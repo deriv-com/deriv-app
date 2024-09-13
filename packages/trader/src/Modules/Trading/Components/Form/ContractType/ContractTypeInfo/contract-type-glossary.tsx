@@ -66,7 +66,7 @@ const ContractTypeGlossary = ({
                     {
                         type: 'paragraph',
                         text: (
-                            <Localize i18n_default_text='Your payout is equal to the payout per point multiplied by the difference between the final price and barrier.' />
+                            <Localize i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the distance between the final price and the barrier.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Expiry' /> },
@@ -80,24 +80,28 @@ const ContractTypeGlossary = ({
                     {
                         type: 'paragraph',
                         text: (
-                            <Localize i18n_default_text='This is a price level that you choose. If this barrier is ever crossed, your contract would be terminated.' />
+                            <Localize i18n_default_text='This is the corresponding price level based on the payout per point you’ve selected. If this barrier is ever breached, your contract would be terminated.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Payout per point' /> },
                     {
                         type: 'paragraph',
-                        text: <Localize i18n_default_text='We calculate this based on the barrier you’ve selected.' />,
+                        text: (
+                            <Localize i18n_default_text='The amount you choose to receive at expiry for every point of change between the final price and the barrier.' />
+                        ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Final price' /> },
                     {
                         type: 'paragraph',
-                        text: <Localize i18n_default_text='This is the spot price of the last tick at expiry.' />,
+                        text: (
+                            <Localize i18n_default_text='This is the spot price of the last tick at expiry, i.e. the exit spot.' />
+                        ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Contract value' /> },
                     {
                         type: 'paragraph',
                         text: (
-                            <Localize i18n_default_text='We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price. We won’t offer a contract value if the remaining duration is below 15 seconds or if the contract duration is in ticks.' />
+                            <Localize i18n_default_text='This is the resale value of your contract, based on the prevailing market conditions (e.g, the current spot), including additional commissions if any.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Cut-off time' /> },
@@ -112,6 +116,13 @@ const ContractTypeGlossary = ({
                         type: 'paragraph',
                         text: (
                             <Localize i18n_default_text='Your contract will expire on this date (in GMT), based on the end time you’ve selected.' />
+                        ),
+                    },
+                    { type: 'heading', text: <Localize i18n_default_text='Take Profit' /> },
+                    {
+                        type: 'paragraph',
+                        text: (
+                            <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount throughout the contract duration. Your profit may be more than the amount you entered depending on the market price at closing. You may change your take profit amount up to 15 seconds before expiry.' />
                         ),
                     },
                 ];

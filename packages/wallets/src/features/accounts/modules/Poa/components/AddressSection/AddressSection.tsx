@@ -1,7 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { FormDropdown, FormField, InlineMessage, WalletText } from '../../../../../../components';
+import { InlineMessage } from '@deriv-com/ui';
+import { FormDropdown, FormField, WalletText } from '../../../../../../components';
 import { TAddressDetails } from '../../types';
 import './AddressSection.scss';
 
@@ -18,7 +19,7 @@ const AddressSection: React.FC = () => {
                 <div className='wallets-address-section__title__divider' />
             </div>
             <div className='wallets-address-section__inline'>
-                <InlineMessage size='md' type='warning' variant='contained'>
+                <InlineMessage variant='warning'>
                     <div className='wallets-address-section__inline-message'>
                         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
                     </div>

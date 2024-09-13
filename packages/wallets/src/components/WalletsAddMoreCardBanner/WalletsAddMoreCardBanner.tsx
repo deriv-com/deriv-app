@@ -3,11 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import useDevice from '../../hooks/useDevice';
+import { Button, useDevice } from '@deriv-com/ui';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { TWalletCarouselItem } from '../../types';
-import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
@@ -21,7 +20,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const switchWalletAccount = useWalletAccountSwitcher();
 
     const { data, error, isLoading: isWalletCreationLoading, mutateAsync, status } = useCreateWallet();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
@@ -52,15 +51,22 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [data?.currency, data?.display_balance, data?.landing_company_shortcode, error?.error.message, isMobile, status]
+        [
+            data?.currency,
+            data?.display_balance,
+            data?.landing_company_shortcode,
+            error?.error.message,
+            isDesktop,
+            status,
+        ]
     );
 
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
-                <WalletCurrencyIcon currency={currency ?? 'USD'} size={isMobile ? 'xs' : 'sm'} />
+                <WalletCurrencyIcon currency={currency ?? 'USD'} size={isDesktop ? 'sm' : 'xs'} />
             </div>
-            <WalletButton
+            <Button
                 color='white'
                 disabled={isAdded || isWalletCreationLoading}
                 icon={
@@ -88,10 +94,11 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: `0.00 ${currency}` });
                     switchWalletAccount(newAccountWallet.client_id);
                 }}
-                size={isMobile ? 'sm' : 'lg'}
+                size={isDesktop ? 'lg' : 'sm'}
+                textSize='sm'
             >
                 {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
-            </WalletButton>
+            </Button>
         </div>
     );
 };

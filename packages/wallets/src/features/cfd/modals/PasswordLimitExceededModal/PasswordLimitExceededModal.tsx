@@ -1,8 +1,7 @@
 import React from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
-import useDevice from '../../../../hooks/useDevice';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components/Base';
 import './PasswordLimitExceededModal.scss';
 
 type TProps = {
@@ -11,74 +10,77 @@ type TProps = {
 };
 
 const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecondaryClick }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
+
+    const textSize = isDesktop ? 'sm' : 'md';
     const { localize } = useTranslations();
 
-    const textSize = isMobile ? 'md' : 'sm';
-    const alignment = isMobile ? 'center' : 'start';
-    if (isMobile) {
+    if (isDesktop) {
         return (
-            <ModalStepWrapper
-                renderFooter={() => {
-                    return (
-                        <WalletButtonGroup isFullWidth>
-                            <WalletButton
-                                borderWidth='md'
-                                isFullWidth
-                                onClick={onSecondaryClick}
-                                size='lg'
-                                textSize='md'
-                                variant='outlined'
-                            >
-                                <Localize i18n_default_text='Forgot password?' />
-                            </WalletButton>
-                            <WalletButton isFullWidth onClick={onPrimaryClick} size='lg' textSize='md'>
-                                <Localize i18n_default_text='Try later' />
-                            </WalletButton>
-                        </WalletButtonGroup>
-                    );
-                }}
-                title={localize('Too many attempts')}
-            >
+            <ModalWrapper hideCloseButton>
                 <div className='wallets-password-limit-exceeded-modal'>
+                    <div className='wallets-password-limit-exceeded-modal__title'>
+                        <Text align='start' weight='bold'>
+                            <Localize i18n_default_text='Too many attempts' />
+                        </Text>
+                    </div>
                     <div className='wallets-password-limit-exceeded-modal__content'>
-                        <Text align={alignment} size={textSize}>
+                        <Text align='start' size='sm'>
                             <Localize i18n_default_text='Please try again in a minute.' />
                         </Text>
                     </div>
+                    <div className='wallets-password-limit-exceeded-modal__buttons'>
+                        <Button
+                            borderWidth='md'
+                            color='black'
+                            onClick={onSecondaryClick}
+                            size='lg'
+                            textSize={textSize}
+                            variant='outlined'
+                        >
+                            <Localize i18n_default_text='Forgot password?' />
+                        </Button>
+                        <Button onClick={onPrimaryClick} size='lg' textSize={textSize}>
+                            <Localize i18n_default_text='Try later' />
+                        </Button>
+                    </div>
                 </div>
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
+
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalStepWrapper
+            renderFooter={() => {
+                return (
+                    <WalletButtonGroup isFullWidth>
+                        <Button
+                            borderWidth='sm'
+                            color='black'
+                            isFullWidth
+                            onClick={onSecondaryClick}
+                            size='lg'
+                            textSize='sm'
+                            variant='outlined'
+                        >
+                            <Localize i18n_default_text='Forgot password?' />
+                        </Button>
+                        <Button isFullWidth onClick={onPrimaryClick} size='lg' textSize='sm'>
+                            <Localize i18n_default_text='Try later' />
+                        </Button>
+                    </WalletButtonGroup>
+                );
+            }}
+            title={localize('Too many attempts')}
+        >
             <div className='wallets-password-limit-exceeded-modal'>
-                <div className='wallets-password-limit-exceeded-modal__title'>
-                    <Text align='start' weight='bold'>
-                        <Localize i18n_default_text='Too many attempts' />
-                    </Text>
-                </div>
                 <div className='wallets-password-limit-exceeded-modal__content'>
-                    <Text align={alignment} size={textSize}>
+                    <Text align='center' size='md'>
                         <Localize i18n_default_text='Please try again in a minute.' />
                     </Text>
                 </div>
-                <div className='wallets-password-limit-exceeded-modal__buttons'>
-                    <WalletButton
-                        borderWidth='md'
-                        onClick={onSecondaryClick}
-                        size='lg'
-                        textSize={textSize}
-                        variant='outlined'
-                    >
-                        <Localize i18n_default_text='Forgot password?' />
-                    </WalletButton>
-                    <WalletButton onClick={onPrimaryClick} size='lg' textSize={textSize}>
-                        <Localize i18n_default_text='Try later' />
-                    </WalletButton>
-                </div>
             </div>
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

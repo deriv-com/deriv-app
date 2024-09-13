@@ -47,15 +47,15 @@ const OptionsAndMultipliersListing = () => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
                         >
-                            <TradingAccountCard.Icon key={`trading-account-card-icon-${title}`}>
+                            <TradingAccountCard.Icon>
                                 <LinkTitle platform={key} />
                             </TradingAccountCard.Icon>
-                            <TradingAccountCard.Content key={`trading-account-card-content-${title}`}>
+                            <TradingAccountCard.Content>
                                 <Text size='sm'>{title}</Text>
                                 <Text size='xs'>{description}</Text>
                             </TradingAccountCard.Content>
                             {activeLinkedToTradingAccount?.loginid && (
-                                <TradingAccountCard.Button key={`trading-account-card-button-${title}`}>
+                                <TradingAccountCard.Button>
                                     <LabelPairedChevronRightCaptionRegularIcon
                                         data-testid='dt_label_paired_chevron'
                                         width={16}

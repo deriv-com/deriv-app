@@ -38,7 +38,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
         return (
             <div className='wallets-cfd-list-accounts__content'>
                 {Array.from({ length: 3 }).map((_, idx) => (
-                    <TradingAppCardLoader key={`wallets-carousel-loader-action-${idx}`} />
+                    <TradingAppCardLoader key={`wallets-cfd-list-loader-${idx}`} />
                 ))}
             </div>
         );

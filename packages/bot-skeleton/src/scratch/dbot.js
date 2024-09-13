@@ -12,6 +12,7 @@ import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
 import { loadBlockly } from './blockly';
+import { forgetAccumulatorsProposalRequest } from './accumulators-proposal-handler';
 
 class DBot {
     constructor() {
@@ -53,6 +54,8 @@ class DBot {
                     const symbol = market_block.getFieldValue('SYMBOL_LIST');
                     const category = this.getFieldValue('TRADETYPECAT_LIST');
                     const trade_type = this.getFieldValue('TRADETYPE_LIST');
+                    const is_accumulator = trade_type === 'accumulator';
+                    if (!is_accumulator) forgetAccumulatorsProposalRequest(that);
 
                     if (is_symbol_list_change) {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
@@ -367,6 +370,7 @@ class DBot {
         this.interpreter = null;
         this.interpreter = Interpreter();
         await this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
+        forgetAccumulatorsProposalRequest(this);
     }
 
     /**

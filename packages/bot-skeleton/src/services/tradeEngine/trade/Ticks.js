@@ -4,6 +4,8 @@ import * as constants from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
 import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
+import { api_base } from 'src/app';
+import debounce from 'lodash.debounce';
 
 let tickListenerKey;
 
@@ -113,5 +115,105 @@ export default Engine =>
 
         getPipSize() {
             return this.$scope.ticksService.pipSizes[this.symbol];
+        }
+
+        async fetchStatsForAccumulators() {
+            let ticks_stayed_in_list = [];
+            this.is_proposal_requested_for_accumulators = false;
+
+            const requestAccumulatorStats = async () => {
+                if (!this.subscription_id_for_accumulators && !this.is_proposal_requested_for_accumulators) {
+                    this.is_proposal_requested_for_accumulators = true;
+                    if (window.Blockly.accumulators_request) {
+                        await api_base?.api?.send(window.Blockly.accumulators_request);
+                    }
+                }
+            };
+
+            const handleOnMessageForAccumulators = new Promise(resolve => {
+                const subscription = api_base.api.onMessage().subscribe(({ data }) => {
+                    if (data.msg_type === 'proposal') {
+                        try {
+                            this.subscription_id_for_accumulators = data.subscription.id;
+                            const stat_list = (data.proposal.contract_details.ticks_stayed_in || []).reverse();
+                            ticks_stayed_in_list = [...stat_list, ...ticks_stayed_in_list];
+                            if (ticks_stayed_in_list.length > 0) resolve();
+                        } catch (error) {
+                            globalObserver.emit('Unexpected message type or no proposal found:', error);
+                        }
+                    }
+                });
+                api_base.pushSubscription(subscription);
+            });
+
+            try {
+                const debouncedAccumulatorsRequest = debounce(requestAccumulatorStats.bind(this), 300);
+                debouncedAccumulatorsRequest();
+                await handleOnMessageForAccumulators;
+            } catch (error) {
+                globalObserver.emit('Error in subscription promise:', error);
+                throw error;
+            } finally {
+                await api_base?.api?.send({ forget_all: 'proposal' });
+                this.is_proposal_requested_for_accumulators = false;
+                this.subscription_id_for_accumulators = null;
+            }
+
+            return ticks_stayed_in_list;
+        }
+
+        async getCurrentStat() {
+            try {
+                const ticks_stayed_in = await this.fetchStatsForAccumulators();
+                return ticks_stayed_in?.[0];
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log('Error fetching current stat:', error);
+            }
+        }
+
+        async getStatList() {
+            try {
+                const ticksStayedIn = await this.fetchStatsForAccumulators();
+                return ticksStayedIn.slice(0, 100);
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log('Error fetching current stat:', error);
+            }
+        }
+
+        async getDelayTickValue(tick_value) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const ticks = [];
+                    const symbol = this.symbol;
+
+                    const resolveAndExit = () => {
+                        this.$scope.ticksService.stopMonitor({
+                            symbol,
+                            key: '',
+                        });
+                        resolve(ticks);
+                        ticks.length = 0;
+                    };
+
+                    const watchTicks = tick_list => {
+                        ticks.push(tick_list);
+                        const current_tick = ticks.length + 1;
+                        const is_accumulator = this.data.contract.contract_type === 'ACCU';
+                        const is_sell_available = this.isSellAtMarketAvailable();
+                        if (!is_sell_available && is_accumulator) {
+                            resolveAndExit();
+                        } else if (current_tick === tick_value) {
+                            resolveAndExit();
+                        }
+                    };
+
+                    const delayExecution = tick_list => watchTicks(tick_list);
+                    this.$scope.ticksService.monitor({ symbol, callback: delayExecution });
+                } catch (error) {
+                    reject(new Error(`Failed to start tick monitoring: ${error.message}`));
+                }
+            });
         }
     };

@@ -101,12 +101,10 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
                 min_number: 8,
                 max_number: max_length,
             });
-        } else if (!validPassword(values.new_password)) {
-            errors.new_password = getErrorMessages().password();
         } else if (platform !== CFD_PLATFORMS.DXTRADE && !validMT5Password(values.new_password)) {
-            errors.new_password = localize(
-                'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
-            );
+            errors.new_password = getErrorMessages().special_characters();
+        } else if (!validPassword(values.new_password)) {
+            errors.new_password = getErrorMessages().special_characters();
         }
         if (values.new_password.toLowerCase() === email.toLowerCase()) {
             errors.new_password = localize('Your password cannot be the same as your email address.');

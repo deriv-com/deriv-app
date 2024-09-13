@@ -94,13 +94,7 @@ const CFDPasswordChange = observer(
                 if (response.error.code === 'PasswordError')
                     actions.setFieldError('old_password', response.error.message);
                 if (response.error.code === 'InputValidationFailed')
-                    actions.setFieldError(
-                        'new_password',
-                        // Localize is employed to convert the customized error message since the backend error lacks clarity.
-                        localize(
-                            'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
-                        )
-                    );
+                    actions.setFieldError('new_password', getErrorMessages().special_characters());
             }
 
             if (!response.error) {

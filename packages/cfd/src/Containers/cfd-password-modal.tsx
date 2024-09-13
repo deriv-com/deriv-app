@@ -738,16 +738,14 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 min_number: 8,
                 max_number: max_length,
             });
-        } else if (!validPassword(values.password)) {
-            errors.password = getErrorMessages().password();
         } else if (
             platform === CFD_PLATFORMS.MT5 &&
             should_set_trading_password &&
             !validMT5Password(values.password)
         ) {
-            errors.password = localize(
-                'Password must have at least one of these special characters: !&‘’*-“%+.#&(),:;?=@<>\\[]^_{}|~'
-            );
+            errors.password = getErrorMessages().special_characters();
+        } else if (!validPassword(values.password)) {
+            getErrorMessages().password();
         }
         if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');

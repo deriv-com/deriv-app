@@ -68,13 +68,13 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     if (isDesktop)
         return (
             <div className='wallets-header__actions'>
-                {getWalletHeaderButtons(localize, isDemo).map(button => (
+                {getWalletHeaderButtons(localize, isDemo).map((button, index) => (
                     <Button
                         aria-label={button.name}
                         borderWidth='sm'
                         color={button.color}
                         icon={button.icon}
-                        key={button.name}
+                        key={`wallets-header-actions-${button.name}-${index}`}
                         onClick={() => {
                             history.push(`/wallet/${button.name}`);
                         }}

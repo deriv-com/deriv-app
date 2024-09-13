@@ -7,16 +7,13 @@ import { WalletsContainer } from '../WalletsContainer';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList = () => {
-    const { data: activeWallet, isInitializing } = useActiveWalletAccount();
+    const { isInitializing } = useActiveWalletAccount();
 
     return (
         <div className='wallets-desktop-wallets-list' data-testid='dt_desktop-wallets-list'>
             {isInitializing && <WalletsCardLoader />}
             {!isInitializing && (
-                <WalletsContainer
-                    key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
-                    renderHeader={() => <WalletListCard />}
-                >
+                <WalletsContainer renderHeader={() => <WalletListCard />}>
                     <AccountsList />
                 </WalletsContainer>
             )}

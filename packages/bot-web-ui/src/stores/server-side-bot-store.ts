@@ -130,10 +130,6 @@ export default class ServerBotStore {
         durationtype: SERVER_BOT_CONFIG.DEFAULT.durationtype,
         action: 'RUN',
     };
-    is_dialog_open = false;
-    dialog_options = {};
-    onOkButtonClick: (() => void) | null = null;
-    onCancelButtonClick: (() => void) | null = null;
 
     constructor(client_store: TClientStore) {
         this.client_store = client_store;
@@ -150,8 +146,6 @@ export default class ServerBotStore {
             form_data: observable,
             current_duration_min_max: observable,
             loss_threshold_warning_data: observable,
-            is_dialog_open: observable,
-            dialog_options: observable,
             setShouldSubscribe: action,
             performance: computed,
             setListLoading: action,
@@ -174,8 +168,6 @@ export default class ServerBotStore {
             setCurrentDurationMinMax: action,
             setSelectedStrategy: action,
             resetValues: action,
-            showClearStatDialog: action,
-            onCloseDialog: action,
         });
 
         reaction(
@@ -668,28 +660,5 @@ export default class ServerBotStore {
 
     setSelectedStrategy = (strategy: string) => {
         this.selected_strategy = strategy;
-    };
-
-    onCloseDialog = () => {
-        this.is_dialog_open = false;
-    };
-
-    showClearStatDialog = () => {
-        this.onCancelButtonClick = this.onCloseDialog;
-        this.onOkButtonClick = () => {
-            this.resetJournal();
-            this.resetTransactions();
-            this.onCloseDialog();
-        };
-        this.onCloseDialog();
-        this.dialog_options = {
-            title: localize('Are you sure?'),
-            message: localize(
-                'This will clear all data in the summary and journal panels. All counters will be reset to zero.'
-            ),
-            cancel_button_text: localize('Cancel'),
-            ok_button_text: localize('Ok'),
-        };
-        this.is_dialog_open = true;
     };
 }

@@ -4,6 +4,12 @@ import { Button, Icon, Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import ClearJournalTransactions from '../bot-list/clear-journal-transactions';
+
+type TSummary = {
+    is_clear_dialog_visible: boolean;
+    setClearDialogVisibility: (is_clear_dialog_visible: boolean) => void;
+};
 
 const STATUS = Object.freeze({
     open: {
@@ -29,11 +35,11 @@ const STATUS = Object.freeze({
     },
 });
 
-const Summary: React.FC = observer(() => {
+const Summary = observer(({ is_clear_dialog_visible, setClearDialogVisibility }: TSummary) => {
     const { server_bot } = useDBotStore();
     const { client } = useStore();
     const { currency } = client;
-    const { transactions, active_bot, performance, resetTransactions } = server_bot;
+    const { transactions, active_bot, performance, resetTransactions, resetJournal } = server_bot;
     const { bot_id } = active_bot;
     const bot_transactions = bot_id ? transactions[bot_id] : {};
 
@@ -42,6 +48,12 @@ const Summary: React.FC = observer(() => {
     // when we allow multiple bots to run at the same time, it should be an array
     // const is_some_bot_running = active_bots.every(item => item.status !== 'stopped');
     const is_bot_running = active_bot?.status !== 'stopped';
+
+    const onOkButtonClick = () => {
+        resetJournal();
+        resetTransactions();
+        setClearDialogVisibility(false);
+    };
 
     return (
         <div className='ssb-summary'>
@@ -151,11 +163,20 @@ const Summary: React.FC = observer(() => {
                     </ul>
                 </div>
                 <div className='ssb-summary__footer__actions'>
-                    <Button secondary disabled={!has_summary || is_bot_running} onClick={() => resetTransactions()}>
+                    <Button
+                        secondary
+                        disabled={!has_summary || is_bot_running}
+                        onClick={() => setClearDialogVisibility(true)}
+                    >
                         <Localize i18n_default_text='Reset' />
                     </Button>
                 </div>
             </div>
+            <ClearJournalTransactions
+                is_open={is_clear_dialog_visible}
+                onConfirm={onOkButtonClick}
+                setVisibility={setClearDialogVisibility}
+            />
         </div>
     );
 });

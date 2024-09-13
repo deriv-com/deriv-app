@@ -32,7 +32,7 @@ describe('AvailableDxtradeAccountsList', () => {
 
     it('shows DxtradeEnterPasswordModal upon clicking on the TradingAccountCard component', () => {
         render(<AvailableDxtradeAccountsList />, { wrapper });
-        const tradingAccountCard = screen.getByRole('button');
+        const tradingAccountCard = screen.getByTestId('dt_wallets_trading_account_card');
         userEvent.click(tradingAccountCard);
         expect(mockShow).toHaveBeenCalled();
     });

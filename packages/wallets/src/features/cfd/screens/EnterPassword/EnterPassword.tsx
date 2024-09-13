@@ -30,7 +30,7 @@ type TProps = {
 const EnterPassword: React.FC<TProps> = ({
     isForgotPasswordLoading,
     isLoading,
-    isTncChecked = false,
+    isTncChecked = true,
     isVirtual,
     marketType,
     modalTitle,

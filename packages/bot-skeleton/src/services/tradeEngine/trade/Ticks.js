@@ -167,8 +167,7 @@ export default Engine =>
                 const ticks_stayed_in = await this.fetchStatsForAccumulators();
                 return ticks_stayed_in?.[0];
             } catch (error) {
-                // eslint-disable-next-line no-console
-                console.log('Error fetching current stat:', error);
+                globalObserver.emit('Error fetching current stat:', error);
             }
         }
 
@@ -177,8 +176,7 @@ export default Engine =>
                 const ticksStayedIn = await this.fetchStatsForAccumulators();
                 return ticksStayedIn.slice(0, 100);
             } catch (error) {
-                // eslint-disable-next-line no-console
-                console.log('Error fetching current stat:', error);
+                globalObserver.emit('Error fetching current stat:', error);
             }
         }
 

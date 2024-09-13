@@ -22,8 +22,10 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
+    const localize_url = window.localStorage.getItem('i18n_language');
+    const localize_language = localize_url ? JSON.parse(localize_url) : null;
     const url_lang = getlangFromUrl();
-    const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
+    const i18n_language = localize_language || url_lang || 'en';
 
     let base_link = '';
 
@@ -39,8 +41,10 @@ export const getUrlSmartTrader = () => {
 export const getUrlP2P = (is_language_required = true) => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
 
+    const localize_url = window.localStorage.getItem('i18n_language');
+    const localize_language = localize_url ? JSON.parse(localize_url) : null;
     const url_lang = getlangFromUrl();
-    const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
+    const i18n_language = localize_language || url_lang || 'en';
     const base_link = is_staging_deriv_app ? deriv_urls.P2P_STAGING : deriv_urls.P2P_PRODUCTION;
 
     return is_language_required ? `${base_link}/?l=${i18n_language.toLowerCase()}` : base_link;

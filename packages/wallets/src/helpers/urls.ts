@@ -53,8 +53,10 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { isStagingDerivApp } = getPlatformFromUrl();
+    const localizeUrl = window.localStorage.getItem('i18n_language');
+    const localizeLanguage = localizeUrl ? JSON.parse(localizeUrl) : null;
     const urlLang = getlangFromUrl();
-    const i18NLanguage = window.localStorage.getItem('i18n_language') || urlLang || 'en';
+    const i18NLanguage = localizeLanguage || urlLang || 'en';
 
     let baseLink = '';
 

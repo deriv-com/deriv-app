@@ -96,7 +96,9 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
     );
 
     const initOnfido = useCallback(async () => {
-        const i18NLanguage = window.localStorage.getItem('i18n_language')?.toLowerCase() ?? 'en';
+        const localize_url = window.localStorage.getItem('i18n_language');
+        const localize_language = localize_url ? JSON.parse(localize_url) : null;
+        const i18NLanguage = localize_language.toLowerCase() ?? 'en';
         const onfidoCountryCode =
             countryCode.length !== 3 ? ALPHA_2_TO_ALPHA_3[countryCode.toUpperCase()] : countryCode;
         try {

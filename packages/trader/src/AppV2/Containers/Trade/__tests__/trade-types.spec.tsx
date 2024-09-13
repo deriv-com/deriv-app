@@ -95,7 +95,7 @@ describe('TradeTypes', () => {
         render(mockTradeTypes());
 
         await userEvent.click(screen.getByText('View all'));
-        await userEvent.click(screen.getByText('Customize'));
+        await userEvent.click(screen.getByText('Customise'));
         const addButton = screen.getAllByTestId('dt_trade_type_list_item_right_icon')[0];
         await userEvent.click(addButton);
 

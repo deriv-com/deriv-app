@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useModulesStore } from 'Stores/useModulesStores';
 import { clickAndKeyEventHandler } from '@deriv/shared';
@@ -24,7 +24,6 @@ const MarketCategoryItem = forwardRef(
         const { markets } = useModulesStore();
         const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = markets;
         const { addSnackbar } = useSnackbar();
-        const { ui } = useStore();
 
         useEffect(() => {
             setIsFavorite(favoriteSymbols.includes(item.symbol));

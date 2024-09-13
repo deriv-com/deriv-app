@@ -46,21 +46,19 @@ Blockly.Blocks.tick_delay = {
         return {
             TICKDELAYVALUE: input_value => {
                 const evaluated_result = evaluateExpression(input_value);
-                // Check if the evaluated result is invalid
                 if (evaluated_result === 'invalid_input') {
                     if (this.workspace_to_code.includes(input_value)) {
                         return false;
                     }
                     this.error_message = localize('Invalid Input {{ input_value }}.', { input_value });
-                    return true; // Return false for invalid input
+                    return true;
                 }
 
-                // Check if the evaluated result is less than or equal to zero
                 if (evaluated_result < 0) {
                     this.error_message = localize('Values cannot be negative. Provided value: {{ input_value }}.', {
                         input_value,
                     });
-                    return true; // Return false for values less than or equal to zero
+                    return true;
                 }
             },
         };

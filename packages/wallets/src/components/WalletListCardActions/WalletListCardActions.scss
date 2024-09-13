@@ -41,7 +41,7 @@
     flex-direction: row;
     align-items: center;
     cursor: pointer;
-    min-width: 5.6rem;
+    gap: 3.2rem;
 
     &__container {
         display: flex;
@@ -49,15 +49,15 @@
         justify-content: center;
         align-items: center;
         gap: 0.8rem;
-        align-self: stretch;
     }
 
     &-content {
         display: flex;
-        width: 8rem;
         flex-direction: column;
         align-items: center;
         gap: 0.4rem;
+        width: 5.6rem;
+        white-space: nowrap;
 
         &-icon {
             border-radius: 1.2rem;

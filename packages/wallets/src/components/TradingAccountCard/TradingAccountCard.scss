@@ -8,6 +8,10 @@
     border: none;
     background: none;
 
+    &--disabled {
+        cursor: not-allowed;
+    }
+
     @include desktop {
         padding-inline: 1.6rem;
         $columns: 3;

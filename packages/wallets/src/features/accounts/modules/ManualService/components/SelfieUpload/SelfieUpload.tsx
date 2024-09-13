@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { Dropzone, ModalStepWrapper, WalletText } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import SelfieIcon from '../../../../../../public/images/accounts/selfie-icon.svg';
 import { Footer } from '../../../components';
 import { TManualDocumentComponent } from '../../utils';

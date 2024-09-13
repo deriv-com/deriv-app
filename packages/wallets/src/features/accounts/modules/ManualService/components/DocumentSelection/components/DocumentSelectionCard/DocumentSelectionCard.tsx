@@ -1,6 +1,6 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
 import RightArrow from '../../../../../../../../public/images/navigation-chevron-right.svg';
 import { TManualDocumentType } from '../../../../utils';
 import './DocumentSelectionCard.scss';

@@ -22,7 +22,7 @@
         &--dark {
             font-weight: bold;
             text-decoration: underline;
-            color: #000;
+            color: var(--du-text-black, #000000);
         }
     }
 }

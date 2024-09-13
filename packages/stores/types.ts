@@ -663,7 +663,8 @@ type TCommonStore = {
     setAppstorePlatform: (value?: string) => void;
     setError?: (has_error: boolean, error: TCommonStoreError) => void;
     setSelectedContractType: (contract_type: string) => void;
-    setServicesError: (error: TCommonStoreServicesError) => void;
+    setServicesError: (error: TCommonStoreServicesError, hide_toast: boolean) => void;
+    resetServicesError: () => void;
     showError: (error: TCommonStoreError) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;

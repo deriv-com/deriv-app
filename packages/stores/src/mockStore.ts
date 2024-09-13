@@ -642,6 +642,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             saveChartType: jest.fn(),
             saved_chart_type: '',
             saved_granularity: null,
+            saveGranularity: jest.fn(),
             setChartTypeAndGranularity: jest.fn(),
             setNewAccumulatorBarriersData: jest.fn(),
             updateAccumulatorBarriersData: jest.fn(),

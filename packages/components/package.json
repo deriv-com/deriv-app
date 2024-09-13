@@ -79,6 +79,8 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv-com/quill-tokens": "^2.0.4",
+        "@deriv-com/quill-ui": "1.16.9",
         "@types/react-virtualized": "^9.21.21",
         "classnames": "^2.2.6",
         "clsx": "^2.1.1",

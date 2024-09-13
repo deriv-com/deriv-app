@@ -1,4 +1,4 @@
-import { ActionSheet, Button, CaptionText, DatePicker, Text } from '@deriv-com/quill-ui';
+import { ActionSheet, CaptionText, DatePicker, IconButton, Text } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useState } from 'react';
@@ -23,21 +23,12 @@ const formatDate = (date: Date) => {
     return `${formatted_date} GMT`;
 };
 
-const calculateTotalDays = (expiry_date: Date) => {
-    const today = new Date();
-    const time_difference = expiry_date.getTime() - today.getTime();
-    const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
-    return day_difference;
-};
-
 const DurationEndTimePicker = ({
     expiry_date,
     setExpiryDate,
-    setSelectedTime,
 }: {
     setExpiryDate: (date: Date) => void;
     expiry_date: Date;
-    setSelectedTime: (arg: number[]) => void;
 }) => {
     const [open_date_picker, setOpenDatePicker] = useState(false);
 
@@ -50,13 +41,12 @@ const DurationEndTimePicker = ({
                 <Text size='sm'>{formatDate(expiry_date)}</Text>
             </div>
             <div>
-                <Button
-                    variant='secondary'
+                <IconButton
                     size='md'
                     color='black-white'
+                    variant='secondary'
                     onClick={() => setOpenDatePicker(true)}
                     icon={<LabelPairedCalendarSmBoldIcon />}
-                    iconButton
                 />
                 <ActionSheet.Root
                     isOpen={open_date_picker}
@@ -73,7 +63,6 @@ const DurationEndTimePicker = ({
                             onChange={date => {
                                 if (date && date instanceof Date) {
                                     setExpiryDate(date);
-                                    setSelectedTime([calculateTotalDays(date)]);
                                     setOpenDatePicker(false);
                                 }
                             }}

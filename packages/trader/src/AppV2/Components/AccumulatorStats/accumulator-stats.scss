@@ -30,7 +30,7 @@
 }
 
 .accumulators-stats {
-    background: var(--general-main-1);
+    background: var(--semantic-color-slate-solid-surface-frame-low);
     padding: var(--core-spacing-400);
     margin-top: calc(var(--core-spacing-600) * -1);
     &__container {
@@ -40,14 +40,14 @@
             margin: var(--core-spacing-300) var(--core-spacing-400);
             background: transparent;
             border: none;
-            border-bottom: var(--core-spacing-75) dashed;
+            border-bottom: var(--core-spacing-75) dashed var(--component-textIcon-normal-default);
             padding: var(--core-spacing-50);
         }
         &__divider {
             border-right: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
             margin: var(--core-spacing-50) var(--core-spacing-400);
         }
-        .slide-right {
+        .-slide-right {
             @include accumulator-slide-to-next;
         }
 
@@ -121,13 +121,13 @@
             margin-bottom: var(--core-spacing-1200);
         }
         &__caption {
-            margin-bottom: var(--core-spacing-400);
+            margin-bottom: var(--core-spacing-1200);
         }
         &__stats {
             display: flex;
             padding: var(--core-spacing-600) var(--core-spacing-75);
             justify-content: space-around;
-            border-bottom: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
+            border-bottom: var(--core-spacing-75) solid var(--semantic-color-monochrome-border-normal-mid);
             &__moving {
                 display: flex;
                 align-items: center;
@@ -172,20 +172,7 @@
     }
 
     .stats-description {
-        text-align: left;
-        &__player-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; // 16:9 aspect ratio (9/16 = 0.5625 or 56.25%)
-            overflow: hidden;
-            &__player {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        }
+        text-align: start;
 
         &__content {
             margin: var(--core-spacing-1200);

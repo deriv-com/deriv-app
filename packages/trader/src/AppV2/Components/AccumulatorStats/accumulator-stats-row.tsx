@@ -16,7 +16,13 @@ const StatsRow = ({
     return (
         <>
             <div className={`${className}__stat`}>
-                <Text size='sm' bold className={animation_class} data-testid='accumulator-first-stat'>
+                <Text
+                    size='sm'
+                    bold
+                    className={animation_class}
+                    data-testid='accumulator-first-stat'
+                    color='quill-typography__color--prominent'
+                >
                     {rows[0]}
                 </Text>
             </div>

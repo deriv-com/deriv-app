@@ -6,9 +6,14 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
     return (
         <ActionSheet.Content className='barrier-params__description-content'>
             {isDays ? (
-                <Text>
-                    <Localize i18n_default_text='The barrier will be fixed at the set price.' />
-                </Text>
+                <div className='content-section'>
+                    <Text bold>
+                        <Localize i18n_default_text='Fixed price:' />
+                    </Text>
+                    <Text>
+                        <Localize i18n_default_text='Barrier set at specific price.' />
+                    </Text>
+                </div>
             ) : (
                 <>
                     <div className='content-section'>
@@ -16,7 +21,7 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
                             <Localize i18n_default_text='Above spot:' />
                         </Text>
                         <Text>
-                            <Localize i18n_default_text='The barrier will move relative to the current spot, maintaining a set distance above it.' />
+                            <Localize i18n_default_text='Barrier set above spot price.' />
                         </Text>
                     </div>
                     <div className='content-section'>
@@ -24,7 +29,7 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
                             <Localize i18n_default_text='Below spot:' />
                         </Text>
                         <Text>
-                            <Localize i18n_default_text='The barrier will move relative to the current spot, maintaining a set distance below it.' />
+                            <Localize i18n_default_text='Barrier set below spot price.' />
                         </Text>
                     </div>
                     <div className='content-section'>
@@ -32,7 +37,7 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
                             <Localize i18n_default_text='Fixed price:' />
                         </Text>
                         <Text>
-                            <Localize i18n_default_text='The barrier will be fixed at the set price.' />
+                            <Localize i18n_default_text='Barrier set at specific price.' />
                         </Text>
                     </div>
                 </>

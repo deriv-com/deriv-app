@@ -15,6 +15,7 @@ type TProps = {
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
     marketType?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['marketType'];
     platform?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['platform'];
+    product?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['product'];
     walletName?: JSX.Element | string;
 };
 
@@ -27,6 +28,7 @@ const AppCard: React.FC<TProps> = ({
     isDemoWallet = false,
     marketType,
     platform,
+    product,
     walletName,
 }) => {
     return (
@@ -47,6 +49,7 @@ const AppCard: React.FC<TProps> = ({
                             isDemo={isDemoWallet}
                             marketType={marketType}
                             platform={platform}
+                            product={product}
                         />
                     </div>
                     {cardSize !== 'sm' && (

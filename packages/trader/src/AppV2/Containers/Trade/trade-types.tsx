@@ -5,6 +5,7 @@ import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { Localize, localize } from '@deriv/translations';
+import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
@@ -275,6 +276,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>
+            {is_open && <TradeTypesSelectionGuide />}
         </div>
     );
 };

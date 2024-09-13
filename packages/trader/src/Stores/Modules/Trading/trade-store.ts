@@ -1230,11 +1230,13 @@ export default class TradeStore extends BaseStore {
         // when accumulator is selected, we need to change chart type to mountain and granularity to 0
         // and we need to restore previous chart type and granularity when accumulator is unselected
         const {
-            prev_chart_type,
-            prev_granularity,
             chart_type,
             granularity,
-            savePreviousChartMode,
+            saveChartType,
+            saved_chart_type,
+            saved_granularity,
+            saveGranularity,
+            setChartTypeAndGranularity,
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
@@ -1242,20 +1244,21 @@ export default class TradeStore extends BaseStore {
             isAccumulatorContract(obj_new_values.contract_type) ||
             isDigitTradeType(obj_new_values.contract_type) ||
             isUpDownContract(obj_new_values.contract_type);
-        if ((chart_type !== 'line' || granularity !== 0) && has_line_chart) {
-            savePreviousChartMode(chart_type, granularity);
-            updateGranularity(0);
-            updateChartType('line');
-        } else if (
-            !has_line_chart &&
-            obj_new_values.contract_type &&
-            prev_chart_type &&
-            prev_granularity &&
-            (prev_chart_type !== chart_type || prev_granularity !== granularity)
-        ) {
-            updateGranularity(prev_granularity);
-            updateChartType(prev_chart_type);
-            savePreviousChartMode(chart_type, granularity);
+        if (!has_line_chart && (saved_chart_type || !Number.isNaN(saved_granularity))) {
+            if (saved_chart_type) {
+                updateChartType(saved_chart_type);
+            }
+            if (!Number.isNaN(saved_granularity)) {
+                updateGranularity(saved_granularity);
+            }
+        } else if (has_line_chart) {
+            setChartTypeAndGranularity('line', 0);
+            (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
+            (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
+        } else {
+            setChartTypeAndGranularity('candles', 60);
+            (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
+            (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx
@@ -1718,17 +1721,14 @@ export default class TradeStore extends BaseStore {
 
     setChartModeFromURL() {
         const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
-        const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
-        if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
-            updateGranularity(Number(granularityParam));
+        const { chart_type, granularity, saveChartType, saveGranularity } = this.root_store.contract_trade;
+        if (
+            (!isNaN(Number(granularityParam)) && granularityParam !== granularity) ||
+            (chartTypeParam && chartTypeParam !== chart_type)
+        ) {
+            chartTypeParam && saveChartType(chartTypeParam);
+            granularityParam && saveGranularity(Number(granularityParam));
         }
-        if (chartTypeParam && chartTypeParam !== chart_type) {
-            updateChartType(chartTypeParam);
-        }
-        setTradeURLParams({
-            chartType: chartTypeParam ?? chart_type,
-            granularity: granularityParam ?? Number(granularity),
-        });
     }
 
     setChartStatus(status: boolean, isFromChart?: boolean) {
@@ -1881,14 +1881,6 @@ export default class TradeStore extends BaseStore {
             option.isClosed !== this.is_market_closed
         ) {
             this.prepareTradeStore(false);
-        }
-        if (state === STATE_TYPES.SET_CHART_MODE) {
-            if (!isNaN(Number(option?.granularity))) {
-                this.root_store.contract_trade.updateGranularity(Number(option?.granularity));
-            }
-            if (option?.chart_type_name) {
-                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
-            }
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {

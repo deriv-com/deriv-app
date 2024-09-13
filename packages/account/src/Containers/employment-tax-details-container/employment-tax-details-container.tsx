@@ -129,7 +129,7 @@ const EmploymentTaxDetailsContainer = observer(
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
         return (
-            <div id={id}>
+            <div id={'employment-tax-section'}>
                 <EmploymentStatusField required is_disabled={isFieldDisabled('employment_status')} />
 
                 {!client.account_settings.tax_identification_number && should_show_no_tax_details_checkbox && (

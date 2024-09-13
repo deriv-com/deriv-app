@@ -1,3 +1,5 @@
 .employment-tin-section {
-    margin: 2.4rem 0;
+    @include desktop-screen {
+        margin: 2.4rem 0;
+    }
 }

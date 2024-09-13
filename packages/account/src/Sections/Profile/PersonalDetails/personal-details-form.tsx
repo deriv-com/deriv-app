@@ -25,6 +25,7 @@ import { PersonalDetailsValueTypes } from 'Types';
 import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
 import { account_opening_reason_list } from './constants';
 import './personal-details-form.scss';
+// import { useScrollElementToTop } from '../../../hooks'; // [TODO]: Uncomment this after implementing Notification redirect
 
 type TRestState = {
     show_form: boolean;
@@ -40,6 +41,8 @@ const PersonalDetailsForm = observer(() => {
     const history = useHistory();
 
     const { tin_validation_config, mutate } = useTinValidations();
+
+    // const scrollToTop = useScrollElementToTop(); // [TODO]: Uncomment this after implementing Notification redirect
 
     const {
         client,
@@ -221,6 +224,16 @@ const PersonalDetailsForm = observer(() => {
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg, tin_validation_config);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
+
+    // [ToDo]: Uncomment this code once notification redirect is implemented
+    // const handleScroll = () => {
+    //     const parentRef = isDesktop
+    //         ? document.querySelector('.account-form__personal-details .dc-themed-scrollbars')
+    //         : document.querySelector('.account__scrollbars_container--grid-layout');
+    //     const targetRef = document.getElementById('employment-tax-section') as HTMLElement;
+    //     const offset = isDesktop ? 0 : 78; // 78px is the height of header and title of the page
+    //     scrollToTop(parentRef as HTMLElement, targetRef, offset);
+    // };
 
     return (
         <Formik

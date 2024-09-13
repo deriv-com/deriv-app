@@ -23,9 +23,9 @@ const getBaseSchema = () =>
             ),
         phone: Yup.string()
             .required(localize('Phone is required.'))
-            .min(9, localize('You should enter 9-35 numbers.'))
-            .max(35, localize('You should enter 9-35 characters.'))
-            .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, localize('Please enter a valid phone number (e.g. +15417541234).')),
+            .min(9, localize('You should enter 9-20 numbers.'))
+            .max(20, localize('You should enter 9-20 characters.'))
+            .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, localize('Enter a valid phone number (e.g. +15417541234).')),
         address_line_1: Yup.string()
             .trim()
             .required(localize('First line of address is required.'))

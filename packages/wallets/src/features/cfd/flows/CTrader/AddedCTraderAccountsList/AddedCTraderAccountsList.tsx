@@ -18,15 +18,17 @@ const AddedCTraderAccountsList: React.FC = () => {
                     key={`added-ctrader-${account.login}-${index}`}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                 >
-                    <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
-                    <TradingAccountCard.Content>
+                    <TradingAccountCard.Icon key={`added-ctrader-icon-${account.login}-${index}`}>
+                        {PlatformDetails.ctrader.icon}
+                    </TradingAccountCard.Icon>
+                    <TradingAccountCard.Content key={`added-ctrader-content-${account.login}-${index}`}>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
                         </WalletText>
                         <WalletText size='xs'>{account.login}</WalletText>
                     </TradingAccountCard.Content>
-                    <TradingAccountCard.Button>
+                    <TradingAccountCard.Button key={`added-ctrader-button-${account.login}-${index}`}>
                         <LabelPairedChevronRightCaptionRegularIcon width={16} />
                     </TradingAccountCard.Button>
                 </TradingAccountCard>

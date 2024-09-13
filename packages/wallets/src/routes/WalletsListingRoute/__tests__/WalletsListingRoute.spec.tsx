@@ -39,6 +39,17 @@ const wrapper = ({ children }: PropsWithChildren) => (
 describe('WalletsListingRoute', () => {
     beforeEach(() => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [
+                {
+                    currency: 'USD',
+                    currency_config: { fractional_digits: 2 },
+                    is_disabled: false,
+                    is_virtual: false,
+                    loginid: 'CR1',
+                },
+            ],
+        });
     });
 
     afterAll(() => {

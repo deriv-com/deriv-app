@@ -29,6 +29,15 @@ describe('WalletsContainer', () => {
 
     beforeEach(() => {
         renderHeaderMock.mockClear();
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [
+                { is_disabled: false, is_virtual: false, loginid: 'real1' },
+                { is_virtual: true, loginid: 'demo123' },
+            ],
+        });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: undefined,
+        });
     });
 
     it('should render the default component if no data available', () => {

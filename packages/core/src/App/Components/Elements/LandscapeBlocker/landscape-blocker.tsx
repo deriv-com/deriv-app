@@ -1,16 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { isDisabledLandscapeBlockerRoute, isMobileOs, isTabletOs, routes } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import LandscapeBlockerSvg from 'Assets/SvgComponents/settings/landscape-blocker.svg';
 import './landscape-blocker.scss';
 import { useDevice } from '@deriv-com/ui';
 
 const LandscapeBlocker = observer(() => {
-    // need to check for wallet account and don't hide landscape blocker for users migrated to wallets
-    const {
-        client: { has_wallet },
-    } = useStore();
     const { isMobile } = useDevice();
     const location = useLocation();
     const pathname = location?.pathname;
@@ -24,11 +20,7 @@ const LandscapeBlocker = observer(() => {
             pathname.startsWith(routes.bot) ||
             pathname.startsWith('/contract'));
 
-    if (
-        !has_wallet &&
-        !show_blocker_on_mobile_landscape_view &&
-        (is_hidden_landscape_blocker || should_show_dtrader_tablet_view)
-    )
+    if (!show_blocker_on_mobile_landscape_view && (is_hidden_landscape_blocker || should_show_dtrader_tablet_view))
         return null;
 
     return (

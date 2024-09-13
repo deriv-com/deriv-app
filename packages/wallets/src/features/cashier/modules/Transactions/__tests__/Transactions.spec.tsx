@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
-import useDevice from '../../../../../hooks/useDevice';
 import Transactions from '../Transactions';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -10,11 +10,9 @@ jest.mock('@deriv/api-v2', () => ({
     useCurrencyConfig: jest.fn(),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        isMobile: true,
-    })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 jest.mock('react-router-dom', () => ({

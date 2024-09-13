@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider, useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import useAllBalanceSubscription from '../../../hooks/useAllBalanceSubscription';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import { DerivAppsTradingAccount } from '../DerivAppsTradingAccount';
 
@@ -42,7 +42,10 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
     }))
 );
 
-jest.mock('../../../hooks/useDevice', () => jest.fn(() => ({ isDesktop: false, isMobile: true })));
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const wrapper = ({ children }: PropsWithChildren) => {
     return (
@@ -64,6 +67,11 @@ const mockUseActiveLinkedToTradingAccount = useActiveLinkedToTradingAccount as j
 >;
 
 describe('DerivAppsTradingAccount', () => {
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+        jest.clearAllMocks();
+    });
+
     it('renders the component when balance is not loading', () => {
         (mockUseActiveWalletAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValueOnce({ isLoading: false });

@@ -9,11 +9,6 @@ jest.mock('@simplewebauthn/browser', () => ({
     ...jest.requireActual('@simplewebauthn/browser'),
     startRegistration: jest.fn(() => Promise.resolve('authenticator_response')),
 }));
-const mockInvalidate = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useInvalidateQuery: jest.fn(() => mockInvalidate),
-}));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
@@ -57,7 +52,6 @@ describe('useRegisterPasskey', () => {
             publicKeyCredential: 'authenticator_response',
         });
 
-        expect(mockInvalidate).toHaveBeenCalled();
         expect(mockOnSuccess).toHaveBeenCalledTimes(1);
     });
 

@@ -4,11 +4,6 @@ import APIProvider from '@deriv/api/src/APIProvider';
 import { WS } from '@deriv/shared';
 import useRemovePasskey from '../useRemovePasskey';
 
-const mockInvalidate = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useInvalidateQuery: jest.fn(() => mockInvalidate),
-}));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
@@ -43,7 +38,6 @@ describe('useRemovePasskey', () => {
             passkeys_revoke: 1,
             id: 123,
         });
-        expect(mockInvalidate).toHaveBeenCalled();
         expect(mockOnSuccess).toHaveBeenCalled();
     });
 

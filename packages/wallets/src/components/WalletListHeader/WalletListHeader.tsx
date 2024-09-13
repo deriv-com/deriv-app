@@ -51,6 +51,7 @@ const WalletListHeader: React.FC = () => {
                             className={classNames('wallets-list-header__label-item', {
                                 'wallets-list-header__label-item--disabled': !hasAnyActiveRealWallets,
                             })}
+                            data-testid='dt_wallets_list_header__label_item_real'
                         >
                             <Text size='sm'>
                                 <Localize i18n_default_text='Real' />

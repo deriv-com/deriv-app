@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import { ModalProvider } from '../../ModalProvider';
@@ -8,6 +8,7 @@ import WalletsContainer from '../WalletsContainer';
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
+    useWalletAccountsList: jest.fn(),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (
@@ -17,6 +18,10 @@ const wrapper = ({ children }: PropsWithChildren) => (
         </WalletsAuthProvider>
     </APIProvider>
 );
+
+jest.mock('../../WalletsDisabledAccountsBanner', () => ({
+    WalletsDisabledAccountsBanner: jest.fn(() => <div>mockDisabledWalletsBanner</div>),
+}));
 
 describe('WalletsContainer', () => {
     const renderHeaderMock = jest.fn(() => <div data-testid='header'>Header</div>);
@@ -74,5 +79,21 @@ describe('WalletsContainer', () => {
         });
 
         expect(containerElement).toHaveStyle('scroll-margin-top: 80px');
+    });
+
+    it('renders the disabled wallets banner if a user has any disabled wallets', () => {
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [
+                { is_disabled: true, is_virtual: false, loginid: 'real1' },
+                { is_virtual: true, loginid: 'demo123' },
+            ],
+        });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: undefined,
+        });
+
+        render(<WalletsContainer renderHeader={renderHeaderMock}>{children}</WalletsContainer>, { wrapper });
+
+        expect(screen.getByText('mockDisabledWalletsBanner')).toBeInTheDocument();
     });
 });

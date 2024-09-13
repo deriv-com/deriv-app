@@ -2762,9 +2762,7 @@ export default class ClientStore extends BaseStore {
 
     async fetchPasskeysList() {
         const data = await WS.authorized.send({ passkeys_list: 1 });
-        if (data?.passkeys_list?.length > 0) {
-            this.passkeys_list = data?.passkeys_list;
-        }
+        this.passkeys_list = data?.passkeys_list;
     }
 
     async fetchShouldShowPasskeyNotification() {

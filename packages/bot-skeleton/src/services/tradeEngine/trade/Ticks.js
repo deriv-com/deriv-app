@@ -157,31 +157,28 @@ export default Engine =>
                     const ticks = [];
                     const symbol = this.symbol;
 
-                    let tick_delayed = false;
-                    const entry_tick_time = this.data.contract.entry_tick_time;
-                    const exit_tick_time = this.data.contract.exit_tick_time;
-                    const total_seconds = Number(exit_tick_time) - Number(entry_tick_time);
-                    let total_delay = total_seconds * 1000;
-                    if (tick_value <= 0) {
-                        total_delay = 0;
-                    }
+                    const resolveAndExit = () => {
+                        this.$scope.ticksService.stopMonitor({
+                            symbol,
+                            key: '',
+                        });
+                        resolve(ticks);
+                        ticks.length = 0;
+                    };
 
-                    const callback = async ticksList => {
-                        if (!tick_delayed) {
-                            await new Promise(resolve => setTimeout(resolve, total_delay));
-                            tick_delayed = true;
-                        }
-                        ticks.push(ticksList);
-                        if (ticks.length === tick_value) {
-                            this.$scope.ticksService.stopMonitor({
-                                symbol,
-                                key: '',
-                            });
-                            resolve(ticks);
-                            ticks.length = 0;
+                    const watchTicks = tick_list => {
+                        ticks.push(tick_list);
+                        const current_tick = ticks.length + 1;
+                        const is_accumulator = this.data.contract.contract_type === 'ACCU';
+                        if (!this.isSellAtMarketAvailable() && is_accumulator) {
+                            resolveAndExit();
+                        } else if (current_tick === tick_value) {
+                            resolveAndExit();
                         }
                     };
-                    this.$scope.ticksService.monitor({ symbol, callback });
+
+                    const delayExecution = tick_list => watchTicks(tick_list);
+                    this.$scope.ticksService.monitor({ symbol, callback: delayExecution });
                 } catch (error) {
                     reject(new Error(`Failed to start tick monitoring: ${error.message}`));
                 }

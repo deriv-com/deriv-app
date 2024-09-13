@@ -31,7 +31,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                 className='wallets-disabled-account-banner__content'
                 icon={
                     <StandaloneCircleExclamationBoldIcon
-                        data-testid='dt_wallets_disabled_account_notification_icon'
+                        data-testid='dt_wallets_disabled_account_banner_icon'
                         fill='#C47D00'
                         iconSize='sm'
                     />

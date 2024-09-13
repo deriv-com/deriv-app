@@ -116,6 +116,6 @@ describe('WalletsDisabledAccountsBanner', () => {
 
     it('renders the icon', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0]]} />);
-        expect(screen.getByTestId('dt_wallets_disabled_account_notification_icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_disabled_account_banner_icon')).toBeInTheDocument();
     });
 });

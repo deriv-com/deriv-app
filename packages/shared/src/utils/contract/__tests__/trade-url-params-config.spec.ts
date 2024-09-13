@@ -4,7 +4,9 @@ import { TRADE_TYPES } from '../contract';
 import { routes } from '../../routes';
 
 const areaChartType = { text: 'area', value: 'line' };
+const candleChartType = { text: 'candle', value: 'candles' };
 const oneTickInterval = '1t';
+const oneMinuteInterval = '1m';
 const symbol = 'R_100';
 
 describe('getTradeURLParams', () => {
@@ -56,10 +58,10 @@ describe('getTradeURLParams', () => {
     });
 
     it('should return an object with chartType & interval based on the URL query params when called without arguments', () => {
-        location.search = `?symbol=${symbol}&trade_type=${TRADE_TYPES.ACCUMULATOR}&chart_type=${areaChartType.text}&interval=${oneTickInterval}`;
+        location.search = `?symbol=${symbol}&trade_type=${TRADE_TYPES.VANILLA}&chart_type=${candleChartType.text}&interval=${oneMinuteInterval}`;
         expect(getTradeURLParams()).toMatchObject({
-            chartType: areaChartType.value,
-            granularity: 0,
+            chartType: candleChartType.value,
+            granularity: 60,
         });
     });
     it('should return an object without granularity if interval in the URL is incorrect', () => {
@@ -74,13 +76,6 @@ describe('getTradeURLParams', () => {
             granularity: 0,
         });
     });
-    it('should return an object with "area" chartType if interval is 1t even if chart_type in the URL is valid but not area', () => {
-        location.search = `?symbol=${symbol}&trade_type=${TRADE_TYPES.ACCUMULATOR}&chart_type=hollow&interval=${oneTickInterval}`;
-        expect(getTradeURLParams()).toMatchObject({
-            chartType: areaChartType.value,
-            granularity: 0,
-        });
-    });
     it('should return an object with symbol based on the URL query param when active_symbols is passed', () => {
         location.search = `?symbol=${symbol}`;
         expect(getTradeURLParams({ active_symbols: activeSymbols })).toMatchObject({
@@ -88,10 +83,10 @@ describe('getTradeURLParams', () => {
         });
     });
     it('should return an object with showModal & without symbol if symbol in the URL is incorrect and when called with active_symbols', () => {
-        location.search = `?symbol=BLA&chart_type=${areaChartType.text}&interval=${oneTickInterval}`;
+        location.search = `?symbol=BLA&chart_type=${candleChartType.text}&interval=${oneMinuteInterval}`;
         expect(getTradeURLParams({ active_symbols: activeSymbols })).toMatchObject({
-            chartType: areaChartType.value,
-            granularity: 0,
+            chartType: candleChartType.value,
+            granularity: 60,
             showModal: true,
         });
     });
@@ -102,10 +97,10 @@ describe('getTradeURLParams', () => {
         });
     });
     it('should return an object with showModal & without contractType if trade_type in the URL is incorrect', () => {
-        location.search = `?trade_type=BLA&chart_type=${areaChartType.text}&interval=${oneTickInterval}`;
+        location.search = `?trade_type=BLA&chart_type=${candleChartType.text}&interval=${oneMinuteInterval}`;
         expect(getTradeURLParams({ contract_types_list: contractTypesList })).toMatchObject({
-            chartType: areaChartType.value,
-            granularity: 0,
+            chartType: candleChartType.value,
+            granularity: 60,
             showModal: true,
         });
     });

@@ -1,10 +1,13 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronRightCaptionRegularIcon,
+    LabelPairedCircleExclamationLgBoldIcon,
+    LabelPairedTriangleExclamationMdBoldIcon,
+} from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { InlineMessage } from '../../../../../components/Base';
+import { InlineMessage, Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { THooks } from '../../../../../types';
@@ -85,41 +88,53 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     {account.display_login}
                 </Text>
                 {jurisdictionStatus.is_pending && (
-                    <div className='wallets-added-mt5__details-badge'>
-                        <InlineMessage size='xs' type='warning' variant='outlined'>
-                            <Text color='warning' size='2xs' weight='bold'>
-                                <Localize i18n_default_text='Pending verification' />
-                            </Text>
-                        </InlineMessage>
-                    </div>
+                    <InlineMessage
+                        className='wallets-added-mt5__badge--warning'
+                        icon={
+                            <LabelPairedCircleExclamationLgBoldIcon
+                                className='wallets-added-mt5__badge-icon'
+                                fill='var(--du-text-warning)'
+                            />
+                        }
+                    >
+                        <Text color='warning' size='2xs' weight='bold'>
+                            <Localize i18n_default_text='Pending verification' />
+                        </Text>
+                    </InlineMessage>
                 )}
 
                 {jurisdictionStatus.is_failed && (
-                    <div className='wallets-added-mt5__details-badge'>
-                        <InlineMessage size='xs' type='error' variant='outlined'>
-                            <Text color='error' size='2xs' weight='bold'>
-                                <Localize
-                                    components={[
-                                        <a
-                                            className='wallets-added-mt5__badge--error-link'
-                                            key={0}
-                                            onClick={() =>
-                                                show(
-                                                    <VerificationFailedModal
-                                                        selectedJurisdiction={account.landing_company_short}
-                                                    />,
-                                                    {
-                                                        defaultRootId: 'wallets_modal_root',
-                                                    }
-                                                )
-                                            }
-                                        />,
-                                    ]}
-                                    i18n_default_text='Verification failed <0>Why?</0>'
-                                />
-                            </Text>
-                        </InlineMessage>
-                    </div>
+                    <InlineMessage
+                        className='wallets-added-mt5__badge--error'
+                        icon={
+                            <LabelPairedTriangleExclamationMdBoldIcon
+                                className='wallets-added-mt5__badge-icon'
+                                fill='var(--du-text-loss-danger)'
+                            />
+                        }
+                    >
+                        <Text color='error' size='2xs' weight='bold'>
+                            <Localize
+                                components={[
+                                    <a
+                                        className='wallets-added-mt5__badge--error-link'
+                                        key={0}
+                                        onClick={() =>
+                                            show(
+                                                <VerificationFailedModal
+                                                    selectedJurisdiction={account.landing_company_short}
+                                                />,
+                                                {
+                                                    defaultRootId: 'wallets_modal_root',
+                                                }
+                                            )
+                                        }
+                                    />,
+                                ]}
+                                i18n_default_text='Verification failed <0>Why?</0>'
+                            />
+                        </Text>
+                    </InlineMessage>
                 )}
             </TradingAccountCard.Content>
             <TradingAccountCard.Button

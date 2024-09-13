@@ -53,6 +53,8 @@
         }
     }
     &__parameter {
-        background-color: var(--semantic-color-slate-solid-surface-frame-low);
+        // background-color: var(--semantic-color-slate-solid-surface-frame-low);
+        // background-color: green;
+        display: inline;
     }
 }

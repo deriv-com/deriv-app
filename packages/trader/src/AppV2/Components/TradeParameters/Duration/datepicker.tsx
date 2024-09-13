@@ -1,5 +1,5 @@
-import { ActionSheet, CaptionText, DatePicker, Text } from '@deriv-com/quill-ui';
-import { LabelPairedCalendarLgBoldIcon } from '@deriv/quill-icons';
+import { ActionSheet, Button, CaptionText, DatePicker, Text } from '@deriv-com/quill-ui';
+import { LabelPairedCalendarSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useState } from 'react';
 
@@ -50,9 +50,13 @@ const DurationEndTimePicker = ({
                 <Text size='sm'>{formatDate(expiry_date)}</Text>
             </div>
             <div>
-                <LabelPairedCalendarLgBoldIcon
-                    className='duration-container__date-picker__icon'
+                <Button
+                    variant='secondary'
+                    size='md'
+                    color='black-white'
                     onClick={() => setOpenDatePicker(true)}
+                    icon={<LabelPairedCalendarSmBoldIcon />}
+                    iconButton
                 />
                 <ActionSheet.Root
                     isOpen={open_date_picker}

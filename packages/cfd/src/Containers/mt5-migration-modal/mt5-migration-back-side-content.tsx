@@ -59,7 +59,7 @@ const MT5MigrationBackSideContent = observer(() => {
                 max_number: 25,
             });
         } else if (!validMT5Password(values.password)) {
-            errors.password = getErrorMessages().special_characters();
+            errors.password = getErrorMessages().password();
         }
         if (values.password?.toLowerCase() === email.toLowerCase()) {
             errors.password = localize('Your password cannot be the same as your email address.');

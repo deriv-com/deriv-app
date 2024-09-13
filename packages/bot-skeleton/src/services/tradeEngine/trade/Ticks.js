@@ -168,7 +168,7 @@ export default Engine =>
 
                     const watchTicks = tick_list => {
                         ticks.push(tick_list);
-                        const current_tick = ticks.length + 1;
+                        const current_tick = ticks.length;
                         const is_accumulator = this.data.contract.contract_type === 'ACCU';
                         if (!this.isSellAtMarketAvailable() && is_accumulator) {
                             resolveAndExit();

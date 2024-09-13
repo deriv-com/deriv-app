@@ -37,11 +37,11 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
             onChange={onChangeTabHandler}
             wrapperClassName='wallets-accounts-list'
         >
-            <Tab className='wallets-accounts-list__tab' title={localize('CFDs')}>
+            <Tab className='wallets-accounts-list__tab' title={localize('test-CFDs-123')}>
                 <CFDPlatformsList />
                 <Divider className='wallets-accounts-list__divider' color='var(--wallets-banner-border-color)' />
             </Tab>
-            <Tab className='wallets-accounts-list__tab' title={localize('Options')}>
+            <Tab className='wallets-accounts-list__tab' title={localize('test-Options-456')}>
                 <OptionsAndMultipliersListing />
                 <Divider className='wallets-accounts-list__divider' color='var(--wallets-banner-border-color)' />
             </Tab>

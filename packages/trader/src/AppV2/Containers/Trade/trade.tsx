@@ -105,7 +105,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         <div className='trade__chart-tooltip'>
                             <section
-                                className='trade__chart'
+                                className={clsx('trade__chart', { 'trade__chart--with-borderRadius': !is_accumulator })}
                                 style={{
                                     height: getChartHeight({ is_accumulator, symbol, has_cancellation, contract_type }),
                                 }}
@@ -113,8 +113,8 @@ const Trade = observer(() => {
                             >
                                 <TradeChart />
                             </section>
-                            {is_accumulator && <AccumulatorStats />}
                         </div>
+                        {is_accumulator && <AccumulatorStats />}
                     </div>
                     <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>

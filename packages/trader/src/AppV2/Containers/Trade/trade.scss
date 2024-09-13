@@ -45,8 +45,13 @@
         }
     }
     &__chart {
-        border-radius: var(--core-borderRadius-400);
+        border-top-left-radius: var(--core-borderRadius-400);
+        border-top-right-radius: var(--core-borderRadius-400);
         overflow: hidden;
+        &--with-borderRadius {
+            border-bottom-left-radius: var(--core-borderRadius-400);
+            border-bottom-right-radius: var(--core-borderRadius-400);
+        }
 
         .smartcharts {
             position: relative;

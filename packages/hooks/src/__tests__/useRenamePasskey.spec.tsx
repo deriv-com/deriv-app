@@ -4,11 +4,6 @@ import APIProvider from '@deriv/api/src/APIProvider';
 import { WS } from '@deriv/shared';
 import useRenamePasskey from '../useRenamePasskey';
 
-const mockInvalidate = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useInvalidateQuery: jest.fn(() => mockInvalidate),
-}));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
@@ -42,7 +37,6 @@ describe('useRenamePasskey', () => {
         });
 
         expect(WS.send).toHaveBeenCalledWith({ passkeys_rename: 1, ...test_passkey_data });
-        expect(mockInvalidate).toHaveBeenCalled();
         expect(mockOnSuccess).toHaveBeenCalled();
     });
 

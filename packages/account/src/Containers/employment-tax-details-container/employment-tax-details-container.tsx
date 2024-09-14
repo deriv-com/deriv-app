@@ -32,7 +32,7 @@ const EmploymentTaxDetailsContainer = observer(
         tin_validation_config,
         handleChange,
     }: TEmploymentTaxDetailsContainerProps) => {
-        const { values, setFieldValue, touched, errors, setValues, dirty } = useFormikContext<FormikValues>();
+        const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
         const { data: residence_list } = useResidenceList();
         const { localize } = useTranslations();
@@ -118,6 +118,8 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
+        const is_tin_required = !client.is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+
         const should_show_no_tax_details_checkbox =
             (tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||
             Boolean(values.tin_skipped);
@@ -162,7 +164,7 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tax_residence_popover_open={is_tax_residence_popover_open}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
-                        required={should_display_long_message && !values.tin_skipped}
+                        required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
                     />
                 </div>
                 <div ref={tin_ref} className='account-form__fieldset'>
@@ -171,7 +173,7 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tin_popover_open={is_tin_popover_open}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                        required={should_display_long_message && !values.tin_skipped}
+                        required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
                     />
                 </div>
                 {should_show_tax_confirm_checkbox && (

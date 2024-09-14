@@ -10,7 +10,7 @@ import { TinValidations } from '@deriv/api/types';
 import { PersonalDetailsValueTypes } from 'Types';
 
 export const getPersonalDetailsInitialValues = (
-    account_settings: GetSettings,
+    account_settings: GetSettings & { tin_skipped?: 0 | 1 },
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual?: boolean
@@ -72,7 +72,11 @@ export const getPersonalDetailsInitialValues = (
     }
 
     // Setting default value of `I confirm that my tax information is accurate and complete.` checkbox
-    initialValues.tax_identification_confirm = false;
+    if (account_settings.tax_residence && account_settings.tax_identification_number && !account_settings.tin_skipped) {
+        initialValues.tax_identification_confirm = true;
+    } else {
+        initialValues.tax_identification_confirm = false;
+    }
 
     return initialValues;
 };

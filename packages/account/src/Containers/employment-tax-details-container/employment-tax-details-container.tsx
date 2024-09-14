@@ -31,9 +31,8 @@ const EmploymentTaxDetailsContainer = observer(
         should_display_long_message,
         tin_validation_config,
         handleChange,
-        id = 'employment-tax-section',
     }: TEmploymentTaxDetailsContainerProps) => {
-        const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
+        const { values, setFieldValue, touched, errors, setValues, dirty } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
         const { data: residence_list } = useResidenceList();
         const { localize } = useTranslations();
@@ -98,10 +97,10 @@ const EmploymentTaxDetailsContainer = observer(
         }, [tin_validation_config, setFieldValue, values.tax_identification_number]);
 
         useEffect(() => {
-            if (values.tax_identification_number) {
+            if (touched.tax_identification_number && values.tax_identification_number) {
                 setFieldValue('tin_skipped', 0, true);
             }
-        }, [values.tax_identification_number, setFieldValue]);
+        }, [values.tax_identification_number, setFieldValue, touched.tax_identification_number]);
 
         const is_tax_details_confirm_disabled = useMemo(
             () =>

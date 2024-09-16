@@ -26,9 +26,7 @@ export default class UIStore extends BaseStore {
     settings_extension = undefined;
     notification_messages_ui = undefined;
 
-    is_dark_mode_on =
-        (window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile()) ||
-        JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
+    is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
     is_language_settings_modal_on = false;
     is_mobile_language_menu_open = false;
@@ -440,17 +438,29 @@ export default class UIStore extends BaseStore {
         });
     }
     changeTheme = () => {
-        const html = document.querySelector('html');
         if (this.is_dark_mode_on) {
             document.body.classList.remove('theme--light');
-            html.classList.remove('light');
             document.body.classList.add('theme--dark');
-            html.classList.add('dark');
         } else {
             document.body.classList.remove('theme--dark');
-            html.classList.remove('dark');
             document.body.classList.add('theme--light');
-            html.classList.add('light');
+        }
+
+        const html = document?.querySelector('html');
+        const is_dtrader_v2 =
+            JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 &&
+            this.is_mobile &&
+            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'));
+
+        if (!html || !is_dtrader_v2) return;
+
+        const is_dark_mode_on_lc = JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
+        if (this.is_dark_mode_on || is_dark_mode_on_lc) {
+            html.classList?.remove('light');
+            html.classList?.add('dark');
+        } else {
+            html.classList?.remove('dark');
+            html.classList?.add('light');
         }
     };
 

@@ -762,6 +762,7 @@ import './mt5/ic-mt5-responsive.svg';
 import './mt5/ic-mt5-standard-financial-bvi.svg';
 import './mt5/ic-mt5-standard-financial-vanuatu.svg';
 import './mt5/ic-mt5-standard.svg';
+import './mt5/ic-mt5-success.svg';
 import './mt5/ic-mt5-support.svg';
 import './mt5/ic-mt5-svg-derived.svg';
 import './mt5/ic-mt5-svg-financial.svg';

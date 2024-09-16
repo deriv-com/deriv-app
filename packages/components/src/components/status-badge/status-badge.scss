@@ -34,12 +34,21 @@
             font-size: var(--text-size-xxxs);
             align-items: center;
         }
-        &--failed {
+        &--failed,
+        &--rejected,
+        &--suspected {
             border-color: var(--status-danger);
             color: var(--status-danger);
             font-weight: bold;
             text-decoration: underline;
             background-color: var(--status-danger-transparent);
+        }
+
+        &--verified {
+            margin-top: 0.1rem;
+            color: var(--status-success);
+            background-color: var(--status-success-transparent);
+            font-weight: bold;
         }
 
         &--icon {

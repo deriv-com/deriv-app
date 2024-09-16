@@ -47,6 +47,7 @@ Blockly.Blocks.tick_delay = {
             TICKDELAYVALUE: input_value => {
                 const evaluated_result = evaluateExpression(input_value);
                 if (evaluated_result === 'invalid_input') {
+                    // this was done to check if any equation or varible assignment is present in the code.
                     if (this.workspace_to_code.includes(input_value)) {
                         return false;
                     }

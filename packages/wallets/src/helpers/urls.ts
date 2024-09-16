@@ -1,4 +1,4 @@
-import { isValidJson } from '../utils/utils';
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -36,16 +36,6 @@ export const normalizePath = (path: string) => (path ? path.replace(/(^\/|\/$|[^
 /**
  * @deprecated Please use 'URLUtils.getQueryParameter' from '@deriv-com/utils' instead of this.
  */
-export const getlangFromUrl = () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const lang = urlParams.get('lang');
-    return lang;
-};
-
-/**
- * @deprecated Please use 'URLUtils.getQueryParameter' from '@deriv-com/utils' instead of this.
- */
 export const getActionFromUrl = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -55,9 +45,8 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { isStagingDerivApp } = getPlatformFromUrl();
-    const localizeUrl = window.localStorage.getItem('i18n_language') || '';
-    const localizeLanguage = isValidJson(localizeUrl) ? JSON.parse(localizeUrl) : localizeUrl;
-    const urlLang = getlangFromUrl();
+    const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+    const urlLang = URLUtils.getQueryParameter('lang');
     const i18NLanguage = localizeLanguage || urlLang || 'en';
 
     let baseLink = '';

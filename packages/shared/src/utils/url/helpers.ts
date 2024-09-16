@@ -1,3 +1,4 @@
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 import { deriv_urls } from './constants';
 
 /**
@@ -22,9 +23,8 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
-    const localize_url = window.localStorage.getItem('i18n_language') || '';
-    const localize_language = isValidJson(localize_url) ? JSON.parse(localize_url) : localize_url;
-    const url_lang = getlangFromUrl();
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
     const i18n_language = localize_language || url_lang || 'en';
 
     let base_link = '';
@@ -41,9 +41,8 @@ export const getUrlSmartTrader = () => {
 export const getUrlP2P = (is_language_required = true) => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
 
-    const localize_url = window.localStorage.getItem('i18n_language') || '';
-    const localize_language = isValidJson(localize_url) ? JSON.parse(localize_url) : localize_url;
-    const url_lang = getlangFromUrl();
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
     const i18n_language = localize_language || url_lang || 'en';
     const base_link = is_staging_deriv_app ? deriv_urls.P2P_STAGING : deriv_urls.P2P_PRODUCTION;
 
@@ -88,13 +87,4 @@ export const removeActionParam = (action_to_remove: string) => {
     const new_path = `${pathname}${new_search ? `?${new_search}` : ''}`;
 
     window.history.pushState({}, '', new_path);
-};
-
-export const isValidJson = (value: string) => {
-    try {
-        JSON.parse(value);
-        return true;
-    } catch {
-        return false;
-    }
 };

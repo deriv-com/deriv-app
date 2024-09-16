@@ -1,18 +1,17 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { InlineMessage } from '@deriv-com/ui';
-import { WalletText } from '../../../../../../../components';
+import { InlineMessage, Text } from '@deriv-com/ui';
 import './IDVServiceErrorMessage.scss';
 
 const IDVServiceErrorMessage = ({ message }: { message: string }) => (
     <div className='wallets-idv-service-error-message'>
-        <WalletText weight='bold'>
+        <Text weight='bold'>
             <Localize i18n_default_text='Your identity verification failed because:' />
-        </WalletText>
+        </Text>
         <InlineMessage variant='error'>{message}</InlineMessage>
-        <WalletText size='sm'>
+        <Text size='sm'>
             <Localize i18n_default_text="Let's try again. Choose another document and enter the corresponding details." />
-        </WalletText>
+        </Text>
     </div>
 );
 

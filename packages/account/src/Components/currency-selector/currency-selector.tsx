@@ -25,7 +25,7 @@ type TCurrencySelectorExtend = {
     has_wallet_account: boolean;
     is_virtual: boolean;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
-    onSave: (current_step: number, values: TCurrencySelectorFormProps) => void;
+    onSave?: (current_step: number, values: TCurrencySelectorFormProps) => void;
     onSubmit: (
         current_step: number | null,
         values: TCurrencySelectorFormProps,
@@ -105,13 +105,13 @@ const CurrencySelector = observer(
 
         const handleCancel = (values: TCurrencySelectorFormProps) => {
             const current_step = getCurrentStep() - 1;
-            onSave(current_step, values);
+            onSave?.(current_step, values);
             onCancel(current_step, goToPreviousStep);
         };
 
         const handleValidate = (values: TCurrencySelectorFormProps) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
-            onSave(current_step, values);
+            onSave?.(current_step, values);
 
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;

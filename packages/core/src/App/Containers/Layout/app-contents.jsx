@@ -4,7 +4,7 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS, isDTraderV2 } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
@@ -21,6 +21,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
     const { isDesktop, isMobile } = useDevice();
+    const { pathname } = useLocation();
 
     const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
@@ -35,6 +36,7 @@ const AppContents = observer(({ children }) => {
     } = ui;
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
+    const is_dtrader_v2 = isDTraderV2() && (pathname.startsWith(routes.trade) || pathname.startsWith('/contract/'));
 
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
@@ -111,6 +113,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
+                'app-contents--is-dtrader-v2': is_dtrader_v2,
             })}
             ref={scroll_ref}
         >

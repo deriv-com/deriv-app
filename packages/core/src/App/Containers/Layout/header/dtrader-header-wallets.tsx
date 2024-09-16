@@ -56,9 +56,9 @@ const MenuLeft = observer(() => {
                     {header_extension && is_logged_in && (
                         <div className='header__menu-left-extensions'>{header_extension}</div>
                     )}
-                    <MenuLinks />
                 </React.Fragment>
             )}
+            <MenuLinks />
         </div>
     );
 });

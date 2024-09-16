@@ -445,23 +445,6 @@ export default class UIStore extends BaseStore {
             document.body.classList.remove('theme--dark');
             document.body.classList.add('theme--light');
         }
-
-        const html = document?.querySelector('html');
-        const is_dtrader_v2 =
-            JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 &&
-            this.is_mobile &&
-            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'));
-
-        if (!html || !is_dtrader_v2) return;
-
-        const is_dark_mode_on_lc = JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
-        if (this.is_dark_mode_on || is_dark_mode_on_lc) {
-            html.classList?.remove('light');
-            html.classList?.add('dark');
-        } else {
-            html.classList?.remove('dark');
-            html.classList?.add('light');
-        }
     };
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {

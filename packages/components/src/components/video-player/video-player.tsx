@@ -191,6 +191,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
     const repeat = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
         if (should_check_time_ref.current && new_time_ref.current !== video_ref.current.currentTime) {
+            cancelAnimationFrame(animation_ref.current);
             animation_ref.current = requestAnimationFrame(repeat);
             return;
         }

@@ -54,8 +54,8 @@ class DBot {
                     const symbol = market_block.getFieldValue('SYMBOL_LIST');
                     const category = this.getFieldValue('TRADETYPECAT_LIST');
                     const trade_type = this.getFieldValue('TRADETYPE_LIST');
-                    const is_accumulator = trade_type === 'accumulator';
-                    if (!is_accumulator) forgetAccumulatorsProposalRequest(that);
+                    const is_trade_type_accumulator = trade_type === 'accumulator';
+                    if (!is_trade_type_accumulator) forgetAccumulatorsProposalRequest(that);
 
                     if (is_symbol_list_change) {
                         contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {

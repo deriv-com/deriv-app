@@ -117,27 +117,28 @@ export default Engine =>
             return this.$scope.ticksService.pipSizes[this.symbol];
         }
 
-        async fetchStatsForAccumulators() {
-            let ticks_stayed_in_list = [];
-            this.is_proposal_requested_for_accumulators = false;
-
-            const requestAccumulatorStats = async () => {
-                if (!this.subscription_id_for_accumulators && !this.is_proposal_requested_for_accumulators) {
-                    this.is_proposal_requested_for_accumulators = true;
-                    if (window.Blockly.accumulators_request) {
-                        await api_base?.api?.send(window.Blockly.accumulators_request);
-                    }
+        async requestAccumulatorStats() {
+            const subscription_id = this.subscription_id_for_accumulators;
+            const is_proposal_requested = this.is_proposal_requested_for_accumulators;
+            if (!subscription_id && !is_proposal_requested) {
+                this.is_proposal_requested_for_accumulators = true;
+                if (window.Blockly.accumulators_request) {
+                    await api_base?.api?.send(window.Blockly.accumulators_request);
                 }
-            };
+            }
+        }
 
-            const handleOnMessageForAccumulators = new Promise(resolve => {
+        async handleOnMessageForAccumulators() {
+            let ticks_stayed_in_list = [];
+            return new Promise(resolve => {
                 const subscription = api_base.api.onMessage().subscribe(({ data }) => {
                     if (data.msg_type === 'proposal') {
                         try {
                             this.subscription_id_for_accumulators = data.subscription.id;
-                            const stat_list = (data.proposal.contract_details.ticks_stayed_in || []).reverse();
+                            // this was done because we can multile arrays in the respone and the list comes in reverse order
+                            const stat_list = (data.proposal.contract_details.ticks_stayed_in || []).flat().reverse();
                             ticks_stayed_in_list = [...stat_list, ...ticks_stayed_in_list];
-                            if (ticks_stayed_in_list.length > 0) resolve();
+                            if (ticks_stayed_in_list.length > 0) resolve(ticks_stayed_in_list);
                         } catch (error) {
                             globalObserver.emit('Unexpected message type or no proposal found:', error);
                         }
@@ -145,21 +146,25 @@ export default Engine =>
                 });
                 api_base.pushSubscription(subscription);
             });
+        }
 
+        async fetchStatsForAccumulators() {
             try {
-                const debouncedAccumulatorsRequest = debounce(requestAccumulatorStats.bind(this), 300);
+                // request stats for accumulators
+                const debouncedAccumulatorsRequest = debounce(() => this.requestAccumulatorStats(), 300);
                 debouncedAccumulatorsRequest();
-                await handleOnMessageForAccumulators;
+                // wait for proposal response
+                const ticks_stayed_in_list = await this.handleOnMessageForAccumulators();
+                return ticks_stayed_in_list;
             } catch (error) {
                 globalObserver.emit('Error in subscription promise:', error);
                 throw error;
             } finally {
+                // forget all proposal subscriptions so we can fetch new stats data on new call
                 await api_base?.api?.send({ forget_all: 'proposal' });
                 this.is_proposal_requested_for_accumulators = false;
                 this.subscription_id_for_accumulators = null;
             }
-
-            return ticks_stayed_in_list;
         }
 
         async getCurrentStat() {
@@ -173,8 +178,9 @@ export default Engine =>
 
         async getStatList() {
             try {
-                const ticksStayedIn = await this.fetchStatsForAccumulators();
-                return ticksStayedIn.slice(0, 100);
+                const ticks_stayed_in = await this.fetchStatsForAccumulators();
+                // we need to send only lastest 100 ticks
+                return ticks_stayed_in?.slice(0, 100);
             } catch (error) {
                 globalObserver.emit('Error fetching current stat:', error);
             }
@@ -198,9 +204,9 @@ export default Engine =>
                     const watchTicks = tick_list => {
                         ticks.push(tick_list);
                         const current_tick = ticks.length + 1;
-                        const is_accumulator = this.data.contract.contract_type === 'ACCU';
+                        const is_contract_type_accumulator = this.data.contract.contract_type === 'ACCU';
                         const is_sell_available = this.isSellAtMarketAvailable();
-                        if (!is_sell_available && is_accumulator) {
+                        if (!is_sell_available && is_contract_type_accumulator) {
                             resolveAndExit();
                         } else if (current_tick === tick_value) {
                             resolveAndExit();

@@ -13,7 +13,7 @@ export const DEFAULT_PROPOSAL_REQUEST = {
 };
 
 export const forgetAccumulatorsProposalRequest = async instance => {
-    if (!instance.is_bot_running) {
+    if (instance && !instance.is_bot_running) {
         await api_base?.api?.send({ forget_all: 'proposal' });
         instance.subscription_id_for_accumulators = null;
         instance.is_proposal_requested_for_accumulators = false;

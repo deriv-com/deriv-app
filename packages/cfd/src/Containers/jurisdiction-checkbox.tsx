@@ -26,7 +26,7 @@ const JurisdictionCheckBox = observer(
                         <StaticUrl
                             key={0}
                             className='link link--no-underline'
-                            href={DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].tnc_url}
+                            href={DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode]?.tnc_url}
                             is_document
                         />,
                     ]}

@@ -39,7 +39,7 @@ const AccountNeedsVerification = observer(() => {
                 return openModal('currency_selection');
             }}
         >
-            <StatusBadge account_status={mf_account_status} icon={badge_icon} text={badge_text} />
+            <StatusBadge account_status={mf_account_status} icon={badge_icon} text={badge_text} icon_size='18' />
         </CurrencySwitcherContainer>
     );
 });

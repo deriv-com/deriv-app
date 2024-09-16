@@ -69,78 +69,80 @@ const MT5CreatePassword = ({
                 values,
                 validateForm,
             }) => (
-                <form onSubmit={handleSubmit}>
-                    <div
-                        className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
-                        data-testid='dt_mt5_create_password'
-                    >
-                        <div className='mt5-password-modal__create-password-content'>
-                            <Icon icon='IcMt5Password' size={150} />
+                <React.Fragment>
+                    <form>
+                        <div
+                            className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
+                            data-testid='dt_mt5_create_password'
+                        >
+                            <div className='mt5-password-modal__create-password-content'>
+                                <Icon icon='IcMt5Password' size={100} />
 
-                            <Text
-                                size='xs'
-                                align='left'
-                                className='mt5-password-modal__create-password-description'
-                                color='var(--text-prominent)'
-                            >
-                                <Localize
-                                    i18n_default_text='Create a password for your {{platform}} account:'
-                                    values={{ platform: getCFDPlatformNames(platform) }}
-                                />
-                            </Text>
-                            <div className='mt5-password-modal__mt5-input-element'>
-                                <PasswordMeter
-                                    input={values.password}
-                                    has_error={!!(touched.password && errors.password)}
-                                    custom_feedback_messages={getErrorMessages().password_warnings}
+                                <Text
+                                    size='xs'
+                                    align='left'
+                                    className='mt5-password-modal__create-password-description'
+                                    color='var(--text-prominent)'
                                 >
-                                    {({ has_warning }: { has_warning: boolean }) => (
-                                        <PasswordInput
-                                            autoComplete='new-password'
-                                            label={localize('{{platform}} password', {
-                                                platform: getCFDPlatformLabel(platform),
-                                            })}
-                                            error={
-                                                (touched.password && errors.password) ||
-                                                (values.password.length === 0 ? error_message : '')
-                                            }
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                                handlePasswordInputChange(
-                                                    e,
-                                                    handleChange,
-                                                    validateForm,
-                                                    setFieldTouched
-                                                );
-                                            }}
-                                            data_testId={`dt_${platform}_password`}
-                                            hint={
-                                                (!has_warning || values.password.length === 0) &&
-                                                localize('This password works for all your Deriv MT5 accounts.')
-                                            }
-                                        />
-                                    )}
-                                </PasswordMeter>
+                                    <Localize
+                                        i18n_default_text='Create a password for your {{platform}} account:'
+                                        values={{ platform: getCFDPlatformNames(platform) }}
+                                    />
+                                </Text>
+                                <div className='mt5-password-modal__mt5-input-element'>
+                                    <PasswordMeter
+                                        input={values.password}
+                                        has_error={!!(touched.password && errors.password)}
+                                        custom_feedback_messages={getErrorMessages().password_warnings}
+                                    >
+                                        {({ has_warning }: { has_warning: boolean }) => (
+                                            <PasswordInput
+                                                autoComplete='new-password'
+                                                label={localize('{{platform}} password', {
+                                                    platform: getCFDPlatformLabel(platform),
+                                                })}
+                                                error={
+                                                    (touched.password && errors.password) ||
+                                                    (values.password.length === 0 ? error_message : '')
+                                                }
+                                                name='password'
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                    handlePasswordInputChange(
+                                                        e,
+                                                        handleChange,
+                                                        validateForm,
+                                                        setFieldTouched
+                                                    );
+                                                }}
+                                                data_testId={`dt_${platform}_password`}
+                                                hint={
+                                                    (!has_warning || values.password.length === 0) &&
+                                                    localize('This password works for all your Deriv MT5 accounts.')
+                                                }
+                                            />
+                                        )}
+                                    </PasswordMeter>
+                                </div>
+                                <CfdPasswordModalTnc
+                                    platform={platform}
+                                    checked={checked}
+                                    onCheck={() => setChecked(prev => !prev)}
+                                    need_tnc={need_tnc}
+                                />
                             </div>
-
-                            <CfdPasswordModalTnc
-                                platform={platform}
-                                checked={checked}
-                                onCheck={() => setChecked(prev => !prev)}
-                                need_tnc={need_tnc}
-                            />
                         </div>
-                        <div className='mt5-password-modal__submit-button'>
-                            <FormSubmitButton
-                                is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
-                                is_loading={isSubmitting}
-                                label={localize('Create account')}
-                            />
-                        </div>
+                    </form>
+                    <div className='mt5-password-modal__submit-button'>
+                        <FormSubmitButton
+                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
+                            is_loading={isSubmitting}
+                            label={localize('Create account')}
+                            onClick={handleSubmit}
+                        />
                     </div>
-                </form>
+                </React.Fragment>
             )}
         </Formik>
     );

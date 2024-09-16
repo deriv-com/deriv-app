@@ -4,7 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import useGetStatus from '../useGetStatus';
 import useGetMFAccountStatus from '../useGetMFAccountStatus';
 import useIsSelectedMT5AccountCreated from '../useIsSelectedMT5AccountCreated';
-import { CFD_PLATFORMS, MT5_ACCOUNT_STATUS, ACCOUNT_BADGE_STATUS } from '@deriv/shared';
+import { CFD_PLATFORMS, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 
 jest.mock('../useIsSelectedMT5AccountCreated');
 jest.mock('../useGetMFAccountStatus', () => jest.fn());
@@ -90,9 +90,7 @@ describe('useGetStatus', () => {
                 market_type: 'financial',
                 product: 'financial',
                 status: 'verification_pending',
-                requirements: {
-                    client_kyc_status: {},
-                },
+                client_kyc_status: {},
             },
             is_selected_MT5_account_created: true,
             selected_account_status: MT5_ACCOUNT_STATUS.PENDING,

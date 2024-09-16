@@ -29,7 +29,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
 
     return (
         <div className='verification-docs-list-modal__content-list-item' onClick={onClickItem}>
-            <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
+            <Text size={isMobile ? 'xs' : 's'} line_height='xl'>
                 <Localize i18n_default_text={text} />
             </Text>
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
@@ -57,7 +57,7 @@ const VerificationDocsListModalContent = observer(() => {
     const items = [
         { id: 'identity', text: 'Proof of identity', status: poi_status, route: routes.proof_of_identity },
         { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
-        { id: 'tax', text: 'Tax residence', status: valid_tin, route: routes.personal_details },
+        { id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details },
     ].filter(item => item.status || item.status === 0);
 
     return (

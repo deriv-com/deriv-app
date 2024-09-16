@@ -150,11 +150,11 @@ const TradingAppCard = ({
             window.open(getStaticUrl(`trade-types/options/digital-options/up-and-down/`));
         else;
     };
+    const is_mt5_maintainance_status = [
+        TRADING_PLATFORM_STATUS.UNAVAILABLE,
+        MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
+    ].includes(mt5_acc_auth_status);
 
-    const migration_status =
-        mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
-        mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
-    const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
     const platform_name = is_account_being_created ? name : sub_title ?? name;
 
     const is_existing_real_ctrader_account =
@@ -250,10 +250,7 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={
-                            //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
-                            is_disabled
-                        }
+                        is_buttons_disabled={is_mt5_maintainance_status}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

@@ -1,9 +1,17 @@
+import { useEffect } from 'react';
 import { useStore } from '@deriv/stores';
 import { ACCOUNT_BADGE_STATUS } from '@deriv/shared';
 
 const useGetMFAccountStatus = () => {
     const { client } = useStore();
-    const { account_status } = client || {};
+    const { account_status, updateAccountStatus } = client || {};
+
+    useEffect(() => {
+        async function fetchData() {
+            await updateAccountStatus();
+        }
+        fetchData();
+    }, []);
     const authentication = account_status?.authentication;
     const poi_status = authentication?.identity?.status;
     const onfido_status = authentication?.identity?.services?.onfido?.status;

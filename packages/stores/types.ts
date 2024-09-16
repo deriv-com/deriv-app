@@ -257,8 +257,8 @@ type TTradingPlatformAvailableAccount = {
             tax_information: string[];
         };
         signup: string[];
-        client_kyc_status?: Record<string, string>;
     };
+    client_kyc_status?: Record<string, string>;
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
     max_count?: number;

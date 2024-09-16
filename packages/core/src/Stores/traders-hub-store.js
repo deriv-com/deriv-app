@@ -845,13 +845,13 @@ export default class TradersHubStore extends BaseStore {
         );
 
         if (current_account.length) {
-            this.setSelectedJurisdictionKYCStatus(current_account[0].requirements.client_kyc_status);
+            this.setSelectedJurisdictionKYCStatus(current_account[0]?.client_kyc_status ?? {});
         } else {
             const selected_mt5_account = trading_platform_available_accounts?.filter(
                 account => account.shortcode === jurisdiction_selected_shortcode && account.product === product
             );
             if (selected_mt5_account.length) {
-                this.setSelectedJurisdictionKYCStatus(selected_mt5_account[0].requirements.client_kyc_status);
+                this.setSelectedJurisdictionKYCStatus(selected_mt5_account[0]?.client_kyc_status ?? {});
             } else {
                 this.setSelectedJurisdictionKYCStatus({});
             }

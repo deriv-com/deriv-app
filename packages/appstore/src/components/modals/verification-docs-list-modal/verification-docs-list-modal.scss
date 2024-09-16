@@ -6,15 +6,16 @@
         justify-content: center;
         align-items: center;
         &-list {
-            padding: 1.2rem 2.4rem;
             width: 100%;
             &-item {
+                display: flex;
+                min-height: 5.6rem;
+                align-items: center;
                 border-radius: 2 * $BORDER_RADIUS;
                 background: var(--core-color-solid-slate-75, #f6f7f8);
-                display: flex;
                 padding: 0.8rem 1.6rem;
                 justify-content: space-between;
-                margin: 1.6rem;
+                margin: 1.6rem auto;
             }
         }
     }

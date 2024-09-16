@@ -7,7 +7,7 @@ type TStatusBadgeProps = {
     account_status: string | null;
     icon: string;
     text: ReactNode;
-    icon_size: string;
+    icon_size?: string;
     onClick?: () => void;
 };
 

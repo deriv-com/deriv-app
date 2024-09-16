@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
 import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
+import Item from '@deriv/components/src/components/mobile-drawer/mobile-drawer-item';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
@@ -28,20 +29,58 @@ const getHighlightedIconLabel = (
         }
         return localize('Forex: standard/micro');
     };
+    const getIdForInstruments = instruments => {
+        // "forex",
+        // "stocks",
+        // "stock_indices",
+        // "commodities",
+        // "cryptocurrencies",
+        // "ETFs"
+        // 'synthetic_indices';
+        // 'basket_indices';
+        // 'derived_FX';
+
+        return instruments?.map(item => {
+            if (item.toLowerCase().includes('forex')) {
+                return 'forex';
+            } else if (item === 'ETFs') {
+                return 'ETFs'; // Preserve the original form for ETFs
+            } else if (item === 'Derived FX') {
+                return 'derived_FX'; // Handle FX case
+            }
+            return item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
+        });
+    };
+    const data = [
+        { id: 'forex', icon: 'Forex', text: getForexLabel() },
+        { id: 'stocks', icon: 'Stocks', text: localize('Stocks') },
+        { id: 'stock_indices', icon: 'StockIndices', text: localize('Stock indices') },
+        { id: 'commodities', icon: 'Commodities', text: localize('Commodities') },
+        {
+            id: 'cryptocurrencies',
+            icon: 'Cryptocurrencies',
+            text: localize('Cryptocurrencies'),
+        },
+        { id: 'ETFs', icon: 'ETF', text: localize('ETFs') },
+        {
+            id: 'synthetic_indices',
+            icon: 'Synthetics',
+            text: localize('Synthetic indices'),
+        },
+        { id: 'basket_indices', icon: 'Baskets', text: localize('Basket indices') },
+        { id: 'derived_FX', icon: 'DerivedFX', text: localize('Derived FX') },
+    ];
+
+    const getHighlightDetails = () =>
+        data.map(item => ({
+            ...item, // Copy all existing properties
+            highlighted: getIdForInstruments(trading_platforms?.instruments)?.includes(item.id) ?? true, // Add 'highlighted' property
+        }));
 
     switch (trading_platforms.market_type) {
         case MARKET_TYPE.GAMING:
-            return [
-                { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                { icon: 'ETF', text: localize('ETFs'), highlighted: true },
-                { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
-                { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
-                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
-            ];
+            return getHighlightDetails();
+
         case MARKET_TYPE.FINANCIAL:
             switch (trading_platforms.shortcode) {
                 case JURISDICTION.MALTA_INVEST:
@@ -59,95 +98,37 @@ const getHighlightedIconLabel = (
                         },
                     ];
                 case JURISDICTION.LABUAN:
-                    return [
-                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
-                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
-                        { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETFs'), highlighted: false },
-                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: false },
-                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
-                    ];
+                    return getHighlightDetails();
                 default:
-                    return [
-                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
-                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: false },
-                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
-                    ];
+                    return getHighlightDetails();
             }
         case MARKET_TYPE.ALL:
         default:
             if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
                 if (trading_platforms.product === PRODUCT.SWAPFREE) {
-                    return [
-                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
-                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
-                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
-                    ];
+                    return getHighlightDetails();
                 } else if (trading_platforms.product === PRODUCT.ZEROSPREAD) {
-                    return [
-                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
-                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETFs'), highlighted: false },
-                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
-                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
-                    ];
+                    return getHighlightDetails();
                 }
             }
 
-            return [
-                { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                { icon: 'ETF', text: localize('ETFs'), highlighted: true },
-                { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
-                { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
-                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
-            ];
+            return getHighlightDetails();
     }
 };
 
 // Get the Account Title according to the market type and jurisdiction
 const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
     switch (shortcode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return is_demo ? localize('Standard Demo') : localize('Standard - SVG');
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return localize('Standard - BVI');
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return localize('Standard - Vanuatu');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return is_demo ? localize('Financial Demo') : localize('Financial - SVG');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            return localize('Financial - BVI');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            return localize('Financial - Vanuatu');
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC:
+            return is_demo ? localize('Standard Demo') : localize('Standard');
+        case MARKET_TYPE_SHORTCODE.FINANCIAL:
+            return is_demo ? localize('Financial Demo') : localize('Financial');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            return localize('Financial - Labuan');
+            return localize('Financial - STP');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
-            return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
+            return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
+            return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread');
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
@@ -161,6 +142,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
 const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case CFD_PLATFORMS.DXTRADE:
+            return localize('Deriv X');
         case CFD_PLATFORMS.CFDS:
             return localize('Other CFDs Platform');
         case CFD_PLATFORMS.CTRADER:
@@ -175,6 +157,7 @@ const getPlatformLabel = (shortcode?: string) => {
 const platformsHeaderLabel = {
     mt5: localize('MT5 Platform'),
     ctrader: localize('Deriv cTrader'),
+    derivx: localize('Deriv X'),
     other_cfds: localize('Other CFDs Platform'),
 };
 
@@ -210,13 +193,26 @@ const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccou
 // Get the color of Header based on the platform
 const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
-        case platformsHeaderLabel.other_cfds:
         case platformsHeaderLabel.ctrader:
+            return 'orange';
+        case platformsHeaderLabel.derivx:
             return 'green';
         case platformsHeaderLabel.mt5:
+        case platformsHeaderLabel.other_cfds:
         default:
             return 'blue';
     }
+};
+
+const getDefaultJurisdictionDetails = data => {
+    const leverage = `${data?.product_details?.max_leverage}`;
+    const spread = `${data?.product_details?.min_spread} pips`;
+    return {
+        leverage,
+        leverage_description: localize('Maximum leverage'),
+        spread,
+        spread_description: localize('Spreads from'),
+    };
 };
 
 // Config for different Jurisdictions
@@ -235,7 +231,7 @@ const cfd_config = () => ({
 });
 
 // Map the Jurisdictions with the config
-const getJuridisctionDescription = (shortcode: string) => {
+const getJuridisctionDescription = (shortcode: string, trading_platforms) => {
     const createDescription = (
         counterparty_company: string,
         jurisdiction: string,
@@ -254,50 +250,16 @@ const getJuridisctionDescription = (shortcode: string) => {
         leverage,
         spread,
     });
-
     switch (shortcode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            return createDescription(
-                'Deriv (BVI) Ltd',
-                'British Virgin Islands',
-                localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114)'),
-                localize('Regulator/External dispute resolution'),
-                cfd_config().leverage,
-                shortcode === MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI ? '0.1 pips' : '0.2 pips'
-            );
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC:
+            return getDefaultJurisdictionDetails(trading_platforms);
+        case MARKET_TYPE_SHORTCODE.FINANCIAL:
+            return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return createDescription(
-                'Deriv (BVI) Ltd',
-                'British Virgin Islands',
-                localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114)'),
-                localize('Regulator/External dispute resolution'),
-                '1:1000',
-                '0.0 pips'
-            );
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            return createDescription(
-                'Deriv (V) Ltd',
-                'Vanuatu',
-                localize('Vanuatu Financial Services Commission'),
-                '',
-                localize('Regulator/External dispute resolution'),
-                cfd_config().leverage,
-                shortcode === MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU ? '0.1 pips' : '0.2 pips'
-            );
+            return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            return createDescription(
-                'Deriv (FX) Ltd',
-                'Labuan',
-                localize('Labuan Financial Services Authority'),
-                localize('(licence no. MB/18/0024)'),
-                localize('Regulator/External dispute resolution'),
-                '1:100',
-                '0.6 pips'
-            );
+            return getDefaultJurisdictionDetails(trading_platforms);
+
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
             return createDescription(
                 'Deriv Investments (Europe) Limited',
@@ -307,12 +269,9 @@ const getJuridisctionDescription = (shortcode: string) => {
                 '',
                 '1:30'
             );
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return { ...cfd_config(), spread: '0.1 pips' };
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return { ...cfd_config(), spread: '0.2 pips' };
+
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
-            return { ...cfd_config(), spread: '0.3 pips' };
+            return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         default:
             return cfd_config();
@@ -322,16 +281,31 @@ const getJuridisctionDescription = (shortcode: string) => {
 // Sort the MT5 accounts in the order of derived, financial and swap-free
 const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.ALL && item.product === PRODUCT.SWAPFREE)
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.ALL &&
+                item.product === PRODUCT.SWAPFREE &&
+                item.is_default_jurisdiction === 'true'
+        )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     const zero_spread_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.ALL && item.product === PRODUCT.ZEROSPREAD)
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.ALL &&
+                item.product === PRODUCT.ZEROSPREAD &&
+                item.is_default_jurisdiction === 'true'
+        )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     const financial_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode !== JURISDICTION.MALTA_INVEST)
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.FINANCIAL &&
+                item.shortcode !== JURISDICTION.MALTA_INVEST &&
+                item.is_default_jurisdiction === 'true'
+        )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     const gaming_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.GAMING)
+        .filter(item => item.market_type === MARKET_TYPE.GAMING && item.is_default_jurisdiction === 'true')
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts, ...zero_spread_accounts];
 };
@@ -339,7 +313,12 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
 // Get the maltainvest accounts for EU and DIEL clients
 const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const financial_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode === JURISDICTION.MALTA_INVEST)
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.FINANCIAL &&
+                item.shortcode === JURISDICTION.MALTA_INVEST &&
+                item.is_default_jurisdiction === 'true'
+        )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     return [...financial_accounts];
 };
@@ -423,6 +402,7 @@ const getCtraderDemoData = (available_accounts: TModifiedTradingPlatformAvailabl
 export {
     getHighlightedIconLabel,
     getJuridisctionDescription,
+    getDefaultJurisdictionDetails,
     getAccountCardTitle,
     getMarketType,
     getAccountIcon,

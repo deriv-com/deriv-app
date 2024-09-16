@@ -8,10 +8,12 @@ import { CFD_PLATFORMS, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from '../../Helpers
 
 const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
+
     const market_type_shortcode =
-        trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type === MARKET_TYPE.ALL
+        trading_platforms.platform === CFD_PLATFORMS.MT5 &&
+        (market_type === MARKET_TYPE.ALL || trading_platforms.product === 'stp')
             ? `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`
-            : market_type.concat('_', trading_platforms.shortcode ?? '');
+            : market_type ?? '';
     const jurisdiction_card_icon =
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE || trading_platforms.platform === CFD_PLATFORMS.CTRADER
             ? getAccountIcon(trading_platforms.platform)

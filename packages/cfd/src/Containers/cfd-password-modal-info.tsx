@@ -26,14 +26,19 @@ const CfdPasswordModalInfo = ({
             <Text size='xxxs'>
                 {need_tnc ? (
                     <Localize
-                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{regulatory_authority}} (License no. <0>{{licence_number}}</0>).'
+                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{regulatory_authority}} (license no.<0/> )'
                         values={{
                             platform,
                             product,
                             company: selected_mt5_account?.name,
                             regulatory_authority: selected_mt5_account?.regulatory_authority ?? '',
-                            licence_number: selected_mt5_account?.licence_number ?? '',
                         }}
+                        components={[
+                            <span
+                                key={0}
+                                dangerouslySetInnerHTML={{ __html: selected_mt5_account?.licence_number ?? '' }}
+                            />,
+                        ]}
                     />
                 ) : (
                     <Localize

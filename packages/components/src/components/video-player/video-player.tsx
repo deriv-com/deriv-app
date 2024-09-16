@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 import { useIsRtl } from '@deriv/hooks';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
-import debounce from 'lodash.debounce';
+import { useDebounce } from '../../hooks';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';
 
@@ -156,7 +156,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
         debouncedRewind();
     };
 
-    const debouncedRewind = debounce(() => {
+    const debouncedRewind = useDebounce(() => {
         if (!video_ref.current) return;
 
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);

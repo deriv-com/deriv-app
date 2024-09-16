@@ -25,3 +25,13 @@ export const defineViewportHeight = () => {
     const viewportHeight = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--wallets-vh', `${viewportHeight}px`);
 };
+
+// TODO: replace with the respective function from @deriv-com/utils
+export const isValidJson = (value: string) => {
+    try {
+        JSON.parse(value);
+        return true;
+    } catch {
+        return false;
+    }
+};

@@ -1,3 +1,5 @@
+import { isValidJson } from '../utils/utils';
+
 const isBrowser = () => typeof window !== 'undefined';
 
 const derivComUrl = 'deriv.com';
@@ -53,8 +55,8 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { isStagingDerivApp } = getPlatformFromUrl();
-    const localizeUrl = window.localStorage.getItem('i18n_language');
-    const localizeLanguage = localizeUrl ? JSON.parse(localizeUrl) : null;
+    const localizeUrl = window.localStorage.getItem('i18n_language') || '';
+    const localizeLanguage = isValidJson(localizeUrl) ? JSON.parse(localizeUrl) : localizeUrl;
     const urlLang = getlangFromUrl();
     const i18NLanguage = localizeLanguage || urlLang || 'en';
 

@@ -7,6 +7,16 @@ import type { SdkHandle, SdkResponse } from '../types/onfido';
 import useOnfidoNotificationEvent from './useOnfidoNotificationEvent';
 import { v4 as uuidv4 } from 'uuid';
 
+// TODO: replace with the respective function from @deriv-com/utils
+export const isValidJson = (value: string) => {
+    try {
+        JSON.parse(value);
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 /** A custom hook to initialize Onfido SDK.
  * To initialize Onfido, ensure that an empty container is present.
  * Call the hook and use `onfidoContainerId` to mark the empty container where the Onfido UI is to be mounted.
@@ -96,8 +106,8 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
     );
 
     const initOnfido = useCallback(async () => {
-        const localize_url = window.localStorage.getItem('i18n_language');
-        const localize_language = localize_url ? JSON.parse(localize_url) : null;
+        const localize_url = window.localStorage.getItem('i18n_language') || '';
+        const localize_language = isValidJson(localize_url) ? JSON.parse(localize_url) : localize_url;
         const i18NLanguage = localize_language ? localize_language.toLowerCase() : 'en';
         const onfidoCountryCode =
             countryCode.length !== 3 ? ALPHA_2_TO_ALPHA_3[countryCode.toUpperCase()] : countryCode;

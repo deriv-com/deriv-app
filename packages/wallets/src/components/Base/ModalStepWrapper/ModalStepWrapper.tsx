@@ -2,8 +2,8 @@ import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { useModal } from '../../ModalProvider';
-import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
@@ -17,6 +17,18 @@ type TModalStepWrapperProps = {
     shouldPreventCloseOnEscape?: boolean;
     title?: string;
 };
+
+type TFooterProps = {
+    hasRenderFooter: boolean;
+    renderFooter: TModalStepWrapperProps['renderFooter'];
+};
+
+const Footer: FC<TFooterProps> = ({ hasRenderFooter, renderFooter }) =>
+    hasRenderFooter && renderFooter ? (
+        <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
+            {renderFooter()}
+        </div>
+    ) : null;
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
@@ -47,13 +59,6 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldHideDerivAppHeader]);
 
-    const Footer = () =>
-        hasRenderFooter ? (
-            <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
-                {renderFooter()}
-            </div>
-        ) : null;
-
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
@@ -69,7 +74,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         >
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header' data-testid='dt_modal_step_wrapper_header'>
-                    <WalletText weight='bold'>{title}</WalletText>
+                    <Text weight='bold'>{title}</Text>
                     <LegacyClose2pxIcon
                         className='wallets-modal-step-wrapper__header-close-icon'
                         data-testid='dt_modal_step_wrapper_header_icon'
@@ -80,9 +85,9 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             )}
             <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
                 {children}
-                {!shouldFixedFooter && <Footer />}
+                {!shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
             </div>
-            {shouldFixedFooter && <Footer />}
+            {shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
         </div>
     );
 };

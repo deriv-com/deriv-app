@@ -172,12 +172,8 @@
     }
 
     .stats-description {
-        text-align: left;
-        &__placeholder {
-            height: 220px;
-            width: 100%;
-            background-color: var(--core-color-opacity-black-100);
-        }
+        text-align: start;
+
         &__content {
             margin: var(--core-spacing-1200);
             &__title {

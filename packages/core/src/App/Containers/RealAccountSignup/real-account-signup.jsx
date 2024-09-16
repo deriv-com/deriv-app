@@ -86,6 +86,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         should_show_appropriateness_warning_modal,
         should_show_risk_warning_modal,
         setShouldShowOneTimeDepositModal,
+        toggleAccountSuccessModal,
         real_account_signup: state_value,
         is_trading_assessment_for_new_user_enabled,
     } = ui;
@@ -327,7 +328,11 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const closeModalthenOpenDepositModal = () => {
         closeRealAccountSignup();
-        setShouldShowOneTimeDepositModal(true);
+        if (!client.is_mf_account) {
+            setShouldShowOneTimeDepositModal(true);
+        } else {
+            toggleAccountSuccessModal();
+        }
     };
 
     const showStatusDialog = curr => {

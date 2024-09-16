@@ -16,18 +16,21 @@ import './TaxInformation.scss';
 
 type TTaxInformationProps = {
     onCompletion?: VoidFunction;
+    selectedJurisdiction: string;
 };
 
-const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
+const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion, selectedJurisdiction }) => {
     const { localize } = useTranslations();
+
     const {
         countryCodeToPatternMapper,
         countryList,
         initialValues,
         isLoading,
         isSubmitted: isTaxInformationSubmitted,
+        isTinMandatory,
         onSubmit,
-    } = useTaxInformation();
+    } = useTaxInformation(selectedJurisdiction);
 
     useEffect(() => {
         if (isTaxInformationSubmitted && onCompletion) {
@@ -88,15 +91,17 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             validationSchema={getTaxResidenceValidator(countryList, localize)}
                                             variant='prompt'
                                         />
-                                        <FormField
-                                            disabled={Boolean(!values.taxResidence || errors.taxResidence)}
-                                            label={localize('Tax identification number*')}
-                                            name='taxIdentificationNumber'
-                                            validationSchema={getTinValidator(
-                                                countryCodeToPatternMapper[values.taxResidence ?? ''],
-                                                localize
-                                            )}
-                                        />
+                                        {isTinMandatory && (
+                                            <FormField
+                                                disabled={Boolean(!values.taxResidence || errors.taxResidence)}
+                                                label={localize('Tax identification number*')}
+                                                name='taxIdentificationNumber'
+                                                validationSchema={getTinValidator(
+                                                    countryCodeToPatternMapper[values.taxResidence ?? ''],
+                                                    localize
+                                                )}
+                                            />
+                                        )}
                                         <FormDropdown
                                             isFullWidth
                                             label={localize('Account opening reason*')}

@@ -1,11 +1,14 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
-import useDevice from '../../../hooks/useDevice';
 import WalletsListingRoute from '../WalletsListingRoute';
 
-jest.mock('../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('../../../components', () => ({
     ...jest.requireActual('../../../components'),
@@ -29,9 +32,15 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 
 describe('WalletsListingRoute', () => {
-    it('renders DesktopWalletsList, WalletsAddMoreCarousel and WalletTourGuide correctly on desktop', async () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+    beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
+    it('renders DesktopWalletsList, WalletsAddMoreCarousel and WalletTourGuide correctly on desktop', async () => {
         render(<WalletsListingRoute />, { wrapper });
         expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.queryByText('WalletsCarousel')).not.toBeInTheDocument();

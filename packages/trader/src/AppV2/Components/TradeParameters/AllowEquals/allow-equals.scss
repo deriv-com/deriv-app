@@ -1,16 +1,27 @@
-$HANDLEBAR_HEIGHT: var(--core-size-1000);
-$HEADER_TITLE_HEIGHT: var(--core-size-3200);
-
 .allow-equals {
     &__wrapper {
-        height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
-        padding-block-start: 0;
-    }
-
-    &__content {
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-block: var(--core-spacing-400);
+        height: var(--core-size-1100);
+    }
+
+    &__title {
+        border-bottom: var(--core-borderWidth-75) dotted var(--component-textIcon-normal-default);
+    }
+
+    &__definition {
+        &__wrapper {
+            padding: var(--component-actionSheet-spacing-padding-lg);
+        }
+
+        &__title {
+            margin-block-end: var(--component-actionSheet-spacing-padding-lg);
+        }
+    }
+
+    &__button {
+        padding: var(--component-actionSheet-spacing-padding-lg);
     }
 }

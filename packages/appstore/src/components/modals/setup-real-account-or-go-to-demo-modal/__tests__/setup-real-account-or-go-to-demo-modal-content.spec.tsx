@@ -13,7 +13,6 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 jest.mock('@deriv-com/analytics', () => ({
-    ...jest.requireActual('@deriv-com/analytics'),
     Analytics: {
         trackEvent: jest.fn(),
     },

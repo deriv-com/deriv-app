@@ -15,8 +15,8 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const [prevSymbol, setPrevSymbol] = React.useState('');
     const [prevTradeType, setPrevTradeType] = React.useState('');
-    const { quick_strategy } = useDBotStore();
-    const { setValue, setCurrentDurationMinMax } = quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { setValue, setCurrentDurationMinMax } = server_bot;
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
 

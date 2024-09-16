@@ -3,7 +3,7 @@
     display: flex;
     width: 100%;
     cursor: pointer;
-    background-color: var(--component-modal-bg);
+    background-color: var(--semantic-color-slate-solid-surface-frame-low);
     padding: var(--semantic-spacing-general-md);
     justify-content: space-between;
     height: 10.4rem;
@@ -38,11 +38,12 @@
     }
     .status,
     .timer {
-        background-color: var(--core-color-opacity-black-75);
+        background-color: var(--component-tag-bg-default);
 
         &,
         .dc-remaining-time {
             font-size: var(--core-fontSize-50);
+            color: var(--component-tag-label-color-default);
         }
     }
     .status-and-profit {
@@ -248,7 +249,6 @@
             position: sticky;
             top: 0;
             z-index: 1;
-            background-color: var(--core-color-solid-slate-75);
         }
     }
 }

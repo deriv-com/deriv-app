@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui';
-import useDevice from '../../../../../../../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
 import RightArrow from '../../../../../../../../public/images/navigation-chevron-right.svg';
 import { TManualDocumentType } from '../../../../utils';
 import './DocumentSelectionCard.scss';

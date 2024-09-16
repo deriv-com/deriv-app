@@ -282,7 +282,7 @@ const TakeProfitAndStopLossInput = ({
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'
-                    value={new_input_value}
+                    value={new_input_value ?? ''}
                 />
                 {!is_enabled && (
                     <button

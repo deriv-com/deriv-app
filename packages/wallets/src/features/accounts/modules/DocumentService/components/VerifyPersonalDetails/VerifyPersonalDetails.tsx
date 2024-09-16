@@ -5,8 +5,8 @@ import moment from 'moment';
 import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { DatePicker, FormField, InlineMessage } from '../../../../../../components';
+import { InlineMessage, Text } from '@deriv-com/ui';
+import { DatePicker, FormField } from '../../../../../../components';
 import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
@@ -48,7 +48,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
 
     return (
         <div className='wallets-verify-personal-details'>
-            <InlineMessage>
+            <InlineMessage iconPosition='top' variant='warning'>
                 <Text size='sm'>
                     <Localize
                         components={[<strong key={0} />]}

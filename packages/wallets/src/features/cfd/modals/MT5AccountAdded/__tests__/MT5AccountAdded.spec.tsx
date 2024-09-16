@@ -20,7 +20,7 @@ import MT5AccountAdded from '../MT5AccountAdded';
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({
-        isMobile: false,
+        isDesktop: true,
     })),
 }));
 
@@ -67,6 +67,11 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 describe('MT5AccountAdded', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
     const history = createMemoryHistory();
     it('should render mt5 account added success modal for demo account', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
@@ -291,8 +296,7 @@ describe('MT5AccountAdded', () => {
         expect(
             screen.getByText('Transfer funds from your USD Wallet to your Financial (SVG) account to start trading.')
         ).toBeInTheDocument();
-        expect(screen.getAllByRole('button', { name: 'Transfer funds' })[0]).toBeInTheDocument();
-        expect(screen.getAllByRole('button', { name: 'Maybe later' })[0]).toBeInTheDocument();
+        expect(screen.getAllByRole('button', { name: 'OK' })[0]).toBeInTheDocument();
     });
 
     it('should render loading state', () => {

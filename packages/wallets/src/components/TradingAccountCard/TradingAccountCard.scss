@@ -8,6 +8,10 @@
     border: none;
     background: none;
 
+    &--disabled {
+        cursor: not-allowed;
+    }
+
     @include desktop {
         padding-inline: 1.6rem;
         $columns: 3;
@@ -24,7 +28,7 @@
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 8rem;
         &:last-child > &__content,
         &:last-child ~ & > &__content {

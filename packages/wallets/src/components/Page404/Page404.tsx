@@ -1,8 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { ActionScreen, Button, Text } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 import './Page404.scss';
 
 const Page404 = () => {

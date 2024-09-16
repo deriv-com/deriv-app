@@ -1,13 +1,13 @@
 .wallets-available-mt5 {
     &__title {
         display: flex;
-        gap: 8px;
+        gap: 0.8rem;
         align-items: center;
     }
     &__badge {
-        border-radius: 4px;
-        max-height: 22px;
-        padding: 2px 4px;
+        border-radius: 0.4rem;
+        max-height: 2.2rem;
+        padding: 0.2rem 0.4rem;
         display: inline-flex;
         justify-content: center;
         align-items: center;

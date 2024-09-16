@@ -1,6 +1,5 @@
 import React from 'react';
-import { WalletText } from '../../../../../../../../components';
-import useDevice from '../../../../../../../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
 import RightArrow from '../../../../../../../../public/images/navigation-chevron-right.svg';
 import { TManualDocumentType } from '../../../../utils';
 import './DocumentSelectionCard.scss';
@@ -23,10 +22,10 @@ const DocumentSelectionCard: React.FC<TDocumentSelectionCardProps> = ({
             <div className='wallets-document-selection-card__content'>
                 <Icon />
                 <div className='wallets-document-selection-card__text-content'>
-                    <WalletText size={!isDesktop ? 'xs' : 'sm'} weight='bold'>
+                    <Text size={!isDesktop ? 'xs' : 'sm'} weight='bold'>
                         {title}
-                    </WalletText>
-                    <WalletText size={!isDesktop ? '2xs' : 'xs'}>{description}</WalletText>
+                    </Text>
+                    <Text size={!isDesktop ? '2xs' : 'xs'}>{description}</Text>
                 </div>
             </div>
             <RightArrow />

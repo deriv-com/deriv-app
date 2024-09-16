@@ -15,7 +15,7 @@
     &__header {
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;

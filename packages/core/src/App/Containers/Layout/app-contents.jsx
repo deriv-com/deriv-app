@@ -21,7 +21,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
     const { isDesktop, isMobile } = useDevice();
-    const { pathname } = useLocation();
+    const location = useLocation();
 
     const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
@@ -36,12 +36,11 @@ const AppContents = observer(({ children }) => {
     } = ui;
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
-    const is_dtrader_v2 = isDTraderV2() && (pathname.startsWith(routes.trade) || pathname.startsWith('/contract/'));
+    const is_dtrader_v2 =
+        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
 
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
-
-    const location = useLocation();
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

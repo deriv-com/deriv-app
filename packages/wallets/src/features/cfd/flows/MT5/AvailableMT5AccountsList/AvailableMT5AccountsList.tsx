@@ -1,12 +1,13 @@
-import React, { lazy, useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Loader, Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import './AvailableMT5AccountsList.scss';
 
 const LazyVerification = lazy(
     () => import(/* webpackChunkName: "wallets-client-verification" */ '../../ClientVerification/ClientVerification')
@@ -47,12 +48,14 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     );
                 } else if (account.product === PRODUCT.ZEROSPREAD) {
                     show(
-                        <LazyVerification
-                            onCompletion={() => {
-                                setShowMt5PasswordModal(true);
-                            }}
-                            selectedJurisdiction={account.shortcode}
-                        />
+                        <Suspense fallback={<Loader />}>
+                            <LazyVerification
+                                onCompletion={() => {
+                                    setShowMt5PasswordModal(true);
+                                }}
+                                selectedJurisdiction={account.shortcode}
+                            />
+                        </Suspense>
                     );
                 } else {
                     show(<JurisdictionModal />);

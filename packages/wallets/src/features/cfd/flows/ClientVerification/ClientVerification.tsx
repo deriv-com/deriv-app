@@ -12,7 +12,7 @@ type TClientVerificationProps = {
     onCompletion?: VoidFunction;
     selectedJurisdiction?: string;
 };
-type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
+type TStatusCodes = Exclude<THooks.POA['status'], undefined>;
 
 const isSubmissionRequired: Record<TStatusCodes, boolean> = {
     expired: true,
@@ -55,21 +55,12 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
         [poaData?.status, poaData?.verified_jurisdiction, selectedJurisdiction]
     );
 
-    const isPoiRequired = useMemo(
-        () =>
-            (poiData?.current.status && isSubmissionRequired[poiData?.current.status]) ||
-            (poiData?.previous?.status &&
-                // @ts-expect-error broken api-types for attempts/latest key in get_account_settings
-                isSubmissionRequired[poiData.previous.status]),
-        [poiData]
-    );
-
     const isTaxInformationRequired = useMemo(
         () => !accountSettings.has_submitted_personal_details,
         [accountSettings.has_submitted_personal_details]
     );
 
-    const shouldSubmitPoi = isPoiRequired && !isPoiJustCompleted;
+    const shouldSubmitPoi = poiData?.is_poi_required && !isPoiJustCompleted;
 
     const shouldSubmitPoa = isPoaRequired && !isPoaJustCompleted;
 

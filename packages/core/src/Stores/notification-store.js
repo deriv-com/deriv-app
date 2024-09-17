@@ -386,8 +386,8 @@ export default class NotificationStore extends BaseStore {
                 this.handleCurrencyRemovalNotification(account_currency_closure_status, currency);
             }
 
-            if (status?.includes('mt5_additional_kyc_required'))
-                this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+            // if (status?.includes('mt5_additional_kyc_required'))
+            this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1558,7 +1558,8 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Update now'),
                     onClick: () => {
                         if (this.is_notifications_visible) this.toggleNotificationsModal();
-                        ui.toggleAdditionalKycInfoModal();
+                        // ui.toggleAdditionalKycInfoModal();
+                        ui.setFieldRefToFocus('account-opening-reason');
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
                 },

@@ -182,6 +182,7 @@ export default class UIStore extends BaseStore {
 
     is_additional_kyc_info_modal_open = false;
     is_kyc_information_submitted_modal_open = false;
+    field_ref_to_focus = null;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -430,6 +431,8 @@ export default class UIStore extends BaseStore {
             setShouldShowDepositNowOrLaterModal: action.bound,
             setShouldShowCryptoTransactionProcessingModal: action.bound,
             setShouldShowSameDOBPhoneModal: action.bound,
+            field_ref_to_focus: observable,
+            setFieldRefToFocus: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -446,6 +449,10 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
+
+    setFieldRefToFocus(field_ref) {
+        this.field_ref_to_focus = field_ref;
+    }
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
         this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;

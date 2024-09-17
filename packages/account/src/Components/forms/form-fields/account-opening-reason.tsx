@@ -24,7 +24,7 @@ const AccountOpeningReasonField = ({
     const { localize } = useTranslations();
     return (
         <React.Fragment>
-            <Field name='account_opening_reason'>
+            <Field name='account_opening_reason' id='account-opening-reason'>
                 {({ field, meta }: FieldProps) => (
                     <div className='account-form__fieldset'>
                         {isDesktop ? (

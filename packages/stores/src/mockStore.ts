@@ -490,6 +490,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsTradingDisabledByResidenceModal: jest.fn(),
             should_show_same_dob_phone_modal: false,
             setShouldShowSameDOBPhoneModal: jest.fn(),
+            field_ref_to_focus: null,
+            setFieldRefToFocus: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

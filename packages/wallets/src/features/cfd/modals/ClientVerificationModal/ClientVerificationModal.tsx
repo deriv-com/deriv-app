@@ -1,9 +1,9 @@
 import React from 'react';
 import { DerivLightUploadPoiIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { SectionMessage, Text, useDevice } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
-import { DocumentTile } from './components';
+import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
 
 const getDescriptionText = () => {
@@ -29,9 +29,7 @@ const ClientVerificationModal = () => {
                 <Text align='center' size={isMobile ? 'md' : 'sm'}>
                     {description}
                 </Text>
-                <DocumentTile title='Personal Details' />
-                <DocumentTile title='Personal Details' />
-                <DocumentTile title='Personal Details' />
+                <DocumentsList />
             </div>
         </ModalStepWrapper>
     );

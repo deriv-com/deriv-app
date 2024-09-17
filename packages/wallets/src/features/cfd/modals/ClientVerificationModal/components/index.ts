@@ -1,1 +1,1 @@
-export * from './DocumentTile';
+export * from './DocumentsList';

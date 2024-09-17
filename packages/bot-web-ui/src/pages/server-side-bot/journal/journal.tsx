@@ -6,20 +6,18 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { JOURNAL_TYPE } from 'Stores/server-side-bot-store';
 import { useDBotStore } from 'Stores/useDBotStore';
-import ClearJournalTransactions from '../bot-list/clear-journal-transactions';
 
 type TJournal = {
     setActiveTabIndex: (index: number) => void;
-    is_clear_dialog_visible: boolean;
     setClearDialogVisibility: (is_clear_dialog_visible: boolean) => void;
 };
 
-const Journal = observer(({ setActiveTabIndex, is_clear_dialog_visible, setClearDialogVisibility }: TJournal) => {
+const Journal = observer(({ setActiveTabIndex, setClearDialogVisibility }: TJournal) => {
     const {
         client: { currency },
     } = useStore();
     const { server_bot } = useDBotStore();
-    const { active_bot, journal, downloadJournal, resetJournal, resetTransactions } = server_bot;
+    const { active_bot, journal, downloadJournal } = server_bot;
     const has_journal = !!journal.length;
     const font_size = 'xxs';
     const uid = 'journal';
@@ -33,12 +31,6 @@ const Journal = observer(({ setActiveTabIndex, is_clear_dialog_visible, setClear
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [journal.length]);
-
-    const onOkButtonClick = () => {
-        resetJournal();
-        resetTransactions();
-        setClearDialogVisibility(false);
-    };
 
     return (
         <div className='ssb-journal'>
@@ -155,11 +147,6 @@ const Journal = observer(({ setActiveTabIndex, is_clear_dialog_visible, setClear
                     <Localize i18n_default_text='Download' />
                 </Button>
             </div>
-            <ClearJournalTransactions
-                is_open={is_clear_dialog_visible}
-                onConfirm={onOkButtonClick}
-                setVisibility={setClearDialogVisibility}
-            />
         </div>
     );
 });

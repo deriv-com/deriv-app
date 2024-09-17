@@ -4,10 +4,8 @@ import { Button, Icon, Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import ClearJournalTransactions from '../bot-list/clear-journal-transactions';
 
 type TSummary = {
-    is_clear_dialog_visible: boolean;
     setClearDialogVisibility: (is_clear_dialog_visible: boolean) => void;
 };
 
@@ -35,11 +33,11 @@ const STATUS = Object.freeze({
     },
 });
 
-const Summary = observer(({ is_clear_dialog_visible, setClearDialogVisibility }: TSummary) => {
+const Summary = observer(({ setClearDialogVisibility }: TSummary) => {
     const { server_bot } = useDBotStore();
     const { client } = useStore();
     const { currency } = client;
-    const { transactions, active_bot, performance, resetTransactions, resetJournal } = server_bot;
+    const { transactions, active_bot, performance } = server_bot;
     const { bot_id } = active_bot;
     const bot_transactions = bot_id ? transactions[bot_id] : {};
 
@@ -48,12 +46,6 @@ const Summary = observer(({ is_clear_dialog_visible, setClearDialogVisibility }:
     // when we allow multiple bots to run at the same time, it should be an array
     // const is_some_bot_running = active_bots.every(item => item.status !== 'stopped');
     const is_bot_running = active_bot?.status !== 'stopped';
-
-    const onOkButtonClick = () => {
-        resetJournal();
-        resetTransactions();
-        setClearDialogVisibility(false);
-    };
 
     return (
         <div className='ssb-summary'>
@@ -172,11 +164,6 @@ const Summary = observer(({ is_clear_dialog_visible, setClearDialogVisibility }:
                     </Button>
                 </div>
             </div>
-            <ClearJournalTransactions
-                is_open={is_clear_dialog_visible}
-                onConfirm={onOkButtonClick}
-                setVisibility={setClearDialogVisibility}
-            />
         </div>
     );
 });

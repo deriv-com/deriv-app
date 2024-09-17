@@ -1,20 +1,29 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { observer } from '@deriv/stores';
 
 type TDeleteServerBot = {
     is_open: boolean;
     setVisibility: (is_open: boolean) => void;
-    onConfirm: () => void;
+    setClearDialogVisibility: () => void;
 };
 
-const ClearJournalTransactions: React.FC<TDeleteServerBot> = ({ is_open, setVisibility, onConfirm }) => {
+const ClearJournalTransactions = observer(({ is_open, setVisibility, setClearDialogVisibility }: TDeleteServerBot) => {
+    const { server_bot } = useDBotStore();
+    const { resetJournal, resetTransactions } = server_bot;
+    const onOkButtonClick = () => {
+        resetJournal();
+        resetTransactions();
+        setClearDialogVisibility();
+    };
     return (
         <Dialog
             title={localize('Are you sure?')}
             is_visible={is_open}
             confirm_button_text={localize('Ok')}
-            onConfirm={onConfirm}
+            onConfirm={onOkButtonClick}
             cancel_button_text={localize('Cancel')}
             onCancel={() => setVisibility(false)}
             onClose={() => setVisibility(false)}
@@ -28,6 +37,6 @@ const ClearJournalTransactions: React.FC<TDeleteServerBot> = ({ is_open, setVisi
             </Text>
         </Dialog>
     );
-};
+});
 
 export default ClearJournalTransactions;

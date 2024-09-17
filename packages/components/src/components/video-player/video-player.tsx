@@ -13,6 +13,7 @@ type TVideoPlayerProps = {
     data_testid?: string;
     height?: string;
     is_mobile?: boolean;
+    increased_drag_area?: boolean;
     muted?: boolean;
     src: string;
 };
@@ -24,7 +25,15 @@ const dragMoveHandlerThrottled = throttle(
     50
 );
 
-const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false, src }: TVideoPlayerProps) => {
+const VideoPlayer = ({
+    className,
+    data_testid,
+    height,
+    is_mobile,
+    increased_drag_area,
+    muted = false,
+    src,
+}: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
 
     const should_autoplay =
@@ -317,6 +326,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}
+                increased_drag_area={increased_drag_area}
                 onRewind={onRewind}
                 onVolumeChange={setVolume}
                 onPlaybackRateChange={setPlaybackRate}

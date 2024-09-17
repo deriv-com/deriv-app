@@ -18,7 +18,9 @@ type BottomNavProps = {
 const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
-    const { active_positions_count } = useStore().portfolio;
+    const { client, portfolio } = useStore();
+    const { active_positions_count } = portfolio;
+    const { is_logged_in } = client;
 
     const bottomNavItems = [
         {
@@ -75,24 +77,28 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             <div className='bottom-nav-selection' onScroll={onScroll}>
                 {children}
             </div>
-            <Navigation.Bottom className='bottom-nav-container' onChange={(_, index) => handleSelect(index)}>
-                {bottomNavItems.map((item, index) => (
-                    <Navigation.BottomAction
-                        key={index}
-                        index={index}
-                        activeIcon={item.icon}
-                        icon={item.icon}
-                        label={item.label}
-                        selected={index === selectedIndex}
-                        showLabel
-                        className={clsx(
-                            'bottom-nav-item',
-                            index === selectedIndex && 'bottom-nav-item--active',
-                            item.path === routes.trader_positions && 'bottom-nav-item--positions'
-                        )}
-                    />
-                ))}
-            </Navigation.Bottom>
+            {is_logged_in ? (
+                <Navigation.Bottom className='bottom-nav-container' onChange={(_, index) => handleSelect(index)}>
+                    {bottomNavItems.map((item, index) => (
+                        <Navigation.BottomAction
+                            key={index}
+                            index={index}
+                            activeIcon={item.icon}
+                            icon={item.icon}
+                            label={item.label}
+                            selected={index === selectedIndex}
+                            showLabel
+                            className={clsx(
+                                'bottom-nav-item',
+                                index === selectedIndex && 'bottom-nav-item--active',
+                                item.path === routes.trader_positions && 'bottom-nav-item--positions'
+                            )}
+                        />
+                    ))}
+                </Navigation.Bottom>
+            ) : (
+                <></>
+            )}
         </div>
     );
 });

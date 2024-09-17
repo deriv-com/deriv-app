@@ -1,6 +1,7 @@
 .favorite-symbols {
     &__container {
         padding: var(--core-spacing-400) 0;
+        margin: 0 var(--core-spacing-400);
     }
     &--no-fav {
         padding: 0 var(--core-spacing-2400);

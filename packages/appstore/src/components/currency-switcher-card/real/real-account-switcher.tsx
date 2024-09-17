@@ -24,7 +24,11 @@ const AccountNeedsVerification = observer(() => {
         toggleVerificationModal(true);
     };
 
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mf_account_status, onClickBanner);
+    const {
+        text: badge_text,
+        icon: badge_icon,
+        icon_size: badge_icon_size,
+    } = getStatusBadgeConfig(mf_account_status, onClickBanner);
 
     return (
         <CurrencySwitcherContainer
@@ -39,7 +43,12 @@ const AccountNeedsVerification = observer(() => {
                 return openModal('currency_selection');
             }}
         >
-            <StatusBadge account_status={mf_account_status} icon={badge_icon} text={badge_text} icon_size='18' />
+            <StatusBadge
+                account_status={mf_account_status}
+                icon={badge_icon}
+                text={badge_text}
+                icon_size={badge_icon_size}
+            />
         </CurrencySwitcherContainer>
     );
 });

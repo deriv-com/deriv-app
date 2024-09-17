@@ -35,7 +35,7 @@ describe('useGetStatus', () => {
 
         mockUseIsSelectedMT5AccountCreated.mockReturnValue({
             selected_mt5_account: {
-                is_default_jurisdiction: true,
+                is_default_jurisdiction: 'true',
                 requirements: {
                     after_first_deposit: {
                         financial_assessment: ['financial_information', 'trading_experience'],

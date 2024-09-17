@@ -557,7 +557,8 @@ export default class TradersHubStore extends BaseStore {
         const { product } = this.root_store.modules.cfd;
 
         const default_jurisdiction = trading_platform_available_accounts.filter(
-            available_account => available_account.product === product && available_account.is_default_jurisdiction
+            available_account =>
+                available_account.product === product && available_account.is_default_jurisdiction === 'true'
         )[0]?.shortcode;
         return default_jurisdiction;
     }

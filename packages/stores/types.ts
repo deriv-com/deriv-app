@@ -104,12 +104,13 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
-export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
-    product?: string;
+// TODO: Remove this type once the API types are updated
+export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    product?: 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
 };
 
 type TIconTypes =
@@ -199,7 +200,7 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     account_category?: 'wallet' | 'trading';
 };
 
-type TCtraderAccountsList = TDetailsOfEachMT5Loginid & {
+type TCtraderAccountsList = TAdditionalDetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;
 };
@@ -231,7 +232,7 @@ type TAccountsList = {
     is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
-    mt5_login_list?: TDetailsOfEachMT5Loginid[];
+    mt5_login_list?: TAdditionalDetailsOfEachMT5Loginid[];
     title?: string;
 }[];
 
@@ -245,7 +246,7 @@ export type TActiveAccount = TAccount & {
     token: string;
 };
 
-type TTradingPlatformAvailableAccount = {
+export type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
@@ -263,10 +264,16 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
-    product: TProduct;
-    is_default_jurisdiction: boolean; //TODO: check for default jurisdiction project
+    //TODO: remove once api-types for default jurisdiction project
+    product?: TProduct;
+    is_default_jurisdiction?: string;
     licence_number?: string;
     regulatory_authority?: string;
+    instruments?: string[];
+    product_details?: {
+        max_leverage?: string;
+        min_spread?: string;
+    };
 };
 
 type TAvailableCFDAccounts = {
@@ -501,8 +508,8 @@ type TClientStore = {
     responseMt5LoginList: ({
         mt5_login_list,
     }: {
-        mt5_login_list: TDetailsOfEachMT5Loginid[];
-    }) => TDetailsOfEachMT5Loginid[];
+        mt5_login_list: TAdditionalDetailsOfEachMT5Loginid[];
+    }) => TAdditionalDetailsOfEachMT5Loginid[];
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: {
@@ -539,7 +546,7 @@ type TClientStore = {
     updateAccountStatus: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
-    mt5_login_list: TDetailsOfEachMT5Loginid[];
+    mt5_login_list: TAdditionalDetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     should_allow_poinc_authentication: boolean;
@@ -578,7 +585,7 @@ type TClientStore = {
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
-    dxtrade_accounts_list: (TDetailsOfEachMT5Loginid & { account_id?: string })[];
+    dxtrade_accounts_list: (TAdditionalDetailsOfEachMT5Loginid & { account_id?: string })[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;

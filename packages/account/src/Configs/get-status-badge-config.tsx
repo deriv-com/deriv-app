@@ -15,11 +15,18 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                 text: (
                     <Localize
                         i18n_default_text='<0>In review</0>'
-                        components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-warning)' />]}
+                        components={[
+                            <Text
+                                key={0}
+                                weight='bold'
+                                size='xxxs'
+                                color='var(--status-warning)'
+                                onClick={handleOnClick}
+                            />,
+                        ]}
                     />
                 ),
-                icon: 'IcAlertWarning',
-                icon_size: '18',
+                icon: 'IcMt5Pending',
             };
         case ACCOUNT_BADGE_STATUS.FAILED:
             return {
@@ -37,7 +44,7 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                         ]}
                     />
                 ),
-                icon: 'IcRedWarning',
+                icon: 'IcMt5Failed',
                 icon_size: '18',
             };
         case ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION: {

@@ -21,7 +21,7 @@ import {
     TCFDAccountCard,
     TCFDAccountCardActionProps,
     TTradingPlatformAccounts,
-    TTradingPlatformAvailableAccount,
+    TModifiedTradingPlatformAvailableAccount,
 } from './props.types';
 import { CFD_PLATFORMS, CATEGORY, MARKET_TYPE } from '../Helpers/cfd-config';
 import { TMarketTypeSynthetic, TAccountCategory } from '../types/market-type.types';
@@ -188,10 +188,10 @@ const CFDAccountCardComponent = observer(
             platform === CFD_PLATFORMS.MT5 &&
             (type.category === CATEGORY.DEMO
                 ? isEligibleForMoreDemoMt5Svg(
-                      type.type as TTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
+                      type.type as TModifiedTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
                   ) && !!existing_data
                 : isEligibleForMoreRealMt5(
-                      type.type as TTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
+                      type.type as TModifiedTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
                   ) && !!existing_data);
 
         const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.CFD : type.type;

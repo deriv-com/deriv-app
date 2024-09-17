@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
 import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
-import Item from '@deriv/components/src/components/mobile-drawer/mobile-drawer-item';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
@@ -29,17 +28,7 @@ const getHighlightedIconLabel = (
         }
         return localize('Forex: standard/micro');
     };
-    const getIdForInstruments = instruments => {
-        // "forex",
-        // "stocks",
-        // "stock_indices",
-        // "commodities",
-        // "cryptocurrencies",
-        // "ETFs"
-        // 'synthetic_indices';
-        // 'basket_indices';
-        // 'derived_FX';
-
+    const getIdForInstruments = (instruments: TModifiedTradingPlatformAvailableAccount['instruments']) => {
         return instruments?.map(item => {
             if (item.toLowerCase().includes('forex')) {
                 return 'forex';
@@ -204,7 +193,7 @@ const getHeaderColor = (shortcode: string) => {
     }
 };
 
-const getDefaultJurisdictionDetails = data => {
+const getDefaultJurisdictionDetails = (data: TModifiedTradingPlatformAvailableAccount) => {
     const leverage = `${data?.product_details?.max_leverage}`;
     const spread = `${data?.product_details?.min_spread} pips`;
     return {
@@ -231,7 +220,7 @@ const cfd_config = () => ({
 });
 
 // Map the Jurisdictions with the config
-const getJuridisctionDescription = (shortcode: string, trading_platforms) => {
+const getJuridisctionDescription = (shortcode: string, trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
     const createDescription = (
         counterparty_company: string,
         jurisdiction: string,

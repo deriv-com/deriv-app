@@ -17,7 +17,7 @@ import {
     TJurisdictionCardItemVerification,
     TJurisdictionCardSection,
     TJurisdictionCardSectionTitleIndicators,
-    TTradingPlatformAvailableAccount,
+    TModifiedTradingPlatformAvailableAccount,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
 
@@ -235,10 +235,10 @@ export type TJurisdictionModalContentProps = {
     is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
-    financial_available_accounts: TTradingPlatformAvailableAccount[];
-    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
-    swapfree_available_accounts: TTradingPlatformAvailableAccount[];
+    synthetic_available_accounts: TModifiedTradingPlatformAvailableAccount[];
+    financial_available_accounts: TModifiedTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TModifiedTradingPlatformAvailableAccount[];
+    swapfree_available_accounts: TModifiedTradingPlatformAvailableAccount[];
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     real_swapfree_accounts_existing_data: TExistingData;

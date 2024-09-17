@@ -1,6 +1,5 @@
 import { useStore } from '@deriv/stores';
 import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
-import { TDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 
 const getStatusBadge = (status: string) => {
     if (status === 'proof_failed') {

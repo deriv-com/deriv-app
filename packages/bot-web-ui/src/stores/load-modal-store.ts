@@ -40,7 +40,6 @@ interface ILoadModalStore {
     preview_workspace: Blockly.WorkspaceSvg | null;
     selected_strategy: TStrategy;
     tab_name: string;
-    setPreviewedStrategyId: (clicked_id: string) => void;
     getSelectedStrategyID: (current_workspace_id: string) => void;
     refreshStrategies: () => void;
     loadStrategyToBuilder: (param: TStrategy) => void;
@@ -58,7 +57,6 @@ interface ILoadModalStore {
     onLoadModalClose: () => void;
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
-    previewRecentStrategy: (workspace_id: string) => void;
     setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
@@ -77,13 +75,11 @@ interface ILoadModalStore {
 export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
     core: TStores;
-    previewed_strategy_id = '';
     imported_strategy_type = 'pending';
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             active_index: observable,
-            previewed_strategy_id: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
             is_strategy_loaded: observable,
@@ -100,7 +96,6 @@ export default class LoadModalStore implements ILoadModalStore {
             tab_name: computed,
             is_open_button_disabled: observable,
             setOpenButtonDisabled: action.bound,
-            setPreviewedStrategyId: action.bound,
             getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
             loadStrategyToBuilder: action.bound,
@@ -202,10 +197,6 @@ export default class LoadModalStore implements ILoadModalStore {
 
     setOpenButtonDisabled = (is_open_button_disabled: boolean) => {
         this.is_open_button_disabled = is_open_button_disabled;
-    };
-
-    setPreviewedStrategyId = (clicked_id: string) => {
-        this.previewed_strategy_id = clicked_id;
     };
 
     getSelectedStrategyID = (current_workspace_id: string) => {

@@ -84,7 +84,7 @@ const DashboardBotList = observer(() => {
                     })}
                 </div>
             </div>
-            <DeleteDialog setStrategies={setDashboardStrategies} />
+            <DeleteDialog />
         </div>
     );
 });

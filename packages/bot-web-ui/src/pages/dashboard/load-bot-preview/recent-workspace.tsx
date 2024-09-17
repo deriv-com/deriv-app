@@ -30,7 +30,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         getSelectedStrategyID,
         loadFileFromRecent,
         onToggleDeleteDialog,
-        previewed_strategy_id,
         selected_strategy_id,
         setSelectedStrategyId,
     } = load_modal;
@@ -103,7 +102,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     return (
         <div
             className={classnames('bot-list__item', {
-                'bot-list__item--selected': previewed_strategy_id === workspace.id,
                 'bot-list__item--loaded': dashboard_strategies,
                 'bot-list__item--min': !!dashboard_strategies?.length && !is_desktop,
             })}

@@ -8,7 +8,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 jest.mock('@deriv-com/quill-ui', () => ({
     Text: () => <div>Contract Details</div>,
     IconButton: ({ icon, onClick }: { icon: React.ReactNode; onClick: () => void }) => (
-        <div onClick={onClick}>{icon}</div>
+        <button onClick={onClick}>{icon}</button>
     ),
 }));
 jest.mock('react-router-dom', () => ({

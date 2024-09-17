@@ -39,7 +39,9 @@ type TObjExpiry = {
 type TValidationParams =
     | {
           validation_params?: {
-              max_payout?: string;
+              payout?: {
+                  max: string;
+              };
               max_ticks?: number;
               stake?: {
                   max: string;

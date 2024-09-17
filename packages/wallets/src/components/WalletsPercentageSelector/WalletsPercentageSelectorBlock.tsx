@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletText } from '../Base';
+import { Text } from '@deriv-com/ui';
 import './WalletsPercentageSelector.scss';
 
 type TWalletsPercentageSelectorBlock = {
@@ -11,9 +11,9 @@ type TWalletsPercentageSelectorBlock = {
 const WalletsPercentageSelectorBlock = ({ fillPercentage, label, onClick }: TWalletsPercentageSelectorBlock) => {
     return (
         <div className='wallets-percentage-selector-block-container'>
-            <WalletText color='prominent' size='xs'>
+            <Text color='prominent' size='xs'>
                 {label}
-            </WalletText>
+            </Text>
             <div className='wallets-percentage-selector-block' onClick={onClick}>
                 <div className='wallets-percentage-selector-block__fill' style={{ width: `${fillPercentage}%` }} />
             </div>

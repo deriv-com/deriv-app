@@ -17,11 +17,10 @@ type TVideoPlayerProps = {
     muted?: boolean;
     src: string;
 };
+type TSupportedEvent = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent;
+
 const dragMoveHandlerThrottled = throttle(
-    (
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent,
-        callback: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent) => void
-    ) => callback(e),
+    (e: TSupportedEvent, callback: (e: TSupportedEvent) => void) => callback(e),
     50
 );
 
@@ -64,13 +63,7 @@ const VideoPlayer = ({
     const is_dragging = React.useRef(false);
     const is_ended = React.useRef(false);
 
-    const calculateNewWidth = (
-        e:
-            | React.MouseEvent<HTMLDivElement | HTMLSpanElement>
-            | React.TouchEvent<HTMLDivElement | HTMLSpanElement>
-            | TouchEvent
-            | MouseEvent
-    ) => {
+    const calculateNewWidth = (e: TSupportedEvent) => {
         const full_width = 100;
         const progress_bar = progress_bar_ref.current;
         const client_X =
@@ -109,9 +102,7 @@ const VideoPlayer = ({
         if (is_mobile) setHasEnlargedDot(true);
     };
 
-    const dragMoveHandler = (
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent
-    ) => {
+    const dragMoveHandler = (e: TSupportedEvent) => {
         if (e.type === 'mousemove') e.preventDefault();
         e.stopPropagation();
 
@@ -258,9 +249,7 @@ const VideoPlayer = ({
     );
 
     React.useEffect(() => {
-        const dragMoveHandlerThrottledWrapper = (
-            e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent
-        ) => dragMoveHandlerThrottled(e, dragMoveHandler);
+        const dragMoveHandlerThrottledWrapper = (e: TSupportedEvent) => dragMoveHandlerThrottled(e, dragMoveHandler);
 
         if (is_mobile) {
             document.addEventListener('touchmove', dragMoveHandlerThrottledWrapper);

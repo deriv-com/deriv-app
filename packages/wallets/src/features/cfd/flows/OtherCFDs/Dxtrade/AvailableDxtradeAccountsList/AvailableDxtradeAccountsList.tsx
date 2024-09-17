@@ -1,8 +1,8 @@
 import React from 'react';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../../constants';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
@@ -17,11 +17,11 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
                 <p className='wallets-available-dxtrade__details-title'>
-                    <WalletText size='sm'>Deriv X</WalletText>
+                    <Text size='sm'>Deriv X</Text>
                 </p>
-                <WalletText size='xs'>
+                <Text size='xs'>
                     <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
-                </WalletText>
+                </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
                 <LabelPairedChevronRightCaptionRegularIcon width={16} />

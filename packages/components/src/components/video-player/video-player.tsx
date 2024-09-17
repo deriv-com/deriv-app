@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 import { useIsRtl } from '@deriv/hooks';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
+import throttle from 'lodash.throttle';
 import { useDebounce } from '../../hooks';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';
@@ -15,6 +16,13 @@ type TVideoPlayerProps = {
     muted?: boolean;
     src: string;
 };
+const dragMoveHandlerThrottled = throttle(
+    (
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent,
+        callback: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent) => void
+    ) => callback(e),
+    50
+);
 
 const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false, src }: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
@@ -241,22 +249,26 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, muted = false,
     );
 
     React.useEffect(() => {
+        const dragMoveHandlerThrottledWrapper = (
+            e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent
+        ) => dragMoveHandlerThrottled(e, dragMoveHandler);
+
         if (is_mobile) {
-            document.addEventListener('touchmove', dragMoveHandler);
+            document.addEventListener('touchmove', dragMoveHandlerThrottledWrapper);
             document.addEventListener('touchend', dragEndHandler);
             document.addEventListener('touchcancel', dragEndHandler);
         } else {
-            document.addEventListener('mousemove', dragMoveHandler);
+            document.addEventListener('mousemove', dragMoveHandlerThrottledWrapper);
             document.addEventListener('mouseup', dragEndHandler);
         }
 
         return () => {
             if (is_mobile) {
-                document.removeEventListener('touchmove', dragMoveHandler);
+                document.removeEventListener('touchmove', dragMoveHandlerThrottledWrapper);
                 document.removeEventListener('touchend', dragEndHandler);
                 document.removeEventListener('touchcancel', dragEndHandler);
             } else {
-                document.removeEventListener('mousemove', dragMoveHandler);
+                document.removeEventListener('mousemove', dragMoveHandlerThrottledWrapper);
                 document.removeEventListener('mouseup', dragEndHandler);
             }
             cancelAnimationFrame(animation_ref.current);

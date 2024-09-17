@@ -25,11 +25,7 @@ const PerformancePanel = () => {
                     />
                 </div>
             </Tabs>
-            <ClearJournalTransactions
-                is_open={is_clear_dialog_visible}
-                setClearDialogVisibility={() => setClearDialogVisibility(false)}
-                setVisibility={setClearDialogVisibility}
-            />
+            <ClearJournalTransactions is_open={is_clear_dialog_visible} setVisibility={setClearDialogVisibility} />
         </>
     );
 };

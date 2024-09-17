@@ -7,17 +7,17 @@ import { observer } from '@deriv/stores';
 type TDeleteServerBot = {
     is_open: boolean;
     setVisibility: (is_open: boolean) => void;
-    setClearDialogVisibility: () => void;
 };
 
-const ClearJournalTransactions = observer(({ is_open, setVisibility, setClearDialogVisibility }: TDeleteServerBot) => {
+const ClearJournalTransactions = observer(({ is_open, setVisibility }: TDeleteServerBot) => {
     const { server_bot } = useDBotStore();
     const { resetJournal, resetTransactions } = server_bot;
     const onOkButtonClick = () => {
         resetJournal();
         resetTransactions();
-        setClearDialogVisibility();
+        setVisibility(false);
     };
+
     return (
         <Dialog
             title={localize('Are you sure?')}

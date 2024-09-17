@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
-import { Dropzone, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { Text, useDevice } from '@deriv-com/ui';
+import { Dropzone, ModalStepWrapper } from '../../../../../../components';
 import SelfieIcon from '../../../../../../public/images/accounts/selfie-icon.svg';
 import { Footer } from '../../../components';
 import { TManualDocumentComponent } from '../../utils';
@@ -30,9 +30,9 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
             title={localize('Add a real MT5 account')}
         >
             <div className='wallets-selfie-upload'>
-                <WalletText weight='bold'>
+                <Text weight='bold'>
                     <Localize i18n_default_text='Upload your selfie' />
-                </WalletText>
+                </Text>
                 <Dropzone
                     buttonText={localize('Drop file or click here to upload')}
                     defaultFile={values.selfieFile}
@@ -44,12 +44,12 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
                     noClick
                     onFileChange={(file?: File) => setFieldValue('selfieFile', file)}
                 />
-                <WalletText color={isDesktop ? 'less-prominent' : 'general'}>
+                <Text color={isDesktop ? 'less-prominent' : 'general'}>
                     <Localize
                         i18n_default_text='Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your
                     face is within the frame.'
                     />
-                </WalletText>
+                </Text>
             </div>
         </ModalStepWrapper>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
-import { WalletCurrencyCard, WalletMarketCurrencyIcon, WalletText } from '../../../../../../../../components';
+import { WalletCurrencyCard, WalletMarketCurrencyIcon } from '../../../../../../../../components';
 import { THooks, TPlatforms } from '../../../../../../../../types';
 import { MARKET_TYPE } from '../../../../../../../cfd/constants';
 import { getMarketType } from '../../../../../../helpers';
@@ -57,13 +57,13 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                 className='wallets-transactions-completed-row-account-details__type-and-wallet-name 
             wallets-transactions-completed-row-account-details__column'
             >
-                <WalletText color='primary' size='xs'>
+                <Text color='primary' size='xs'>
                     {displayActionType}
-                </WalletText>
+                </Text>
                 <div className='wallets-transactions-completed-row-account-details__wallet-name'>
-                    <WalletText color='general' size='xs' weight='bold'>
+                    <Text color='general' size='xs' weight='bold'>
                         {displayAccountName}
-                    </WalletText>
+                    </Text>
                 </div>
                 {!isDesktop && (
                     <Text

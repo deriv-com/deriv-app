@@ -23,7 +23,7 @@ const WalletDisabledAccountModal: FC<WalletDisabledAccountModalProps> = ({ accou
                     color='primary'
                     onClick={() => {
                         onClose();
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget.call('maximize');
                     }}
                 >
                     <Localize i18n_default_text='Live chat' />

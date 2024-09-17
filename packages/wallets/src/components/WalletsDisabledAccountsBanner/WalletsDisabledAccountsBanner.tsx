@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useWalletAccountsList } from '@deriv/api-v2';
 import { StandaloneCircleExclamationBoldIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { InlineMessage, Text, useDevice } from '@deriv-com/ui';
+import { SectionMessage, Text, useDevice } from '@deriv-com/ui';
 import './WalletsDisabledAccountsBanner.scss';
 
 type TProps = {
@@ -27,7 +27,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     });
     return (
         <div className='wallets-disabled-account-banner__container'>
-            <InlineMessage
+            <SectionMessage
                 className='wallets-disabled-account-banner__content'
                 icon={
                     <StandaloneCircleExclamationBoldIcon
@@ -36,9 +36,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                         iconSize='sm'
                     />
                 }
-                iconPosition='top'
-                type='filled'
-                variant='general'
+                variant='warning'
             >
                 <Text lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
@@ -46,7 +44,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                             <button
                                 className='wallets-disabled-account-notification__button wallets-link wallets-link__variant--dark'
                                 key={0}
-                                onClick={() => window.LC_API.open_chat_window()}
+                                onClick={() => window.LiveChatWidget.call('maximize')}
                             />,
                         ]}
                         i18n_default_text='Your {{currencies}} {{accountType}} {{verb}} disabled. Contact us via <0>live chat</0> for details.'
@@ -57,7 +55,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                         }}
                     />
                 </Text>
-            </InlineMessage>
+            </SectionMessage>
         </div>
     );
 };

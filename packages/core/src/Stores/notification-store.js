@@ -1562,6 +1562,7 @@ export default class NotificationStore extends BaseStore {
                         ui.setFieldRefToFocus('account-opening-reason');
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
+                    route: routes.personal_details,
                 },
                 type: 'warning',
             },

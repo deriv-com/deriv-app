@@ -541,7 +541,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
-        tin_skipped?: boolean;
+        tin_skipped?: 0 | 1;
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
@@ -836,7 +836,7 @@ type TUiStore = {
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
     field_ref_to_focus: string;
-    setFieldRefToFocus: (value: string) => void;
+    setFieldRefToFocus: (value: string | null) => void;
 };
 
 type TPortfolioStore = {

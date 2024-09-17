@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Fragment, useMemo } from 'react';
+import { useState, useRef, useEffect, Fragment, useMemo, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
@@ -25,7 +25,7 @@ import { PersonalDetailsValueTypes } from 'Types';
 import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
 import { account_opening_reason_list } from './constants';
 import './personal-details-form.scss';
-// import { useScrollElementToTop } from '../../../hooks'; // [TODO]: Uncomment this after implementing Notification redirect
+import { useScrollElementToTop } from '../../../hooks';
 
 type TRestState = {
     show_form: boolean;
@@ -42,10 +42,11 @@ const PersonalDetailsForm = observer(() => {
 
     const { tin_validation_config, mutate } = useTinValidations();
 
-    // const scrollToTop = useScrollElementToTop(); // [TODO]: Uncomment this after implementing Notification redirect
+    const scrollToTop = useScrollElementToTop();
 
     const {
         client,
+        ui,
         notifications,
         common: { is_language_changing },
     } = useStore();
@@ -61,6 +62,8 @@ const PersonalDetailsForm = observer(() => {
         residence,
         is_svg,
     } = client;
+
+    const { field_ref_to_focus, setFieldRefToFocus } = ui;
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
 
@@ -91,6 +94,8 @@ const PersonalDetailsForm = observer(() => {
     useEffect(() => {
         fetchAccountSettings();
     }, [fetchAccountSettings]);
+
+    const should_show_loader = is_loading_state_list || is_loading || is_loading_residence_list;
 
     useEffect(() => {
         const init = async () => {
@@ -199,10 +204,36 @@ const PersonalDetailsForm = observer(() => {
     }, [account_settings?.immutable_fields, account_settings?.tax_residence]);
 
     const { api_error, show_form } = rest_state;
+    const loadTimer = useRef<NodeJS.Timeout>();
+
+    // To facilitate scrolling to the field that is to be focused
+    useLayoutEffect(() => {
+        if (field_ref_to_focus && !should_show_loader && !api_error) {
+            loadTimer.current = setTimeout(() => {
+                const parentRef = isDesktop
+                    ? document.querySelector('.account-form__personal-details .dc-themed-scrollbars')
+                    : document.querySelector('.account__scrollbars_container--grid-layout');
+                const targetRef = document.getElementById(field_ref_to_focus) as HTMLElement;
+                const offset = isDesktop ? 24 : 78; // 78px is the height of header and title of the page for mobile & 24 is the padding of the container for desktop
+                scrollToTop(parentRef as HTMLElement, targetRef, offset);
+            }, 0);
+        }
+        return () => {
+            if (field_ref_to_focus) {
+                clearTimeout(loadTimer.current);
+            }
+        };
+    }, [field_ref_to_focus, isDesktop, should_show_loader, api_error, scrollToTop, setFieldRefToFocus]);
+
+    useEffect(() => {
+        return () => {
+            setFieldRefToFocus(null);
+        };
+    }, [setFieldRefToFocus]);
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading_state_list || is_loading || is_loading_residence_list) {
+    if (should_show_loader) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -224,16 +255,6 @@ const PersonalDetailsForm = observer(() => {
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg, tin_validation_config);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
-
-    // [ToDo]: Uncomment this code once notification redirect is implemented
-    // const handleScroll = () => {
-    //     const parentRef = isDesktop
-    //         ? document.querySelector('.account-form__personal-details .dc-themed-scrollbars')
-    //         : document.querySelector('.account__scrollbars_container--grid-layout');
-    //     const targetRef = document.getElementById('employment-tax-section') as HTMLElement;
-    //     const offset = isDesktop ? 0 : 78; // 78px is the height of header and title of the page
-    //     scrollToTop(parentRef as HTMLElement, targetRef, offset);
-    // };
 
     return (
         <Formik

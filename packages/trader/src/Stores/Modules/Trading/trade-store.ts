@@ -1043,10 +1043,13 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
+                            this.root_store.common.setServicesError(
+                                {
+                                    type: response.msg_type,
+                                    ...response.error,
+                                },
+                                this.is_dtrader_v2_enabled
+                            );
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
                             if (isMobile && this.root_store.common?.services_error?.type === 'buy') {

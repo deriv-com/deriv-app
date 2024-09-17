@@ -27,17 +27,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     });
     return (
         <div className='wallets-disabled-account-banner__container'>
-            <SectionMessage
-                className='wallets-disabled-account-banner__content'
-                icon={
-                    <StandaloneCircleExclamationBoldIcon
-                        data-testid='dt_wallets_disabled_account_banner_icon'
-                        fill='#C47D00'
-                        iconSize='sm'
-                    />
-                }
-                variant='warning'
-            >
+            <SectionMessage className='wallets-disabled-account-banner__content' variant='warning'>
                 <Text lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         components={[

@@ -27,9 +27,11 @@ jest.mock('@deriv-com/translations', () => ({
     useTranslations: jest.fn(),
 }));
 
-window.LC_API = {
-    on_chat_ended: jest.fn(),
-    open_chat_window: jest.fn(),
+window.LiveChatWidget = {
+    init: jest.fn(),
+    on: jest.fn(),
+    get: jest.fn(),
+    call: jest.fn(),
 };
 
 describe('WalletsDisabledAccountsBanner', () => {
@@ -108,14 +110,15 @@ describe('WalletsDisabledAccountsBanner', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0], mockDisabledAccounts[1]]} />);
 
         const chatButton = screen.getByRole('button');
-        chatButton.addEventListener('click', window.LC_API.open_chat_window);
+        chatButton.addEventListener('click', () => window.LiveChatWidget.call('maximize'));
         userEvent.click(chatButton);
 
-        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
     it('renders the icon', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0]]} />);
-        expect(screen.getByTestId('dt_wallets_disabled_account_banner_icon')).toBeInTheDocument();
+        expect(screen.getByRole('img')).toBeInTheDocument();
+        expect(screen.getByRole('img')).toHaveClass('deriv-section-message__icon--warning');
     });
 });

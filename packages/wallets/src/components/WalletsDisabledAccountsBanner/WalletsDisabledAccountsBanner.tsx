@@ -13,6 +13,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     const { localize } = useTranslations();
     let disabledAccountsCurrencies = '';
     const disabledAccountsLength = disabledAccounts.length;
+
     disabledAccounts.forEach((disabledAccount, index) => {
         if (disabledAccountsLength > 1) {
             if (index === disabledAccountsLength - 1) {
@@ -24,6 +25,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
             disabledAccountsCurrencies += disabledAccount.currency;
         }
     });
+
     return (
         <div className='wallets-disabled-account-banner__container'>
             <SectionMessage variant='warning'>
@@ -31,7 +33,8 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                     <Localize
                         components={[
                             <button
-                                className='wallets-disabled-account-notification__button wallets-link wallets-link__variant--dark'
+                                aria-label={localize('Contact live chat')}
+                                className='wallets-link wallets-link__variant--dark'
                                 key={0}
                                 onClick={() => window.LiveChatWidget.call('maximize')}
                             />,

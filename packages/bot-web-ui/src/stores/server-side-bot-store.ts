@@ -378,8 +378,20 @@ export default class ServerBotStore {
         try {
             const items = [[localize('Journal')]];
             [...this.journal].map(item => {
-                const arr = [item.msg];
-                items.push(arr);
+                let combined_message;
+
+                switch (item?.type) {
+                    case JOURNAL_TYPE.WON:
+                        combined_message = `Profit amount: ${item?.amount ?? ''}`;
+                        break;
+                    case JOURNAL_TYPE.LOSS:
+                        combined_message = `Loss amount: ${item?.amount ?? ''}`;
+                        break;
+                    default:
+                        combined_message = `${item?.type ?? ''}:${item?.msg ?? ''}`;
+                        break;
+                }
+                items.push([combined_message]);
             });
             const content = items.map(e => e.join(',')).join('\n');
             downloadFile(localize('Journal'), content);
@@ -388,7 +400,6 @@ export default class ServerBotStore {
             console.dir(error);
         }
     };
-
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
         if (poc && !poc?.contract_id && this.active_bot?.bot_id) return;
 

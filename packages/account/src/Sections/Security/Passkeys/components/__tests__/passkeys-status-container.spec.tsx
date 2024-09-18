@@ -25,7 +25,7 @@ describe('PasskeysStatusContainer', () => {
     const mockOnSecondaryButtonClick = jest.fn();
     const mock_current_managed_passkey: React.ComponentProps<
         typeof PasskeysStatusContainer
-    >['current_managed_passkey'] = { id: 777, name: 'test passkey name' };
+    >['current_managed_passkey'] = { id: 777, name: 'test passkey name', passkey_id: 'test_passkey_id' };
 
     const renderComponent = (passkey_status: TPasskeysStatus) => {
         render(

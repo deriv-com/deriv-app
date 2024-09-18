@@ -4,7 +4,6 @@
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    Passkeys,
     PersonalDetails,
     ProofOfIdentity,
     ProofOfAddress,
@@ -24,6 +23,11 @@ const Page404 = makeLazyLoader(
 
 const Passwords = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/Passwords')),
+    () => <Loading />
+)();
+
+const Passkeys = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passkeys')),
     () => <Loading />
 )();
 

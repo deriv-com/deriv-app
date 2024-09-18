@@ -606,12 +606,21 @@ export type TClientStore = {
     resetWalletMigration: () => void;
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
-    passkey_usage: boolean;
+    passkeys_list: Array<{
+        id: number;
+        name: string;
+        last_used: number;
+        created_at?: number;
+        stored_on?: string;
+        passkey_id: string;
+        icon?: string;
+    }>;
     setIsPasskeySupported: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
     fetchShouldShowPasskeyNotification: () => void;
+    fetchPasskeysList: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;

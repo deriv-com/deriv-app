@@ -64,7 +64,6 @@ describe('RecentComponent', () => {
             button_status: 0,
             updateBotName: jest.fn(),
             onConfirmSave: jest.fn(),
-            onDriveConnect: jest.fn(),
             validateBotName: jest.fn(),
             toggleSaveModal: jest.fn(),
             is_save_modal_open: true,

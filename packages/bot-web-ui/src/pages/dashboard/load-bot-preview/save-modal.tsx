@@ -18,14 +18,14 @@ type TSaveModalForm = {
     is_save_modal_open?: boolean;
     icon?: string;
     text?: string;
-    onConfirmSave: () => void;
-    onDriveConnect: () => void;
+    onDriveConnect?: () => void;
+    onConfirmSave: (values: { is_local: boolean; save_as_collection: boolean; bot_name: string }) => void;
+    setCurrentFocus: (current_focus: string) => void;
     toggleSaveModal: () => void;
-    setCurrentFocus: () => void;
-    validateBotName: () => void;
+    validateBotName: (values: string) => { [key: string]: string };
 };
 
-const SaveModalForm = ({
+const SaveModalForm: React.FC<TSaveModalForm> = ({
     bot_name,
     button_status,
     is_authorised,
@@ -36,7 +36,7 @@ const SaveModalForm = ({
     is_mobile,
     is_onscreen_keyboard_active,
     setCurrentFocus,
-}: TSaveModalForm) => (
+}) => (
     <Formik
         initialValues={{
             is_local: true,
@@ -172,12 +172,11 @@ const SaveModal = observer(() => {
         bot_name,
         is_save_modal_open,
         onConfirmSave,
-        onDriveConnect,
         toggleSaveModal,
         updateBotName,
         validateBotName,
     } = save_modal;
-    const { is_authorised } = google_drive;
+    const { is_authorised, onDriveConnect } = google_drive;
     const { is_onscreen_keyboard_active, setCurrentFocus, is_mobile } = ui;
     const { active_tab } = dashboard;
 

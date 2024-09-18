@@ -23,56 +23,7 @@ import { getStrategyType } from '../analytics/utils';
 import { waitForDomElement } from '../utils/dom-observer';
 import RootStore from './root-store';
 
-interface ILoadModalStore {
-    active_index: number;
-    is_load_modal_open: boolean;
-    is_explanation_expand: boolean;
-    is_open_button_loading: boolean;
-    is_strategy_loaded: boolean;
-    loaded_local_file: File | null;
-    recent_strategies: TStrategy[];
-    dashboard_strategies: Array<TStrategy>;
-    selected_strategy_id: string | undefined;
-    is_strategy_removed: boolean;
-    is_delete_modal_open: boolean;
-    is_open_button_disabled: boolean;
-    current_workspace_id: string;
-    preview_workspace: Blockly.WorkspaceSvg | null;
-    selected_strategy: TStrategy;
-    tab_name: string;
-    getSelectedStrategyID: (current_workspace_id: string) => void;
-    refreshStrategies: () => void;
-    loadStrategyToBuilder: (param: TStrategy) => void;
-    refreshStrategiesTheme: () => void;
-    handleFileChange: (
-        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
-        is_body: boolean
-    ) => boolean;
-    loadFileFromLocal: () => void;
-    loadStrategyOnBotBuilder: () => void;
-    onActiveIndexChange: () => void;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
-    onEntered: () => void;
-    onLoadModalClose: () => void;
-    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
-    onZoomInOutClick: (is_zoom_in: string) => void;
-    setActiveTabIndex: (index: number) => void;
-    setLoadedLocalFile: (loaded_local_file: File | null) => void;
-    setDashboardStrategies: (strategies: Array<TStrategy>) => void;
-    setRecentStrategies: (recent_strategies: TStrategy[]) => void;
-    setSelectedStrategyId: (selected_strategy_id: string) => void;
-    toggleExplanationExpand: () => void;
-    toggleLoadModal: () => void;
-    toggleTourLoadModal: (toggle: boolean) => void;
-    readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
-    updateListStrategies: (workspaces: Array<TStrategy>) => void;
-    getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
-    getSaveType: (save_type: { [key: string]: string } | string) => string;
-    setOpenButtonDisabled: (is_open_button_disabled: boolean) => void;
-}
-
-export default class LoadModalStore implements ILoadModalStore {
+export default class LoadModalStore {
     root_store: RootStore;
     core: TStores;
     imported_strategy_type = 'pending';
@@ -105,7 +56,6 @@ export default class LoadModalStore implements ILoadModalStore {
             loadFileFromLocal: action.bound,
             imported_strategy_type: observable,
             onActiveIndexChange: action.bound,
-            onDriveConnect: action.bound,
             onDriveOpen: action.bound,
             onEntered: action.bound,
             onLoadModalClose: action.bound,
@@ -213,16 +163,6 @@ export default class LoadModalStore implements ILoadModalStore {
     getDashboardStrategies = async () => {
         const recent_strategies = await getSavedWorkspaces();
         this.dashboard_strategies = recent_strategies;
-    };
-
-    onDriveConnect = (): void => {
-        const { google_drive } = this.root_store;
-
-        if (google_drive.is_authorised) {
-            google_drive.signOut();
-        } else {
-            google_drive.signIn();
-        }
     };
 
     onDriveOpen = async () => {

@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendGoogleDriveConnectEvent,
@@ -12,8 +12,8 @@ import {
 const GoogleDrive = observer(() => {
     const { ui } = useStore();
     const { google_drive, load_modal } = useDBotStore();
-    const { is_authorised } = google_drive;
-    const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
+    const { is_authorised, signIn, signOut } = google_drive;
+    const { is_open_button_loading, onDriveOpen } = load_modal;
     const { is_desktop } = ui;
 
     return (
@@ -36,17 +36,17 @@ const GoogleDrive = observer(() => {
                 {is_authorised ? (
                     <Button.Group>
                         <Button
-                            text={localize('Disconnect')}
                             onClick={() => {
-                                onDriveConnect();
+                                signOut();
                                 rudderStackSendGoogleDriveDisconnectEvent();
                             }}
                             has_effect
                             secondary
                             large
-                        />
+                        >
+                            <Localize i18n_default_text='Disconnect' />
+                        </Button>
                         <Button
-                            text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
                             }}
@@ -54,7 +54,9 @@ const GoogleDrive = observer(() => {
                             has_effect
                             primary
                             large
-                        />
+                        >
+                            <Localize i18n_default_text='Open' />
+                        </Button>
                     </Button.Group>
                 ) : (
                     <React.Fragment>
@@ -77,15 +79,16 @@ const GoogleDrive = observer(() => {
                             </div>
                         </div>
                         <Button
-                            text={localize('Sign in')}
                             onClick={() => {
-                                onDriveConnect();
+                                signIn();
                                 rudderStackSendGoogleDriveConnectEvent();
                             }}
                             has_effect
                             primary
                             large
-                        />
+                        >
+                            <Localize i18n_default_text='Sign in' />
+                        </Button>
                     </React.Fragment>
                 )}
             </div>

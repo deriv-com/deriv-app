@@ -16,9 +16,7 @@ const DeleteDialog = observer(() => {
         onToggleDeleteDialog,
         selected_strategy_id,
         setDashboardStrategies,
-        setSelectedStrategyId,
         loadStrategyToBuilder,
-        previewed_strategy_id,
         refreshStrategiesTheme,
         resetBotBuilderStrategy,
     } = load_modal;

@@ -11,7 +11,6 @@ type TProps = {
     fractionDigits?: number;
     isError?: boolean;
     label: string;
-    locale?: Intl.LocalesArgument;
     maxDigits?: number;
     onBlur?: VoidFunction;
     onChange?: (value: number) => void;
@@ -25,7 +24,6 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     fractionDigits = 0,
     isError,
     label,
-    locale,
     maxDigits,
     onBlur,
     onChange,
@@ -43,13 +41,12 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
         value: formattedValue,
     } = useInputATMFormatter(inputRef, value, {
         fractionDigits,
-        locale,
         maxDigits,
     });
 
     useEffect(() => {
-        onChange?.(Number(unFormatLocaleString(formattedValue, locale)));
-    }, [formattedValue, locale, onChange]);
+        onChange?.(Number(unFormatLocaleString(formattedValue, 'en-US')));
+    }, [formattedValue, onChange]);
 
     const onFocusHandler = useCallback(() => {
         setIsFocused(true);

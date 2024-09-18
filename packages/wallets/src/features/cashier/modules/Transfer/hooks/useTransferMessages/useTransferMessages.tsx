@@ -50,10 +50,7 @@ const useTransferMessages = ({
 
     const displayMoney = useCallback(
         (amount: number, currency: string, fractionalDigits: number) =>
-            displayMoney_(amount, currency, {
-                fractional_digits: fractionalDigits,
-                preferred_language: 'en-US',
-            }),
+            displayMoney_(amount, currency, { fractional_digits: fractionalDigits }),
         []
     );
 

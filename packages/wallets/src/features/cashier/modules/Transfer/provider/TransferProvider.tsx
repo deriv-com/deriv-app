@@ -20,7 +20,6 @@ export type TTransferContext = {
     activeWalletExchangeRates?: THooks.ExchangeRate;
     error: ReturnType<typeof useTransferBetweenAccounts>['error'];
     isLoading: boolean;
-    preferredLanguage: Intl.LocalesArgument;
     receipt?: TReceipt;
     refetchAccountLimits: ReturnType<typeof useAccountLimits>['refetch'];
     refetchExchangeRates: ReturnType<typeof useGetExchangeRate>['refetch'];
@@ -126,7 +125,6 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 activeWalletExchangeRates,
                 error,
                 isLoading,
-                preferredLanguage: 'en-US',
                 receipt,
                 refetchAccountLimits,
                 refetchExchangeRates,

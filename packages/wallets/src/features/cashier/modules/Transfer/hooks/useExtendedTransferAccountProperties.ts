@@ -26,7 +26,6 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
             });
             const displayBalance = displayMoney(Number(account.balance), currencyConfig?.display_code, {
                 fractional_digits: currencyConfig?.fractional_digits,
-                preferred_language: 'en-US',
             });
             const landingCompanyName =
                 account.account_type === PlatformDetails.mt5.name

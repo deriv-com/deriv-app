@@ -39,7 +39,6 @@ const DerivAppsTradingAccount = () => {
                     <Text align='start' size='sm' weight='bold'>
                         {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
                             fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                            preferred_language: 'en-US',
                         })}
                     </Text>
                 )}

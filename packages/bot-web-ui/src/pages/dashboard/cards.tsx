@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dialog, Icon, MobileFullPageModal, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Icon, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendOpenEvent } from '../../analytics/rudderstack-common-events';
 import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
 import DashboardBotList from './bot-list/dashboard-bot-list';
-import GoogleDrive from './bot-list/google-drive';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -25,7 +24,6 @@ type TCardArray = {
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useDBotStore();
     const { toggleLoadModal, setActiveTabIndex } = load_modal;
-    const { ui } = useStore();
     const { is_dialog_open, setActiveTab } = dashboard;
     const { setFormVisibility } = quick_strategy;
 

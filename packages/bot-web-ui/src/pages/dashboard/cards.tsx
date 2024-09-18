@@ -7,8 +7,8 @@ import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendOpenEvent } from '../../analytics/rudderstack-common-events';
 import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
-import DashboardBotList from './load-bot-preview/dashboard-bot-list';
-import GoogleDrive from './load-bot-preview/google-drive';
+import DashboardBotList from './bot-list/dashboard-bot-list';
+import GoogleDrive from './bot-list/google-drive';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;

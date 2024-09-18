@@ -7,7 +7,8 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendGoogleDriveConnectEvent,
     rudderStackSendGoogleDriveDisconnectEvent,
-} from '../../../analytics/rudderstack-common-events';
+} from '../../../../analytics/rudderstack-common-events';
+import './google-drive.scss';
 
 const GoogleDrive = observer(() => {
     const { ui } = useStore();

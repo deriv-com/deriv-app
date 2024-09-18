@@ -7,7 +7,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendSwitchLoadStrategyTabEvent } from '../../analytics/rudderstack-bot-builder';
 import { rudderStackSendCloseEvent } from '../../analytics/rudderstack-common-events';
 import { LOAD_MODAL_TABS } from '../../analytics/utils';
-import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
+import GoogleDrive from '../../pages/dashboard/bot-list/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';

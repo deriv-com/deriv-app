@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
+import './delete-dialog.scss';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();

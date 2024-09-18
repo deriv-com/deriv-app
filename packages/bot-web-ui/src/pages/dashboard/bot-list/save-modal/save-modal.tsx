@@ -5,8 +5,9 @@ import { config, save_types } from '@deriv/bot-skeleton';
 import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useDBotStore } from '../../../stores/useDBotStore';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import IconRadio from './icon-radio';
+import './save-modal.scss';
 
 type TSaveModalForm = {
     bot_name: string;

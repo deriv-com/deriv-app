@@ -11,26 +11,37 @@ import './verify-button.scss';
 type TVerifyButton = {
     is_verify_button_disabled: boolean;
     next_email_otp_request_timer?: number;
+    is_phone_number_edited: boolean;
+    phone_number: string | undefined | null;
     setStatus: (status: any) => void;
 };
 
 export const VerifyButton = observer(
-    ({ is_verify_button_disabled, next_email_otp_request_timer, setStatus }: TVerifyButton) => {
+    ({
+        is_verify_button_disabled,
+        next_email_otp_request_timer,
+        setStatus,
+        is_phone_number_edited,
+        phone_number,
+    }: TVerifyButton) => {
         const { client, ui } = useStore();
         const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
-        const { setVerificationCode } = client;
+        const { setVerificationCode, is_authorize } = client;
         const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
         const { localize } = useTranslations();
-        const { refetch } = useSettings();
+        const {
+            refetch,
+            mutation: { mutateAsync: updateSettings, isLoading: isSetSettingsLoading },
+        } = useSettings();
         //@ts-expect-error remove this when phone_number_verification is added to api calls
         const { sendPhoneNumberVerifyEmail, WS, is_loading, error } = useVerifyEmail('phone_number_verification');
         const { isDesktop } = useDevice();
         const ref = useRef<HTMLDivElement | null>(null);
 
         useEffect(() => {
-            refetch();
-        }, [refetch]);
+            if (is_authorize) refetch();
+        }, [refetch, is_authorize]);
 
         useEffect(() => {
             if (is_scroll_to_verify_button) {
@@ -58,11 +69,21 @@ export const VerifyButton = observer(
             }
         }, [WS.isSuccess, history, error]);
 
+        const savePhoneNumberAndVerify = async () => {
+            updateSettings({ payload: { phone: phone_number } })
+                .then(() => {
+                    sendPhoneNumberVerifyEmail();
+                })
+                .catch(err => {
+                    setStatus({ msg: err.message, code: err.code });
+                });
+        };
+
         const redirectToPhoneVerification = (e: React.MouseEvent<HTMLElement>) => {
             e.preventDefault();
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
-            sendPhoneNumberVerifyEmail();
+            is_phone_number_edited ? savePhoneNumberAndVerify() : sendPhoneNumberVerifyEmail();
         };
 
         const verifyTimer = () => {
@@ -78,6 +99,22 @@ export const VerifyButton = observer(
             return resendCodeTimer;
         };
 
+        const getButtonText = () => {
+            if (is_phone_number_verified) {
+                return <Localize i18n_default_text='Verified' />;
+            } else if (is_phone_number_edited) {
+                return <Localize i18n_default_text='Save and Verify' />;
+            }
+            return (
+                <Localize
+                    i18n_default_text='Verify{{resendCode}}'
+                    values={{
+                        resendCode: verifyTimer(),
+                    }}
+                />
+            );
+        };
+
         return (
             <div ref={ref}>
                 <Button
@@ -86,6 +123,7 @@ export const VerifyButton = observer(
                         is_phone_number_verified ||
                         is_verify_button_disabled ||
                         is_loading ||
+                        isSetSettingsLoading ||
                         !!next_email_otp_request_timer
                     }
                     onClick={redirectToPhoneVerification}
@@ -94,16 +132,7 @@ export const VerifyButton = observer(
                     primary
                     large
                 >
-                    {is_phone_number_verified ? (
-                        <Localize i18n_default_text='Verified' />
-                    ) : (
-                        <Localize
-                            i18n_default_text='Verify{{resendCode}}'
-                            values={{
-                                resendCode: verifyTimer(),
-                            }}
-                        />
-                    )}
+                    {getButtonText()}
                 </Button>
             </div>
         );

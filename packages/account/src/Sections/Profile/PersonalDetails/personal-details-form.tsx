@@ -442,10 +442,11 @@ const PersonalDetailsForm = observer(() => {
                                             <VerifyButton
                                                 is_verify_button_disabled={
                                                     isFieldDisabled('phone') ||
-                                                    account_settings.phone !== values.phone ||
                                                     !account_settings.phone ||
                                                     is_email_otp_timer_loading
                                                 }
+                                                is_phone_number_edited={account_settings.phone !== values.phone}
+                                                phone_number={values.phone}
                                                 next_email_otp_request_timer={next_email_otp_request_timer}
                                                 setStatus={setStatus}
                                             />

@@ -18,6 +18,10 @@ jest.mock('@deriv/hooks', () => ({
     })),
     useSettings: jest.fn(() => ({
         refetch: jest.fn(),
+        mutation: {
+            mutateAsync: jest.fn(),
+            isLoading: false,
+        },
     })),
 }));
 
@@ -46,6 +50,8 @@ describe('VerifyButton', () => {
                         is_verify_button_disabled={false}
                         next_email_otp_request_timer={mock_next_email_otp_request_timer}
                         setStatus={mock_set_status}
+                        is_phone_number_edited={false}
+                        phone_number='0123456789'
                     />
                 </StoreProvider>
             </Router>

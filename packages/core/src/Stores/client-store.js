@@ -1529,7 +1529,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
+            this.setLoginId(loginid_param);
         else this.setLoginId(LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -1558,13 +1559,20 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    action_param
-                );
+                const has_action = [
+                    'crypto_transactions_withdraw',
+                    'payment_agent_withdraw',
+                    'payment_withdraw',
+                    'reset_password',
+                ].includes(action_param);
 
                 if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
-                    if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
+                    if (
+                        [routes.cashier_withdrawal, routes.cashier_pa, routes.cashier_transactions_crypto].includes(
+                            redirect_route
+                        )
+                    ) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
                     } else {

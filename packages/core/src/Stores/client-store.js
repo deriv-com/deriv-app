@@ -162,6 +162,7 @@ export default class ClientStore extends BaseStore {
 
     is_passkey_supported = false;
     should_show_passkey_notification = false;
+    passkeys_list = [];
 
     subscriptions = {};
     exchange_rates = {};
@@ -239,6 +240,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
             account_open_date: computed,
@@ -410,6 +412,7 @@ export default class ClientStore extends BaseStore {
             setIsPasskeySupported: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
+            fetchPasskeysList: action.bound,
             setShouldShowPasskeyNotification: action.bound,
             getExchangeRate: action.bound,
             subscribeToExchangeRate: action.bound,
@@ -2757,11 +2760,16 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    async fetchPasskeysList() {
+        const data = await WS.authorized.send({ passkeys_list: 1 });
+        this.passkeys_list = data?.passkeys_list;
+    }
+
     async fetchShouldShowPasskeyNotification() {
         if (this.root_store.ui?.is_mobile) {
             try {
-                const data = await WS.authorized.send({ passkeys_list: 1 });
-                const is_passkeys_empty = data?.passkeys_list?.length === 0;
+                await this.fetchPasskeysList();
+                const is_passkeys_empty = this.passkeys_list.length === 0;
                 if (!is_passkeys_empty) {
                     this.setPasskeysStatusToCookie('available');
                 }

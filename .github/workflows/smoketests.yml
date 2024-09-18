@@ -53,6 +53,6 @@ jobs:
             owner: 'regentmarkets',
             repo: 'e2e-deriv-app',
             workflow_id: 'E2E_Run_PR.yml',
-            ref: 'mark/pr-commit-v2',
+            ref: 'master',
             inputs: workflowInputs
           });

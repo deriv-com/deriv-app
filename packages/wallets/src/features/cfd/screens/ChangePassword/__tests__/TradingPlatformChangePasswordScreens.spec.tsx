@@ -1,10 +1,10 @@
 import React from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../components/ModalProvider';
-import useDevice from '../../../../../hooks/useDevice';
 import TradingPlatformChangePasswordScreens from '../TradingPlatformChangePasswordScreens';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -24,7 +24,10 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: false })));
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
@@ -55,9 +58,7 @@ describe('TradingPlatformChangePasswordScreens', () => {
             hide: jest.fn(),
         });
 
-        (useDevice as jest.Mock).mockReturnValue({
-            isMobile: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
 
         (useSettings as jest.Mock).mockReturnValue({
             data: { email: 'test@mail.com' },

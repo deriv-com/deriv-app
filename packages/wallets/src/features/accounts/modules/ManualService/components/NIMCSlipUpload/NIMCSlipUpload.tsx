@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Divider, Loader } from '@deriv-com/ui';
-import { Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { Divider, Loader, Text } from '@deriv-com/ui';
+import { Dropzone, FormField, ModalStepWrapper } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
 import { THooks } from '../../../../../../types';
@@ -84,9 +84,9 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     >
                         <div className='wallets-nimc-slip-upload' data-testid='dt_nimc-upload'>
                             <div className='wallets-nimc-slip-upload__wrapper'>
-                                <WalletText>
+                                <Text>
                                     <Localize i18n_default_text='First, enter your NIMC slip number.' />
-                                </WalletText>
+                                </Text>
                                 <FormField label={localize('NIMC slip number*')} name='nimcNumber' />
                                 <Divider
                                     className='wallets-nimc-slip-upload__divider'
@@ -94,9 +94,9 @@ const NIMCSlipUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                     height={2}
                                 />
                                 <div className='wallets-nimc-slip-upload__document-section'>
-                                    <WalletText>
+                                    <Text>
                                         <Localize i18n_default_text='Next, upload both of the following documents.' />
-                                    </WalletText>
+                                    </Text>
                                     <div className='wallets-nimc-slip-upload__dropzones'>
                                         <div className='wallets-nimc-slip-upload__dropzones--left'>
                                             <Dropzone

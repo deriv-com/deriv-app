@@ -1,8 +1,8 @@
 import React from 'react';
-import { getTradeParams } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { isTradeParamVisible } from 'AppV2/Utils/layout-utils';
 import AllowEquals from './AllowEquals';
 import Duration from './Duration';
 import Stake from './Stake';
@@ -28,10 +28,8 @@ type TTradeParametersProps = {
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
-    const isVisible = (component_key: string) => {
-        const params = getTradeParams(symbol, has_cancellation)?.[contract_type] ?? {};
-        return component_key in params;
-    };
+    const isVisible = (component_key: string) =>
+        isTradeParamVisible({ component_key, contract_type, has_cancellation, symbol });
 
     return (
         <div

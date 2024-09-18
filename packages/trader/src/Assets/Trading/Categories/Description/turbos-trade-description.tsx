@@ -16,7 +16,7 @@ const TurbosTradeDescription = ({
         {
             text: (
                 <Localize
-                    i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never touches or breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
+                    i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
                     components={[
                         <span
                             className='contract-type-info__content-definition'
@@ -47,7 +47,7 @@ const TurbosTradeDescription = ({
         {
             text: (
                 <Localize
-                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the <0>final price</0> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
+                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the distance between the <0>final price</0> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
                     components={[
                         <span
                             className='contract-type-info__content-definition'

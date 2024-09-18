@@ -14,9 +14,7 @@ export const routes = {
     dxtrade: '/derivx',
     bot: '/bot',
     trade: '/dtrader',
-    markets: '/dtrader/markets',
     trader_positions: '/dtrader/positions',
-    trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
 
     // account
@@ -104,6 +102,8 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.bot,
     routes.account,
     routes.endpoint,
+    routes.wallets,
+    routes.wallets_compare_accounts,
     routes.cashier,
     /** because contract route has dynamic id */
     '/contract',

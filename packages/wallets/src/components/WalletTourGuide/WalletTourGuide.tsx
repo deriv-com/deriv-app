@@ -8,7 +8,7 @@ import {
     useDxtradeAccountsList,
     useSortedMT5Accounts,
 } from '@deriv/api-v2';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { useModal } from '../ModalProvider';
 import {
@@ -21,7 +21,7 @@ import { desktopStepTourGuide, mobileStepTourGuide } from './WalletTourGuideStep
 const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const [run, setRun] = useState(false);
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const modal = useModal();
 
     const switchWalletAccount = useWalletAccountSwitcher();
@@ -66,8 +66,8 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={run}
-            scrollOffset={isMobile ? 100 : 80}
-            steps={isMobile ? mobileStepTourGuide(allWalletsAreAdded) : desktopStepTourGuide(allWalletsAreAdded)}
+            scrollOffset={isDesktop ? 80 : 100}
+            steps={isDesktop ? desktopStepTourGuide(allWalletsAreAdded) : mobileStepTourGuide(allWalletsAreAdded)}
             tooltipComponent={TooltipComponent}
         />
     );

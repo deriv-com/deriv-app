@@ -26,15 +26,17 @@ const useIsSelectedMT5AccountCreated = () => {
     );
 
     const is_selected_MT5_account_created = created_account && Object.keys(created_account).length > 0;
-    const selected_mt5_account = is_selected_MT5_account_created ? created_account[0] : selected_account[0];
-    const selected_account_status = is_selected_MT5_account_created
-        ? getStatusBadge(selected_mt5_account?.status)
-        : MT5_ACCOUNT_STATUS.PENDING;
+
+    const existing_account = is_selected_MT5_account_created ? created_account[0] : null;
+    const existing_account_status = existing_account?.status ? getStatusBadge(existing_account?.status) : null;
+
+    const available_account_to_create = !is_selected_MT5_account_created ? selected_account[0] : null;
 
     return {
         is_selected_MT5_account_created,
-        selected_mt5_account,
-        selected_account_status,
+        existing_account,
+        existing_account_status,
+        available_account_to_create,
     };
 };
 

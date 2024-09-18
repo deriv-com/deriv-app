@@ -17,7 +17,7 @@ const CfdPasswordModalInfo = ({
     product,
     need_tnc,
 }: CfdPasswordModalInfoProps) => {
-    const { selected_mt5_account } = useIsSelectedMT5AccountCreated();
+    const { available_account_to_create } = useIsSelectedMT5AccountCreated();
     return (
         <div className='cfd-password-modal-info'>
             <div className='cfd-password-modal-info__icon'>
@@ -30,13 +30,13 @@ const CfdPasswordModalInfo = ({
                         values={{
                             platform,
                             product,
-                            company: selected_mt5_account?.name,
-                            regulatory_authority: selected_mt5_account?.regulatory_authority ?? '',
+                            company: available_account_to_create?.name,
+                            regulatory_authority: available_account_to_create?.regulatory_authority ?? '',
                         }}
                         components={[
                             <span
                                 key={0}
-                                dangerouslySetInnerHTML={{ __html: selected_mt5_account?.licence_number ?? '' }}
+                                dangerouslySetInnerHTML={{ __html: available_account_to_create?.licence_number ?? '' }}
                             />,
                         ]}
                     />

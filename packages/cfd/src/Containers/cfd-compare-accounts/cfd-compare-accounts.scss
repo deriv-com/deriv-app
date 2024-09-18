@@ -57,12 +57,11 @@
             box-shadow: 0 2px 8px 0 var(--shadow-menu);
         }
         @include mobile-or-tablet-screen {
-            width: 18rem;
+            width: 20rem;
         }
         &__eu-clients {
             position: relative;
             top: 0.5rem;
-            text-align: center;
         }
         &__banner {
             position: absolute;
@@ -171,7 +170,7 @@
     }
     &-underline {
         border-top: 0.5rem solid var(--less-prominent);
-        width: 21.3rem;
+        width: 12rem;
     }
     &__button {
         width: calc(100% - 4rem);

@@ -246,7 +246,7 @@ export type TInstrumentsIcon = {
         | 'ETF';
     text: string;
     id?: string;
-    highlighted: boolean;
+    highlighted?: boolean;
     className?: string;
     is_asterisk?: boolean;
 };

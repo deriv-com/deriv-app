@@ -34,7 +34,7 @@ describe('useGetStatus', () => {
         });
 
         mockUseIsSelectedMT5AccountCreated.mockReturnValue({
-            selected_mt5_account: {
+            available_account_to_create: {
                 is_default_jurisdiction: 'true',
                 requirements: {
                     after_first_deposit: {
@@ -48,9 +48,13 @@ describe('useGetStatus', () => {
                 },
                 sub_account_type: 'standard',
                 shortcode: 'bvi',
+                market_type: 'financial',
+                product: 'financial',
+                name: 'sample company',
             },
             is_selected_MT5_account_created: false,
-            selected_account_status: MT5_ACCOUNT_STATUS.PENDING,
+            existing_account_status: MT5_ACCOUNT_STATUS.PENDING,
+            existing_account: null,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -77,7 +81,7 @@ describe('useGetStatus', () => {
         });
 
         mockUseIsSelectedMT5AccountCreated.mockReturnValue({
-            selected_mt5_account: {
+            existing_account: {
                 account_type: 'real',
                 balance: 0,
                 country: 'bh',
@@ -92,8 +96,9 @@ describe('useGetStatus', () => {
                 status: 'verification_pending',
                 client_kyc_status: {},
             },
+            available_account_to_create: null,
             is_selected_MT5_account_created: true,
-            selected_account_status: MT5_ACCOUNT_STATUS.PENDING,
+            existing_account_status: MT5_ACCOUNT_STATUS.PENDING,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -106,7 +111,7 @@ describe('useGetStatus', () => {
         });
     });
 
-    it('should return correct account status when for deriv account', () => {
+    it('should return correct account status  for deriv account', () => {
         const mock = mockStore({
             common: { platform: '' },
             traders_hub: {
@@ -123,9 +128,10 @@ describe('useGetStatus', () => {
         });
 
         mockUseIsSelectedMT5AccountCreated.mockReturnValue({
-            selected_mt5_account: {},
+            available_account_to_create: null,
             is_selected_MT5_account_created: false,
-            selected_account_status: MT5_ACCOUNT_STATUS.FAILED,
+            existing_account_status: null,
+            existing_account: null,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -141,7 +147,7 @@ describe('useGetStatus', () => {
         });
     });
 
-    it('should return empty requirements when fully verified', () => {
+    it('should return empty requirements when fully verified for deriv account', () => {
         const mock = mockStore({
             common: { platform: '' },
             traders_hub: {
@@ -155,9 +161,10 @@ describe('useGetStatus', () => {
         });
 
         mockUseIsSelectedMT5AccountCreated.mockReturnValue({
-            selected_mt5_account: {},
+            available_account_to_create: null,
+            existing_account: null,
             is_selected_MT5_account_created: false,
-            selected_account_status: MT5_ACCOUNT_STATUS.PENDING,
+            existing_account_status: MT5_ACCOUNT_STATUS.PENDING,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

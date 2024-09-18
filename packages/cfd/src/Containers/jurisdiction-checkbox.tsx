@@ -16,12 +16,12 @@ const JurisdictionCheckBox = observer(
     ({ class_name, is_checked, jurisdiction_selected_shortcode, onCheck }: TJurisdictionCheckBoxProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const { selected_mt5_account } = useIsSelectedMT5AccountCreated();
+        const { available_account_to_create } = useIsSelectedMT5AccountCreated();
         const getCheckboxLabel = () => (
             <Text as='p' align={is_mobile ? 'left' : 'center'} size='xxs' line_height='m'>
                 <Localize
                     i18n_default_text="I confirm and accept {{company}} 's <0>terms and conditions</0>"
-                    values={{ company: selected_mt5_account?.name }}
+                    values={{ company: available_account_to_create?.name }}
                     components={[
                         <StaticUrl
                             key={0}

@@ -40,7 +40,8 @@ const getHighlightedIconLabel = (
             return item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
         });
     };
-    const data = [
+
+    const instrumentsData: TInstrumentsIcon[] = [
         { id: 'forex', icon: 'Forex', text: getForexLabel() },
         { id: 'stocks', icon: 'Stocks', text: localize('Stocks') },
         { id: 'stock_indices', icon: 'StockIndices', text: localize('Stock indices') },
@@ -60,49 +61,10 @@ const getHighlightedIconLabel = (
         { id: 'derived_FX', icon: 'DerivedFX', text: localize('Derived FX') },
     ];
 
-    const getHighlightDetails = () =>
-        data.map(item => ({
-            ...item, // Copy all existing properties
-            highlighted: getIdForInstruments(trading_platforms?.instruments)?.includes(item.id) ?? true, // Add 'highlighted' property
-        }));
-
-    switch (trading_platforms.market_type) {
-        case MARKET_TYPE.GAMING:
-            return getHighlightDetails();
-
-        case MARKET_TYPE.FINANCIAL:
-            switch (trading_platforms.shortcode) {
-                case JURISDICTION.MALTA_INVEST:
-                    return [
-                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                        { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        {
-                            icon: 'Synthetics',
-                            text: localize('Synthetic indices'),
-                            highlighted: true,
-                            is_asterisk: true,
-                        },
-                    ];
-                case JURISDICTION.LABUAN:
-                    return getHighlightDetails();
-                default:
-                    return getHighlightDetails();
-            }
-        case MARKET_TYPE.ALL:
-        default:
-            if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
-                if (trading_platforms.product === PRODUCT.SWAPFREE) {
-                    return getHighlightDetails();
-                } else if (trading_platforms.product === PRODUCT.ZEROSPREAD) {
-                    return getHighlightDetails();
-                }
-            }
-
-            return getHighlightDetails();
-    }
+    return instrumentsData.map((item: TInstrumentsIcon) => ({
+        ...item, // Copy all existing properties
+        highlighted: getIdForInstruments(trading_platforms?.instruments)?.includes(item?.id ?? '') ?? true,
+    }));
 };
 
 // Get the Account Title according to the market type and jurisdiction
@@ -221,45 +183,13 @@ const cfd_config = () => ({
 
 // Map the Jurisdictions with the config
 const getJuridisctionDescription = (shortcode: string, trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
-    const createDescription = (
-        counterparty_company: string,
-        jurisdiction: string,
-        regulator: string,
-        regulator_license: string | undefined,
-        regulator_description: string,
-        leverage: string = cfd_config().leverage,
-        spread: string = cfd_config().spread
-    ) => ({
-        ...cfd_config(),
-        counterparty_company,
-        jurisdiction,
-        regulator,
-        regulator_license,
-        regulator_description,
-        leverage,
-        spread,
-    });
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC:
-            return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.FINANCIAL:
-            return getDefaultJurisdictionDetails(trading_platforms);
-        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            return getDefaultJurisdictionDetails(trading_platforms);
-
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
-            return createDescription(
-                'Deriv Investments (Europe) Limited',
-                'Malta',
-                localize('Financial Commission'),
-                localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
-                '',
-                '1:30'
-            );
-
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
             return getDefaultJurisdictionDetails(trading_platforms);
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         default:

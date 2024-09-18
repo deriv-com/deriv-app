@@ -111,6 +111,7 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 // TODO: Remove this type once the API types are updated
 export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     product?: 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
+    client_kyc_status?: Record<string, string>;
 };
 
 type TIconTypes =

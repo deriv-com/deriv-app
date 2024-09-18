@@ -312,6 +312,7 @@ export default class NotificationStore extends BaseStore {
     async handleClientNotifications() {
         const current_time = dayjs();
         const {
+            account_list,
             account_settings,
             account_status,
             account_open_date,
@@ -499,6 +500,7 @@ export default class NotificationStore extends BaseStore {
                 const svg_needs_poi =
                     cr_account && status.includes('allow_document_upload') && identity?.status === 'none';
                 const svg_poi_expired = cr_account && identity?.status === 'expired';
+                const has_tusdt_account = account_list.some(account => account.title === 'tUSDT');
 
                 this.addVerificationNotifications(
                     identity,
@@ -581,6 +583,7 @@ export default class NotificationStore extends BaseStore {
                     }
                 }
 
+                if (has_tusdt_account) this.addNotificationMessage(this.client_notifications.has_tusdt_account);
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
                 if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
                 if (is_p2p_enabled) {
@@ -1612,6 +1615,14 @@ export default class NotificationStore extends BaseStore {
                 ),
                 should_show_again: true,
                 type: 'warning',
+            },
+            has_tusdt_account: {
+                key: 'has_tusdt_account',
+                header: localize('Attention: tUSDT deposit address change'),
+                message: (
+                    <Localize i18n_default_text='Verify the address on the Deposit page before each deposit to avoid losing funds. Occasionally, the address could be updated.' />
+                ),
+                type: 'announce',
             },
         };
 

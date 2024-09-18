@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { Loader, Text } from '@deriv-com/ui';
+import { FormDropdown, FormField, ModalStepWrapper } from '../../../../../../components';
 import { Footer } from '../../../components';
 import {
     TVerifyPersonalDetailsValues,
@@ -95,9 +95,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     <IDVServiceErrorMessage message={localize(errorMessage.message)} />
                                 )}
                                 <div className='wallets-idv-service__title'>
-                                    <WalletText weight='bold'>
+                                    <Text weight='bold'>
                                         <Localize i18n_default_text='Identity verification' />
-                                    </WalletText>
+                                    </Text>
                                 </div>
                                 <FormDropdown
                                     isFullWidth
@@ -162,9 +162,9 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                             />
                                         )}
                                         <div className='wallets-idv-service__title'>
-                                            <WalletText weight='bold'>
+                                            <Text weight='bold'>
                                                 <Localize i18n_default_text='Details' />
-                                            </WalletText>
+                                            </Text>
                                         </div>
                                     </>
                                 )}

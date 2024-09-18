@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import ListItem from '../ListItem'; // Adjust the import path as necessary
+import ListItem from '../ListItem';
 import { useStore, StoreProvider, mockStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';

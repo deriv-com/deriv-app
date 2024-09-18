@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-// Adjust the import path as necessary
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
@@ -88,18 +87,4 @@ describe('<VerificationDocsListModal />', () => {
         expect(screen.getByText('DerivLightUploadPoiIcon')).toBeInTheDocument();
         expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
     });
-
-    // it('should show the LabelPairedChevronRightCaptionBoldIcon', () => {
-    //     (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValueOnce({ is_selected_MT5_account_created: true });
-    //     (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: false });
-    //     (useGetStatus as jest.Mock).mockReturnValueOnce({
-    //         client_kyc_status: {
-    //             poi_status: 'verified',
-    //             poa_status: 'verified',
-    //             valid_tin: 'verified',
-    //         },
-    //     });
-    //     renderComponent({});
-    //     expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
-    // });
 });

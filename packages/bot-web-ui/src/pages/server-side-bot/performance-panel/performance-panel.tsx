@@ -12,15 +12,11 @@ const PerformancePanel = () => {
         <>
             <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top className='ssb'>
                 <div id='db-run-panel-tab__summary' label={localize('Summary')}>
-                    <Summary
-                        is_clear_dialog_visible={is_clear_dialog_visible}
-                        setClearDialogVisibility={setClearDialogVisibility}
-                    />
+                    <Summary setClearDialogVisibility={setClearDialogVisibility} />
                 </div>
                 <div id='db-run-panel-tab__journal' label={localize('Journal')}>
                     <Journal
                         setActiveTabIndex={setActiveTabIndex}
-                        is_clear_dialog_visible={is_clear_dialog_visible}
                         setClearDialogVisibility={setClearDialogVisibility}
                     />
                 </div>

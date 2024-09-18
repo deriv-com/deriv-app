@@ -4,7 +4,6 @@
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    Passkeys,
     PersonalDetails,
     ProofOfIdentity,
     ProofOfAddress,
@@ -31,6 +30,12 @@ const PhoneVerificationPage = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Profile/PhoneVerification')),
     () => <Loading />
 )();
+
+const Passkeys = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passkeys')),
+    () => <Loading />
+)();
+
 const AccountLimits = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
     () => <Loading />

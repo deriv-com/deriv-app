@@ -612,6 +612,15 @@ export type TClientStore = {
     resetWalletMigration: () => void;
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
+    passkeys_list: Array<{
+        id: number;
+        name: string;
+        last_used: number;
+        created_at?: number;
+        stored_on?: string;
+        passkey_id: string;
+        icon?: string;
+    }>;
     setIsPasskeySupported: (value: boolean) => void;
     is_phone_number_verification_enabled: boolean;
     setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
@@ -619,6 +628,7 @@ export type TClientStore = {
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
     fetchShouldShowPasskeyNotification: () => void;
+    fetchPasskeysList: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;

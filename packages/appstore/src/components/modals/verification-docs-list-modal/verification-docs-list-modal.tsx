@@ -25,11 +25,13 @@ const MT5BadgeStatus = (status: TAuthStatusCodes) => {
                 text: <Localize i18n_default_text='Verified' />,
                 icon: 'IcMt5Success',
                 icon_size: '18',
+                text_color: 'green',
             };
         case AUTH_STATUS_CODES.PENDING:
             return {
                 text: <Localize i18n_default_text='In review' />,
                 icon: 'IcMt5Pending',
+                text_color: 'yellow',
             };
         case AUTH_STATUS_CODES.REJECTED:
         case AUTH_STATUS_CODES.SUSPECTED:
@@ -37,6 +39,7 @@ const MT5BadgeStatus = (status: TAuthStatusCodes) => {
                 text: <Localize i18n_default_text='Failed' />,
                 icon: 'IcMt5Failed',
                 icon_size: '18',
+                text_color: 'red',
             };
         default:
             return {
@@ -54,6 +57,9 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const history = useHistory();
 
     const onClickItem = () => {
+        if ([AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status)) {
+            return;
+        }
         history.push(route);
         toggleVerificationModal(false);
     };
@@ -67,7 +73,16 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                 <LabelPairedChevronRightCaptionBoldIcon />
             ) : (
                 <div className='verification-docs-list-modal__card'>
-                    <StatusBadge account_status={status} icon={badge_icon} text={badge_text} icon_size={badge_size} />
+                    <StatusBadge
+                        account_status={status}
+                        icon={badge_icon}
+                        text={
+                            <Text as='p' size='xxs' line_height='m' color={}>
+                                {badge_text}
+                            </Text>
+                        }
+                        icon_size={badge_size}
+                    />
                     <LabelPairedChevronRightCaptionBoldIcon fill='var(--text-primary)' />
                 </div>
             )}

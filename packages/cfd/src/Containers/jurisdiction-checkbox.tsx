@@ -18,7 +18,7 @@ const JurisdictionCheckBox = observer(
         const { is_mobile } = ui;
         const { available_account_to_create } = useIsSelectedMT5AccountCreated();
         const getCheckboxLabel = () => (
-            <Text as='p' align={is_mobile ? 'left' : 'center'} size='xxs' line_height='m'>
+            <Text as='p' size='xxs' line_height='m'>
                 <Localize
                     i18n_default_text="I confirm and accept {{company}} 's <0>terms and conditions</0>"
                     values={{ company: available_account_to_create?.name }}

@@ -68,21 +68,22 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     if (isDesktop)
         return (
             <div className='wallets-header__actions'>
-                {getWalletHeaderButtons(localize, isDemo).map((button, index) => (
-                    <Button
-                        aria-label={button.name}
-                        borderWidth='sm'
-                        color={button.color}
-                        icon={button.icon}
-                        key={`wallets-header-actions-${button.name}-${index}`}
-                        onClick={() => {
-                            history.push(`/wallet/${button.name}`);
-                        }}
-                        rounded='lg'
-                        variant={button.variant}
-                    >
-                        {isActive ? button.text : ''}
-                    </Button>
+                {getWalletHeaderButtons(localize, isDemo).map(button => (
+                    <div key={`wallets-header-actions-${button.name}`}>
+                        <Button
+                            aria-label={button.name}
+                            borderWidth='sm'
+                            color={button.color}
+                            icon={button.icon}
+                            onClick={() => {
+                                history.push(`/wallet/${button.name}`);
+                            }}
+                            rounded='lg'
+                            variant={button.variant}
+                        >
+                            {isActive ? button.text : ''}
+                        </Button>
+                    </div>
                 ))}
             </div>
         );
@@ -91,7 +92,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
         <div className='wallets-mobile-actions__container'>
             <div className='wallets-mobile-actions'>
                 {getWalletHeaderButtons(localize, isDemo).map(button => (
-                    <div className='wallets-mobile-actions-content' key={button.name}>
+                    <div className='wallets-mobile-actions-content' key={`wallets-mobile-actions-${button.name}`}>
                         <IconButton
                             aria-label={button.name}
                             className={button.className}

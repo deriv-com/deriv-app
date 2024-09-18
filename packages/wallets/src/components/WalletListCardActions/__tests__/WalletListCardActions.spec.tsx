@@ -12,7 +12,6 @@ jest.mock('@deriv/api-v2', () => ({
             currency: 'USD',
             display_login: 'CRW123456',
             email: '',
-            is_active: true,
             is_virtual: false,
             loginid: 'CRW123456',
         },
@@ -49,7 +48,6 @@ describe('WalletListCardActions', () => {
                 currency: 'USD',
                 display_login: 'VRW123456',
                 email: '',
-                is_active: true,
                 is_virtual: true,
                 loginid: 'VRW123456',
             },
@@ -60,31 +58,12 @@ describe('WalletListCardActions', () => {
         expect(screen.getByText('Transfer')).toBeInTheDocument();
     });
 
-    it("shouldn't show the actions texts if the real wallet is inactive", () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: {
-                currency: 'USD',
-                display_login: 'CRW123456',
-                email: '',
-                is_active: false,
-                is_virtual: false,
-                loginid: 'CRW123456',
-            },
-        });
-
-        render(<WalletListCardActions />, { wrapper });
-        expect(screen.queryByText('Deposit')).not.toBeInTheDocument();
-        expect(screen.queryByText('Withdraw')).not.toBeInTheDocument();
-        expect(screen.queryByText('Transfer')).not.toBeInTheDocument();
-    });
-
     it('should switch account and redirect to the correct page when clicking on one of the actions and wallet is inactive', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency: 'USD',
                 display_login: 'CRW123456',
                 email: '',
-                is_active: false,
                 is_virtual: false,
                 loginid: 'CRW123456',
             },
@@ -138,7 +117,6 @@ describe('WalletListCardActions', () => {
                 currency: 'USD',
                 display_login: 'VRW123456',
                 email: '',
-                is_active: true,
                 is_virtual: true,
                 loginid: 'VRW123456',
             },
@@ -156,7 +134,6 @@ describe('WalletListCardActions', () => {
                 currency: 'USD',
                 display_login: 'CRW123456',
                 email: '',
-                is_active: true,
                 is_virtual: false,
                 loginid: 'CRW123456',
             },
@@ -181,7 +158,6 @@ describe('WalletListCardActions', () => {
                 currency: 'USD',
                 display_login: 'VRW123456',
                 email: '',
-                is_active: true,
                 is_virtual: true,
                 loginid: 'VRW123456',
             },

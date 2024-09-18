@@ -61,30 +61,83 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
     const { isDesktop } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
-
-    const isActive = activeWallet?.is_active;
     const isDemo = activeWallet?.is_virtual;
 
     if (isDesktop)
         return (
             <div className='wallets-header__actions'>
-                {getWalletHeaderButtons(localize, isDemo).map(button => (
-                    <div key={`wallets-header-actions-${button.name}`}>
+                {isDemo ? (
+                    <React.Fragment>
                         <Button
-                            aria-label={button.name}
+                            aria-label='reset-balance'
                             borderWidth='sm'
-                            color={button.color}
-                            icon={button.icon}
+                            color='black'
+                            icon={<LabelPairedArrowsRotateMdBoldIcon />}
                             onClick={() => {
-                                history.push(`/wallet/${button.name}`);
+                                history.push('/wallet/reset-balance');
                             }}
                             rounded='lg'
-                            variant={button.variant}
+                            variant='outlined'
                         >
-                            {isActive ? button.text : ''}
+                            {localize('Reset balance')}
                         </Button>
-                    </div>
-                ))}
+                        <Button
+                            aria-label='account-transfer'
+                            borderWidth='sm'
+                            color='black'
+                            icon={<LabelPairedArrowUpArrowDownMdBoldIcon />}
+                            onClick={() => {
+                                history.push('/wallet/account-transfer');
+                            }}
+                            rounded='lg'
+                            variant='outlined'
+                        >
+                            {localize('Transfer')}
+                        </Button>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                        <Button
+                            aria-label='deposit'
+                            borderWidth='sm'
+                            color='primary'
+                            icon={<LabelPairedPlusMdBoldIcon fill='#FFF' />}
+                            onClick={() => {
+                                history.push('/wallet/deposit');
+                            }}
+                            rounded='lg'
+                            variant='contained'
+                        >
+                            {localize('Deposit')}
+                        </Button>
+                        <Button
+                            aria-label='withdrawal'
+                            borderWidth='sm'
+                            color='black'
+                            icon={<LabelPairedMinusMdBoldIcon />}
+                            onClick={() => {
+                                history.push('/wallet/withdrawal');
+                            }}
+                            rounded='lg'
+                            variant='outlined'
+                        >
+                            {localize('Withdraw')}
+                        </Button>
+                        <Button
+                            aria-label='account-transfer'
+                            borderWidth='sm'
+                            color='black'
+                            icon={<LabelPairedArrowUpArrowDownMdBoldIcon />}
+                            onClick={() => {
+                                history.push('/wallet/account-transfer');
+                            }}
+                            rounded='lg'
+                            variant='outlined'
+                        >
+                            {localize('Transfer')}
+                        </Button>
+                    </React.Fragment>
+                )}
             </div>
         );
 
@@ -92,7 +145,7 @@ const WalletListCardActions: React.FC<TProps> = ({ accountsActiveTabIndex }) => 
         <div className='wallets-mobile-actions__container'>
             <div className='wallets-mobile-actions'>
                 {getWalletHeaderButtons(localize, isDemo).map(button => (
-                    <div className='wallets-mobile-actions-content' key={`wallets-mobile-actions-${button.name}`}>
+                    <div className='wallets-mobile-actions-content' key={button.name}>
                         <IconButton
                             aria-label={button.name}
                             className={button.className}

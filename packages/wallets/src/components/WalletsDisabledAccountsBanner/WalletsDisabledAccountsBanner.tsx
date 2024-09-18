@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useWalletAccountsList } from '@deriv/api-v2';
-import { StandaloneCircleExclamationBoldIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { SectionMessage, Text, useDevice } from '@deriv-com/ui';
 import './WalletsDisabledAccountsBanner.scss';
@@ -27,7 +26,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     });
     return (
         <div className='wallets-disabled-account-banner__container'>
-            <SectionMessage className='wallets-disabled-account-banner__content' variant='warning'>
+            <SectionMessage variant='warning'>
                 <Text lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         components={[

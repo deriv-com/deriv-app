@@ -105,17 +105,20 @@ const DerivAppsGetAccount: React.FC = () => {
                 <Text align='start' size='sm'>
                     <Localize i18n_default_text='Options' />
                 </Text>
-                <Text align='start' size={isDesktop ? '2xs' : 'xs'}>
+                <Text align='start' size='xs'>
                     <Localize i18n_default_text='One options account for all platforms.' />
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
                 <Button
-                    color='primary-light'
+                    borderWidth='sm'
+                    color='black'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
+                    rounded='md'
+                    variant='outlined'
                 >
-                    <Localize i18n_default_text='Get' />
+                    <Localize i18n_default_text='Enable' />
                 </Button>
             </TradingAccountCard.Button>
         </TradingAccountCard>

@@ -12,16 +12,16 @@ import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { DerivLightDropzoneFrameIcon, DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Button, useDevice } from '@deriv-com/ui';
-import { IconButton, WalletText } from '../Base';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { IconButton } from '../Base';
 import './Dropzone.scss';
 
 type TProps = {
     buttonText?: ReactNode;
     defaultFile?: File;
     description?: ReactNode;
-    descriptionColor?: ComponentProps<typeof WalletText>['color'];
-    descriptionSize?: ComponentProps<typeof WalletText>['size'];
+    descriptionColor?: ComponentProps<typeof Text>['color'];
+    descriptionSize?: ComponentProps<typeof Text>['size'];
     fileFormats?: NonNullable<Parameters<typeof useDropzone>[0]>['accept'];
     hasFrame?: boolean;
     hoverMessage?: ReactNode;
@@ -30,7 +30,7 @@ type TProps = {
     noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
     onFileChange?: (file?: File) => void;
     title?: ReactNode;
-    titleType?: ComponentProps<typeof WalletText>['weight'];
+    titleType?: ComponentProps<typeof Text>['weight'];
 };
 
 type TFile = {
@@ -133,18 +133,18 @@ const Dropzone: React.FC<TProps> = ({
                 )}
             >
                 <div className='wallets-dropzone__content'>
-                    {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
+                    {showHoverMessage && <Text size='sm'>{hoverMessage}</Text>}
                     {!showHoverMessage && !errorMessage && !file && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
                             {title && (
-                                <WalletText align='center' color='primary' size='md' weight={titleType}>
+                                <Text align='center' color='primary' size='md' weight={titleType}>
                                     {title}
-                                </WalletText>
+                                </Text>
                             )}
-                            <WalletText align='center' color={descriptionColor} size={descriptionSize}>
+                            <Text align='center' color={descriptionColor} size={descriptionSize}>
                                 {description}
-                            </WalletText>
+                            </Text>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
                                     <Button
@@ -172,9 +172,9 @@ const Dropzone: React.FC<TProps> = ({
                                         size='sm'
                                     />
                                     <DerivLightIcCloudUploadIcon height={50} width={50} />
-                                    <WalletText align='center' size='sm'>
+                                    <Text align='center' size='sm'>
                                         {file.name.length > 30 ? `${file.name.slice(0, 30)}....pdf` : file.name}
-                                    </WalletText>
+                                    </Text>
                                 </div>
                             ) : (
                                 <div
@@ -195,9 +195,9 @@ const Dropzone: React.FC<TProps> = ({
                                 </div>
                             )}
                             {description && (
-                                <WalletText align='center' color={descriptionColor}>
+                                <Text align='center' color={descriptionColor}>
                                     {description}
-                                </WalletText>
+                                </Text>
                             )}
                         </React.Fragment>
                     )}
@@ -210,9 +210,9 @@ const Dropzone: React.FC<TProps> = ({
                                 onClick={resetError}
                                 size='sm'
                             />
-                            <WalletText align='center' color='red'>
+                            <Text align='center' color='red'>
                                 {errorMessage}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>

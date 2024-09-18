@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import {
     StandaloneChartAreaFillIcon,
-    StandaloneChartLineRegularIcon,
+    StandaloneChartAreaRegularIcon,
     StandaloneClockThreeFillIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
@@ -27,7 +27,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
 
     const bottomNavItems = [
         {
-            icon: <StandaloneChartLineRegularIcon iconSize='sm' />,
+            icon: <StandaloneChartAreaRegularIcon iconSize='sm' />,
             activeIcon: <StandaloneChartAreaFillIcon iconSize='sm' />,
             label: <Localize i18n_default_text='Trade' />,
             path: routes.trade,

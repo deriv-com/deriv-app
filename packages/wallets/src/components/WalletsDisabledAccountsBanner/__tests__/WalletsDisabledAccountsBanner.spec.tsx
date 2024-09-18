@@ -28,10 +28,10 @@ jest.mock('@deriv-com/translations', () => ({
 }));
 
 window.LiveChatWidget = {
+    call: jest.fn(),
+    get: jest.fn(),
     init: jest.fn(),
     on: jest.fn(),
-    get: jest.fn(),
-    call: jest.fn(),
 };
 
 describe('WalletsDisabledAccountsBanner', () => {

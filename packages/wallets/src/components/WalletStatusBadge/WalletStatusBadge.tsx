@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { LabelPairedTriangleExclamationSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Badge } from '@deriv-com/ui';
 
 type TStatus = 'disabled';
 
-type TProps = {
+type TProps = Omit<ComponentProps<typeof Badge>, 'children'> & {
     status: TStatus;
 };
 
@@ -17,17 +17,26 @@ const statusConfig = {
     },
 } as const;
 
-const WalletStatusBadge: React.FC<TProps> = ({ status }) => {
+const WalletStatusBadge: React.FC<TProps> = ({
+    badgeSize = 'sm',
+    padding = 'loose',
+    rounded = 'sm',
+    status,
+    textSize = 'xs',
+    variant = 'bordered',
+    ...rest
+}) => {
     return (
         <Badge
-            badgeSize='sm'
+            badgeSize={badgeSize}
             color={statusConfig[status].color}
             isBold
             leftIcon={statusConfig[status].icon}
-            padding='loose'
-            rounded='sm'
-            textSize='xs'
-            variant='bordered'
+            padding={padding}
+            rounded={rounded}
+            textSize={textSize}
+            variant={variant}
+            {...rest}
         >
             {statusConfig[status].text}
         </Badge>

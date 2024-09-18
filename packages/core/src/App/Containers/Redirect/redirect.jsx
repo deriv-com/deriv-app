@@ -220,6 +220,11 @@ const Redirect = observer(() => {
             redirected_to_route = true;
             break;
         }
+        case 'crypto_transactions_withdraw': {
+            history.push(`${routes.cashier_withdrawal}?action=${action_param}`);
+            redirected_to_route = true;
+            break;
+        }
         case 'payment_transactions': {
             if (has_wallet) {
                 history.push(routes.wallets_transactions);

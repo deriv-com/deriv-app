@@ -18,7 +18,7 @@ type TCardArray = {
     type: string;
     icon: string;
     content: string;
-    method: () => void;
+    callback: () => void;
 };
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
@@ -44,7 +44,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             type: 'my-computer',
             icon: is_mobile ? 'IcLocal' : 'IcMyComputer',
             content: is_mobile ? localize('Local') : localize('My computer'),
-            method: () => {
+            callback: () => {
                 openFileLoader();
                 rudderStackSendOpenEvent({
                     subpage_name: 'bot_builder',
@@ -58,7 +58,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             type: 'google-drive',
             icon: 'IcGoogleDriveDbot',
             content: localize('Google Drive'),
-            method: () => {
+            callback: () => {
                 openGoogleDriveDialog();
                 rudderStackSendOpenEvent({
                     subpage_name: 'bot_builder',
@@ -72,7 +72,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             type: 'bot-builder',
             icon: 'IcBotBuilder',
             content: localize('Bot Builder'),
-            method: () => {
+            callback: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 rudderStackSendDashboardClickEvent({
                     dashboard_click_name: 'bot_builder',
@@ -84,7 +84,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             type: 'quick-strategy',
             icon: 'IcQuickStrategy',
             content: localize('Quick strategy'),
-            method: () => {
+            callback: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
                 rudderStackSendOpenEvent({
@@ -110,13 +110,16 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                     id='tab__dashboard__table__tiles'
                 >
                     {actions.map(icons => {
-                        const { icon, content, method } = icons;
+                        const { icon, content, callback } = icons;
                         return (
                             <div
                                 key={content}
                                 className={classNames('tab__dashboard__table__block', {
                                     'tab__dashboard__table__block--minimized': has_dashboard_strategies && is_mobile,
                                 })}
+                                onClick={() => {
+                                    callback();
+                                }}
                             >
                                 <Icon
                                     className={classNames('tab__dashboard__table__images', {
@@ -126,9 +129,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     height='8rem'
                                     icon={icon}
                                     id={icon}
-                                    onClick={() => {
-                                        method();
-                                    }}
                                 />
                                 <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>
                                     {content}

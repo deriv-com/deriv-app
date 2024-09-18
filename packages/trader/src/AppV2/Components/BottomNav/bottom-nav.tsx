@@ -4,7 +4,12 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import { StandaloneChartAreaFillIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
+import {
+    StandaloneChartAreaFillIcon,
+    StandaloneChartLineRegularIcon,
+    StandaloneClockThreeFillIcon,
+    StandaloneClockThreeRegularIcon,
+} from '@deriv/quill-icons';
 import { Badge, Navigation } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import { useHistory, useLocation } from 'react-router';
@@ -22,7 +27,8 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
 
     const bottomNavItems = [
         {
-            icon: <StandaloneChartAreaFillIcon iconSize='sm' />,
+            icon: <StandaloneChartLineRegularIcon iconSize='sm' />,
+            activeIcon: <StandaloneChartAreaFillIcon iconSize='sm' />,
             label: <Localize i18n_default_text='Trade' />,
             path: routes.trade,
         },
@@ -38,16 +44,26 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         contentSize='sm'
                         className='bottom-nav-item__position-badge'
                     >
-                        <StandaloneClockThreeRegularIcon
-                            iconSize='sm'
-                            fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                        />
+                        <StandaloneClockThreeRegularIcon iconSize='sm' />
                     </Badge>
                 ) : (
-                    <StandaloneClockThreeRegularIcon
-                        iconSize='sm'
-                        fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                    />
+                    <StandaloneClockThreeRegularIcon iconSize='sm' />
+                ),
+            activeIcon:
+                active_positions_count > 0 ? (
+                    <Badge
+                        variant='notification'
+                        position='top-right'
+                        label={active_positions_count.toString()}
+                        color='danger'
+                        size='sm'
+                        contentSize='sm'
+                        className='bottom-nav-item__position-badge'
+                    >
+                        <StandaloneClockThreeFillIcon iconSize='sm' />
+                    </Badge>
+                ) : (
+                    <StandaloneClockThreeFillIcon iconSize='sm' />
                 ),
             label: (
                 <React.Fragment>
@@ -58,6 +74,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             path: routes.trader_positions,
         },
     ];
+
     const navIndex = bottomNavItems.findIndex(item => item.path === location.pathname);
     const [selectedIndex, setSelectedIndex] = React.useState(navIndex > -1 ? navIndex : 0);
 
@@ -65,6 +82,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         setSelectedIndex(index);
         history.push(bottomNavItems[index].path);
     };
+
     return (
         <div className={classNames('bottom-nav', className)}>
             <div className='bottom-nav-selection' onScroll={onScroll}>
@@ -75,8 +93,8 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                     <Navigation.BottomAction
                         key={index}
                         index={index}
-                        activeIcon={item.icon}
-                        icon={item.icon}
+                        activeIcon={<></>}
+                        icon={index === selectedIndex ? item.activeIcon : item.icon}
                         label={item.label}
                         selected={index === selectedIndex}
                         showLabel

@@ -26,8 +26,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     const { dashboard, load_modal, quick_strategy } = useDBotStore();
     const { toggleLoadModal, setActiveTabIndex } = load_modal;
     const { ui } = useStore();
-    const { is_desktop } = ui;
-    const { onCloseDialog, dialog_options, is_dialog_open, setActiveTab, setPreviewOnPopup } = dashboard;
+    const { is_dialog_open, setActiveTab } = dashboard;
     const { setFormVisibility } = quick_strategy;
 
     const openGoogleDriveDialog = () => {
@@ -139,35 +138,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             </div>
                         );
                     })}
-
-                    {is_desktop ? (
-                        <Dialog
-                            title={dialog_options.title}
-                            is_visible={is_dialog_open}
-                            onCancel={onCloseDialog}
-                            is_mobile_full_width
-                            className='dc-dialog__wrapper--google-drive'
-                            has_close_icon
-                        >
-                            <GoogleDrive />
-                        </Dialog>
-                    ) : (
-                        <MobileFullPageModal
-                            is_modal_open={is_dialog_open}
-                            className='load-strategy__wrapper'
-                            header={localize('Load strategy')}
-                            onClickClose={() => {
-                                setPreviewOnPopup(false);
-                                onCloseDialog();
-                            }}
-                            height_offset='80px'
-                            page_overlay
-                        >
-                            <div label='Google Drive' className='google-drive-label'>
-                                <GoogleDrive />
-                            </div>
-                        </MobileFullPageModal>
-                    )}
                 </div>
                 <DashboardBotList />
             </div>

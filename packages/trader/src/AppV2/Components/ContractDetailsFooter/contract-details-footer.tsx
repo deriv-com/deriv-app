@@ -68,7 +68,6 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                                         as='span'
                                         end_time={cancellation_date_expiry}
                                         format='mm:ss'
-                                        className='color'
                                         getCardLabels={getCardLabelsV2}
                                         start_time={server_time}
                                     />

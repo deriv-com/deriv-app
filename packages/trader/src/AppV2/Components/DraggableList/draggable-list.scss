@@ -24,8 +24,7 @@
         }
 
         &--active {
-            border: var(--core-spacing-75) solid var(--core-color-solid-slate-75);
-            background-color: var(--core-color-solid-slate-75);
+            background-color: var(--semantic-color-slate-solid-surface-frame-mid);
         }
 
         button {

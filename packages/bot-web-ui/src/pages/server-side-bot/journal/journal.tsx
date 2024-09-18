@@ -143,7 +143,7 @@ const Journal = observer(({ setActiveTabIndex, setClearDialogVisibility }: TJour
                 <Button secondary disabled={should_disable} onClick={() => setClearDialogVisibility(true)}>
                     <Localize i18n_default_text='Reset' />
                 </Button>
-                <Button secondary disabled={should_disable} onClick={() => downloadJournal()}>
+                <Button secondary disabled={should_disable} onClick={downloadJournal}>
                     <Localize i18n_default_text='Download' />
                 </Button>
             </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { FormatUtils } from '@deriv-com/utils';
+import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
 import { getCurrencyDisplayCode, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
@@ -49,7 +49,7 @@ const StakeDetails = ({
         const getDisplayedValue = (new_value?: number | string, current_value?: string) => {
             return ((current_value === '-' && is_loading_proposal) || stake_error) && !is_max_payout_exceeded
                 ? '-'
-                : FormatUtils.formatMoney(Number(new_value));
+                : FormatUtils.formatMoney(Number(new_value), { currency: currency as CurrencyConstants.Currency });
         };
 
         const {
@@ -76,7 +76,16 @@ const StakeDetails = ({
                 stop_out: new_stop_out,
             });
         }
-    }, [commission, details, displayed_values, is_loading_proposal, is_max_payout_exceeded, stake_error, stop_out]);
+    }, [
+        commission,
+        currency,
+        details,
+        displayed_values,
+        is_loading_proposal,
+        is_max_payout_exceeded,
+        stake_error,
+        stop_out,
+    ]);
 
     const payout_title = <Localize i18n_default_text='Payout' />;
     const content = [

@@ -3,7 +3,14 @@ import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { CONTRACT_TYPES, getCurrencyDisplayCode, getDecimalPlaces, useIsMounted, WS } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    getCurrencyDisplayCode,
+    getDecimalPlaces,
+    isCryptocurrency,
+    useIsMounted,
+    WS,
+} from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -84,6 +91,7 @@ const TakeProfitAndStopLossInput = ({
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
+    const is_crypto_currency = isCryptocurrency(currency);
 
     const input_message =
         info.min_value && info.max_value && is_enabled ? (
@@ -168,7 +176,8 @@ const TakeProfitAndStopLossInput = ({
 
         /* In order to get validation params for Multipliers when TP and SL are empty, 
             we send '1' first, get validation params and set them into the state.*/
-        const input_value = should_set_validation_params ? '1' : new_input_value;
+        const default_value = is_crypto_currency ? '0.00002' : '1';
+        const input_value = should_set_validation_params ? default_value : new_input_value;
         const dispose = debounce(
             previewProposal(
                 trade_store,

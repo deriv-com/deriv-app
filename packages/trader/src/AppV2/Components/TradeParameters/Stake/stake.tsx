@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
@@ -138,8 +138,12 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(+details.min_stake),
-                    max_stake: FormatUtils.formatMoney(+details.max_stake),
+                    min_stake: FormatUtils.formatMoney(+details.min_stake, {
+                        currency: currency as CurrencyConstants.Currency,
+                    }),
+                    max_stake: FormatUtils.formatMoney(+details.max_stake, {
+                        currency: currency as CurrencyConstants.Currency,
+                    }),
                 }}
             />
         ));

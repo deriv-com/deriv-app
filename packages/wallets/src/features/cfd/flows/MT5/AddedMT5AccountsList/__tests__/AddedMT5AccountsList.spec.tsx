@@ -157,7 +157,7 @@ jest.mock('../../../../../../components', () => ({
     WalletDisabledAccountModal: jest.fn(({ isVisible, onClose }) =>
         isVisible ? (
             <div data-testid='dt_wallet_disabled_account_modal'>
-                Wallet Disabled Account Modal
+                <span>Wallet Disabled Account Modal</span>
                 <button onClick={onClose}>Close</button>
             </div>
         ) : null

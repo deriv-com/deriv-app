@@ -4,7 +4,7 @@ import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Loader, Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -112,7 +112,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     {account.product === PRODUCT.ZEROSPREAD && (
                         <div className='wallets-available-mt5__badge'>
                             <Text align='start' size='xs' weight='bold'>
-                                NEW
+                                <Localize i18n_default_text='NEW' />
                             </Text>
                         </div>
                     )}

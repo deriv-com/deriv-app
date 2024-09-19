@@ -46,6 +46,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
     const { preferred_language } = root_store.client;
+    const { is_dark_mode_on } = root_store.ui;
+    const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
+    const is_dtrader_v2 =
+        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
     const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
@@ -105,7 +109,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [root_store.client.email]);
 
     const getLoader = () =>
-        isDTraderV2() ? (
+        is_dtrader_v2 ? (
             <Loading.DTraderV2
                 initial_app_loading
                 is_contract_details={location.pathname.startsWith('/contract/')}
@@ -115,6 +119,20 @@ const AppWithoutTranslation = ({ root_store }) => {
         ) : (
             <Loading />
         );
+
+    React.useEffect(() => {
+        const html = document?.querySelector('html');
+
+        if (!html || !is_dtrader_v2) return;
+        if (is_dark_mode) {
+            html.classList?.remove('light');
+            html.classList?.add('dark');
+        } else {
+            html.classList?.remove('dark');
+            html.classList?.add('light');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

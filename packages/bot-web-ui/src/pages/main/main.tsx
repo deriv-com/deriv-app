@@ -73,6 +73,11 @@ const AppWrapper = observer(() => {
     React.useEffect(() => {
         window.addEventListener('focus', checkAndHandleConnection);
         // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        return () => {
+            window.removeEventListener('focus', checkAndHandleConnection);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

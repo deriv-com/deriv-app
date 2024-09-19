@@ -1,6 +1,5 @@
 import React from 'react';
-import { ActionSheet } from '@deriv-com/quill-ui';
-import { Text } from '@deriv-com/ui';
+import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import StatsRow from './accumulator-stats-row';
 import { Localize } from '@deriv/translations';
 

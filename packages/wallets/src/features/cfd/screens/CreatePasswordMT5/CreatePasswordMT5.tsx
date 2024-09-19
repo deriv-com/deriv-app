@@ -1,6 +1,6 @@
 import React from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TPlatforms } from '../../../../types';
@@ -33,6 +33,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     product,
 }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
@@ -55,7 +56,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                     />
                 </Text>
                 <WalletPasswordFieldLazy
-                    label={`${title} password`}
+                    label={localize('{{title}} password', { title })}
                     mt5Policy={isMT5}
                     onChange={onPasswordChange}
                     password={password}

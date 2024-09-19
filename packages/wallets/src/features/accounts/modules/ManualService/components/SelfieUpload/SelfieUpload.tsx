@@ -45,10 +45,7 @@ const SelfieUpload: TManualDocumentComponent = ({ onClickBack, onCompletion }) =
                     onFileChange={(file?: File) => setFieldValue('selfieFile', file)}
                 />
                 <Text color={isDesktop ? 'less-prominent' : 'general'}>
-                    <Localize
-                        i18n_default_text='Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your
-                    face is within the frame.'
-                    />
+                    <Localize i18n_default_text='Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.' />
                 </Text>
             </div>
         </ModalStepWrapper>

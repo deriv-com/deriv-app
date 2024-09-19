@@ -1,19 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
 
-interface UseGrowthbookGetFeatureValueArgs<T> {
+type featureValueTypes = Record<string, boolean> | boolean | string | [];
+
+interface UseGrowthbookGetFeatureValueArgs {
+    defaultValue?: featureValueTypes;
     featureFlag: string;
-    defaultValue?: T;
 }
 
-const useGrowthbookGetFeatureValue = <T extends string | boolean>({
-    featureFlag,
+const useGrowthbookGetFeatureValue = <T>({
     defaultValue,
-}: UseGrowthbookGetFeatureValueArgs<T>) => {
-    const resolvedDefaultValue: T = defaultValue !== undefined ? defaultValue : (false as T);
-    const [featureFlagValue, setFeatureFlagValue] = useState(
-        Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
+    featureFlag,
+}: UseGrowthbookGetFeatureValueArgs): [T, boolean] => {
+    const resolvedDefaultValue: featureValueTypes = defaultValue !== undefined ? defaultValue : false;
+    const [featureFlagValue, setFeatureFlagValue] = useState<T>(
+        (Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue) as T
     );
     const isGBLoaded = useIsGrowthbookIsLoaded();
 
@@ -21,7 +23,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
                 const setFeatureValue = () => {
-                    const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
+                    const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) as T;
                     setFeatureFlagValue(value);
                 };
                 setFeatureValue();
@@ -33,7 +35,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
         }
     }, [isGBLoaded, resolvedDefaultValue, featureFlag]);
 
-    return [featureFlagValue, isGBLoaded];
+    return [featureFlagValue as T, isGBLoaded];
 };
 
 export default useGrowthbookGetFeatureValue;

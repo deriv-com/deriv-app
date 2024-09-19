@@ -71,7 +71,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
 
-    const [is_oauth2_hydra_enabled] = useGrowthbookGetFeatureValue({
+    const [is_oauth2_hydra_enabled, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue({
         featureFlag: 'hydra_be',
         defaultValue: false,
     });
@@ -110,7 +110,12 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
     };
 
-    const { OAuth2Logout } = useOAuth2(logoutRedirect);
+    const isOauth2EnabledConfig = {
+        is_oauth2_hydra_enabled,
+        OAuth2EnabledAppsInitialised,
+    };
+
+    const { OAuth2Logout } = useOAuth2(isOauth2EnabledConfig, logoutRedirect);
 
     const handleLogout = async () => {
         closeAccountsDialog();
@@ -118,12 +123,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        if (is_oauth2_hydra_enabled) {
-            await OAuth2Logout();
-            return;
-        }
-
-        await logoutRedirect();
+        await OAuth2Logout();
     };
 
     const closeAccountsDialog = () => {

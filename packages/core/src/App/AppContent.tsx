@@ -17,8 +17,13 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useIsOAuth2Enabled } from '@deriv-com/auth-client';
+import { useGrowthbookIsOn, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
+
+type hydraBEApps = {
+    enabled_for: number[];
+}[];
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
@@ -33,6 +38,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
+
+    const [OAuth2EnabledApps, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue<hydraBEApps>({
+        featureFlag: 'hydra_be',
+    });
+
+    const isOAuth2Enabled = useIsOAuth2Enabled(OAuth2EnabledApps, OAuth2EnabledAppsInitialised);
+
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
@@ -81,7 +93,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 <AppModals />
             </ErrorBoundary>
             <SmartTraderIFrame />
-            <P2PIFrame />
+            {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

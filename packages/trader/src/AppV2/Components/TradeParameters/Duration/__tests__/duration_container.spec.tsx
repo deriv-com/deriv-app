@@ -166,10 +166,10 @@ describe('DurationActionSheetContainer', () => {
             expiry_type: 'endtime',
         });
     });
-    it('should not render chips if duration_units_list contains only one member', () => {
+    it('should not render chips if duration_units_list contains only ticks', () => {
         default_trade_store.modules.trade.duration = 1;
         default_trade_store.modules.trade.duration_unit = 't';
-        default_trade_store.modules.trade.duration_units_list = ['t'];
+        default_trade_store.modules.trade.duration_units_list = [{ value: 't' }];
         renderDurationContainer();
 
         const chip_names = ['Ticks', 'Seconds', 'Minutes', 'Hours', 'Days', 'End Time'];

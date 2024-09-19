@@ -17,7 +17,7 @@ const DurationActionSheetContainer = observer(
         const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
         const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
-        const show_duration_chips = duration_units_list.length > 1;
+        const show_duration_chips = !(duration_units_list.length === 1 && duration_units_list[0].value === 't');
         const updateCurrentGmtTime = () => {
             const now = new Date();
             const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });

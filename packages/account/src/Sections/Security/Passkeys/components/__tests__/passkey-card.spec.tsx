@@ -30,7 +30,7 @@ const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_li
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getOSNameWithUAParser: () => 'test OS',
+    getOSNameWithUAParser: jest.fn(() => 'test OS'),
 }));
 
 describe('PasskeyCard', () => {

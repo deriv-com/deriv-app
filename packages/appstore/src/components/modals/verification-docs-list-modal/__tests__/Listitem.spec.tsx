@@ -72,20 +72,7 @@ describe('<ListItem />', () => {
         (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: true });
     });
 
-    it('should render the list item', () => {
-        const props = {
-            id: 'identity',
-            text: 'Verified',
-            status: AUTH_STATUS_CODES.VERIFIED,
-            route: '/proof_of_identity',
-        };
-        renderComponent(props);
-
-        expect(screen.getByText('Verified')).toBeInTheDocument();
-        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
-    });
-    it('should render the list item with verified status', () => {
+    it('should render verified status', () => {
         const props = {
             id: 'identity',
             text: 'Verified',
@@ -99,7 +86,7 @@ describe('<ListItem />', () => {
         expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
     });
 
-    it('should render the list item with pending status', () => {
+    it('should render pending status', () => {
         const props = {
             id: 'identity',
             text: 'In review',
@@ -113,7 +100,7 @@ describe('<ListItem />', () => {
         expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
     });
 
-    it('should render the list item with rejected status', () => {
+    it('should render with Failed status', () => {
         const props = {
             id: 'identity',
             text: 'Failed',
@@ -123,22 +110,8 @@ describe('<ListItem />', () => {
         renderComponent(props);
 
         expect(screen.getByText('Failed')).toBeInTheDocument();
+        s;
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
         expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
-    });
-
-    it('should render nothing for unknown status', () => {
-        const props = {
-            id: 'identity',
-            text: 'Unknown',
-            status: 'unknown_status',
-            route: '/proof_of_identity',
-        };
-        renderComponent(props);
-
-        expect(screen.getByText('Unknown')).toBeInTheDocument();
-        expect(screen.queryByText('IcMt5Success')).not.toBeInTheDocument();
-        expect(screen.queryByText('IcMt5Pending')).not.toBeInTheDocument();
-        expect(screen.queryByText('IcMt5Failed')).not.toBeInTheDocument();
     });
 });

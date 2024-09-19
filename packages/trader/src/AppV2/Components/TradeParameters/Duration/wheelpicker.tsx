@@ -3,7 +3,7 @@ import { setTime, toMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import { getBoundaries, getSelectedTime } from 'Stores/Modules/Trading/Helpers/end-time';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -58,6 +58,7 @@ const DurationWheelPicker = observer(
         toggle_date_picker: boolean;
         is_wheelpicker_loading: boolean;
     }) => {
+        const [is24_hour_selected, setIs24HourSelected] = useState(false);
         const { common } = useStore();
         const { server_time } = common;
         const { expiry_date, expiry_time, market_open_times, market_close_times, trade_types, contract_type } =
@@ -75,6 +76,8 @@ const DurationWheelPicker = observer(
 
         const adjusted_start_time =
             boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
+
+        const adjusted_end_time = boundaries.end[0]?.clone().add(5, 'minutes').format('HH:mm');
 
         const time = getSelectedTime(
             server_datetime.clone(),
@@ -99,11 +102,20 @@ const DurationWheelPicker = observer(
                     {unit !== 'et' ? (
                         <WheelPickerContainer
                             key={`${unit}-${toggle_date_picker}`}
-                            data={options}
+                            data={!is24_hour_selected ? options : [options[0], [{ ...options[1][0] }]]}
                             defaultValue={[String(selected_time)]}
                             containerHeight={unit == 'd' ? '228px' : '268px'}
                             inputValues={unit == 'h' ? selected_hour : selected_time}
-                            setInputValues={setWheelPickerValue}
+                            setInputValues={(index, val) => {
+                                if (unit == 'h') {
+                                    if (index == 0 && val === 24) {
+                                        setIs24HourSelected(true);
+                                    } else if (index == 0 && val !== 24) {
+                                        setIs24HourSelected(false);
+                                    }
+                                }
+                                setWheelPickerValue(index, val);
+                            }}
                         />
                     ) : (
                         <TimeWheelPickerContainer
@@ -111,6 +123,7 @@ const DurationWheelPicker = observer(
                             startTimeIn24Format={adjusted_start_time}
                             minutesInterval={5}
                             selectedTime={time}
+                            endTimeIn24Format={adjusted_end_time}
                             setSelectedValue={val => setEndTime(val as string)}
                             containerHeight='226px'
                             hoursInterval={1}

@@ -221,7 +221,7 @@ export const getOptionPerUnit = (unit: string, show_tick_from_5: boolean): { val
         d: { start: 1, end: 365, label: <Localize i18n_default_text='days' /> },
         t: { start: show_tick_from_5 ? 5 : 1, end: 10, label: <Localize i18n_default_text='tick' /> },
         h: () => {
-            const hour_options = generateOptions(1, 23, 'h');
+            const hour_options = generateOptions(1, 24, 'h');
             const minute_options = generateOptions(0, 59, 'min');
             return [hour_options, minute_options];
         },

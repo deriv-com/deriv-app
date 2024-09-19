@@ -4,6 +4,9 @@ import ListItem from '../ListItem';
 import { useStore, StoreProvider, mockStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
+import { StatusBadge } from '@deriv/components';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -17,7 +20,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 jest.mock('@deriv/quill-icons', () => ({
-    LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon </div>,
+    LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -27,16 +30,19 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    AUTH_STATUS_CODES: { VERIFIED: 'verified' },
+    AUTH_STATUS_CODES: {
+        VERIFIED: 'verified',
+        PENDING: 'pending',
+        REJECTED: 'rejected',
+        SUSPECTED: 'suspected',
+    },
 }));
-const mockFn = jest.fn();
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         push: jest.fn(),
         location: { search: 'test' },
-        replace: mockFn,
     }),
 }));
 
@@ -50,16 +56,9 @@ describe('<ListItem />', () => {
         },
     });
 
-    const defaultProps = {
-        id: 'identity',
-        text: 'Verified',
-        status: 'verified',
-        route: '/proof_of_identity',
-    };
-
-    const rendercomponent = ({ props = defaultProps, store = defaultStore }) => {
+    const renderComponent = (props: { id: string; text: string; status: string; route: string }) => {
         render(
-            <StoreProvider store={store}>
+            <StoreProvider store={defaultStore}>
                 <ListItem {...props} />
             </StoreProvider>
         );
@@ -75,10 +74,86 @@ describe('<ListItem />', () => {
     });
 
     it('should render the list item', () => {
-        rendercomponent({ props: defaultProps });
+        const props = {
+            id: 'identity',
+            text: 'Verified',
+            status: AUTH_STATUS_CODES.VERIFIED,
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
 
         expect(screen.getByText('Verified')).toBeInTheDocument();
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
         expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+    });
+    it('should render the list item with verified status', () => {
+        const props = {
+            id: 'identity',
+            text: 'Verified',
+            status: AUTH_STATUS_CODES.VERIFIED,
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
+
+        expect(screen.getByText('Verified')).toBeInTheDocument();
+        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+    });
+
+    it('should render the list item with pending status', () => {
+        const props = {
+            id: 'identity',
+            text: 'In review',
+            status: AUTH_STATUS_CODES.PENDING,
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
+
+        expect(screen.getByText('In review')).toBeInTheDocument();
+        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+    });
+
+    it('should render the list item with rejected status', () => {
+        const props = {
+            id: 'identity',
+            text: 'Failed',
+            status: AUTH_STATUS_CODES.REJECTED,
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
+
+        expect(screen.getByText('Failed')).toBeInTheDocument();
+        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+    });
+
+    it('should render the list item with suspected status', () => {
+        const props = {
+            id: 'identity',
+            text: 'Failed',
+            status: AUTH_STATUS_CODES.SUSPECTED,
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
+
+        expect(screen.getByText('Failed')).toBeInTheDocument();
+        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+    });
+
+    it('should render nothing for unknown status', () => {
+        const props = {
+            id: 'identity',
+            text: 'Unknown',
+            status: 'unknown_status',
+            route: '/proof_of_identity',
+        };
+        renderComponent(props);
+
+        expect(screen.getByText('Unknown')).toBeInTheDocument();
+        expect(screen.queryByText('IcMt5Success')).not.toBeInTheDocument();
+        expect(screen.queryByText('IcMt5Pending')).not.toBeInTheDocument();
+        expect(screen.queryByText('IcMt5Failed')).not.toBeInTheDocument();
     });
 });

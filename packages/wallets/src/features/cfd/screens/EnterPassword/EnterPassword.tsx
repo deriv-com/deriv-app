@@ -73,7 +73,7 @@ const EnterPassword: React.FC<TProps> = ({
                 </Text>
             )}
             <div className='wallets-enter-password__content'>
-                <Text align='center' size={isDesktop ? 'sm' : 'md'}>
+                <Text align='start' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
                         values={{

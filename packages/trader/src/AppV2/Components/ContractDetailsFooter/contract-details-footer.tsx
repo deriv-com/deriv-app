@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TButtonColor } from '@deriv-com/quill-ui';
+import { Button, TButtonColor, Text } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
@@ -51,48 +51,54 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
         <div className='contract-details-footer--container'>
             {is_multiplier ? (
                 <>
-                    <Button
-                        label={label}
-                        isLoading={is_sell_requested}
-                        disabled={Number(profit) < 0 && is_valid_to_cancel}
-                        onClick={() => onClickSell(contract_id)}
-                        {...buttonProps}
-                    />
-                    {is_valid_to_cancel && (
+                    <span className='contract-details-footer-button__wrapper'>
                         <Button
-                            onClick={() => onClickCancel(contract_id)}
-                            label={
-                                <>
-                                    {cardLabels.CANCEL}{' '}
-                                    <RemainingTime
-                                        as='span'
-                                        end_time={cancellation_date_expiry}
-                                        format='mm:ss'
-                                        getCardLabels={getCardLabelsV2}
-                                        start_time={server_time}
-                                    />
-                                </>
-                            }
-                            disabled={Number(profit) >= 0}
-                            variant='secondary'
+                            label={label}
+                            isLoading={is_sell_requested}
+                            disabled={Number(profit) < 0 && is_valid_to_cancel}
+                            onClick={() => onClickSell(contract_id)}
                             {...buttonProps}
                         />
+                    </span>
+                    {is_valid_to_cancel && (
+                        <span className='contract-details-footer-button__wrapper'>
+                            <Button
+                                onClick={() => onClickCancel(contract_id)}
+                                label={
+                                    <>
+                                        {cardLabels.CANCEL}{' '}
+                                        <RemainingTime
+                                            as='span'
+                                            end_time={cancellation_date_expiry}
+                                            format='mm:ss'
+                                            getCardLabels={getCardLabelsV2}
+                                            start_time={server_time}
+                                        />
+                                    </>
+                                }
+                                disabled={Number(profit) >= 0}
+                                variant='secondary'
+                                {...buttonProps}
+                            />
+                        </span>
                     )}
                 </>
             ) : (
-                <Button
-                    label={
-                        is_valid_to_sell
-                            ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
-                            : cardLabels.RESALE_NOT_OFFERED
-                    }
-                    isLoading={is_sell_requested && is_valid_to_sell}
-                    isOpaque
-                    onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
-                    disabled={!is_valid_to_sell}
-                    variant='primary'
-                    {...buttonProps}
-                />
+                <span className='contract-details-footer-button__wrapper'>
+                    <Button
+                        label={
+                            is_valid_to_sell
+                                ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
+                                : cardLabels.RESALE_NOT_OFFERED
+                        }
+                        isLoading={is_sell_requested && is_valid_to_sell}
+                        isOpaque
+                        onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
+                        disabled={!is_valid_to_sell}
+                        variant='primary'
+                        {...buttonProps}
+                    />
+                </span>
             )}
         </div>
     );

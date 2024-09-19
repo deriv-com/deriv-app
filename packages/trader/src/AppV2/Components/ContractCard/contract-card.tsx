@@ -207,7 +207,12 @@ const ContractCard = ({
                             {isCloseButtonPressed ? (
                                 <div className='circle-loader' data-testid='dt_button_loader' />
                             ) : (
-                                <CaptionText bold as='div' className='label'>
+                                <CaptionText
+                                    bold
+                                    as='div'
+                                    className='label'
+                                    color='var(--component-textIcon-static-prominentDark)'
+                                >
                                     {getCardLabels().CLOSE}
                                 </CaptionText>
                             )}

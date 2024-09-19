@@ -59,7 +59,8 @@
             height: var(--core-size-2800);
         }
         .input {
-            padding-inline-start: 0;
+            padding: 0;
+            height: unset;
         }
     }
     &--minimized {

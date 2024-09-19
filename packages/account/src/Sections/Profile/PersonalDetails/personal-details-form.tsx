@@ -425,7 +425,13 @@ const PersonalDetailsForm = observer(() => {
                                                 is_phone_number_editted: account_settings.phone !== values.phone,
                                             })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                handleChange(e);
+                                                let phone_number = e.target.value.replace(/[^0-9]/g, '');
+                                                if (phone_number.length === 0) {
+                                                    phone_number = '+';
+                                                } else {
+                                                    phone_number = `+${phone_number}`;
+                                                }
+                                                setFieldValue('phone', phone_number, true);
                                                 setStatus('');
                                             }}
                                             onBlur={handleBlur}

@@ -160,6 +160,7 @@ const RiskManagementItem = observer(
                                 <TextFieldWithSteppers
                                     allowDecimals
                                     allowSign={false}
+                                    className='text-field--custom'
                                     customType='commaRemoval'
                                     decimals={getDecimalPlaces(currency)}
                                     message={errorMessage}

@@ -181,6 +181,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             allowDecimals
                             allowSign={false}
                             customType='commaRemoval'
+                            className='text-field--custom'
                             decimals={getDecimalPlaces(currency)}
                             data-testid='dt_input_with_steppers'
                             message={getInputMessage()}

@@ -722,13 +722,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === CATEGORY.REAL) {
-            if (platform === CFD_PLATFORMS.MT5) {
-                return localize('Transfer now');
-            }
             return localize('Transfer now');
         }
         return localize('Continue');
-    }, [platform, account_type, is_eu_user]);
+    }, [account_type]);
 
     const success_modal_cancel_label = React.useMemo(() => {
         if (is_eu_user && account_type.category === 'real' && platform === CFD_PLATFORMS.MT5) {
@@ -955,7 +952,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const invalid_mt5_password_modal = isMobileOrTabletPortrait
         ? is_mt5_password_format_invalid
         : is_mt5_password_format_invalid_desktop;
-
     return (
         <React.Fragment>
             {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}

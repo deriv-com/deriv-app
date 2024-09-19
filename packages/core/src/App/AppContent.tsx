@@ -23,7 +23,7 @@ import initHotjar from '../Utils/Hotjar';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { is_client_initialized, has_wallet, setIsPasskeySupported } = store.client;
+    const { is_client_store_initialized, has_wallet, setIsPasskeySupported } = store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -63,8 +63,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [tracking_datadog]);
 
     React.useEffect(() => {
-        if (is_client_initialized) initHotjar(store.client);
-    }, [store.client, is_client_initialized]);
+        if (is_client_store_initialized) initHotjar(store.client);
+    }, [store.client, is_client_store_initialized]);
 
     // intentionally switch the user with wallets to light mode and EN language
     React.useLayoutEffect(() => {

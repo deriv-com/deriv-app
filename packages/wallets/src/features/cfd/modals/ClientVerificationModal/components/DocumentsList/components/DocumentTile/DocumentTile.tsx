@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/ui';
 import './DocumentTile.scss';
 
 type TDocumentTileProps = {
-    badge: JSX.Element;
+    badge?: JSX.Element;
     onClick: VoidFunction;
     title: string;
 };
@@ -12,9 +12,9 @@ type TDocumentTileProps = {
 const DocumentTile: React.FC<TDocumentTileProps> = ({ badge, onClick, title }) => {
     return (
         <button className='wallets-document-tile' onClick={onClick}>
-            <Text>{title}</Text>
+            <Text align='start'>{title}</Text>
             <div className='wallets-document-tile__status'>
-                <div className='wallets-document-tile__badge'>{badge}</div>
+                {badge}
                 <LabelPairedChevronRightMdRegularIcon />
             </div>
         </button>

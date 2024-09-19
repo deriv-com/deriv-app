@@ -55,29 +55,36 @@ const useSortedMT5Accounts = (regulation?: string) => {
     const filtered_data = useMemo(() => {
         if (!modified_data) return;
 
-        const added_accounts = modified_data.filter(account => account.is_added);
-        const non_added_accounts = modified_data.filter(account => !account.is_added);
+        // console.log(modified_data.filter(account => account.is_default_jurisdiction === 'true'));
+        // console.log(
+        //     modified_data.filter(
+        //         account => 'client_kyc_status' in account && account.is_default_jurisdiction === 'true'
+        //     )
+        // );
 
-        const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
-            const { market_type, product } = account;
-            const key = product === 'zero_spread' ? `${market_type}_${product}` : market_type;
+        const added_accounts = modified_data.filter(
+            account => account.is_added && account.is_default_jurisdiction === 'true'
+        );
+        const non_added_accounts = modified_data.filter(
+            account => !account.is_added && account.is_default_jurisdiction === 'true'
+        );
 
-            const existing_account = acc.find(acc_account =>
-                acc_account.product === 'zero_spread'
-                    ? `${acc_account.market_type}_${acc_account.product}` === key
-                    : acc_account.market_type === key
-            );
-            const added_account = added_accounts.find(acc_account =>
-                acc_account.product === 'zero_spread'
-                    ? `${acc_account.market_type}_${acc_account.product}` === key
-                    : acc_account.market_type === key
-            );
-            if (existing_account || added_account) return acc;
+        // const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
+        //     const { market_type, product } = account;
+        //     const key = product === 'zero_spread' ? `${market_type}_${product}` : market_type;
 
-            return [...acc, account];
-        }, [] as typeof non_added_accounts);
+        //     const existing_account = acc.find(acc_account =>
+        //         acc_account.product === 'zero_spread'
+        //             ? `${acc_account.market_type}_${acc_account.product}` === key
+        //             : acc_account.market_type === key
+        //     );
 
-        return [...added_accounts, ...filtered_non_added_accounts];
+        //     if (existing_account) return acc;
+
+        //     return [...acc, account];
+        // }, [] as typeof non_added_accounts);
+
+        return [...added_accounts, ...non_added_accounts];
     }, [modified_data]);
 
     // Sort the data by market_type and product to make sure the order is 'synthetic', 'financial', 'swap_free' and 'zero_spread'

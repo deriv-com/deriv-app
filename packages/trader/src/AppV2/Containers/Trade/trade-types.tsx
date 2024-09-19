@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
+import { Button, Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
@@ -231,11 +231,14 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             <Text size='sm'>{title}</Text>
                         </Chip.Selectable>
                     ))}
-            <button key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
-                <Text size='sm' bold underlined>
-                    {<Localize i18n_default_text='View all' />}
-                </Text>
-            </button>
+            <Button
+                variant='tertiary'
+                key='trade-types-all'
+                onClick={() => setIsOpen(true)}
+                className='trade__trade-types-header'
+                color='black-white'
+                label={<Localize i18n_default_text='View all' />}
+            />
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
                     <ActionSheet.Header

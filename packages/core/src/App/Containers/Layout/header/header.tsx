@@ -6,6 +6,7 @@ import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
+import DTraderContractDetailsHeader from './dtrader-v2-contract-detail-header';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -39,11 +40,6 @@ const TradersHubHeader = makeLazyLoader(
 const TradersHubHeaderWallets = makeLazyLoader(
     () =>
         moduleLoader(() => import(/* webpackChunkName: "traders-hub-header-wallets" */ './traders-hub-header-wallets')),
-    () => <HeaderFallback />
-)();
-
-const DTraderV2ContractDetailsHeader = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-v2-header" */ './dtrader-v2-contract-detail-header')),
     () => <HeaderFallback />
 )();
 
@@ -90,7 +86,7 @@ const Header = observer(() => {
             case is_dtrader_v2_enabled &&
                 isMobile &&
                 pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'):
-                result = <DTraderV2ContractDetailsHeader />;
+                result = <DTraderContractDetailsHeader />;
                 break;
             case traders_hub_routes:
                 result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;

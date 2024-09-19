@@ -25,48 +25,50 @@ const JurisdictionTncSection: React.FC<TProps> = ({
 
     return (
         <div className='wallets-jurisdiction-tnc'>
-            {selectedJurisdiction && (
-                <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
-            )}
-            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                <Checkbox
-                    checked={isCheckBoxChecked}
-                    label={
-                        <Localize
-                            components={[
-                                <a
-                                    className='wallets-jurisdiction-tnc-checkbox__link'
-                                    key={0}
-                                    onClick={() => {
-                                        window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
-                                    }}
-                                    // Reason: To fix sonarcloud issue
-                                    onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                                        if (event.key === 'Enter') {
-                                            window.open(
-                                                getStaticUrl(
-                                                    companyNamesAndUrls[
-                                                        selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                                    ].tncUrl
-                                                ),
-                                                '_blank'
-                                            );
-                                        }
-                                    }}
-                                />,
-                            ]}
-                            i18n_default_text="I confirm and accept {{companyName}}'s <0>Terms and Conditions</0>"
-                            values={{ companyName: selectedCompany.name }}
-                        />
-                    }
-                    labelClassName='wallets-jurisdiction-tnc-checkbox__label'
-                    name='tnc-checkbox'
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        setIsCheckBoxChecked(event.target.checked)
-                    }
-                    wrapperClassName='wallets-jurisdiction-tnc-checkbox'
-                />
-            )}
+            <div className='wallets-jurisdiction-tnc__container'>
+                {selectedJurisdiction && (
+                    <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
+                )}
+                {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
+                    <Checkbox
+                        checked={isCheckBoxChecked}
+                        label={
+                            <Localize
+                                components={[
+                                    <a
+                                        className='wallets-jurisdiction-tnc-checkbox__link'
+                                        key={0}
+                                        onClick={() => {
+                                            window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
+                                        }}
+                                        // Reason: To fix sonarcloud issue
+                                        onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                            if (event.key === 'Enter') {
+                                                window.open(
+                                                    getStaticUrl(
+                                                        companyNamesAndUrls[
+                                                            selectedJurisdiction as keyof typeof companyNamesAndUrls
+                                                        ].tncUrl
+                                                    ),
+                                                    '_blank'
+                                                );
+                                            }
+                                        }}
+                                    />,
+                                ]}
+                                i18n_default_text="I confirm and accept {{companyName}}'s <0>Terms and Conditions</0>"
+                                values={{ companyName: selectedCompany.name }}
+                            />
+                        }
+                        labelClassName='wallets-jurisdiction-tnc-checkbox__label'
+                        name='tnc-checkbox'
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            setIsCheckBoxChecked(event.target.checked)
+                        }
+                        wrapperClassName='wallets-jurisdiction-tnc-checkbox'
+                    />
+                )}
+            </div>
         </div>
     );
 };

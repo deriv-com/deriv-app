@@ -2,9 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { AppCard, WalletCard } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
 import './TransferReceipt.scss';
@@ -16,7 +15,7 @@ type TReceiptCardProps = {
 };
 
 const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balance }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const isTradingApp = account?.account_category === 'trading';
     const isWallet = account?.account_category === 'wallet';
 
@@ -27,10 +26,11 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 appName={account?.accountName}
                 balance={balance}
                 cardSize='md'
-                device={isMobile ? 'mobile' : 'desktop'}
+                device={isDesktop ? 'desktop' : 'mobile'}
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
                 marketType={account?.market_type}
                 platform={account?.account_type as TPlatforms.All}
+                product={account?.product}
                 walletName={activeWallet?.accountName}
             />
         );
@@ -50,7 +50,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
 
 const TransferReceipt = () => {
     const { activeWallet, receipt, resetTransfer } = useTransfer();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     if (!receipt) return null;
 
@@ -118,8 +118,8 @@ const TransferReceipt = () => {
                 <Button
                     borderWidth='sm'
                     onClick={() => resetTransfer()}
-                    size={isMobile ? 'md' : 'lg'}
-                    textSize={isMobile ? 'md' : 'sm'}
+                    size={isDesktop ? 'lg' : 'md'}
+                    textSize={isDesktop ? 'sm' : 'md'}
                 >
                     <Localize i18n_default_text='Make a new transfer' />
                 </Button>

@@ -1,0 +1,37 @@
+.wallets-dialog {
+    /* stylelint-disable-next-line selector-class-pattern */
+    &.deriv-dialog {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2.4rem;
+        width: 100%;
+        max-width: 44rem;
+        padding: 2.4rem;
+
+        @include mobile {
+            height: auto;
+            width: calc(100vw - 3.2rem);
+            min-width: auto;
+            max-width: 32.4rem;
+            border-radius: 0.8rem;
+            row-gap: 1.6rem;
+            padding: 1.6rem;
+        }
+    }
+
+    &__header {
+        height: auto;
+        padding: 0;
+    }
+
+    &__content {
+        overflow: unset;
+    }
+
+    &__footer {
+        min-height: unset;
+        height: auto;
+        padding: 0;
+        column-gap: 1.6rem;
+    }
+}

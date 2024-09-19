@@ -2,8 +2,9 @@
     width: 100%;
     max-width: 60rem;
     min-width: 51.2rem;
+    margin-inline: auto;
 
-    @include mobile {
+    @include mobile-screen {
         width: 100%;
         min-width: 100%;
         height: auto;
@@ -12,6 +13,7 @@
     &__label {
         display: flex;
         flex-direction: row;
+        align-items: center;
         gap: 0.6rem;
     }
 
@@ -19,6 +21,11 @@
         display: flex;
         align-items: center;
         width: 100%;
+
+        &-badge {
+            width: auto;
+            padding-block: 0.5rem;
+        }
 
         &-balance {
             margin-left: auto;

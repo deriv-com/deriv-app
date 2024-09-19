@@ -20,7 +20,7 @@ import MT5AccountAdded from '../MT5AccountAdded';
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({
-        isMobile: false,
+        isDesktop: true,
     })),
 }));
 
@@ -67,6 +67,11 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 describe('MT5AccountAdded', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
     const history = createMemoryHistory();
     it('should render mt5 account added success modal for demo account', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
@@ -111,9 +116,11 @@ describe('MT5AccountAdded', () => {
                 </WalletsAuthProvider>
             </APIProvider>
         );
-        expect(screen.getByText('Your Financial account is ready')).toBeInTheDocument();
+        expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
         expect(
-            screen.getByText('Transfer funds from your undefined Wallet to your Financial account to start trading.')
+            screen.getByText(
+                'Transfer funds from your undefined Wallet to your Financial (SVG) account to start trading.'
+            )
         ).toBeInTheDocument();
     });
 
@@ -285,12 +292,11 @@ describe('MT5AccountAdded', () => {
             </Router>
         );
 
-        expect(screen.getByText('Your Financial account is ready')).toBeInTheDocument();
+        expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
         expect(
-            screen.getByText('Transfer funds from your USD Wallet to your Financial account to start trading.')
+            screen.getByText('Transfer funds from your USD Wallet to your Financial (SVG) account to start trading.')
         ).toBeInTheDocument();
-        expect(screen.getAllByRole('button', { name: 'Transfer funds' })[0]).toBeInTheDocument();
-        expect(screen.getAllByRole('button', { name: 'Maybe later' })[0]).toBeInTheDocument();
+        expect(screen.getAllByRole('button', { name: 'OK' })[0]).toBeInTheDocument();
     });
 
     it('should render loading state', () => {

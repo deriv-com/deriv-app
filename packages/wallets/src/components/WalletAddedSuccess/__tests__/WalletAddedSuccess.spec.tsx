@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletAddedSuccess from '../WalletAddedSuccess';
 
@@ -22,30 +22,32 @@ const wrapper = ({ children }: PropsWithChildren) => (
     </APIProvider>
 );
 
-jest.mock('../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
-describe('WalletAddedSuccess', () => {
-    it('renders success modal content', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+describe('<WalletAddedSuccess />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
+    it('should render success modal', () => {
         render(<WalletAddedSuccess {...props} />, { wrapper });
         expect(screen.getByText('Make a deposit into your new Wallet.')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Deposit' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
     });
 
-    it('renders WalletCard', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
+    it('should render WalletCard', () => {
         render(<WalletAddedSuccess {...props} />, { wrapper });
         expect(screen.getByTestId('dt_wallets_wallet_card')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_card_details')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_currency_icon')).toBeInTheDocument();
     });
 
-    it('runs function on button click', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
-
+    it('should run function on button click', () => {
         render(<WalletAddedSuccess {...props} />, { wrapper });
         const depositButton = screen.getByRole('button', { name: 'Deposit' });
         const maybeLaterButton = screen.getByRole('button', { name: 'Maybe later' });

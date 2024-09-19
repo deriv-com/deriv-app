@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { ApiHelpers } from '@deriv/bot-skeleton';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -11,7 +12,6 @@ import SymbolSelect from '../symbol';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
     ApiHelpers: {
@@ -62,14 +62,9 @@ window.Blockly = {
 
 describe('<SymbolSelect />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeEach(() => {
-        const mock_store = mockStore({
-            ui: {
-                is_mobile: true,
-            },
-        });
-
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
@@ -96,7 +91,7 @@ describe('<SymbolSelect />', () => {
     });
 
     it('should select item from the list', async () => {
-        render(<SymbolSelect key='RDBULL' />, {
+        render(<SymbolSelect />, {
             wrapper,
         });
 
@@ -106,18 +101,49 @@ describe('<SymbolSelect />', () => {
         const option_element = screen.getByText(/Bear Market Index/i);
         userEvent.click(option_element);
 
-        expect(autocomplete_element).toHaveDisplayValue([/Bear Market Index/i]);
+        expect(autocomplete_element).toHaveValue('Bear Market Index');
     });
 
-    it('should input to be empty when the user clicks to type something', () => {
-        mockStore({ ui: { is_mobile: false } });
+    it('should select item from the list if item is not found', async () => {
+        mock_store.ui.is_desktop = true;
         render(<SymbolSelect />, {
             wrapper,
         });
 
         const autocomplete_element = screen.getByTestId('dt_qs_symbol');
-        userEvent.hover(autocomplete_element);
+        userEvent.click(autocomplete_element);
 
-        expect((autocomplete_element as HTMLInputElement).value).toBe('AUD Basket');
+        expect(autocomplete_element).not.toHaveValue('Bear Market Index');
+    });
+
+    it('should handle hide dropdown list', async () => {
+        mock_store.ui.is_desktop = true;
+        render(<SymbolSelect />, { wrapper });
+
+        const autocomplete_element = screen.getByTestId('dt_qs_symbol');
+        userEvent.type(autocomplete_element, 'Invalid');
+        userEvent.tab();
+
+        expect(autocomplete_element).toHaveValue('AUD Basket');
+    });
+
+    it('should handle hide dropdown list if symbol is not found', async () => {
+        mock_store.ui.is_desktop = true;
+        const mockAPI = ApiHelpers.instance as unknown as {
+            active_symbols: {
+                getSymbolsForBot: jest.Mock<string, string[]>;
+            };
+        };
+        mockAPI.active_symbols.getSymbolsForBot = jest.fn().mockReturnValue([]);
+
+        render(<SymbolSelect />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('dt_qs_symbol');
+        userEvent.type(autocomplete_element, 'Invalid');
+        userEvent.tab();
+
+        expect(autocomplete_element).not.toHaveValue('Bear Market Index');
     });
 });

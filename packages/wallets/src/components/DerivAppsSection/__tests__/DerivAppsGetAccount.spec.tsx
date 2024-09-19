@@ -73,27 +73,28 @@ const wrapper = ({ children }: PropsWithChildren) => {
 describe('DerivAppsGetAccount', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     it('renders the component', () => {
         render(<DerivAppsGetAccount />, { wrapper });
-        expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument();
     });
 
-    it('calls createTradingAccount function when the Get button is clicked', async () => {
+    it('calls createTradingAccount function when the Enable button is clicked', async () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         const mockInvalidate = jest.fn();
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({ isLoading: false, mutateAsync: mockMutateAsync });
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({ isLoading: false });
         mockUseInvalidateQuery.mockReturnValue(mockInvalidate);
         render(<DerivAppsGetAccount />, { wrapper });
-        const button = screen.getByRole('button', { name: 'Get' });
+        const button = screen.getByRole('button', { name: 'Enable' });
         userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).toBeCalled());
         await waitFor(() => expect(mockInvalidate).toBeCalledWith('account_list'));
     });
 
-    it('calls show function when the Get button is clicked and new_account_real is defined on mobile', () => {
+    it('calls show function when the Enable button is clicked and new_account_real is defined on mobile', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({
             isLoading: false,
@@ -106,7 +107,7 @@ describe('DerivAppsGetAccount', () => {
         expect(mockShow).toBeCalled();
     });
 
-    it('calls show function when the Get button is clicked and new_account_real is defined on desktop', () => {
+    it('calls show function when the Enable button is clicked and new_account_real is defined on desktop', () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({
             isLoading: false,
@@ -130,7 +131,7 @@ describe('DerivAppsGetAccount', () => {
             data: { is_virtual: true },
         });
         render(<DerivAppsGetAccount />, { wrapper });
-        const button = screen.getByRole('button', { name: 'Get' });
+        const button = screen.getByRole('button', { name: 'Enable' });
         userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).not.toBeCalled());
     });

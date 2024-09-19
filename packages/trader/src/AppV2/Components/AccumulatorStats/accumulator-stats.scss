@@ -13,12 +13,17 @@
 @mixin accumulator-underline-animation($color: var(--core-color-solid-green-600)) {
     animation: underline-animation 640ms ease-in-out forwards;
     background-color: $color;
+
     @keyframes underline-animation {
         0% {
             transform: scaleX(0);
             opacity: 0;
         }
-        50% {
+        37.5% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        62.5% {
             transform: scaleX(1);
             opacity: 1;
         }
@@ -33,6 +38,8 @@
     background: var(--general-main-1);
     padding: var(--core-spacing-400);
     margin-top: calc(var(--core-spacing-600) * -1);
+    border-bottom-left-radius: var(--core-borderWidth-300);
+    border-bottom-right-radius: var(--core-borderWidth-300);
     &__container {
         display: flex;
         justify-content: space-between;
@@ -55,7 +62,6 @@
             margin: var(--core-spacing-300) var(--core-spacing-50);
             display: flex;
             width: calc(100% - 48px - 9px - 40px);
-            justify-content: space-between;
             gap: var(--core-spacing-400);
             position: relative;
             overflow-x: auto;
@@ -84,7 +90,7 @@
                         bottom: 0;
                         left: 0;
                         width: 100%;
-                        height: var(--core-spacing-100);
+                        height: var(--core-spacing-75);
                         transform: scaleX(0);
                         transform-origin: left;
                         background-color: var(--core-color-solid-green-600);
@@ -111,6 +117,8 @@
 
 .accumulator-stats-sheet-wrapper {
     .stats-sheet {
+        max-height: 100dvh;
+        overflow-y: auto;
         padding: var(--core-spacing-800);
         text-align: center;
         .slide-right {
@@ -123,10 +131,15 @@
         &__caption {
             margin-bottom: var(--core-spacing-400);
         }
+        &__moving {
+            display: flex;
+            align-items: center;
+            gap: var(--core-spacing-400);
+        }
         &__stats {
             display: flex;
             padding: var(--core-spacing-600) var(--core-spacing-75);
-            justify-content: space-around;
+            justify-content: space-between;
             border-bottom: var(--core-spacing-75) solid var(--core-color-opacity-black-100);
             &__moving {
                 display: flex;
@@ -146,7 +159,7 @@
                         bottom: 0;
                         left: 0;
                         width: 100%;
-                        height: var(--core-spacing-100);
+                        height: var(--core-spacing-75);
                         transform: scaleX(0);
                         transform-origin: left;
                         opacity: 0;
@@ -172,20 +185,7 @@
     }
 
     .stats-description {
-        text-align: left;
-        &__player-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; // 16:9 aspect ratio (9/16 = 0.5625 or 56.25%)
-            overflow: hidden;
-            &__player {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        }
+        text-align: start;
 
         &__content {
             margin: var(--core-spacing-1200);

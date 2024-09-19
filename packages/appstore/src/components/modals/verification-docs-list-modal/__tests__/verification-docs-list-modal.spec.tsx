@@ -19,7 +19,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 jest.mock('@deriv/quill-icons', () => ({
-    DerivLightUploGHJKadPoiIcon: () => <div>DerivLightUploadPoiIcon</div>,
+    DerivLightUploadPoiIcon: () => <div>DerivLightUploadPoiIcon</div>,
     LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
 }));
 

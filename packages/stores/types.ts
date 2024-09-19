@@ -846,6 +846,8 @@ type TUiStore = {
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    setHashedValue: (value: string) => void;
+    url_hashed_values: string;
 };
 
 type TPortfolioStore = {

@@ -64,8 +64,7 @@ const DurationWheelPicker = observer(
     }) => {
         const { common } = useStore();
         const { server_time } = common;
-        const { expiry_date, expiry_time, market_open_times, market_close_times, trade_types, contract_type } =
-            useTraderStore();
+        const { expiry_date, expiry_time, market_open_times, market_close_times, contract_type } = useTraderStore();
         const moment_expiry_date = toMoment(expiry_date);
         const market_open_datetimes = market_open_times.map(open_time =>
             setTime(moment_expiry_date.clone(), open_time)

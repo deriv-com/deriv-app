@@ -65,7 +65,7 @@ const AccumulatorStats = observer(() => {
             clearTimeout(error_timeout);
             clearTimeout(transition_timeout);
         };
-    }, [rows[0]?.[0]]);
+    }, [rows[0]?.[0], ticks_history]);
 
     if (rows.length === 0) {
         return null;

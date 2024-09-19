@@ -216,8 +216,9 @@ const PurchaseButton = observer(() => {
                         }
                         fullWidth
                         isOpaque
+                        isLoading={active_accu_contract?.is_sell_requested}
                         className='purchase-button purchase-button--single'
-                        disabled={is_accu_sell_disabled}
+                        disabled={!is_valid_to_sell}
                         onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                     />
                 </div>

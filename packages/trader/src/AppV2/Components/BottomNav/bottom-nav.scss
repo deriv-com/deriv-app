@@ -10,6 +10,7 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
         width: 100%;
         border-top: 1px solid var(--component-navigationBar-border-color);
         height: $BOTTOM_NAV_HEIGHT;
+        z-index: 30;
     }
     &-selection {
         flex: 1;

@@ -79,8 +79,6 @@ const DurationWheelPicker = observer(
         const adjusted_start_time =
             boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-        const adjusted_end_time = boundaries.end[0]?.clone().add(5, 'minutes').format('HH:mm');
-
         const time = getSelectedTime(
             server_datetime.clone(),
             expiry_datetime,
@@ -129,7 +127,6 @@ const DurationWheelPicker = observer(
                             startTimeIn24Format={adjusted_start_time}
                             minutesInterval={5}
                             selectedTime={time}
-                            endTimeIn24Format={adjusted_end_time}
                             setSelectedValue={val => setEndTime(val as string)}
                             containerHeight='226px'
                             hoursInterval={1}

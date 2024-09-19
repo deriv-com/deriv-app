@@ -36,14 +36,14 @@ const WalletListHeader: React.FC = () => {
 
     return (
         <div className='wallets-list-header'>
-            <Text size='xl' weight='bold'>
+            <Text align='start' size='xl' weight='bold'>
                 <Localize i18n_default_text="Trader's Hub" />
             </Text>
             {shouldShowSwitcher && (
                 <div>
                     <div className='wallets-list-header__label'>
                         <div className='wallets-list-header__label-item'>
-                            <Text size='sm'>
+                            <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Demo' />
                             </Text>
                         </div>
@@ -53,7 +53,7 @@ const WalletListHeader: React.FC = () => {
                             })}
                             data-testid='dt_wallets_list_header__label_item_real'
                         >
-                            <Text size='sm'>
+                            <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Real' />
                             </Text>
                         </div>

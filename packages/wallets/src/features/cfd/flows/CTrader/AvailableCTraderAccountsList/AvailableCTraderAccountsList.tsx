@@ -60,8 +60,10 @@ const AvailableCTraderAccountsList: React.FC = () => {
             <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content>
-                    <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                    <Text size='xs'>
+                    <Text align='start' size='sm'>
+                        {PlatformDetails.ctrader.title}
+                    </Text>
+                    <Text align='start' size='xs'>
                         <Localize i18n_default_text='CFDs on financial and derived instruments with copy trading.' />
                     </Text>
                 </TradingAccountCard.Content>

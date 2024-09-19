@@ -29,7 +29,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     return (
         <div className='wallets-disabled-account-banner__container'>
             <SectionMessage variant='warning'>
-                <Text lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
+                <Text align='start' lineHeight='lg' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         components={[
                             <button

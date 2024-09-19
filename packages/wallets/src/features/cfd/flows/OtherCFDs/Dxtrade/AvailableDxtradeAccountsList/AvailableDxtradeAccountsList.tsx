@@ -18,9 +18,11 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content>
                     <p className='wallets-available-dxtrade__details-title'>
-                        <Text size='sm'>Deriv X</Text>
+                        <Text align='start' size='sm'>
+                            Deriv X
+                        </Text>
                     </p>
-                    <Text size='xs'>
+                    <Text align='start' size='xs'>
                         <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
                     </Text>
                 </TradingAccountCard.Content>

@@ -56,7 +56,7 @@ const TradingAccountJurisdictionStatusInfo: React.FC<TTradingAccountJurisdiction
                     />
                 }
             >
-                <Text color='warning' size='2xs' weight='bold'>
+                <Text align='start' color='warning' size='2xs' weight='bold'>
                     <Localize i18n_default_text='Pending verification' />
                 </Text>
             </InlineMessage>
@@ -74,7 +74,7 @@ const TradingAccountJurisdictionStatusInfo: React.FC<TTradingAccountJurisdiction
                     />
                 }
             >
-                <Text color='error' size='2xs' weight='bold'>
+                <Text align='start' color='error' size='2xs' weight='bold'>
                     <Localize
                         components={[
                             <a
@@ -158,15 +158,17 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <TradingAccountCard.Section>
                     <TradingAccountCard.Content className='wallets-added-mt5__details'>
                         <div className='wallets-added-mt5__details-title'>
-                            <Text size='sm'>{title}</Text>
+                            <Text align='start' size='sm'>
+                                {title}
+                            </Text>
                         </div>
                         {shouldShowBalance && (
-                            <Text size='sm' weight='bold'>
+                            <Text align='start' size='sm' weight='bold'>
                                 {account.display_balance}
                             </Text>
                         )}
 
-                        <Text as='p' size='xs'>
+                        <Text align='start' as='p' size='xs'>
                             {account.display_login}
                         </Text>
                         <TradingAccountJurisdictionStatusInfo

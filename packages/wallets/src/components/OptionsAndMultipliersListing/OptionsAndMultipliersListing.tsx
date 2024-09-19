@@ -26,7 +26,7 @@ const OptionsAndMultipliersListing = () => {
                             <Localize i18n_default_text='Options' />
                         </Text>
                     )}
-                    <Text size={isDesktop ? 'md' : 'sm'}>
+                    <Text align='start' size={isDesktop ? 'md' : 'sm'}>
                         <Localize i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. ' />
                         <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
                             <Localize i18n_default_text='Learn more' />
@@ -52,8 +52,12 @@ const OptionsAndMultipliersListing = () => {
                             </TradingAccountCard.Icon>
                             <TradingAccountCard.Section>
                                 <TradingAccountCard.Content>
-                                    <Text size='sm'>{title}</Text>
-                                    <Text size='xs'>{description}</Text>
+                                    <Text align='start' size='sm'>
+                                        {title}
+                                    </Text>
+                                    <Text align='start' size='xs'>
+                                        {description}
+                                    </Text>
                                 </TradingAccountCard.Content>
                                 {activeLinkedToTradingAccount?.loginid && (
                                     <TradingAccountCard.Button>

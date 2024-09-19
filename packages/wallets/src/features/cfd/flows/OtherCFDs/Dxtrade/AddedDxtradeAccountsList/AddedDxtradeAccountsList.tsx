@@ -21,11 +21,15 @@ const AddedDxtradeAccountsList: React.FC = () => {
                     <TradingAccountCard.Icon>{PlatformDetails.dxtrade.icon}</TradingAccountCard.Icon>
                     <TradingAccountCard.Section>
                         <TradingAccountCard.Content>
-                            <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
-                            <Text size='sm' weight='bold'>
+                            <Text align='start' size='sm'>
+                                {PlatformDetails.dxtrade.title}
+                            </Text>
+                            <Text align='start' size='sm' weight='bold'>
                                 {account?.display_balance}
                             </Text>
-                            <Text size='xs'>{account?.login}</Text>
+                            <Text align='start' size='xs'>
+                                {account?.login}
+                            </Text>
                         </TradingAccountCard.Content>
                         <TradingAccountCard.Button>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />

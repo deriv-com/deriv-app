@@ -14,7 +14,7 @@ const WalletDisabledAccountModal: FC<WalletDisabledAccountModalProps> = ({ accou
                 <Localize i18n_default_text='{{accountType}} account disabled ' values={{ accountType }} />
             </WalletDialog.Header>
             <WalletDialog.Content>
-                <Text size='sm'>
+                <Text align='start' size='sm'>
                     <Localize i18n_default_text='Contact us via live chat for more details.' />
                 </Text>
             </WalletDialog.Content>

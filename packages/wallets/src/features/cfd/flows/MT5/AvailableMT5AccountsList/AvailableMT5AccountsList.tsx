@@ -98,18 +98,20 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content className='wallets-available-mt5__details'>
                     <div className='wallets-available-mt5__title'>
-                        <Text className='' size='sm'>
+                        <Text align='start' className='' size='sm'>
                             {title}
                         </Text>
                         {account.product === PRODUCT.ZEROSPREAD && (
                             <div className='wallets-available-mt5__badge'>
-                                <Text size='xs' weight='bold'>
+                                <Text align='start' size='xs' weight='bold'>
                                     NEW
                                 </Text>
                             </div>
                         )}
                     </div>
-                    <Text size='xs'>{description}</Text>
+                    <Text align='start' size='xs'>
+                        {description}
+                    </Text>
                 </TradingAccountCard.Content>
                 <TradingAccountCard.Button className='wallets-available-mt5__icon'>
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />

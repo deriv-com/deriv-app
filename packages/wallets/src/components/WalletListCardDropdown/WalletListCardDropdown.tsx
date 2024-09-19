@@ -104,7 +104,7 @@ const WalletListCardDropdown = () => {
                     {isOpen && (
                         <ul className='wallets-listcard-dropdown__items'>
                             <div className='wallets-listcard-dropdown__items-header'>
-                                <Text size='sm' weight='bold'>
+                                <Text align='start' size='sm' weight='bold'>
                                     <Localize i18n_default_text='Select Wallet' />
                                 </Text>
                             </div>
@@ -129,7 +129,9 @@ const WalletListCardDropdown = () => {
                                     >
                                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                                         <div className='wallets-listcard-dropdown__list-content'>
-                                            <Text size='2xs'>{wallet.currency} Wallet</Text>
+                                            <Text align='start' size='2xs'>
+                                                {wallet.currency} Wallet
+                                            </Text>
                                             {isBalanceLoading ? (
                                                 <div
                                                     className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
@@ -137,7 +139,7 @@ const WalletListCardDropdown = () => {
                                                 />
                                             ) : (
                                                 !wallet.isDisabled && (
-                                                    <Text size='sm' weight='bold'>
+                                                    <Text align='start' size='sm' weight='bold'>
                                                         {displayMoney(
                                                             balanceData?.[wallet.loginid]?.balance,
                                                             wallet?.currency,

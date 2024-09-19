@@ -103,8 +103,10 @@ const DerivAppsGetAccount: React.FC = () => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content>
-                    <Text size='sm'>Options</Text>
-                    <Text size='xs'>
+                    <Text align='start' size='sm'>
+                        Options
+                    </Text>
+                    <Text align='start' size='xs'>
                         <Localize i18n_default_text='One options account for all platforms.' />
                     </Text>
                 </TradingAccountCard.Content>

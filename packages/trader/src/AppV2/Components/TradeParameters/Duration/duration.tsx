@@ -12,7 +12,7 @@ type TDurationProps = {
 };
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
-    const { duration, duration_unit, expiry_time, expiry_type } = useTraderStore();
+    const { duration, duration_unit, expiry_time, expiry_type, contract_type, onChange } = useTraderStore();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
@@ -38,6 +38,13 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
 
     useEffect(() => {
         handleHour();
+        if (
+            ['turboslong', 'turbosshort', 'high_low', 'touch'].includes(contract_type) &&
+            duration_unit == 't' &&
+            duration < 5
+        ) {
+            onChange({ target: { value: duration, name: 'duration' } });
+        }
     }, [handleHour, is_open]);
 
     const getInputValues = () => {

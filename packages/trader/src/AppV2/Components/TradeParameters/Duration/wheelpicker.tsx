@@ -58,11 +58,10 @@ const DurationWheelPicker = observer(
         toggle_date_picker: boolean;
         is_wheelpicker_loading: boolean;
     }) => {
-        const options = React.useMemo(() => getOptionPerUnit(unit), [unit]);
-
         const { common } = useStore();
         const { server_time } = common;
-        const { expiry_date, expiry_time, market_open_times, market_close_times } = useTraderStore();
+        const { expiry_date, expiry_time, market_open_times, market_close_times, trade_types, contract_type } =
+            useTraderStore();
         const moment_expiry_date = toMoment(expiry_date);
         const market_open_datetimes = market_open_times.map(open_time =>
             setTime(moment_expiry_date.clone(), open_time)
@@ -83,6 +82,8 @@ const DurationWheelPicker = observer(
             market_open_datetimes,
             market_close_datetimes
         );
+        const show_tick_from_five = ['turboslong', 'turbosshort', 'high_low', 'touch'].includes(contract_type);
+        const options = React.useMemo(() => getOptionPerUnit(unit, show_tick_from_five), [unit, show_tick_from_five]);
 
         return (
             <div

@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
+import { LegacyArrowLeft2pxIcon, LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { AppCard, WalletCard } from '../../../../../../components';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
 import './TransferReceipt.scss';
@@ -51,6 +52,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
 const TransferReceipt = () => {
     const { activeWallet, receipt, resetTransfer } = useTransfer();
     const { isDesktop } = useDevice();
+    const isRtl = useIsRtl();
 
     if (!receipt) return null;
 
@@ -87,7 +89,7 @@ const TransferReceipt = () => {
                     balance={`-${displayTransferredFromAmount}`}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
-                    <LegacyArrowRight2pxIcon iconSize='xs' />
+                    {isRtl ? <LegacyArrowLeft2pxIcon iconSize='xs' /> : <LegacyArrowRight2pxIcon iconSize='xs' />}
                 </div>
                 <ReceiptCard
                     account={toAccount}

@@ -49,7 +49,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
             )}
             <div className='wallets-create-password-mt5__body'>
                 <DerivLightDmt5PasswordIcon height={120} width={120} />
-                <Text size={isDesktop ? 'sm' : 'md'}>
+                <Text align='start' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         i18n_default_text='Note: You can use this password for all your {{title}} accounts.'
                         values={{ title }}

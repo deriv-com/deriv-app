@@ -110,7 +110,6 @@ describe('<ListItem />', () => {
         renderComponent(props);
 
         expect(screen.getByText('Failed')).toBeInTheDocument();
-        s;
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
         expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
     });

@@ -17,11 +17,11 @@ describe('WalletDeposit', () => {
         jest.clearAllMocks();
     });
 
-    it('should render crypto module when wallet is crypto', () => {
+    it('renders crypto module when cashier provider is `crypto`', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency_config: {
-                    is_crypto: true,
+                    platform: { cashier: ['crypto'] },
                 },
             },
         });
@@ -32,11 +32,11 @@ describe('WalletDeposit', () => {
         expect(screen.queryByText(/MockedDepositFiatModule/)).not.toBeInTheDocument();
     });
 
-    it('should render fiat module when wallet is fiat', () => {
+    it('renders fiat module when cashier provider is `doughflow`', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency_config: {
-                    is_crypto: false,
+                    platform: { cashier: ['doughflow'] },
                 },
             },
         });

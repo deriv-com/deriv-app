@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Modal, Dialog } from '@deriv/components';
+import { useHistory } from 'react-router-dom';
+import { Modal } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import AccountTransfer from '@deriv/cashier/src/pages/account-transfer';
+import ErrorDialog from '@deriv/cashier/src/components/error-dialog';
 import './account-transfer-modal.scss';
 
 type TAccountTransferModal = {
@@ -22,13 +23,11 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
         },
         traders_hub: { closeModal, setSelectedAccount },
     } = useStore();
-    const [is_error_dialog_open, setIsErrorDialogOpen] = React.useState(false);
 
     const history = useHistory();
 
     React.useEffect(() => {
         if (is_modal_open) setActiveTab('account_transfer');
-        if (error.code === 'FinancialAssessmentRequired') setIsErrorDialogOpen(true);
 
         return () => {
             if (is_modal_open) {
@@ -37,7 +36,6 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
                 setActiveTab('deposit');
                 closeModal();
             }
-            if (error.code === 'FinancialAssessmentRequired') setIsErrorDialogOpen(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_modal_open, error.code]);
@@ -54,30 +52,8 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
         history.push(routes.cashier_acc_transfer);
     };
 
-    const dismissError = () => {
-        toggleModal();
-        setIsErrorDialogOpen(false);
-        error.setErrorMessage({ code: '', message: '' }, null, false);
-    };
-
-    if (is_error_dialog_open) {
-        return (
-            <Dialog
-                title={localize('Cashier Error')}
-                confirm_button_text={localize('OK')}
-                onConfirm={dismissError}
-                is_visible={is_error_dialog_open}
-                has_close_icon={false}
-                dismissable={false}
-            >
-                <Localize
-                    i18n_default_text='Please complete your <0>financial assessment</0>.'
-                    components={[
-                        <Link to={routes.financial_assessment} key={0} className='link' onClick={dismissError} />,
-                    ]}
-                />
-            </Dialog>
-        );
+    if (error.code?.length) {
+        return <ErrorDialog error={error} />;
     }
 
     return (

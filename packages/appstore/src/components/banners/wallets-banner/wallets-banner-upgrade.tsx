@@ -23,9 +23,10 @@ type TProps = {
 };
 
 const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
-    const { traders_hub } = useStore();
+    const { traders_hub, common } = useStore();
     const { isDesktop, isMobile, isTablet } = useDevice();
     const { is_demo, toggleWalletsUpgrade } = traders_hub;
+    const { current_language } = common;
     const account_mode = is_demo ? 'demo' : 'real';
     let titleFontSize, iconHeight, iconWidth;
 
@@ -53,7 +54,7 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
     };
 
     return (
-        <div className='wallets-banner wallets-banner-upgrade'>
+        <div className='wallets-banner wallets-banner-upgrade' key={`wallets-banner__${current_language}--upgrade`}>
             <div className='wallets-banner__content wallets-banner-upgrade__content'>
                 <div>
                     <Localize

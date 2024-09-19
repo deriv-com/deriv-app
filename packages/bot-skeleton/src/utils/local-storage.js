@@ -8,8 +8,7 @@ import { save_types } from '../constants/save-type';
  * @param {Blockly.Events} event // Blockly event object
  */
 export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED) => {
-    // Ensure strategies don't go through expensive conversion.
-    xml.setAttribute('is_dbot', true);
+    const xml_dom = convertStrategyToIsDbot(xml);
     const {
         load_modal: { updateListStrategies },
         save_modal,
@@ -17,7 +16,7 @@ export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED)
 
     const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.idGenerator.genUid();
     const workspaces = await getSavedWorkspaces();
-    const current_xml = Blockly.Xml.domToText(xml);
+    const current_xml = Blockly.Xml.domToText(xml_dom);
     const current_timestamp = Date.now();
     const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 
@@ -67,4 +66,13 @@ export const removeExistingWorkspace = async workspace_id => {
     }
 
     await localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
+};
+
+export const convertStrategyToIsDbot = xml_dom => {
+    if (!xml_dom) return;
+    if (xml_dom.hasAttribute('collection') && xml_dom.getAttribute('collection') === 'true') {
+        xml_dom.setAttribute('collection', 'true');
+    }
+    xml_dom.setAttribute('is_dbot', 'true');
+    return xml_dom;
 };

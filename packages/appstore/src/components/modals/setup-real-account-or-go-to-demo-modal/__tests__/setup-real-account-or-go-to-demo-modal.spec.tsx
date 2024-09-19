@@ -10,7 +10,6 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 jest.mock('@deriv-com/analytics', () => ({
-    ...jest.requireActual('@deriv-com/analytics'),
     Analytics: {
         trackEvent: jest.fn(),
     },

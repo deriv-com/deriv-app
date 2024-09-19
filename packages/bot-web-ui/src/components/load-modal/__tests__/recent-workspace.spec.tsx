@@ -6,6 +6,7 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import RecentWorkspace from '../recent-workspace';
+import { TStrategy } from 'Types';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
@@ -21,6 +22,21 @@ const mock_workspace = {
     timestamp: 1697621094136,
     xml: '<xml>Sample</xml>',
 };
+
+type TMockStrategy = Array<TStrategy>;
+
+const strategy = {
+    name: '',
+    xml: '',
+    save_type: '',
+    timestamp: 1,
+};
+
+const mock_strategy: TMockStrategy = [
+    { ...strategy, name: 'martingale', id: 'test-id-1' },
+    { ...strategy, name: 'd_alembert', id: 'test-id-1' },
+    { ...strategy, name: 'oscar_grind', id: 'test-id-1' },
+];
 
 describe('RecentWorkspace', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
@@ -49,9 +65,10 @@ describe('RecentWorkspace', () => {
     });
 
     it('should update selected strategy ID on clicking the strategy', () => {
+        mock_DBot_store?.load_modal?.setRecentStrategies(mock_strategy);
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
         const recent_workspace_item = screen.getByTestId('dt_recent_workspace_item');
         userEvent.click(recent_workspace_item);
-        expect(mock_DBot_store?.load_modal?.selected_strategy_id).toBe(mock_workspace.id);
+        expect(mock_DBot_store?.load_modal?.selected_strategy_id).toBe(mock_strategy[0].id);
     });
 });

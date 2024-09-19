@@ -1,17 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import {
-    LegacyMarketBasketIndicesIcon,
-    StandaloneBarsRegularIcon,
-    StandaloneChartCandlestickRegularIcon,
-    StandaloneClockThreeRegularIcon,
-} from '@deriv/quill-icons';
-import { Badge } from '@deriv-com/quill-ui';
+import { StandaloneChartCandlestickRegularIcon, StandaloneClockThreeRegularIcon } from '@deriv/quill-icons';
+import { Badge, Navigation } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
-import BottomNavItem from './bottom-nav-item';
 import { useHistory, useLocation } from 'react-router';
 
 type BottomNavProps = {
@@ -23,7 +18,9 @@ type BottomNavProps = {
 const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
-    const { active_positions_count, onMount, onUnmount } = useStore().portfolio;
+    const { client, portfolio } = useStore();
+    const { active_positions_count } = portfolio;
+    const { is_logged_in } = client;
 
     const bottomNavItems = [
         {
@@ -37,16 +34,6 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             path: routes.trade,
         },
         {
-            icon: (
-                <LegacyMarketBasketIndicesIcon
-                    iconSize='sm'
-                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-                />
-            ),
-            label: <Localize i18n_default_text='Markets' />,
-            path: routes.markets,
-        },
-        {
             icon:
                 active_positions_count > 0 ? (
                     <Badge
@@ -56,6 +43,7 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         color='danger'
                         size='sm'
                         contentSize='sm'
+                        className='bottom-nav-item__position-badge'
                     >
                         <StandaloneClockThreeRegularIcon
                             iconSize='sm'
@@ -68,15 +56,13 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                         fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                     />
                 ),
-            label: <Localize i18n_default_text='Positions' />,
-            path: routes.trader_positions,
-        },
-        {
-            icon: (
-                <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
+            label: (
+                <React.Fragment>
+                    <span className='user-guide__anchor' />
+                    <Localize i18n_default_text='Positions' />
+                </React.Fragment>
             ),
-            label: <Localize i18n_default_text='Menu' />,
-            path: routes.trader_menu,
+            path: routes.trader_positions,
         },
     ];
     const navIndex = bottomNavItems.findIndex(item => item.path === location.pathname);
@@ -86,28 +72,33 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
         setSelectedIndex(index);
         history.push(bottomNavItems[index].path);
     };
-    React.useEffect(() => {
-        onMount();
-        return onUnmount;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
     return (
         <div className={classNames('bottom-nav', className)}>
             <div className='bottom-nav-selection' onScroll={onScroll}>
                 {children}
             </div>
-            <div className='bottom-nav-container'>
-                {bottomNavItems.map((item, index) => (
-                    <BottomNavItem
-                        key={index}
-                        index={index}
-                        icon={item.icon}
-                        selectedIndex={selectedIndex}
-                        label={item.label}
-                        setSelectedIndex={handleSelect}
-                    />
-                ))}
-            </div>
+            {is_logged_in ? (
+                <Navigation.Bottom className='bottom-nav-container' onChange={(_, index) => handleSelect(index)}>
+                    {bottomNavItems.map((item, index) => (
+                        <Navigation.BottomAction
+                            key={index}
+                            index={index}
+                            activeIcon={item.icon}
+                            icon={item.icon}
+                            label={item.label}
+                            selected={index === selectedIndex}
+                            showLabel
+                            className={clsx(
+                                'bottom-nav-item',
+                                index === selectedIndex && 'bottom-nav-item--active',
+                                item.path === routes.trader_positions && 'bottom-nav-item--positions'
+                            )}
+                        />
+                    ))}
+                </Navigation.Bottom>
+            ) : (
+                <></>
+            )}
         </div>
     );
 });

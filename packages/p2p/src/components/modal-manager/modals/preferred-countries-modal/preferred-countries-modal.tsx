@@ -15,8 +15,8 @@ type TPreferredCountriesModal = {
 const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: TPreferredCountriesModal) => {
     const { isDesktop } = useDevice();
     const [search_value, setSearchValue] = React.useState('');
-    const [selected_countries, setSelectedCountries] = React.useState(eligible_countries);
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
+    const [selected_countries, setSelectedCountries] = useSavedState('selected_countries', eligible_countries);
 
     const onApplySelectedCountries = () => {
         onApply?.(selected_countries);
@@ -24,6 +24,16 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
     };
 
     const onClear = () => setSelectedCountries([]);
+    const onLeave = () => {
+        if (selected_countries === eligible_countries) {
+            hideModal();
+        } else {
+            showModal({
+                key: 'LeavePageModal',
+                props: {},
+            });
+        }
+    };
 
     if (isDesktop) {
         return (
@@ -33,7 +43,7 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                 is_open={is_modal_open}
                 small
                 title={localize('Preferred countries')}
-                toggleModal={() => hideModal()}
+                toggleModal={onLeave}
             >
                 <Modal.Body className='preferred-countries-modal__body'>
                     <PreferredCountriesModalBody
@@ -66,7 +76,7 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
             is_flex
             is_modal_open={is_modal_open}
             page_footer_className='preferred-countries-modal__footer'
-            pageHeaderReturnFn={hideModal}
+            pageHeaderReturnFn={onLeave}
             renderPageHeaderElement={
                 <Text as='p' color='prominent' weight='bold'>
                     <Localize i18n_default_text='Preferred countries' />

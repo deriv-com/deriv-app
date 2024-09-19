@@ -20,7 +20,6 @@ import {
     ContentFlag,
     getStaticUrl,
     getUrlSmartTrader,
-    getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
     TRADING_PLATFORM_STATUS,
@@ -132,9 +131,6 @@ const TradingAppCard = ({
                 case DERIV_PLATFORM_NAMES.SMARTTRADER:
                     window.open(getUrlSmartTrader());
                     break;
-                case DERIV_PLATFORM_NAMES.BBOT:
-                    window.open(getUrlBinaryBot());
-                    break;
                 case DERIV_PLATFORM_NAMES.GO:
                     window.open(getStaticUrl('/deriv-go'));
                     break;
@@ -171,7 +167,7 @@ const TradingAppCard = ({
             </div>
             <div
                 className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
-                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${platform_name
+                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${String(platform_name)
                     .replaceAll(' ', '-')
                     .toLowerCase()}${
                     selected_mt5_jurisdiction?.jurisdiction ? `_${selected_mt5_jurisdiction.jurisdiction}` : ''
@@ -208,7 +204,7 @@ const TradingAppCard = ({
                         </Text>
                         {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
                             <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
-                                <Localize i18n_default_text='NEW!' />
+                                <Localize i18n_default_text='NEW' />
                             </Text>
                         )}
                     </div>

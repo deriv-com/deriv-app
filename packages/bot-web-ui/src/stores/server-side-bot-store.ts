@@ -1,12 +1,13 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import moment from 'moment';
 import { ProposalOpenContract } from '@deriv/api-types';
 import { api_base } from '@deriv/bot-skeleton';
 import { isEnded } from '@deriv/shared';
+import { TClientStore } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { downloadFile } from 'Utils/download';
-import RootStore from './root-store';
+import { SERVER_BOT_CONFIG } from '../pages/server-side-bot/config';
 
 export type TFormData = {
     [key: string]: string | number | boolean;
@@ -85,13 +86,21 @@ export type TJournalItem = {
     time?: string;
 };
 
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
+};
+
 export const getDate = (epoch: number) => {
     const DATE_TIME_FORMAT_WITH_OFFSET = 'YYYY-MM-DD HH:mm:ss Z';
     return moment.unix(epoch).utc().local().format(DATE_TIME_FORMAT_WITH_OFFSET);
 };
 
 export default class ServerBotStore {
-    root_store: RootStore;
+    client_store: TClientStore;
     is_loading_bot_list = true;
     active_bot_id = '';
     bot_list: TServerBotItem[] = [];
@@ -107,9 +116,23 @@ export default class ServerBotStore {
 
     pocs: { [key: string]: ProposalOpenContract } = {};
     should_subscribe = true;
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
+    current_duration_min_max = {
+        min: 0,
+        max: 10,
+    };
+    selected_strategy = 'MARTINGALE';
+    form_data: TFormData = {
+        symbol: SERVER_BOT_CONFIG.DEFAULT.symbol,
+        tradetype: SERVER_BOT_CONFIG.DEFAULT.tradetype,
+        durationtype: SERVER_BOT_CONFIG.DEFAULT.durationtype,
+        action: 'RUN',
+    };
 
-    constructor(root_store: RootStore) {
-        this.root_store = root_store;
+    constructor(client_store: TClientStore) {
+        this.client_store = client_store;
         makeObservable(this, {
             is_loading_bot_list: observable,
             active_bot_id: observable,
@@ -119,6 +142,10 @@ export default class ServerBotStore {
             pocs: observable,
             journal: observable,
             should_subscribe: observable,
+            selected_strategy: observable,
+            form_data: observable,
+            current_duration_min_max: observable,
+            loss_threshold_warning_data: observable,
             setShouldSubscribe: action,
             performance: computed,
             setListLoading: action,
@@ -136,8 +163,37 @@ export default class ServerBotStore {
             setJournal: action,
             setBotList: action,
             setActiveBotId: action,
+            setLossThresholdWarningData: action,
+            initializeLossThresholdWarningData: action,
+            setCurrentDurationMinMax: action,
+            setSelectedStrategy: action,
+            resetValues: action,
         });
+
+        reaction(
+            () => this.client_store.is_virtual,
+            (is_virtual: boolean) => {
+                if (this?.client_store?.is_logged_in && is_virtual) {
+                    this.resetValues();
+                }
+            }
+        );
     }
+
+    resetValues = () => {
+        this.is_loading_bot_list = true;
+        this.active_bot_id = '';
+        this.bot_list = [];
+        this.active_bot = {
+            status: 'stopped',
+        };
+        this.order = 0;
+        this.transactions = {};
+        this.journal = [];
+        this.subscriptions = {};
+        this.pocs = {};
+        this.should_subscribe = true;
+    };
 
     get performance() {
         let total_runs = 0;
@@ -184,12 +240,14 @@ export default class ServerBotStore {
         this.active_bot_id = bot_id;
     };
 
+    setActiveBot = (active_bot: Partial<TServerBotItem>) => {
+        this.active_bot = active_bot;
+    };
+
     onMessage = ({ data }) => {
         const { msg_type, echo_req } = data;
 
         if (data?.error) {
-            // eslint-disable-next-line no-console
-            console.info(data.error);
             if (data.error.message) {
                 this.onJournalMessage(JOURNAL_TYPE.ERROR, {
                     msg: data.error.message,
@@ -249,19 +307,19 @@ export default class ServerBotStore {
                             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
                             bot_list[index].status = 'stopped';
                             this.setBotList(bot_list);
-                            this.active_bot = {
+                            this.setActiveBot({
                                 bot_id,
                                 status: 'stopped',
-                            };
+                            });
                         }
                         const bot_list = [...this.bot_list];
                         const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
                         bot_list[index].status = 'stopped';
                         this.setBotList(bot_list);
-                        this.active_bot = {
+                        this.setActiveBot({
                             bot_id,
                             status: 'stopped',
-                        };
+                        });
                     }
                 }
             }
@@ -320,8 +378,20 @@ export default class ServerBotStore {
         try {
             const items = [[localize('Journal')]];
             [...this.journal].map(item => {
-                const arr = [item.msg];
-                items.push(arr);
+                let combined_message;
+
+                switch (item?.type) {
+                    case JOURNAL_TYPE.WON:
+                        combined_message = `Profit amount: ${item?.amount ?? ''}`;
+                        break;
+                    case JOURNAL_TYPE.LOSS:
+                        combined_message = `Loss amount: ${item?.amount ?? ''}`;
+                        break;
+                    default:
+                        combined_message = `${item?.type ?? ''}:${item?.msg ?? ''}`;
+                        break;
+                }
+                items.push([combined_message]);
             });
             const content = items.map(e => e.join(',')).join('\n');
             downloadFile(localize('Journal'), content);
@@ -330,7 +400,6 @@ export default class ServerBotStore {
             console.dir(error);
         }
     };
-
     handleProposalOpenContract = (poc: ProposalOpenContract) => {
         if (poc && !poc?.contract_id && this.active_bot?.bot_id) return;
 
@@ -394,7 +463,7 @@ export default class ServerBotStore {
 
             // Setting the active_bot object with the running bot details
             if (running_bot?.bot_id) {
-                this.active_bot = running_bot;
+                this.setActiveBot(running_bot);
                 this.subscribeToBotNotification(running_bot?.bot_id);
             }
 
@@ -446,10 +515,11 @@ export default class ServerBotStore {
                         amount: data.stake,
                         basis: 'stake',
                         contract_type: data.type,
-                        currency: 'USD',
+                        currency: this.client_store?.currency ?? 'USD',
                         duration: data.duration,
                         duration_unit: data.durationtype,
                         symbol: data.symbol,
+                        barrier: data.last_digit_prediction,
                     },
                     parameters: {
                         initial_stake: data.stake,
@@ -503,10 +573,10 @@ export default class ServerBotStore {
 
     startBot = async (bot_id: string) => {
         try {
-            this.active_bot = {
+            this.setActiveBot({
                 bot_id,
                 status: 'starting',
-            };
+            });
             if (!this.subscriptions[bot_id]) this.subscribeToBotNotification(bot_id);
 
             const { bot_start, error } = await api_base.api.send({
@@ -522,7 +592,7 @@ export default class ServerBotStore {
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'running';
             this.setBotList(bot_list);
-            this.active_bot = bot_list[index];
+            this.setActiveBot(bot_list[index]);
 
             const msg = bot_start?.message || localize('Bot started successfully');
             botNotification(msg);
@@ -538,10 +608,10 @@ export default class ServerBotStore {
 
     stopBot = async (bot_id: string) => {
         try {
-            this.active_bot = {
+            this.setActiveBot({
                 ...this.active_bot,
                 status: 'stopping',
-            };
+            });
 
             const { bot_stop, error } = await api_base.api.send({
                 bot_stop: 1,
@@ -558,11 +628,10 @@ export default class ServerBotStore {
             const index = bot_list.findIndex(bot => bot.bot_id === bot_id);
             bot_list[index].status = 'stopped';
             this.setBotList(bot_list);
-
-            this.active_bot = {
+            this.setActiveBot({
                 ...this.active_bot,
                 status: 'stopped',
-            };
+            });
 
             this.onJournalMessage(JOURNAL_TYPE.INFO, {
                 msg: bot_stop?.message || localize('Bot stopped successfully'),
@@ -572,5 +641,35 @@ export default class ServerBotStore {
             // eslint-disable-next-line no-console
             console.dir(error);
         }
+    };
+
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
+
+    setCurrentDurationMinMax = (min = 0, max = 10) => {
+        this.current_duration_min_max = {
+            min,
+            max,
+        };
+    };
+
+    setValue = (name: string, value: string | number | boolean) => {
+        this.form_data[name as keyof TFormData] = value;
+    };
+
+    setSelectedStrategy = (strategy: string) => {
+        this.selected_strategy = strategy;
     };
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/quill-ui';
+import { CaptionText, Text } from '@deriv-com/quill-ui';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
 import { TContractInfo } from '@deriv/shared';
 import CardWrapper from 'AppV2/Components/CardWrapper';
@@ -25,11 +25,21 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                             </div>
                             <div className='order-details__table-row-cell'>
                                 {Array.isArray(value) ? (
-                                    value.map((val, index) => (
-                                        <Text key={`${key}_${index}`} size='sm'>
-                                            {val}
-                                        </Text>
-                                    ))
+                                    value.map((val, index) =>
+                                        ['number', 'string'].includes(typeof val) ? (
+                                            <Text key={`${key}_${index}`} size='sm'>
+                                                {val}
+                                            </Text>
+                                        ) : (
+                                            <CaptionText
+                                                key={`${key}_${index}`}
+                                                size='sm'
+                                                color='quill-typography__color--subtle'
+                                            >
+                                                {val?.caption ?? ''}
+                                            </CaptionText>
+                                        )
+                                    )
                                 ) : (
                                     <Text size='sm'>{value}</Text>
                                 )}

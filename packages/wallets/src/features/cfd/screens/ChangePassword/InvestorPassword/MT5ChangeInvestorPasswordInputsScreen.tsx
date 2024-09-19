@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletsActionScreen } from '../../../../../components';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
-import useDevice from '../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
@@ -28,8 +26,8 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
-    const { isMobile } = useDevice();
-    const buttonTextSize = isMobile ? 'md' : 'sm';
+    const { isDesktop } = useDevice();
+    const buttonTextSize = isDesktop ? 'sm' : 'md';
 
     const {
         error: changeInvestorPasswordError,
@@ -55,30 +53,8 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     };
 
     return (
-        <WalletsActionScreen
-            description={
-                <>
-                    <Text size='sm'>
-                        <Localize
-                            i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading
-                        account, they will not be able to trade or take any other actions.'
-                        />
-                    </Text>
-                    <Text size='sm'>
-                        <Localize
-                            i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password,
-                        please reset it.'
-                        />
-                    </Text>
-                    {changeInvestorPasswordError && (
-                        <Text align='center' color='error' size='sm'>
-                            {changeInvestorPasswordError?.error?.message}
-                        </Text>
-                    )}
-                </>
-            }
-            descriptionSize='sm'
-            renderButtons={() => (
+        <ActionScreen
+            actionButtons={
                 <Formik initialValues={initialValues} onSubmit={onFormSubmitHandler}>
                     {({ handleChange, values }) => (
                         <Form className='wallets-change-investor-password-screens__form'>
@@ -125,7 +101,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 />
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
-                                <WalletButton
+                                <Button
                                     disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size='lg'
@@ -133,15 +109,37 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     type='submit'
                                 >
                                     <Localize i18n_default_text='Change investor password' />
-                                </WalletButton>
-                                <WalletButton onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
+                                </Button>
+                                <Button
+                                    color='primary-transparent'
+                                    onClick={sendEmail}
+                                    size='lg'
+                                    textSize={buttonTextSize}
+                                    variant='ghost'
+                                >
                                     <Localize i18n_default_text='Create or reset investor password' />
-                                </WalletButton>
+                                </Button>
                             </div>
                         </Form>
                     )}
                 </Formik>
-            )}
+            }
+            description={
+                <>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
+                    </Text>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
+                    </Text>
+                    {changeInvestorPasswordError && (
+                        <Text align='center' color='error' size='sm'>
+                            {changeInvestorPasswordError?.error?.message}
+                        </Text>
+                    )}
+                </>
+            }
+            descriptionSize='sm'
         />
     );
 };

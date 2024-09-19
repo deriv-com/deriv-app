@@ -7,14 +7,14 @@ describe('EmptyPositions', () => {
 
     it('should render "No open trades" content when isClosedTab prop is false', () => {
         render(<EmptyPositions />);
-        expect(screen.getByText('No open trades')).toBeInTheDocument();
-        expect(screen.getByText('Your open trades will appear here.')).toBeInTheDocument();
+        expect(screen.getByText('No open positions')).toBeInTheDocument();
+        expect(screen.getByText('Your open positions will appear here.')).toBeInTheDocument();
     });
 
     it('should render "No closed trades" content when isClosedTab prop is true', () => {
         render(<EmptyPositions isClosedTab />);
-        expect(screen.getByText('No closed trades')).toBeInTheDocument();
-        expect(screen.getByText('Your closed trades will be shown here.')).toBeInTheDocument();
+        expect(screen.getByText('No closed positions')).toBeInTheDocument();
+        expect(screen.getByText('Your closed positions will be shown here.')).toBeInTheDocument();
     });
 
     it('should render "No matches found" content when noMatchesFound prop is true', () => {

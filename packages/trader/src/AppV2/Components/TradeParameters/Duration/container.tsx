@@ -8,31 +8,43 @@ import DurationChips from './chips';
 import DurationWheelPicker from './wheelpicker';
 
 const DurationActionSheetContainer = observer(
-    ({ selected_hour, setSelectedHour }: { selected_hour: number[]; setSelectedHour: (arg: number[]) => void }) => {
-        const { duration, duration_unit, duration_units_list, onChangeMultiple, expiry_time } = useTraderStore();
-        const [unit, setUnit] = useState(expiry_time ? 'et' : duration_unit);
+    ({
+        selected_hour,
+        setSelectedHour,
+        unit,
+        setUnit,
+    }: {
+        selected_hour: number[];
+        setSelectedHour: (arg: number[]) => void;
+        unit: string;
+        setUnit: (arg: string) => void;
+    }) => {
+        const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
         const [end_time, setEndTime] = useState<string>('');
         const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
         const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
-        const updateCurrentGmtTime = () => {
-            const now = new Date();
-            const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
-            setCurrentGmtTime(gmt_time);
-        };
 
         useEffect(() => {
+            const updateCurrentGmtTime = () => {
+                const now = new Date();
+                const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
+                setCurrentGmtTime(gmt_time);
+            };
             updateCurrentGmtTime();
-            const interval = setInterval(updateCurrentGmtTime, 60000);
+            const interval = setInterval(updateCurrentGmtTime, 1000);
+
             return () => clearInterval(interval);
         }, []);
 
         const onAction = () => {
             if (unit === 'h') {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
-                setSelectedHour([minutes]);
+                const hour = Math.floor(duration / 60);
+                const min = duration % 60;
+                setSelectedHour([hour, min]);
                 onChangeMultiple({
                     duration_unit: 'm',
                     duration: Number(minutes),
@@ -65,7 +77,7 @@ const DurationActionSheetContainer = observer(
                 }
                 const timeoutId = setTimeout(() => {
                     setIsWheelPickerLoading(false);
-                }, 500);
+                }, 300);
 
                 return () => clearTimeout(timeoutId);
             },
@@ -80,15 +92,6 @@ const DurationActionSheetContainer = observer(
             setSelectedTime([day_difference]);
             setToggleDatePicker(!toggle_date_picker);
         };
-
-        useEffect(() => {
-            if (duration_unit === 'm' && duration > 59) {
-                const hour = Math.floor(duration / 60);
-                const minutes = duration % 60;
-                setSelectedHour([hour, minutes]);
-                setUnit('h');
-            }
-        }, [duration, duration_unit, setSelectedHour]);
 
         const setWheelPickerValue = (index: number, value: string | number) => {
             const num_value = Number(value);

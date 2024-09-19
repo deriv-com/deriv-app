@@ -231,7 +231,7 @@ export const getOptionPerUnit = (unit: string): { value: number; label: ReactNod
         return Array.from({ length: end - start + 1 }, (_, i) => ({
             value: start + i,
             label: (
-                <React.Fragment>
+                <React.Fragment key={start + i}>
                     {start + i} {label}
                 </React.Fragment>
             ),

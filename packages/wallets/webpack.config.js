@@ -46,6 +46,7 @@ module.exports = function (env) {
                 classnames: true,
                 moment: true,
                 react: true,
+                'react/jsx-runtime': true,
                 'react-dom': true,
                 'react-router-dom': true,
             },

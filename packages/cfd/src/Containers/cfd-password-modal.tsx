@@ -137,14 +137,7 @@ const PasswordModalHeader = ({
     if (is_mt5 && !is_password_reset_error) {
         const platform_name = getCFDPlatformNames(platform);
         return (
-            <Text
-                styles={style}
-                as={element}
-                line_height='m'
-                weight='bold'
-                size={!isDesktop ? 'xs' : 's'}
-                align='center'
-            >
+            <Text as={element} line_height='m' weight='bold' size={!isDesktop ? 'xs' : 's'} align='center'>
                 {should_set_trading_password ? (
                     <Localize
                         i18n_default_text='Create an {{platform_name}} account'

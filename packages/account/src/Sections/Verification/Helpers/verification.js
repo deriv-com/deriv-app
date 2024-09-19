@@ -27,7 +27,7 @@ export const populateVerificationStatus = account_status => {
         !(has_submitted_poa || document_status === 'verified') ||
         (needs_verification.length && needs_verification.includes('document'));
     const needs_poi =
-        poi_acknowledged || (Boolean(needs_verification.length) && needs_verification.includes('identity'));
+        !poi_acknowledged || (Boolean(needs_verification.length) && needs_verification.includes('identity'));
     const needs_poinc = needs_verification.length && needs_verification.includes('income');
 
     const { idv, onfido, manual } = identity.services;

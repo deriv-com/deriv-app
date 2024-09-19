@@ -34,7 +34,6 @@ jest.mock('@deriv/shared', () => ({
         VERIFIED: 'verified',
         PENDING: 'pending',
         REJECTED: 'rejected',
-        SUSPECTED: 'suspected',
     },
 }));
 
@@ -119,20 +118,6 @@ describe('<ListItem />', () => {
             id: 'identity',
             text: 'Failed',
             status: AUTH_STATUS_CODES.REJECTED,
-            route: '/proof_of_identity',
-        };
-        renderComponent(props);
-
-        expect(screen.getByText('Failed')).toBeInTheDocument();
-        expect(screen.getByText('StatusBadge')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
-    });
-
-    it('should render the list item with suspected status', () => {
-        const props = {
-            id: 'identity',
-            text: 'Failed',
-            status: AUTH_STATUS_CODES.SUSPECTED,
             route: '/proof_of_identity',
         };
         renderComponent(props);

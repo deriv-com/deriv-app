@@ -26,6 +26,7 @@ const DurationActionSheetContainer = observer(
         const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
         const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
+        const [is24_hour_selected, setIs24HourSelected] = useState(false);
 
         useEffect(() => {
             const updateCurrentGmtTime = () => {
@@ -73,6 +74,7 @@ const DurationActionSheetContainer = observer(
                 setIsWheelPickerLoading(true);
                 setUnit(value);
                 if (value !== 'h') {
+                    setIs24HourSelected(false);
                     setSelectedHour([]);
                 }
                 const timeoutId = setTimeout(() => {
@@ -122,6 +124,8 @@ const DurationActionSheetContainer = observer(
                     is_wheelpicker_loading={is_wheelpicker_loading}
                     selected_time={selected_time}
                     toggle_date_picker={toggle_date_picker}
+                    is24_hour_selected={is24_hour_selected}
+                    setIs24HourSelected={setIs24HourSelected}
                 />
                 {unit == 'd' && (
                     <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />

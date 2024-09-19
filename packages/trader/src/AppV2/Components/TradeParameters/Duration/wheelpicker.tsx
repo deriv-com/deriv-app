@@ -49,6 +49,8 @@ const DurationWheelPicker = observer(
         selected_time,
         is_wheelpicker_loading,
         toggle_date_picker,
+        is24_hour_selected,
+        setIs24HourSelected,
     }: {
         unit: string;
         setEndTime: (arg: string) => void;
@@ -57,8 +59,9 @@ const DurationWheelPicker = observer(
         selected_time: number[];
         toggle_date_picker: boolean;
         is_wheelpicker_loading: boolean;
+        is24_hour_selected: boolean;
+        setIs24HourSelected: (arg: boolean) => void;
     }) => {
-        const [is24_hour_selected, setIs24HourSelected] = useState(false);
         const { common } = useStore();
         const { server_time } = common;
         const { expiry_date, expiry_time, market_open_times, market_close_times, trade_types, contract_type } =
@@ -87,7 +90,6 @@ const DurationWheelPicker = observer(
         );
         const show_tick_from_five = ['turboslong', 'turbosshort', 'high_low', 'touch'].includes(contract_type);
         const options = React.useMemo(() => getOptionPerUnit(unit, show_tick_from_five), [unit, show_tick_from_five]);
-
         return (
             <div
                 className={clsx('duration-container__wheel-picker-container', {
@@ -111,6 +113,11 @@ const DurationWheelPicker = observer(
                                     if (index == 0 && val === 24) {
                                         setIs24HourSelected(true);
                                     } else if (index == 0 && val !== 24) {
+                                        setIs24HourSelected(false);
+                                    }
+                                } else {
+                                    // eslint-disable-next-line no-lonely-if
+                                    if (is24_hour_selected) {
                                         setIs24HourSelected(false);
                                     }
                                 }

@@ -97,13 +97,9 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'get_settings':
                 if (response.get_settings) {
-                    const updated_settings = {
-                        ...response.get_settings,
-                        phone: response.get_settings?.phone.replace(/[^0-9+]/g, ''),
-                    };
                     setResidence(response.get_settings.country_code);
                     client_store.setEmail(response.get_settings.email);
-                    client_store.setAccountSettings(updated_settings);
+                    client_store.setAccountSettings(response.get_settings);
                     gtm_store.eventHandler(response.get_settings);
                 }
                 break;

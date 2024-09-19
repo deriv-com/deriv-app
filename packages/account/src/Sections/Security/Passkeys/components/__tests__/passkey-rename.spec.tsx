@@ -9,7 +9,7 @@ describe('PasskeyRename', () => {
     const new_passkey_name = 'new passkey name';
     const mock_current_managed_passkey: React.ComponentProps<
         typeof PasskeysStatusContainer
-    >['current_managed_passkey'] = { id: 777, name: init_passkey_name };
+    >['current_managed_passkey'] = { id: 777, name: init_passkey_name, passkey_id: 'test_passkey_id' };
     const validation_error = 'Only 3-30 characters allowed.';
     const mockOnPrimaryButtonClick = jest.fn();
     const mockOnSecondaryButtonClick = jest.fn();

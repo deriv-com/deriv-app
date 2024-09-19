@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
-import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { FormSubmitButton, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';

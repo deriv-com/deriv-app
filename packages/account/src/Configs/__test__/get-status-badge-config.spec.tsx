@@ -28,7 +28,7 @@ describe('getStatusBadgeConfig', () => {
         renderCheck(account_status, onClickBanner);
 
         expect(screen.getByText('In review')).toBeInTheDocument();
-        expect(screen.getByText('IcAlertWarning')).toBeInTheDocument();
+        expect(screen.getByText('IcMt5Pending')).toBeInTheDocument();
     });
 
     it('should render failed status', () => {
@@ -38,7 +38,7 @@ describe('getStatusBadgeConfig', () => {
         const failed_text = screen.getByText('Failed');
 
         expect(failed_text).toBeInTheDocument();
-        expect(screen.getByText('IcRedWarning')).toBeInTheDocument();
+        expect(screen.getByText('IcMt5Failed')).toBeInTheDocument();
 
         userEvent.click(failed_text);
         expect(onClickBanner).toBeCalled();

@@ -13,11 +13,6 @@ jest.mock('@deriv/components', () => ({
     useDevice: () => ({ isMobile: false }),
 }));
 
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
-    DerivLightDmt5PasswordIcon: () => 'DerivLightDmt5PasswordIcon',
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
@@ -92,7 +87,7 @@ describe('<MT5CreatePassword/>', () => {
                 wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
             }
         );
-        expect(await screen.findByText('DerivLightDmt5PasswordIcon')).toBeInTheDocument();
+        expect(await screen.findByText('IcMt5Password')).toBeInTheDocument();
     });
 
     it('should display password field for user to enter the password and hold the entered value', async () => {

@@ -53,6 +53,9 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const history = useHistory();
 
     const onClickItem = () => {
+        if ([AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status)) {
+            return;
+        }
         history.push(route);
         toggleVerificationModal(false);
     };

@@ -4,7 +4,7 @@ import { URLUtils } from '@deriv-com/utils';
 import { useRemoteConfig } from '@deriv/api';
 
 type TLiveChatClientInformation = {
-    is_client_initialized: boolean;
+    is_client_store_initialized: boolean;
     is_logged_in: boolean;
     loginid?: string;
     landing_company_shortcode?: string;
@@ -17,7 +17,7 @@ type TLiveChatClientInformation = {
 
 const useLiveChat = (client_information: TLiveChatClientInformation) => {
     const {
-        is_client_initialized,
+        is_client_store_initialized,
         landing_company_shortcode = ' ',
         currency = ' ',
         email = ' ',
@@ -37,13 +37,13 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
     const { cs_chat_livechat } = data;
 
     useEffect(() => {
-        if (is_client_initialized && cs_chat_livechat) {
+        if (is_client_store_initialized && cs_chat_livechat) {
             window.LiveChatWidget.init();
         }
-    }, [is_client_initialized, cs_chat_livechat]);
+    }, [is_client_store_initialized, cs_chat_livechat]);
 
     useEffect(() => {
-        if (!should_disable_livechat && is_client_initialized) {
+        if (!should_disable_livechat && is_client_store_initialized) {
             window.LiveChatWidget?.on('ready', data => {
                 //hide red widget on responsive
                 if (data.state.visibility === 'minimized') {
@@ -81,7 +81,7 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
         loginid,
         is_logged_in,
         landing_company_shortcode,
-        is_client_initialized,
+        is_client_store_initialized,
         currency,
         first_name,
         last_name,

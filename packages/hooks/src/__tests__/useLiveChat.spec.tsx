@@ -31,7 +31,7 @@ window.LiveChatWidget = {
 
 describe('useLiveChat', () => {
     const mockClientInfo = {
-        is_client_initialized: true,
+        is_client_store_initialized: true,
         is_logged_in: true,
         loginid: 'test_loginid',
         landing_company_shortcode: 'test_landing_company_shortcode',
@@ -43,7 +43,7 @@ describe('useLiveChat', () => {
     };
 
     const mockClientInfoNotLoggedIn = {
-        is_client_initialized: true,
+        is_client_store_initialized: true,
         is_logged_in: false,
         loginid: '',
         landing_company_shortcode: '',

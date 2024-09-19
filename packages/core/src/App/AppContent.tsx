@@ -26,7 +26,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         has_wallet,
         is_logged_in,
         loginid,
-        is_client_initialized,
+        is_client_store_initialized,
         landing_company_shortcode,
         currency,
         residence,
@@ -53,7 +53,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_passkeys_supported = browserSupportsWebAuthn();
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
-        is_client_initialized,
+        is_client_store_initialized,
         is_logged_in,
         loginid,
         landing_company_shortcode,

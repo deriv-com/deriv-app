@@ -84,14 +84,17 @@ const TakeProfitAndStopLossInput = ({
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
+    const is_crypto_currency = isCryptocurrency(currency);
     const should_set_validation_params =
-        is_multiplier && is_enabled && (new_input_value === '' || typeof new_input_value === 'undefined');
+        is_multiplier &&
+        is_enabled &&
+        (new_input_value === '' || typeof new_input_value === 'undefined') &&
+        !is_crypto_currency;
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
-    const is_crypto_currency = isCryptocurrency(currency);
 
     const input_message =
         info.min_value && info.max_value && is_enabled ? (
@@ -176,8 +179,7 @@ const TakeProfitAndStopLossInput = ({
 
         /* In order to get validation params for Multipliers when TP and SL are empty, 
             we send '1' first, get validation params and set them into the state.*/
-        const default_value = is_crypto_currency ? '0.00002' : '1';
-        const input_value = should_set_validation_params ? default_value : new_input_value;
+        const input_value = should_set_validation_params ? '1' : new_input_value;
         const dispose = debounce(
             previewProposal(
                 trade_store,

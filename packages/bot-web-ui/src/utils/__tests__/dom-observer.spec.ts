@@ -6,7 +6,7 @@ describe('waitForDomElement', () => {
         jest.clearAllMocks();
     });
 
-    test('should resolve immediately if the element is already in the DOM', async () => {
+    it('should resolve immediately if the element is already in the DOM', async () => {
         const elementId = 'testElement';
         const div = document.createElement('div');
         div.id = elementId;
@@ -17,7 +17,7 @@ describe('waitForDomElement', () => {
         expect(result.id).toBe(elementId);
     });
 
-    test('should resolve when the element is added to the DOM after some time', async () => {
+    it('should resolve when the element is added to the DOM after some time', async () => {
         const elementId = 'dynamicElement';
 
         const promise = waitForDomElement(`#${elementId}`);

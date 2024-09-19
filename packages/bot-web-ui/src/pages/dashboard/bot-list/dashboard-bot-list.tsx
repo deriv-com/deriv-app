@@ -4,7 +4,7 @@ import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import DeleteDialog from './delete-dialog/delete-dialog';
+import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import './index.scss';
 

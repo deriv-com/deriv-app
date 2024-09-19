@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TButtonColor, Text } from '@deriv-com/quill-ui';
+import { Button, TButtonColor } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';

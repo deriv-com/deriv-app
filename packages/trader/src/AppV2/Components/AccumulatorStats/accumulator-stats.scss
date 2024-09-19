@@ -49,7 +49,7 @@
             border-right: var(--core-spacing-75) solid var(--semantic-color-monochrome-surface-normal-low);
             margin: var(--core-spacing-50) var(--core-spacing-400);
         }
-        .-slide-right {
+        .slide-right {
             @include accumulator-slide-to-next;
         }
 

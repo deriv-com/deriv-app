@@ -49,7 +49,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     }, [show_confirm_phone_number, trackPhoneVerificationEvents]);
 
     useEffect(() => {
-        setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
+        setPhoneNumber(account_settings?.phone?.replace(/[^0-9]/g, '') || '');
     }, [account_settings?.phone]);
 
     useEffect(() => {

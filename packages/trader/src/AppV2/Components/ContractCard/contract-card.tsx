@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { CaptionText, Text } from '@deriv-com/quill-ui';
+import { CaptionText, Tag, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
 import { IconTradeTypes, Money, RemainingTime } from '@deriv/components';
 import {
@@ -61,7 +61,8 @@ const ContractCard = ({
     const [isClosing, setIsClosing] = React.useState(false);
     const [isCanceling, setIsCanceling] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
-    const { buy_price, contract_type, display_name, sell_time, shortcode } = contractInfo;
+    const { buy_price, contract_type, display_name, sell_time, shortcode, limit_order } = contractInfo as TContractInfo;
+    const { take_profit, stop_loss } = limit_order ?? { take_profit: {}, stop_loss: {} };
     const is_high_low = isHighLow({ shortcode });
     const contract_main_title = getTradeTypeName(contract_type ?? '', {
         isHighLow: is_high_low,
@@ -76,7 +77,9 @@ const ContractCard = ({
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
     const is_crypto = isCryptoContract((contractInfo as TContractInfo).underlying);
     const isMultiplier = isMultiplierContract(contract_type);
+    const has_no_auto_expiry = isMultiplier && !is_crypto;
     const isSold = !!sell_time || isEnded(contractInfo as TContractInfo);
+    const show_main_tag = !has_no_auto_expiry || (has_no_auto_expiry && isSold);
     const totalProfit = getProfit(contractInfo);
     const validToCancel = isValidToCancel(contractInfo as TContractInfo);
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
@@ -107,6 +110,15 @@ const ContractCard = ({
         }
     };
 
+    const getRiskManagementLabels = () => {
+        const labels: string[] = [];
+        if (take_profit?.order_amount) labels.push('TP');
+        if (stop_loss?.order_amount) labels.push('SL');
+        if (cancellation_date_expiry) labels.push('DC');
+        return labels;
+    };
+    const risk_management_labels = getRiskManagementLabels();
+
     React.useEffect(() => {
         if (isSold && hasActionButtons) {
             setIsDeleted(true);
@@ -131,13 +143,26 @@ const ContractCard = ({
                 <div className={`${className}__body`}>
                     <div className={`${className}__details`}>
                         <IconTradeTypes type={is_high_low ? `${contract_type}_barrier` : contract_type} size={24} />
-                        <ContractCardStatusTimer
-                            currentTick={currentTick}
-                            hasNoAutoExpiry={isMultiplier && !is_crypto}
-                            isSold={isSold}
-                            serverTime={serverTime}
-                            {...contractInfo}
-                        />
+                        <div className='tag__wrapper'>
+                            {!!risk_management_labels.length &&
+                                risk_management_labels.map(label => (
+                                    <Tag
+                                        className='risk-management'
+                                        label={label}
+                                        key={label}
+                                        variant='custom'
+                                        size='sm'
+                                    />
+                                ))}
+                            {show_main_tag && (
+                                <ContractCardStatusTimer
+                                    currentTick={currentTick}
+                                    isSold={isSold}
+                                    serverTime={serverTime}
+                                    {...contractInfo}
+                                />
+                            )}
+                        </div>
                     </div>
                     <div className={`${className}__details`}>
                         <Text className='trade-type' size='sm'>

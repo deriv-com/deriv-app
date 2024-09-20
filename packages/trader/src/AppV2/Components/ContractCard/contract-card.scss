@@ -20,13 +20,22 @@
         min-width: 0;
         flex-grow: 1;
     }
-    &__details {
+    &__details,
+    .tag__wrapper {
         display: flex;
         gap: var(--core-spacing-400);
         align-items: center;
         justify-content: space-between;
     }
+    .tag__wrapper {
+        gap: var(--core-spacing-200);
+    }
+    .risk-management,
+    .timer {
+        color: var(--component-tag-label-color-default);
+    }
     .status,
+    .risk-management,
     .timer {
         background-color: var(--core-color-opacity-black-75);
 

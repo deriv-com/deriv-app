@@ -12,7 +12,7 @@
         font-size: var(--text-size-xxxs);
 
         &--pending {
-            color: var(--status-warning);
+            color: var(--status-warning-dark);
             background-color: var(--status-warning-transparent);
             text-decoration: underline;
             font-weight: bold;
@@ -46,7 +46,7 @@
 
         &--verified {
             margin-top: 0.1rem;
-            color: var(--status-success);
+            color: $color-status-verified;
             background-color: var(--status-success-transparent);
             font-weight: bold;
         }

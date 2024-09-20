@@ -161,7 +161,8 @@
         --status-danger-transparent: #{$alpha-color-red-1};
         --status-success: #{$color-green-1};
         --status-success-transparent: #{$alpha-color-green-3};
-        --status-warning: #{$color-yellow-1};
+        --status-warning: #{$color-yellow};
+        --status-warning-dark: #{$color-yellow-1};
         --status-warning-transparent: #{$alpha-color-yellow-1};
         --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};

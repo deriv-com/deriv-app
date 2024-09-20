@@ -1344,23 +1344,25 @@ export default class TradeStore extends BaseStore {
             isAccumulatorContract(obj_new_values.contract_type) ||
             isDigitTradeType(obj_new_values.contract_type) ||
             isUpDownContract(obj_new_values.contract_type);
-        if (!has_line_chart && (saved_chart_type || !Number.isNaN(saved_granularity))) {
-            if (saved_chart_type) {
-                updateChartType(saved_chart_type);
+        if (obj_new_values.contract_type) {
+            if (!has_line_chart && (saved_chart_type || !Number.isNaN(saved_granularity))) {
+                if (saved_chart_type) {
+                    updateChartType(saved_chart_type);
+                }
+                if (!Number.isNaN(saved_granularity)) {
+                    updateGranularity(saved_granularity);
+                }
+            } else if (has_line_chart) {
+                setChartTypeAndGranularity('line', 0);
+                setTradeURLParams({ chartType: 'line', granularity: 0 });
+                (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
+                (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
+            } else {
+                setChartTypeAndGranularity('candles', 60);
+                setTradeURLParams({ chartType: 'candles', granularity: 60 });
+                (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
+                (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
             }
-            if (!Number.isNaN(saved_granularity)) {
-                updateGranularity(saved_granularity);
-            }
-        } else if (has_line_chart) {
-            setChartTypeAndGranularity('line', 0);
-            setTradeURLParams({ chartType: 'line', granularity: 0 });
-            (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
-            (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
-        } else {
-            setChartTypeAndGranularity('candles', 60);
-            setTradeURLParams({ chartType: 'candles', granularity: 60 });
-            (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
-            (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx

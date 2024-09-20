@@ -144,9 +144,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             )}
             <Text bold>
                 {should_show_phone_number_otp ? (
-                    <Localize i18n_default_text='Verify your number' />
+                    <Localize i18n_default_text='Step 3/3: Verify your number' />
                 ) : (
-                    <Localize i18n_default_text='Verify access' />
+                    <Localize i18n_default_text='Step 1/3: Verify access' />
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>

@@ -59,7 +59,7 @@ describe('OTPVerification', () => {
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
         renderComponent();
-        expect(screen.getByText(/Verify access/)).toBeInTheDocument();
+        expect(screen.getByText('Step 1/3: Verify access')).toBeInTheDocument();
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
         expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe('OTPVerification', () => {
     it('should render Verify your number in OTP Verification', () => {
         store.ui.should_show_phone_number_otp = true;
         renderComponent();
-        expect(screen.getByText(/Verify your number/)).toBeInTheDocument();
+        expect(screen.getByText('Step 3/3: Verify your number')).toBeInTheDocument();
         expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at ./)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change/ })).toBeInTheDocument();
     });

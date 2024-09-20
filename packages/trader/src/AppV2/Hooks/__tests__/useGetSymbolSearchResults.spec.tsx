@@ -21,7 +21,6 @@ jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
             { symbol: 'GBPUSD', display_name: 'GBP/USD', exchange_is_open: 0 },
             { symbol: 'CADAUD', display_name: 'CAD/AUD', exchange_is_open: 0 },
         ],
-        fetchActiveSymbols: jest.fn(),
     })),
 }));
 

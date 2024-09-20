@@ -491,6 +491,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsTradingDisabledByResidenceModal: jest.fn(),
             should_show_same_dob_phone_modal: false,
             setShouldShowSameDOBPhoneModal: jest.fn(),
+            setHashedValue: jest.fn(),
+            url_hashed_values: '',
             is_tnc_update_modal_open: false,
             toggleTncUpdateModal: jest.fn(),
         },

@@ -844,6 +844,8 @@ type TUiStore = {
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    setHashedValue: (value: string) => void;
+    url_hashed_values: string;
     is_tnc_update_modal_open: boolean;
     toggleTncUpdateModal: (value: boolean) => void;
 };

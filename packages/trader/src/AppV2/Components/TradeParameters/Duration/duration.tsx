@@ -12,7 +12,7 @@ type TDurationProps = {
 };
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
-    const { duration, duration_unit, expiry_time, expiry_type, contract_type, onChange } = useTraderStore();
+    const { duration, duration_unit, expiry_time, expiry_type } = useTraderStore();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
@@ -38,21 +38,14 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
 
     useEffect(() => {
         handleHour();
-        if (
-            ['turboslong', 'turbosshort', 'high_low', 'touch'].includes(contract_type) &&
-            duration_unit == 't' &&
-            duration < 5
-        ) {
-            onChange({ target: { value: duration, name: 'duration' } });
-        }
     }, [handleHour, is_open]);
 
     const getInputValues = () => {
         if (expiry_type == 'duration') {
             if (duration_unit === 'm' && duration > 59) {
-                const hour = Math.floor(duration / 60);
+                const hours = Math.floor(duration / 60);
                 const minutes = duration % 60;
-                return `${hour} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
+                return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             }
             return `${duration} ${duration_unit_text}`;
         }

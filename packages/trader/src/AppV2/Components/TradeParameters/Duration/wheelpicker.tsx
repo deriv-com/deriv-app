@@ -3,7 +3,7 @@ import { setTime, toMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React from 'react';
 import { getBoundaries, getSelectedTime } from 'Stores/Modules/Trading/Helpers/end-time';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -64,7 +64,7 @@ const DurationWheelPicker = observer(
     }) => {
         const { common } = useStore();
         const { server_time } = common;
-        const { expiry_date, expiry_time, market_open_times, market_close_times, contract_type } = useTraderStore();
+        const { expiry_date, expiry_time, market_open_times, market_close_times, duration_min_max } = useTraderStore();
         const moment_expiry_date = toMoment(expiry_date);
         const market_open_datetimes = market_open_times.map(open_time =>
             setTime(moment_expiry_date.clone(), open_time)
@@ -85,8 +85,12 @@ const DurationWheelPicker = observer(
             market_open_datetimes,
             market_close_datetimes
         );
-        const show_tick_from_five = ['turboslong', 'turbosshort', 'high_low', 'touch'].includes(contract_type);
-        const options = React.useMemo(() => getOptionPerUnit(unit, show_tick_from_five), [unit, show_tick_from_five]);
+
+        const options = React.useMemo(
+            () => getOptionPerUnit(unit, duration_min_max?.tick?.min === 5),
+            [unit, duration_min_max]
+        );
+
         return (
             <div
                 className={clsx('duration-container__wheel-picker-container', {
@@ -109,15 +113,15 @@ const DurationWheelPicker = observer(
                                 if (unit == 'h') {
                                     if (index == 0 && val === 24) {
                                         setIs24HourSelected(true);
-                                    } else if (index == 0 && val !== 24) {
-                                        setIs24HourSelected(false);
-                                    }
-                                } else {
-                                    // eslint-disable-next-line no-lonely-if
-                                    if (is24_hour_selected) {
+                                    } else if (is24_hour_selected) {
                                         setIs24HourSelected(false);
                                     }
                                 }
+                                // eslint-disable-next-line no-lonely-if
+                                else if (is24_hour_selected) {
+                                    setIs24HourSelected(false);
+                                }
+
                                 setWheelPickerValue(index, val);
                             }}
                         />

@@ -54,6 +54,6 @@ describe('PhoneNumberVerifiedModal', () => {
         const doneButton = screen.getByRole('button', { name: /OK/ });
         await userEvent.click(doneButton);
         expect(mockPush).toHaveBeenCalledTimes(1);
-        expect(mockPush).toBeCalledWith(routes.personal_details);
+        expect(mockPush).toBeCalledWith(routes.traders_hub);
     });
 });

@@ -1,4 +1,3 @@
-import React from 'react';
 import { observer } from '@deriv/stores';
 import { NoPasskeys } from './no-passkeys';
 import { TCurrentManagedPasskey, TOnPasskeyMenuClick, TPasskey } from '../passkeys';
@@ -7,6 +6,7 @@ import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../passkeys-configs';
 import { PasskeysLearnMore } from './passkeys-learn-more';
 import { PasskeysList } from './passkeys-list';
 import { PasskeyRename } from './passkey-rename';
+import { PasskeyRemoved } from './passkey-removed';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysStatusContainer = {
@@ -55,7 +55,8 @@ export const PasskeysStatusContainer = observer(
                         onSecondaryButtonClick={onSecondaryButtonClick}
                     />
                 );
-
+            case PASSKEY_STATUS_CODES.REMOVED:
+                return <PasskeyRemoved onPrimaryButtonClick={onPrimaryButtonClick} />;
             default:
                 return (
                     <PasskeysList

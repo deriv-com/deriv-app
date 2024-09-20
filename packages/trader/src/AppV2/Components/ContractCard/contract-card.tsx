@@ -5,22 +5,29 @@ import { useSwipeable } from 'react-swipeable';
 import { IconTradeTypes, Money, RemainingTime } from '@deriv/components';
 import {
     TContractInfo,
+    formatDate,
+    formatTime,
     getCardLabels,
     getCurrentTick,
     getMarketName,
+    getStartTime,
     getTradeTypeName,
+    hasForwardContractStarted,
     isCryptoContract,
     isEnded,
+    isForwardStarting,
     isHighLow,
     isMultiplierContract,
     isValidToCancel,
     isValidToSell,
+    toMoment,
 } from '@deriv/shared';
 import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contract-card-status-timer';
 import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
 import { getProfit } from 'AppV2/Utils/positions-utils';
+import { Localize } from '@deriv/translations';
 
 type TContractCardProps = TContractCardStatusTimerProps & {
     className?: string;
@@ -79,12 +86,17 @@ const ContractCard = ({
     const isMultiplier = isMultiplierContract(contract_type);
     const has_no_auto_expiry = isMultiplier && !is_crypto;
     const isSold = !!sell_time || isEnded(contractInfo as TContractInfo);
+    const is_forward_starting = isForwardStarting(contractInfo?.shortcode ?? '', Number(contractInfo?.purchase_time));
     const show_main_tag = !has_no_auto_expiry || (has_no_auto_expiry && isSold);
     const totalProfit = getProfit(contractInfo);
     const validToCancel = isValidToCancel(contractInfo as TContractInfo);
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
+    const start_time = getStartTime(contractInfo?.shortcode ?? '');
+    const has_forward_contract_started = hasForwardContractStarted(contractInfo?.shortcode ?? '');
+    const show_tag_forward_started = is_forward_starting && start_time && !has_forward_contract_started;
+
     const Component = redirectTo ? NavLink : 'div';
 
     const handleSwipe = (direction: string) => {
@@ -154,12 +166,31 @@ const ContractCard = ({
                                         size='sm'
                                     />
                                 ))}
-                            {show_main_tag && (
+                            {show_main_tag && !show_tag_forward_started && (
                                 <ContractCardStatusTimer
                                     currentTick={currentTick}
                                     isSold={isSold}
                                     serverTime={serverTime}
                                     {...contractInfo}
+                                />
+                            )}
+                            {show_tag_forward_started && (
+                                <Tag
+                                    className='forward-staring'
+                                    label={
+                                        <Localize
+                                            i18n_default_text='Starts on {{formattedDate}}, {{formattedTime}}'
+                                            values={{
+                                                formattedDate: formatDate(
+                                                    toMoment(parseInt(start_time || '')),
+                                                    'DD MMM YYYY'
+                                                ),
+                                                formattedTime: formatTime(parseInt(start_time || ''), 'HH:mm [GMT]'),
+                                            }}
+                                        />
+                                    }
+                                    variant='custom'
+                                    size='sm'
                                 />
                             )}
                         </div>

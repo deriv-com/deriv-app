@@ -66,7 +66,7 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const phone_number_textfield = screen.getByRole('textbox', { name: 'Phone number' });
-        expect(screen.getByText('Confirm your phone number')).toBeInTheDocument();
+        expect(screen.getByText('Step 2/3: Confirm your phone number')).toBeInTheDocument();
         expect(phone_number_textfield).toBeInTheDocument();
         userEvent.clear(phone_number_textfield);
         userEvent.type(phone_number_textfield, '+01293291291');

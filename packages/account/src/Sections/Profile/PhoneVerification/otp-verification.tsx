@@ -121,7 +121,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     };
 
     return (
-        <PhoneVerificationCard is_small_card>
+        <>
             <CoolDownPeriodModal
                 show_cool_down_period_modal={show_cool_down_period_modal}
                 setShowCoolDownPeriodModal={setShowCoolDownPeriodModal}
@@ -216,7 +216,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     reInitializeGetSettings={reInitializeGetSettings}
                 />
             </div>
-        </PhoneVerificationCard>
+        </>
     );
 });
 

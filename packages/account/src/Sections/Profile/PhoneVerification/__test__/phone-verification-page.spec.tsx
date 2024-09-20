@@ -18,6 +18,9 @@ jest.mock('@deriv/hooks', () => ({
         sendEmailOTPVerification: jest.fn(),
     })),
     useGrowthbookGetFeatureValue: jest.fn(),
+    usePhoneNumberVerificationSessionTimer: jest.fn(() => ({
+        formatted_time: '00:00',
+    })),
 }));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

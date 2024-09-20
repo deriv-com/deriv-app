@@ -29,7 +29,6 @@ describe('<MarketCategories />', () => {
     });
     it('should render correct amount of mockedMarketCategoryTab', () => {
         (useActiveSymbols as jest.Mock).mockReturnValue({
-            default_symbol: '',
             activeSymbols: [
                 {
                     symbol: 'cryBTCUSD',
@@ -42,7 +41,6 @@ describe('<MarketCategories />', () => {
                     submarket_display_name: 'Cryptocurrencies',
                 },
             ],
-            fetchActiveSymbols: jest.fn(),
         });
         render(<MarketCategories {...mocked_props} />);
         expect(screen.getAllByText('MockedMarketCategoryTab')).toHaveLength(3);
@@ -50,9 +48,7 @@ describe('<MarketCategories />', () => {
     });
     it('should render no MarketCategoryTab when activeSymbols is empty', () => {
         (useActiveSymbols as jest.Mock).mockReturnValue({
-            default_symbol: '',
             activeSymbols: [],
-            fetchActiveSymbols: jest.fn(),
         });
 
         render(<MarketCategories {...mocked_props} />);

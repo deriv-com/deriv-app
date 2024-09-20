@@ -1353,10 +1353,12 @@ export default class TradeStore extends BaseStore {
             }
         } else if (has_line_chart) {
             setChartTypeAndGranularity('line', 0);
+            setTradeURLParams({ chartType: 'line', granularity: 0 });
             (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
             (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
         } else {
             setChartTypeAndGranularity('candles', 60);
+            setTradeURLParams({ chartType: 'candles', granularity: 60 });
             (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
             (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
         }

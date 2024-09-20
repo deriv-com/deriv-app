@@ -424,9 +424,6 @@
         border-bottom: 1px solid var(--border-divider);
         user-select: none;
         position: relative;
-        &:hover {
-            cursor: pointer;
-        }
 
         &__label {
             padding: 0.8rem 1.6rem;
@@ -478,6 +475,10 @@
                 margin-inline-end: 1.6rem;
                 &:last-child {
                     margin-inline: 0;
+                }
+
+                &:hover {
+                    cursor: pointer;
                 }
             }
 

@@ -5,29 +5,27 @@ import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { Icon, Popover, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { CONTEXT_MENU, STRATEGY } from 'Constants/dashboard';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendDashboardClickEvent } from '../../../analytics/rudderstack-dashboard';
-import { CONTEXT_MENU, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
+import { TRecentStrategy } from './types';
 import './index.scss';
 
 type TRecentWorkspace = {
-    index: number;
-    workspace: { [key: string]: string };
-    updateBotName: (name: string) => void;
+    workspace: TRecentStrategy;
 };
 
-const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
+const RecentWorkspace = observer(({ workspace }: TRecentWorkspace) => {
     const { ui } = useStore();
     const { is_desktop } = ui;
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { setActiveTab } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
-        dashboard_strategies = [],
+        dashboard_strategies,
         getRecentFileIcon,
         getSaveType,
-        getSelectedStrategyID,
         loadFileFromRecent,
         onToggleDeleteDialog,
         selected_strategy_id,
@@ -36,25 +34,8 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLButtonElement>(null);
-    const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-
-    React.useEffect(() => {
-        let timer: ReturnType<typeof setTimeout>;
-
-        const select_first_strategy = dashboard_strategies?.length && index === 0 && !is_div_triggered_once.current;
-
-        if (select_first_strategy) {
-            timer = setTimeout(() => {
-                is_div_triggered_once.current = true;
-                trigger_div_ref?.current?.click();
-            }, 50);
-        }
-        return () => {
-            if (timer) clearTimeout(timer);
-        };
-    }, [dashboard_strategies, index]);
 
     const onToggleDropdown = (e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
@@ -107,12 +88,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             })}
             key={workspace.id}
             ref={trigger_div_ref}
-            onClick={e => {
-                e.stopPropagation(); //stop event bubbling for child element
-                if (is_dropdown_visible) setDropdownVisibility(false);
-                getSelectedStrategyID(workspace.id);
-                viewRecentStrategy(STRATEGY.INIT);
-            }}
         >
             <div className='bot-list__item__label'>
                 <div className='text-wrapper' title={workspace.name}>
@@ -160,7 +135,12 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             ) : (
                 <>
                     <div className='bot-list__item__actions'>
-                        <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
+                        <button
+                            ref={toggle_ref}
+                            onClick={onToggleDropdown}
+                            tabIndex={0}
+                            data-testid='dt_mobile_menu_icon'
+                        >
                             <Icon icon='IcMenuDots' />
                         </button>
                     </div>

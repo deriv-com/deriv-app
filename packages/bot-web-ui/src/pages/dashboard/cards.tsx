@@ -120,6 +120,12 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                 onClick={() => {
                                     callback();
                                 }}
+                                onKeyDown={(e: React.KeyboardEvent) => {
+                                    if (e.key === 'Enter') {
+                                        callback();
+                                    }
+                                }}
+                                tabIndex={0}
                             >
                                 <Icon
                                     className={classNames('tab__dashboard__table__images', {

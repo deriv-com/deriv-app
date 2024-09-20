@@ -125,6 +125,13 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspace) => {
                                 e.stopPropagation();
                                 viewRecentStrategy(type);
                             }}
+                            onKeyDown={(e: React.KeyboardEvent) => {
+                                if (e.key === 'Enter') {
+                                    e.stopPropagation();
+                                    viewRecentStrategy(type);
+                                }
+                            }}
+                            tabIndex={0}
                         >
                             <Popover alignment='top' message={label} zIndex={'9999'}>
                                 <Icon icon={icon} />
@@ -158,6 +165,13 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspace) => {
                                     e.stopPropagation();
                                     viewRecentStrategy(type);
                                 }}
+                                onKeyDown={(e: React.KeyboardEvent) => {
+                                    if (e.key === 'Enter') {
+                                        e.stopPropagation();
+                                        viewRecentStrategy(type);
+                                    }
+                                }}
+                                tabIndex={0}
                             >
                                 <div>
                                     <Icon icon={icon} />

@@ -66,6 +66,7 @@ const DurationEndDatePicker = ({
                                 }
                             }}
                             wrapperClassName='duration-container__date-picker__sheet'
+                            disableCurrentDayMarker
                         />
                     </ActionSheet.Portal>
                 </ActionSheet.Root>

@@ -13,10 +13,17 @@ type TPhoneNumberVerifiedModal = {
 
 const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_modal }: TPhoneNumberVerifiedModal) => {
     const history = useHistory();
+    const previous_routes = localStorage.getItem('routes_from_notification_to_pnv');
+    const is_routing_user_to_previous =
+        !!previous_routes &&
+        (previous_routes !== routes.personal_details || previous_routes !== routes.phone_verification);
 
     const handleDoneButton = () => {
-        history.push(routes.personal_details);
+        localStorage.removeItem('routes_from_notification_to_pnv');
+
+        is_routing_user_to_previous ? history.push(previous_routes) : history.push(routes.traders_hub);
     };
+
     const { isMobile } = useDevice();
     const { ui } = useStore();
     const { setIsPhoneVerificationCompleted } = ui;

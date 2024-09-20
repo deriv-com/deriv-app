@@ -59,7 +59,7 @@ describe('OTPVerification', () => {
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
         renderComponent();
-        expect(screen.getByText('Step 1/3: Verify access')).toBeInTheDocument();
+        expect(screen.getByText('Step 1/3: Verification needed')).toBeInTheDocument();
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
         expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();

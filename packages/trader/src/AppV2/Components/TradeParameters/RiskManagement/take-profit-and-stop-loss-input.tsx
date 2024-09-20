@@ -85,11 +85,7 @@ const TakeProfitAndStopLossInput = ({
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
     const is_crypto_currency = isCryptocurrency(currency);
-    const should_set_validation_params =
-        is_multiplier &&
-        is_enabled &&
-        (new_input_value === '' || typeof new_input_value === 'undefined') &&
-        !is_crypto_currency;
+    const should_set_validation_params = is_multiplier && is_enabled && !new_input_value && !is_crypto_currency;
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;

@@ -17,6 +17,7 @@ const languages = {
     RU: 'Русский',
     SI: 'සිංහල',
     TR: 'Türkçe',
+    UZ: "O'zbek",
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',

@@ -138,6 +138,12 @@ const openPositions = [
                     order_date: 1716220583,
                     value: '614.26',
                 },
+                stop_loss: {
+                    order_amount: -1,
+                },
+                take_profit: {
+                    order_amount: 5,
+                },
             },
             longcode:
                 "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 (1s) Index, multiplied by 90, minus commissions.",
@@ -333,7 +339,7 @@ describe('ContractCard', () => {
         expect(screen.getByRole('button', { name: CLOSE })).toBeEnabled();
         expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
     });
-    it('should render a card for an open Multiplier position with Cancel & Close buttons and with Ongoing status instead of remaining time', () => {
+    it('should render a card for an open Multiplier position with Cancel & Close buttons and with tags for risk management (if it is active) instead of remaining time', () => {
         render(
             mockedContractCard({
                 ...mockProps,
@@ -343,7 +349,9 @@ describe('ContractCard', () => {
         expect(screen.getByText('Multipliers Up')).toBeInTheDocument();
         expect(screen.getByText(symbolName)).toBeInTheDocument();
         expect(screen.getByText('9.39 USD')).toBeInTheDocument();
-        expect(screen.getByText('Ongoing')).toBeInTheDocument();
+        expect(screen.getByText('TP')).toBeInTheDocument();
+        expect(screen.getByText('SL')).toBeInTheDocument();
+        expect(screen.getByText('DC')).toBeInTheDocument();
         expect(screen.getByText('0.49 USD')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: CANCEL })).toBeEnabled();
         expect(screen.getByRole('button', { name: CLOSE })).toBeDisabled();

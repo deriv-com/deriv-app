@@ -100,6 +100,7 @@
         max-height: 7rem;
         margin-left: auto;
         padding: 1rem 1.6rem;
+        text-wrap: nowrap;
 
         @include tablet-screen {
             justify-self: flex-end;

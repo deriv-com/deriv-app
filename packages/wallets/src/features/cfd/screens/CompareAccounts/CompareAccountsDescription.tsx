@@ -1,19 +1,35 @@
 import React from 'react';
 import classNames from 'classnames';
-import { WalletText } from '../../../../components';
-import { THooks } from '../../../../types';
+import { localize } from '@deriv-com/translations';
+import { Text, Tooltip } from '@deriv-com/ui';
+import InfoIcon from '../../../../public/images/ic-info-outline.svg';
+import { THooks, TPlatforms } from '../../../../types';
+import { CFD_PLATFORMS } from '../../constants';
 import { getJurisdictionDescription } from './compareAccountsConfig';
+import { MARKET_TYPE_SHORTCODE } from './constants';
 import './CompareAccountsDescription.scss';
 
 type TCompareAccountsDescription = {
     isDemo: boolean;
     isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
+    platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode }: TCompareAccountsDescription) => {
-    const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
+const CompareAccountsDescription = ({
+    isDemo,
+    isEuRegion,
+    marketType,
+    platform,
+    product,
+    shortCode,
+}: TCompareAccountsDescription) => {
+    const marketTypeShortCode =
+        platform === CFD_PLATFORMS.MT5 && marketType === 'all'
+            ? `${marketType}_${product}_${shortCode}`
+            : marketType?.concat('_', shortCode ?? '');
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
@@ -23,53 +39,66 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
             })}
         >
             <div className='wallets-compare-accounts-text-container__separator'>
-                <WalletText align='center' as='h1' size='xl' weight='bold'>
-                    {'Up to'} {jurisdictionData.leverage}
-                </WalletText>
-                <WalletText align='center' as='p' size='2xs'>
+                <Text align='center' as='h1' size='xl' weight='bold'>
+                    {jurisdictionData.leverage}
+                </Text>
+                <Text align='center' as='p' size='2xs'>
                     {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
-                </WalletText>
+                </Text>
             </div>
             {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
-                    <WalletText align='center' as='h1' size='xl' weight='bold'>
-                        {jurisdictionData.spread}
-                    </WalletText>
-                    <WalletText align='center' as='p' size='2xs'>
+                    <div className='wallets-compare-accounts-title__separator'>
+                        <Text align='center' as='h1' size='xl' weight='bold'>
+                            {jurisdictionData.spread}
+                        </Text>
+                        {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
+                            <Tooltip
+                                as='div'
+                                data-testid='wallets-compare-accounts-text-container__tooltip'
+                                tooltipContent={localize('Commissions apply')}
+                                tooltipOffset={20}
+                                tooltipPosition='top'
+                            >
+                                <InfoIcon />
+                            </Tooltip>
+                        )}
+                    </div>
+                    <Text align='center' as='p' size='2xs'>
                         {jurisdictionData.spread_description}
-                    </WalletText>
+                    </Text>
                 </div>
             )}
             {!isDemo && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.counterparty_company}
-                        </WalletText>
-                        <WalletText align='center' as='p' size='2xs'>
+                        </Text>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.counterparty_company_description}
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.jurisdiction}
-                        </WalletText>
-                        <WalletText align='center' as='p' size='2xs'>
+                        </Text>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.jurisdiction_description}
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.regulator}
-                        </WalletText>
+                        </Text>
                         {jurisdictionData.regulator_license && (
-                            <WalletText align='center' as='p' size='2xs'>
+                            <Text align='center' as='p' size='2xs'>
                                 {jurisdictionData.regulator_license}
-                            </WalletText>
+                            </Text>
                         )}
-                        <WalletText align='center' as='p' size='2xs'>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.regulator_description}
-                        </WalletText>
+                        </Text>
                     </div>
                 </React.Fragment>
             )}

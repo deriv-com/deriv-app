@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
@@ -21,6 +21,8 @@ const MenuLeft = observer(() => {
     const { header_extension } = ui;
     const { setTogglePlatformType } = traders_hub;
 
+    const { isDesktop } = useDevice();
+
     const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -29,11 +31,7 @@ const MenuLeft = observer(() => {
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if (
-                config.link_to === routes.bot ||
-                config.href === routes.binarybot ||
-                config.href === routes.smarttrader
-            ) {
+            if (config.link_to === routes.bot || config.href === routes.smarttrader) {
                 return is_bot_allowed;
             }
             return true;
@@ -41,22 +39,25 @@ const MenuLeft = observer(() => {
 
     return (
         <div className='header__menu-left'>
-            <DesktopWrapper>
-                <TradersHubHomeButton />
-                <div className='traders-hub-header__divider traders-hub-header__divider--wallets' />
-                <PlatformSwitcher
-                    app_routing_history={app_routing_history}
-                    platform_config={filterPlatformsForClients(platform_config)}
-                    setTogglePlatformType={setTogglePlatformType}
-                    current_language={current_language}
-                />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-                {header_extension && is_logged_in && (
-                    <div className='header__menu-left-extensions'>{header_extension}</div>
-                )}
-            </MobileWrapper>
+            {isDesktop ? (
+                <React.Fragment>
+                    <TradersHubHomeButton />
+                    <div className='traders-hub-header__divider traders-hub-header__divider--wallets' />
+                    <PlatformSwitcher
+                        app_routing_history={app_routing_history}
+                        platform_config={filterPlatformsForClients(platform_config)}
+                        setTogglePlatformType={setTogglePlatformType}
+                        current_language={current_language}
+                    />
+                </React.Fragment>
+            ) : (
+                <React.Fragment>
+                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                    {header_extension && is_logged_in && (
+                        <div className='header__menu-left-extensions'>{header_extension}</div>
+                    )}
+                </React.Fragment>
+            )}
             <MenuLinks />
         </div>
     );

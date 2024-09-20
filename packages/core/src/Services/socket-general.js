@@ -271,7 +271,8 @@ const BinarySocketGeneral = (() => {
 
     const subscribeBalances = () => {
         WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
-        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
+        if (client_store.currency)
+            WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
     const authorizeAccount = response => {

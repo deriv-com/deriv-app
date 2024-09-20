@@ -170,6 +170,11 @@ describe('DESCRIPTION_VIDEO_IDS', () => {
             DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.EVEN_ODD].dark
         );
     });
+    it('should return an id for Turbos description video in dark theme', () => {
+        expect(getDescriptionVideoIds(CONTRACT_LIST.TURBOS, true)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.TURBOS].dark
+        );
+    });
     it('should return undefined when called with empty arguments', () => {
         expect(getDescriptionVideoIds()).toEqual(undefined);
     });

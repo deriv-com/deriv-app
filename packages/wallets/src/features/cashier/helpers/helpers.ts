@@ -1,4 +1,5 @@
 import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../../../types';
+import { PRODUCT } from '../../cfd/constants';
 import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants';
 
 type TGetAccountNameProps = {
@@ -7,6 +8,7 @@ type TGetAccountNameProps = {
     displayCurrencyCode?: THooks.CurrencyConfig['display_code'];
     landingCompanyName: TWalletLandingCompanyName;
     mt5MarketType?: TMarketTypes.SortedMT5Accounts;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
 //TODO: remove this function when market_type will be added to transfer_between_accounts response in API
@@ -32,13 +34,13 @@ export const getAccountName = ({
     displayCurrencyCode,
     landingCompanyName,
     mt5MarketType,
+    product,
 }: TGetAccountNameProps) => {
     switch (accountCategory) {
         case 'wallet':
             return `${displayCurrencyCode} Wallet`;
         case 'trading': {
             switch (accountType) {
-                case PlatformDetails.binary.name:
                 case PlatformDetails.standard.name:
                     return PlatformDetails.standard.title;
                 case PlatformDetails.dxtrade.name:
@@ -62,6 +64,9 @@ export const getAccountName = ({
                         case MT5MarketTypeDetails.synthetic.name:
                             return MT5MarketTypeDetails.synthetic.title;
                         case MT5MarketTypeDetails.all.name:
+                            if (product === PRODUCT.ZEROSPREAD) {
+                                return MT5MarketTypeDetails.all.product?.zero_spread.title;
+                            }
                             return MT5MarketTypeDetails.all.title;
                         default:
                             return '';

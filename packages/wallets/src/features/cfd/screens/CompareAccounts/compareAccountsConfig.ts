@@ -1,7 +1,7 @@
 import { localize } from '@deriv-com/translations';
 import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
@@ -18,9 +18,13 @@ const getHighlightedIconLabel = (
     platform: TPlatforms.All,
     isEuRegion: boolean,
     marketType: TMarketTypes,
-    shortCode: TShortCode
+    shortCode: TShortCode,
+    product?: THooks.AvailableMT5Accounts['product']
 ): THighlightedIconLabel[] => {
-    const marketTypeShortCode = marketType?.concat('_', shortCode || '');
+    const marketTypeShortCode =
+        platform === CFD_PLATFORMS.MT5 && marketType === 'all'
+            ? `${marketType}_${product}_${shortCode}`
+            : marketType?.concat('_', shortCode ?? '');
 
     const forexLabel = (() => {
         if (isEuRegion) {
@@ -28,11 +32,14 @@ const getHighlightedIconLabel = (
         } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return localize('Forex: standard/exotic');
         } else if (
-            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG) ||
             platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
-        } else if (marketType === MARKET_TYPE.SYNTHETIC) {
+        } else if (
+            marketType === MARKET_TYPE.SYNTHETIC ||
+            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI)
+        ) {
             return localize('Forex: standard');
         }
         return localize('Forex: standard/micro');
@@ -95,6 +102,19 @@ const getHighlightedIconLabel = (
         case MARKET_TYPE.ALL:
         default:
             if (platform === CFD_PLATFORMS.MT5) {
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return [
+                        { highlighted: true, icon: 'Forex', text: forexLabel },
+                        { highlighted: false, icon: 'Stocks', text: 'Stocks' },
+                        { highlighted: true, icon: 'StockIndices', text: 'Stock indices' },
+                        { highlighted: true, icon: 'Commodities', text: 'Commodities' },
+                        { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
+                        { highlighted: false, icon: 'ETF', text: 'ETFs' },
+                        { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
+                        { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
+                        { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },
+                    ];
+                }
                 return [
                     { highlighted: true, icon: 'Forex', text: forexLabel },
                     { highlighted: true, icon: 'Stocks', text: localize('Stocks') },
@@ -139,7 +159,7 @@ const cfdConfig = {
     counterparty_company_description: localize('Counterparty company'),
     jurisdiction: localize('St. Vincent & Grenadines'),
     jurisdiction_description: localize('Jurisdiction'),
-    leverage: localize('1:1000'),
+    leverage: localize('Up to 1:1000'),
     leverage_description: localize('Maximum leverage'),
     regulator: localize('Financial Commission'),
     regulator_description: localize('Regulator/External dispute resolution'),
@@ -175,7 +195,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 ...cfdConfig,
                 counterparty_company: localize('Deriv (FX) Ltd'),
                 jurisdiction: localize('Labuan'),
-                leverage: localize('1:100'),
+                leverage: localize('Up to 1:100'),
                 regulator: localize('Labuan Financial Services Authority'),
                 regulator_description: localize('Regulator/External dispute resolution'),
                 regulator_license: localize('(License no. MB/18/0024)'),
@@ -186,12 +206,21 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 ...cfdConfig,
                 counterparty_company: localize('Deriv Investments (Europe) Limited'),
                 jurisdiction: localize('Malta'),
-                leverage: localize('1:30'),
+                leverage: localize('Up to 1:30'),
                 regulator: localize('Financial Commission'),
                 regulator_description: '',
                 regulator_license: localize(
                     'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'
                 ),
+            };
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
+            return {
+                ...cfdConfig,
+                counterparty_company: 'Deriv (BVI) Ltd',
+                jurisdiction: 'British Virgin Islands',
+                regulator: 'British Virgin Islands Financial Services Commission',
+                regulator_license: '(License no. SIBA/L/18/1114)',
+                spread: '0.0 pips',
             };
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         case MARKET_TYPE_SHORTCODE.ALL_SVG:

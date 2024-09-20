@@ -1,6 +1,10 @@
 .wallets-carousel-content {
     background-color: var(--general-main-1, #ffffff);
-    width: 100vw;
+    width: 100%;
+
+    @include mobile-screen {
+        width: 100vw;
+    }
 
     &__wrapper {
         width: 100%;

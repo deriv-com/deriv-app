@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { WalletText } from '../../../../components/Base';
+import { Text } from '@deriv-com/ui';
 import './DynamicLeverageTableColumnHeader.scss';
 
 type TDynamicLeverageTableColumnHeader = {
@@ -9,11 +9,11 @@ type TDynamicLeverageTableColumnHeader = {
 
 export const DynamicLeverageTableColumnHeader: FC<TDynamicLeverageTableColumnHeader> = ({ subtitle, title }) => (
     <div className='wallets-dynamic-leverage-screen__table-cell'>
-        <WalletText align='center' size='sm' weight='bold'>
+        <Text align='center' size='sm' weight='bold'>
             {title}
-        </WalletText>
-        <WalletText align='center' size='xs'>
+        </Text>
+        <Text align='center' size='xs'>
             {subtitle}
-        </WalletText>
+        </Text>
     </div>
 );

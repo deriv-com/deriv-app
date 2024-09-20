@@ -1,34 +1,47 @@
-import React, { ComponentProps } from 'react';
+import React, { PropsWithChildren } from 'react';
+import classNames from 'classnames';
+import TradingAccountCardButton from './TradingAccountCardButton';
+import TradingAccountCardContent from './TradingAccountCardContent';
+import TradingAccountCardIcon from './TradingAccountCardIcon';
 import './TradingAccountCard.scss';
 
-type TProps = {
-    disabled?: ComponentProps<'button'>['disabled'];
-    leading?: React.ReactNode;
-    onClick?: ComponentProps<'button'>['onClick'];
-    trailing?: React.ReactNode;
+export type TCommonProps = {
+    children: React.ReactNode;
+    className?: string;
+    'data-testid'?: string;
 };
 
-const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({
-    children,
-    disabled,
-    leading,
-    onClick,
-    trailing,
-}) => {
+type TProps = {
+    className?: string;
+    disabled?: boolean;
+    onClick?: () => void;
+};
+
+const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWithChildren<TProps>) => {
+    const handleClick = () => {
+        if (!disabled && onClick) {
+            onClick();
+        }
+    };
+
     return (
-        <button
-            className='wallets-trading-account-card'
+        <div
+            aria-disabled={disabled}
+            className={classNames('wallets-trading-account-card', className, {
+                'wallets-trading-account-card--disabled': disabled,
+            })}
             data-testid='dt_wallets_trading_account_card'
-            disabled={disabled}
-            onClick={onClick}
+            onClick={handleClick}
+            onKeyDown={handleClick}
+            tabIndex={disabled ? -1 : 0} // Remove focusability if disabled
         >
-            {leading}
-            <div className='wallets-trading-account-card__content'>
-                {children}
-                {trailing}
-            </div>
-        </button>
+            {children}
+        </div>
     );
 };
+
+TradingAccountCard.Icon = TradingAccountCardIcon;
+TradingAccountCard.Content = TradingAccountCardContent;
+TradingAccountCard.Button = TradingAccountCardButton;
 
 export default TradingAccountCard;

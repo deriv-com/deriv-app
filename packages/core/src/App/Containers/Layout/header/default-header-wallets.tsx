@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { useStore } from '@deriv/stores';
-import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv/components';
+import { StaticUrl } from '@deriv/components';
 import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
@@ -56,6 +57,8 @@ const DefaultHeaderWallets = () => {
 
     const history = useHistory();
 
+    const { isDesktop } = useDevice();
+
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -77,11 +80,7 @@ const DefaultHeaderWallets = () => {
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if (
-                config.link_to === routes.bot ||
-                config.href === routes.binarybot ||
-                config.href === routes.smarttrader
-            ) {
+            if (config.link_to === routes.bot || config.href === routes.smarttrader) {
                 return is_bot_allowed;
             }
             return true;
@@ -96,28 +95,31 @@ const DefaultHeaderWallets = () => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    <DesktopWrapper>
-                        <div className='header__menu-left-logo'>
-                            <StaticUrl href='/'>
-                                <DerivBrandShortLogo />
-                            </StaticUrl>
-                        </div>
-                        <PlatformSwitcher
-                            app_routing_history={app_routing_history}
-                            is_landing_company_loaded={is_landing_company_loaded}
-                            is_logged_in={is_logged_in}
-                            is_logging_in={is_logging_in}
-                            platform_config={filterPlatformsForClients(platform_config)}
-                            setTogglePlatformType={setTogglePlatformType}
-                            current_language={current_language}
-                        />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-                        {header_extension && is_logged_in && (
-                            <div className='header__menu-left-extensions'>{header_extension}</div>
-                        )}
-                    </MobileWrapper>
+                    {isDesktop ? (
+                        <React.Fragment>
+                            <div className='header__menu-left-logo'>
+                                <StaticUrl href='/'>
+                                    <DerivBrandShortLogo />
+                                </StaticUrl>
+                            </div>
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                is_landing_company_loaded={is_landing_company_loaded}
+                                is_logged_in={is_logged_in}
+                                is_logging_in={is_logging_in}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                                setTogglePlatformType={setTogglePlatformType}
+                                current_language={current_language}
+                            />
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                            {header_extension && is_logged_in && (
+                                <div className='header__menu-left-extensions'>{header_extension}</div>
+                            )}
+                        </React.Fragment>
+                    )}
                     <MenuLinks />
                 </div>
                 <div

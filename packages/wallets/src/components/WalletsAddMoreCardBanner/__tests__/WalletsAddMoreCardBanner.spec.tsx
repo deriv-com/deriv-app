@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import useDevice from '../../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';
@@ -20,12 +20,6 @@ type TWalletAddedSuccess = {
     onSecondaryButtonClick: () => void;
 };
 
-type TWalletButton = {
-    children: React.ReactNode;
-    disabled: boolean;
-    onClick: () => void;
-};
-
 jest.mock('@deriv/api-v2', () => ({
     useCreateWallet: jest.fn(),
 }));
@@ -34,7 +28,10 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }));
 
-jest.mock('../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 jest.mock('../../../hooks/useSyncLocalStorageClientAccounts', () => jest.fn());
 jest.mock('../../../hooks/useWalletAccountSwitcher', () => jest.fn());
 
@@ -60,14 +57,6 @@ jest.mock('../../WalletAddedSuccess', () => ({
     ),
 }));
 
-jest.mock('../../Base', () => ({
-    WalletButton: ({ children, disabled, onClick }: TWalletButton) => (
-        <button data-testid='wallet-button' disabled={disabled} onClick={onClick}>
-            {children}
-        </button>
-    ),
-}));
-
 describe('WalletsAddMoreCardBanner', () => {
     const mockMutate = jest.fn().mockResolvedValue({ new_account_wallet: { client_id: '123', currency: 'USD' } });
     const mockHistoryPush = jest.fn();
@@ -87,7 +76,7 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'idle',
         });
 
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useSyncLocalStorageClientAccounts as jest.Mock).mockReturnValue({
             addWalletAccountToLocalStorage: mockAddWalletAccountToLocalStorage,
         });
@@ -115,7 +104,7 @@ describe('WalletsAddMoreCardBanner', () => {
         );
 
         expect(screen.getByTestId('wallet-currency-icon')).toBeInTheDocument();
-        expect(screen.getByTestId('wallet-button')).toHaveTextContent('Add');
+        expect(screen.getByRole('button')).toHaveTextContent('Add');
     });
 
     it('should disable the button when is added is true', () => {
@@ -125,8 +114,8 @@ describe('WalletsAddMoreCardBanner', () => {
             </ModalProvider>
         );
 
-        expect(screen.getByTestId('wallet-button')).toBeDisabled();
-        expect(screen.getByTestId('wallet-button')).toHaveTextContent('Added');
+        expect(screen.getByRole('button')).toBeDisabled();
+        expect(screen.getByRole('button')).toHaveTextContent('Added');
     });
 
     it('should call mutate with correct arguments when add button is clicked', () => {
@@ -136,7 +125,7 @@ describe('WalletsAddMoreCardBanner', () => {
             </ModalProvider>
         );
 
-        fireEvent.click(screen.getByTestId('wallet-button'));
+        fireEvent.click(screen.getByText('Add'));
 
         expect(mockMutate).toHaveBeenCalledWith({ account_type: 'doughflow', currency: 'USD' });
     });

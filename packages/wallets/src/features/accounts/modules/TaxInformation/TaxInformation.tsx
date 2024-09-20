@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../components';
+import { Loader, Text } from '@deriv-com/ui';
+import { FormDropdown, FormField, ModalStepWrapper } from '../../../../components';
 import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
@@ -16,18 +16,21 @@ import './TaxInformation.scss';
 
 type TTaxInformationProps = {
     onCompletion?: VoidFunction;
+    selectedJurisdiction: string;
 };
 
-const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
+const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion, selectedJurisdiction }) => {
     const { localize } = useTranslations();
+
     const {
         countryCodeToPatternMapper,
         countryList,
         initialValues,
         isLoading,
         isSubmitted: isTaxInformationSubmitted,
+        isTinMandatory,
         onSubmit,
-    } = useTaxInformation();
+    } = useTaxInformation(selectedJurisdiction);
 
     useEffect(() => {
         if (isTaxInformationSubmitted && onCompletion) {
@@ -53,15 +56,12 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                             {!isLoading && (
                                 <>
                                     <div className='wallets-tax-information__header'>
-                                        <WalletText align='center' as='h2' color='prominent' weight='bold'>
+                                        <Text align='center' as='h2' color='prominent' weight='bold'>
                                             <Localize i18n_default_text='Complete your personal details' />
-                                        </WalletText>
-                                        <WalletText align='center' size='xs'>
-                                            <Localize
-                                                i18n_default_text='Any information you provide is confidential and will be used for
-                                            verification purposes only.'
-                                            />
-                                        </WalletText>
+                                        </Text>
+                                        <Text align='center' size='xs'>
+                                            <Localize i18n_default_text='Any information you provide is confidential and will be used for verification purposes only.' />
+                                        </Text>
                                     </div>
                                     <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>
@@ -91,15 +91,17 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion }) => {
                                             validationSchema={getTaxResidenceValidator(countryList, localize)}
                                             variant='prompt'
                                         />
-                                        <FormField
-                                            disabled={Boolean(!values.taxResidence || errors.taxResidence)}
-                                            label={localize('Tax identification number*')}
-                                            name='taxIdentificationNumber'
-                                            validationSchema={getTinValidator(
-                                                countryCodeToPatternMapper[values.taxResidence ?? ''],
-                                                localize
-                                            )}
-                                        />
+                                        {isTinMandatory && (
+                                            <FormField
+                                                disabled={Boolean(!values.taxResidence || errors.taxResidence)}
+                                                label={localize('Tax identification number*')}
+                                                name='taxIdentificationNumber'
+                                                validationSchema={getTinValidator(
+                                                    countryCodeToPatternMapper[values.taxResidence ?? ''],
+                                                    localize
+                                                )}
+                                            />
+                                        )}
                                         <FormDropdown
                                             isFullWidth
                                             label={localize('Account opening reason*')}

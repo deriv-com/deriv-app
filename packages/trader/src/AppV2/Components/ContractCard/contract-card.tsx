@@ -130,24 +130,7 @@ const ContractCard = ({
             >
                 <div className={`${className}__body`}>
                     <div className={`${className}__details`}>
-                        <IconTradeTypes
-                            className='trade-type-icon'
-                            type={is_high_low ? `${contract_type}_barrier` : contract_type}
-                            size={32}
-                        />
-                        <div className={`${className}__title`}>
-                            <Text className='trade-type' size='sm'>
-                                {tradeTypeName}
-                            </Text>
-                            <CaptionText className='symbol' size='sm'>
-                                {symbolName}
-                            </CaptionText>
-                        </div>
-                        <CaptionText className='stake' size='sm'>
-                            <Money amount={buy_price} currency={currency} show_currency />
-                        </CaptionText>
-                    </div>
-                    <div className='status-and-profit'>
+                        <IconTradeTypes type={is_high_low ? `${contract_type}_barrier` : contract_type} size={24} />
                         <ContractCardStatusTimer
                             currentTick={currentTick}
                             hasNoAutoExpiry={isMultiplier && !is_crypto}
@@ -155,6 +138,19 @@ const ContractCard = ({
                             serverTime={serverTime}
                             {...contractInfo}
                         />
+                    </div>
+                    <div className={`${className}__details`}>
+                        <Text className='trade-type' size='sm'>
+                            {tradeTypeName}
+                        </Text>
+                        <Text size='sm' color='quill-typography__color--subtle'>
+                            <Money amount={buy_price} currency={currency} show_currency />
+                        </Text>
+                    </div>
+                    <div className={`${className}__details`}>
+                        <Text size='sm' className='symbol' color='quill-typography__color--subtle'>
+                            {symbolName}
+                        </Text>
                         <Text className='profit' size='sm'>
                             <Money amount={totalProfit} currency={currency} has_sign show_currency />
                         </Text>

@@ -12,29 +12,19 @@
     text-decoration: none;
     color: unset;
 
-    .dc-icon {
-        display: flex;
-        flex-shrink: 0;
-        justify-content: center;
-        align-items: center;
-        width: var(--core-size-1600);
-        height: var(--core-size-1600);
-    }
     &__body {
         display: flex;
         flex-direction: column;
-        gap: var(--semantic-spacing-gap-md);
-    }
-    &__body,
-    &__title {
+        justify-content: space-between;
+        gap: var(--semantic-spacing-gap-sm);
         min-width: 0;
         flex-grow: 1;
     }
-    &__details,
-    .status-and-profit {
+    &__details {
         display: flex;
         gap: var(--core-spacing-400);
         align-items: center;
+        justify-content: space-between;
     }
     .status,
     .timer {
@@ -45,30 +35,13 @@
             font-size: var(--core-fontSize-50);
         }
     }
-    .status-and-profit {
-        justify-content: space-between;
-    }
-    &__title {
-        display: flex;
-        flex-direction: column;
-    }
     .trade-type,
     .symbol {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
 
-        &-icon {
-            padding: var(--core-size-200);
-        }
-    }
-    .symbol,
-    .stake {
-        color: var(--component-textIcon-normal-subtle);
-    }
-    .stake {
-        align-self: flex-end;
-    }
     .buttons {
         display: flex;
         align-self: center;

@@ -23,7 +23,7 @@ const formatDate = (date: Date) => {
     return `${formatted_date} GMT`;
 };
 
-const DurationEndTimePicker = ({
+const DurationEndDatePicker = ({
     expiry_date,
     setExpiryDate,
 }: {
@@ -74,4 +74,4 @@ const DurationEndTimePicker = ({
     );
 };
 
-export default DurationEndTimePicker;
+export default DurationEndDatePicker;

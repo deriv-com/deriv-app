@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActionSheet, CaptionText, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import DurationEndTimePicker from './datepicker';
+import DurationEndDatePicker from './datepicker';
 import { observer } from '@deriv/stores';
 import DurationChips from './chips';
 import DurationWheelPicker from './wheelpicker';
@@ -128,7 +128,7 @@ const DurationActionSheetContainer = observer(
                     setIs24HourSelected={setIs24HourSelected}
                 />
                 {unit == 'd' && (
-                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
+                    <DurationEndDatePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
                 )}
                 {unit == 'et' && (
                     <div className='duration-container__endtime'>

@@ -21,9 +21,21 @@ jest.mock('@deriv/quill-icons', () => ({
         <button onClick={onClick}>LabelPairedCalendarLgBoldIcon</button>
     )),
 }));
+
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
-    DatePicker: jest.fn(({ onClick }) => <button onClick={onClick}>Date Picker</button>),
+    DatePicker: jest.fn(({ onChange }) => (
+        <div>
+            <button
+                onClick={() => {
+                    const mockDate = new Date(2023, 8, 10);
+                    onChange(mockDate);
+                }}
+            >
+                Date Picker
+            </button>
+        </div>
+    )),
 }));
 
 describe('DurationActionSheetContainer', () => {
@@ -37,7 +49,7 @@ describe('DurationActionSheetContainer', () => {
                 duration_units_list: ['t', 'm', 'h', 'd'],
                 onChangeMultiple: jest.fn(),
                 expiry_time: null,
-                contract_type: 'call',
+                contract_type: 'touch',
             },
         },
     });
@@ -120,6 +132,21 @@ describe('DurationActionSheetContainer', () => {
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 's',
             duration: 20,
+            expiry_time: null,
+            expiry_type: 'duration',
+        });
+    });
+
+    it('should call onChangeMultiple with correct data with hour', () => {
+        default_trade_store.modules.trade.duration = 4;
+
+        renderDurationContainer(default_trade_store, 'h');
+        userEvent.click(screen.getByText('4 h'));
+        userEvent.click(screen.getByText('Save'));
+
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            duration_unit: 'm',
+            duration: 60,
             expiry_time: null,
             expiry_type: 'duration',
         });

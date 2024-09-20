@@ -11,6 +11,13 @@ jest.mock('@deriv/hooks', () => {
     };
 });
 
+jest.mock('@deriv-com/auth-client', () => {
+    return {
+        ...jest.requireActual('@deriv-com/auth-client'),
+        useOAuth2: jest.fn(() => ({ OAuth2Logout: jest.fn() })),
+    };
+});
+
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
 

@@ -24,6 +24,9 @@
         gap: 0.8rem;
         align-items: center;
     }
+    &__status-badge {
+        text-decoration: none;
+    }
 }
 
 .dc-modal__container_verification-docs-list-modal {

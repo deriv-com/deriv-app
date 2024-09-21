@@ -43,7 +43,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp';
 export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
@@ -112,18 +112,15 @@ export const getCFDAccountKey = ({
         }
     }
     if (market_type === 'financial') {
-        if (
-            platform === CFD_PLATFORMS.DXTRADE ||
-            sub_account_type === 'financial' ||
-            sub_account_type === 'financial_stp'
-        ) {
+        if (product === 'stp' && sub_account_type === 'financial_stp') {
+            return 'stp';
+        } else if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
                 case 'svg':
                     return 'financial_svg';
                 case 'bvi':
                     return 'financial_bvi';
-                case 'labuan':
-                    return 'financial_fx';
+
                 case 'vanuatu':
                     return 'financial_v';
                 case 'maltainvest':

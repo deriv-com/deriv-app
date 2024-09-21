@@ -131,16 +131,16 @@ const MT5CreatePassword = ({
                                     need_tnc={need_tnc}
                                 />
                             </div>
+                            <div className='mt5-password-modal__submit-button'>
+                                <FormSubmitButton
+                                    is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
+                                    is_loading={isSubmitting}
+                                    label={localize('Create account')}
+                                    onClick={handleSubmit}
+                                />
+                            </div>
                         </div>
                     </form>
-                    <div className='mt5-password-modal__submit-button'>
-                        <FormSubmitButton
-                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
-                            is_loading={isSubmitting}
-                            label={localize('Create account')}
-                            onClick={handleSubmit}
-                        />
-                    </div>
                 </React.Fragment>
             )}
         </Formik>

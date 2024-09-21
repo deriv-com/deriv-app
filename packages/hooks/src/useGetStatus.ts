@@ -4,16 +4,15 @@ import useIsSelectedMT5AccountCreated from './useIsSelectedMT5AccountCreated';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
 const useGetStatus = () => {
-    const { common, traders_hub } = useStore();
+    const { common } = useStore();
     const { mf_account_status, kyc_status } = useGetMFAccountStatus();
-    const { existing_account_status } = useIsSelectedMT5AccountCreated();
+    const { existing_account_status, existing_account } = useIsSelectedMT5AccountCreated();
     const { platform } = common;
-    const { selected_jurisdiction_kyc_status } = traders_hub;
 
     if (platform === CFD_PLATFORMS.MT5) {
         return {
             status_badge: existing_account_status,
-            client_kyc_status: selected_jurisdiction_kyc_status,
+            client_kyc_status: existing_account?.client_kyc_status,
         };
     }
     return {

@@ -58,7 +58,7 @@ const useGetMFAccountStatus = () => {
         }
         return null;
     };
-    const getVerificationStatus = () => (!is_verified ? { poi_status, poa_status } : {});
+    const getVerificationStatus = () => (!is_verified ? { poi_status, poa_status, valid_tin: 1 } : {});
 
     return {
         mf_account_status: getMFAccountStatus(),

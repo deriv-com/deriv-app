@@ -18,13 +18,17 @@ const VerificationDocsListModalContent = observer(() => {
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
+
+    if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin } = client_kyc_status;
 
     const items = [
         { id: 'identity', text: 'Proof of identity', status: poi_status, route: routes.proof_of_identity },
         { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
-        { id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details },
-    ].filter(item => item.status || item.status === 0);
+        ...(valid_tin === 0
+            ? [{ id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details }]
+            : []),
+    ];
 
     return (
         <div className='verification-docs-list-modal__content'>

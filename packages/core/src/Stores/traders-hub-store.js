@@ -424,6 +424,15 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'All',
             },
             {
+                name: 'Financial',
+                description: getAccountDesc(),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'financial',
+                product: 'stp',
+                icon: 'Financial',
+                availability: 'Non-EU',
+            },
+            {
                 name: 'Swap-Free',
                 description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
@@ -570,7 +579,9 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-                if (
+                if (product === 'stp') {
+                    return key.startsWith(`${platform}.${selected_account_type}.${product}`);
+                } else if (
                     platform === CFD_PLATFORMS.MT5 &&
                     market_type !== 'all' &&
                     !this.is_eu_user &&
@@ -768,6 +779,8 @@ export default class TradersHubStore extends BaseStore {
                         },
                     ];
                 });
+            } else if (account.product === 'stp') {
+                this.combined_cfd_mt5_accounts = [...this.combined_cfd_mt5_accounts];
             } else {
                 this.combined_cfd_mt5_accounts = [
                     ...this.combined_cfd_mt5_accounts,

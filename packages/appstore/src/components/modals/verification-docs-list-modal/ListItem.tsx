@@ -11,13 +11,13 @@ import { LabelPairedChevronRightCaptionBoldIcon } from '@deriv/quill-icons';
 type TListItemProps = {
     id: string;
     text: string;
-    status: string | number;
+    status?: string | number;
     route: string;
 };
 
 type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 
-const MT5BadgeStatus = (status: TAuthStatusCodes) => {
+const getBadgeStatus = (status: TAuthStatusCodes) => {
     switch (status) {
         case AUTH_STATUS_CODES.VERIFIED:
             return {
@@ -46,7 +46,7 @@ const MT5BadgeStatus = (status: TAuthStatusCodes) => {
 };
 
 const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
-    const { text: badge_text, icon: badge_icon, icon_size: badge_size } = MT5BadgeStatus(status);
+    const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
     const { isMobile } = useDevice();
     const { traders_hub } = useStore();
     const { toggleVerificationModal } = traders_hub;
@@ -69,7 +69,13 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                 <LabelPairedChevronRightCaptionBoldIcon />
             ) : (
                 <div className='verification-docs-list-modal__card'>
-                    <StatusBadge account_status={status} icon={badge_icon} text={badge_text} icon_size={badge_size} />
+                    <StatusBadge
+                        account_status={status}
+                        icon={badge_icon}
+                        text={badge_text}
+                        icon_size={badge_size}
+                        className='verification-docs-list-modal__status-badge'
+                    />
                     <LabelPairedChevronRightCaptionBoldIcon fill='var(--text-primary)' />
                 </div>
             )}

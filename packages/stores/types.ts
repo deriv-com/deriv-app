@@ -109,9 +109,15 @@ type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial'
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 // TODO: Remove this type once the API types are updated
+
+type TClientKyCStatus = {
+    poi_status?: keyof typeof AUTH_STATUS_CODES;
+    poa_status?: keyof typeof AUTH_STATUS_CODES;
+    valid_tin?: 0 | 1;
+};
 export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     product?: 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
-    client_kyc_status?: Record<string, string>;
+    client_kyc_status?: TClientKyCStatus;
 };
 
 type TIconTypes =
@@ -258,7 +264,7 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    client_kyc_status?: Record<string, string>;
+    client_kyc_status?: TClientKyCStatus;
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
     max_count?: number;
@@ -412,6 +418,14 @@ type RealAccountSignupSettings = {
     error_message: string;
     previous_currency: string;
     success_message: string;
+};
+const AUTH_STATUS_CODES = {
+    NONE: 'none',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    VERIFIED: 'verified',
+    EXPIRED: 'expired',
+    SUSPECTED: 'suspected',
 };
 
 export type TClientStore = {

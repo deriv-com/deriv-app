@@ -51,6 +51,11 @@ describe('useGetStatus', () => {
                 market_type: 'financial',
                 product: 'financial',
                 name: 'sample company',
+                client_kyc_status: {
+                    poa_status: 'pending',
+                    poi_status: 'verified',
+                    valid_tin: 1,
+                },
             },
             is_selected_MT5_account_created: false,
             existing_account_status: MT5_ACCOUNT_STATUS.PENDING,
@@ -63,7 +68,11 @@ describe('useGetStatus', () => {
         const { result } = renderHook(() => useGetStatus(), { wrapper });
         expect(result.current).toEqual({
             status_badge: MT5_ACCOUNT_STATUS.PENDING,
-            client_kyc_status: {},
+            client_kyc_status: {
+                poa_status: 'pending',
+                poi_status: 'verified',
+                valid_tin: 1,
+            },
         });
     });
 
@@ -124,6 +133,7 @@ describe('useGetStatus', () => {
             kyc_status: {
                 poi_status: 'pending',
                 poa_status: 'verified',
+                valid_tin: 1,
             },
         });
 
@@ -143,6 +153,7 @@ describe('useGetStatus', () => {
             client_kyc_status: {
                 poi_status: 'pending',
                 poa_status: 'verified',
+                valid_tin: 1,
             },
         });
     });

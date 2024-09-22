@@ -23,6 +23,10 @@
         display: flex;
         gap: 0.8rem;
         align-items: center;
+        &--icon {
+            width: 2.4rem;
+            height: 2.4rem;
+        }
     }
     &__status-badge {
         text-decoration: none;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
+import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv/translations';
 import { Text, StatusBadge } from '@deriv/components';
 import { AUTH_STATUS_CODES } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
 import './verification-docs-list-modal.scss';
-import { LabelPairedChevronRightCaptionBoldIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 
 type TListItemProps = {
     id: string;
@@ -29,6 +29,7 @@ const getBadgeStatus = (status: TAuthStatusCodes) => {
             return {
                 text: <Localize i18n_default_text='In review' />,
                 icon: 'IcMt5Pending',
+                icon_size: '12',
             };
         case AUTH_STATUS_CODES.REJECTED:
         case AUTH_STATUS_CODES.SUSPECTED:
@@ -47,13 +48,14 @@ const getBadgeStatus = (status: TAuthStatusCodes) => {
 
 const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
-    const { isMobile } = useDevice();
     const { traders_hub } = useStore();
+    const { isMobile } = useDevice();
     const { toggleVerificationModal } = traders_hub;
     const history = useHistory();
+    const is_document_acknowledged = [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status);
 
     const onClickItem = () => {
-        if ([AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status)) {
+        if (is_document_acknowledged) {
             return;
         }
         history.push(route);
@@ -62,11 +64,11 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
 
     return (
         <div className='verification-docs-list-modal__content-list-item' onClick={onClickItem}>
-            <Text as='div' size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
+            <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
                 <Localize i18n_default_text={text} />
             </Text>
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
-                <LabelPairedChevronRightCaptionBoldIcon />
+                <LabelPairedChevronRightMdRegularIcon />
             ) : (
                 <div className='verification-docs-list-modal__card'>
                     <StatusBadge
@@ -76,7 +78,14 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                         icon_size={badge_size}
                         className='verification-docs-list-modal__status-badge'
                     />
-                    <LabelPairedChevronRightCaptionBoldIcon fill='var(--text-primary)' />
+                    {is_document_acknowledged ? (
+                        <LabelPairedChevronRightMdRegularIcon
+                            className='verification-docs-list-modal__card--icon'
+                            fill='var(--text-disabled-1)'
+                        />
+                    ) : (
+                        <LabelPairedChevronRightMdRegularIcon />
+                    )}
                 </div>
             )}
         </div>

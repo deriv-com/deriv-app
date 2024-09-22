@@ -111,8 +111,8 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 // TODO: Remove this type once the API types are updated
 
 type TClientKyCStatus = {
-    poi_status?: keyof typeof AUTH_STATUS_CODES;
-    poa_status?: keyof typeof AUTH_STATUS_CODES;
+    poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
     valid_tin?: 0 | 1;
 };
 export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
@@ -426,7 +426,7 @@ const AUTH_STATUS_CODES = {
     VERIFIED: 'verified',
     EXPIRED: 'expired',
     SUSPECTED: 'suspected',
-};
+} as const;
 
 export type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;

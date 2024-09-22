@@ -19,7 +19,7 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                             <Text
                                 key={0}
                                 weight='bold'
-                                size='xxxs'
+                                size='xxs'
                                 color='var(--status-warning)'
                                 onClick={handleOnClick}
                             />,
@@ -37,7 +37,7 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                             <Text
                                 key={0}
                                 weight='bold'
-                                size='xxxs'
+                                size='xxs'
                                 color='var(--status-danger)'
                                 onClick={handleOnClick}
                             />,
@@ -56,7 +56,7 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                             <Text
                                 key={0}
                                 weight='bold'
-                                size='xxxs'
+                                size='xxs'
                                 color='var(--status-info)'
                                 onClick={handleOnClick}
                             />,

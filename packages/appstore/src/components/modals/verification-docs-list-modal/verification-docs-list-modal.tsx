@@ -28,7 +28,7 @@ const VerificationDocsListModalContent = observer(() => {
         ...(valid_tin === 0
             ? [{ id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details }]
             : []),
-    ];
+    ].filter(item => item.status);
 
     return (
         <div className='verification-docs-list-modal__content'>

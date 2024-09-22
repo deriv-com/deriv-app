@@ -110,6 +110,10 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
     onForgotPassword: () => void;
     should_set_trading_password: boolean;
     submitPassword: TOnSubmitPassword;
+    account_type: {
+        type: string;
+        category: string;
+    };
 };
 
 type TCFDPasswordModalProps = {
@@ -359,11 +363,12 @@ const CFDPasswordForm = observer(
         should_set_trading_password,
         submitPassword,
         validatePassword,
+        account_type,
     }: TCFDPasswordFormProps) => {
         const { isDesktop } = useDevice();
         const { jurisdiction_selected_shortcode } = useCfdStore();
-        const [checked, setChecked] = React.useState(false); // TODO: check for default jurisdiction project
-        const need_tnc = jurisdiction_selected_shortcode !== 'svg'; /// TODO: check for default jurisdiction project
+        const [checked, setChecked] = React.useState(false);
+        const need_tnc = jurisdiction_selected_shortcode !== 'svg' && account_type.category === CATEGORY.REAL;
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -481,13 +486,15 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
-                            <CfdPasswordModalTnc
-                                className='cfd-password-modal-tnc--bottom'
-                                platform={platform}
-                                checked={checked}
-                                onCheck={() => setChecked(prev => !prev)}
-                                need_tnc={need_tnc}
-                            />
+                            {account_type.category === CATEGORY.REAL && (
+                                <CfdPasswordModalTnc
+                                    className='cfd-password-modal-tnc--bottom'
+                                    platform={platform}
+                                    checked={checked}
+                                    onCheck={() => setChecked(prev => !prev)}
+                                    need_tnc={need_tnc}
+                                />
+                            )}
                         </div>
                         <FormSubmitButton
                             is_disabled={!values.password || !isValid || (need_tnc && !checked)}
@@ -546,7 +553,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsMt5PasswordInvalidFormatModalVisible,
         is_sent_email_modal_enabled,
         setSentEmailModalStatus,
-        setJurisdictionSelectedShortcode,
     } = useCfdStore();
 
     const history = useHistory();
@@ -827,6 +833,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             platform={platform}
             is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
+            account_type={account_type}
         />
     );
 

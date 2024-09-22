@@ -23,12 +23,15 @@ const VerificationDocsListModalContent = observer(() => {
     const { poi_status, poa_status, valid_tin } = client_kyc_status;
 
     const items = [
-        { id: 'identity', text: 'Proof of identity', status: poi_status, route: routes.proof_of_identity },
-        { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
-        ...(valid_tin === 0
-            ? [{ id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details }]
-            : []),
-    ].filter(item => item.status);
+        poi_status && {
+            id: 'identity',
+            text: 'Proof of identity',
+            status: poi_status,
+            route: routes.proof_of_identity,
+        },
+        poa_status && { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
+        valid_tin === 0 && { id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details },
+    ].filter(Boolean);
 
     return (
         <div className='verification-docs-list-modal__content'>

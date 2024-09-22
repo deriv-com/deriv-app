@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
 import { DBVI_COMPANY_NAMES } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 
@@ -14,8 +14,6 @@ type TJurisdictionCheckBoxProps = {
 
 const JurisdictionCheckBox = observer(
     ({ class_name, is_checked, jurisdiction_selected_shortcode, onCheck }: TJurisdictionCheckBoxProps) => {
-        const { ui } = useStore();
-        const { is_mobile } = ui;
         const { available_account_to_create } = useIsSelectedMT5AccountCreated();
         const getCheckboxLabel = () => (
             <Text as='p' size='xxs' line_height='m'>

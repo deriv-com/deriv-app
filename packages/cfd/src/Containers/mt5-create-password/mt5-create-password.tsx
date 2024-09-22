@@ -124,12 +124,14 @@ const MT5CreatePassword = ({
                                         )}
                                     </PasswordMeter>
                                 </div>
-                                <CfdPasswordModalTnc
-                                    platform={platform}
-                                    checked={checked}
-                                    onCheck={() => setChecked(prev => !prev)}
-                                    need_tnc={need_tnc}
-                                />
+                                {account_type.category === CATEGORY.REAL && (
+                                    <CfdPasswordModalTnc
+                                        platform={platform}
+                                        checked={checked}
+                                        onCheck={() => setChecked(prev => !prev)}
+                                        need_tnc={need_tnc}
+                                    />
+                                )}
                             </div>
                             <div className='mt5-password-modal__submit-button'>
                                 <FormSubmitButton

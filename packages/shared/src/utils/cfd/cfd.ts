@@ -26,6 +26,7 @@ export const CFD_text: { [key: string]: string } = {
     all_zero_spread_demo: 'Zero Spread Demo',
     all_swap_free_svg: 'Swap-Free SVG',
     all_zero_spread_bvi: 'Zero Spread BVI',
+    stp: 'Financial Labuan',
 } as const;
 
 export const CFD_PRODUCTS_TITLE = {

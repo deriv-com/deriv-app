@@ -1,13 +1,28 @@
 import React, { Suspense } from 'react';
+import { useDevice } from '@deriv-com/ui';
+import { DerivLightUploadPoiIcon, DerivLightWaitingPoaIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
-import { routes, CFD_PLATFORMS } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
+import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES, CFD_text } from '@deriv/shared';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import './verification-docs-list-modal.scss';
-import { DerivLightUploadPoiIcon } from '@deriv/quill-icons';
 import ListItem from './ListItem';
+import './verification-docs-list-modal.scss';
+
+type TItems = {
+    id: string;
+    text: string;
+    status: string | number;
+    route: string;
+};
+
+const getIcon = (items: TItems[]) => {
+    const icon_size = { height: '120px', width: '120px' };
+    if (items.every(item => item?.id === 'address' && item?.status === AUTH_STATUS_CODES.PENDING)) {
+        return <DerivLightWaitingPoaIcon {...icon_size} />;
+    }
+    return <DerivLightUploadPoiIcon {...icon_size} />;
+};
 
 const VerificationDocsListModalContent = observer(() => {
     const {
@@ -22,26 +37,36 @@ const VerificationDocsListModalContent = observer(() => {
     if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin } = client_kyc_status;
 
-    const items = [
+    const items: TItems[] = [
         poi_status && {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
             route: routes.proof_of_identity,
         },
-        poa_status && { id: 'address', text: 'Proof of address', status: poa_status, route: routes.proof_of_address },
-        valid_tin === 0 && { id: 'tax', text: 'Personal Details', status: valid_tin, route: routes.personal_details },
-    ].filter(Boolean);
+        poa_status && {
+            id: 'address',
+            text: 'Proof of address',
+            status: poa_status,
+            route: routes.proof_of_address,
+        },
+        valid_tin === 0 && {
+            id: 'tax',
+            text: 'Personal Details',
+            status: valid_tin,
+            route: routes.personal_details,
+        },
+    ].filter(Boolean) as TItems[];
 
     return (
         <div className='verification-docs-list-modal__content'>
-            <DerivLightUploadPoiIcon height={120} width={120} />
+            {getIcon(items)}
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
                 {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
                     <Localize
                         i18n_default_text='Once your account details are complete, your {{platform}} {{product}} account will be ready for you.'
                         values={{
-                            platform: 'MT5',
+                            platform: CFD_text[platform],
                             product: mt5_companies[account_type.category][account_type.type]?.title || '',
                         }}
                     />

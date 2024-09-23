@@ -468,6 +468,7 @@ export type TClientStore = {
     is_logging_in: boolean;
     is_client_store_initialized: boolean;
     is_low_risk: boolean;
+    is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
     is_p2p_enabled: boolean;

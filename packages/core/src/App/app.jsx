@@ -26,7 +26,6 @@ import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
-import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
@@ -64,12 +63,6 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = async () => {
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-            await delay(2000);
-            initHotjar(root_store.client);
-        };
-
         initializeTranslations();
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
@@ -79,17 +72,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
-        const max_timeout = setTimeout(loadExternalScripts, 15 * 1000); // 15 seconds
-
-        window.addEventListener('load', () => {
-            clearTimeout(max_timeout);
-            loadExternalScripts();
-        });
-
-        return () => {
-            window.removeEventListener('load', loadExternalScripts);
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

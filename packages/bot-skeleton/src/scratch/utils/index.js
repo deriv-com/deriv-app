@@ -657,10 +657,11 @@ const download_option = {
 };
 
 export const excludeOptionFromContextMenu = (menu, exclude_items) => {
-    if (exclude_items && exclude_items.length > 0) {
-        for (let i = menu.length - 1; i >= 0; i--) {
+    for (let i = 0; i <= menu.length - 1; i++) {
+        if (exclude_items) {
             const menu_text = localize(menu[i].text);
-            if (exclude_items.includes(menu_text)) {
+            const item_to_remove = localize(exclude_items?.text);
+            if (item_to_remove === menu_text) {
                 menu.splice(i, 1);
             } else {
                 menu[i].text = menu_text;

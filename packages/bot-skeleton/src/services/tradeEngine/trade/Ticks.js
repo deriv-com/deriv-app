@@ -214,6 +214,8 @@ export default Engine =>
                     };
 
                     const delayExecution = tick_list => watchTicks(tick_list);
+
+                    if (Number(tick_value) <= 0) resolveAndExit();
                     this.$scope.ticksService.monitor({ symbol, callback: delayExecution });
                 } catch (error) {
                     reject(new Error(`Failed to start tick monitoring: ${error.message}`));

@@ -4,7 +4,7 @@ $ONE_BUTTON_FOOTER_HEIGHT: var(--core-size-3200);
 $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
 
 .contract-details {
-    background-color: var(--core-color-solid-slate-75);
+    background-color: var(--semantic-color-slate-solid-surface-frame-mid);
     padding: 0 var(--core-spacing-400);
     display: flex;
     flex-direction: column;
@@ -35,15 +35,10 @@ $TWO_BUTTONS_FOOTER_HEIGHT: 120px;
     }
 }
 
-.placeholder {
-    background-color: var(--core-color-solid-slate-50);
-}
-
 .contract-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--core-color-solid-slate-50);
     border-radius: var(--core-borderRadius-500);
     padding: var(--core-spacing-800);
 

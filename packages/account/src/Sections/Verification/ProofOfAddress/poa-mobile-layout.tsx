@@ -2,15 +2,9 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text, InlineMessage, Button } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
-import { useHistory } from 'react-router';
-import { routes as shared_routes } from '@deriv/shared';
-import './poa-mobile-layout.scss';
 import { useFormikContext, Form } from 'formik';
-import { useDevice } from '@deriv-com/ui';
 import FormBody from '../../../Components/form-body';
-import FormSubHeader from '../../../Components/form-sub-header';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { TPOAFormState } from '../../../Types';
 import FormFooter from '../../../Components/form-footer';
@@ -18,6 +12,8 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
+import { LabelPairedArrowLeftMdBoldIcon } from '@deriv/quill-icons';
+import './poa-mobile-layout.scss';
 
 type TPOAMobileLayout = {
     className?: string;
@@ -44,7 +40,6 @@ const ProgressBar = ({ is_active }: { is_active: boolean }) => (
 
 const POAMobileLayout = observer(
     ({ setOffset, is_resubmit, form_state, document_files, setDocumentFiles, is_for_cfd_modal }: TPOAMobileLayout) => {
-        const history = useHistory();
         const { localize } = useTranslations();
         const { status, handleSubmit, isSubmitting, isValid, values, errors } = useFormikContext<TFormInitialValues>();
         const { client } = useStore();
@@ -54,33 +49,40 @@ const POAMobileLayout = observer(
         const { states_list, account_settings, is_eu, getChangeableFields } = client;
 
         const changeable_fields = getChangeableFields();
-        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), []);
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa', is_eu), [is_eu]);
 
         const isNextBtnDisabled = React.useMemo(() => {
             if (step.id === 2) {
                 return false;
             }
             return (
-                !values.address_line_1 &&
-                !!errors.address_line_1 &&
-                !!errors.address_line_2 &&
-                !values.address_city &&
-                !!errors.address_city &&
-                !!errors.address_state &&
+                !values.address_line_1 ||
+                !!errors.address_line_1 ||
+                !!errors.address_line_2 ||
+                !values.address_city ||
+                !!errors.address_city ||
+                !!errors.address_state ||
                 !!errors.address_postcode
             );
-        }, [values]);
+        }, [values, errors, step.id]);
 
         return (
             <div className='poa-mobile-layout'>
                 <div className={clsx('poa-header', { 'poa-header--non-modal': !is_for_cfd_modal })}>
-                    <Text as='p' size='xxs' className='timeline'>
-                        <Localize
-                            i18n_default_text='<0>Step {{step}}/2:&nbsp;</0> {{title}}'
-                            values={{ step: step.id, title: step.text }}
-                            components={[<strong key={0} />]}
-                        />
-                    </Text>
+                    <div className='timeline'>
+                        {step.id === 2 && (
+                            <LabelPairedArrowLeftMdBoldIcon
+                                onClick={() => setStep({ id: 1, text: localize('Enter your address') })}
+                            />
+                        )}
+                        <Text as='p' size='xxs'>
+                            <Localize
+                                i18n_default_text='<0>Step {{step}}/2:&nbsp;</0> {{title}}'
+                                values={{ step: step.id, title: step.text }}
+                                components={[<strong key={0} />]}
+                            />
+                        </Text>
+                    </div>
                     <div className='timeline-item'>
                         <ProgressBar is_active={step.id <= 2} />
                         <ProgressBar is_active={step.id === 2} />

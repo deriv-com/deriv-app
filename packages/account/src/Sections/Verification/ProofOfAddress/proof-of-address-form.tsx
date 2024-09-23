@@ -136,6 +136,10 @@ const ProofOfAddressForm = observer(
                 }
             }
 
+            if (!values.document_type?.value) {
+                errors.document_type = localize('Document type is required.');
+            }
+
             return errors;
         };
 
@@ -278,6 +282,7 @@ const ProofOfAddressForm = observer(
                 onSubmit={onSubmitValues}
                 validate={validateFields}
                 enableReinitialize
+                validateOnMount
             >
                 {() => (
                     <React.Fragment>

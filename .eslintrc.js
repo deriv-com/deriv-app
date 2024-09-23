@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['@deriv/eslint-config-deriv'],
+    extends: ['@deriv-com/eslint-config-deriv'],
     rules: {
         'global-require': 'off',
     },

@@ -37,7 +37,7 @@
     "author": "Binary.com",
     "license": "MIT",
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
+        "@babel/eslint-parser": "^7.25.1",
         "@babel/preset-react": "^7.16.7",
         "@testing-library/react": "^12.0.0",
         "@types/dompurify": "^3.0.5",
@@ -49,7 +49,7 @@
         "copy-webpack-plugin": "^9.0.1",
         "css-hot-loader": "^1.4.4",
         "css-loader": "^5.0.1",
-        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-binary": "^1.0.2",
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-import": "^2.23.4",
@@ -68,7 +68,8 @@
         "svg-sprite-loader": "^6.0.11",
         "typescript": "^4.6.3",
         "webpack": "^5.81.0",
-        "webpack-cli": "^4.7.2"
+        "webpack-cli": "^4.7.2",
+        "eslint-plugin-jest-dom": "^5.4.0"
     },
     "dependencies": {
         "@deriv-com/ui": "1.35.0",

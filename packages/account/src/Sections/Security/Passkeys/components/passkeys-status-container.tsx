@@ -5,8 +5,9 @@ import { PasskeyCreated } from './passkey-created';
 import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../passkeys-configs';
 import { PasskeysLearnMore } from './passkeys-learn-more';
 import { PasskeysList } from './passkeys-list';
-import { PasskeyRename } from './passkey-rename';
+import { PasskeyRemove } from './passkey-remove';
 import { PasskeyRemoved } from './passkey-removed';
+import { PasskeyRename } from './passkey-rename';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysStatusContainer = {
@@ -57,6 +58,14 @@ export const PasskeysStatusContainer = observer(
                 );
             case PASSKEY_STATUS_CODES.REMOVED:
                 return <PasskeyRemoved onPrimaryButtonClick={onPrimaryButtonClick} />;
+            case PASSKEY_STATUS_CODES.REMOVING:
+                return (
+                    <PasskeyRemove
+                        current_managed_passkey={current_managed_passkey}
+                        onPrimaryButtonClick={onPrimaryButtonClick}
+                        onSecondaryButtonClick={onSecondaryButtonClick}
+                    />
+                );
             default:
                 return (
                     <PasskeysList

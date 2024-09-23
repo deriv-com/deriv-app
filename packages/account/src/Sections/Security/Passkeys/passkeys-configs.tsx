@@ -14,7 +14,6 @@ export const PASSKEY_STATUS_CODES = {
     REMOVED: 'removed',
     REMOVING: 'removing',
     RENAMING: 'renaming',
-    VERIFYING: 'verifying',
 } as const;
 
 export type TPasskeysStatus = typeof PASSKEY_STATUS_CODES[keyof typeof PASSKEY_STATUS_CODES];

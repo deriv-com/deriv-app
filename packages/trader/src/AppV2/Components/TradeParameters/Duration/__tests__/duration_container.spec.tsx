@@ -17,8 +17,8 @@ global.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedCalendarLgBoldIcon: jest.fn(({ onClick }) => (
-        <button onClick={onClick}>LabelPairedCalendarLgBoldIcon</button>
+    LabelPairedCalendarSmBoldIcon: jest.fn(({ onClick }) => (
+        <button onClick={onClick}>LabelPairedCalendarSmBoldIcon</button>
     )),
 }));
 

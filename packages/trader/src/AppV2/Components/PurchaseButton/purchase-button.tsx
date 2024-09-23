@@ -207,7 +207,7 @@ const PurchaseButton = observer(() => {
             >
                 <div className='purchase-button__wrapper'>
                     <Button
-                        color='black'
+                        color='black-white'
                         size='lg'
                         label={
                             is_accu_sell_disabled

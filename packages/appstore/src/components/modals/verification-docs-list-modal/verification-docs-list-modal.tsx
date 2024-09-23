@@ -33,7 +33,6 @@ const VerificationDocsListModalContent = observer(() => {
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
-
     if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin } = client_kyc_status;
 
@@ -57,7 +56,6 @@ const VerificationDocsListModalContent = observer(() => {
             route: routes.personal_details,
         },
     ].filter(Boolean) as TItems[];
-
     return (
         <div className='verification-docs-list-modal__content'>
             {getIcon(items)}
@@ -93,7 +91,6 @@ const VerificationDocsListModal = observer(() => {
         platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created
             ? localize('Create account')
             : localize('Verify your account');
-
     return (
         <Suspense fallback={<UILoader />}>
             {!isMobile ? (

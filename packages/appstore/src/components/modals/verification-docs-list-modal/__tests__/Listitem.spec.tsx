@@ -20,7 +20,10 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 jest.mock('@deriv/quill-icons', () => ({
-    LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
+    ...jest.requireActual('@deriv/quill-icons'),
+    DerivLightUploadPoiIcon: () => <div>DerivLightUploadPoiIcon</div>,
+    LabelPairedChevronRightMdRegularIcon: () => <div>LabelPairedChevronRightMdRegularIcon</div>,
+    DerivLightWaitingPoaIcon: () => <div>DerivLightWaitingPoaIcon</div>,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -83,7 +86,7 @@ describe('<ListItem />', () => {
 
         expect(screen.getByText('Verified')).toBeInTheDocument();
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightMdRegularIcon')).toBeInTheDocument();
     });
 
     it('should render pending status', () => {
@@ -97,7 +100,7 @@ describe('<ListItem />', () => {
 
         expect(screen.getByText('In review')).toBeInTheDocument();
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightMdRegularIcon')).toBeInTheDocument();
     });
 
     it('should render with Failed status', () => {
@@ -111,6 +114,6 @@ describe('<ListItem />', () => {
 
         expect(screen.getByText('Failed')).toBeInTheDocument();
         expect(screen.getByText('StatusBadge')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedChevronRightCaptionBoldIcon')).toBeInTheDocument();
+        expect(screen.getByText('LabelPairedChevronRightMdRegularIcon')).toBeInTheDocument();
     });
 });

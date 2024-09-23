@@ -37,7 +37,7 @@ describe('<MT5CreatePassword/>', () => {
             cfd: {
                 error_message: '',
                 account_title: '',
-                account_type: {},
+                account_type: { type: 'mt5', category: 'real' },
                 getAccountStatus: mockFn,
                 new_account_response: {},
                 jurisdiction_selected_shortcode: 'svg',
@@ -121,7 +121,7 @@ describe('<MT5CreatePassword/>', () => {
         expect(await screen.findByText(/This password works for all your Deriv MT5 accounts./i)).toBeInTheDocument();
     });
 
-    it('should show TNC checkbox when need_tnc is true', async () => {
+    it('should show TNC checkbox when account type is real ', async () => {
         render(
             <Router history={history}>
                 <MT5CreatePassword {...default_props} need_tnc={true} />
@@ -160,6 +160,9 @@ describe('<MT5CreatePassword/>', () => {
         expect(submitButton).toBeInTheDocument();
 
         fireEvent.change(passwordInput, { target: { value: user_input } });
+        const checkbox = await screen.findByRole('checkbox');
+        expect(checkbox).toBeInTheDocument();
+        fireEvent.click(checkbox);
         fireEvent.click(submitButton);
 
         await waitFor(() => {

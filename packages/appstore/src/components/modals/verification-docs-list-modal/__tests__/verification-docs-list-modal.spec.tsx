@@ -13,14 +13,16 @@ jest.mock('@deriv-com/ui', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useGetStatus: jest.fn(() => ({
-        client_kyc_status: { poi_status: 'verified', poa_status: 'verified', valid_tin: 'verified' },
+        client_kyc_status: { poi_status: 'rejected', poa_status: 'verified', valid_tin: 1 },
     })),
     useIsSelectedMT5AccountCreated: jest.fn(() => ({ is_selected_MT5_account_created: true })),
 }));
 
 jest.mock('@deriv/quill-icons', () => ({
+    ...jest.requireActual('@deriv/quill-icons'),
     DerivLightUploadPoiIcon: () => <div>DerivLightUploadPoiIcon</div>,
     LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
+    DerivLightWaitingPoaIcon: () => <div>DerivLightWaitingPoaIcon</div>,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -31,7 +33,6 @@ jest.mock('@deriv/components', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     CFD_PLATFORMS: { MT5: 'mt5' },
-    AUTH_STATUS_CODES: { VERIFIED: 'verified' },
 }));
 
 describe('<VerificationDocsListModal />', () => {
@@ -72,9 +73,9 @@ describe('<VerificationDocsListModal />', () => {
         (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: false });
         (useGetStatus as jest.Mock).mockReturnValueOnce({
             client_kyc_status: {
-                poi_status: 'verified',
+                poi_status: 'none',
                 poa_status: 'verified',
-                valid_tin: 'verified',
+                valid_tin: 1,
             },
         });
         renderComponent({});

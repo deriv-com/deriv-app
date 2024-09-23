@@ -121,8 +121,8 @@
         flex-direction: column;
         gap: 1.6rem;
         align-self: stretch;
-
         label {
+            /* stylelint-disable-next-line declaration-no-important */
             text-transform: none !important;
         }
     }

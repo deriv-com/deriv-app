@@ -49,7 +49,10 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             }
             return `${duration} ${duration_unit_text}`;
         }
-        return `${localize('Ends at')} ${expiry_time} GMT`;
+        if (expiry_time) {
+            return `${localize('Ends at')} ${expiry_time} GMT`;
+        }
+        return '';
     };
 
     return (

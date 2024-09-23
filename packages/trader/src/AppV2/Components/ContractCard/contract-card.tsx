@@ -128,7 +128,7 @@ const ContractCard = ({
         const labels: string[] = [];
         if (take_profit?.order_amount) labels.push('TP');
         if (stop_loss?.order_amount) labels.push('SL');
-        if (cancellation_date_expiry) labels.push('DC');
+        if (validToCancel) labels.push('DC');
         return labels;
     };
     const risk_management_labels = getRiskManagementLabels();
@@ -157,7 +157,7 @@ const ContractCard = ({
             >
                 <div className={`${className}__body`}>
                     <div className={`${className}__details`}>
-                        <IconTradeTypes type={is_high_low ? `${contract_type}_barrier` : contract_type} size={24} />
+                        <IconTradeTypes type={is_high_low ? `${contract_type}_barrier` : contract_type} size={16} />
                         <div className='tag__wrapper'>
                             {show_risk_management_labels &&
                                 risk_management_labels.map(label => (

@@ -8,6 +8,8 @@ import { FormatUtils } from '@deriv-com/utils';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
+import useSnackbarOnce from 'AppV2/Hooks/useSnackbarOnce';
+import { usePrevious } from '@deriv/components';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -35,6 +37,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         validation_params,
         v2_params_initial_values,
     } = useTraderStore();
+    const showSnackbarOnce = useSnackbarOnce();
+    const prevAmount = React.useRef(0);
+    const prevContract = usePrevious(contract_type);
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
@@ -93,6 +98,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    React.useEffect(() => {
+        if (prevContract !== contract_type) prevAmount.current = 0;
+        if ((two_contracts_error || stake_error) && prevAmount.current !== amount) {
+            showSnackbarOnce(<Localize i18n_default_text='Please adjust your stake.' />);
+        }
+    }, [two_contracts_error, stake_error, prevContract, contract_type, amount]);
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;
@@ -158,6 +170,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 setV2ParamsInitialValues({ value: amount, name: 'stake' });
             }
             setIsOpen(false);
+            if (is_saved) {
+                prevAmount.current = amount;
+            }
         }
     };
 
@@ -168,7 +183,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
                 noStatusIcon
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    setIsOpen(true);
+                    prevAmount.current = amount;
+                }}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}

@@ -17,7 +17,7 @@ const PhoneVerificationCard = ({ children, is_small_card }: React.PropsWithChild
                     showIcon={false}
                     size='sm'
                     variant='custom'
-                    color='rgba(0, 0, 0, 0.04)'
+                    color='#f5f5f5'
                     label={
                         <Localize
                             i18n_default_text='Time remaining: {{time_remaining}}'

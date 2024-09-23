@@ -180,6 +180,7 @@
         gap: var(--core-spacing-400);
         width: inherit;
         padding-inline: var(--core-spacing-400);
+        padding-block-end: var(--core-spacing-400);
 
         &--has-buttons-demo {
             .contract-card-wrapper:first-child {

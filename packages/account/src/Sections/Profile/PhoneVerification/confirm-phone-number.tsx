@@ -156,7 +156,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 hasCloseButton={false}
                 message={
                     <Localize
-                        i18n_default_text='An error occurred. Request a new OTP in {{next_phone_number_attempt_timestamp}}.'
+                        i18n_default_text='Request new code in {{next_phone_number_attempt_timestamp}}.'
                         values={{ next_phone_number_attempt_timestamp: resendPhoneOtpTimer() }}
                     />
                 }

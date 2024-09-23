@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { TSocketError } from '@deriv/api/types';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { useTranslations, Localize } from '@deriv-com/translations';
-import { Modal, Text } from '@deriv-com/quill-ui';
+import { Modal } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import { convertPhoneTypeDisplay } from '../../../Helpers/utils';
 
@@ -99,24 +99,6 @@ const DidntGetTheCodeModal = ({
             toggleModal={() => setShouldShowDidntGetTheCodeModal(false)}
         >
             <Modal.Header title={<Localize i18n_default_text="Didn't receive a code?" />} />
-            <Modal.Body>
-                <div className='phone-verification__get-code-modal--contents'>
-                    <Text>
-                        <Localize
-                            i18n_default_text='Request a new one or get one via {{phone_verification_type}}.'
-                            values={{
-                                phone_verification_type: localize(
-                                    convertPhoneTypeDisplay(
-                                        phone_verification_type === VERIFICATION_SERVICES.SMS
-                                            ? VERIFICATION_SERVICES.WHATSAPP
-                                            : VERIFICATION_SERVICES.SMS
-                                    )
-                                ),
-                            }}
-                        />
-                    </Text>
-                </div>
-            </Modal.Body>
         </Modal>
     );
 };

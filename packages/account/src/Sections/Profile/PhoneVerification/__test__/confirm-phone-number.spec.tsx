@@ -165,6 +165,6 @@ describe('ConfirmPhoneNumber', () => {
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        expect(screen.getByText(/An error occurred. Request a new OTP in 1 minutes./));
+        expect(screen.getByText(/Request new code in 1 minutes./));
     });
 });

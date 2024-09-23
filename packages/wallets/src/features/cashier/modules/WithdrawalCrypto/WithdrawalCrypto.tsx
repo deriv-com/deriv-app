@@ -41,8 +41,8 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
 
     return (
         <div className='wallets-withdrawal-crypto'>
-            <div className='wallets-withdrawal-crypto__side-pane' />
-            <div className='wallets-withdrawal-crypto__content'>
+            <div className='wallets-withdrawal-crypto__left-content' /> {/* This div is used for alignment */}
+            <div className='wallets-withdrawal-crypto__main-content'>
                 <Text weight='bold'>
                     <Localize
                         i18n_default_text='Withdraw {{currencyName}} ({{currency}}) to your wallet'
@@ -52,7 +52,7 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />
             </div>
-            <div className='wallets-withdrawal-crypto__side-pane'>
+            <div className='wallets-withdrawal-crypto__right-content'>
                 <TransactionStatus transactionType='withdrawal' />
             </div>
         </div>

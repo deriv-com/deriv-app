@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import './WalletListHeader.scss';
 
 const WalletListHeader: React.FC = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
@@ -31,7 +30,7 @@ const WalletListHeader: React.FC = () => {
         setIsChecked(!isDemo);
     }, [isDemo]);
 
-    if (isMobile) return null;
+    if (!isDesktop) return null;
 
     return (
         <div className='wallets-list-header'>

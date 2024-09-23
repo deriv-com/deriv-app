@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Divider, Loader } from '@deriv-com/ui';
-import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { Divider, Loader, Text } from '@deriv-com/ui';
+import { DatePicker, Dropzone, FormField, ModalStepWrapper } from '../../../../../../components';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { THooks } from '../../../../../../types';
 import { getAdjustedDate } from '../../../../../../utils/utils';
@@ -91,9 +91,9 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     >
                         <div className='wallets-passport-upload' data-testid='dt_passport-document-upload'>
                             <div className='wallets-passport-upload__wrapper'>
-                                <WalletText>
+                                <Text>
                                     <Localize i18n_default_text='First, enter your Passport number and the expiry date.' />
-                                </WalletText>
+                                </Text>
                                 <div className='wallets-passport-upload__input-group'>
                                     <FormField label={localize('Passport number*')} name='passportNumber' />
                                     <DatePicker
@@ -108,9 +108,9 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                     height={2}
                                 />
                                 <div className='wallets-passport-upload__document-upload'>
-                                    <WalletText>
+                                    <Text>
                                         <Localize i18n_default_text='Next, upload the page of your passport that contains your photo.' />
-                                    </WalletText>
+                                    </Text>
                                     <Dropzone
                                         buttonText={localize('Drop file or click here to upload')}
                                         defaultFile={values.passportFile}

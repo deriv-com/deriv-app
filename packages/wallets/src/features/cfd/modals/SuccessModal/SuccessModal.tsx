@@ -25,10 +25,12 @@ const SuccessModal: FC<TProps> = ({
 
     const accountType = activeWallet?.is_virtual ? localize('demo') : 'real';
 
+    const buttonSize = isDesktop ? 'md' : 'lg';
+
     const renderButton =
         accountType === 'demo' ? (
             <div className='wallets-success-btn'>
-                <Button isFullWidth onClick={onSecondaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
+                <Button isFullWidth onClick={onSecondaryClick} size={buttonSize} textSize='sm'>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </div>
@@ -38,22 +40,23 @@ const SuccessModal: FC<TProps> = ({
                     borderWidth='sm'
                     color='black'
                     onClick={onSecondaryClick}
-                    size={isDesktop ? 'md' : 'lg'}
+                    size={buttonSize}
                     textSize='sm'
                     variant='outlined'
                 >
                     <Localize i18n_default_text='Maybe later' />
                 </Button>
-                <Button onClick={onPrimaryClick} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
+                <Button onClick={onPrimaryClick} size={buttonSize} textSize='sm'>
                     <Localize i18n_default_text='Transfer funds' />
                 </Button>
             </WalletButtonGroup>
         );
 
-    if (!isDesktop) {
+    if (isDesktop) {
         return (
-            <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
+            <ModalWrapper hideCloseButton>
                 <CFDSuccess
+                    actionButtons={renderButton}
                     description={description}
                     displayBalance={displayBalance}
                     marketType={marketType}
@@ -68,12 +71,12 @@ const SuccessModal: FC<TProps> = ({
                         />
                     }
                 />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
             <CFDSuccess
                 actionButtons={renderButton}
                 description={description}
@@ -90,7 +93,7 @@ const SuccessModal: FC<TProps> = ({
                     />
                 }
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

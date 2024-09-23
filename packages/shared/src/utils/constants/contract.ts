@@ -188,14 +188,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+        components: ['trade_type_tabs', 'payout_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
         title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,
-        components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
+        components: ['trade_type_tabs', 'payout_selector', 'take_profit'],
     },
     [TRADE_TYPES.VANILLA.CALL]: {
         title: localize('Call/Put'),
@@ -318,6 +318,8 @@ export const getCardLabelsV2 = () =>
     ({
         APPLY: localize('Apply'),
         BARRIER: localize('Barrier'),
+        HIGH_BARRIER: localize('High Barrier'),
+        LOW_BARRIER: localize('Low Barrier'),
         BUY_PRICE: localize('Buy price'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
@@ -336,6 +338,10 @@ export const getCardLabelsV2 = () =>
         GROWTH_RATE: localize('Growth rate'),
         INCREMENT_VALUE: localize('Increment value'),
         INDICATIVE_PRICE: localize('Indicative price'),
+        INDICATIVE_HIGH_SPOT: localize('Indicative high spot'),
+        INDICATIVE_LOW_SPOT: localize('Indicative low spot'),
+        HIGH_SPOT: localize('High spot'),
+        LOW_SPOT: localize('Low spot'),
         INITIAL_STAKE: localize('Initial stake'),
         LOST: localize('Lost'),
         MULTIPLIER: localize('Multiplier'),
@@ -368,6 +374,9 @@ export const getCardLabelsV2 = () =>
         TICKS: localize('Ticks'),
         TOTAL_PROFIT_LOSS: localize('Total profit/loss'),
         WON: localize('Won'),
+        RESET_BARRIER: localize('Reset barrier'),
+        RESET_TIME: localize('Reset time'),
+        SELECTED_TICK: localize('Selected tick'),
     } as const);
 
 export const getMarketNamesMap = () =>

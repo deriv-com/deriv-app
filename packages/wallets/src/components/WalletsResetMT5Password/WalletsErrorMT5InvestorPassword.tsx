@@ -1,8 +1,7 @@
 import React from 'react';
 import { DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { ActionScreen } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { ActionScreen, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
 import './WalletsErrorMT5InvestorPassword.scss';
 
@@ -13,18 +12,18 @@ type TProps = {
 };
 
 const WalletsErrorMT5InvestorPassword: React.FC<TProps> = ({ actionButtons, errorMessage, title }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? () => actionButtons : undefined}
-            shouldHideFooter={!isMobile}
+            renderFooter={!isDesktop ? () => actionButtons : undefined}
+            shouldHideFooter={isDesktop}
             title={localize('Reset {{title}} password', { title })}
         >
             <div className='wallets-error-mt5-investor-password'>
                 <ActionScreen
-                    actionButtons={!isMobile ? actionButtons : undefined}
+                    actionButtons={isDesktop ? actionButtons : undefined}
                     description={errorMessage}
                     icon={<DerivLightIcDxtradePasswordIcon height={100} width={100} />}
                 />

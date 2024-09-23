@@ -4,9 +4,9 @@ import { render, screen } from '@testing-library/react';
 import PlatformSwitcher from '../platform-switcher';
 import { createBrowserHistory } from 'history';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => true),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 const withRouter = <T extends object>(Component: React.ComponentType<T>) => {

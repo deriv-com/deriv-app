@@ -9,6 +9,7 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
         width: 100%;
         border-top: 1px solid var(--core-color-opacity-black-100);
         height: $BOTTOM_NAV_HEIGHT;
+        z-index: 30;
     }
     &-selection {
         flex: 1;
@@ -35,11 +36,11 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
 
             .user-guide__anchor {
                 position: absolute;
-                height: var(--core-size-2500);
+                height: var(--core-size-3200);
                 width: var(--core-size-4600);
                 left: 50%;
                 top: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -70%);
             }
         }
     }

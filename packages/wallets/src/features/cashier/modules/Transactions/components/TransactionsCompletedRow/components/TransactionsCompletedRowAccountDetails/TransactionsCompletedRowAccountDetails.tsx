@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
-import { WalletCurrencyCard, WalletMarketCurrencyIcon, WalletText } from '../../../../../../../../components';
+import { WalletCurrencyCard, WalletMarketCurrencyIcon } from '../../../../../../../../components';
 import { THooks, TPlatforms } from '../../../../../../../../types';
 import { MARKET_TYPE } from '../../../../../../../cfd/constants';
 import { getMarketType } from '../../../../../../helpers';
@@ -16,6 +16,7 @@ type TProps = {
     isDemo: boolean;
     isInterWallet?: boolean;
     mt5Group?: string;
+    product?: THooks.AvailableMT5Accounts['product'];
     transactionID?: number;
 };
 
@@ -28,6 +29,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     isDemo,
     isInterWallet = false,
     mt5Group,
+    product,
     transactionID,
 }) => {
     const { isDesktop } = useDevice();
@@ -48,19 +50,20 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     isDemo={isDemo}
                     marketType={marketType ?? MARKET_TYPE.ALL}
                     platform={accountType as TPlatforms.All}
+                    product={product}
                 />
             )}
             <div
                 className='wallets-transactions-completed-row-account-details__type-and-wallet-name 
             wallets-transactions-completed-row-account-details__column'
             >
-                <WalletText color='primary' size='xs'>
+                <Text color='primary' size='xs'>
                     {displayActionType}
-                </WalletText>
+                </Text>
                 <div className='wallets-transactions-completed-row-account-details__wallet-name'>
-                    <WalletText color='general' size='xs' weight='bold'>
+                    <Text color='general' size='xs' weight='bold'>
                         {displayAccountName}
-                    </WalletText>
+                    </Text>
                 </div>
                 {!isDesktop && (
                     <Text

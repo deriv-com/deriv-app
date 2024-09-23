@@ -46,8 +46,8 @@ describe('Stake', () => {
                         },
                         validation_errors: { amount: [] },
                         validation_params: {
-                            [CONTRACT_TYPES.CALL]: { max_payout: '50000.00' },
-                            [CONTRACT_TYPES.PUT]: { max_payout: '50000.00' },
+                            [CONTRACT_TYPES.CALL]: { payout: { max: '50000.00' } },
+                            [CONTRACT_TYPES.PUT]: { payout: { max: '50000.00' } },
                         },
                         v2_params_initial_values: {
                             stake: 10,

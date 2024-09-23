@@ -1,14 +1,16 @@
 import React, { PropsWithChildren } from 'react';
 import { APIProvider, useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import { CFD_PLATFORMS } from '../../../features/cfd/constants';
-import useDevice from '../../../hooks/useDevice';
 import { ModalProvider } from '../../ModalProvider';
 import WalletsResetMT5Password from '../WalletsResetMT5Password';
 
-jest.mock('../../../hooks/useDevice');
-const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 const mockShow = jest.fn();
 const mockHide = jest.fn();
@@ -61,6 +63,7 @@ describe('WalletsResetMT5Password', () => {
     beforeEach(() => {
         jest.clearAllMocks();
 
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         $root = document.createElement('div');
         $root.id = 'root';
         $modalContainer = document.createElement('div');
@@ -75,23 +78,13 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should render WalletsResetMT5Password on Desktop', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         render(<WalletsResetMT5Password {...defaultProps} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Create/ })).toBeInTheDocument();
     });
 
     it('should render WalletsResetMT5Password on Mobile', () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: false,
-            isMobile: true,
-            isTablet: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletsResetMT5Password {...defaultProps} />, { wrapper });
         expect(screen.getByTestId('dt_modal_step_wrapper')).toBeInTheDocument();
@@ -99,12 +92,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should show correct content if isInvestorPassword is false', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         const mockMutate = jest.fn();
         (useTradingPlatformPasswordReset as jest.Mock).mockReturnValue({
             error: null,
@@ -128,12 +115,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should show correct content if isInvestorPassword is true', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         const mockMutate = jest.fn();
         (useTradingPlatformInvestorPasswordReset as jest.Mock).mockReturnValue({
             error: null,
@@ -157,12 +138,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should return Error when API returns error', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         const mockMutate = jest.fn();
         (useTradingPlatformPasswordReset as jest.Mock).mockReturnValue({
             error: 'Error',
@@ -187,12 +162,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should return Success when API returns success', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         const mockMutate = jest.fn();
         (useTradingPlatformPasswordReset as jest.Mock).mockReturnValue({
             error: null,
@@ -217,12 +186,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should disable the Create button for invalid MT5 password', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         render(<WalletsResetMT5Password {...defaultProps} />);
         const inputBox = await screen.findByLabelText(/Deriv MT5 password/);
         const createButton = await screen.findByRole('button', { name: /Create/ });
@@ -231,12 +194,6 @@ describe('WalletsResetMT5Password', () => {
     });
 
     it('should cancel reset on click of Cancel button', async () => {
-        mockUseDevice.mockReturnValue({
-            isDesktop: true,
-            isMobile: false,
-            isTablet: false,
-        });
-
         render(<WalletsResetMT5Password {...defaultProps} />);
         const cancelButton = await screen.findByRole('button', { name: /Cancel/ });
         await fireEvent.click(cancelButton);

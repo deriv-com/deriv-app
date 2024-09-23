@@ -1,15 +1,18 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import useDevice from '../../../../../../../hooks/useDevice';
 import { TransferProvider, useTransfer } from '../../../provider';
 import TransferForm from '../TransferForm';
 
 const mockAccounts = ['CR1', 'CR2'];
 let mockFormikValues: unknown;
 
-jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('../../../provider', () => ({
     ...jest.requireActual('../../../provider'),
@@ -42,9 +45,11 @@ const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => <TransferPr
 
 describe('<TransferForm />', () => {
     beforeEach(() => {
-        (useDevice as jest.Mock).mockReturnValue({
-            isMobile: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
     });
 
     it('should test if the loader is shown until values are received from useTransfer hook', () => {

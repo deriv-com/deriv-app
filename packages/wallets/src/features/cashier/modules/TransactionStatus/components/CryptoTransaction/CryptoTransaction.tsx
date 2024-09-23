@@ -4,9 +4,8 @@ import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { getFormattedDateString } from '../../../../../../utils/utils';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
@@ -27,7 +26,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
     transaction,
 }) => {
     const { hide, show } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const formattedTransactionHash = transaction.transaction_hash
         ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
@@ -90,7 +89,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     <Text lineHeight='2xs' size='2xs'>
                         {getStatusName(transaction.status_code)}
                     </Text>
-                    {!!transaction.is_valid_to_cancel && !isMobile && (
+                    {!!transaction.is_valid_to_cancel && isDesktop && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
                             data-testid='dt-wallets-crypto-transactions-cancel-button'
@@ -166,7 +165,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     </Text>
                 </div>
             )}
-            {!!transaction.is_valid_to_cancel && isMobile && (
+            {!!transaction.is_valid_to_cancel && !isDesktop && (
                 <div className='wallets-crypto-transaction__cancel-button-container'>
                     <Button
                         borderWidth='sm'

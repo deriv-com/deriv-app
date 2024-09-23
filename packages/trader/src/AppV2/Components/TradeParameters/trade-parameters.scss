@@ -41,24 +41,9 @@
             }
 
             &--minimized {
-                max-height: 0px;
-                padding: 0px;
-                transition: transform 0.5s, opacity 0.5s, max-height 0.5s, padding 0.1s;
+                max-height: 104px;
+                padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
 
-                &--enter,
-                &--exit {
-                    opacity: 0;
-                    transform: translateY(100%);
-                    max-height: 0px;
-                    padding: 0px;
-                }
-                &--enter-done {
-                    opacity: 1;
-                    transform: translateY(0);
-                    max-height: 104px;
-                    padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400)
-                        var(--core-spacing-400);
-                }
                 .quill-input__container {
                     width: unset;
                 }
@@ -80,5 +65,23 @@
     &--minimized {
         min-height: var(--core-size-3600);
         width: 100%;
+    }
+}
+
+.text-field--custom {
+    .quill-input {
+        &-no-label__wrapper {
+            position: relative;
+            .input {
+                padding-inline: var(--core-spacing-1700);
+            }
+        }
+        &-label__label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            inset-inline-start: 0;
+            z-index: 2;
+        }
     }
 }

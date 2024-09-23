@@ -29,6 +29,9 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
     const { data: poaStatus } = usePOA();
     const { isDesktop } = useDevice();
 
+    const walletButton = isDesktop ? 'lg' : 'md';
+    const buttonText = isDesktop ? 'md' : 'sm';
+
     const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
 
@@ -73,8 +76,8 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                     borderWidth='sm'
                     color='black'
                     onClick={() => hide()}
-                    size={isDesktop ? 'lg' : 'md'}
-                    textSize={isDesktop ? 'md' : 'sm'}
+                    size={walletButton}
+                    textSize={buttonText}
                     variant='outlined'
                 >
                     <Localize i18n_default_text='Maybe later' />
@@ -87,8 +90,8 @@ const VerificationFailed: FC<TVerificationFailedProps> = ({ selectedJurisdiction
                             </Suspense>
                         )
                     }
-                    size={isDesktop ? 'lg' : 'md'}
-                    textSize={isDesktop ? 'md' : 'sm'}
+                    size={walletButton}
+                    textSize={buttonText}
                 >
                     <Localize i18n_default_text='Resubmit documents' />
                 </Button>

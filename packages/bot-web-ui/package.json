@@ -71,7 +71,7 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
-        "@datadog/browser-logs": "^5.11.0",
+        "@deriv-com/ui": "1.35.0",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",
@@ -81,6 +81,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/quill-icons": "1.23.3",
         "blockly": "^10.4.3",
         "@testing-library/user-event": "^13.5.0",
         "@types/react-router-dom": "^5.1.6",

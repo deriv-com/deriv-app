@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { ActionScreen, Button } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { ActionScreen, Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../Base';
 
 type WalletSuccessResetMT5PasswordProps = {

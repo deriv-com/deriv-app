@@ -62,15 +62,41 @@ describe('CompareAccountsTitleIcon', () => {
     });
 
     it('renders correct title for swap-free accounts', () => {
-        render(<CompareAccountsTitleIcon {...defaultProps} marketType='all' shortCode='svg' />);
-
+        render(<CompareAccountsTitleIcon {...defaultProps} marketType='all' product='swap_free' shortCode='svg' />);
         expect(screen.getByText('Swap-Free - SVG')).toBeInTheDocument();
     });
 
     it('renders correct title for demo swap-free accounts', () => {
-        render(<CompareAccountsTitleIcon {...defaultProps} isDemo={true} marketType='all' shortCode='svg' />);
+        render(
+            <CompareAccountsTitleIcon
+                {...defaultProps}
+                isDemo={true}
+                marketType='all'
+                product='swap_free'
+                shortCode='svg'
+            />
+        );
 
         expect(screen.getByText('Swap-Free Demo')).toBeInTheDocument();
+    });
+
+    it('renders correct title for Zero Spread accounts', () => {
+        render(<CompareAccountsTitleIcon {...defaultProps} marketType='all' product='zero_spread' shortCode='bvi' />);
+        expect(screen.getByText('Zero Spread - BVI')).toBeInTheDocument();
+    });
+
+    it('renders correct title for demo Zero Spread accounts', () => {
+        render(
+            <CompareAccountsTitleIcon
+                {...defaultProps}
+                isDemo={true}
+                marketType='all'
+                product='zero_spread'
+                shortCode='bvi'
+            />
+        );
+
+        expect(screen.getByText('Zero Spread Demo')).toBeInTheDocument();
     });
 
     it('renders correct title for synthetic SVG accounts', () => {

@@ -405,7 +405,7 @@ const CTraderDerivXTradeModal = ({
                     <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
-
+                    {/* all platforms are on ios/android and huawei except ctrader is not on Huawei*/}
                     {platform !== CFD_PLATFORMS.CTRADER && (
                         <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
                             <Icon icon='IcInstallationHuawei' width={135} height={40} />

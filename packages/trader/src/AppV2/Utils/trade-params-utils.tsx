@@ -222,7 +222,7 @@ export const getOptionPerUnit = (unit: string): { value: number; label: ReactNod
         t: { start: 1, end: 10, label: <Localize i18n_default_text='tick' /> },
         h: () => {
             const hour_options = generateOptions(1, 23, 'h');
-            const minute_options = generateOptions(1, 59, 'min');
+            const minute_options = generateOptions(0, 59, 'min');
             return [hour_options, minute_options];
         },
     };

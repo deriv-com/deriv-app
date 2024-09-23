@@ -19,8 +19,12 @@ describe('TradeParametersContainer', () => {
         expect(screen.getByText(children)).toBeInTheDocument();
     });
 
-    it('should render only children if is_minimized is true', () => {
-        render(<TradeParametersContainer is_minimized>{mock_children}</TradeParametersContainer>);
+    it('should render only children if is_minimized and is_minimized_visible is true', () => {
+        render(
+            <TradeParametersContainer is_minimized is_minimized_visible>
+                {mock_children}
+            </TradeParametersContainer>
+        );
 
         expect(screen.queryByText('Set your trade')).not.toBeInTheDocument();
         expect(screen.queryByText('Guide')).not.toBeInTheDocument();

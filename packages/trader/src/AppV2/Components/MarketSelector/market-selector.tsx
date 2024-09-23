@@ -11,11 +11,9 @@ import { Skeleton } from '@deriv/components';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
-    const { default_symbol, activeSymbols } = useActiveSymbols();
+    const { activeSymbols } = useActiveSymbols();
     const { symbol: storeSymbol, tick_data } = useTraderStore();
-    const currentSymbol =
-        activeSymbols.find(({ symbol }) => symbol === storeSymbol) ??
-        activeSymbols.find(({ symbol }) => symbol === default_symbol);
+    const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
 
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
@@ -24,7 +22,7 @@ const MarketSelector = observer(() => {
         <React.Fragment>
             <div className='market-selector__container' onClick={() => setIsOpen(true)}>
                 <div className='market-selector'>
-                    <SymbolIconsMapper symbol={storeSymbol ?? default_symbol} />
+                    <SymbolIconsMapper symbol={storeSymbol} />
                     <div className='market-selector-info'>
                         <div className='market-selector-info__label'>
                             <Text bold>{currentSymbol?.display_name}</Text>

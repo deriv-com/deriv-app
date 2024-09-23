@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapsible, Text } from '@deriv/components';
+import { Collapsible, FadeWrapper, PageOverlay, Text } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
@@ -23,13 +23,14 @@ import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
-import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
+import PayoutSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/payout-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize } from '@deriv/translations';
 import { TRADE_TYPES } from '@deriv/shared';
+import PayoutPerPointMobileInput from '../Elements/PayoutPerPoint/payout-per-point-mobile-input';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,
@@ -125,17 +126,13 @@ const CollapsibleTradeParams = ({
                     <BarrierMobile />
                 </div>
             )}
-            {isVisible('barrier_selector') && (
-                <div data-collapsible='true'>
-                    <BarrierSelector />
-                </div>
-            )}
             {isVisible('strike') && (
                 <div data-collapsible='true'>
                     <Strike />
                 </div>
             )}
             {!is_accumulator && <MobileWidget />}
+            {is_turbos && <PayoutSelector />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
                     <AllowEqualsMobile />
@@ -164,6 +161,7 @@ const CollapsibleTradeParams = ({
                     <AccumulatorsInfoDisplay />
                 </div>,
             ]}
+
             {is_turbos && (
                 <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
                     <TakeProfit
@@ -174,7 +172,8 @@ const CollapsibleTradeParams = ({
                     />
                 </div>
             )}
-            {(is_turbos || is_vanilla) && <PayoutPerPointMobile />}
+            {is_vanilla && <PayoutPerPointMobile />}
+
             <div
                 className={classNames({
                     'purchase-container': !is_vanilla,
@@ -207,6 +206,13 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         setIsTradeParamsExpanded,
         take_profit,
         last_digit,
+        open_payout_wheelpicker,
+        togglePayoutWheelPicker,
+        currency,
+        payout_per_point,
+        payout_choices,
+        setPayoutPerPoint,
+        barrier_1,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -242,7 +248,21 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
             <TradeParamsLoader speed={2} />
         </div>
     ) : (
-        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
+        <>
+            {open_payout_wheelpicker ? (
+                <PayoutPerPointMobileInput
+                    togglePayoutWheelPicker={togglePayoutWheelPicker}
+                    currency={currency}
+                    selectedBarrier={barrier_1}
+                    onPayoutClick={setPayoutPerPoint}
+                    payoutChoices={payout_choices}
+                    payout_per_point={payout_per_point}
+                    contract_type={contract_type}
+                />
+            ) : (
+                <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
+            )}
+        </>
     );
 });
 

@@ -40,7 +40,13 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
         },
         {
             id: 2,
-            component: <TradeParamDefinition description={<Localize i18n_default_text='Content goes here' />} />,
+            component: (
+                <TradeParamDefinition
+                    description={
+                        <Localize i18n_default_text='Multipliers amplify your potential profit if the market moves in your favour, with losses limited to your initial capital.' />
+                    }
+                />
+            ),
         },
     ];
 

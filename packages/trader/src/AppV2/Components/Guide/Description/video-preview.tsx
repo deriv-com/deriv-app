@@ -11,13 +11,8 @@ type TVideoPreview = {
 };
 
 const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPreview) => (
-    <div className='guide-video__wrapper'>
-        <div
-            className='guide-video__preview'
-            data-testid='dt_video_preview'
-            onClick={toggleVideoPlayer}
-            onKeyDown={toggleVideoPlayer}
-        >
+    <div className='guide-video__wrapper' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
+        <div className='guide-video__preview' data-testid='dt_video_preview'>
             <Stream
                 className='guide-video'
                 letterboxColor='transparent'

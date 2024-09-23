@@ -15,7 +15,7 @@ const ACTIONS = {
     DEC: 'decrement',
     ADD10: 'add10',
 } as const;
-const TOTAL_ANIMATION_TIME = 240;
+const TOTAL_ANIMATION_TIME = 80;
 
 const CurrentSpotDisplay = ({ has_tick_count, spot, tick }: TCurrentSpotDisplayProps) => {
     const last_digit = Number(spot?.slice(-1));

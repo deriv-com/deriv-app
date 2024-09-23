@@ -3,6 +3,7 @@ import { isEmptyObject, WS } from '@deriv/shared';
 import { createProposalRequests } from './proposal';
 import { PriceProposalRequest, PriceProposalResponse } from '@deriv/api-types';
 import { TTradeStore } from 'Types';
+import { ProposalResponse } from '../trade-store';
 
 type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = Res & {
     echo_req: Req;
@@ -23,7 +24,7 @@ export const previewProposal = (
     const requests = createProposalRequests(new_store as Parameters<typeof createProposalRequests>[0]);
     const subscription_map: { [key: string]: boolean } = {};
 
-    const onResponse = (response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) => {
+    const onResponse = (response: TResponse<PriceProposalRequest, ProposalResponse, 'proposal'>) => {
         if (!should_show_error && (response.error || !response.subscription)) return;
 
         if (response.subscription) {

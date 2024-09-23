@@ -1,8 +1,8 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import useDevice from '../../../hooks/useDevice';
 import CFDPlatformsList from '../CFDPlatformsList';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -16,7 +16,10 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('../../../hooks/useDevice', () => jest.fn(() => ({ isMobile: false })));
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 const mockPush = jest.fn();
 

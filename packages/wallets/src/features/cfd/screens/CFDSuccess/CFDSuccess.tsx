@@ -2,11 +2,10 @@ import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletMarketCurrencyIcon, WalletSuccess } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
-import useDevice from '../../../../hooks/useDevice';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
@@ -17,8 +16,10 @@ type TSuccessProps = {
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
         | TDisplayBalance.MT5AccountsList;
+    landingCompanyName?: string;
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
     title: React.ReactNode;
 };
 
@@ -26,8 +27,10 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     actionButtons,
     description,
     displayBalance,
+    landingCompanyName,
     marketType,
     platform,
+    product,
     title,
 }) => {
     const { data } = useActiveWalletAccount();
@@ -46,7 +49,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = getMarketTypeDetails()[marketType].title;
+            marketTypeTitle = getMarketTypeDetails(product)[marketType].title;
         }
     }
 
@@ -81,11 +84,12 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     isDemo={isDemo ?? false}
                                     marketType={marketType}
                                     platform={platform}
+                                    product={product}
                                 />
                             </div>
                             <div className='wallets-cfd-success__info'>
                                 <Text size='2xs'>
-                                    {platformTitlePrefix} {marketTypeTitle}
+                                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && landingCompanyName}
                                 </Text>
                                 <Text color='primary' size='2xs'>
                                     {data?.currency} Wallet

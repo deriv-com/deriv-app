@@ -41,6 +41,7 @@ import {
     formatMoney,
     getContractPath,
     routes,
+    isDtraderV2Enabled,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -56,7 +57,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
+import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
 import {
     ActiveSymbols,
@@ -74,6 +75,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
+import { safeParse } from '@deriv/utils';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -81,6 +83,25 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
+
+export type ProposalResponse = PriceProposalResponse & {
+    proposal: PriceProposalResponse['proposal'] & {
+        payout_choices: string[];
+        barrier_spot_distance: string;
+        contract_details: {
+            barrier: string;
+        };
+    };
+    error?: PriceProposalResponse['error'] & {
+        code: string;
+        message: string;
+        details?: {
+            payout_per_point_choices?: number[];
+            [k: string]: unknown;
+        };
+    };
+};
+
 export type TChartLayout = {
     adj: boolean;
     aggregationType: string;
@@ -146,6 +167,7 @@ export type TV2ParamsInitialValues = {
     strike?: string | number;
     multiplier?: number;
     barrier_1?: number;
+    payout_per_point?: string;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
@@ -157,12 +179,7 @@ type TPrevChartLayout =
           is_used?: boolean;
       })
     | null;
-type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: TTextValueStrings[];
-    };
-};
+
 type TDurationMinMax = {
     [key: string]: { min: number; max: number };
 };
@@ -171,7 +188,7 @@ type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = 
     error?: {
         code: string;
         message: string;
-        details?: Res[K] & { field: string };
+        details?: Res[K] & { field: string; payout_per_point_choices?: number[] };
     };
 };
 type TProposalInfo = {
@@ -185,7 +202,7 @@ type TStakeBoundary = Record<
     }
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
-type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
+type TBarriersData = Record<string, never> | { barrier: string; barrier_choices?: string[] };
 type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params'];
 
 const store_name = 'trade_store';
@@ -246,7 +263,7 @@ export default class TradeStore extends BaseStore {
     barriers: TBarriers = [];
     hovered_barrier = '';
     barrier_choices: string[] = [];
-
+    payout_choices: string[] = [];
     // Start Time
     start_date = 0; // 0 refers to 'now'
     start_dates_list: Array<{ text: string; value: number }> = [];
@@ -299,6 +316,7 @@ export default class TradeStore extends BaseStore {
     has_stop_loss = false;
     has_take_profit = false;
     has_cancellation = false;
+    open_payout_wheelpicker = false;
     commission?: string | number;
     cancellation_price?: number;
     stop_out?: number;
@@ -314,6 +332,7 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     long_barriers: TBarriersData = {};
     short_barriers: TBarriersData = {};
+    payout_per_point = '';
 
     // Vanilla trade params
     strike_price_choices: TBarriersData = {};
@@ -390,9 +409,11 @@ export default class TradeStore extends BaseStore {
             barrier_2: observable,
             barrier_count: observable,
             barrier_choices: observable,
+            payout_choices: observable,
             barriers: observable,
             basis_list: observable,
             basis: observable,
+            payout_per_point: observable,
             cancellation_duration: observable,
             cancellation_price: observable,
             cancellation_range_list: observable,
@@ -475,6 +496,8 @@ export default class TradeStore extends BaseStore {
             ticks_history_stats: observable,
             trade_type_tab: observable,
             trade_types: observable,
+            open_payout_wheelpicker: observable,
+            togglePayoutWheelPicker: action.bound,
             v2_params_initial_values: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
@@ -486,6 +509,7 @@ export default class TradeStore extends BaseStore {
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
             clearV2ParamsInitialValues: action.bound,
+            processContractsForV2: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -524,6 +548,7 @@ export default class TradeStore extends BaseStore {
             setActiveSymbols: action.bound,
             setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
+            setPayoutChoices: action.bound,
             setChartModeFromURL: action.bound,
             setChartStatus: action.bound,
             setContractTypes: action.bound,
@@ -532,6 +557,7 @@ export default class TradeStore extends BaseStore {
             setIsTradeParamsExpanded: action.bound,
             setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
+            getTurbosChartBarrier: action.bound,
             setMobileDigitView: action.bound,
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
@@ -542,9 +568,57 @@ export default class TradeStore extends BaseStore {
             show_digits_stats: computed,
             updateStore: action.bound,
             updateSymbol: action.bound,
+            setPayoutPerPoint: action.bound,
         });
 
-        // Adds intercept to change min_max value of duration validation
+        when(
+            () => !isEmptyObject(this.contract_types_list_v2),
+            () => {
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlContractType = searchParams.get('trade_type');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
+                const flattedContractTypesV2 = Object.values(this.contract_types_list_v2)
+                    .map(contract_type => contract_type.categories)
+                    .flatMap(categories => categories);
+                const isValidContractType = flattedContractTypesV2.some(
+                    contract_type => contract_type.value === urlContractType
+                );
+                if (urlContractType) {
+                    if (isValidContractType) {
+                        tradeStoreObj.contract_type = urlContractType;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.contract_type = urlContractType;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
+                }
+            }
+        );
+
+        when(
+            () => this.has_symbols_for_v2,
+            () => {
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlSymbol = searchParams.get('symbol');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
+                const isValidSymbol = this.active_symbols.some(symbol => symbol.symbol === urlSymbol);
+
+                if (urlSymbol) {
+                    if (isValidSymbol) {
+                        tradeStoreObj.symbol = urlSymbol;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.symbol = urlSymbol;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
+                }
+            }
+        );
+
         reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
             () => {
@@ -603,7 +677,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
-                if (!isEmptyObject(this.contract_types_list)) {
+                if (!isEmptyObject(this.contract_types_list) || !isEmptyObject(this.contract_types_list_v2)) {
                     setTradeURLParams({ contractType: this.contract_type });
                 }
                 this.root_store.notifications.removeTradeNotifications();
@@ -775,7 +849,21 @@ export default class TradeStore extends BaseStore {
         await this.processNewValuesAsync({ active_symbols });
     }
 
+    async processContractsForV2() {
+        const contract_categories = ContractType.getContractCategories();
+        this.processNewValuesAsync({
+            ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
+                has_only_forward_starting_contracts: boolean;
+            }),
+        });
+        this.processNewValuesAsync(ContractType.getContractValues(this));
+    }
+
     async setContractTypes() {
+        if (this.is_dtrader_v2_enabled) {
+            return;
+        }
+
         let contractType: string | undefined = '';
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
@@ -1014,10 +1102,13 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
+                            this.root_store.common.setServicesError(
+                                {
+                                    type: response.msg_type,
+                                    ...response.error,
+                                },
+                                this.is_dtrader_v2_enabled
+                            );
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
                             if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
@@ -1339,13 +1430,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_dtrader_v2_enabled() {
-        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
-
-        return (
-            is_dtrader_v2 &&
-            this.root_store.ui.is_mobile &&
-            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
-        );
+        return isDtraderV2Enabled(this.root_store.ui.is_mobile);
     }
 
     get is_synthetics_available() {
@@ -1446,7 +1531,14 @@ export default class TradeStore extends BaseStore {
         this.is_market_closed = status;
     }
 
-    onProposalResponse(response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) {
+    // eslint-disable-next-line class-methods-use-this
+    getTurbosChartBarrier(response: ProposalResponse) {
+        return (Number(response.proposal?.contract_details?.barrier) - Number(response.proposal?.spot)).toFixed(
+            getBarrierPipSize(response.proposal?.contract_details?.barrier)
+        );
+    }
+
+    onProposalResponse(response: TResponse<PriceProposalRequest, ProposalResponse, 'proposal'>) {
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
@@ -1510,7 +1602,17 @@ export default class TradeStore extends BaseStore {
         }
 
         if (!this.main_barrier || this.main_barrier?.shade) {
-            this.setMainBarrier(response.echo_req);
+            if (this.is_turbos) {
+                if (response.proposal) {
+                    const chart_barrier = response.proposal.barrier_spot_distance;
+                    this.setMainBarrier({
+                        ...response.echo_req,
+                        barrier: String(chart_barrier),
+                    });
+                }
+            } else {
+                this.setMainBarrier(response.echo_req);
+            }
         }
 
         if (this.hovered_contract_type === contract_type) {
@@ -1554,7 +1656,7 @@ export default class TradeStore extends BaseStore {
 
             // Sometimes the initial barrier doesn't match with current barrier choices received from API.
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
-            if ((this.is_turbos || this.is_vanilla) && response.error.details?.barrier_choices) {
+            if (this.is_vanilla && response.error.details?.barrier_choices) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
 
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
@@ -1563,7 +1665,7 @@ export default class TradeStore extends BaseStore {
                     // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
                     // The new list is set and the mid value is assigned
                     const index = Math.floor(this.barrier_choices.length / 2);
-                    this.barrier_1 = this.is_vanilla ? this.barrier_choices[index] : this.barrier_choices[0];
+                    this.barrier_1 = this.barrier_choices[index];
                     this.onChange({
                         target: {
                             name: 'barrier_1',
@@ -1572,12 +1674,40 @@ export default class TradeStore extends BaseStore {
                     });
                 }
             }
+            if (this.is_turbos && response.error.details?.payout_per_point_choices) {
+                const { payout_per_point_choices, min_stake, max_stake } = response.error.details;
+                const payoutIndex = Math.floor(payout_per_point_choices.length / 2);
+                this.setPayoutChoices(payout_per_point_choices.map(item => String(item)));
+                this.setStakeBoundary(contract_type, min_stake, max_stake);
+                this.onChange({
+                    target: {
+                        name: 'payout_per_point',
+                        value: String(payout_per_point_choices[payoutIndex]),
+                    },
+                });
+                this.barrier_1 = String(this.getTurbosChartBarrier(response));
+            }
         } else {
             this.validateAllProperties();
-            if (this.is_turbos || this.is_vanilla) {
+            if (this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal ?? {};
                 this.setBarrierChoices(barrier_choices as string[]);
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
+            } else if (this.is_turbos) {
+                const { max_stake, min_stake, payout_choices } = response.proposal ?? {};
+                if (payout_choices) {
+                    if (this.payout_per_point == '') {
+                        this.onChange({
+                            target: {
+                                name: 'payout_per_point',
+                                value: String(Math.floor(payout_choices.length / 2)),
+                            },
+                        });
+                    }
+                    this.setPayoutChoices(payout_choices as string[]);
+                    this.setStakeBoundary(contract_type, min_stake, max_stake);
+                    this.barrier_1 = response.proposal.barrier_spot_distance;
+                }
             }
         }
 
@@ -1962,19 +2092,35 @@ export default class TradeStore extends BaseStore {
 
     setBarrierChoices(barrier_choices: string[]) {
         this.barrier_choices = barrier_choices ?? [];
-        if (this.is_turbos) {
-            const stored_barriers_data = { barrier: this.barrier_1, barrier_choices };
-            if (getContractSubtype(this.contract_type) === 'Long') {
-                this.long_barriers = stored_barriers_data;
-            } else {
-                this.short_barriers = stored_barriers_data;
-            }
-        }
         if (this.is_vanilla) {
             this.strike_price_choices = { barrier: this.barrier_1, barrier_choices };
         }
     }
 
+    setPayoutChoices(payout_choices: string[]) {
+        this.payout_choices = payout_choices ?? [];
+        const stored_barriers_data = { barrier: this.barrier_1, payout_choices };
+        if (getContractSubtype(this.contract_type) === 'Long') {
+            this.long_barriers = stored_barriers_data;
+        } else {
+            this.short_barriers = stored_barriers_data;
+        }
+    }
+
+    togglePayoutWheelPicker() {
+        this.open_payout_wheelpicker = !this.open_payout_wheelpicker;
+    }
+    setPayoutPerPoint(val: string) {
+        if (val && val !== this.payout_per_point) {
+            this.payout_per_point = val;
+            this.onChange({
+                target: {
+                    name: 'payout_per_point',
+                    value: String(this.payout_per_point),
+                },
+            });
+        }
+    }
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
     }

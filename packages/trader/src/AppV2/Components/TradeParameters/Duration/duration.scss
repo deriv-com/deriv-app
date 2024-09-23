@@ -11,6 +11,20 @@
         min-height: var(--core-spacing-1600);
         white-space: nowrap;
         scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        -ms-overflow-style: none;
+    }
+    &__wheel-picker-container {
+        padding: 0 var(--component-actionSheet-spacing-padding-md);
+        min-height: 268px;
+        &__day {
+            min-height: 228px;
+        }
+        &__loading {
+            display: none;
+        }
     }
     &__endtime {
         text-align: center;
@@ -26,12 +40,6 @@
             p {
                 margin-left: var(--core-spacing-1300);
             }
-        }
-        &__icon {
-            width: var(--core-spacing-1600);
-            height: var(--core-spacing-1600);
-            border: var(--core-spacing-75) solid var(--text-general);
-            border-radius: var(--core-spacing-600);
         }
         &__sheet {
             font-size: var(--core-spacing-800);

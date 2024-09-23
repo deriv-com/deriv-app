@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
+import { MobileFullPageModal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TServerBotItem } from 'Stores/server-side-bot-store';
@@ -29,21 +29,18 @@ const ServerSideBot: React.FC = observer(() => {
     return (
         <>
             <ServerBotContainer>
-                <>
-                    <MobileWrapper>
-                        <BotList setFormVisibility={setFormVisibility} />
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <div className='ssb-desktop-wrapper'>
-                            <div className='ssb-desktop-wrapper__list'>
-                                <BotList setFormVisibility={setFormVisibility} />
-                            </div>
-                            <div className='ssb-desktop-wrapper__performance-panel'>
-                                <PerformancePanel />
-                            </div>
+                {is_mobile ? (
+                    <BotList setFormVisibility={setFormVisibility} />
+                ) : (
+                    <div className='ssb-desktop-wrapper'>
+                        <div className='ssb-desktop-wrapper__list'>
+                            <BotList setFormVisibility={setFormVisibility} />
                         </div>
-                    </DesktopWrapper>
-                </>
+                        <div className='ssb-desktop-wrapper__performance-panel'>
+                            <PerformancePanel />
+                        </div>
+                    </div>
+                )}
             </ServerBotContainer>
             <AddBot is_open={is_open} setFormVisibility={setFormVisibility} />
             <MobileFullPageModal

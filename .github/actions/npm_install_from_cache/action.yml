@@ -6,17 +6,19 @@ runs:
   - name: Get npm cache directory
     id: npm-cache-dir
     run: echo "dir=$(npm config get cache)" >> "${GITHUB_OUTPUT}"
+    shell: bash
   - uses: actions/cache@v3
     id: npm-cache
     with:
       path: ${{ steps.npm-cache-dir.outputs.dir }}
       key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       restore-keys: |
-      ${{ runner.os }}-node-
+        ${{ runner.os }}-node-
   - name: List the state of node modules
     if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
     continue-on-error: true
-    run: npm list   
+    run: npm list
+    shell: bash
   - name: Install npm packages
     run: npm ci
     shell: bash

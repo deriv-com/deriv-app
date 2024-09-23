@@ -16,6 +16,7 @@ type TFileUploaderContainer = {
     files_description?: React.ReactNode;
     examples?: React.ReactNode;
     onError?: (error_message: string) => void;
+    placeholder?: string;
 };
 
 const FileUploaderContainer = ({
@@ -24,6 +25,7 @@ const FileUploaderContainer = ({
     country_of_residence,
     onFileDrop,
     onError,
+    placeholder,
 }: TFileUploaderContainer) => {
     const { isMobile } = useDevice();
     const { localize } = useTranslations();
@@ -63,7 +65,7 @@ const FileUploaderContainer = ({
                                 list_items={document_list}
                                 type='text'
                                 value={field.value?.text}
-                                placeholder={localize('Select a document')}
+                                placeholder={placeholder ?? localize('Select a document')}
                                 onItemSelection={(item: TListItem) => {
                                     setFieldValue('document_type', item, true);
                                 }}

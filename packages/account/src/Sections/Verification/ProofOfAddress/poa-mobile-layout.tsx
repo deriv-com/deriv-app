@@ -148,6 +148,7 @@ const POAMobileLayout = observer(
                                     }
                                     examples={<CommonMistakeExamples />}
                                     country_of_residence={account_settings?.country_code as string}
+                                    placeholder={localize('Type of document')}
                                 />
                                 <FormFooter className='account-form__footer-poa'>
                                     <Button

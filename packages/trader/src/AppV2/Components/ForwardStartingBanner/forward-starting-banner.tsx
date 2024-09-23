@@ -21,10 +21,10 @@ import { LabelPairedStopwatchMdBoldIcon } from '@deriv/quill-icons';
 type TForwardStartingBannerProps = {
     class_name?: string;
     contract_info: TContractInfo | TClosedPosition['contract_info'];
-    serverTime?: TRootStore['common']['server_time'];
+    server_time?: TRootStore['common']['server_time'];
 };
 
-const ForwardStartingBanner = ({ class_name, contract_info, serverTime }: TForwardStartingBannerProps) => {
+const ForwardStartingBanner = ({ class_name, contract_info, server_time }: TForwardStartingBannerProps) => {
     const { purchase_time, sell_time, shortcode } = contract_info;
     const is_sold = !!sell_time || isEnded(contract_info as TContractInfo);
     const converted_purchase_time =
@@ -55,7 +55,7 @@ const ForwardStartingBanner = ({ class_name, contract_info, serverTime }: TForwa
                     className='banner__timer__countdown'
                     end_time={parseInt(start_time || '')}
                     getCardLabels={getCardLabels}
-                    start_time={serverTime as moment.Moment}
+                    start_time={server_time as moment.Moment}
                     key='remaining-time'
                 />
             </Text>

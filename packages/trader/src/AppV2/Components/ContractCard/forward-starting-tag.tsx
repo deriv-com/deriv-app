@@ -14,6 +14,7 @@ const ForwardStartingTag = ({ formatted_date, formatted_time }: TForwardStarting
         <Tag
             color='info'
             className='forward-starting'
+            data-testid='dt_forward-starting'
             label={
                 <Localize
                     i18n_default_text='Starts on {{formatted_date}}, {{formatted_time}}'

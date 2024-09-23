@@ -57,7 +57,8 @@ Blockly.Blocks.accumulator_take_profit = {
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);
-        excludeOptionFromContextMenu(menu, menu[3]);
+        const block_options = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, block_options);
     },
     restricted_parents: ['trade_definition_accumulator'],
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,

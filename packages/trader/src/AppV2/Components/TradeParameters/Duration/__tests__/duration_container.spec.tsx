@@ -160,16 +160,16 @@ describe('DurationActionSheetContainer', () => {
     it('should open datepicker on clicking on calendar icon in the days wheelpicker', () => {
         default_trade_store.modules.trade.duration = 34;
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarLgBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarLgBoldIcon'));
+        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
+        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Pick an end date')).toBeInTheDocument();
     });
 
     it('should select value when clicked on any date on datepicker', () => {
         default_trade_store.modules.trade.duration = 2;
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarLgBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarLgBoldIcon'));
+        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
+        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Date Picker')).toBeInTheDocument();
         userEvent.click(screen.getByText('Save'));
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({

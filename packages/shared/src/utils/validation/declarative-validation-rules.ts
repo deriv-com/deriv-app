@@ -71,7 +71,7 @@ const validBarrier = (value: string) => {
             message: form_error_messages?.empty_barrier(),
         };
     }
-    return { is_ok: /^[+-]?\d+\.?\d*$/.test(value) };
+    return { is_ok: /^[+-]?\d+(\.\d+)?$/.test(value) };
 };
 const validGeneral = (value: string) => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><|]+/.test(value);
 const validRegular = (value: string, options: TOptions) => options.regex?.test(value);

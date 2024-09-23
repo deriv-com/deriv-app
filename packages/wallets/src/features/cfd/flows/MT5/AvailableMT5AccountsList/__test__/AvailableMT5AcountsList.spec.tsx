@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../../modals';
 import AvailableMT5AccountsList from '../AvailableMT5AccountsList';
@@ -61,7 +62,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={defaultAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(
             <MT5PasswordModal isVirtual={false} marketType='synthetic' platform='mt5' product='swap_free' />
@@ -79,7 +80,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={defaultAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={false} />);
     });
@@ -92,7 +93,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={defaultAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal />);
     });
@@ -105,7 +106,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={[]} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(<JurisdictionModal />);
     });
@@ -118,7 +119,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={defaultAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={true} />);
     });
@@ -129,7 +130,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={nonSwapAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(<JurisdictionModal />);
     });
@@ -141,7 +142,7 @@ describe('AvailableMT5AccountsList', () => {
 
         expect(screen.getByText('NEW')).toBeInTheDocument();
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         await waitFor(() => {
             expect(mockShow).toHaveBeenCalled();
@@ -156,7 +157,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={defaultAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(mockShow).toHaveBeenCalledWith(
             <MT5PasswordModal isVirtual={true} marketType='synthetic' platform='mt5' product='swap_free' />
@@ -169,7 +170,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={zeroSpreadAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         await waitFor(() => {
             expect(mockShow).toHaveBeenCalled();

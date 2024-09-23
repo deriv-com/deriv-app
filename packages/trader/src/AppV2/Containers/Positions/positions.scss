@@ -81,3 +81,21 @@ $TABS_HEIGHT: var(--core-size-2400);
         height: 100%;
     }
 }
+
+.text-field--custom {
+    .quill-input {
+        &-no-label__wrapper {
+            position: relative;
+            .input {
+                padding-inline: var(--core-spacing-1700);
+            }
+        }
+        &-label__label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            inset-inline-start: 0;
+            z-index: 2;
+        }
+    }
+}

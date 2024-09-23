@@ -420,8 +420,8 @@ class DBot {
      */
     disableBlocksRecursively(block) {
         block.setDisabled(true);
-        if (block.outputConnection.targetConnection) {
-            this.disableBlocksRecursively(block.outputConnection?.sourceBlock_);
+        if (block?.outputConnection?.targetConnection) {
+            this.disableBlocksRecursively(block?.outputConnection?.sourceBlock_);
         }
     }
 

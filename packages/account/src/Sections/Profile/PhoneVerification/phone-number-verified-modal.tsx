@@ -13,15 +13,15 @@ type TPhoneNumberVerifiedModal = {
 
 const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_modal }: TPhoneNumberVerifiedModal) => {
     const history = useHistory();
-    const previous_routes = localStorage.getItem('routes_from_notification_to_pnv');
-    const is_routing_user_to_previous =
-        !!previous_routes &&
-        (previous_routes !== routes.personal_details || previous_routes !== routes.phone_verification);
+    const previous_route = localStorage.getItem('routes_from_notification_to_pnv');
+    const should_route_back_to_previous =
+        !!previous_route &&
+        (previous_route !== routes.personal_details || previous_route !== routes.phone_verification);
 
     const handleDoneButton = () => {
         localStorage.removeItem('routes_from_notification_to_pnv');
 
-        is_routing_user_to_previous ? history.push(previous_routes) : history.push(routes.traders_hub);
+        should_route_back_to_previous ? history.push(previous_route) : history.push(routes.traders_hub);
     };
 
     const { isMobile } = useDevice();

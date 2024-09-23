@@ -27,7 +27,7 @@ import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
 import { getProfit } from 'AppV2/Utils/positions-utils';
-import { Localize } from '@deriv/translations';
+import ForwardStartingTag from './forward-starting-tag';
 
 type TContractCardProps = TContractCardStatusTimerProps & {
     className?: string;
@@ -97,8 +97,8 @@ const ContractCard = ({
     const is_forward_starting = isForwardStarting(shortcode ?? '', converted_purchase_time);
     const start_time = getStartTime(shortcode ?? '');
     const has_forward_contract_started = hasForwardContractStarted(shortcode ?? '');
-    const show_tag_forward_started = is_forward_starting && !!start_time && !has_forward_contract_started && !isSold;
-    const show_status_timer_tag = (!has_no_auto_expiry || (has_no_auto_expiry && isSold)) && !show_tag_forward_started;
+    const show_tag_forward_starting = is_forward_starting && !!start_time && !has_forward_contract_started && !isSold;
+    const show_status_timer_tag = (!has_no_auto_expiry || (has_no_auto_expiry && isSold)) && !show_tag_forward_starting;
     const Component = redirectTo ? NavLink : 'div';
 
     const handleSwipe = (direction: string) => {
@@ -177,23 +177,10 @@ const ContractCard = ({
                                     {...contractInfo}
                                 />
                             )}
-                            {show_tag_forward_started && (
-                                <Tag
-                                    className='forward-staring'
-                                    label={
-                                        <Localize
-                                            i18n_default_text='Starts on {{formattedDate}}, {{formattedTime}}'
-                                            values={{
-                                                formattedDate: formatDate(
-                                                    toMoment(parseInt(start_time || '')),
-                                                    'DD MMM YYYY'
-                                                ),
-                                                formattedTime: formatTime(parseInt(start_time || ''), 'HH:mm [GMT]'),
-                                            }}
-                                        />
-                                    }
-                                    variant='custom'
-                                    size='sm'
+                            {show_tag_forward_starting && (
+                                <ForwardStartingTag
+                                    formatted_date={formatDate(toMoment(parseInt(start_time || '')), 'DD MMM YYYY')}
+                                    formatted_time={formatTime(parseInt(start_time || ''), 'HH:mm [GMT]')}
                                 />
                             )}
                         </div>

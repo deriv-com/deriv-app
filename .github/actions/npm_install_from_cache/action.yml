@@ -3,6 +3,20 @@ description: Install npm packages
 runs:
   using: composite
   steps:
+  - name: Get npm cache directory
+    id: npm-cache-dir
+    run: echo "dir=$(npm config get cache)" >> "${GITHUB_OUTPUT}"
+  - uses: actions/cache@v3
+    id: npm-cache
+    with:
+      path: ${{ steps.npm-cache-dir.outputs.dir }}
+      key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      restore-keys: |
+      ${{ runner.os }}-node-
+  - name: List the state of node modules
+    if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+    continue-on-error: true
+    run: npm list   
   - name: Install npm packages
     run: npm ci
     shell: bash

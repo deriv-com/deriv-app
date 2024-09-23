@@ -25,7 +25,12 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
     };
 
     const { isMobile } = useDevice();
-    const { ui } = useStore();
+    const {
+        ui,
+        client: {
+            account_settings: { phone },
+        },
+    } = useStore();
     const { setIsPhoneVerificationCompleted } = ui;
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
@@ -51,11 +56,14 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
             disableCloseOnOverlay
         >
-            <Modal.Header title={<Localize i18n_default_text='Success' />} />
+            <Modal.Header title={<Localize i18n_default_text='Phone number verified' />} />
             <Modal.Body>
                 <div className='phone-verification__verified-modal--contents'>
                     <Text>
-                        <Localize i18n_default_text='Your phone number is verified.' />
+                        <Localize
+                            i18n_default_text='{{ phone }} is verified as your phone number.'
+                            values={{ phone }}
+                        />
                     </Text>
                 </div>
             </Modal.Body>

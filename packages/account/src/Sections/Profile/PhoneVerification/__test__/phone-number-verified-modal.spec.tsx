@@ -45,8 +45,8 @@ describe('PhoneNumberVerifiedModal', () => {
 
     it('it should render PhoneNumberVerifiedModal', () => {
         renderModal();
-        expect(screen.getByText(/Success/)).toBeInTheDocument();
-        expect(screen.getByText(/Your phone number is verified./)).toBeInTheDocument();
+        expect(screen.getByText(/Phone number verified/)).toBeInTheDocument();
+        expect(screen.getByText(/is verified as your phone number./)).toBeInTheDocument();
     });
 
     it('it should refetch GetSettings when done is clicked', async () => {

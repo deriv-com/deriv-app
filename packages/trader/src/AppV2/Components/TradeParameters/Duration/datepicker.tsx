@@ -55,19 +55,21 @@ const DurationEndDatePicker = ({
                 >
                     <ActionSheet.Portal shouldCloseOnDrag>
                         <ActionSheet.Header title={<Localize i18n_default_text='Pick an end date' />} />
-                        <DatePicker
-                            hasFixedWidth={false}
-                            minDate={new Date()}
-                            maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                            onChange={date => {
-                                if (date && date instanceof Date) {
-                                    setExpiryDate(date);
-                                    setOpenDatePicker(false);
-                                }
-                            }}
-                            wrapperClassName='duration-container__date-picker__sheet'
-                            disableCurrentDayMarker
-                        />
+                        <div className='duration-datepicker'>
+                            <DatePicker
+                                hasFixedWidth={false}
+                                minDate={new Date()}
+                                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                                onChange={date => {
+                                    if (date && date instanceof Date) {
+                                        setExpiryDate(date);
+                                        setOpenDatePicker(false);
+                                    }
+                                }}
+                                wrapperClassName='duration-container__date-picker__sheet'
+                                disableCurrentDayMarker
+                            />
+                        </div>
                     </ActionSheet.Portal>
                 </ActionSheet.Root>
             </div>

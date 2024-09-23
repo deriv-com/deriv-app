@@ -6,10 +6,12 @@ import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
-import { CFD_PLATFORMS, PlatformDetails, PRODUCT } from '../../constants';
+import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
+import { MT5LicenceMessage } from '../components';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
+    account: THooks.SortedMT5Accounts;
     isLoading?: boolean;
     isTncChecked: boolean;
     isVirtual?: boolean;
@@ -22,6 +24,7 @@ type TProps = {
 };
 
 const CreatePasswordMT5: React.FC<TProps> = ({
+    account,
     isLoading,
     isTncChecked,
     isVirtual,
@@ -30,7 +33,6 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     onTncChange,
     password,
     platform,
-    product,
 }) => {
     const { isDesktop } = useDevice();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
@@ -60,14 +62,8 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                     onChange={onPasswordChange}
                     password={password}
                 />
-                {product === PRODUCT.ZEROSPREAD && !isVirtual && (
-                    <CFDPasswordModalTnc
-                        checked={isTncChecked}
-                        onChange={onTncChange}
-                        platform={platform}
-                        product={product}
-                    />
-                )}
+                <MT5LicenceMessage account={account} />
+                {!isVirtual && <CFDPasswordModalTnc checked={isTncChecked} onChange={onTncChange} />}
             </div>
 
             {isDesktop && (

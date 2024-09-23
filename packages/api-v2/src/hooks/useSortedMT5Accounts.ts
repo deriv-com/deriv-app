@@ -55,34 +55,10 @@ const useSortedMT5Accounts = (regulation?: string) => {
     const filtered_data = useMemo(() => {
         if (!modified_data) return;
 
-        // console.log(modified_data.filter(account => account.is_default_jurisdiction === 'true'));
-        // console.log(
-        //     modified_data.filter(
-        //         account => 'client_kyc_status' in account && account.is_default_jurisdiction === 'true'
-        //     )
-        // );
-
-        const added_accounts = modified_data.filter(
-            account => account.is_added && account.is_default_jurisdiction === 'true'
-        );
+        const added_accounts = modified_data.filter(account => account.is_added);
         const non_added_accounts = modified_data.filter(
-            account => !account.is_added && account.is_default_jurisdiction === 'true'
+            account => !account.is_added && account.is_default_jurisdiction === 'true' && account.product !== 'stp'
         );
-
-        // const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
-        //     const { market_type, product } = account;
-        //     const key = product === 'zero_spread' ? `${market_type}_${product}` : market_type;
-
-        //     const existing_account = acc.find(acc_account =>
-        //         acc_account.product === 'zero_spread'
-        //             ? `${acc_account.market_type}_${acc_account.product}` === key
-        //             : acc_account.market_type === key
-        //     );
-
-        //     if (existing_account) return acc;
-
-        //     return [...acc, account];
-        // }, [] as typeof non_added_accounts);
 
         return [...added_accounts, ...non_added_accounts];
     }, [modified_data]);

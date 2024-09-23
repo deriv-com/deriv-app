@@ -5,7 +5,7 @@ import { DocumentTile } from './components';
 import './DocumentsList.scss';
 
 type TDocumentsListProps = {
-    statuses: THooks.AvailableMT5Accounts['client_kyc_status'];
+    statuses: THooks.SortedMT5Accounts['client_kyc_status'];
 };
 
 type TStatuses = 'expired' | 'none' | 'pending' | 'rejected' | 'suspected' | 'verified';
@@ -38,7 +38,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
                     title='Proof of address'
                 />
             )}
-            {'valid_tin' in statuses && (
+            {'valid_tin' in statuses && !statuses.valid_tin && (
                 <DocumentTile onClick={() => history.push('/account/personal-details')} title='Personal Details' />
             )}
         </div>

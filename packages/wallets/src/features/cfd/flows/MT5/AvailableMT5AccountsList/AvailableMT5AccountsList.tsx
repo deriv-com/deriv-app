@@ -10,7 +10,7 @@ import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal }
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
-    account: THooks.AvailableMT5Accounts;
+    account: THooks.SortedMT5Accounts;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -37,6 +37,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 } else {
                     show(
                         <MT5PasswordModal
+                            account={account}
                             isVirtual={activeWallet?.is_virtual}
                             marketType={account?.market_type || 'synthetic'}
                             platform={account.platform}

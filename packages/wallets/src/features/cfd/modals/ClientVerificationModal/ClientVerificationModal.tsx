@@ -1,6 +1,6 @@
 import React from 'react';
 import { DerivLightUploadPoiIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { THooks } from '../../../../types';
@@ -9,11 +9,15 @@ import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
 
 type TClientVerificationModal = {
-    account: THooks.AvailableMT5Accounts;
+    account: THooks.SortedMT5Accounts;
 };
 
-const getDescriptionText = (account: THooks.AvailableMT5Accounts) => {
+const getDescriptionText = (account: THooks.SortedMT5Accounts) => {
     const { title } = getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL];
+
+    if (account.is_added) {
+        return <Localize i18n_default_text='Your account needs verification.' />;
+    }
 
     return (
         <Localize
@@ -23,16 +27,15 @@ const getDescriptionText = (account: THooks.AvailableMT5Accounts) => {
             values={{ accountName: `MT5 ${title}` }}
         />
     );
-
-    return <Localize i18n_default_text='Your account needs verification.' />;
 };
 
 const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }) => {
+    const { localize } = useTranslations();
     const { isMobile } = useDevice();
     const description = getDescriptionText(account);
 
     return (
-        <ModalStepWrapper title='Default service'>
+        <ModalStepWrapper title={account.is_added ? localize('Create account') : localize('Verify account')}>
             <div className='wallets-client-verification-modal'>
                 <DerivLightUploadPoiIcon height={128} width={128} />
                 <Text align='center' size={isMobile ? 'md' : 'sm'}>

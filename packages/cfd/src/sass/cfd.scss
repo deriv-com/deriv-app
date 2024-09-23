@@ -457,7 +457,7 @@
     }
 
     .dc-form-submit-button {
-        box-shadow: 0px 2px 0px 0px #f2f3f4 inset;
+        box-shadow: 0px 2px 0px 0px var(--border-divider) inset;
         width: 100%;
         padding-inline: 1.6rem;
         padding-block-start: 1.6rem;
@@ -498,7 +498,7 @@
     }
     .dc-modal-header {
         &--cfd-password-modal {
-            box-shadow: 0px -2px 0px 0px #f2f3f4 inset;
+            box-shadow: 0px -2px 0px 0px var(--border-divider) inset;
         }
     }
 }

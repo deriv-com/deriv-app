@@ -115,4 +115,15 @@
             width: 100%;
         }
     }
+
+    &__type-selection {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        align-self: stretch;
+
+        label {
+            text-transform: none !important;
+        }
+    }
 }

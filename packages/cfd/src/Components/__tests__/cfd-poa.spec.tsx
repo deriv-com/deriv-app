@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import CFDPOA from '../cfd-poa';
@@ -89,6 +89,7 @@ describe('<CFDPOA />', () => {
                 address_city: 'test address_city',
                 address_state: 'test address_state',
                 address_postcode: 'test address_postcode',
+                country_code: 'in',
             },
             fetchResidenceList: jest.fn(() => Promise.resolve('')),
             getChangeableFields: jest.fn(() => []),
@@ -112,7 +113,8 @@ describe('<CFDPOA />', () => {
 
         const uploader = screen.getByTestId('dt_file_upload_input');
         const file = new File(['test file'], 'test_file.png', { type: 'image/png' });
-
+        const dt_document_type = screen.getByRole('textbox', { name: /Type of document/ });
+        fireEvent.change(dt_document_type, { target: { value: 'utility_bill' } });
         await waitFor(() => {
             userEvent.upload(uploader, file);
         });

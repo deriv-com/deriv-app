@@ -64,10 +64,11 @@ const FileUploaderContainer = ({
                                 autoComplete='off'
                                 list_items={document_list}
                                 type='text'
-                                value={field.value?.text}
+                                value={field.value}
+                                label={placeholder}
                                 placeholder={placeholder ?? localize('Select a document')}
                                 onItemSelection={(item: TListItem) => {
-                                    setFieldValue('document_type', item, true);
+                                    setFieldValue('document_type', item.text, true);
                                 }}
                                 required
                             />

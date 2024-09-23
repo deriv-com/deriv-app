@@ -14,6 +14,7 @@ import POADesktopLayout from './poa-desktop-layout';
 import { TPOAFormState } from '../../../Types';
 import { useTranslations } from '@deriv-com/translations';
 import POAMobileLayout from './poa-mobile-layout';
+import { getSupportedProofOfAddressDocuments } from '../../../Constants/file-uploader';
 
 type TProofOfAddressForm = {
     className: string;
@@ -28,7 +29,7 @@ type TFormInitialValues = Record<
     'address_line_1' | 'address_line_2' | 'address_city' | 'address_state' | 'address_postcode',
     string
 > & {
-    document_type?: Record<'text' | 'value', string>;
+    document_type?: string;
 };
 
 const ProofOfAddressForm = observer(
@@ -136,7 +137,7 @@ const ProofOfAddressForm = observer(
                 }
             }
 
-            if (!values.document_type?.value) {
+            if (!values.document_type) {
                 errors.document_type = localize('Document type is required.');
             }
 
@@ -189,8 +190,12 @@ const ProofOfAddressForm = observer(
 
             // upload files
             try {
+                // This is required as AutoComplate displays only the selected value
+                const selected_doc_type = getSupportedProofOfAddressDocuments().find(
+                    doc => doc.text === values.document_type
+                );
                 const api_response = await upload(document_files, {
-                    document_type: values.document_type?.value as DocumentUploadRequest['document_type'],
+                    document_type: selected_doc_type?.value as DocumentUploadRequest['document_type'],
                 });
 
                 if (api_response?.warning) {
@@ -256,7 +261,7 @@ const ProofOfAddressForm = observer(
             address_city,
             address_state,
             address_postcode,
-            document_type: { text: '', value: '' },
+            document_type: '',
         };
 
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;

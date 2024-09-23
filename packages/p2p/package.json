@@ -98,7 +98,7 @@
         "eslint-config-binary": "^1.0.2",
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-import": "^2.23.4",
-        "eslint-plugin-prettier": "^3.3.1",
+        "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "lint-staged": "^10.4.0",

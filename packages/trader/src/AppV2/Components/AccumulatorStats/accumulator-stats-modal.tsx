@@ -1,6 +1,5 @@
 import React from 'react';
-import { ActionSheet } from '@deriv-com/quill-ui';
-import { Text } from '@deriv-com/ui';
+import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import StatsRow from './accumulator-stats-row';
 import { Localize } from '@deriv/translations';
 
@@ -17,7 +16,7 @@ const AccumulatorStatsModal = ({
         <ActionSheet.Portal shouldCloseOnDrag>
             <div className='stats-sheet'>
                 <div className='stats-sheet__title'>
-                    <Text size='lg' bold>
+                    <Text size='lg' bold color='quill-typography__color--prominent'>
                         <Localize i18n_default_text='Stats' />
                     </Text>
                 </div>
@@ -26,7 +25,6 @@ const AccumulatorStatsModal = ({
                         <Localize i18n_default_text='History of tick counts' />
                     </Text>
                 </div>
-
                 <div className='stats-sheet__stats'>
                     <StatsRow
                         rows={rows[0]}

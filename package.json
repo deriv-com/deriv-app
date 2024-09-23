@@ -103,7 +103,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "1.14.0",
-        "@deriv-com/quill-ui": "1.16.9",
+        "@deriv-com/quill-ui": "1.16.17",
         "@sendbird/chat": "^4.9.7",
         "dotenv": "^8.2.0",
         "react": "^17.0.2",

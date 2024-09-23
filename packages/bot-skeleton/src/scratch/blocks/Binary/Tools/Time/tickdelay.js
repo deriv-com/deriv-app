@@ -1,10 +1,14 @@
 import { localize } from '@deriv/translations';
 import { modifyContextMenu, evaluateExpression } from '../../../../utils';
+import DBotStore from '../../../../dbot-store';
 
 Blockly.Blocks.tick_delay = {
     init() {
         this.jsonInit(this.definition());
-        this.workspace_to_code = Blockly.JavaScript.javascriptGenerator.workspaceToCode(Blockly.derivWorkspace);
+        const { client } = DBotStore.instance;
+        if (client && client.is_logged_in) {
+            this.workspace_to_code = Blockly.JavaScript.javascriptGenerator.workspaceToCode(Blockly.derivWorkspace);
+        }
     },
     definition() {
         return {
@@ -48,7 +52,7 @@ Blockly.Blocks.tick_delay = {
                 const evaluated_result = evaluateExpression(input_value);
                 if (evaluated_result === 'invalid_input') {
                     // this was done to check if any equation or varible assignment is present in the code.
-                    if (this.workspace_to_code.includes(input_value)) {
+                    if (this.workspace_to_code && this.workspace_to_code.includes(input_value)) {
                         return false;
                     }
                     this.error_message = localize('Invalid Input {{ input_value }}.', { input_value });

@@ -20,6 +20,7 @@ import {
     FlagThailandIcon,
     FlagTurkeyIcon,
     FlagUnitedKingdomIcon,
+    FlagUzbekistanIcon,
     FlagVietnamIcon,
 } from '@deriv/quill-icons';
 
@@ -41,6 +42,7 @@ const flagComponents = {
     SI: FlagSriLankaIcon,
     SW: FlagTanzaniaIcon,
     TR: FlagTurkeyIcon,
+    UZ: FlagUzbekistanIcon,
     VI: FlagVietnamIcon,
     ZH_CN: FlagChinaSimplifiedIcon,
     ZH_TW: FlagChinaTraditionalIcon,

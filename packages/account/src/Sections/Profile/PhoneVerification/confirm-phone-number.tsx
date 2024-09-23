@@ -88,12 +88,22 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         }
     };
 
+    const isSingularValue = (time: number) => {
+        return time === 1;
+    };
+
     const resendPhoneOtpTimer = () => {
         let resendPhoneOtpTimer = '';
         if (next_phone_otp_request_timer) {
             next_phone_otp_request_timer < 60
-                ? (resendPhoneOtpTimer = next_phone_otp_request_timer + localize(' seconds'))
-                : (resendPhoneOtpTimer = Math.round(next_phone_otp_request_timer / 60) + localize(' minute'));
+                ? (resendPhoneOtpTimer = `${next_phone_otp_request_timer} ${
+                      isSingularValue(next_phone_otp_request_timer) ? localize('second') : localize('seconds')
+                  }`)
+                : (resendPhoneOtpTimer = `${Math.round(next_phone_otp_request_timer / 60)} ${
+                      isSingularValue(Math.round(next_phone_otp_request_timer / 60))
+                          ? localize('minute')
+                          : localize('minutes')
+                  }`);
         } else {
             resendPhoneOtpTimer = '';
         }

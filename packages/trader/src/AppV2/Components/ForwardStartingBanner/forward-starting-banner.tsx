@@ -1,10 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
-import { CaptionText } from '@deriv-com/quill-ui';
+import { CaptionText, Text } from '@deriv-com/quill-ui';
 import {
     TContractInfo,
     formatDate,
     formatTime,
+    getCardLabels,
     getStartTime,
     hasForwardContractStarted,
     isEnded,
@@ -13,14 +14,18 @@ import {
 } from '@deriv/shared';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { Localize } from '@deriv/translations';
+import { RemainingTime } from '@deriv/components';
+import { TRootStore } from 'Types';
+import { LabelPairedStopwatchMdBoldIcon } from '@deriv/quill-icons';
 
 type TForwardStartingBannerProps = {
     class_name?: string;
     contract_info: TContractInfo | TClosedPosition['contract_info'];
+    serverTime?: TRootStore['common']['server_time'];
 };
 
-const ForwardStartingBanner = ({ class_name, contract_info }: TForwardStartingBannerProps) => {
-    const { purchase_time, sell_time, shortcode } = contract_info as TContractInfo;
+const ForwardStartingBanner = ({ class_name, contract_info, serverTime }: TForwardStartingBannerProps) => {
+    const { purchase_time, sell_time, shortcode } = contract_info;
     const is_sold = !!sell_time || isEnded(contract_info as TContractInfo);
     const converted_purchase_time =
         typeof purchase_time === 'string' ? Number(new Date(purchase_time).getTime()) : purchase_time;
@@ -43,7 +48,17 @@ const ForwardStartingBanner = ({ class_name, contract_info }: TForwardStartingBa
                     {formatTime(parseInt(start_time || ''), 'HH:mm [GMT]')}
                 </CaptionText>
             </div>
-            <div>Counter</div>
+            <Text bold size='md' className='banner__timer' as='div'>
+                <LabelPairedStopwatchMdBoldIcon fill='var(--component-textIcon-static-prominentDark)' />
+                <RemainingTime
+                    as='span'
+                    className='banner__timer__countdown'
+                    end_time={parseInt(start_time || '')}
+                    getCardLabels={getCardLabels}
+                    start_time={serverTime as moment.Moment}
+                    key='remaining-time'
+                />
+            </Text>
         </div>
     );
 };

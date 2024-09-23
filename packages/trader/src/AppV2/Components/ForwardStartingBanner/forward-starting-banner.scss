@@ -18,7 +18,12 @@
             justify-content: center;
         }
     }
-    &__text {
+    &__text,
+    &__timer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         color: var(--component-textIcon-static-prominentDark);
+        gap: var(--core-spacing-200);
     }
 }

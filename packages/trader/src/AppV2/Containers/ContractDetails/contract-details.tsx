@@ -84,7 +84,7 @@ const ContractDetails = observer(() => {
                     'contract-details--one-button': shouldShowSell && !showCancelButton,
                 })}
             >
-                <ForwardStartingBanner contract_info={contract_info} />
+                <ForwardStartingBanner contract_info={contract_info} serverTime={server_time} />
                 <ContractCard contractInfo={contract_info} serverTime={server_time} currency={currency} />
                 <ContractDetailsChart />
                 <DealCancellation />

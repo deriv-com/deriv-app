@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { useHistory } from 'react-router-dom';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -21,7 +20,10 @@ jest.mock('@deriv/api', () => ({
         },
     })),
 }));
-
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
@@ -45,6 +47,7 @@ const cashier_mock = {
     },
     transaction_history: {
         is_transactions_crypto_visible: false,
+        setIsTransactionsCryptoVisible: jest.fn(),
     },
     withdraw: {
         check10kLimit: jest.fn(),
@@ -62,13 +65,15 @@ const cashier_mock = {
 };
 
 describe('<Withdrawal />', () => {
+    beforeEach(() => {
+        (useHistory as jest.Mock).mockReturnValue({ location: { search: '' } });
+    });
+
     const mockWithdrawal = (mock_root_store: ReturnType<typeof mockStore>) => {
         return (
             <APIProvider>
                 <CashierProviders store={mock_root_store}>
-                    <Router history={createBrowserHistory()}>
-                        <Withdrawal />
-                    </Router>
+                    <Withdrawal />
                 </CashierProviders>
             </APIProvider>
         );
@@ -266,5 +271,22 @@ describe('<Withdrawal />', () => {
         render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
+    });
+
+    it('triggers `setIsTransactionsCryptoVisible` callback if the withdrawal page is mounting with `crypto_transactions_withdraw` action in URL', () => {
+        (useHistory as jest.Mock).mockReturnValue({ location: { search: '?action=crypto_transactions_withdraw' } });
+        const mock_root_store = mockStore({
+            client: {
+                balance: '10',
+                currency: 'BTC',
+                is_authorize: true,
+            },
+            modules: { cashier: cashier_mock },
+        });
+        render(mockWithdrawal(mock_root_store));
+
+        expect(mock_root_store.modules.cashier.transaction_history.setIsTransactionsCryptoVisible).toHaveBeenCalledWith(
+            true
+        );
     });
 });

@@ -1,24 +1,23 @@
-import React from 'react';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';
 import { PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack } from '../passkeys-configs';
 
 type TPasskeyCard = TPasskey & { onPasskeyMenuClick: TOnPasskeyMenuClick };
 
-export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMenuClick }: TPasskeyCard) => {
+export const PasskeyCard = ({ name, last_used, stored_on, id, icon, passkey_id, onPasskeyMenuClick }: TPasskeyCard) => {
+    const { localize } = useTranslations();
+
+    const current_passkey_data = { id, name, passkey_id };
+
     const handleManagePasskey = (event: { target: { value: string } }) => {
         if (event.target.value === 'rename') {
-            onPasskeyMenuClick(PASSKEY_STATUS_CODES.RENAMING, {
-                id,
-                name,
-            });
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            passkeysMenuActionEventTrack('passkey_rename_open');
-        } else if (event.target.value === 'revoke') {
-            // TODO: add action for revoke passkey
+            onPasskeyMenuClick(PASSKEY_STATUS_CODES.RENAMING, current_passkey_data);
+            passkeysMenuActionEventTrack('passkey_rename_started');
+        } else if (event.target.value === 'remove') {
+            onPasskeyMenuClick(PASSKEY_STATUS_CODES.REMOVING, current_passkey_data);
+            passkeysMenuActionEventTrack('passkey_remove_started');
         }
     };
 
@@ -45,6 +44,7 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMen
                 {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}
             </div>
             <Dropdown
+                test_id={`dt_passkey_card_menu_${id}`}
                 is_align_text_left
                 list={[
                     {
@@ -52,15 +52,9 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMen
                         value: 'rename',
                     },
                     {
-                        text: localize(''),
-                        value: '',
-                        disabled: true,
+                        text: localize('Remove'),
+                        value: 'remove',
                     },
-                    // TODO: remove empty option when 'revoke' is implemented. Empty option is needed for proper working dropdown
-                    // {
-                    //     text: localize('Revoke'),
-                    //     value: 'revoke',
-                    // },
                 ]}
                 onChange={handleManagePasskey}
                 suffix_icon='IcMenuDots'

@@ -381,24 +381,25 @@ export default class ContractStore extends BaseStore {
                 ? { take_profit: getLimitOrder(this).take_profit }
                 : getLimitOrder(this);
 
-        WS.contractUpdate(this.contract_id, limit_order).then(response => {
-            if (response.error) {
-                this.root_store.common.setServicesError({
-                    type: response.msg_type,
-                    ...response.error,
-                });
-                return;
-            }
+        Object.keys(limit_order).length !== 0 &&
+            WS.contractUpdate(this.contract_id, limit_order).then(response => {
+                if (response.error) {
+                    this.root_store.common.setServicesError({
+                        type: response.msg_type,
+                        ...response.error,
+                    });
+                    return;
+                }
 
-            // Update contract store
-            this.populateContractUpdateConfig(response);
-            if (this.root_store.ui.is_history_tab_active) {
-                WS.contractUpdateHistory(this.contract_id).then(this.populateContractUpdateHistory);
-            }
+                // Update contract store
+                this.populateContractUpdateConfig(response);
+                if (this.root_store.ui.is_history_tab_active) {
+                    WS.contractUpdateHistory(this.contract_id).then(this.populateContractUpdateHistory);
+                }
 
-            // Update portfolio store
-            this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
-        });
+                // Update portfolio store
+                this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
+            });
     }
 
     getContractsArray() {

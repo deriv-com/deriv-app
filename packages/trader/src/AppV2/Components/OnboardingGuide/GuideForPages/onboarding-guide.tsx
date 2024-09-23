@@ -42,7 +42,7 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     };
 
     const modal_content = {
-        image: <div className='video-placeholder' />,
+        image: <OnboardingVideo type={type} />,
         title: <Localize i18n_default_text='View your positions' />,
         content: (
             <Localize i18n_default_text='You can view your open and closed positions here. Tap an item for more details.' />
@@ -51,7 +51,6 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
         primaryButtonCallback: onGuideSkip,
         ...(is_trade_page_guide
             ? {
-                  image: <OnboardingVideo />,
                   title: <Localize i18n_default_text='Welcome to the new Deriv Trader' />,
                   content: (
                       <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />

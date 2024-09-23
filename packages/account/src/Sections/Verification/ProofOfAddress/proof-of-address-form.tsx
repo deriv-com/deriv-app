@@ -274,7 +274,7 @@ const ProofOfAddressForm = observer(
         } else {
             form_initial_values.address_state = '';
         }
-        const setOffset = (status: { msg: string }): string => {
+        const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '166px';
             return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '94px';
         };

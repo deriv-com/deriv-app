@@ -96,7 +96,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
             </Field>
             <div
                 className={classNames('wallets-withdrawal-crypto-amount-converter__arrow', {
-                    'wallets-withdrawal-crypto-amount-converter__arrow--rtl': !isCryptoInputActive,
+                    'wallets-withdrawal-crypto-amount-converter__arrow--inverted': !isCryptoInputActive,
                 })}
                 data-testid='dt_withdrawal_crypto_amount_converter_arrow'
             >

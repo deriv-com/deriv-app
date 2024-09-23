@@ -28,6 +28,10 @@
     &__arrow-icon {
         @include mobile-screen {
             rotate: 90deg;
+
+            @include rtl {
+                rotate: -90deg;
+            }
         }
     }
 

@@ -28,11 +28,12 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
         >
             {variant === 'clipboard' && (
                 <React.Fragment>
-                    <Text color='less-prominent' size={textSize}>
+                    <Text align='start' color='less-prominent' size={textSize}>
                         {label}
                     </Text>
                     <div className='wallets-mt5-trade-details-item__values'>
                         <Text
+                            align='start'
                             className='wallets-mt5-trade-details-item__values--mono-text'
                             size={textSize}
                             weight='bold'
@@ -45,11 +46,12 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
             )}
             {variant === 'password' && (
                 <React.Fragment>
-                    <Text color='less-prominent' size={textSize}>
+                    <Text align='start' color='less-prominent' size={textSize}>
                         {label}
                     </Text>
                     <div className='wallets-mt5-trade-details-item__values'>
                         <Text
+                            align='start'
                             as='a'
                             className='wallets-mt5-trade-details-item__values--forgot-link'
                             onClick={() => show(<ChangePassword />)}
@@ -62,7 +64,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value = '',
                 </React.Fragment>
             )}
             {variant === 'info' && (
-                <Text color='less-prominent' size={textSize}>
+                <Text align='start' color='less-prominent' size={textSize}>
                     {value}
                 </Text>
             )}

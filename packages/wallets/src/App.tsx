@@ -22,6 +22,7 @@ const App: React.FC = () => {
         [defaultLanguage]
     );
 
+    if (localStorage.getItem('i18n_language') !== i18nInstance.language) return <Loader />;
     return (
         <APIProvider standalone>
             <WalletsAuthProvider>

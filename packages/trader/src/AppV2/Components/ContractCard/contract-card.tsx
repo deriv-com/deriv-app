@@ -68,7 +68,8 @@ const ContractCard = ({
     const [isClosing, setIsClosing] = React.useState(false);
     const [isCanceling, setIsCanceling] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
-    const { buy_price, contract_type, display_name, sell_time, shortcode, limit_order } = contractInfo as TContractInfo;
+    const { buy_price, contract_type, display_name, purchase_time, sell_time, shortcode, limit_order } =
+        contractInfo as TContractInfo;
     const { take_profit, stop_loss } = limit_order ?? { take_profit: {}, stop_loss: {} };
     const is_high_low = isHighLow({ shortcode });
     const contract_main_title = getTradeTypeName(contract_type ?? '', {
@@ -84,19 +85,20 @@ const ContractCard = ({
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
     const is_crypto = isCryptoContract((contractInfo as TContractInfo).underlying);
     const isMultiplier = isMultiplierContract(contract_type);
-    const has_no_auto_expiry = isMultiplier && !is_crypto;
     const isSold = !!sell_time || isEnded(contractInfo as TContractInfo);
-    const is_forward_starting = isForwardStarting(contractInfo?.shortcode ?? '', Number(contractInfo?.purchase_time));
-    const show_main_tag = !has_no_auto_expiry || (has_no_auto_expiry && isSold);
     const totalProfit = getProfit(contractInfo);
     const validToCancel = isValidToCancel(contractInfo as TContractInfo);
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
-    const start_time = getStartTime(contractInfo?.shortcode ?? '');
-    const has_forward_contract_started = hasForwardContractStarted(contractInfo?.shortcode ?? '');
-    const show_tag_forward_started = is_forward_starting && start_time && !has_forward_contract_started;
-
+    const has_no_auto_expiry = isMultiplier && !is_crypto;
+    const converted_purchase_time =
+        typeof purchase_time === 'string' ? Number(new Date(purchase_time).getTime()) : purchase_time;
+    const is_forward_starting = isForwardStarting(shortcode ?? '', converted_purchase_time);
+    const start_time = getStartTime(shortcode ?? '');
+    const has_forward_contract_started = hasForwardContractStarted(shortcode ?? '');
+    const show_tag_forward_started = is_forward_starting && !!start_time && !has_forward_contract_started && !isSold;
+    const show_status_timer_tag = (!has_no_auto_expiry || (has_no_auto_expiry && isSold)) && !show_tag_forward_started;
     const Component = redirectTo ? NavLink : 'div';
 
     const handleSwipe = (direction: string) => {
@@ -130,6 +132,7 @@ const ContractCard = ({
         return labels;
     };
     const risk_management_labels = getRiskManagementLabels();
+    const show_risk_management_labels = !!risk_management_labels.length && !isSold;
 
     React.useEffect(() => {
         if (isSold && hasActionButtons) {
@@ -156,7 +159,7 @@ const ContractCard = ({
                     <div className={`${className}__details`}>
                         <IconTradeTypes type={is_high_low ? `${contract_type}_barrier` : contract_type} size={24} />
                         <div className='tag__wrapper'>
-                            {!!risk_management_labels.length &&
+                            {show_risk_management_labels &&
                                 risk_management_labels.map(label => (
                                     <Tag
                                         className='risk-management'
@@ -166,7 +169,7 @@ const ContractCard = ({
                                         size='sm'
                                     />
                                 ))}
-                            {show_main_tag && !show_tag_forward_started && (
+                            {show_status_timer_tag && (
                                 <ContractCardStatusTimer
                                     currentTick={currentTick}
                                     isSold={isSold}

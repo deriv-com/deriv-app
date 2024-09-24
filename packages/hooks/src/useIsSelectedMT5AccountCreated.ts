@@ -31,7 +31,6 @@ const useIsSelectedMT5AccountCreated = () => {
     const existing_account_status = existing_account?.status ? getStatusBadge(existing_account?.status) : null;
 
     const available_account_to_create = !is_selected_MT5_account_created ? selected_account[0] : null;
-
     return {
         is_selected_MT5_account_created,
         existing_account,

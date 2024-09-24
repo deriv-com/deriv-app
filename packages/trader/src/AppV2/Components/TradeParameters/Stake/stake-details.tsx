@@ -1,8 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { FormatUtils } from '@deriv-com/utils';
-import { getCurrencyDisplayCode, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 
@@ -39,6 +38,7 @@ const StakeDetails = ({
     stop_out,
 }: TStakeDetailsProps) => {
     const [displayed_values, setDisplayedValues] = React.useState({
+        max_payout: '',
         commission: '',
         first_contract_payout: '',
         second_contract_payout: '',
@@ -49,7 +49,7 @@ const StakeDetails = ({
         const getDisplayedValue = (new_value?: number | string, current_value?: string) => {
             return ((current_value === '-' && is_loading_proposal) || stake_error) && !is_max_payout_exceeded
                 ? '-'
-                : FormatUtils.formatMoney(Number(new_value));
+                : formatMoney(currency, Number(new_value), true);
         };
 
         const {
@@ -57,26 +57,39 @@ const StakeDetails = ({
             first_contract_payout,
             second_contract_payout,
             stop_out: stop_out_value,
+            max_payout,
         } = displayed_values;
         const new_commission = getDisplayedValue(Math.abs(Number(commission)), commission_value);
         const new_payout_1 = getDisplayedValue(details.first_contract_payout, first_contract_payout);
         const new_payout_2 = getDisplayedValue(details.second_contract_payout, second_contract_payout);
         const new_stop_out = getDisplayedValue(Math.abs(Number(stop_out)), stop_out_value);
+        const new_max_payout = getDisplayedValue(details.max_payout, max_payout);
 
         if (
             commission_value !== new_commission ||
             first_contract_payout !== new_payout_1 ||
             second_contract_payout !== new_payout_2 ||
-            stop_out_value !== new_stop_out
+            stop_out_value !== new_stop_out ||
+            max_payout !== new_max_payout
         ) {
             setDisplayedValues({
                 commission: new_commission,
                 first_contract_payout: new_payout_1,
                 second_contract_payout: new_payout_2,
                 stop_out: new_stop_out,
+                max_payout: new_max_payout,
             });
         }
-    }, [commission, details, displayed_values, is_loading_proposal, is_max_payout_exceeded, stake_error, stop_out]);
+    }, [
+        commission,
+        currency,
+        details,
+        displayed_values,
+        is_loading_proposal,
+        is_max_payout_exceeded,
+        stake_error,
+        stop_out,
+    ]);
 
     const payout_title = <Localize i18n_default_text='Payout' />;
     const content = [
@@ -93,7 +106,7 @@ const StakeDetails = ({
         {
             is_displayed: !!details.max_payout && should_show_payout_details,
             label: <Localize i18n_default_text='Max payout' />,
-            value: FormatUtils.formatMoney(+details.max_payout),
+            value: formatMoney(currency, +details.max_payout, true),
         },
         {
             contract_type: getTradeTypeName(contract_types[0], {

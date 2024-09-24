@@ -2,17 +2,6 @@ import { LogTypes } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 import { getCurrentDateTimeLocale, getSuccessJournalMessage } from 'Utils/download';
 
-jest.mock('@deriv/translations', () => ({
-    localize: jest.fn((message, values) => {
-        let result = message;
-        if (values) {
-            Object.keys(values).forEach(key => {
-                result = result.replace(`{{${key}}}`, values[key]);
-            });
-        }
-        return result;
-    }),
-}));
 jest.mock('@deriv/bot-skeleton', () => ({
     LogTypes: {
         LOAD_BLOCK: 'load_block',

@@ -52,10 +52,10 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { isMobile } = useDevice();
     const { toggleVerificationModal } = traders_hub;
     const history = useHistory();
-    const is_document_acknowledged = [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status);
+    const is_document_submitted = [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status);
 
     const onClickItem = () => {
-        if (is_document_acknowledged) {
+        if (is_document_submitted) {
             return;
         }
         history.push(route);
@@ -78,7 +78,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                         icon_size={badge_size}
                         className='verification-docs-list-modal__status-badge'
                     />
-                    {is_document_acknowledged ? (
+                    {is_document_submitted ? (
                         <LabelPairedChevronRightMdRegularIcon
                             className='verification-docs-list-modal__card--icon'
                             fill='var(--text-disabled-1)'

@@ -12,7 +12,7 @@ const AppContent: React.FC = () => {
     const { data: derivAccountList } = useDerivAccountsList();
     const { switchLanguage } = useTranslations();
     const previousDerivAccountListLenghtRef = useRef(0);
-    const currentLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
+    const currentLanguage = getInitialLanguage();
 
     useEffect(() => {
         if (!derivAccountList?.length) return;
@@ -39,7 +39,9 @@ const AppContent: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        switchLanguage(currentLanguage);
+        if (currentLanguage) {
+            switchLanguage(currentLanguage);
+        }
     }, [currentLanguage, switchLanguage]);
 
     return (

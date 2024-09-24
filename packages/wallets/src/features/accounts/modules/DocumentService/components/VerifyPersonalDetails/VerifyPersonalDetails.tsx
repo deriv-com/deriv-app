@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import moment from 'moment';
 import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Text } from '@deriv-com/ui';
 import { DatePicker, FormField } from '../../../../../../components';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { VerifyPersonalDetailsErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
@@ -80,9 +80,9 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
                         disabled={values.arePersonalDetailsVerified}
                         displayFormat={dateDisplayFormat}
                         label={localize('Date of birth*')}
-                        maxDate={moment().subtract(18, 'years').toDate()}
+                        maxDate={getAdjustedDate(18, 'years')}
                         message={localize('Your date of birth as in your identity document')}
-                        minDate={moment().subtract(100, 'years').toDate()}
+                        minDate={getAdjustedDate(100, 'years')}
                         mobileAlignment='above'
                         name='dateOfBirth'
                         showMessage

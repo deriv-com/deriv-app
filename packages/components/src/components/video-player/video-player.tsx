@@ -4,7 +4,7 @@ import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 import { useIsRtl } from '@deriv/hooks';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import throttle from 'lodash.throttle';
-import { useDebounce } from '../../hooks';
+import { useDebounceCallback } from 'usehooks-ts';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';
 
@@ -164,7 +164,7 @@ const VideoPlayer = ({
         debouncedRewind();
     };
 
-    const debouncedRewind = useDebounce(() => {
+    const debouncedRewind = useDebounceCallback(() => {
         if (!video_ref.current) return;
 
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
@@ -270,7 +270,6 @@ const VideoPlayer = ({
                 document.removeEventListener('mouseup', dragEndHandler);
             }
             cancelAnimationFrame(animation_ref.current);
-            debouncedRewind.cancel();
             clearTimeout(replay_animation_timeout.current);
             clearTimeout(toggle_animation_timeout.current);
         };

@@ -1,15 +1,27 @@
 import React, { useEffect, useRef } from 'react';
-import { useDerivAccountsList } from '@deriv/api-v2';
+import { useDerivAccountsList, useSettings } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { Router } from './routes';
 import './AppContent.scss';
 
-const AppContent: React.FC = () => {
+type LanguageType = 'AR' | 'EN';
+type AppContentProps = {
+    setPreferredLanguage: (language: LanguageType) => void;
+};
+
+const AppContent: React.FC<AppContentProps> = ({ setPreferredLanguage }) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
+    const {
+        data: { preferred_language: preferredLanguage },
+    } = useSettings();
     const previousDerivAccountListLenghtRef = useRef(0);
+
+    useEffect(() => {
+        setPreferredLanguage((preferredLanguage as LanguageType) ?? null);
+    }, [preferredLanguage, setPreferredLanguage]);
 
     useEffect(() => {
         if (!derivAccountList?.length) return;

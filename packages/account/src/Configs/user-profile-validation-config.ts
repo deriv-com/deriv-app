@@ -22,8 +22,12 @@ type TINDepdendents = {
     tin_skipped?: boolean;
 };
 
-const makeTinOptional = (employment_status: string, { is_mf, is_real, tin_skipped }: TINDepdendents) => {
-    const should_not_bypass_tin = !['Student', 'Unemployed']?.includes(employment_status);
+const makeTinOptional = (
+    tin_config: TinValidations,
+    employment_status: string,
+    { is_mf, is_real, tin_skipped }: TINDepdendents
+) => {
+    const should_not_bypass_tin = !tin_config?.tin_employment_status_bypass?.includes(employment_status);
     return tin_skipped || !is_mf || !(is_real && should_not_bypass_tin);
 };
 
@@ -45,7 +49,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations, 
         tax_identification_number: Yup.string()
             .when(['tin_skipped', 'is_mf', 'is_real', 'employment_status'], {
                 is: (tin_skipped: boolean, employment_status: string) =>
-                    makeTinOptional(employment_status, { is_mf, is_real, tin_skipped }),
+                    makeTinOptional(tin_config, employment_status, { is_mf, is_real, tin_skipped }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })

@@ -118,7 +118,7 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const is_tin_required = !client.is_virtual && !['Student', 'Unemployed']?.includes(values.employment_status);
+        const is_tin_required = !client.is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
 
         const should_show_no_tax_details_checkbox =
             (tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||

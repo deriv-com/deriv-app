@@ -22,6 +22,8 @@ const App: React.FC = () => {
         [defaultLanguage]
     );
 
+    // eslint-disable-next-line no-console
+    console.log(i18nInstance);
     return (
         <APIProvider standalone>
             <WalletsAuthProvider>

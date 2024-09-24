@@ -446,9 +446,6 @@ export default class LoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        if (this.upload_id && is_preview) {
-            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
-        }
         const reader = new FileReader();
         const file_name = file?.name.replace(/\.[^/.]+$/, '') || '';
 
@@ -462,24 +459,8 @@ export default class LoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const upload_type = getStrategyType(load_options?.block_string ?? '');
-
-            const result = await load(load_options);
+            await load(load_options);
             this.loadStrategyOnModalLocalPreview(load_options);
-            if (!is_preview && !result?.error) {
-                rudderStackSendUploadStrategyCompletedEvent({
-                    upload_provider: 'my_computer',
-                    upload_type,
-                    upload_id: this.upload_id,
-                });
-            } else if (!is_preview && result?.error) {
-                rudderStackSendUploadStrategyFailedEvent({
-                    upload_provider: 'my_computer',
-                    upload_id: this.upload_id,
-                    upload_type,
-                    error_message: result.error,
-                });
-            }
             this.is_open_button_loading = false;
         });
 
@@ -497,13 +478,24 @@ export default class LoadModalStore {
     };
 
     loadStrategyOnBotBuilder = async () => {
-        const { strategy_id = window.Blockly.utils.idGenerator.genUid(), convertedDom } = window.Blockly.xmlValues;
+        const {
+            strategy_id = window.Blockly.utils.idGenerator.genUid(),
+            convertedDom,
+            block_string,
+        } = window.Blockly.xmlValues;
         const derivWorkspace = window.Blockly.derivWorkspace;
 
         window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id;
+
+        const upload_type = getStrategyType(block_string ?? '');
+        rudderStackSendUploadStrategyCompletedEvent({
+            upload_provider: 'my_computer',
+            upload_type,
+            upload_id: this.upload_id,
+        });
     };
 
     updateXmlValuesOnStrategySelection = () => {
@@ -555,6 +547,17 @@ export default class LoadModalStore {
             (load_options.workspace as any).RTL = isDbotRTL();
         }
 
-        await load(load_options);
+        const upload_type = getStrategyType(load_options?.block_string ?? '');
+        const result = await load(load_options);
+        if (!result?.error) {
+            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
+        } else if (result?.error) {
+            rudderStackSendUploadStrategyFailedEvent({
+                upload_provider: 'my_computer',
+                upload_id: this.upload_id,
+                upload_type,
+                error_message: result.error,
+            });
+        }
     };
 }

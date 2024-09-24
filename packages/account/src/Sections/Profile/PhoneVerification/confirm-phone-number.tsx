@@ -104,7 +104,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     return (
         <PhoneVerificationCard>
             <Text bold>
-                <Localize i18n_default_text='Confirm your phone number' />
+                <Localize i18n_default_text='Step 2 of 3: Confirm your phone number' />
             </Text>
             <div className='phone-verification__card--inputfield'>
                 <TextFieldAddon

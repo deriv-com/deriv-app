@@ -19,7 +19,6 @@
         "@deriv-com/ui": "1.35.0",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api-v2": "^1.0.0",
-        "@deriv/integration": "^1.0.0",
         "@deriv/quill-icons": "1.23.3",
         "@deriv/utils": "^1.0.0",
         "@tanstack/react-table": "^8.10.3",

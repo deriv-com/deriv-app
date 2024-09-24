@@ -20,6 +20,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                 <div className='account-form__fieldset'>
                     {isDesktop ? (
                         <Dropdown
+                            {...field}
                             className='dropdown-field'
                             placeholder={required ? localize('Employment status*') : localize('Employment status')}
                             is_align_text_left
@@ -36,6 +37,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                         />
                     ) : (
                         <SelectNative
+                            {...field}
                             placeholder={localize('Please select')}
                             name={field.name}
                             label={required ? localize('Employment status*') : localize('Employment status')}

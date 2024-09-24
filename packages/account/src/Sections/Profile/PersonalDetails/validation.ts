@@ -145,7 +145,11 @@ export const getPersonalDetailsValidationSchema = (
 
     const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false);
 
-    const employment_tin_schema = getEmploymentAndTaxValidationSchema(tin_validation_config as TinValidations, !is_svg);
+    const employment_tin_schema = getEmploymentAndTaxValidationSchema(
+        tin_validation_config as TinValidations,
+        !is_svg,
+        !is_virtual
+    );
 
     return personal_details_schema.concat(address_detail_schema).concat(employment_tin_schema);
 };

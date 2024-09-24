@@ -169,7 +169,7 @@ const EmploymentTaxDetailsContainer = observer(
                 </div>
                 <div ref={tin_ref} className='account-form__fieldset'>
                     <TaxIdentificationNumberField
-                        disabled={isFieldDisabled('tax_identification_number')}
+                        disabled={isFieldDisabled('tax_identification_number') || values.tin_skipped}
                         is_tin_popover_open={is_tin_popover_open}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}

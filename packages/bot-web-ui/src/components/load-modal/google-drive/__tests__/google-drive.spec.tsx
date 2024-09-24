@@ -10,7 +10,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
 
 const mockRequestAccessToken = jest.fn();
 
-describe('GoogleDrive', () => {
+describe('<GoogleDrive />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
 
     beforeAll(() => {
@@ -68,7 +68,7 @@ describe('GoogleDrive', () => {
         expect(container).toBeDefined();
     });
 
-    it('should render GoogleDrive component with svg element that has height and width equal 128', () => {
+    it('should render with svg element that has height and width equal 128', () => {
         mock_store.ui.is_desktop = true;
         render(<GoogleDrive />, { wrapper });
         const google_drive_container = screen.getByTestId('dt_google_drive');
@@ -83,7 +83,7 @@ describe('GoogleDrive', () => {
         expect(screen.getByText('Google Drive')).toHaveClass('load-strategy__google-drive-connected-text');
     });
 
-    it('should render GoogleDrive component with buttons Disconnect and Open when is_authorised = true', () => {
+    it('should render with buttons Disconnect and Open when is_authorised = true', () => {
         mock_DBot_store?.google_drive?.setIsAuthorized(true);
         render(<GoogleDrive />, { wrapper });
 
@@ -96,7 +96,7 @@ describe('GoogleDrive', () => {
         expect(google_drive_btn_second).toBeInTheDocument();
     });
 
-    it('should render GoogleDrive component with ability to close dialog modal and invoke google drive when is_authorised = true', () => {
+    it('should have ability to close dialog modal and invoke google drive when is_authorised = true', () => {
         mock_DBot_store?.google_drive?.setIsAuthorized(true);
         render(<GoogleDrive />, { wrapper });
 
@@ -104,7 +104,8 @@ describe('GoogleDrive', () => {
 
         expect(mock_DBot_store?.dashboard.is_dialog_open).toBeFalsy();
     });
-    it('should render GoogleDrive component with with svg element that has height and width equal 96 when it is a mobile version', () => {
+
+    it('should render the svg element that has height and width equal 96 when it is a mobile version', () => {
         mock_store.ui.is_desktop = false;
         render(<GoogleDrive />, { wrapper });
 

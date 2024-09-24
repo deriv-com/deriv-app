@@ -29,46 +29,43 @@ jest.mock('@deriv-com/quill-ui', () => ({
 describe('DurationActionSheetContainer', () => {
     let default_trade_store: TCoreStores;
 
-    const trade_store = mockStore({
-        modules: {
-            trade: {
-                duration: 30,
-                duration_unit: 'm',
-                duration_units_list: ['t', 'm', 'h', 'd'],
-                onChangeMultiple: jest.fn(),
-                expiry_time: null,
-                contract_type: 'call',
-            },
-        },
-    });
-
     beforeEach(() => {
-        default_trade_store = trade_store;
+        default_trade_store = mockStore({
+            modules: {
+                trade: {
+                    duration: 30,
+                    duration_unit: 'm',
+                    duration_units_list: ['t', 'm', 'h', 'd'],
+                    onChangeMultiple: jest.fn(),
+                    expiry_time: null,
+                    contract_type: 'call',
+                },
+            },
+        });
     });
 
     const renderDurationContainer = (
-        mocked_store: TCoreStores,
         hours = {
             selected_hour: [0, 0],
             setSelectedHour: jest.fn(),
         }
     ) => {
         render(
-            <TraderProviders store={mocked_store}>
+            <TraderProviders store={default_trade_store}>
                 <DurationActionSheetContainer {...hours} />
             </TraderProviders>
         );
     };
 
     it('should render the DurationActionSheetContainer with default values', () => {
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         expect(screen.getByText('Duration')).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
     it('should select duration in hours if duration is more than 59 minutes', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
 
         const duration_chip = screen.getByText('1 h');
         userEvent.click(duration_chip);
@@ -78,7 +75,7 @@ describe('DurationActionSheetContainer', () => {
 
     it('should call onChangeMultiple with correct data with hours', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store, { selected_hour: [2, 10], setSelectedHour: jest.fn() });
+        renderDurationContainer({ selected_hour: [2, 10], setSelectedHour: jest.fn() });
 
         userEvent.click(screen.getByText('Save'));
 
@@ -95,7 +92,7 @@ describe('DurationActionSheetContainer', () => {
         default_trade_store.modules.trade.duration = 5;
         default_trade_store.modules.trade.duration_unit = 't';
 
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
 
         userEvent.click(screen.getByText('Save'));
 
@@ -111,7 +108,7 @@ describe('DurationActionSheetContainer', () => {
         default_trade_store.modules.trade.duration = 20;
         default_trade_store.modules.trade.duration_unit = 's';
 
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         userEvent.click(screen.getByText('22 sec'));
         userEvent.click(screen.getByText('Save'));
 
@@ -125,14 +122,14 @@ describe('DurationActionSheetContainer', () => {
 
     it('should show Expiry Date when days are selected', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         expect(screen.getByText('Expiry')).toBeInTheDocument();
     });
 
     it('should open datepicker on clicking on calendar icon in the days wheelpicker', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 34;
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
         userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Pick an end date')).toBeInTheDocument();
@@ -141,7 +138,7 @@ describe('DurationActionSheetContainer', () => {
     it('should select value when clicked on any date on datepicker', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 2;
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
         userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Date Picker')).toBeInTheDocument();
@@ -157,12 +154,12 @@ describe('DurationActionSheetContainer', () => {
     it('should show Current Time when End time us selected', () => {
         default_trade_store.modules.trade.expiry_time = '16:30';
         default_trade_store.modules.trade.expiry_type = 'endtime';
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         expect(screen.getByText('Current time')).toBeInTheDocument();
     });
 
     it('should handle expiry time selection for end time ("et")', () => {
-        renderDurationContainer(default_trade_store);
+        renderDurationContainer();
         const end_time_chip = screen.getByText('End Time');
         userEvent.click(end_time_chip);
         userEvent.click(screen.getByText('Save'));
@@ -170,5 +167,14 @@ describe('DurationActionSheetContainer', () => {
             expiry_time: expect.any(String),
             expiry_type: 'endtime',
         });
+    });
+    it('should not render chips if duration_units_list contains only ticks', () => {
+        default_trade_store.modules.trade.duration = 1;
+        default_trade_store.modules.trade.duration_unit = 't';
+        default_trade_store.modules.trade.duration_units_list = [{ value: 't' }];
+        renderDurationContainer();
+
+        const chip_names = ['Ticks', 'Seconds', 'Minutes', 'Hours', 'Days', 'End Time'];
+        chip_names.forEach(name => expect(screen.queryByText(name)).not.toBeInTheDocument());
     });
 });

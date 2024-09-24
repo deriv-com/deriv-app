@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider, useSettings } from '@deriv/api-v2';
 import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalProvider } from './components/ModalProvider';
@@ -11,7 +11,10 @@ import './index.scss';
 type LanguageType = 'AR' | 'EN';
 
 const App: React.FC = () => {
-    const defaultLanguage = (localStorage.getItem('i18n_language') ?? getInitialLanguage()) as LanguageType;
+    const {
+        data: { preferred_language: preferredLanguage },
+    } = useSettings();
+    const defaultLanguage = (preferredLanguage ?? getInitialLanguage()) as LanguageType;
 
     const i18nInstance = useMemo(
         () =>
@@ -22,8 +25,6 @@ const App: React.FC = () => {
         [defaultLanguage]
     );
 
-    // eslint-disable-next-line no-console
-    console.log('local storage:', localStorage.getItem('i18n_language'), 'initialLanguage:', getInitialLanguage());
     return (
         <APIProvider standalone>
             <WalletsAuthProvider>

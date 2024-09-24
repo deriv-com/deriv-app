@@ -121,6 +121,7 @@ export default Engine =>
             const subscription_id = this.subscription_id_for_accumulators;
             const is_proposal_requested = this.is_proposal_requested_for_accumulators;
             const proposal_request = {
+                ...window.Blockly.accumulators_request,
                 amount: this?.tradeOptions?.amount,
                 basis: this?.tradeOptions?.basis,
                 contract_type: 'ACCU',

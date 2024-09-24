@@ -252,7 +252,14 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg, tin_validation_config);
+    const is_tin_auto_set = Boolean(account_settings?.tin_skipped);
+
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema(
+        is_virtual,
+        is_svg,
+        tin_validation_config,
+        is_tin_auto_set
+    );
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
 
@@ -426,7 +433,10 @@ const PersonalDetailsForm = observer(() => {
                                         <AccountOpeningReasonField
                                             account_opening_reason_list={account_opening_reason_list}
                                             setFieldValue={setFieldValue}
-                                            disabled={isFieldDisabled('account_opening_reason')}
+                                            disabled={
+                                                isFieldDisabled('account_opening_reason') ||
+                                                Boolean(account_settings?.account_opening_reason)
+                                            }
                                             required
                                         />
                                     </Fragment>

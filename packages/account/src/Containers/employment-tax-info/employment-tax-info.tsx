@@ -58,7 +58,11 @@ const EmploymentTaxInfo = observer(
 
         const is_eu = real_account_signup_target === 'maltainvest';
 
-        const schema = getEmploymentAndTaxValidationSchema(tin_validation_config, is_eu, !client.is_virtual);
+        const schema = getEmploymentAndTaxValidationSchema({
+            tin_config: tin_validation_config,
+            is_mf: is_eu,
+            is_real: !client.is_virtual,
+        });
 
         const handleCancel = (values: FormikValues) => {
             const current_step = (getCurrentStep?.() || 1) - 1;

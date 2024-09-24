@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import dayjs from 'dayjs';
 import { TinValidations } from '@deriv/api/types';
+import { TEmployeeDetailsTinValidationConfig } from 'Types';
 
 const {
     taxIdentificationNumber,
@@ -20,18 +21,24 @@ type TINDepdendents = {
     is_mf?: boolean;
     is_real?: boolean;
     tin_skipped?: boolean;
+    is_tin_auto_set?: boolean;
 };
 
 const makeTinOptional = (
     tin_config: TinValidations,
     employment_status: string,
-    { is_mf, is_real, tin_skipped }: TINDepdendents
+    { is_mf, is_real, tin_skipped, is_tin_auto_set }: TINDepdendents
 ) => {
     const should_not_bypass_tin = !tin_config?.tin_employment_status_bypass?.includes(employment_status);
-    return tin_skipped || (!is_mf && !is_real) || !(is_real && should_not_bypass_tin);
+    return (tin_skipped && !is_tin_auto_set) || (!is_mf && !is_real) || !(is_real && should_not_bypass_tin);
 };
 
-export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations, is_mf = false, is_real = false) => {
+export const getEmploymentAndTaxValidationSchema = ({
+    tin_config,
+    is_mf = false,
+    is_real = false,
+    is_tin_auto_set = false,
+}: TEmployeeDetailsTinValidationConfig) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
         tax_residence: Yup.string().when('is_mf', {
@@ -49,7 +56,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations, 
         tax_identification_number: Yup.string()
             .when(['employment_status', 'tin_skipped'], {
                 is: (employment_status: string, tin_skipped: boolean) =>
-                    makeTinOptional(tin_config, employment_status, { is_mf, is_real, tin_skipped }),
+                    makeTinOptional(tin_config, employment_status, { is_mf, is_real, tin_skipped, is_tin_auto_set }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })

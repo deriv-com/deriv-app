@@ -131,7 +131,8 @@ export const makeSettingsRequest = (
 export const getPersonalDetailsValidationSchema = (
     is_virtual?: boolean,
     is_svg?: boolean,
-    tin_validation_config?: TinValidations
+    tin_validation_config?: TinValidations,
+    is_tin_auto_set?: boolean
 ) => {
     if (is_virtual) return Yup.object();
 
@@ -145,11 +146,12 @@ export const getPersonalDetailsValidationSchema = (
 
     const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false);
 
-    const employment_tin_schema = getEmploymentAndTaxValidationSchema(
-        tin_validation_config as TinValidations,
-        !is_svg,
-        !is_virtual
-    );
+    const employment_tin_schema = getEmploymentAndTaxValidationSchema({
+        tin_config: tin_validation_config as TinValidations,
+        is_mf: !is_svg,
+        is_real: !is_virtual,
+        is_tin_auto_set,
+    });
 
     return personal_details_schema.concat(address_detail_schema).concat(employment_tin_schema);
 };

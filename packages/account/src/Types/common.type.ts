@@ -21,6 +21,7 @@ import {
     Platforms,
     TRADING_PLATFORM_STATUS,
 } from '@deriv/shared';
+import { TinValidations } from '@deriv/api/types';
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
 
@@ -330,4 +331,11 @@ export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
     date_of_birth?: string;
     tax_identification_confirm?: boolean;
     tin_skipped?: 0 | 1;
+};
+
+export type TEmployeeDetailsTinValidationConfig = {
+    tin_config: TinValidations;
+    is_mf?: boolean;
+    is_real?: boolean;
+    is_tin_auto_set?: boolean;
 };

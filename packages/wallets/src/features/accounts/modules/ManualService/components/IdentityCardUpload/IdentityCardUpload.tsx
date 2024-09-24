@@ -97,7 +97,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                     >
                         <div className='wallets-identity-card-upload' data-testid='dt_identity-card-upload'>
                             <div className='wallets-identity-card-upload__wrapper'>
-                                <Text>
+                                <Text align='start'>
                                     <Localize i18n_default_text='First, enter your Identity card number and the expiry date.' />
                                 </Text>
                                 <div className='wallets-identity-card-upload__input-group'>
@@ -118,7 +118,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                     height={2}
                                 />
                                 <div className='wallets-identity-card-upload__document-upload'>
-                                    <Text>
+                                    <Text align='start'>
                                         <Localize i18n_default_text='Next, upload the front and back of your identity card.' />
                                     </Text>
                                     <div className='wallets-identity-card-upload__dropzone'>

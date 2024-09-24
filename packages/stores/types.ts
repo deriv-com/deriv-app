@@ -1175,6 +1175,7 @@ type TTradersHubStore = {
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
     selected_jurisdiction_kyc_status: Record<string, string>;
     setSelectedJurisdictionKYCStatus: (value: Record<string, string>) => void;
+    getDefaultJurisdiction: () => string;
 };
 
 type TContractReplay = {

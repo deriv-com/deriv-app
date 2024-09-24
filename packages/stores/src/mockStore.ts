@@ -199,6 +199,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             fetchStatesList: jest.fn(),
             setVerificationCode: jest.fn(),
             updateAccountStatus: jest.fn(),
+            updateMT5AccountDetails: jest.fn(),
             is_authentication_needed: false,
             authentication_status: {
                 document_status: '',

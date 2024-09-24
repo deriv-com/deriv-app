@@ -559,6 +559,7 @@ export type TClientStore = {
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
+    updateMT5AccountDetails: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: TAdditionalDetailsOfEachMT5Loginid[];

@@ -357,6 +357,7 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
+            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             cleanUp: action.bound,
             logout: action.bound,
@@ -1997,6 +1998,11 @@ export default class ClientStore extends BaseStore {
         if (!account_status_response.error) {
             this.setAccountStatus(account_status_response.get_account_status);
         }
+    }
+
+    async updateMT5AccountDetails() {
+        await WS.mt5LoginList().then(this.responseMt5LoginList);
+        WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
     }
 
     setInitialized(is_initialized) {

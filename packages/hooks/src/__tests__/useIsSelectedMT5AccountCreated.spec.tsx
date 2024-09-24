@@ -15,6 +15,7 @@ describe('useIsSelectedMT5AccountCreated', () => {
                 mt5_login_list: [
                     { landing_company_short: 'svg', product: 'financial', status: 'proof_failed', login: '123' },
                 ],
+                updateMT5AccountDetails: jest.fn(),
                 trading_platform_available_accounts: [{ shortcode: 'svg', product: 'financial' }],
             },
 
@@ -43,6 +44,7 @@ describe('useIsSelectedMT5AccountCreated', () => {
                 mt5_login_list: [
                     { landing_company_short: 'svg', product: 'financial', status: 'proof_failed', login: '123' },
                 ],
+                updateMT5AccountDetails: jest.fn(),
                 trading_platform_available_accounts: [
                     { shortcode: 'svg', product: 'financial' },
                     { shortcode: 'bvi', product: 'zero_spread' },
@@ -70,7 +72,8 @@ describe('useIsSelectedMT5AccountCreated', () => {
         const mock = mockStore({
             client: {
                 mt5_login_list: [{ landing_company_short: 'svg', product: 'standard', status: 'verification_pending' }],
-                trading_platform_available_accounts: [{ shortcode: 'svg', product: 'real' }],
+                trading_platform_available_accounts: [{ shortcode: 'svg', product: 'standard' }],
+                updateMT5AccountDetails: jest.fn(),
             },
             modules: {
                 cfd: {
@@ -93,6 +96,7 @@ describe('useIsSelectedMT5AccountCreated', () => {
             client: {
                 mt5_login_list: [],
                 trading_platform_available_accounts: [],
+                updateMT5AccountDetails: jest.fn(),
             },
             modules: {
                 cfd: {

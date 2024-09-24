@@ -229,7 +229,7 @@ const PersonalDetailsForm = observer(() => {
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    const stripped_phone_number = `+${account_settings.phone?.replace(/[^0-9]/g, '')}`;
+    const stripped_phone_number = `+${account_settings.phone?.replace(/\D/g, '')}`;
 
     //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
@@ -427,7 +427,7 @@ const PersonalDetailsForm = observer(() => {
                                                 is_phone_number_editted: stripped_phone_number !== values.phone,
                                             })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                let phone_number = e.target.value.replace(/[^0-9]/g, '');
+                                                let phone_number = e.target.value.replace(/\D/g, '');
                                                 phone_number = phone_number.length === 0 ? '+' : `+${phone_number}`;
                                                 setFieldValue('phone', phone_number, true);
                                                 setStatus('');

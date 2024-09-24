@@ -169,6 +169,7 @@ const VideoPlayer = ({
 
         const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
         if (!video_ref.current?.ended || !is_rewind_to_the_end) {
+            cancelAnimationFrame(animation_ref.current);
             setIsAnimated(true);
             video_ref.current.currentTime = new_time_ref.current;
             animation_ref.current = requestAnimationFrame(repeat);
@@ -296,6 +297,8 @@ const VideoPlayer = ({
                 onEnded={onEnded}
                 onPlay={() => setIsPlaying(true)}
                 onLoadedMetaData={onLoadedMetaData}
+                onSeeked={() => (should_check_time_ref.current = true)}
+                onSeeking={() => (should_check_time_ref.current = true)}
                 playbackRate={playback_rate}
                 volume={volume}
             />

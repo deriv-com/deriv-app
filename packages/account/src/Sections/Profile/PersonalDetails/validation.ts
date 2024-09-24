@@ -81,7 +81,7 @@ export const getPersonalDetailsInitialValues = (
         date_of_birth: account_settings.date_of_birth,
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
-        phone: account_settings.phone?.replace(/[^0-9+]/g, ''),
+        phone: `+${account_settings.phone?.replace(/[^0-9]/g, '')}`,
         tax_identification_number: account_settings.tax_identification_number ?? '',
     };
 

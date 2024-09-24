@@ -229,7 +229,7 @@ const PersonalDetailsForm = observer(() => {
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    const stripped_phone_number = account_settings.phone?.replace(/[^0-9+]/g, '');
+    const stripped_phone_number = `+${account_settings.phone?.replace(/[^0-9]/g, '')}`;
 
     //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {

@@ -30,7 +30,7 @@ const useIsLiveChatWidgetAvailable = () => {
         window.LiveChatWidget.on('ready', data => {
             if (data.state.availability === 'online' && !is_livechat_available) setIsLivechatAvailable(true);
         });
-    }, [is_livechat_available]);
+    }, [enable_freshworks_live_chat, is_livechat_available]);
 
     return {
         is_livechat_available,

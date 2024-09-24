@@ -3,8 +3,8 @@ import { useLayoutEffect } from 'react';
 import { useScript } from 'usehooks-ts';
 
 const useFreshChat = () => {
-    // useScript('https://fw-cdn.com/11706964/4344125.js');
-    useScript('https://uae.fw-cdn.com/40116340/63296.js');
+    useScript('https://fw-cdn.com/11706964/4344125.js');
+    // useScript('https://uae.fw-cdn.com/40116340/63296.js');
 
     const { client } = useStore();
     const { getFreshworksToken, is_logged_in, loginid, email, account_settings, currency, residence, user_id } = client;

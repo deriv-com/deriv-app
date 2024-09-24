@@ -113,12 +113,10 @@ const DurationWheelPicker = observer(
                                 if (unit == 'h') {
                                     if (index == 0 && val === 24) {
                                         setIs24HourSelected(true);
-                                    } else if (is24_hour_selected) {
+                                    } else if (index == 0 && val !== 24) {
                                         setIs24HourSelected(false);
                                     }
-                                }
-                                // eslint-disable-next-line no-lonely-if
-                                else if (is24_hour_selected) {
+                                } else {
                                     setIs24HourSelected(false);
                                 }
 

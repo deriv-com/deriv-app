@@ -1,5 +1,5 @@
 /** check is stringified object or not */
-const checkIsStringifiedObject = (s: string) => {
+export const safeParse = (s: string) => {
     try {
         return JSON.parse(s);
     } catch (error) {
@@ -17,5 +17,5 @@ const checkIsStringifiedObject = (s: string) => {
  */
 export const getLocalStorage = (key: string) => {
     const data = localStorage.getItem(key);
-    return data ? checkIsStringifiedObject(data) : null;
+    return data ? safeParse(data) : null;
 };

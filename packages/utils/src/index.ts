@@ -2,7 +2,7 @@ export { default as getAccountsFromLocalStorage } from './getAccountsFromLocalSt
 export { default as getAccountListWithAuthToken } from './getAccountListWithAuthToken';
 export { default as getActiveAuthTokenIDFromLocalStorage } from './getActiveAuthTokenIDFromLocalStorage';
 export { default as getActiveLoginIDFromLocalStorage } from './getActiveLoginIDFromLocalStorage';
-export { getLocalStorage } from './getLocalStorage';
+export { safeParse, getLocalStorage } from './getLocalStorage';
 export { default as getWalletCurrencyIcon } from './getWalletCurrencyIcon';
 export { default as getToken } from './getToken';
 export { default as groupTransactionsByDay } from './groupTransactionsByDay';

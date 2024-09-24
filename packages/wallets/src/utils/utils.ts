@@ -42,7 +42,9 @@ export const getFormattedDateString = (
             break;
     }
 
-    const formattedDate = dateObj.toLocaleDateString('en-GB', dateOptions);
+    const formattedDate = dateObj
+        .toLocaleDateString('en-GB', dateOptions)
+        .replace(/(\d{2}) (\w{3,4}) (\d{4})/, (_, day, month, year) => `${day} ${month.slice(0, 3)} ${year}`);
     return format === 'DD MMM YYYY' || format === 'MMM DD YYYY'
         ? formattedDate
         : formattedDate.replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1');

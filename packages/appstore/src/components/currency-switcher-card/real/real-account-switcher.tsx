@@ -13,7 +13,7 @@ const AccountNeedsVerification = observer(() => {
     const mf_account_status = useMFAccountStatus();
     const { client, traders_hub, common } = useStore();
     const { account_list, loginid } = client;
-    const { openModal, toggleVerificationModal } = traders_hub;
+    const { openModal, setVerificationModalOpen } = traders_hub;
     const { setAppstorePlatform } = common;
 
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
@@ -21,7 +21,7 @@ const AccountNeedsVerification = observer(() => {
 
     const onClickBanner = () => {
         setAppstorePlatform('');
-        toggleVerificationModal(true);
+        setVerificationModalOpen(true);
     };
 
     const {

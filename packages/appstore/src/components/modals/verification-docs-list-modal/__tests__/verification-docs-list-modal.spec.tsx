@@ -39,7 +39,7 @@ describe('<VerificationDocsListModal />', () => {
     const defaultstore = mockStore({
         traders_hub: {
             is_verification_docs_list_modal_visible: true,
-            toggleVerificationModal: jest.fn(),
+            setVerificationModalOpen: jest.fn(),
         },
         common: {
             platform: 'mt5',

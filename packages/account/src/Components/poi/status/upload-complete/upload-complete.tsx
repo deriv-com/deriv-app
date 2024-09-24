@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { isNavigationFromP2P, isNavigationFromDerivGO, routes } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useTranslations } from '@deriv-com/translations';
 import PoaButton from '../../../poa/poa-button';
 import RouteButton from '../../../route-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
@@ -13,6 +13,7 @@ export const UploadComplete = ({
     is_from_external,
     is_manual_upload = false,
 }: TPOIStatus) => {
+    const { localize } = useTranslations();
     const message = localize('Review in progress');
     const description = is_manual_upload
         ? localize('Your proof of identity is under review. We’ll get back to you within 1–3 working days.')

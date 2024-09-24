@@ -83,7 +83,7 @@ const VerificationDocsListModalContent = observer(() => {
 
 const VerificationDocsListModal = observer(() => {
     const { traders_hub, common } = useStore();
-    const { is_verification_docs_list_modal_visible, toggleVerificationModal } = traders_hub;
+    const { is_verification_docs_list_modal_visible, setVerificationModalOpen } = traders_hub;
     const { platform } = common;
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     const { isMobile } = useDevice();
@@ -96,7 +96,7 @@ const VerificationDocsListModal = observer(() => {
             {!isMobile ? (
                 <Modal
                     is_open={is_verification_docs_list_modal_visible}
-                    toggleModal={() => toggleVerificationModal(false)}
+                    toggleModal={() => setVerificationModalOpen(false)}
                     title={title}
                     width='44rem'
                     should_header_stick_body={false}
@@ -109,7 +109,7 @@ const VerificationDocsListModal = observer(() => {
                     portal_element_id='deriv_app'
                     title={title}
                     visible={is_verification_docs_list_modal_visible}
-                    onClose={() => toggleVerificationModal(false)}
+                    onClose={() => setVerificationModalOpen(false)}
                 >
                     <VerificationDocsListModalContent />
                 </MobileDialog>

@@ -50,7 +50,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
     const { traders_hub } = useStore();
     const { isMobile } = useDevice();
-    const { toggleVerificationModal } = traders_hub;
+    const { setVerificationModalOpen } = traders_hub;
     const history = useHistory();
     const is_document_submitted = [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status);
 
@@ -59,7 +59,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
             return;
         }
         history.push(route);
-        toggleVerificationModal(false);
+        setVerificationModalOpen(false);
     };
 
     return (

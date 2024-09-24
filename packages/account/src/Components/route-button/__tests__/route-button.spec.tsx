@@ -13,13 +13,17 @@ describe('<RouteButton/>', () => {
 
     it('should render RouteButton component', () => {
         renderWithRouter(<RouteButton button_label='Test Route Button' route={routes.traders_hub} />);
-        expect(screen.getByTestId('route_btn_text')).toBeInTheDocument();
-        expect(screen.getByText(/Test Route Button/i)).toBeInTheDocument();
+        screen.getByRole('link', {
+            name: 'Test Route Button',
+        });
+        expect(screen.getByText('Test Route Button')).toBeInTheDocument();
     });
 
     it('should navigate to route on clicking the text', () => {
         renderWithRouter(<RouteButton button_label='Test Route Button' route={routes.traders_hub} />);
-        const route_btn_text = screen.getByTestId('route_btn_text');
+        const route_btn_text = screen.getByRole('link', {
+            name: 'Test Route Button',
+        });
         fireEvent.click(route_btn_text);
         expect(history.location.pathname).toBe(routes.traders_hub);
     });

@@ -117,7 +117,7 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             setIsOnboardingVisited: action.bound,
             setIsFirstTimeVisit: action.bound,
-            toggleVerificationModal: action.bound,
+            setVerificationModalOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
@@ -659,7 +659,7 @@ export default class TradersHubStore extends BaseStore {
         await this.getMT5AccountKYCStatus();
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             if (this.selected_jurisdiction_kyc_status && Object.keys(this.selected_jurisdiction_kyc_status)?.length) {
-                this.toggleVerificationModal(true);
+                this.setVerificationModalOpen(true);
             } else {
                 //all kyc requirements satisfied)
                 enableCFDPasswordModal();
@@ -809,7 +809,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_account_transfer_modal_open = !this.is_account_transfer_modal_open;
     }
 
-    toggleVerificationModal(value) {
+    setVerificationModalOpen(value) {
         this.is_verification_docs_list_modal_visible = value;
     }
 

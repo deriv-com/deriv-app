@@ -57,7 +57,7 @@ const TradingAppCard = ({
         content_flag,
         is_real,
         selected_account_type,
-        toggleVerificationModal,
+        setVerificationModalOpen,
         getMT5AccountKYCStatus,
     } = traders_hub;
     const { current_language, setAppstorePlatform } = common;
@@ -103,7 +103,7 @@ const TradingAppCard = ({
                 setJurisdictionSelectedShortcode(selected_mt5_jurisdiction?.jurisdiction ?? '');
                 setProduct(selected_mt5_jurisdiction?.product ?? '');
                 getMT5AccountKYCStatus();
-                return toggleVerificationModal(true);
+                return setVerificationModalOpen(true);
             }
 
             default:

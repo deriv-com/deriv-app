@@ -51,7 +51,7 @@ jest.mock('react-router-dom', () => ({
 describe('<ListItem />', () => {
     const defaultStore = mockStore({
         traders_hub: {
-            toggleVerificationModal: jest.fn(),
+            setVerificationModalOpen: jest.fn(),
         },
         common: {
             platform: 'mt5',

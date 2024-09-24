@@ -273,6 +273,7 @@ const TakeProfitAndStopLossInput = ({
                 <TextFieldWithSteppers
                     allowDecimals
                     customType='commaRemoval'
+                    className='text-field--custom'
                     disabled={!is_enabled}
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}

@@ -20,7 +20,7 @@ type TTradeTypeCategory = {
 
 type TTradeTypeListProps = {
     categories?: TTradeTypeCategory[];
-    selected_item?: string;
+    isSelected: (id: string) => boolean;
     selectable?: boolean;
     onRightIconClick?: (item: TTradeTypeItem) => void;
     onTradeTypeClick?: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
@@ -30,7 +30,7 @@ type TTradeTypeListProps = {
 
 const TradeTypeList: React.FC<TTradeTypeListProps> = ({
     categories,
-    selected_item,
+    isSelected,
     selectable,
     onRightIconClick,
     onTradeTypeClick,
@@ -64,7 +64,7 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
                                 className='trade-type-list-category-header-button'
                                 onClick={onAction}
                             >
-                                {category.button_title || <Localize i18n_default_text='Customize' />}
+                                {category.button_title || <Localize i18n_default_text='Customise' />}
                             </Text>
                         )}
                     </div>
@@ -73,7 +73,7 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
                             <div key={item.id}>
                                 <TradeTypeListItem
                                     title={item.title}
-                                    selected={!!selectable && item.id === selected_item}
+                                    selected={!!selectable && isSelected(item.id)}
                                     onRightIconClick={onRightIconClick && (() => onRightIconClick(item))}
                                     onTradeTypeClick={onTradeTypeClick}
                                 />

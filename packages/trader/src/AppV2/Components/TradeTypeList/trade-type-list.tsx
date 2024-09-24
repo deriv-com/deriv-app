@@ -64,7 +64,7 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
                                 className='trade-type-list-category-header-button'
                                 onClick={onAction}
                             >
-                                {category.button_title || <Localize i18n_default_text='Customize' />}
+                                {category.button_title || <Localize i18n_default_text='Customise' />}
                             </Text>
                         )}
                     </div>

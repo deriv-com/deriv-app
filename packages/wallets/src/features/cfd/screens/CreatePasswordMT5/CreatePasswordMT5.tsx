@@ -63,7 +63,9 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                     password={password}
                 />
                 <MT5LicenceMessage account={account} />
-                {!isVirtual && <CFDPasswordModalTnc checked={isTncChecked} onChange={onTncChange} />}
+                {!isVirtual && account.shortcode !== 'svg' && (
+                    <CFDPasswordModalTnc account={account} checked={isTncChecked} onChange={onTncChange} />
+                )}
             </div>
 
             {isDesktop && (

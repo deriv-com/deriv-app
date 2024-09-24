@@ -35,15 +35,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 if (account.client_kyc_status?.poi_status && account.client_kyc_status?.poi_status !== 'verified') {
                     show(<ClientVerificationModal account={account} />);
                 } else {
-                    show(
-                        <MT5PasswordModal
-                            account={account}
-                            isVirtual={activeWallet?.is_virtual}
-                            marketType={account?.market_type || 'synthetic'}
-                            platform={account.platform}
-                            product={account.product}
-                        />
-                    );
+                    show(<MT5PasswordModal account={account} isVirtual={activeWallet?.is_virtual} />);
                 }
                 setModalState('marketType', account.market_type);
                 setModalState('selectedJurisdiction', account.shortcode);

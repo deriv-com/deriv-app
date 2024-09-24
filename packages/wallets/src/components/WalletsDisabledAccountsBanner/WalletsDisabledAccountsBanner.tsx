@@ -36,7 +36,13 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                                 aria-label={localize('Contact live chat')}
                                 className='wallets-link wallets-link__variant--dark'
                                 key={0}
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => {
+                                    // eslint-disable-next-line no-console
+                                    console.log('Contact live chat');
+                                    // eslint-disable-next-line no-debugger
+                                    debugger;
+                                    window.LiveChatWidget.call('maximize');
+                                }}
                             />,
                         ]}
                         i18n_default_text='Your {{currencies}} {{accountType}} {{verb}} disabled. Contact us via <0>live chat</0> for details.'

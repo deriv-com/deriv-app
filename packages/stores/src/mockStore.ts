@@ -576,6 +576,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setVerificationModalOpen: jest.fn(),
             selected_jurisdiction_kyc_status: {},
             setSelectedJurisdictionKYCStatus: jest.fn(),
+            getDefaultJurisdiction: jest.fn(),
         },
         notifications: {
             addNotificationMessage: jest.fn(),

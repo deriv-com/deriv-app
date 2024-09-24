@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDerivAccountsList } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
+import { getInitialLanguage, useTranslations } from '@deriv-com/translations';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { Router } from './routes';
@@ -9,7 +10,9 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
+    const { switchLanguage } = useTranslations();
     const previousDerivAccountListLenghtRef = useRef(0);
+    const currentLanguage = localStorage.getItem('i18n_language') ?? getInitialLanguage();
 
     useEffect(() => {
         if (!derivAccountList?.length) return;
@@ -34,6 +37,10 @@ const AppContent: React.FC = () => {
             form_name: 'ce_wallets_homepage_form',
         });
     }, []);
+
+    useEffect(() => {
+        switchLanguage(currentLanguage);
+    }, [currentLanguage, switchLanguage]);
 
     return (
         <div className='wallets-app'>

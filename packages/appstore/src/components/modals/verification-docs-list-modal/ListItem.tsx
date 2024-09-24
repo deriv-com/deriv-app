@@ -68,7 +68,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                 <Localize i18n_default_text={text} />
             </Text>
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (
-                <LabelPairedChevronRightMdRegularIcon />
+                <LabelPairedChevronRightMdRegularIcon fill='var(--text-prominent)' />
             ) : (
                 <div className='verification-docs-list-modal__card'>
                     <StatusBadge
@@ -84,7 +84,10 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                             fill='var(--text-disabled-1)'
                         />
                     ) : (
-                        <LabelPairedChevronRightMdRegularIcon />
+                        <LabelPairedChevronRightMdRegularIcon
+                            className='verification-docs-list-modal__card--icon'
+                            fill='var(--text-prominent)'
+                        />
                     )}
                 </div>
             )}

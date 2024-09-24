@@ -86,6 +86,7 @@ const CFDsListing = observer(() => {
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
         ctrader_total_balance,
+        updateMT5AccountDetails,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -179,6 +180,7 @@ const CFDsListing = observer(() => {
             setPerformanceValue('switch_from_demo_to_real_time');
             setPerformanceValue('switch_from_real_to_demo_time');
         }
+        updateMT5AccountDetails();
     }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
     return (

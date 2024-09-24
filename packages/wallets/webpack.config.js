@@ -42,7 +42,7 @@ module.exports = function (env) {
         externals: [
             {
                 '@deriv-com/analytics': '@deriv-com/analytics',
-                '@deriv-com/translations': '@deriv-com/translations',
+                '@deriv-com/translations': true,
                 classnames: true,
                 moment: true,
                 react: true,

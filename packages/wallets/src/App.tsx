@@ -12,7 +12,7 @@ type LanguageType = 'AR' | 'EN';
 
 const App: React.FC = () => {
     const [preferredLanguage, setPreferredLanguage] = useState<LanguageType | null>(null);
-    const defaultLanguage = (preferredLanguage ?? getInitialLanguage()) as LanguageType;
+    const defaultLanguage = (getInitialLanguage() ?? preferredLanguage) as LanguageType;
 
     const i18nInstance = useMemo(
         () =>

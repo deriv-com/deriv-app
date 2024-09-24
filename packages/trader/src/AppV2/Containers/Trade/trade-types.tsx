@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
+import { Chip, Text, ActionSheet, Button } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
+import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
+import { safeParse } from '@deriv/utils';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
 
@@ -12,6 +14,7 @@ type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
+    is_dark_mode_on: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
 type TItem = {
@@ -28,31 +31,78 @@ type TResultItem = {
     items: TItem[];
 };
 
-const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
+const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mode_on }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
     const trade_types_ref = React.useRef<HTMLDivElement>(null);
 
-    const { onMount, onUnmount } = useTraderStore();
-
-    const createArrayFromCategories = (data: any): TItem[] => {
+    const createArrayFromCategories = (data: TTradeTypesProps['trade_types']): TItem[] => {
         const result: TItem[] = [];
 
-        data.forEach((category: { value: string; text: string }) => {
+        data.forEach(category => {
             result.push({
                 id: category.value,
-                title: category.text,
+                title: category.text ?? '',
             });
         });
 
         return result;
     };
 
-    const saved_other_trade_types = JSON.parse(localStorage.getItem('other_trade_types') ?? '[]');
-    const saved_pinned_trade_types = JSON.parse(localStorage.getItem('pinned_trade_types') ?? '[]');
+    const saved_pinned_trade_types_string: string = localStorage.getItem('pinned_trade_types') ?? '[]';
+    const saved_pinned_trade_types: TResultItem[] = useMemo(
+        () => safeParse(saved_pinned_trade_types_string) ?? [],
+        [saved_pinned_trade_types_string]
+    );
 
-    const [other_trade_types, setOtherTradeTypes] = React.useState<TResultItem[]>(saved_other_trade_types);
-    const [pinned_trade_types, setPinnedTradeTypes] = React.useState<TResultItem[]>(saved_pinned_trade_types);
+    const [other_trade_types, setOtherTradeTypes] = useState<TResultItem[]>([]);
+    const [pinned_trade_types, setPinnedTradeTypes] = useState<TResultItem[]>(saved_pinned_trade_types);
+
+    const sorted_trade_types_array = useMemo(() => {
+        const array = createArrayFromCategories(trade_types);
+        return array.sort((a, b) => a.title?.localeCompare(b.title));
+    }, [trade_types]);
+
+    const getPinnedItems = useCallback(() => {
+        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
+
+        if (pinned_items.length === 0) {
+            pinned_items.push(...sorted_trade_types_array.slice(0, 5));
+        }
+        return pinned_items;
+    }, [saved_pinned_trade_types, sorted_trade_types_array]);
+
+    const setTradeTypes = useCallback(() => {
+        const pinned_items = getPinnedItems();
+
+        const default_pinned_trade_types = [
+            {
+                id: 'pinned',
+                title: localize('Pinned'),
+                items: pinned_items,
+            },
+        ];
+
+        const default_other_trade_types = [
+            {
+                id: 'other',
+                items: sorted_trade_types_array.filter(
+                    item => !pinned_items.some(pinned_item => pinned_item.id === item.id)
+                ),
+            },
+        ];
+
+        setPinnedTradeTypes(default_pinned_trade_types);
+        setOtherTradeTypes(default_other_trade_types);
+    }, [getPinnedItems, sorted_trade_types_array]);
+
+    useEffect(() => {
+        setTradeTypes();
+    }, [setTradeTypes]);
+
+    useEffect(() => {
+        scrollToSelectedTradeType();
+    }, []);
 
     const handleCloseTradeTypes = () => {
         setIsOpen(false);
@@ -60,8 +110,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
     };
 
     const handleCustomizeTradeTypes = () => {
-        setPinnedTradeTypes(saved_pinned_trade_types);
-        setOtherTradeTypes(saved_other_trade_types);
         setIsEditing(true);
     };
 
@@ -145,58 +193,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         }, 0);
     };
 
-    React.useEffect(() => {
-        const formatted_items = createArrayFromCategories(trade_types);
-        const default_pinned_trade_types = [
-            {
-                id: 'pinned',
-                title: localize('Pinned'),
-                items: formatted_items.slice(0, 1),
-            },
-        ];
-        const default_other_trade_types = [
-            {
-                id: 'other',
-                items: formatted_items
-                    .filter(item => !pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id))
-                    .filter(item =>
-                        saved_pinned_trade_types.length < 1
-                            ? !default_pinned_trade_types[0]?.items.some(pinned_item => pinned_item.id === item.id)
-                            : item
-                    )
-                    .sort((a, b) => a.title?.localeCompare(b.title)),
-            },
-        ];
-
-        if (saved_pinned_trade_types.length < 1) {
-            setPinnedTradeTypes(default_pinned_trade_types);
-            localStorage.setItem('pinned_trade_types', JSON.stringify(default_pinned_trade_types));
-        }
-
-        setOtherTradeTypes(default_other_trade_types);
-        localStorage.setItem('other_trade_types', JSON.stringify(default_other_trade_types));
-    }, [trade_types]);
-
-    React.useEffect(() => {
-        onMount();
-
-        scrollToSelectedTradeType();
-        if (saved_pinned_trade_types.length > 0) {
-            setPinnedTradeTypes(saved_pinned_trade_types);
-        }
-
-        if (saved_other_trade_types.length > 0) {
-            setOtherTradeTypes(saved_other_trade_types);
-        }
-
-        return () => {
-            onUnmount();
-        };
-    }, []);
-
     const savePinnedToLocalStorage = () => {
         localStorage.setItem('pinned_trade_types', JSON.stringify(pinned_trade_types));
-        localStorage.setItem('other_trade_types', JSON.stringify(other_trade_types));
         setIsEditing(false);
     };
 
@@ -210,32 +208,57 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
         setIsOpen(false);
     };
 
+    const handleOpenActionSheet = () => {
+        setTradeTypes();
+        setIsOpen(true);
+    };
+
     const isTradeTypeSelected = (value: string) =>
-        [contract_type, value].every(type => type.startsWith('vanilla')) ||
-        [contract_type, value].every(type => type.startsWith('turbos')) ||
-        [contract_type, value].every(type => type.startsWith('rise_fall')) ||
-        contract_type === value;
+        checkContractTypePrefix([contract_type, value]) || contract_type === value;
+
+    const getItems = (trade_types: TResultItem[]) => trade_types.flatMap(type => type.items);
+
+    const filterItems = (items: TItem[], tradeTypes: TItem[]): TItem[] => {
+        const trade_types_ids = tradeTypes.map(type => type.id);
+        return items.filter(item => trade_types_ids.includes(item.id));
+    };
+
+    const getTradeTypeChips = () => {
+        const pinned_items = getPinnedItems();
+        const is_contract_type_in_pinned = pinned_items.some(item => item.id === contract_type);
+
+        const other_item = !is_contract_type_in_pinned
+            ? getItems(other_trade_types).find(
+                  item => item.id === contract_type || checkContractTypePrefix([item.id, contract_type])
+              )
+            : null;
+
+        return [...pinned_items, other_item].filter(Boolean) as TItem[];
+    };
+
+    const trade_type_chips = getTradeTypeChips();
+    const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
+
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>
-            {saved_pinned_trade_types.length > 0 &&
-                saved_pinned_trade_types[0].items.map(({ title, id }: TItem) => (
-                    <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
-                        <Text size='sm'>{title}</Text>
-                    </Chip.Selectable>
-                ))}
-            {!saved_pinned_trade_types[0]?.items.some((item: TItem) => item.id === contract_type) &&
-                saved_other_trade_types[0]?.items
-                    .filter((item: TItem) => item.id === contract_type)
-                    .map(({ title, id }: TItem) => (
-                        <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
-                            <Text size='sm'>{title}</Text>
-                        </Chip.Selectable>
-                    ))}
-            <button key='trade-types-all' onClick={() => setIsOpen(true)} className='trade__trade-types-header'>
-                <Text size='sm' bold underlined>
-                    {<Localize i18n_default_text='View all' />}
-                </Text>
-            </button>
+            {trade_type_chips.map(({ title, id }: TItem) => (
+                <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
+                    <Text size='sm'>{title}</Text>
+                </Chip.Selectable>
+            ))}
+            {should_show_view_all && (
+                <Button
+                    key='trade-types-all'
+                    onClick={handleOpenActionSheet}
+                    variant='tertiary'
+                    className='trade__trade-types-header'
+                    color={is_dark_mode_on ? 'white' : 'black'}
+                >
+                    <Text size='sm' bold underlined color='var(--component-button-label-color-blackWhite-tertiary)'>
+                        {<Localize i18n_default_text='View all' />}
+                    </Text>
+                </Button>
+            )}
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>
                     <ActionSheet.Header
@@ -252,19 +275,19 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
                             />
                         ) : (
                             <TradeTypeList
-                                categories={saved_pinned_trade_types}
+                                categories={pinned_trade_types}
                                 onAction={handleCustomizeTradeTypes}
                                 onTradeTypeClick={handleOnTradeTypeSelect}
-                                selected_item={contract_type}
+                                isSelected={id => isTradeTypeSelected(id)}
                                 should_show_title={false}
                                 selectable
                             />
                         )}
                         <TradeTypeList
-                            categories={is_editing ? other_trade_types : saved_other_trade_types}
+                            categories={other_trade_types}
                             onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
                             onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
-                            selected_item={contract_type}
+                            isSelected={id => isTradeTypeSelected(id)}
                             selectable={!is_editing}
                         />
                     </ActionSheet.Content>

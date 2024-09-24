@@ -120,10 +120,14 @@ export default Engine =>
         async requestAccumulatorStats() {
             const subscription_id = this.subscription_id_for_accumulators;
             const is_proposal_requested = this.is_proposal_requested_for_accumulators;
+            const proposal_request = {
+                ...window.Blockly.accumulators_request,
+                amount: this?.tradeOptions?.amount,
+            };
             if (!subscription_id && !is_proposal_requested) {
                 this.is_proposal_requested_for_accumulators = true;
-                if (window.Blockly.accumulators_request) {
-                    await api_base?.api?.send(window.Blockly.accumulators_request);
+                if (proposal_request) {
+                    await api_base?.api?.send(proposal_request);
                 }
             }
         }

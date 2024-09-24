@@ -10,22 +10,7 @@ export const STRATEGY = {
     INIT: 'init',
 };
 
-export const MENU_DESKTOP = [
-    {
-        type: STRATEGY.OPEN,
-        icon: 'IcOpen',
-    },
-    {
-        type: STRATEGY.SAVE,
-        icon: 'IcSave',
-    },
-    {
-        type: STRATEGY.DELETE,
-        icon: 'IcDelete',
-    },
-];
-
-export const CONTEXT_MENU_MOBILE = [
+export const CONTEXT_MENU = [
     {
         type: STRATEGY.OPEN,
         icon: 'IcOpen',

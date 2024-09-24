@@ -50,6 +50,14 @@ export const guide_content: TGuideContent[] = [
         src: getImageLocation('how_to_use_martingale.jpg'),
         search_id: `${VIDEOS}-2`,
     },
+    {
+        id: 4,
+        type: 'DBotVideo',
+        content: localize('Introducing Accumulator Options on Deriv Bot: Available for automated trading'),
+        url: 'https://www.youtube.com/embed/uMBBmdNaadU',
+        src: getImageLocation('introducing_accumulators_on_deriv_bot.png'),
+        search_id: `${VIDEOS}-3`,
+    },
 ];
 
 export const faq_content: TFaqContent[] = [

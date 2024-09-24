@@ -90,7 +90,7 @@
     "dependencies": {
         "@deriv-com/analytics": "1.14.0",
         "@deriv-com/quill-tokens": "^2.0.4",
-        "@deriv-com/quill-ui": "1.16.9",
+        "@deriv-com/quill-ui": "1.16.17",
         "@deriv-com/utils": "0.0.30",
         "@deriv-com/ui": "1.35.0",
         "@deriv/api-types": "1.0.172",
@@ -101,6 +101,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/utils": "^1.0.0",
         "@deriv/quill-icons": "1.23.3",
         "@lottiefiles/dotlottie-react": "0.7.2",
         "@types/react-loadable": "^5.5.6",

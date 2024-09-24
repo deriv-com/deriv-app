@@ -467,6 +467,7 @@ export type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
     is_p2p_enabled: boolean;
@@ -505,6 +506,7 @@ export type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
+    setIsClientStoreInitialized: () => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
@@ -605,11 +607,21 @@ export type TClientStore = {
     resetWalletMigration: () => void;
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
+    passkeys_list: Array<{
+        id: number;
+        name: string;
+        last_used: number;
+        created_at?: number;
+        stored_on?: string;
+        passkey_id: string;
+        icon?: string;
+    }>;
     setIsPasskeySupported: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
     fetchShouldShowPasskeyNotification: () => void;
+    fetchPasskeysList: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
@@ -837,6 +849,8 @@ type TUiStore = {
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
     field_ref_to_focus: string | null;
     setFieldRefToFocus: (value: string | null) => void;
+    setHashedValue: (value: string) => void;
+    url_hashed_values: string;
 };
 
 type TPortfolioStore = {

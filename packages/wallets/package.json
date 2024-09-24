@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "1.14.0",
-        "@deriv-com/translations": "1.3.5",
+        "@deriv-com/translations": "1.3.9",
         "@deriv-com/utils": "0.0.30",
         "@deriv-com/ui": "1.35.0",
         "@deriv/api-v2": "^1.0.0",

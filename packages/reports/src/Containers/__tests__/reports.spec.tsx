@@ -165,6 +165,7 @@ describe('Reports', () => {
             isMobile: true,
             isTablet: false,
             isTabletPortrait: false,
+            isMobileOrTabletLandscape: false,
         }));
         const history = createMemoryHistory();
         renderReports(store, history);

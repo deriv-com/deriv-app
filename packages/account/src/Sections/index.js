@@ -1,4 +1,3 @@
-import Passkeys from 'Sections/Security/Passkeys';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
 import { ProofOfIdentityContainer, ProofOfIdentity } from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
@@ -9,7 +8,6 @@ import EmploymentTaxInfo from '../Containers/employment-tax-info/employment-tax-
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
 
 export {
-    Passkeys,
     PersonalDetails,
     ProofOfIdentityContainer,
     ProofOfIdentity,

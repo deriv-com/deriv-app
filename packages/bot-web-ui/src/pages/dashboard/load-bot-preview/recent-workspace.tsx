@@ -2,12 +2,12 @@ import React from 'react';
 import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Popover, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendDashboardClickEvent } from '../../../analytics/rudderstack-dashboard';
-import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
+import { CONTEXT_MENU, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
 import './index.scss';
 
@@ -143,17 +143,19 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             </div>
             {is_desktop ? (
                 <div className='bot-list__item__actions'>
-                    {MENU_DESKTOP.map(item => (
+                    {CONTEXT_MENU.map(({ type, label, icon }) => (
                         <div
-                            data-testid={`dt_desktop_bot_list_action-${item.type}`}
-                            key={item.type}
+                            data-testid={`dt_desktop_bot_list_action-${type}`}
+                            key={type}
                             className='bot-list__item__actions__action-item'
                             onClick={e => {
                                 e.stopPropagation();
-                                viewRecentStrategy(item.type);
+                                viewRecentStrategy(type);
                             }}
                         >
-                            <Icon icon={item.icon} />
+                            <Popover alignment='top' message={label} zIndex={'9999'}>
+                                <Icon icon={icon} />
+                            </Popover>
                         </div>
                     ))}
                 </div>
@@ -170,26 +172,26 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                             'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
                         })}
                     >
-                        {CONTEXT_MENU_MOBILE.map(item => (
+                        {CONTEXT_MENU.map(({ type, label, icon }) => (
                             <div
-                                key={item.type}
+                                key={type}
                                 className='bot-list__item__responsive__menu'
                                 onClick={e => {
                                     e.stopPropagation();
-                                    viewRecentStrategy(item.type);
+                                    viewRecentStrategy(type);
                                 }}
                             >
                                 <div>
-                                    <Icon icon={item.icon} />
+                                    <Icon icon={icon} />
                                 </div>
                                 <Text
-                                    data-testid={`dt_mobile_bot_list_action-${item.type}`}
+                                    data-testid={`dt_mobile_bot_list_action-${type}`}
                                     color='prominent'
                                     className='bot-list__item__responsive__menu__item'
                                     as='p'
                                     size='xxs'
                                 >
-                                    {item.label}
+                                    {label}
                                 </Text>
                             </div>
                         ))}

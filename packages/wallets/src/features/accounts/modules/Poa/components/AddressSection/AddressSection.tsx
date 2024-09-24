@@ -1,8 +1,8 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { InlineMessage } from '@deriv-com/ui';
-import { FormDropdown, FormField, WalletText } from '../../../../../../components';
+import { InlineMessage, Text } from '@deriv-com/ui';
+import { FormDropdown, FormField } from '../../../../../../components';
 import { TAddressDetails } from '../../types';
 import './AddressSection.scss';
 
@@ -13,9 +13,9 @@ const AddressSection: React.FC = () => {
     return (
         <div className='wallets-address-section'>
             <div className='wallets-address-section__title'>
-                <WalletText weight='bold'>
+                <Text weight='bold'>
                     <Localize i18n_default_text='Address' />
-                </WalletText>
+                </Text>
                 <div className='wallets-address-section__title__divider' />
             </div>
             <div className='wallets-address-section__inline'>

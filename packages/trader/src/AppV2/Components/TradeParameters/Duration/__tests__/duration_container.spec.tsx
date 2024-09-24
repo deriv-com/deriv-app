@@ -17,7 +17,9 @@ global.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedCalendarLgBoldIcon: jest.fn(() => <div>LabelPairedCalendarLgBoldIcon</div>),
+    LabelPairedCalendarSmBoldIcon: jest.fn(({ onClick }) => (
+        <button onClick={onClick}>LabelPairedCalendarSmBoldIcon</button>
+    )),
 }));
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
@@ -128,8 +130,8 @@ describe('DurationActionSheetContainer', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 34;
         renderDurationContainer();
-        expect(screen.getByText('LabelPairedCalendarLgBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarLgBoldIcon'));
+        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
+        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Pick an end date')).toBeInTheDocument();
     });
 
@@ -137,8 +139,8 @@ describe('DurationActionSheetContainer', () => {
         default_trade_store.modules.trade.duration_unit = 'd';
         default_trade_store.modules.trade.duration = 2;
         renderDurationContainer();
-        expect(screen.getByText('LabelPairedCalendarLgBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarLgBoldIcon'));
+        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
+        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
         expect(screen.getByText('Date Picker')).toBeInTheDocument();
         userEvent.click(screen.getByText('Save'));
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({

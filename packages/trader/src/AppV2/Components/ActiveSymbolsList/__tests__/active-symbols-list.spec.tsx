@@ -13,9 +13,7 @@ jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
     ...jest.requireActual('AppV2/Hooks/useActiveSymbols'),
     __esModule: true,
     default: jest.fn(() => ({
-        default_symbol: 'CADAUD',
         activeSymbols: [],
-        fetchActiveSymbols: jest.fn(),
     })),
 }));
 

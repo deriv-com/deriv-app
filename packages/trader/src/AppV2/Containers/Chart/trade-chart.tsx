@@ -8,6 +8,7 @@ import { SmartChart } from 'Modules/SmartChart';
 import AccumulatorsChartElements from 'Modules/SmartChart/Components/Markers/accumulators-chart-elements';
 import ToolbarWidgets from 'Modules/SmartChart/Components/toolbar-widgets';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
+import useDefaultSymbol from 'AppV2/Hooks/useDefaultSymbol';
 
 type TBottomWidgetsParams = {
     digits: number[];
@@ -51,7 +52,8 @@ const TradeChart = observer(() => {
     const { all_positions } = portfolio;
     const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { current_language, is_socket_opened } = common;
-    const { default_symbol, activeSymbols: active_symbols } = useActiveSymbols();
+    const { activeSymbols: active_symbols } = useActiveSymbols();
+    const { symbol } = useDefaultSymbol();
     const {
         barriers_flattened: extra_barriers,
         chartStateChange,
@@ -65,7 +67,6 @@ const TradeChart = observer(() => {
         setDigitStats,
         setTickData,
         show_digits_stats,
-        symbol: symbol_from_store,
         onChange,
         prev_contract_type,
         wsForget,
@@ -74,7 +75,6 @@ const TradeChart = observer(() => {
         wsSubscribe,
     } = useTraderStore();
 
-    const symbol = symbol_from_store ?? default_symbol;
     const is_accumulator = isAccumulatorContract(contract_type);
     const settings = {
         countdown: is_chart_countdown_visible,

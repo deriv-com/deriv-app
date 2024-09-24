@@ -22,6 +22,7 @@ import ru from 'Translations/ru.json';
 import si from 'Translations/si.json';
 import th from 'Translations/th.json';
 import tr from 'Translations/tr.json';
+import uz from 'Translations/uz.json';
 import vi from 'Translations/vi.json';
 import zh_cn from 'Translations/zh_cn.json';
 import zh_tw from 'Translations/zh_tw.json';
@@ -59,6 +60,7 @@ const i18n_config = {
         SI: { translations: { ...si } },
         TH: { translations: { ...th } },
         TR: { translations: { ...tr } },
+        UZ: { translations: { ...uz } },
         VI: { translations: { ...vi } },
         ZH_CN: { translations: { ...zh_cn } },
         ZH_TW: { translations: { ...zh_tw } },

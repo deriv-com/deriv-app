@@ -72,7 +72,7 @@ const POAMobile: React.FC<POAMobileProps> = ({ countryCode, onCompletion }) => {
                     <div className='wallets-poa-mobile-layout__container'>
                         {errorSettings?.message && (
                             <InlineMessage className='wallets-poa-mobile-layout__error-banner' variant='error'>
-                                <Text align='start'>{localize(errorSettings.message)}</Text>
+                                <Text align='start'>{errorSettings.message}</Text>
                             </InlineMessage>
                         )}
                         <DocumentSubmission countryCode={countryCode as string} />

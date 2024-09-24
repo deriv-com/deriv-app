@@ -52,9 +52,7 @@ export const getPersonalDetailsInitialValues = (
         }
     });
 
-    // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
     if (account_settings?.tin_skipped) {
-        // @ts-expect-error need to fix the type for tax_identification_number in GetSettings because it should be boolean
         initialValues.tin_skipped = account_settings.tin_skipped;
         initialValues.tax_identification_number = '';
     } else {

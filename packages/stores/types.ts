@@ -467,6 +467,7 @@ export type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
     is_p2p_enabled: boolean;
@@ -505,6 +506,7 @@ export type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
+    setIsClientStoreInitialized: () => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
@@ -864,6 +866,8 @@ type TUiStore = {
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    setHashedValue: (value: string) => void;
+    url_hashed_values: string;
 };
 
 type TPortfolioStore = {

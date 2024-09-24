@@ -19,10 +19,12 @@ import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookGetFeatureValue, useGrowthbookIsOn } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
+import initHotjar from '../Utils/Hotjar';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { has_wallet, setIsPhoneNumberVerificationEnabled } = store.client;
+    const { is_client_store_initialized, has_wallet, setIsPasskeySupported, setIsPhoneNumberVerificationEnabled } =
+        store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -53,15 +55,26 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
-            store.client.setIsPasskeySupported(
+            setIsPasskeySupported(
                 is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled && isMobile
             );
         }
-    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported, isMobile, store.client]);
+    }, [
+        isServicePasskeysFFEnabled,
+        isGBLoaded,
+        isWebPasskeysFFEnabled,
+        is_passkeys_supported,
+        isMobile,
+        setIsPasskeySupported,
+    ]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
+
+    React.useEffect(() => {
+        if (is_client_store_initialized) initHotjar(store.client);
+    }, [store.client, is_client_store_initialized]);
 
     // intentionally switch the user with wallets to light mode and EN language
     React.useLayoutEffect(() => {

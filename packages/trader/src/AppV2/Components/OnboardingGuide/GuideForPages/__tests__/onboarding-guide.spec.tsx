@@ -37,7 +37,7 @@ describe('OnboardingGuide', () => {
 
         await waitFor(() => jest.advanceTimersByTime(800));
 
-        expect(screen.queryByText('OnboardingVideo')).not.toBeInTheDocument();
+        expect(screen.getByText('OnboardingVideo')).toBeInTheDocument();
         expect(screen.getByText(positions_modal_text)).toBeInTheDocument();
         expect(screen.getByText('Got it')).toBeInTheDocument();
 

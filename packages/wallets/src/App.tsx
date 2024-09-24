@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { APIProvider } from '@deriv/api-v2';
 import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -11,16 +11,14 @@ import './index.scss';
 type LanguageType = 'AR' | 'EN';
 
 const App: React.FC = () => {
-    const [preferredLanguage, setPreferredLanguage] = useState<LanguageType | null>(null);
-    const defaultLanguage = (getInitialLanguage() ?? preferredLanguage) as LanguageType;
-
+    const defaultLanguage = (getInitialLanguage() ?? 'EN') as LanguageType;
     const i18nInstance = useMemo(
         () =>
             initializeI18n({
                 cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
             }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [getInitialLanguage()]
+        [defaultLanguage]
     );
 
     return (
@@ -29,7 +27,7 @@ const App: React.FC = () => {
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
                     <React.Suspense fallback={<Loader />}>
                         <ModalProvider>
-                            <AppContent setPreferredLanguage={setPreferredLanguage} />
+                            <AppContent />
                         </ModalProvider>
                     </React.Suspense>
                 </TranslationProvider>

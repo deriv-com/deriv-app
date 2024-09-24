@@ -7,6 +7,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import { getClientVerification } from '../../../utils';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
@@ -21,6 +22,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const platformStatus = getPlatformStatus(account.platform);
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
+    const { isVerificationRequired } = getClientVerification(account);
 
     const onButtonClick = useCallback(() => {
         if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
@@ -32,7 +34,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 return show(<TradingPlatformStatusModal />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
-                if (account.client_kyc_status?.poi_status && account.client_kyc_status?.poi_status !== 'verified') {
+                if (isVerificationRequired) {
                     show(<ClientVerificationModal account={account} />);
                 } else {
                     show(<MT5PasswordModal account={account} isVirtual={activeWallet?.is_virtual} />);
@@ -41,7 +43,15 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 setModalState('selectedJurisdiction', account.shortcode);
                 break;
         }
-    }, [hasUnavailableAccount, show, platformStatus, activeWallet?.is_virtual, account, setModalState]);
+    }, [
+        hasUnavailableAccount,
+        show,
+        platformStatus,
+        isVerificationRequired,
+        setModalState,
+        account,
+        activeWallet?.is_virtual,
+    ]);
 
     return (
         <TradingAccountCard onClick={onButtonClick}>

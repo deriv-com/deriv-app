@@ -17,6 +17,7 @@ const DurationActionSheetContainer = observer(
         const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
         const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
         const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
+        const show_duration_chips = !(duration_units_list.length === 1 && duration_units_list[0].value === 't');
         const updateCurrentGmtTime = () => {
             const now = new Date();
             const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
@@ -110,7 +111,9 @@ const DurationActionSheetContainer = observer(
         return (
             <div className='duration-container'>
                 <ActionSheet.Header title={<Localize i18n_default_text='Duration' />} />
-                <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
+                {show_duration_chips && (
+                    <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
+                )}
                 <DurationWheelPicker
                     unit={unit}
                     setEndTime={setEndTime}

@@ -29,8 +29,15 @@ const makeTinOptional = (
     employment_status: string,
     { is_mf, is_real, tin_skipped, is_tin_auto_set }: TINDepdendents
 ) => {
-    const should_not_bypass_tin = !tin_config?.tin_employment_status_bypass?.includes(employment_status);
-    return (tin_skipped && !is_tin_auto_set) || (!is_mf && !is_real) || !(is_real && should_not_bypass_tin);
+    const should_bypass_tin = tin_config?.tin_employment_status_bypass?.includes(employment_status);
+    const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
+    if (is_real) {
+        return check_if_tin_skipped || should_bypass_tin;
+    }
+    if (is_mf) {
+        return check_if_tin_skipped;
+    }
+    return should_bypass_tin;
 };
 
 export const getEmploymentAndTaxValidationSchema = ({

@@ -209,7 +209,6 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
-            is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,

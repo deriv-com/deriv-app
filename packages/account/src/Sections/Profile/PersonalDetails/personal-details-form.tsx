@@ -61,6 +61,7 @@ const PersonalDetailsForm = observer(() => {
         fetchAccountSettings,
         residence,
         is_svg,
+        is_mf_account,
     } = client;
 
     const { field_ref_to_focus, setFieldRefToFocus } = ui;
@@ -450,6 +451,7 @@ const PersonalDetailsForm = observer(() => {
                                             parent_ref={scroll_div_ref}
                                             handleChange={mutate}
                                             tin_validation_config={tin_validation_config}
+                                            should_display_long_message={is_mf_account}
                                         />
                                         {!is_virtual && (
                                             <Fragment>

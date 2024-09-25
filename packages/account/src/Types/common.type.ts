@@ -339,3 +339,45 @@ export type TEmployeeDetailsTinValidationConfig = {
     is_real?: boolean;
     is_tin_auto_set?: boolean;
 };
+
+type ReqRule = ['req', React.ReactNode];
+
+type LengthRule = ['length', React.ReactNode, { min: number; max: number }];
+
+type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
+
+type CustomValidator = (
+    value: string,
+    /**
+     * The options passed to the validation function
+     */
+    options: Record<string, unknown>,
+    /**
+     * The values of all fields in the form
+     */
+    values: Record<string, unknown>
+) => React.ReactNode;
+
+type CustomRule = [CustomValidator, React.ReactNode];
+
+type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
+
+export type TGetField = {
+    label: React.ReactNode;
+    /**
+     * The type of the input field (e.g. 'text', 'password', 'select', etc.)
+     */
+    type?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
+    /**
+     * The list of items for the dropdown or select
+     */
+    list_items?: TListItem[];
+    /**
+     * The validation rules for the input field (e.g. 'req', 'length', 'regular', etc.)
+     */
+    rules?: Array<Rule>;
+};

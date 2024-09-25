@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getInitialLanguage } from '@deriv-com/translations';
 import { TLanguageType } from '../types';
 
@@ -7,10 +7,18 @@ const useLanguage = (preferredLanguage: TLanguageType | null) => {
         return preferredLanguage || 'EN';
     });
     const initialLang = getInitialLanguage() as TLanguageType;
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
-        setLanguage(initialLang);
-    }, [initialLang]);
+        if (preferredLanguage) {
+            if (isFirstRender.current) {
+                setLanguage(preferredLanguage);
+                isFirstRender.current = false;
+            } else {
+                setLanguage(initialLang);
+            }
+        }
+    }, [initialLang, preferredLanguage]);
 
     return language;
 };

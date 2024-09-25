@@ -125,7 +125,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     }, [activeWalletData?.is_virtual, marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     return (
-        <div className='wallets-mt5-trade-screen'>
+        <div className='wallets-mt5-trade-screen' data-testid='dt_mt5_trade_screen'>
             <div className='wallets-mt5-trade-screen__content'>
                 <div className='wallets-mt5-trade-screen__content-header'>
                     <div className='wallets-mt5-trade-screen__description'>

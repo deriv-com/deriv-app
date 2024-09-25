@@ -1,13 +1,13 @@
 import React from 'react';
-import { WalletText } from '../../Base';
+import { Text } from '@deriv-com/ui';
 import './WalletsCarouselLoader.scss';
 
 const WalletsCarouselLoader = () => (
     <div className='wallets-carousel-loader'>
         <div className='wallets-carousel-loader__title'>
-            <WalletText size='xl' weight='bold'>
+            <Text size='xl' weight='bold'>
                 Trader&apos;s Hub
-            </WalletText>
+            </Text>
         </div>
         <div className='wallets-carousel-loader__card-container'>
             {Array.from({ length: 3 }).map((_, idx) => (

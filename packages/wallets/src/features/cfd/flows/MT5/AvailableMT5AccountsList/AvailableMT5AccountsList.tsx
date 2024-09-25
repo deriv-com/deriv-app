@@ -7,6 +7,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import './AvailableMT5AccountsList.scss';
 
 const LazyVerification = lazy(
     () => import(/* webpackChunkName: "wallets-client-verification" */ '../../ClientVerification/ClientVerification')

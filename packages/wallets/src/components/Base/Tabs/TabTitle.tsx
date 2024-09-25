@@ -1,13 +1,13 @@
-import React, { FC, useCallback } from 'react';
+import React, { ComponentProps, FC, useCallback } from 'react';
 import classNames from 'classnames';
-import WalletText, { WalletTextProps } from '../WalletText/WalletText';
+import { Text } from '@deriv-com/ui';
 
 export type TabTitleProps = {
     icon?: React.ReactNode;
     index: number;
     isActive?: boolean;
     setSelectedTab: (index: number) => void;
-    size: WalletTextProps['size'];
+    size: ComponentProps<typeof Text>['size'];
     title: string;
 };
 
@@ -24,9 +24,9 @@ const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, si
             onClick={handleOnClick}
         >
             {icon}
-            <WalletText size={size} weight={isActive ? 'bold' : 'normal'}>
+            <Text size={size} weight={isActive ? 'bold' : 'normal'}>
                 {title}
-            </WalletText>
+            </Text>
         </button>
     );
 };

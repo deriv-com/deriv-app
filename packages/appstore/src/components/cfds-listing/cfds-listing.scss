@@ -593,24 +593,15 @@
     &__dxtrade-button,
     &__platform-button {
         display: flex;
-        background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
-        padding: 0;
+        padding: 0 1.6rem;
+        border: 1px solid var(--border-normal-2);
 
         &-icon {
             margin-left: 0.6rem;
             margin-top: 0.1rem;
-        }
-
-        &-text {
-            padding: 0.5rem;
-
-            @include mobile-or-tablet-screen {
-                padding-right: 0.5rem;
-                white-space: nowrap;
-            }
         }
     }
     &__specs {
@@ -973,7 +964,8 @@
 
         @include mobile-or-tablet-screen {
             grid-template-columns: 1fr;
-            margin: 0 6.5rem 3rem;
+            margin: 0 auto 3rem;
+            min-width: 20rem;
         }
     }
 
@@ -998,19 +990,19 @@
                 }
 
                 &-row {
-                    grid-template-columns: 1fr 0.5fr 1.25fr;
+                    grid-template-columns: 1fr 1fr 1.4fr;
                     justify-items: center;
                     border-bottom: 0;
-                    padding: 0.4rem 0;
+                    padding: 0.4rem;
                     background-color: var(--general-hover);
                 }
             }
 
             &-row {
-                grid-template-columns: 1fr 0.5fr 1.25fr;
+                grid-template-columns: 1fr 1fr 1.4fr;
                 justify-items: center;
                 border-bottom: 0;
-                padding: 0.4rem 0;
+                padding: 0.4rem;
 
                 &:nth-child(even) {
                     background-color: var(--general-hover);

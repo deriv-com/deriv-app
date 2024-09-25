@@ -28,6 +28,7 @@ const PurchaseButton = observer(() => {
     const {
         contract_replay: { is_market_closed },
         portfolio: { all_positions, onClickSell },
+        client: { is_logged_in },
     } = useStore();
     const {
         contract_type,
@@ -126,7 +127,11 @@ const PurchaseButton = observer(() => {
                 unmountOnExit
                 mountOnEnter
             >
-                <div className='purchase-button__wrapper'>
+                <div
+                    className={clsx('purchase-button__wrapper', {
+                        'purchase-button__wrapper__un-auth': !is_logged_in,
+                    })}
+                >
                     {contract_types.map((trade_type, index) => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
@@ -202,7 +207,7 @@ const PurchaseButton = observer(() => {
             >
                 <div className='purchase-button__wrapper'>
                     <Button
-                        color='black'
+                        color='black-white'
                         size='lg'
                         label={
                             is_accu_sell_disabled
@@ -211,8 +216,9 @@ const PurchaseButton = observer(() => {
                         }
                         fullWidth
                         isOpaque
+                        isLoading={active_accu_contract?.is_sell_requested}
                         className='purchase-button purchase-button--single'
-                        disabled={is_accu_sell_disabled}
+                        disabled={!is_valid_to_sell}
                         onClick={() => onClickSell(active_accu_contract?.contract_info.contract_id)}
                     />
                 </div>

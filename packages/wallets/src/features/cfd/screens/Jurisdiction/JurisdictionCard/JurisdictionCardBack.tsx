@@ -1,7 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
-import { Divider } from '@deriv-com/ui';
-import { WalletText } from '../../../../../components/Base/WalletText';
+import { Divider, Text } from '@deriv-com/ui';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
 import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
@@ -49,14 +48,14 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                         setIsFlipped(false);
                     }}
                 />
-                <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
+                <Text size='xs'>{verificationContents.shortDescription}</Text>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${verificationDocument}-${i}`}>
                             {verificationIconsMapper[verificationDocument]}
-                            <WalletText size='xs'>
+                            <Text size='xs'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
-                            </WalletText>
+                            </Text>
                         </div>
                     );
                 })}
@@ -66,7 +65,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${statusReference}-${i}`}>
                             {verificationStatusIconsMapper[statusReference.icon]}
-                            <WalletText size='xs'>{statusReference.text}</WalletText>
+                            <Text size='xs'>{statusReference.text}</Text>
                         </div>
                     );
                 })}

@@ -709,7 +709,6 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
-    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -835,8 +834,8 @@ type TUiStore = {
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
-    toggleAdditionalKycInfoModal: () => void;
-    toggleKycInformationSubmittedModal: () => void;
+    // toggleAdditionalKycInfoModal: () => void;
+    // toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;

@@ -214,7 +214,7 @@ const PersonalDetailsForm = observer(() => {
                     ? document.querySelector('.account-form__personal-details .dc-themed-scrollbars')
                     : document.querySelector('.account__scrollbars_container--grid-layout');
                 const targetRef = document.getElementById(field_ref_to_focus) as HTMLElement;
-                const offset = isDesktop ? 24 : 78; // 78px is the height of header and title of the page for mobile & 24 is the padding of the container for desktop
+                const offset = 24; // 24 is the padding of the container
                 scrollToTop(parentRef as HTMLElement, targetRef, offset);
             }, 0);
         }
@@ -438,6 +438,7 @@ const PersonalDetailsForm = observer(() => {
                                                 Boolean(account_settings?.account_opening_reason)
                                             }
                                             required
+                                            fieldFocused={field_ref_to_focus === 'account-opening-reason'}
                                         />
                                     </Fragment>
                                 )}

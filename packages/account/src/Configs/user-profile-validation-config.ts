@@ -21,6 +21,9 @@ type TINDepdendents = {
     is_mf?: boolean;
     is_real?: boolean;
     tin_skipped?: boolean;
+    /**
+     * This flag indicates that tin was skipped before and was set by BE
+     */
     is_tin_auto_set?: boolean;
 };
 

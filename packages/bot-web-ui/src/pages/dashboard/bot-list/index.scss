@@ -1,7 +1,4 @@
 @import '../../../styles/mixins.scss';
-@import './google-drive.scss';
-@import './delete-dialog.scss';
-@import './save-modal.scss';
 
 .load-strategy {
     &__wrapper {
@@ -427,9 +424,6 @@
         border-bottom: 1px solid var(--border-divider);
         user-select: none;
         position: relative;
-        &:hover {
-            cursor: pointer;
-        }
 
         &__label {
             padding: 0.8rem 1.6rem;
@@ -482,6 +476,10 @@
                 &:last-child {
                     margin-inline: 0;
                 }
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             @include mobile-or-tablet-screen {
@@ -529,10 +527,6 @@
                     inset-inline-end: 6rem;
                 }
             }
-        }
-
-        &--selected {
-            background-color: var(--general-section-1);
         }
     }
 }

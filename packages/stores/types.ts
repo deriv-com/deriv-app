@@ -527,7 +527,7 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
-    website_status: { mt5_status: TMt5StatusServer; dx_trade_status: TDXTraderStatusServerType };
+    website_status: WebsiteStatus;
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;

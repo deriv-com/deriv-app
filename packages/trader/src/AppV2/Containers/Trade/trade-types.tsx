@@ -111,12 +111,12 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const handleAddPinnedClick = (item: TItem) => {
-        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setPinnedTradeTypes(prev_pinned => modifyPinnedCategories(prev_pinned, item, 'add'));
     };
 
     const handleRemovePinnedClick = (item: TItem) => {
-        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setOtherTradeTypes(prev_others => modifyOtherCategories(prev_others, item));
     };
 
@@ -144,13 +144,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
         return updated_categories;
     };
 
-    const modifyCategories = (categories: TResultItem[], item: TItem, action: 'remove' = 'remove') =>
+    const modifyCategories = (categories: TResultItem[], item: TItem) =>
         categories.map(category => ({
             ...category,
-            items:
-                action === 'remove'
-                    ? category.items.filter(i => i.id !== item.id)
-                    : category.items.filter(i => i.id !== item.id),
+            items: category.items.filter(i => i.id !== item.id),
         }));
 
     const modifyOtherCategories = (categories: TResultItem[], item: TItem) => {

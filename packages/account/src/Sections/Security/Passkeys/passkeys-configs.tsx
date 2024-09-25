@@ -13,6 +13,7 @@ export const PASSKEY_STATUS_CODES = {
     NO_PASSKEY: 'no_passkey',
     REMOVED: 'removed',
     REMOVING: 'removing',
+    REMOVING_WITH_EMAIL: 'removing_with_email',
     RENAMING: 'renaming',
 } as const;
 

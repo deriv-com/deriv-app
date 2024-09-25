@@ -8,13 +8,11 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv-com/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
-import { PasskeyRemoveConfirmationModal } from './components/passkey-remove-confirmation-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
 import {
     clearRefTimeOut,
     excluded_error_codes,
     excluded_error_names,
-    isNotExistedPasskey,
     PASSKEY_STATUS_CODES,
     passkeysMenuActionEventTrack,
     TPasskeysStatus,
@@ -99,6 +97,8 @@ const Passkeys = observer(() => {
     const should_show_passkeys = is_passkey_supported && isMobile;
     const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error || passkey_removing_error;
 
+    const main_screen_status_code = passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY;
+
     useEffect(() => {
         const should_not_render_main_page =
             is_passkeys_list_loading ||
@@ -127,10 +127,6 @@ const Passkeys = observer(() => {
 
             if (should_hide_error) return;
 
-            if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
-                setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
-            }
-
             is_reminder_modal_open && setIsReminderModalOpen(false);
             clearRefTimeOut(error_modal_timeout);
             error_modal_timeout.current = setTimeout(() => setIsErrorModalOpen(true), 500);
@@ -147,6 +143,10 @@ const Passkeys = observer(() => {
     }
 
     const onCloseErrorModal = () => {
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+            setIsErrorModalOpen(false);
+            return;
+        }
         history.push(routes.traders_hub);
     };
 
@@ -160,6 +160,19 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('create_passkey_reminder_passed');
         }
         setIsReminderModalOpen(false);
+    };
+
+    const onBackButtonClick = () => {
+        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
+            passkeysMenuActionEventTrack('info_back');
+            setPasskeyStatus(main_screen_status_code);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL) {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+            setPasskeyStatus(main_screen_status_code);
+        }
     };
 
     const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
@@ -189,10 +202,13 @@ const Passkeys = observer(() => {
             renamePasskey(current_managed_passkey.id, passkey_data?.name ?? current_managed_passkey.name);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
-            setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
+            setPasskeyStatus(main_screen_status_code);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
-            removePasskey(current_managed_passkey?.id);
+            removePasskey(current_managed_passkey?.id, current_managed_passkey?.passkey_id);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL) {
+            // TODO: implement email verification flow
         }
     };
 
@@ -201,10 +217,7 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('info_open');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE || passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
-            passkeysMenuActionEventTrack('info_back');
-            setPasskeyStatus(passkeys_list?.length ? PASSKEY_STATUS_CODES.LIST : PASSKEY_STATUS_CODES.NO_PASSKEY);
-        }
+
         if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
             passkeysMenuActionEventTrack('add_more_passkeys');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
@@ -213,11 +226,15 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL);
+        }
     };
 
     return (
         <Fragment>
             <PasskeysStatusContainer
+                onBackButtonClick={onBackButtonClick}
                 current_managed_passkey={current_managed_passkey}
                 onPasskeyMenuClick={onPasskeyMenuClick}
                 onPrimaryButtonClick={onPrimaryButtonClick}
@@ -239,7 +256,12 @@ const Passkeys = observer(() => {
                 onButtonClick={onContinueReminderModal}
                 toggleModal={onCloseReminderModal}
             />
-            <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
+            <PasskeyErrorModal
+                error={error}
+                is_modal_open={is_error_modal_open}
+                onButtonClick={onCloseErrorModal}
+                passkey_status={passkey_status}
+            />
         </Fragment>
     );
 });

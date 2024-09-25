@@ -8,6 +8,7 @@ import { PasskeysList } from './passkeys-list';
 import { PasskeyRemove } from './passkey-remove';
 import { PasskeyRemoved } from './passkey-removed';
 import { PasskeyRename } from './passkey-rename';
+import { PasskeyRemoveWithEmail } from './passkey-remove-with-email';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysStatusContainer = {
@@ -20,6 +21,7 @@ type TPasskeysStatusContainer = {
 export const PasskeysStatusContainer = observer(
     ({
         current_managed_passkey,
+        onBackButtonClick,
         onPrimaryButtonClick,
         onSecondaryButtonClick,
         passkeys_list,
@@ -37,8 +39,8 @@ export const PasskeysStatusContainer = observer(
             case PASSKEY_STATUS_CODES.LEARN_MORE:
                 return (
                     <PasskeysLearnMore
+                        onBackButtonClick={onBackButtonClick}
                         onPrimaryButtonClick={onPrimaryButtonClick}
-                        onSecondaryButtonClick={onSecondaryButtonClick}
                     />
                 );
             case PASSKEY_STATUS_CODES.NO_PASSKEY:
@@ -61,9 +63,16 @@ export const PasskeysStatusContainer = observer(
             case PASSKEY_STATUS_CODES.REMOVING:
                 return (
                     <PasskeyRemove
-                        current_managed_passkey={current_managed_passkey}
+                        onBackButtonClick={onBackButtonClick}
                         onPrimaryButtonClick={onPrimaryButtonClick}
                         onSecondaryButtonClick={onSecondaryButtonClick}
+                    />
+                );
+            case PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL:
+                return (
+                    <PasskeyRemoveWithEmail
+                        onBackButtonClick={onBackButtonClick}
+                        onPrimaryButtonClick={onPrimaryButtonClick}
                     />
                 );
             default:

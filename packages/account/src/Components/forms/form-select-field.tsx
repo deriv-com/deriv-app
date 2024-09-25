@@ -39,7 +39,9 @@ const FormSelectField: FC<TFormSelectField> = ({
                     {!isDesktop ? (
                         <SelectNative
                             {...field}
+                            // @ts-expect-error This needs to fixed in AutoComplete component
                             list_items={list_items}
+                            // @ts-expect-error This needs to fixed in AutoComplete component
                             label={label}
                             required={required}
                             disabled={disabled}
@@ -51,17 +53,18 @@ const FormSelectField: FC<TFormSelectField> = ({
                         <Autocomplete
                             {...field}
                             disabled={disabled}
-                            // @ts-expect-error This needs to fixed in AutoComplete component
                             label={label}
+                            // @ts-expect-error This needs to fixed in AutoComplete component
                             list_items={list_items}
                             placeholder={placeholder}
                             required={required}
                             data-lpignore='true'
                             autoComplete='off' // prevent chrome autocomplete
                             error={touched ? error : undefined}
+                            // @ts-expect-error This needs to fixed in AutoComplete component
                             onItemSelection={onItemSelection ?? onSelect(field.name, setFieldValue)}
                             data-testid={`dt_${field.name}`}
-                            list_height={list_height}
+                            list_height={list_height as string}
                         />
                     )}
                 </Fragment>

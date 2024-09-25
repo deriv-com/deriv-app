@@ -3,17 +3,30 @@ import { Popover, Icon, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
+import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { client } = useStore();
     const { has_cookie_account, loginid } = client;
     const { isDesktop } = useDevice();
     const liveChat = useLiveChat(has_cookie_account, loginid);
+    const freshChat = useFreshChat();
 
-    if (!liveChat.isReady) return null;
+    const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+        defaultValue: true,
+    });
 
-    const liveChatClickHandler = () => liveChat.widget?.call('maximize');
+    // const liveChatClickHandler = () => liveChat.widget?.call('maximize');
+    const chat = isGBLoaded && enable_freshworks_live_chat ? freshChat : liveChat;
+
+    if (!chat.isReady) return null;
+
+    const liveChatClickHandler = () => {
+        enable_freshworks_live_chat ? freshChat.widget.open() : liveChat.widget?.call('maximize');
+    };
 
     if (isDesktop)
         return (

@@ -5,8 +5,10 @@ import { useDevice } from '@deriv-com/ui';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { reorderCurrencies, website_name } from '@deriv/shared';
+import { reorderCurrencies, routes, website_name } from '@deriv/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
+import CurrencyProvider from './choose-currency';
+import AddCurrencyNote from './add-currency-note';
 import './currency-selector.scss';
 
 const messages = () => [
@@ -43,17 +45,23 @@ const AddCryptoCurrency = observer(
         hasNoAvailableCrypto,
     }) => {
         const { isDesktop } = useDevice();
-        const { client, ui } = useStore();
+        const { client, modules, ui } = useStore();
         const { available_crypto_currencies, upgradeable_currencies: legal_allowed_currencies, has_fiat } = client;
         const { should_show_cancel } = ui;
+        const { cashier } = modules;
+
+        const deposit_target = cashier.general_store.deposit_target;
+
         const getReorderedFiatCurrencies = () =>
             reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
-        const getReorderedCryptoCurrencies = () =>
-            reorderCurrencies(
-                legal_allowed_currencies.filter(currency => currency.type === CRYPTO_CURRENCY_TYPE),
-                CRYPTO_CURRENCY_TYPE
-            );
+        const getReorderedCryptoCurrencies = () => {
+            const currencies =
+                deposit_target === routes.cashier_onramp
+                    ? CurrencyProvider.currenciesOnRampAvailability(legal_allowed_currencies)
+                    : legal_allowed_currencies.filter(currency => currency.type === CRYPTO_CURRENCY_TYPE);
 
+            return reorderCurrencies(currencies, CRYPTO_CURRENCY_TYPE);
+        };
         const canAddFiat = () => !has_fiat && !should_show_crypto_only;
         const canAddCrypto = currency => {
             // check if the cryptocurrency has not been created
@@ -151,6 +159,11 @@ const AddCryptoCurrency = observer(
                                             />
                                         ))}
                                     </CurrencyRadioButtonGroup>
+                                    {deposit_target === routes.cashier_onramp && (
+                                        <AddCurrencyNote
+                                            message={localize('Some currencies may not be supported by fiat onramp.')}
+                                        />
+                                    )}
                                 </ThemedScrollbars>
                             ) : (
                                 <ThemedScrollbars>

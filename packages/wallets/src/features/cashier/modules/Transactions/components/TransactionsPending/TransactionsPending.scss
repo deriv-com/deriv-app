@@ -12,5 +12,11 @@
         @include mobile-or-tablet-screen {
             margin-inline-start: 0;
         }
+
+        @include rtl {
+            direction: ltr;
+            display: flex;
+            justify-content: flex-end;
+        }
     }
 }

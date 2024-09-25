@@ -2335,7 +2335,7 @@ export default class ClientStore extends BaseStore {
 
     async onSetCitizen(citizen) {
         if (!citizen) return;
-        WS.setSettings({
+        WS.authorized.setSettings({
             set_settings: 1,
             citizen,
         });

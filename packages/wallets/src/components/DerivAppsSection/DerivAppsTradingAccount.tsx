@@ -36,11 +36,11 @@ const DerivAppsTradingAccount = () => {
                     }
                 }}
             >
-                <TradingAccountCard.Icon>
+                <TradingAccountCard.Icon className='wallets-deriv-apps-section--disabled-icon'>
                     <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
                 </TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
-                    <TradingAccountCard.Content>
+                    <TradingAccountCard.Content className='wallets-deriv-apps-section--disabled-content'>
                         <div className='wallets-deriv-apps-section__title-and-badge'>
                             <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Options' />

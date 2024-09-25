@@ -17,12 +17,16 @@
 
     &--disabled {
         cursor: pointer;
-        opacity: 0.48;
         @include desktop {
             &:hover {
                 background: none;
             }
         }
+    }
+
+    &--disabled-icon,
+    &--disabled-content {
+        opacity: 0.48;
     }
 
     &__border {

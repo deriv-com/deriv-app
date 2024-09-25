@@ -20,8 +20,13 @@
         }
 
         &-item--disabled {
+            & > :first-child,
+            & > :nth-child(2) {
+                opacity: 0.48;
+            }
             & > :last-child {
                 margin-left: auto;
+                opacity: 1;
             }
         }
 
@@ -89,7 +94,6 @@
         }
         &--disabled {
             cursor: not-allowed;
-            opacity: 0.48;
             &:hover {
                 background: none;
             }

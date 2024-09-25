@@ -68,7 +68,7 @@ describe('JurisdictionScreen', () => {
             />,
             { wrapper }
         );
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
     });
 
     it('renders JurisdictionCard components correctly', () => {

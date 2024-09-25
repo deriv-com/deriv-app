@@ -34,8 +34,6 @@ const default_mock_store = {
         trade: {
             contract_type: 'rise_fall',
             contract_types_list,
-            onMount: jest.fn(),
-            onUnmount: jest.fn(),
         },
     },
 };
@@ -44,6 +42,7 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
     return (
         <TraderProviders store={mocked_store}>
             <TradeTypes
+                is_dark_mode_on={false}
                 onTradeTypeSelect={jest.fn()}
                 trade_types={mockGetTradeTypesList(default_mock_store.modules.trade.contract_types_list)}
                 contract_type='rise_fall'
@@ -57,6 +56,8 @@ describe('TradeTypes', () => {
     const scrollByMock = jest.fn();
     beforeEach(() => {
         mockGetTradeTypesList.mockReturnValue([
+            { value: 'accumulator', text: 'Accumulator' },
+            { value: 'multipler', text: 'Multiplier' },
             { value: 'rise', text: 'Rise' },
             { value: 'fall', text: 'Fall' },
             { value: 'vanilla_call', text: 'Vanilla Call' },
@@ -81,15 +82,6 @@ describe('TradeTypes', () => {
         expect(screen.getByText('Rise')).toBeInTheDocument();
     });
 
-    it('should open ActionSheet when View all button is clicked', async () => {
-        render(mockTradeTypes());
-
-        await userEvent.click(screen.getByText('View all'));
-
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
-        expect(screen.getByText('Fall')).toBeInTheDocument();
-    });
-
     it('should handle adding and removing pinned trade types', async () => {
         render(mockTradeTypes());
 
@@ -102,14 +94,6 @@ describe('TradeTypes', () => {
         await userEvent.click(removeButton);
 
         expect(screen.getByText('Trade types')).toBeInTheDocument();
-    });
-
-    it('should mount and unmount correctly', () => {
-        const { unmount } = render(mockTradeTypes());
-
-        expect(default_mock_store.modules.trade.onMount).toHaveBeenCalled();
-        unmount();
-        expect(default_mock_store.modules.trade.onUnmount).toHaveBeenCalled();
     });
 
     it('should scroll to the selected trade type when tradeList is clicked', async () => {

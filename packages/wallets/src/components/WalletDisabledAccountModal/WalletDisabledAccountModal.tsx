@@ -2,6 +2,7 @@ import React, { ComponentProps, FC } from 'react';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
 import { WalletDialog } from '../Base';
+import './WalletDisabledAccountModal.scss';
 
 type WalletDisabledAccountModalProps = ComponentProps<typeof WalletDialog> & {
     accountType: string;
@@ -9,7 +10,12 @@ type WalletDisabledAccountModalProps = ComponentProps<typeof WalletDialog> & {
 
 const WalletDisabledAccountModal: FC<WalletDisabledAccountModalProps> = ({ accountType, isVisible, onClose }) => {
     return (
-        <WalletDialog isVisible={isVisible} onClose={onClose}>
+        <WalletDialog
+            className='wallets-disabled-account-modal'
+            isVisible={isVisible}
+            onClose={onClose}
+            shouldCloseOnOverlayClick
+        >
             <WalletDialog.Header onClose={onClose}>
                 <Localize i18n_default_text='{{accountType}} account disabled ' values={{ accountType }} />
             </WalletDialog.Header>
@@ -22,7 +28,6 @@ const WalletDisabledAccountModal: FC<WalletDisabledAccountModalProps> = ({ accou
                 <Button
                     color='primary'
                     onClick={() => {
-                        onClose();
                         window.LiveChatWidget.call('maximize');
                     }}
                 >

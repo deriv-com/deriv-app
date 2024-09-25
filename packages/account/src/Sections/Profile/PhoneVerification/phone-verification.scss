@@ -52,6 +52,13 @@
             height: 40rem;
         }
 
+        &--session-timeout-component {
+            display: flex;
+            width: 100%;
+            justify-content: end;
+            margin-bottom: 2.4rem;
+        }
+
         &--inputfield {
             width: 60%;
             margin-top: 2.4rem;

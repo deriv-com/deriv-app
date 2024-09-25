@@ -58,4 +58,26 @@ describe('usePhoneNumberVerificationSetTimer', () => {
 
         expect(result.current.should_show_session_timeout_modal).toBe(false);
     });
+
+    it('should set formatted_time value to be 00:00 if the session_timestamp has no difference', async () => {
+        if (mock_store.client.account_settings.phone_number_verification)
+            mock_store.client.account_settings.phone_number_verification.session_timestamp = 1620000000;
+
+        const { result, waitForNextUpdate } = renderHook(() => usePhoneNumberVerificationSessionTimer(), { wrapper });
+
+        await waitForNextUpdate();
+
+        expect(result.current.formatted_time).toBe('00:00');
+    });
+
+    it('should set formatted_time value if the session_timestamp has any value', async () => {
+        if (mock_store.client.account_settings.phone_number_verification)
+            mock_store.client.account_settings.phone_number_verification.session_timestamp = 1620000003;
+
+        const { result, waitForNextUpdate } = renderHook(() => usePhoneNumberVerificationSessionTimer(), { wrapper });
+
+        await waitForNextUpdate();
+
+        expect(result.current.formatted_time).toBe('00:03');
+    });
 });

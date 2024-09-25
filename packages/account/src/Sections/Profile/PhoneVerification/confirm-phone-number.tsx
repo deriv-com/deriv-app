@@ -102,7 +102,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     };
 
     return (
-        <PhoneVerificationCard>
+        <>
             <Text bold>
                 <Localize i18n_default_text='Step 2 of 3: Confirm your phone number' />
             </Text>
@@ -162,7 +162,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 }
                 isVisible={!!next_phone_otp_request_timer}
             />
-        </PhoneVerificationCard>
+        </>
     );
 });
 

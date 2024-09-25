@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { toMoment } from '@deriv/shared';
 import ForwardStartingBanner from '../forward-starting-banner';
 
-const mocked_now = Math.floor(Date.now() / 1000);
+const mocked_date = 1727251488;
 const banner_text = 'This contract starts on';
 const mocked_open_positions = [
     {
@@ -18,8 +18,8 @@ const mocked_open_positions = [
         current_spot: 681.76,
         current_spot_display_value: '681.76',
         current_spot_time: 1716220628,
-        date_expiry: mocked_now + 1000,
-        date_settlement: mocked_now + 1000,
+        date_expiry: mocked_date + 1000,
+        date_settlement: mocked_date + 1000,
         date_start: 1716220562,
         display_name: 'Volatility 100 (1s) Index',
         entry_spot: 682.6,
@@ -27,7 +27,7 @@ const mocked_open_positions = [
         entry_tick: 682.6,
         entry_tick_display_value: '682.60',
         entry_tick_time: 1716220563,
-        expiry_time: mocked_now + 1000,
+        expiry_time: mocked_date + 1000,
         is_expired: 0,
         is_forward_starting: 0,
         is_intraday: 1,
@@ -42,7 +42,7 @@ const mocked_open_positions = [
         profit: -2.62,
         profit_percentage: -29.11,
         purchase_time: 1716220562,
-        shortcode: `CALL_1HZ100V_17.61_1716220562_${mocked_now + 1000}F_S0P_0`,
+        shortcode: `CALL_1HZ100V_17.61_1716220562_${mocked_date + 1000}F_S0P_0`,
         status: 'open',
         transaction_ids: {
             buy: 484286139408,
@@ -59,11 +59,11 @@ const mocked_open_positions = [
         currency: 'USD',
         current_spot: 9102.91,
         current_spot_time: 1727096138,
-        date_expiry: mocked_now + 3000,
-        date_settlement: mocked_now + 3000,
-        date_start: mocked_now + 2000,
+        date_expiry: mocked_date + 3000,
+        date_settlement: mocked_date + 3000,
+        date_start: mocked_date + 2000,
         display_name: 'Volatility 10 (1s) Index',
-        expiry_time: mocked_now + 3000,
+        expiry_time: mocked_date + 3000,
         is_expired: 0,
         is_forward_starting: 1,
         is_intraday: 1,
@@ -78,13 +78,13 @@ const mocked_open_positions = [
         profit: -0.47,
         profit_percentage: -4.7,
         purchase_time: 1727096132,
-        shortcode: `CALL_1HZ10V_19.54_${mocked_now + 2000}F_${mocked_now + 3000}_S0P_0`,
+        shortcode: `CALL_1HZ10V_19.54_${mocked_date + 2000}F_${mocked_date + 3000}_S0P_0`,
         status: 'open',
     },
 ];
 const mocked_props = {
     contract_info: mocked_open_positions[1],
-    server_time: toMoment(mocked_now),
+    server_time: toMoment(mocked_date),
 } as React.ComponentProps<typeof ForwardStartingBanner>;
 
 describe('ForwardStartingBanner', () => {

@@ -3,10 +3,24 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getCardLabels, getContractPath, toMoment } from '@deriv/shared';
+import {
+    getCardLabels,
+    getStartTime,
+    getContractPath,
+    hasForwardContractStarted,
+    isForwardStarting,
+    toMoment,
+} from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCard from '../contract-card';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isForwardStarting: jest.fn(),
+    getStartTime: jest.fn(),
+    hasForwardContractStarted: jest.fn(),
+}));
 
 const mockedNow = Math.floor(Date.now() / 1000);
 
@@ -301,40 +315,6 @@ const openPositions = [
         high_barrier: 683.046,
         low_barrier: 682.454,
     },
-    {
-        contract_info: {
-            account_id: 147849428,
-            barrier_count: 1,
-            bid_price: 9.53,
-            buy_price: 10,
-            contract_id: 257552458028,
-            contract_type: 'CALL',
-            currency: 'USD',
-            current_spot: 9102.91,
-            current_spot_time: 1727096138,
-            date_expiry: mockedNow + 3000,
-            date_settlement: mockedNow + 3000,
-            date_start: mockedNow + 2000,
-            display_name: 'Volatility 10 (1s) Index',
-            expiry_time: mockedNow + 3000,
-            is_expired: 0,
-            is_forward_starting: 1,
-            is_intraday: 1,
-            is_path_dependent: 0,
-            is_settleable: 0,
-            is_sold: 0,
-            is_valid_to_cancel: 0,
-            is_valid_to_sell: 1,
-            longcode:
-                'Win payout if Volatility 10 (1s) Index is strictly higher than entry spot at 15 minutes after 2024-09-23 13:05:00 GMT.',
-            payout: 19.54,
-            profit: -0.47,
-            profit_percentage: -4.7,
-            purchase_time: 1727096132,
-            shortcode: `CALL_1HZ10V_19.54_${mockedNow + 2000}F_${mockedNow + 3000}_S0P_0`,
-            status: 'open',
-        },
-    },
 ] as TPortfolioPosition[];
 
 const buttonLoaderId = 'dt_button_loader';
@@ -391,12 +371,11 @@ describe('ContractCard', () => {
         expect(screen.getByRole('button', { name: CLOSE })).toBeDisabled();
     });
     it('should render specific tag if it is a forward starting contract', () => {
-        render(
-            mockedContractCard({
-                ...mockProps,
-                contractInfo: openPositions[3].contract_info,
-            })
-        );
+        (isForwardStarting as jest.Mock).mockReturnValueOnce(true);
+        (hasForwardContractStarted as jest.Mock).mockReturnValueOnce(false);
+        (getStartTime as jest.Mock).mockReturnValueOnce(124525522);
+
+        render(mockedContractCard());
 
         expect(screen.getByTestId('dt_forward-starting')).toBeInTheDocument();
     });

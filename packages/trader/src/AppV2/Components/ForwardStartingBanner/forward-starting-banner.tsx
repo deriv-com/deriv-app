@@ -27,9 +27,7 @@ type TForwardStartingBannerProps = {
 const ForwardStartingBanner = ({ class_name, contract_info, server_time }: TForwardStartingBannerProps) => {
     const { purchase_time, sell_time, shortcode } = contract_info;
     const is_sold = !!sell_time || isEnded(contract_info as TContractInfo);
-    const converted_purchase_time =
-        typeof purchase_time === 'string' ? Number(new Date(purchase_time).getTime()) : purchase_time;
-    const is_forward_starting = isForwardStarting(shortcode ?? '', converted_purchase_time);
+    const is_forward_starting = isForwardStarting(shortcode ?? '', purchase_time);
     const start_time = getStartTime(shortcode ?? '');
     const has_forward_contract_started = hasForwardContractStarted(shortcode ?? '');
     const show_banner = is_forward_starting && !!start_time && !has_forward_contract_started && !is_sold;

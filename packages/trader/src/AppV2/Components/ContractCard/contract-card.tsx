@@ -92,9 +92,7 @@ const ContractCard = ({
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
     const has_no_auto_expiry = isMultiplier && !is_crypto;
-    const converted_purchase_time =
-        typeof purchase_time === 'string' ? Number(new Date(purchase_time).getTime()) : purchase_time;
-    const is_forward_starting = isForwardStarting(shortcode ?? '', converted_purchase_time);
+    const is_forward_starting = isForwardStarting(shortcode ?? '', purchase_time);
     const start_time = getStartTime(shortcode ?? '');
     const has_forward_contract_started = hasForwardContractStarted(shortcode ?? '');
     const show_tag_forward_starting = is_forward_starting && !!start_time && !has_forward_contract_started && !isSold;

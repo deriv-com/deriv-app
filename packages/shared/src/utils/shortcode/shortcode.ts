@@ -91,7 +91,7 @@ export const getStartTime = (shortcode: string) => {
     return shortcode_info?.start_time || '';
 };
 
-export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
+export const isForwardStarting = (shortcode: string, purchase_time?: number | string) => {
     const start_time = getStartTime(shortcode);
     return start_time && purchase_time && /f$/gi.test(start_time);
 };

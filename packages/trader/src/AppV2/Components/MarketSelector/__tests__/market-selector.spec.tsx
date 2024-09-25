@@ -56,6 +56,6 @@ describe('MarketSelector', () => {
         mock_store.modules.trade.symbol = 'USDJPY';
         render(MockedMarketSelector(mockStore(mock_store)));
 
-        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
+        expect(screen.getByTestId('square-skeleton')).toBeInTheDocument();
     });
 });

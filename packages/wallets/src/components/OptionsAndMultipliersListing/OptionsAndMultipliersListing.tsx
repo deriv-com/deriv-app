@@ -41,7 +41,9 @@ const OptionsAndMultipliersListing = () => {
                     return (
                         <TradingAccountCard
                             {...account}
-                            disabled={!activeLinkedToTradingAccount?.loginid}
+                            disabled={
+                                !activeLinkedToTradingAccount?.loginid || activeLinkedToTradingAccount?.is_disabled
+                            }
                             key={`trading-account-card-${title}`}
                             onClick={() => {
                                 account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);

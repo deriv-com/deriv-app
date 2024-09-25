@@ -10,6 +10,12 @@
 
     &--disabled {
         cursor: not-allowed;
+        opacity: 0.48;
+        @include desktop {
+            &:hover {
+                background: none;
+            }
+        }
     }
 
     @include desktop {
@@ -21,7 +27,7 @@
             border-bottom: none;
         }
 
-        &:hover {
+        &:hover:not(&--disabled) {
             cursor: pointer;
             background-color: var(--system-light-6-hover-background, #e6e9e9);
             border-radius: 0.8rem;

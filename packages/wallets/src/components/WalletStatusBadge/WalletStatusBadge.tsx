@@ -11,7 +11,7 @@ type TProps = Omit<ComponentProps<typeof Badge>, 'children'> & {
 
 const statusConfig = {
     disabled: {
-        color: 'danger',
+        color: 'danger-secondary',
         icon: <LabelPairedTriangleExclamationSmBoldIcon fill='var(--du-status-danger, #ec3f3f)' />,
         text: <Localize i18n_default_text='Disabled' />,
     },

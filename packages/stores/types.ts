@@ -740,9 +740,7 @@ type TUiStore = {
     is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
-    is_scroll_to_verify_button: boolean;
     isUrlUnavailableModalVisible: boolean;
-    setIsScrollToVerifyButton: (value: boolean) => void;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
     openRealAccountSignup: (

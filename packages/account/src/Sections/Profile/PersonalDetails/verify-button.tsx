@@ -6,7 +6,6 @@ import { useIsPhoneNumberVerified, useSettings, useVerifyEmail } from '@deriv/ho
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, Localize } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
 import { makeSettingsRequest } from './validation';
 import './verify-button.scss';
 
@@ -29,7 +28,7 @@ export const VerifyButton = observer(
         states_list,
     }: TVerifyButton) => {
         const { client, ui } = useStore();
-        const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
+        const { setShouldShowPhoneNumberOTP } = ui;
         const { setVerificationCode, is_authorize, is_virtual } = client;
         const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
@@ -40,29 +39,11 @@ export const VerifyButton = observer(
         } = useSettings();
         //@ts-expect-error remove this when phone_number_verification is added to api calls
         const { sendPhoneNumberVerifyEmail, WS, is_loading, error } = useVerifyEmail('phone_number_verification');
-        const { isDesktop } = useDevice();
         const ref = useRef<HTMLDivElement | null>(null);
 
         useEffect(() => {
             if (is_authorize) refetch();
         }, [is_authorize, refetch]);
-
-        useEffect(() => {
-            if (is_scroll_to_verify_button) {
-                // To make scrolling work on mobile we need to add a delay.
-                const timeout = setTimeout(() => {
-                    if (ref.current) {
-                        ref.current.style.scrollMarginTop = isDesktop ? '120px' : '80px';
-                        ref.current.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 0);
-
-                return () => {
-                    clearTimeout(timeout);
-                    setIsScrollToVerifyButton(false);
-                };
-            }
-        }, [is_scroll_to_verify_button, setIsScrollToVerifyButton, isDesktop]);
 
         useEffect(() => {
             if (WS.isSuccess) {

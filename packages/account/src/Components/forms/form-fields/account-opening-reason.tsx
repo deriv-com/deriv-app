@@ -1,17 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete & SelectNative components
 
+import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { SelectNative, Dropdown } from '@deriv/components';
 import { useTranslations } from '@deriv-com/translations';
 import { Field, FieldProps } from 'formik';
-import React from 'react';
+import clsx from 'clsx';
 
 type TAccountOpeningReasonFieldProps = {
     required: boolean;
     account_opening_reason_list: { text: string; value: string }[];
     setFieldValue: (field: string, value: string, should_validate?: boolean) => void;
     disabled: boolean;
+    fieldFocused?: boolean;
 };
 
 const AccountOpeningReasonField = ({
@@ -19,9 +21,11 @@ const AccountOpeningReasonField = ({
     account_opening_reason_list,
     setFieldValue,
     disabled,
+    fieldFocused,
 }: TAccountOpeningReasonFieldProps) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
+
     return (
         <React.Fragment>
             <Field name='account_opening_reason'>
@@ -39,6 +43,7 @@ const AccountOpeningReasonField = ({
                                 {...field}
                                 error={meta.touched && meta.error}
                                 required
+                                className={clsx({ 'focus-field': fieldFocused })}
                             />
                         ) : (
                             <SelectNative
@@ -57,6 +62,7 @@ const AccountOpeningReasonField = ({
                                 required
                                 data_testid='account_opening_reason_mobile'
                                 disabled={disabled}
+                                className={clsx({ 'focus-field': fieldFocused })}
                             />
                         )}
                     </div>

@@ -1,6 +1,9 @@
 .wallets-added-mt5 {
     &__card--disabled {
         cursor: pointer;
+        & > :first-child {
+            opacity: 0.48;
+        }
         @include desktop {
             &:hover {
                 background: none;
@@ -74,7 +77,8 @@
         }
         &--disabled {
             & > :first-child,
-            & > :nth-child(2) {
+            & > :nth-child(2),
+            & + [class*='__icon'] {
                 opacity: 0.48;
             }
         }

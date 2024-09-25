@@ -7,6 +7,7 @@ import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks
 import { routes } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { VerifyButton } from '../verify-button';
+import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -18,8 +19,27 @@ jest.mock('@deriv/hooks', () => ({
     })),
     useSettings: jest.fn(() => ({
         refetch: jest.fn(),
+        mutation: {
+            mutateAsync: jest.fn(() => Promise.resolve()),
+            isLoading: false,
+        },
     })),
 }));
+
+const mockAccountSettings: GetSettings = {
+    immutable_fields: ['place_of_birth'],
+    place_of_birth: 'UK',
+    tax_residence: 'UK',
+    tax_identification_number: '12345',
+    account_opening_reason: 'Hedging',
+};
+
+const mockResidenceList: ResidenceList = [
+    { value: 'UK', text: 'United Kingdom' },
+    { value: 'US', text: 'United States' },
+];
+
+const mockStatesList: StatesList = [];
 
 describe('VerifyButton', () => {
     beforeEach(() => {
@@ -45,6 +65,9 @@ describe('VerifyButton', () => {
                     <VerifyButton
                         is_verify_button_disabled={false}
                         next_email_otp_request_timer={mock_next_email_otp_request_timer}
+                        values={mockAccountSettings}
+                        residence_list={mockResidenceList}
+                        states_list={mockStatesList}
                         setStatus={mock_set_status}
                     />
                 </StoreProvider>

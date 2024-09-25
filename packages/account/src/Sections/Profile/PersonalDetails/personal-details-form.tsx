@@ -45,10 +45,6 @@ type TRestState = {
     api_error?: string;
 };
 
-type THintMessage = {
-    is_phone_number_editted: boolean;
-};
-
 const PersonalDetailsForm = observer(() => {
     const { isDesktop } = useDevice();
     const [is_loading, setIsLoading] = useState(false);
@@ -121,7 +117,7 @@ const PersonalDetailsForm = observer(() => {
         }
     }, [invalidate, is_language_changing]);
 
-    const hintMessage = ({ is_phone_number_editted }: THintMessage) => {
+    const hintMessage = () => {
         if (isPhoneNumberVerificationEnabled) {
             if (is_phone_number_verified) {
                 return (
@@ -136,8 +132,6 @@ const PersonalDetailsForm = observer(() => {
                         ]}
                     />
                 );
-            } else if (is_phone_number_editted) {
-                return <Localize i18n_default_text='Save changes to enable verification.' />;
             }
         } else {
             return null;
@@ -423,9 +417,7 @@ const PersonalDetailsForm = observer(() => {
                                             label={localize('Phone number*')}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
-                                            hint={hintMessage({
-                                                is_phone_number_editted: stripped_phone_number !== values.phone,
-                                            })}
+                                            hint={hintMessage()}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                 let phone_number = e.target.value.replace(/\D/g, '');
                                                 phone_number = phone_number.length === 0 ? '+' : `+${phone_number}`;
@@ -446,10 +438,13 @@ const PersonalDetailsForm = observer(() => {
                                             <VerifyButton
                                                 is_verify_button_disabled={
                                                     isFieldDisabled('phone') ||
-                                                    stripped_phone_number !== values.phone ||
+                                                    !isValid ||
                                                     !stripped_phone_number ||
                                                     is_email_otp_timer_loading
                                                 }
+                                                values={values}
+                                                residence_list={residence_list}
+                                                states_list={states_list}
                                                 next_email_otp_request_timer={next_email_otp_request_timer}
                                                 setStatus={setStatus}
                                             />

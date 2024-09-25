@@ -1,36 +1,51 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
+import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { useIsPhoneNumberVerified, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { makeSettingsRequest } from './validation';
 import './verify-button.scss';
 
 type TVerifyButton = {
     is_verify_button_disabled: boolean;
     next_email_otp_request_timer?: number;
     setStatus: (status: any) => void;
+    values: GetSettings;
+    residence_list: ResidenceList;
+    states_list: StatesList;
 };
 
 export const VerifyButton = observer(
-    ({ is_verify_button_disabled, next_email_otp_request_timer, setStatus }: TVerifyButton) => {
+    ({
+        is_verify_button_disabled,
+        next_email_otp_request_timer,
+        setStatus,
+        values,
+        residence_list,
+        states_list,
+    }: TVerifyButton) => {
         const { client, ui } = useStore();
         const { setShouldShowPhoneNumberOTP, is_scroll_to_verify_button, setIsScrollToVerifyButton } = ui;
-        const { setVerificationCode } = client;
+        const { setVerificationCode, is_authorize, is_virtual } = client;
         const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
         const { localize } = useTranslations();
-        const { refetch } = useSettings();
+        const {
+            refetch,
+            mutation: { mutateAsync: updateSettings, isLoading: isSetSettingsLoading },
+        } = useSettings();
         //@ts-expect-error remove this when phone_number_verification is added to api calls
         const { sendPhoneNumberVerifyEmail, WS, is_loading, error } = useVerifyEmail('phone_number_verification');
         const { isDesktop } = useDevice();
         const ref = useRef<HTMLDivElement | null>(null);
 
         useEffect(() => {
-            refetch();
-        }, [refetch]);
+            if (is_authorize) refetch();
+        }, [is_authorize, refetch]);
 
         useEffect(() => {
             if (is_scroll_to_verify_button) {
@@ -62,7 +77,15 @@ export const VerifyButton = observer(
             e.preventDefault();
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
-            sendPhoneNumberVerifyEmail();
+            const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
+            //@ts-expect-error GetSettings types doesn't match updated set_settings payload types
+            updateSettings({ payload: request })
+                .then(() => {
+                    sendPhoneNumberVerifyEmail();
+                })
+                .catch(err => {
+                    setStatus({ msg: err.message, code: err.code });
+                });
         };
 
         const verifyTimer = () => {
@@ -85,6 +108,7 @@ export const VerifyButton = observer(
                     is_disabled={
                         is_phone_number_verified ||
                         is_verify_button_disabled ||
+                        isSetSettingsLoading ||
                         is_loading ||
                         !!next_email_otp_request_timer
                     }

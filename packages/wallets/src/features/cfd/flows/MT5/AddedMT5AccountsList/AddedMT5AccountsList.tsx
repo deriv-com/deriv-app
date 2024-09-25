@@ -156,7 +156,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
                 </TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
-                    <TradingAccountCard.Content className='wallets-added-mt5__details'>
+                    <TradingAccountCard.Content
+                        className={classNames('wallets-added-mt5__details', {
+                            'wallets-added-mt5__details--disabled': isAccountDisabled,
+                        })}
+                    >
                         <div className='wallets-added-mt5__details-title'>
                             <Text align='start' size='sm'>
                                 {title}

@@ -1113,6 +1113,8 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     onClick: () => {
                         WS.verifyEmail(email, 'phone_number_verification');
+                        localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
+
                     },
                     route: routes.phone_verification,
                     text: localize('Verify now'),

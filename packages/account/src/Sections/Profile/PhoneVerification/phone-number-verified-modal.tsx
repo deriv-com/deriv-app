@@ -13,12 +13,24 @@ type TPhoneNumberVerifiedModal = {
 
 const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_modal }: TPhoneNumberVerifiedModal) => {
     const history = useHistory();
+    const previous_route = localStorage.getItem('routes_from_notification_to_pnv');
+    const should_route_back_to_previous =
+        !!previous_route &&
+        (previous_route !== routes.personal_details || previous_route !== routes.phone_verification);
 
     const handleDoneButton = () => {
-        history.push(routes.personal_details);
+        localStorage.removeItem('routes_from_notification_to_pnv');
+
+        should_route_back_to_previous ? history.push(previous_route) : history.push(routes.traders_hub);
     };
+
     const { isMobile } = useDevice();
-    const { ui } = useStore();
+    const {
+        ui,
+        client: {
+            account_settings: { phone },
+        },
+    } = useStore();
     const { setIsPhoneVerificationCompleted } = ui;
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
@@ -44,11 +56,14 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
             primaryButtonLabel={<Localize i18n_default_text='OK' />}
             disableCloseOnOverlay
         >
-            <Modal.Header title={<Localize i18n_default_text='Success' />} />
+            <Modal.Header title={<Localize i18n_default_text='Phone number verified' />} />
             <Modal.Body>
                 <div className='phone-verification__verified-modal--contents'>
                     <Text>
-                        <Localize i18n_default_text='Your phone number is verified.' />
+                        <Localize
+                            i18n_default_text='{{ phone }} is verified as your phone number.'
+                            values={{ phone }}
+                        />
                     </Text>
                 </div>
             </Modal.Body>

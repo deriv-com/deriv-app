@@ -45,8 +45,8 @@ describe('PhoneNumberVerifiedModal', () => {
 
     it('it should render PhoneNumberVerifiedModal', () => {
         renderModal();
-        expect(screen.getByText(/Success/)).toBeInTheDocument();
-        expect(screen.getByText(/Your phone number is verified./)).toBeInTheDocument();
+        expect(screen.getByText(/Phone number verified/)).toBeInTheDocument();
+        expect(screen.getByText(/is verified as your phone number./)).toBeInTheDocument();
     });
 
     it('it should refetch GetSettings when done is clicked', async () => {
@@ -54,6 +54,6 @@ describe('PhoneNumberVerifiedModal', () => {
         const doneButton = screen.getByRole('button', { name: /OK/ });
         await userEvent.click(doneButton);
         expect(mockPush).toHaveBeenCalledTimes(1);
-        expect(mockPush).toBeCalledWith(routes.personal_details);
+        expect(mockPush).toBeCalledWith(routes.traders_hub);
     });
 });

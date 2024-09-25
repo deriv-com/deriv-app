@@ -4,11 +4,11 @@ import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { Router } from './routes';
+import { TLanguageType } from './types';
 import './AppContent.scss';
 
-type LanguageType = 'AR' | 'EN';
 type AppContentProps = {
-    setPreferredLanguage: (language: LanguageType | null) => void;
+    setPreferredLanguage: (language: TLanguageType | null) => void;
 };
 
 const AppContent: React.FC<AppContentProps> = ({ setPreferredLanguage }) => {
@@ -21,7 +21,7 @@ const AppContent: React.FC<AppContentProps> = ({ setPreferredLanguage }) => {
 
     useEffect(() => {
         if (preferredLanguage) {
-            setPreferredLanguage(preferredLanguage as LanguageType);
+            setPreferredLanguage(preferredLanguage as TLanguageType);
         } else {
             setPreferredLanguage(null);
         }

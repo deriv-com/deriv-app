@@ -1,18 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { APIProvider } from '@deriv/api-v2';
-import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
+import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalProvider } from './components/ModalProvider';
+import useLanguage from './hooks/useLanguage';
 import AppContent from './AppContent';
 import WalletsAuthProvider from './AuthProvider';
+import { TLanguageType } from './types';
 import './styles/fonts.scss';
 import './index.scss';
 
-type LanguageType = 'AR' | 'EN';
-
 const App: React.FC = () => {
-    const [preferredLanguage, setPreferredLanguage] = useState<LanguageType | null>(null);
-    const defaultLanguage = (preferredLanguage ?? getInitialLanguage()) as LanguageType;
+    const [preferredLanguage, setPreferredLanguage] = useState<TLanguageType | null>(null);
+    const language = useLanguage(preferredLanguage);
 
     const i18nInstance = useMemo(
         () =>
@@ -20,8 +20,9 @@ const App: React.FC = () => {
                 cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
             }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [preferredLanguage, getInitialLanguage()]
+        [language]
     );
+    const defaultLanguage = preferredLanguage ?? language;
 
     return (
         <APIProvider standalone>

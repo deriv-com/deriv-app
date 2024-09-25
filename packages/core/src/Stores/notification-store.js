@@ -356,6 +356,7 @@ export default class NotificationStore extends BaseStore {
             current_time
         );
         const show_phone_number_verification_notification =
+            !(window.location.pathname === routes.phone_verification) &&
             !account_settings?.phone_number_verification?.verified &&
             account_settings?.phone &&
             !is_next_email_attempt_timer_running &&
@@ -1113,6 +1114,7 @@ export default class NotificationStore extends BaseStore {
                     onClick: () => {
                         WS.verifyEmail(email, 'phone_number_verification');
                         localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
+
                     },
                     route: routes.phone_verification,
                     text: localize('Verify now'),

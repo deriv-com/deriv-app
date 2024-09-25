@@ -386,7 +386,7 @@ export default class NotificationStore extends BaseStore {
                 this.handleCurrencyRemovalNotification(account_currency_closure_status, currency);
             }
 
-            // if (status?.includes('mt5_additional_kyc_required'))
+            if (status?.includes('mt5_additional_kyc_required'))
             this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {

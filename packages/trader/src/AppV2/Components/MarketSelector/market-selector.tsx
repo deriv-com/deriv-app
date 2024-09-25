@@ -17,6 +17,8 @@ const MarketSelector = observer(() => {
 
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
+    // For closed markets exchange_is_open === 0
+    if (typeof currentSymbol?.exchange_is_open === 'undefined') return <Skeleton height={42} width={240} />;
 
     return (
         <React.Fragment>

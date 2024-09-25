@@ -3,8 +3,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
@@ -72,7 +71,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
             : 0;
-    const { max_payout = error_max_payout, stake } = validation_params[contract_types[0]] ?? {};
+    const { payout, stake } = validation_params[contract_types[0]] ?? {};
+    const { max: max_payout = error_max_payout } = payout ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
     const error_payout_1 = proposal_error_message_1
         ? Number(proposal_error_message_1.match(float_number_search_regex)?.[2])
@@ -150,8 +150,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(+details.min_stake),
-                    max_stake: FormatUtils.formatMoney(+details.max_stake),
+                    min_stake: formatMoney(currency, +details.min_stake, true),
+                    max_stake: formatMoney(currency, +details.max_stake, true),
                 }}
             />
         ));
@@ -199,6 +199,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             allowDecimals
                             allowSign={false}
                             customType='commaRemoval'
+                            className='text-field--custom'
                             decimals={getDecimalPlaces(currency)}
                             data-testid='dt_input_with_steppers'
                             message={getInputMessage()}

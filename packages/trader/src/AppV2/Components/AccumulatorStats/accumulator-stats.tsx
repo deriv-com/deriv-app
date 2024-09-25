@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
-import { LabelPairedChevronDownSmBoldIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronUpSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -65,7 +65,7 @@ const AccumulatorStats = observer(() => {
             clearTimeout(error_timeout);
             clearTimeout(transition_timeout);
         };
-    }, [rows[0]?.[0]]);
+    }, [rows[0]?.[0], ticks_history]);
 
     if (rows.length === 0) {
         return null;
@@ -92,7 +92,10 @@ const AccumulatorStats = observer(() => {
                         />
                     </div>
                     <button className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
-                        <LabelPairedChevronDownSmBoldIcon data-testid='expand-stats-icon' />
+                        <LabelPairedChevronUpSmBoldIcon
+                            data-testid='expand-stats-icon'
+                            fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                        />
                     </button>
                 </div>
             </div>

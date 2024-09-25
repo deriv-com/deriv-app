@@ -7,12 +7,12 @@ import {
     useSettings,
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { toMoment } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
+import { getFormattedDateString } from '../../utils/utils';
 import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
@@ -45,7 +45,7 @@ const DerivAppsGetAccount: React.FC = () => {
             const createAccountResponse = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
-                    date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
+                    date_of_birth: getFormattedDateString(Number(dateOfBirth), {}, 'YYYY-MM-DD', true),
                     first_name: firstName,
                     last_name: lastName,
                     residence: countryCode || '',

@@ -9,14 +9,13 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
-import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
 import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/TradeParameters';
 import CurrentSpot from 'AppV2/Components/CurrentSpot';
 import { TradeChart } from '../Chart';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import TradeTypes from './trade-types';
 import MarketSelector from 'AppV2/Components/MarketSelector';
-import useContractsForCompany, { TContractTypesList } from 'AppV2/Hooks/useContractsForCompany';
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
@@ -26,6 +25,7 @@ const Trade = observer(() => {
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
         client: { is_logged_in },
+        ui: { is_dark_mode_on },
     } = useStore();
     const {
         active_symbols,
@@ -38,17 +38,12 @@ const Trade = observer(() => {
         onChange,
         onUnmount,
     } = useTraderStore();
-    const { contract_types_list } = useContractsForCompany();
+    const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
     });
-    const trade_types = React.useMemo(() => {
-        return Array.isArray(contract_types_list) && contract_types_list.length === 0
-            ? []
-            : getTradeTypesList(contract_types_list as TContractTypesList);
-    }, [contract_types_list]);
 
     const symbols = React.useMemo(
         () =>
@@ -96,6 +91,7 @@ const Trade = observer(() => {
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}
+                            is_dark_mode_on={is_dark_mode_on}
                         />
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
@@ -104,7 +100,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         <div className='trade__chart-tooltip'>
                             <section
-                                className='trade__chart'
+                                className={clsx('trade__chart', { 'trade__chart--with-borderRadius': !is_accumulator })}
                                 style={{
                                     height: getChartHeight({ is_accumulator, symbol, has_cancellation, contract_type }),
                                 }}

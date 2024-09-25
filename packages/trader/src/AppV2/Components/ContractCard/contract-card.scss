@@ -3,7 +3,7 @@
     display: flex;
     width: 100%;
     cursor: pointer;
-    background-color: var(--component-modal-bg);
+    background-color: var(--semantic-color-slate-solid-surface-frame-low);
     padding: var(--semantic-spacing-general-md);
     justify-content: space-between;
     height: 10.4rem;
@@ -40,11 +40,12 @@
     .status,
     .risk-management,
     .timer {
-        background-color: var(--core-color-opacity-black-75);
+        background-color: var(--component-tag-bg-default);
 
         &,
         .dc-remaining-time {
             font-size: var(--core-fontSize-50);
+            color: var(--component-tag-label-color-default);
         }
     }
     .trade-type,
@@ -77,15 +78,15 @@
             align-items: center;
             width: var(--core-size-3600);
             height: 100%;
+            color: var(--component-textIcon-static-prominentDark);
             cursor: pointer;
 
             .label,
             .dc-remaining-time {
-                color: var(--core-color-solid-slate-50);
                 font-size: var(--core-fontSize-50);
             }
             &:disabled:not(.loading) {
-                background-color: var(--core-color-opacity-black-200);
+                background-color: var(--semantic-color-monochrome-surface-normal-midLow);
 
                 .label {
                     color: var(--component-textIcon-normal-disabled);
@@ -96,8 +97,12 @@
                 height: var(--core-size-600);
                 display: grid;
                 border-radius: 50%;
-                mask: radial-gradient(farthest-side, #0000 50%, var(--core-color-solid-slate-1400) 51%);
-                background: linear-gradient(0deg, rgba(255, 255, 255, 0.5) 50%, var(--core-color-solid-slate-50) 0)
+                mask: radial-gradient(farthest-side, #0000 50%, var(--component-textIcon-static-prominentDark) 51%);
+                background: linear-gradient(
+                            0deg,
+                            rgba(255, 255, 255, 0.5) 50%,
+                            var(--component-button-bg-sell-primary-loading) 0
+                        )
                         center/1px 100%,
                     linear-gradient(90deg, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.75) 0) center/100% 1px;
                 background-repeat: no-repeat;
@@ -234,7 +239,7 @@
             position: sticky;
             top: 0;
             z-index: 1;
-            background-color: var(--core-color-solid-slate-75);
+            background-color: var(--semantic-color-slate-solid-surface-frame-mid);
         }
     }
 }

@@ -214,11 +214,21 @@ const ContractCard = ({
                                     <div className='circle-loader' data-testid='dt_button_loader' />
                                 ) : (
                                     <>
-                                        <CaptionText bold as='div' className='label'>
+                                        <CaptionText
+                                            bold
+                                            as='div'
+                                            className='label'
+                                            color='quill-typography__color--prominent'
+                                        >
                                             {getCardLabels().CANCEL}
                                         </CaptionText>
                                         {cancellation_date_expiry && (
-                                            <CaptionText bold as='div' className='label'>
+                                            <CaptionText
+                                                bold
+                                                as='div'
+                                                className='label'
+                                                color='quill-typography__color--prominent'
+                                            >
                                                 <RemainingTime
                                                     end_time={cancellation_date_expiry}
                                                     format='mm:ss'
@@ -239,7 +249,12 @@ const ContractCard = ({
                             {isCloseButtonPressed ? (
                                 <div className='circle-loader' data-testid='dt_button_loader' />
                             ) : (
-                                <CaptionText bold as='div' className='label'>
+                                <CaptionText
+                                    bold
+                                    as='div'
+                                    className='label'
+                                    color='var(--component-textIcon-static-prominentDark)'
+                                >
                                     {getCardLabels().CLOSE}
                                 </CaptionText>
                             )}

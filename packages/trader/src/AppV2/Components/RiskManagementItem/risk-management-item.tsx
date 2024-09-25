@@ -29,7 +29,7 @@ const RiskManagementItem = observer(
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
-        const [stepperValue, setStepperValue] = React.useState(0);
+        const [stepperValue, setStepperValue] = React.useState<number | string>();
         const { contract_info, contract } = useContractDetails();
         const { contract_type, currency } = contract_info;
         const { validation_errors, updateLimitOrder, clearContractUpdateConfigValues } = contract;
@@ -78,7 +78,7 @@ const RiskManagementItem = observer(
             clearContractUpdateConfigValues();
             if (value) {
                 setIsSheetOpen(true);
-                setStepperValue(0);
+                setStepperValue('');
                 setIsEnabled(true);
             } else {
                 contract.onChange?.({
@@ -160,6 +160,7 @@ const RiskManagementItem = observer(
                                 <TextFieldWithSteppers
                                     allowDecimals
                                     allowSign={false}
+                                    className='text-field--custom'
                                     customType='commaRemoval'
                                     decimals={getDecimalPlaces(currency)}
                                     message={errorMessage}
@@ -186,7 +187,9 @@ const RiskManagementItem = observer(
                             )}
                         </ActionSheet.Content>
                         <ActionSheet.Footer
-                            isPrimaryButtonDisabled={!!errorMessage || finalValue == stepperValue}
+                            isPrimaryButtonDisabled={
+                                !!errorMessage || finalValue == stepperValue || stepperValue === '' || stepperValue == 0
+                            }
                             shouldCloseOnPrimaryButtonClick
                             primaryAction={{
                                 content: <Localize i18n_default_text='Save' />,

@@ -89,7 +89,9 @@ const transformMultiplierData = (data: TContractInfo) => {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.MULTIPLIER]: data.multiplier ? `x${data.multiplier}` : '',
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
-        [CARD_LABELS.COMMISSION]: data.commission ? `${data.commission} ${data.currency}` : '',
+        [CARD_LABELS.COMMISSION]: data.commission
+            ? `${formatMoney(data.currency as string, data.commission, true)} ${data.currency}`
+            : '',
         ...(dealCancelFee && { [CARD_LABELS.DEAL_CANCEL_FEE]: dealCancelFee }),
         [CARD_LABELS.TAKE_PROFIT]:
             data.limit_order?.take_profit?.order_amount && data.currency

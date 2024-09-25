@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useModulesStore } from 'Stores/useModulesStores';
 import { clickAndKeyEventHandler } from '@deriv/shared';
@@ -24,8 +24,6 @@ const MarketCategoryItem = forwardRef(
         const { markets } = useModulesStore();
         const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = markets;
         const { addSnackbar } = useSnackbar();
-        const { ui } = useStore();
-        const { is_dark_mode_on } = ui;
 
         useEffect(() => {
             setIsFavorite(favoriteSymbols.includes(item.symbol));
@@ -44,16 +42,7 @@ const MarketCategoryItem = forwardRef(
             if (symbolIndex !== -1) {
                 removeFavoriteSymbol(symbol);
                 addSnackbar({
-                    icon: (
-                        <StandaloneStarRegularIcon
-                            fill={
-                                !is_dark_mode_on
-                                    ? 'var(--semantic-color-slate-solid-textIcon-inverse-highest)'
-                                    : 'var(--semantic-color-monochrome-textIcon-normal-mid)'
-                            }
-                            iconSize='sm'
-                        />
-                    ),
+                    icon: <StandaloneStarRegularIcon fill='var(--component-snackbar-icon-neutral)' iconSize='sm' />,
                     message: <Localize i18n_default_text='Removed from favorites' />,
                     hasCloseButton: false,
                 });

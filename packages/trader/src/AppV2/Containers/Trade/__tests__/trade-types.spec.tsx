@@ -42,6 +42,7 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
     return (
         <TraderProviders store={mocked_store}>
             <TradeTypes
+                is_dark_mode_on={false}
                 onTradeTypeSelect={jest.fn()}
                 trade_types={mockGetTradeTypesList(default_mock_store.modules.trade.contract_types_list)}
                 contract_type='rise_fall'
@@ -85,7 +86,7 @@ describe('TradeTypes', () => {
         render(mockTradeTypes());
 
         await userEvent.click(screen.getByText('View all'));
-        await userEvent.click(screen.getByText('Customize'));
+        await userEvent.click(screen.getByText('Customise'));
         const addButton = screen.getAllByTestId('dt_trade_type_list_item_right_icon')[0];
         await userEvent.click(addButton);
 

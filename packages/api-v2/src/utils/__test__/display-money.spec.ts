@@ -24,7 +24,7 @@ describe('displayMoney', () => {
         const fractional_digits = 0;
         const display_money = displayMoney(1234, 'USD', { fractional_digits });
 
-        expect(display_money).toBe('1,234 USD');
+        expect(display_money).toBe('1,234.00 USD');
     });
 
     it('should display USDt in en-US format', async () => {

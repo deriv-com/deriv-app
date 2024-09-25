@@ -62,7 +62,7 @@ describe('OTPVerification', () => {
         expect(screen.getByText('Step 1 of 3: Verification needed')).toBeInTheDocument();
         expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
-        expect(screen.getByText(/Enter the code below so we know the request has come from you./)).toBeInTheDocument();
+        expect(screen.getByText(/Enter the code below to verify it's you/)).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /Verification code/ })).toBeInTheDocument();
         expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });
@@ -72,7 +72,7 @@ describe('OTPVerification', () => {
         renderComponent();
         expect(screen.getByText('Step 3 of 3: Verify your number')).toBeInTheDocument();
         expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at ./)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Change/ })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Edit number/ })).toBeInTheDocument();
     });
 
     it('should render whatsapp when phone_verification_type is whatsapp', () => {

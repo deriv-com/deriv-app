@@ -162,7 +162,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                                 <Button
                                     key={0}
                                     variant='tertiary'
-                                    label={localize('Change')}
+                                    label={localize('Edit number')}
                                     size='sm'
                                     color='black-white'
                                     onClick={() =>
@@ -182,7 +182,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                             />
                         </Text>
                         <Text size='sm'>
-                            <Localize i18n_default_text='Enter the code below so we know the request has come from you.' />
+                            <Localize i18n_default_text="Enter the code below to verify it's you." />
                         </Text>
                     </Fragment>
                 )}

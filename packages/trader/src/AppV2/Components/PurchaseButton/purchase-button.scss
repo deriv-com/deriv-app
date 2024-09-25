@@ -35,6 +35,10 @@
                 min-height: var(--core-size-900);
             }
         }
+
+        &__item {
+            color: var(--component-button-label-color-sell-primary);
+        }
     }
     &__wrapper {
         display: flex;

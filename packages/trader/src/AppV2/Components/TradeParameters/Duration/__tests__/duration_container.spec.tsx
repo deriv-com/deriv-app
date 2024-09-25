@@ -41,21 +41,19 @@ jest.mock('@deriv-com/quill-ui', () => ({
 describe('DurationActionSheetContainer', () => {
     let default_trade_store: TCoreStores;
 
-    const trade_store = mockStore({
-        modules: {
-            trade: {
-                duration: 30,
-                duration_unit: 'm',
-                duration_units_list: ['t', 'm', 'h', 'd'],
-                onChangeMultiple: jest.fn(),
-                expiry_time: null,
-                contract_type: 'touch',
-            },
-        },
-    });
-
     beforeEach(() => {
-        default_trade_store = trade_store;
+        default_trade_store = mockStore({
+            modules: {
+                trade: {
+                    duration: 30,
+                    duration_unit: 'm',
+                    duration_units_list: ['t', 'm', 'h', 'd'],
+                    onChangeMultiple: jest.fn(),
+                    expiry_time: null,
+                    contract_type: 'call',
+                },
+            },
+        });
     });
 
     const renderDurationContainer = (
@@ -195,5 +193,14 @@ describe('DurationActionSheetContainer', () => {
             expiry_time: expect.any(String),
             expiry_type: 'endtime',
         });
+    });
+    it('should not render chips if duration_units_list contains only ticks', () => {
+        default_trade_store.modules.trade.duration = 1;
+        default_trade_store.modules.trade.duration_unit = 't';
+        default_trade_store.modules.trade.duration_units_list = [{ value: 't' }];
+        renderDurationContainer(default_trade_store);
+
+        const chip_names = ['Ticks', 'Seconds', 'Minutes', 'Hours', 'Days', 'End Time'];
+        chip_names.forEach(name => expect(screen.queryByText(name)).not.toBeInTheDocument());
     });
 });

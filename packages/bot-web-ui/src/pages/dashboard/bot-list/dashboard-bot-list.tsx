@@ -79,12 +79,12 @@ const DashboardBotList = observer(() => {
                     })}
                 </div>
                 <div className='bot-list__table'>
-                    {dashboard_strategies.map((workspace, index) => {
-                        return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
-                    })}
+                    {dashboard_strategies.map(workspace => (
+                        <RecentWorkspace key={workspace.id} workspace={workspace} />
+                    ))}
                 </div>
             </div>
-            <DeleteDialog setStrategies={setDashboardStrategies} />
+            <DeleteDialog />
         </div>
     );
 });

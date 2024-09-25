@@ -15,9 +15,9 @@ const DurationChips = ({
 
     return (
         <div className='duration-container__chips'>
-            {list.map(item => (
+            {list.map((item, index) => (
                 <Chip.Selectable
-                    key={item.text}
+                    key={`${item.text}-${index}`}
                     selected={unit == item.value}
                     className='duration-container__chips__chip'
                     onClick={() => onChangeUnit(item.value)}

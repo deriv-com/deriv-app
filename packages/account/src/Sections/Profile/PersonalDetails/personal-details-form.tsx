@@ -229,6 +229,8 @@ const PersonalDetailsForm = observer(() => {
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
+    const stripped_phone_number = `+${account_settings.phone?.replace(/\D/g, '')}`;
+
     //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
         if (!is_poi_verified) {
@@ -422,10 +424,12 @@ const PersonalDetailsForm = observer(() => {
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             hint={hintMessage({
-                                                is_phone_number_editted: account_settings.phone !== values.phone,
+                                                is_phone_number_editted: stripped_phone_number !== values.phone,
                                             })}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                handleChange(e);
+                                                let phone_number = e.target.value.replace(/\D/g, '');
+                                                phone_number = phone_number.length === 0 ? '+' : `+${phone_number}`;
+                                                setFieldValue('phone', phone_number, true);
                                                 setStatus('');
                                             }}
                                             onBlur={handleBlur}
@@ -442,8 +446,8 @@ const PersonalDetailsForm = observer(() => {
                                             <VerifyButton
                                                 is_verify_button_disabled={
                                                     isFieldDisabled('phone') ||
-                                                    account_settings.phone !== values.phone ||
-                                                    !account_settings.phone ||
+                                                    stripped_phone_number !== values.phone ||
+                                                    !stripped_phone_number ||
                                                     is_email_otp_timer_loading
                                                 }
                                                 next_email_otp_request_timer={next_email_otp_request_timer}

@@ -49,7 +49,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     }, [show_confirm_phone_number, trackPhoneVerificationEvents]);
 
     useEffect(() => {
-        setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
+        setPhoneNumber(account_settings?.phone?.replace(/\D/g, '') || '');
     }, [account_settings?.phone]);
 
     useEffect(() => {
@@ -102,9 +102,9 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     };
 
     return (
-        <PhoneVerificationCard>
+        <>
             <Text bold>
-                <Localize i18n_default_text='Confirm your phone number' />
+                <Localize i18n_default_text='Step 2 of 3: Confirm your phone number' />
             </Text>
             <div className='phone-verification__card--inputfield'>
                 <TextFieldAddon
@@ -162,7 +162,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 }
                 isVisible={!!next_phone_otp_request_timer}
             />
-        </PhoneVerificationCard>
+        </>
     );
 });
 

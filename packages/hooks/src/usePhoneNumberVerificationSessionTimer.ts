@@ -1,14 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { WS } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import dayjs from 'dayjs';
 
 const usePhoneNumberVerificationSessionTimer = () => {
     const [session_timer, setSessionTimer] = useState<number | undefined>();
+    const [formatted_time, setFormattedTime] = useState('00:00');
     const [should_show_session_timeout_modal, setShouldShowSessionTimeoutModal] = useState(false);
     const { client } = useStore();
     const { account_settings } = client;
     const { phone_number_verification } = account_settings;
+
+    const formatTime = useCallback((totalSeconds: number) => {
+        if (totalSeconds <= 0) {
+            return setFormattedTime('00:00');
+        }
+
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const formatted_minutes = String(minutes).padStart(2, '0');
+        const formatted_seconds = String(seconds).padStart(2, '0');
+
+        setFormattedTime(`${formatted_minutes}:${formatted_seconds}`);
+    }, []);
 
     useEffect(() => {
         WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
@@ -32,6 +46,7 @@ const usePhoneNumberVerificationSessionTimer = () => {
     useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
         if (typeof session_timer === 'number') {
+            formatTime(session_timer);
             if (session_timer > 0) {
                 setShouldShowSessionTimeoutModal(false);
                 countdown = setInterval(() => {
@@ -42,9 +57,10 @@ const usePhoneNumberVerificationSessionTimer = () => {
             }
         }
         return () => clearInterval(countdown);
-    }, [session_timer]);
+    }, [session_timer, formatTime]);
 
     return {
+        formatted_time,
         should_show_session_timeout_modal,
         setShouldShowSessionTimeoutModal,
     };

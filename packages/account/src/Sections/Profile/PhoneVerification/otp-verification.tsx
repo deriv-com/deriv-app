@@ -121,7 +121,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     };
 
     return (
-        <PhoneVerificationCard is_small_card>
+        <>
             <CoolDownPeriodModal
                 show_cool_down_period_modal={show_cool_down_period_modal}
                 setShowCoolDownPeriodModal={setShowCoolDownPeriodModal}
@@ -144,9 +144,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             )}
             <Text bold>
                 {should_show_phone_number_otp ? (
-                    <Localize i18n_default_text='Verify your number' />
+                    <Localize i18n_default_text='Step 3 of 3: Verify your number' />
                 ) : (
-                    <Localize i18n_default_text='Verify access' />
+                    <Localize i18n_default_text='Step 1 of 3: Verification needed' />
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
@@ -216,7 +216,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     reInitializeGetSettings={reInitializeGetSettings}
                 />
             </div>
-        </PhoneVerificationCard>
+        </>
     );
 });
 

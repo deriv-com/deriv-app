@@ -14,6 +14,7 @@ import OTPVerification from './otp-verification';
 import SessionTimeoutModal from './session-timeout-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 import './phone-verification.scss';
+import PhoneVerificationCard from './phone-verification-card';
 
 const PhoneVerificationPage = observer(() => {
     const history = useHistory();
@@ -122,17 +123,19 @@ const PhoneVerificationPage = observer(() => {
                     </Text>
                 </div>
             )}
-            {otp_verification.show_otp_verification ? (
-                <OTPVerification
-                    phone_verification_type={otp_verification.phone_verification_type}
-                    setOtpVerification={setOtpVerification}
-                />
-            ) : (
-                <ConfirmPhoneNumber
-                    show_confirm_phone_number={!otp_verification.show_otp_verification}
-                    setOtpVerification={setOtpVerification}
-                />
-            )}
+            <PhoneVerificationCard is_small_card={otp_verification.show_otp_verification}>
+                {otp_verification.show_otp_verification ? (
+                    <OTPVerification
+                        phone_verification_type={otp_verification.phone_verification_type}
+                        setOtpVerification={setOtpVerification}
+                    />
+                ) : (
+                    <ConfirmPhoneNumber
+                        show_confirm_phone_number={!otp_verification.show_otp_verification}
+                        setOtpVerification={setOtpVerification}
+                    />
+                )}
+            </PhoneVerificationCard>
         </div>
     );
 });

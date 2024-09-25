@@ -4,18 +4,14 @@ import { address_permitted_special_characters_message, getLocation, toMoment } f
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
 Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
-    return this.test(
-        'is-valid-phone-number-length',
-        message || localize('Phone number must be between 9 and 20 digits'),
-        value => {
-            if (typeof value === 'string') {
-                // Remove the leading '+' symbol before validation
-                const phoneNumber = value.startsWith('+') ? value.slice(1) : value;
-                return /^[0-9]{9,20}$/.test(phoneNumber);
-            }
-            return false;
+    return this.test('is-valid-phone-number-length', message || localize('You should enter 9-20 numbers.'), value => {
+        if (typeof value === 'string') {
+            // Remove the leading '+' symbol before validation
+            const phoneNumber = value.startsWith('+') ? value.slice(1) : value;
+            return /^[0-9]{9,20}$/.test(phoneNumber);
         }
-    );
+        return false;
+    });
 });
 
 const getBaseSchema = () =>
@@ -38,7 +34,7 @@ const getBaseSchema = () =>
             ),
         phone: Yup.string()
             //@ts-expect-error yup validation giving type error
-            .validatePhoneNumberLength(localize('Phone number must be between 9 and 20 digits'))
+            .validatePhoneNumberLength(localize('You should enter 9-20 numbers.'))
             .required(localize('Phone is required.'))
             .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, localize('Enter a valid phone number (e.g. +15417541234).')),
         address_line_1: Yup.string()

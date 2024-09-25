@@ -1,3 +1,5 @@
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
+
 const isBrowser = () => typeof window !== 'undefined';
 
 const derivComUrl = 'deriv.com';
@@ -34,16 +36,6 @@ export const normalizePath = (path: string) => (path ? path.replace(/(^\/|\/$|[^
 /**
  * @deprecated Please use 'URLUtils.getQueryParameter' from '@deriv-com/utils' instead of this.
  */
-export const getlangFromUrl = () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const lang = urlParams.get('lang');
-    return lang;
-};
-
-/**
- * @deprecated Please use 'URLUtils.getQueryParameter' from '@deriv-com/utils' instead of this.
- */
 export const getActionFromUrl = () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -53,8 +45,9 @@ export const getActionFromUrl = () => {
 
 export const getUrlSmartTrader = () => {
     const { isStagingDerivApp } = getPlatformFromUrl();
-    const urlLang = getlangFromUrl();
-    const i18NLanguage = window.localStorage.getItem('i18n_language') || urlLang || 'en';
+    const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+    const urlLang = URLUtils.getQueryParameter('lang');
+    const i18NLanguage = localizeLanguage || urlLang || 'en';
 
     let baseLink = '';
 

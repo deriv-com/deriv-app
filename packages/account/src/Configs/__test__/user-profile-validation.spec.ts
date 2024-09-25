@@ -132,7 +132,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
     };
 
     beforeAll(() => {
-        validation_schema = getEmploymentAndTaxValidationSchema(tin_config);
+        validation_schema = getEmploymentAndTaxValidationSchema({ tin_config });
     });
 
     it('should validate employment and tax details when valid values are provided', () => {

@@ -22,6 +22,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const platformStatus = getPlatformStatus(account.platform);
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
+    const isVirtual = activeWallet?.is_virtual;
     const { isVerificationRequired } = getClientVerification(account);
 
     const onButtonClick = useCallback(() => {
@@ -34,24 +35,16 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 return show(<TradingPlatformStatusModal />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
-                if (isVerificationRequired) {
+                if (!isVirtual && isVerificationRequired) {
                     show(<ClientVerificationModal account={account} />);
                 } else {
-                    show(<MT5PasswordModal account={account} isVirtual={activeWallet?.is_virtual} />);
+                    show(<MT5PasswordModal account={account} isVirtual={isVirtual} />);
                 }
                 setModalState('marketType', account.market_type);
                 setModalState('selectedJurisdiction', account.shortcode);
                 break;
         }
-    }, [
-        hasUnavailableAccount,
-        show,
-        platformStatus,
-        isVerificationRequired,
-        setModalState,
-        account,
-        activeWallet?.is_virtual,
-    ]);
+    }, [hasUnavailableAccount, show, platformStatus, isVirtual, isVerificationRequired, setModalState, account]);
 
     return (
         <TradingAccountCard onClick={onButtonClick}>

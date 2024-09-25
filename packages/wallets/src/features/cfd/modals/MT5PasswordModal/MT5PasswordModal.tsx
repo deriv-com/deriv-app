@@ -34,7 +34,10 @@ export type TPlatformPasswordChange = {
 };
 
 const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual }) => {
-    const [isTncChecked, setIsTncChecked] = useState(!isVirtual || account.shortcode === JURISDICTION.SVG);
+    const [isTncChecked, setIsTncChecked] = useState(
+        // tnc is automatically checked for real SVG accounts and all demo accounts
+        account.shortcode === JURISDICTION.SVG || isVirtual
+    );
     const {
         data: createMT5AccountData,
         error: createMT5AccountError,

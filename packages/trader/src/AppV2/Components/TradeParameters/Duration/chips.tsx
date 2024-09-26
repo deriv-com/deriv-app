@@ -11,8 +11,6 @@ const DurationChips = ({
     onChangeUnit: (arg: string) => void;
     unit: string;
 }) => {
-    const list = duration_units_list.concat({ value: 'et', text: localize('End Time') });
-
     return (
         <div className='duration-container__chips'>
             {duration_units_list.map((item, index) => (

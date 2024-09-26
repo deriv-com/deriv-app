@@ -632,7 +632,6 @@ export type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
-    preferred_language: string;
 };
 
 type TCommonStoreError = {

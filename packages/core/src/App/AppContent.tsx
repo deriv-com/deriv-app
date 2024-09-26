@@ -23,7 +23,7 @@ import initHotjar from '../Utils/Hotjar';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { is_client_store_initialized, has_wallet, preferred_language, setIsPasskeySupported } = store.client;
+    const { is_client_store_initialized, has_wallet, setIsPasskeySupported } = store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -74,10 +74,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 store.ui.setDarkMode(false);
             }
             if (!wallets_allowed_languages) {
-                store.common.changeSelectedLanguage(preferred_language || 'EN');
+                store.common.changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, preferred_language, store.common, store.ui, wallets_allowed_languages]);
+    }, [has_wallet, store.common, store.ui, wallets_allowed_languages]);
 
     return (
         <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>

@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv-com/translations';
-import { Tooltip } from '@deriv-com/ui';
-import { WalletText } from '../../../../components';
+import { Text, Tooltip } from '@deriv-com/ui';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
@@ -40,19 +39,19 @@ const CompareAccountsDescription = ({
             })}
         >
             <div className='wallets-compare-accounts-text-container__separator'>
-                <WalletText align='center' as='h1' size='xl' weight='bold'>
+                <Text align='center' as='h1' size='xl' weight='bold'>
                     {jurisdictionData.leverage}
-                </WalletText>
-                <WalletText align='center' as='p' size='2xs'>
+                </Text>
+                <Text align='center' as='p' size='2xs'>
                     {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
-                </WalletText>
+                </Text>
             </div>
             {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
                     <div className='wallets-compare-accounts-title__separator'>
-                        <WalletText align='center' as='h1' size='xl' weight='bold'>
+                        <Text align='center' as='h1' size='xl' weight='bold'>
                             {jurisdictionData.spread}
-                        </WalletText>
+                        </Text>
                         {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
                             <Tooltip
                                 as='div'
@@ -65,41 +64,41 @@ const CompareAccountsDescription = ({
                             </Tooltip>
                         )}
                     </div>
-                    <WalletText align='center' as='p' size='2xs'>
+                    <Text align='center' as='p' size='2xs'>
                         {jurisdictionData.spread_description}
-                    </WalletText>
+                    </Text>
                 </div>
             )}
             {!isDemo && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.counterparty_company}
-                        </WalletText>
-                        <WalletText align='center' as='p' size='2xs'>
+                        </Text>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.counterparty_company_description}
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.jurisdiction}
-                        </WalletText>
-                        <WalletText align='center' as='p' size='2xs'>
+                        </Text>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.jurisdiction_description}
-                        </WalletText>
+                        </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <WalletText align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size='sm' weight='bold'>
                             {jurisdictionData.regulator}
-                        </WalletText>
+                        </Text>
                         {jurisdictionData.regulator_license && (
-                            <WalletText align='center' as='p' size='2xs'>
+                            <Text align='center' as='p' size='2xs'>
                                 {jurisdictionData.regulator_license}
-                            </WalletText>
+                            </Text>
                         )}
-                        <WalletText align='center' as='p' size='2xs'>
+                        <Text align='center' as='p' size='2xs'>
                             {jurisdictionData.regulator_description}
-                        </WalletText>
+                        </Text>
                     </div>
                 </React.Fragment>
             )}

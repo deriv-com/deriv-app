@@ -22,6 +22,11 @@
         align-items: center;
         width: 100%;
 
+        &-badge {
+            width: auto;
+            padding-block: 0.5rem;
+        }
+
         &-balance {
             margin-left: auto;
         }

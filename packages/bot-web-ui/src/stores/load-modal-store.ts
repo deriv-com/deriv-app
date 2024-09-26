@@ -23,67 +23,14 @@ import { getStrategyType } from '../analytics/utils';
 import { waitForDomElement } from '../utils/dom-observer';
 import RootStore from './root-store';
 
-interface ILoadModalStore {
-    active_index: number;
-    is_load_modal_open: boolean;
-    is_explanation_expand: boolean;
-    is_open_button_loading: boolean;
-    is_strategy_loaded: boolean;
-    loaded_local_file: File | null;
-    recent_strategies: TStrategy[];
-    dashboard_strategies: Array<TStrategy>;
-    selected_strategy_id: string | undefined;
-    is_strategy_removed: boolean;
-    is_delete_modal_open: boolean;
-    is_open_button_disabled: boolean;
-    current_workspace_id: string;
-    preview_workspace: Blockly.WorkspaceSvg | null;
-    selected_strategy: TStrategy;
-    tab_name: string;
-    setPreviewedStrategyId: (clicked_id: string) => void;
-    getSelectedStrategyID: (current_workspace_id: string) => void;
-    refreshStrategies: () => void;
-    loadStrategyToBuilder: (param: TStrategy) => void;
-    refreshStrategiesTheme: () => void;
-    handleFileChange: (
-        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
-        is_body: boolean
-    ) => boolean;
-    loadFileFromLocal: () => void;
-    loadStrategyOnBotBuilder: () => void;
-    onActiveIndexChange: () => void;
-    onDriveConnect: () => void;
-    onDriveOpen: () => void;
-    onEntered: () => void;
-    onLoadModalClose: () => void;
-    onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
-    onZoomInOutClick: (is_zoom_in: string) => void;
-    previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number) => void;
-    setLoadedLocalFile: (loaded_local_file: File | null) => void;
-    setDashboardStrategies: (strategies: Array<TStrategy>) => void;
-    setRecentStrategies: (recent_strategies: TStrategy[]) => void;
-    setSelectedStrategyId: (selected_strategy_id: string) => void;
-    toggleExplanationExpand: () => void;
-    toggleLoadModal: () => void;
-    toggleTourLoadModal: (toggle: boolean) => void;
-    readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
-    updateListStrategies: (workspaces: Array<TStrategy>) => void;
-    getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
-    getSaveType: (save_type: { [key: string]: string } | string) => string;
-    setOpenButtonDisabled: (is_open_button_disabled: boolean) => void;
-}
-
-export default class LoadModalStore implements ILoadModalStore {
+export default class LoadModalStore {
     root_store: RootStore;
     core: TStores;
-    previewed_strategy_id = '';
     imported_strategy_type = 'pending';
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             active_index: observable,
-            previewed_strategy_id: observable,
             is_load_modal_open: observable,
             is_explanation_expand: observable,
             is_strategy_loaded: observable,
@@ -100,7 +47,6 @@ export default class LoadModalStore implements ILoadModalStore {
             tab_name: computed,
             is_open_button_disabled: observable,
             setOpenButtonDisabled: action.bound,
-            setPreviewedStrategyId: action.bound,
             getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
             loadStrategyToBuilder: action.bound,
@@ -110,7 +56,6 @@ export default class LoadModalStore implements ILoadModalStore {
             loadFileFromLocal: action.bound,
             imported_strategy_type: observable,
             onActiveIndexChange: action.bound,
-            onDriveConnect: action.bound,
             onDriveOpen: action.bound,
             onEntered: action.bound,
             onLoadModalClose: action.bound,
@@ -204,10 +149,6 @@ export default class LoadModalStore implements ILoadModalStore {
         this.is_open_button_disabled = is_open_button_disabled;
     };
 
-    setPreviewedStrategyId = (clicked_id: string) => {
-        this.previewed_strategy_id = clicked_id;
-    };
-
     getSelectedStrategyID = (current_workspace_id: string) => {
         this.current_workspace_id = current_workspace_id;
     };
@@ -222,16 +163,6 @@ export default class LoadModalStore implements ILoadModalStore {
     getDashboardStrategies = async () => {
         const recent_strategies = await getSavedWorkspaces();
         this.dashboard_strategies = recent_strategies;
-    };
-
-    onDriveConnect = (): void => {
-        const { google_drive } = this.root_store;
-
-        if (google_drive.is_authorised) {
-            google_drive.signOut();
-        } else {
-            google_drive.signIn();
-        }
     };
 
     onDriveOpen = async () => {
@@ -515,9 +446,6 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        if (this.upload_id && is_preview) {
-            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
-        }
         const reader = new FileReader();
         const file_name = file?.name.replace(/\.[^/.]+$/, '') || '';
 
@@ -531,24 +459,8 @@ export default class LoadModalStore implements ILoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const upload_type = getStrategyType(load_options?.block_string ?? '');
-
-            const result = await load(load_options);
+            await load(load_options);
             this.loadStrategyOnModalLocalPreview(load_options);
-            if (!is_preview && !result?.error) {
-                rudderStackSendUploadStrategyCompletedEvent({
-                    upload_provider: 'my_computer',
-                    upload_type,
-                    upload_id: this.upload_id,
-                });
-            } else if (!is_preview && result?.error) {
-                rudderStackSendUploadStrategyFailedEvent({
-                    upload_provider: 'my_computer',
-                    upload_id: this.upload_id,
-                    upload_type,
-                    error_message: result.error,
-                });
-            }
             this.is_open_button_loading = false;
         });
 
@@ -566,13 +478,24 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     loadStrategyOnBotBuilder = async () => {
-        const { strategy_id = window.Blockly.utils.idGenerator.genUid(), convertedDom } = window.Blockly.xmlValues;
+        const {
+            strategy_id = window.Blockly.utils.idGenerator.genUid(),
+            convertedDom,
+            block_string,
+        } = window.Blockly.xmlValues;
         const derivWorkspace = window.Blockly.derivWorkspace;
 
         window.Blockly.Xml.clearWorkspaceAndLoadFromXml(convertedDom, derivWorkspace);
         derivWorkspace.cleanUp();
         derivWorkspace.clearUndo();
         derivWorkspace.current_strategy_id = strategy_id;
+
+        const upload_type = getStrategyType(block_string ?? '');
+        rudderStackSendUploadStrategyCompletedEvent({
+            upload_provider: 'my_computer',
+            upload_type,
+            upload_id: this.upload_id,
+        });
     };
 
     updateXmlValuesOnStrategySelection = () => {
@@ -624,6 +547,17 @@ export default class LoadModalStore implements ILoadModalStore {
             (load_options.workspace as any).RTL = isDbotRTL();
         }
 
-        await load(load_options);
+        const upload_type = getStrategyType(load_options?.block_string ?? '');
+        const result = await load(load_options);
+        if (!result?.error) {
+            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
+        } else if (result?.error) {
+            rudderStackSendUploadStrategyFailedEvent({
+                upload_provider: 'my_computer',
+                upload_id: this.upload_id,
+                upload_type,
+                error_message: result.error,
+            });
+        }
     };
 }

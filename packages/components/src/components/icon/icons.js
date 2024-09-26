@@ -792,7 +792,6 @@ import './option/ic-option-over-under.svg';
 import './option/ic-option-raise-fall.svg';
 import './option/ic-option-touch-notouch.svg';
 import './option/ic-option-up-down-asian.svg';
-import './rebranding/ic-rebranding-binary-bot.svg';
 import './rebranding/ic-rebranding-ctrader-dashboard.svg';
 import './rebranding/ic-rebranding-deriv-bot-dashboard.svg';
 import './rebranding/ic-rebranding-deriv-bot.svg';

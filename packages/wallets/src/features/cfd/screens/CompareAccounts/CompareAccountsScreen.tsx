@@ -20,12 +20,12 @@ const CompareAccountsScreen = () => {
             <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel>
-                    {mt5Accounts?.map(item => (
+                    {mt5Accounts?.map((item, index) => (
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
-                            key={`${item?.market_type} ${item?.shortcode}`}
+                            key={`compare-accounts-${item?.product}-${index}`}
                             marketType={item?.market_type}
                             platform={item?.platform}
                             product={item?.product}

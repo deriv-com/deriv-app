@@ -1,6 +1,5 @@
 import React from 'react';
-import { useDevice } from '@deriv-com/ui';
-import { WalletText } from '../../../../components';
+import { Text, useDevice } from '@deriv-com/ui';
 import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import './InstrumentsIconWithLabel.scss';
 
@@ -24,9 +23,9 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInst
         >
             {getInstrumentsIcons(!isDesktop)[icon]}
             <div className='wallets-compare-accounts-trading-instruments__text'>
-                <WalletText align='left' as='p' lineHeight='xs' size='xs' weight={isDesktop ? 'bold' : 'normal'}>
+                <Text align='left' as='p' lineHeight='xs' size='xs' weight={isDesktop ? 'bold' : 'normal'}>
                     {text}
-                </WalletText>
+                </Text>
             </div>
             {isAsterisk && <span className='wallets-compare-accounts-trading-instruments__span'>*</span>}
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -12,12 +12,14 @@ import './EnterPassword.scss';
 type TProps = {
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
+    isTncChecked?: boolean;
     isVirtual?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
     modalTitle?: string;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
+    onTncChange?: () => void;
     password: string;
     passwordError?: boolean;
     platform: TPlatforms.All;
@@ -28,12 +30,14 @@ type TProps = {
 const EnterPassword: React.FC<TProps> = ({
     isForgotPasswordLoading,
     isLoading,
+    isTncChecked = true,
     isVirtual,
     marketType,
     modalTitle,
     onPasswordChange,
     onPrimaryClick,
     onSecondaryClick,
+    onTncChange,
     password,
     passwordError,
     platform,
@@ -52,7 +56,6 @@ const EnterPassword: React.FC<TProps> = ({
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }
     );
-    const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
 
     useEffect(() => {
         if (passwordError) {
@@ -91,8 +94,8 @@ const EnterPassword: React.FC<TProps> = ({
                 {passwordError && <Text size={isDesktop ? 'sm' : 'md'}>{passwordErrorHints}</Text>}
                 {product === PRODUCT.ZEROSPREAD && !isVirtual && (
                     <CFDPasswordModalTnc
-                        checked={checked}
-                        onChange={() => setChecked(prev => !prev)}
+                        checked={isTncChecked}
+                        onChange={() => onTncChange?.()}
                         platform={platform}
                         product={product}
                     />
@@ -105,15 +108,17 @@ const EnterPassword: React.FC<TProps> = ({
                         isLoading={isForgotPasswordLoading}
                         onClick={onSecondaryClick}
                         size='lg'
+                        textSize='sm'
                         variant='outlined'
                     >
                         <Localize i18n_default_text='Forgot password?' />
                     </Button>
                     <Button
-                        disabled={isLoading || !validPassword(password)}
+                        disabled={isLoading || !validPassword(password) || !isTncChecked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
+                        textSize='sm'
                     >
                         <Localize i18n_default_text='Add account' />
                     </Button>

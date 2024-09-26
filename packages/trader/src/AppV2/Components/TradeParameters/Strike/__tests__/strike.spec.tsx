@@ -90,7 +90,6 @@ describe('Strike', () => {
         expect(screen.getByText('Payout per point:')).toBeInTheDocument();
         expect(screen.getByText(/14.245555/)).toBeInTheDocument();
         expect(screen.getByText('Save')).toBeInTheDocument();
-        expect(screen.getByText('Content goes here.')).toBeInTheDocument();
     });
 
     it('should not render Payout per point information if proposal_info is empty object', () => {

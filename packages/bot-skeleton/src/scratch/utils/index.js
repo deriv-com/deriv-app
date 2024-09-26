@@ -24,13 +24,14 @@ export const inject_workspace_options = {
 
 export const updateXmlValues = blockly_options => {
     if (!window.Blockly) return;
-    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    const { strategy_id, convertedDom, file_name, from, block_string } = blockly_options;
     window.Blockly.xmlValues = {
         ...window.Blockly.xmlValues,
         strategy_id,
         convertedDom,
         file_name,
         from,
+        block_string,
     };
 };
 
@@ -208,7 +209,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from, block_string });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {

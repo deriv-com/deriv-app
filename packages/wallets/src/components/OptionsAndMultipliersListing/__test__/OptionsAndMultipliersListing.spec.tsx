@@ -46,7 +46,9 @@ describe('OptionsAndMultipliersListing', () => {
             data: { loginid: undefined },
         });
         render(<OptionsAndMultipliersListing />, { wrapper });
-        expect(screen.getAllByTestId('dt_wallets_trading_account_card')[0]).toBeDisabled();
+        const tradingAccountCard = screen.getAllByTestId('dt_wallets_trading_account_card')[0];
+        expect(tradingAccountCard).toHaveAttribute('aria-disabled', 'true');
+        expect(tradingAccountCard).toHaveClass('wallets-trading-account-card--disabled');
         expect(screen.queryByTestId('dt_label_paired_chevron')).not.toBeInTheDocument();
     });
 });

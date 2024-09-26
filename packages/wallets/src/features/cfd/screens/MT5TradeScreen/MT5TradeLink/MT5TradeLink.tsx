@@ -4,7 +4,7 @@ import { Localize } from '@deriv-com/translations';
 import { Button, Divider, Text } from '@deriv-com/ui';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
@@ -87,16 +87,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     </Button>
                 )}
                 {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
-                    <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                        {
-                            PlatformToLabelIconMapper[
-                                (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
-                            ]
-                        }
-                        <Text color='white' size='xs' weight='bold'>
+                    <Button borderWidth='sm' color='black' onClick={onClickWebTerminal} size='sm' variant='outlined'>
+                        <Text color='black' size='xs' weight='bold'>
                             <Localize i18n_default_text='Web terminal' />
                         </Text>
-                    </button>
+                    </Button>
                 )}
             </div>
         </React.Fragment>

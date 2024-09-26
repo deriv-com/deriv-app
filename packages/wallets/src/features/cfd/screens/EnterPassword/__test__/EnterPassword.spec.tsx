@@ -33,7 +33,16 @@ describe('EnterPassword', () => {
     };
 
     const renderComponent = (props = {}) => {
-        return render(<EnterPassword {...defaultProps} {...props} />);
+        return render(
+            <EnterPassword
+                isTncChecked={true}
+                onTncChange={function (): void {
+                    throw new Error('Function not implemented.');
+                }}
+                {...defaultProps}
+                {...props}
+            />
+        );
     };
 
     it('renders the component correctly', () => {

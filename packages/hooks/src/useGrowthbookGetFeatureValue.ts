@@ -2,18 +2,22 @@ import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
 
+type featureValueTypes = Record<string, boolean> | boolean | string | [];
+
 interface UseGrowthbookGetFeatureValueArgs<T> {
     featureFlag: string;
     defaultValue?: T;
 }
 
-const useGrowthbookGetFeatureValue = <T extends string | boolean>({
+const useGrowthbookGetFeatureValue = <T>({
     featureFlag,
     defaultValue,
-}: UseGrowthbookGetFeatureValueArgs<T>) => {
-    const resolvedDefaultValue: T = defaultValue !== undefined ? defaultValue : (false as T);
-    const [featureFlagValue, setFeatureFlagValue] = useState(
-        Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
+}: UseGrowthbookGetFeatureValueArgs<T>): [T, boolean] => {
+    const resolvedDefaultValue: featureValueTypes = (
+        defaultValue !== undefined ? defaultValue : false
+    ) as featureValueTypes;
+    const [featureFlagValue, setFeatureFlagValue] = useState<T>(
+        (Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue) as T
     );
     const isGBLoaded = useIsGrowthbookIsLoaded();
 
@@ -21,7 +25,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
                 const setFeatureValue = () => {
-                    const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
+                    const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) as T;
                     setFeatureFlagValue(value);
                 };
                 setFeatureValue();

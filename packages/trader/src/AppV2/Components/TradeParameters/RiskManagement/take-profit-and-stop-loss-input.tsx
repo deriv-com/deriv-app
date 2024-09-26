@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import debounce from 'lodash.debounce';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import {
@@ -9,15 +8,15 @@ import {
     getDecimalPlaces,
     isCryptocurrency,
     useIsMounted,
-    WS,
 } from '@deriv/shared';
+import { useDebounceCallback } from 'usehooks-ts';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
-import { previewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
+import { createProposalRequestForContract, ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
@@ -36,6 +35,7 @@ type TTakeProfitAndStopLossInputProps = {
     parent_is_api_response_received_ref?: React.MutableRefObject<boolean>;
     type?: 'take_profit' | 'stop_loss';
 };
+type TOnProposalResponse = TTradeStore['onProposalResponse'];
 
 const TakeProfitAndStopLossInput = ({
     classname,
@@ -92,6 +92,37 @@ const TakeProfitAndStopLossInput = ({
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
+    // TODO: remove when BE will send data for acceptable range in proposal
+    /* In order to get validation params for Multipliers when TP and SL are empty, 
+            we send '1' first, get validation params and set them into the state.*/
+    const input_value = should_set_validation_params ? '1' : new_input_value;
+    const store = {
+        ...trade_store,
+        ...{
+            ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+            has_cancellation: false,
+            ...(is_take_profit_input
+                ? { take_profit: is_enabled ? input_value : '' }
+                : { stop_loss: is_enabled ? input_value : '' }),
+        },
+    };
+
+    const new_req = createProposalRequestForContract(
+        store as Parameters<typeof createProposalRequestForContract>[0],
+        Object.keys(trade_types)[0]
+    );
+
+    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        ['proposal', new_input_value ?? ''],
+        {
+            ...new_req,
+            subscribe: undefined,
+        },
+        {
+            enabled: is_enabled,
+        }
+    );
+
     const input_message =
         info.min_value && info.max_value && is_enabled ? (
             <Localize
@@ -127,33 +158,26 @@ const TakeProfitAndStopLossInput = ({
         }
     };
 
-    // We are using requestPreviewProposal in useEffect in order to validate both fields independently
     React.useEffect(() => {
         if (!is_enabled) return;
 
-        const onProposalResponse: TTradeStore['onProposalResponse'] = response => {
-            const { proposal, echo_req, error, subscription } = response;
-            // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
-            if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
-                if (subscription?.id) WS.forget(subscription.id);
-                is_api_response_received_ref.current = true;
-                return;
-            }
+        const onProposalResponse: TOnProposalResponse = response => {
+            const { proposal, echo_req, error } = response;
 
             const new_error = error?.message ?? '';
-            if (error?.message && subscription?.id) WS.forget(subscription.id);
             setErrorText(new_error);
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
                 new_value: new_error,
             });
 
+            // TODO: remove when BE will send data for acceptable range in proposal
             /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
             Here we set them into the state in order to show further even if we got a validation error from API.*/
             if (
                 isMounted() &&
                 proposal &&
-                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
+                (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP || CONTRACT_TYPES.MULTIPLIER.DOWN) &&
                 (echo_req?.limit_order?.take_profit || echo_req?.limit_order?.stop_loss)
             ) {
                 const { validation_params } = proposal as ExpandedProposal;
@@ -171,35 +195,13 @@ const TakeProfitAndStopLossInput = ({
                 });
             }
             is_api_response_received_ref.current = true;
+
+            return () => clearTimeout(focus_timeout.current);
         };
 
-        /* In order to get validation params for Multipliers when TP and SL are empty, 
-            we send '1' first, get validation params and set them into the state.*/
-        const input_value = should_set_validation_params ? '1' : new_input_value;
-        const dispose = debounce(
-            previewProposal(
-                trade_store,
-                onProposalResponse,
-                {
-                    ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
-                    has_cancellation: false,
-                    ...(is_take_profit_input
-                        ? { take_profit: is_enabled ? input_value : '' }
-                        : { stop_loss: is_enabled ? input_value : '' }),
-                },
-                true
-            ),
-            700,
-            { leading: true }
-        );
-
-        return () => {
-            dispose?.();
-            clearTimeout(focus_timeout.current);
-        };
-
+        if (response) onProposalResponse(response);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_enabled, new_input_value]);
+    }, [is_enabled, new_input_value, response]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         is_api_response_received_ref.current = false;
@@ -210,6 +212,8 @@ const TakeProfitAndStopLossInput = ({
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
     };
+
+    const debouncedOnInputChange = useDebounceCallback(onInputChange, 300);
 
     const onSave = () => {
         // Prevent from saving if user clicks before BE validation
@@ -282,7 +286,7 @@ const TakeProfitAndStopLossInput = ({
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
                     noStatusIcon
-                    onChange={debounce(onInputChange, 300)}
+                    onChange={debouncedOnInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}
                     regex={/[^0-9.,]/g}

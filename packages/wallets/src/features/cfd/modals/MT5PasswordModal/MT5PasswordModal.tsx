@@ -10,7 +10,7 @@ import {
     useVerifyEmail,
 } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, useDevice } from '@deriv-com/ui';
+import { Button, useDevice, Loader } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -51,7 +51,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         isLoading: tradingPlatformPasswordChangeLoading,
         mutateAsync: tradingPasswordChangeMutateAsync,
     } = useTradingPlatformPasswordChange();
-    const { data: accountStatusData } = useAccountStatus();
+    const { data: accountStatusData, isLoading: accountStatusLoading } = useAccountStatus();
     const { data: activeWalletData } = useActiveWalletAccount();
     const { data: availableMT5AccountsData } = useAvailableMT5Accounts();
     const {
@@ -74,6 +74,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     const isDemo = activeWalletData?.is_virtual;
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
     const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
+
+    const isLoading = accountStatusLoading || createMT5AccountLoading || tradingPlatformPasswordChangeLoading;
 
     const updateMT5Password =
         createMT5AccountStatus === 'error' &&
@@ -245,6 +247,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     ]);
 
     const PasswordComponent = useMemo(() => {
+        if (isLoading) return <Loader />;
+
         if (isMT5PasswordNotSet && platform !== CFD_PLATFORMS.MT5)
             return (
                 <CreatePassword
@@ -321,6 +325,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         createMT5AccountError?.error?.code,
         sendEmailVerification,
         setIsTncChecked,
+        isLoading,
     ]);
 
     if (emailVerificationStatus === 'error') {

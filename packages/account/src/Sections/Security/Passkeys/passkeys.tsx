@@ -88,7 +88,9 @@ const Passkeys = observer(() => {
     };
 
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, refetchPasskeysList } = useGetPasskeysList();
-    const { passkey_removing_error, removePasskey } = useRemovePasskey({ onSuccess: onSuccessPasskeyRemove });
+    const { is_removing_in_progress, passkey_removing_error, removePasskey } = useRemovePasskey({
+        onSuccess: onSuccessPasskeyRemove,
+    });
     const { passkey_renaming_error, renamePasskey } = useRenamePasskey({ onSuccess: onSuccessPasskeyRename });
     const { createPasskey, startPasskeyRegistration, passkey_registration_error } = useRegisterPasskey({
         onSuccess: onSuccessPasskeyRegister,
@@ -121,6 +123,11 @@ const Passkeys = observer(() => {
         if (error) {
             passkeysMenuActionEventTrack('error', { error_message: (error as TServerError)?.message });
 
+            if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+                setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING_RETRY);
+                return;
+            }
+
             const should_hide_error =
                 excluded_error_names.some(name => name === (error as TServerError).name) ||
                 excluded_error_codes.some(code => code === (error as TServerError).code);
@@ -138,7 +145,11 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    if ((is_passkeys_list_loading && passkey_status === PASSKEY_STATUS_CODES.LIST) || !is_network_on) {
+    if (
+        (is_passkeys_list_loading && passkey_status === PASSKEY_STATUS_CODES.LIST) ||
+        !is_network_on ||
+        is_removing_in_progress
+    ) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -170,7 +181,10 @@ const Passkeys = observer(() => {
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING);
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+        if (
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING ||
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING_RETRY
+        ) {
             setPasskeyStatus(main_screen_status_code);
         }
     };
@@ -204,7 +218,10 @@ const Passkeys = observer(() => {
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             setPasskeyStatus(main_screen_status_code);
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+        if (
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING ||
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING_RETRY
+        ) {
             removePasskey(current_managed_passkey?.id, current_managed_passkey?.passkey_id);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL) {
@@ -226,7 +243,10 @@ const Passkeys = observer(() => {
             passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
-        if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
+        if (
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING ||
+            passkey_status === PASSKEY_STATUS_CODES.REMOVING_RETRY
+        ) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL);
         }
     };
@@ -256,12 +276,7 @@ const Passkeys = observer(() => {
                 onButtonClick={onContinueReminderModal}
                 toggleModal={onCloseReminderModal}
             />
-            <PasskeyErrorModal
-                error={error}
-                is_modal_open={is_error_modal_open}
-                onButtonClick={onCloseErrorModal}
-                passkey_status={passkey_status}
-            />
+            <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
         </Fragment>
     );
 });

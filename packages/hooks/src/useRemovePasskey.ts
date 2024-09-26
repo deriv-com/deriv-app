@@ -6,8 +6,10 @@ type TError = { code?: string; name?: string; message: string };
 
 const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const [passkey_removing_error, setPasskeyRemovingError] = useState<TError | null>(null);
+    const [is_removing_in_progress, setIsRemovingInProgress] = useState(false);
 
     const removePasskey = async (id: number, passkey_id: string) => {
+        setIsRemovingInProgress(true);
         try {
             const passkey_options_response = await WS.send({
                 passkeys_options: 1,
@@ -29,12 +31,15 @@ const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
             }
         } catch (e) {
             setPasskeyRemovingError(e as TError);
+        } finally {
+            setIsRemovingInProgress(false);
         }
     };
 
     return {
         removePasskey,
         passkey_removing_error,
+        is_removing_in_progress,
     };
 };
 

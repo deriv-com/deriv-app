@@ -10,6 +10,7 @@ import { PasskeyRemoved } from './passkey-removed';
 import { PasskeyRename } from './passkey-rename';
 import { PasskeyRemoveWithEmail } from './passkey-remove-with-email';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
+import { PasskeyRemoveRetry } from 'Sections/Security/Passkeys/components/passkey-remove-retry';
 
 type TPasskeysStatusContainer = {
     current_managed_passkey: TCurrentManagedPasskey;
@@ -63,6 +64,14 @@ export const PasskeysStatusContainer = observer(
             case PASSKEY_STATUS_CODES.REMOVING:
                 return (
                     <PasskeyRemove
+                        onBackButtonClick={onBackButtonClick}
+                        onPrimaryButtonClick={onPrimaryButtonClick}
+                        onSecondaryButtonClick={onSecondaryButtonClick}
+                    />
+                );
+            case PASSKEY_STATUS_CODES.REMOVING_RETRY:
+                return (
+                    <PasskeyRemoveRetry
                         onBackButtonClick={onBackButtonClick}
                         onPrimaryButtonClick={onPrimaryButtonClick}
                         onSecondaryButtonClick={onSecondaryButtonClick}

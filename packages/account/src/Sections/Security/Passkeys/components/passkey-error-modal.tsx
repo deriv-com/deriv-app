@@ -1,16 +1,15 @@
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
-import { isNotSupportedError, PASSKEY_STATUS_CODES, TPasskeyError, TPasskeysStatus } from '../passkeys-configs';
+import { isNotSupportedError, TPasskeyError } from '../passkeys-configs';
 import { TServerError } from '../../../../Types';
 
 type TPasskeyErrorModal = {
     error: TPasskeyError;
     onButtonClick: () => void;
     is_modal_open: boolean;
-    passkey_status: TPasskeysStatus;
 };
 
-const getErrorModalContent = (error: TPasskeyError, passkey_status: TPasskeysStatus) => {
+const getErrorModalContent = (error: TPasskeyError) => {
     const error_message_header = (
         <Text size='xs' weight='bold'>
             {isNotSupportedError(error as TServerError) ? (
@@ -27,27 +26,14 @@ const getErrorModalContent = (error: TPasskeyError, passkey_status: TPasskeysSta
         <Localize i18n_default_text='We’re experiencing a temporary issue in processing your request. Please try again later.' />
     );
 
-    if (passkey_status === PASSKEY_STATUS_CODES.REMOVING) {
-        return {
-            error_message_header: (
-                <Text size='xs' weight='bold'>
-                    <Localize i18n_default_text='Verification failed' />
-                </Text>
-            ),
-            error_message: (
-                <Localize i18n_default_text='Verification unsuccessful. Please try again or verify with email instead.' />
-            ),
-        };
-    }
-
     return {
         error_message_header,
         error_message,
     };
 };
 
-export const PasskeyErrorModal = ({ is_modal_open, error, onButtonClick, passkey_status }: TPasskeyErrorModal) => {
-    const error_modal_content = getErrorModalContent(error, passkey_status);
+export const PasskeyErrorModal = ({ is_modal_open, error, onButtonClick }: TPasskeyErrorModal) => {
+    const error_modal_content = getErrorModalContent(error);
 
     return (
         <Modal

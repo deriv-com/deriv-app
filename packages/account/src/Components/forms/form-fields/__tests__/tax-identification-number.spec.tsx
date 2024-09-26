@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TaxIdentificationNumber from '../tax-indentification-number';
 
 describe('Testing <TaxIdentificationNumber/> component', () => {
@@ -53,7 +54,7 @@ describe('Testing <TaxIdentificationNumber/> component', () => {
         );
 
         const popover = screen.getByTestId('tax_identification_number_pop_over');
-        popover.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        userEvent.click(popover);
         expect(props.setIsTaxResidencePopoverOpen).toBeCalledWith(false);
         expect(props.setIsTinPopoverOpen).toBeCalledWith(true);
     });

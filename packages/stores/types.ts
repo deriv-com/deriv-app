@@ -834,8 +834,6 @@ type TUiStore = {
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
-    // toggleAdditionalKycInfoModal: () => void;
-    // toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;
@@ -846,7 +844,7 @@ type TUiStore = {
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
-    field_ref_to_focus: string | null;
+    field_ref_to_focus: string | null; // field_ref_to_focus accepts a field identifier which will be focused
     setFieldRefToFocus: (value: string | null) => void;
     setHashedValue: (value: string) => void;
     url_hashed_values: string;

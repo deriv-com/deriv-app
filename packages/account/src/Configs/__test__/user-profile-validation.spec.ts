@@ -97,7 +97,7 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
         await expect(phone.validate('1234567890')).rejects.toThrow(
             'Please enter a valid phone number (e.g. +15417541234).'
         );
-        await expect(phone.validate('1234567890'.repeat(4))).rejects.toThrow('You should enter 9-35 characters.');
+        await expect(phone.validate('1234567890'.repeat(4))).rejects.toThrow('You should enter 9-20 characters.');
     });
 
     it('should throw an error if place of birth is invalid', async () => {

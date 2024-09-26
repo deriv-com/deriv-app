@@ -175,8 +175,8 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
             }),
         phone: Yup.string()
             .required(localize('Phone is required.'))
-            .min(9, localize('You should enter 9-35 numbers.'))
-            .max(35, localize('You should enter 9-35 characters.'))
+            .min(9, localize('You should enter 9-20 numbers.'))
+            .max(20, localize('You should enter 9-20 characters.'))
             .matches(phoneNumber, localize('Please enter a valid phone number (e.g. +15417541234).')),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
         citizen: Yup.string().when({

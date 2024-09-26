@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { ACCOUNT_BADGE_STATUS, TAccountBadgeStatus } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 
 const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner?: () => void) => {
     const handleOnClick = () => {
@@ -34,13 +34,7 @@ const getStatusBadgeConfig = (account_status: TAccountBadgeStatus, onClickBanner
                     <Localize
                         i18n_default_text='<0>Failed</0>'
                         components={[
-                            <Text
-                                key={0}
-                                weight='bold'
-                                size='xxs'
-                                color='var(--status-danger)'
-                                onClick={handleOnClick}
-                            />,
+                            <Text key={0} weight='bold' size='xxs' color='loss-danger' onClick={handleOnClick} />,
                         ]}
                     />
                 ),

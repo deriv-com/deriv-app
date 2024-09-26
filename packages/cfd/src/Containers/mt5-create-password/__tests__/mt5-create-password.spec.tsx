@@ -1,7 +1,8 @@
 import React from 'react';
 import { Router } from 'react-router';
+import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import MT5CreatePassword from '../mt5-create-password';
 import { mockStore } from '@deriv/stores';
 import CFDProviders from '../../../cfd-providers';
@@ -102,7 +103,8 @@ describe('<MT5CreatePassword/>', () => {
             }
         );
         const password_input = await screen.findByTestId('dt_mt5_password');
-        fireEvent.change(password_input, { target: { value: user_input } });
+
+        userEvent.paste(password_input, user_input);
         await waitFor(() => {
             expect(password_input.value).toBe(user_input);
         });
@@ -159,11 +161,11 @@ describe('<MT5CreatePassword/>', () => {
         expect(passwordInput).toBeInTheDocument();
         expect(submitButton).toBeInTheDocument();
 
-        fireEvent.change(passwordInput, { target: { value: user_input } });
+        userEvent.paste(passwordInput, user_input);
         const checkbox = await screen.findByRole('checkbox');
         expect(checkbox).toBeInTheDocument();
-        fireEvent.click(checkbox);
-        fireEvent.click(submitButton);
+        userEvent.click(checkbox);
+        userEvent.click(submitButton);
 
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalled();

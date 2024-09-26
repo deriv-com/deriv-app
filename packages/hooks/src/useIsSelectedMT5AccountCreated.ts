@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
-import { MT5_ACCOUNT_STATUS, CFD_PLATFORMS, WS } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 
 const getStatusBadge = (status: string) => {
     if (status === 'proof_failed') {
@@ -11,6 +11,17 @@ const getStatusBadge = (status: string) => {
         return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
     }
 };
+
+/**
+ * Custom React hook to check if the selected MT5 account has been created.
+ *
+ * @returns {Object} An object containing the following properties:
+ *
+ * - `is_selected_MT5_account_created` (boolean): Indicates whether the selected MT5 account has been created.
+ * - `existing_account` (Object | null): If the selected account is created, contains the MT5 account details; otherwise `null`.
+ * - `existing_account_status` (string | null): Status of the created account (e.g., 'failed', 'pending', 'needs_verification'), or `null` if no account is created.
+ * - `available_account_to_create` (Object | null): The account available to create for the selected product. Will be `null` if an account is already created.
+ */
 
 const useIsSelectedMT5AccountCreated = () => {
     const {

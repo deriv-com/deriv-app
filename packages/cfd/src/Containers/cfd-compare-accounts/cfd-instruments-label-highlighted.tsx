@@ -15,7 +15,7 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
     return (
         <div className={'compare-cfd-account-outline'} data-testid='dt_compare_cfd_account_outline__container'>
             {is_eu_user ? (
-                <>
+                <React.Fragment>
                     {iconData
                         .filter(item => item.highlighted)
                         .map(item => (
@@ -30,7 +30,7 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
                             <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
                         </Text>
                     </div>
-                </>
+                </React.Fragment>
             ) : (
                 iconData.map(item => (
                     <InstrumentsIconWithLabel

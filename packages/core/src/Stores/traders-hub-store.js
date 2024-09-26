@@ -7,6 +7,7 @@ import {
     getAppstorePlatforms,
     getCFDAvailableAccount,
     WS,
+    PRODUCT,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
@@ -428,7 +429,7 @@ export default class TradersHubStore extends BaseStore {
                 description: getAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
-                product: 'stp',
+                product: PRODUCT.STP,
                 icon: 'Financial',
                 availability: 'Non-EU',
             },
@@ -579,7 +580,7 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-                if (product === 'stp') {
+                if (product === PRODUCT.STP) {
                     return key.startsWith(`${platform}.${selected_account_type}.${product}`);
                 } else if (
                     platform === CFD_PLATFORMS.MT5 &&
@@ -661,7 +662,7 @@ export default class TradersHubStore extends BaseStore {
             if (this.selected_jurisdiction_kyc_status && Object.keys(this.selected_jurisdiction_kyc_status)?.length) {
                 this.setVerificationModalOpen(true);
             } else {
-                //all kyc requirements satisfied)
+                //all kyc requirements satisfied
                 enableCFDPasswordModal();
             }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
@@ -779,7 +780,7 @@ export default class TradersHubStore extends BaseStore {
                         },
                     ];
                 });
-            } else if (account.product === 'stp') {
+            } else if (account.product === PRODUCT.STP) {
                 this.combined_cfd_mt5_accounts = [...this.combined_cfd_mt5_accounts];
             } else {
                 this.combined_cfd_mt5_accounts = [

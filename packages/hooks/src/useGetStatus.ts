@@ -3,6 +3,10 @@ import useGetMFAccountStatus from './useGetMFAccountStatus';
 import useIsSelectedMT5AccountCreated from './useIsSelectedMT5AccountCreated';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
+/** A custom hook to fetch the status badge value and client_kyc_status for MF account and MT5 account 
+MF account status is fetched from useGetMFAccountStatus
+MT5 account status is fetched from useIsSelectedMT5AccountCreated
+*/
 const useGetStatus = () => {
     const { common } = useStore();
     const { mf_account_status, kyc_status } = useGetMFAccountStatus();

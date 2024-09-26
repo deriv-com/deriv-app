@@ -42,11 +42,11 @@ const CfdPasswordModalInfo = ({
                     />
                 ) : (
                     <Localize
-                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{licence_name}}.'
+                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}.'
                         values={{
                             platform,
                             product,
-                            licence_name: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].licence_name,
+                            company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name,
                         }}
                     />
                 )}

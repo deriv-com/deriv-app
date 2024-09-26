@@ -126,6 +126,7 @@ const ProofOfIdentityContainer = observer(
                 routeBackTo(from_platform.route);
             }
         };
+
         const redirect_button = should_show_redirect_btn && (
             <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
                 <Localize

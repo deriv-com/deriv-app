@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers } from 'formik';
+import { Formik, FormikErrors, FormikHelpers, Form } from 'formik';
 import { FormSubmitButton, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -8,7 +8,7 @@ import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
 import './mt5-create-password.scss';
 import '../../sass/cfd.scss';
 import CfdPasswordModalTnc from '../cfd-password-modal-tnc';
-// first MT5 password
+// This component is for first MT5 password modal
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -69,7 +69,7 @@ const MT5CreatePassword = ({
                 validateForm,
             }) => (
                 <React.Fragment>
-                    <form>
+                    <Form>
                         <div
                             className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
                             data-testid='dt_mt5_create_password'
@@ -141,7 +141,7 @@ const MT5CreatePassword = ({
                                 />
                             </div>
                         </div>
-                    </form>
+                    </Form>
                 </React.Fragment>
             )}
         </Formik>

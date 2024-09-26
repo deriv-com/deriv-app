@@ -23,6 +23,7 @@ export const PRODUCT = {
     ZEROSPREAD: 'zero_spread',
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
+    STP: 'stp',
 } as const;
 
 export const MOBILE_PLATFORMS = {

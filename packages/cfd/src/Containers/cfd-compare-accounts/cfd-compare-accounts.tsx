@@ -28,6 +28,7 @@ const CompareCFDs = observer(() => {
     const { trading_platform_available_accounts } = client;
     const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region, available_ctrader_accounts } =
         traders_hub;
+
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
         : getEUAvailableAccounts(trading_platform_available_accounts);

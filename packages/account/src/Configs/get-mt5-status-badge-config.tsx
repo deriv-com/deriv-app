@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 import { TMT5AccountStatus } from '../Types/common.type';
 
 const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {

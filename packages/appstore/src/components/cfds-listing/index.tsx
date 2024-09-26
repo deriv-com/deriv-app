@@ -133,18 +133,20 @@ const CFDsListing = observer(() => {
         } else if (current_acc_status === 'unavailable') {
             return TRADING_PLATFORM_STATUS.UNAVAILABLE;
         } else if (jurisdiction) {
-            if (current_acc_status === 'proof_failed') {
-                return MT5_ACCOUNT_STATUS.FAILED;
-            } else if (current_acc_status === 'verification_pending') {
-                return MT5_ACCOUNT_STATUS.PENDING;
-            } else if (current_acc_status === 'needs_verification') {
-                return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
-            } else if (current_acc_status === 'migrated_with_position') {
-                return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
-            } else if (current_acc_status === 'migrated_without_position') {
-                return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+            switch (current_acc_status) {
+                case 'proof_failed':
+                    return MT5_ACCOUNT_STATUS.FAILED;
+                case 'verification_pending':
+                    return MT5_ACCOUNT_STATUS.PENDING;
+                case 'needs_verification':
+                    return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
+                case 'migrated_with_position':
+                    return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
+                case 'migrated_without_position':
+                    return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+                default:
+                    return null;
             }
-            return null;
         }
         return '';
     };

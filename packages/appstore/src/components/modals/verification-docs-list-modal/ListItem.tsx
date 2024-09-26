@@ -78,17 +78,10 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                         icon_size={badge_size}
                         className='verification-docs-list-modal__status-badge'
                     />
-                    {is_document_submitted ? (
-                        <LabelPairedChevronRightMdRegularIcon
-                            className='verification-docs-list-modal__card--icon'
-                            fill='var(--text-disabled-1)'
-                        />
-                    ) : (
-                        <LabelPairedChevronRightMdRegularIcon
-                            className='verification-docs-list-modal__card--icon'
-                            fill='var(--text-prominent)'
-                        />
-                    )}
+                    <LabelPairedChevronRightMdRegularIcon
+                        className='verification-docs-list-modal__card--icon'
+                        fill={is_document_submitted ? 'var(--text-disabled-1)' : 'var(--text-prominent)'}
+                    />
                 </div>
             )}
         </div>

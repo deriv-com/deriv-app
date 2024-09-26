@@ -1,7 +1,8 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
 import { RouteButton } from '../route-button';
 
@@ -24,7 +25,7 @@ describe('<RouteButton/>', () => {
         const route_btn_text = screen.getByRole('link', {
             name: 'Test Route Button',
         });
-        fireEvent.click(route_btn_text);
+        userEvent.click(route_btn_text);
         expect(history.location.pathname).toBe(routes.traders_hub);
     });
 });

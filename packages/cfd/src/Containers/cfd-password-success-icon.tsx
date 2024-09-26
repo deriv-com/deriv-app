@@ -12,47 +12,50 @@ type TCFDPasswordSuccessIconProps = {
     product?: TProducts;
 };
 
-const CFDPasswordSuccessIcon = ({ platform, type, show_eu_related_content, product }: TCFDPasswordSuccessIconProps) => {
-    const traders_hub = window.location.pathname === routes.traders_hub;
-    if (platform === CFD_PLATFORMS.DXTRADE) {
-        return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
-    } else if (traders_hub) {
-        if (platform === CFD_PLATFORMS.CTRADER) {
-            return <TradingPlatformIcon icon='CTrader' size={128} />;
-        }
-        switch (type) {
-            case 'synthetic':
-                return <TradingPlatformIcon icon='Standard' size={128} />;
-            case 'all':
-                if (product === PRODUCT.ZEROSPREAD) {
-                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
-                }
-                return <TradingPlatformIcon icon='SwapFree' size={128} />;
-            case 'financial':
-                if (show_eu_related_content) {
-                    return <TradingPlatformIcon icon='CFDs' size={128} />;
-                }
-                return <TradingPlatformIcon icon='Financial' size={128} />;
-            default:
-                return <TradingPlatformIcon icon='Financial' size={128} />;
-        }
-    } else {
-        switch (type) {
-            case 'synthetic':
-                return <Icon icon='IcMt5StandardPlatform' size={128} />;
-            case 'all':
-                if (product === PRODUCT.ZEROSPREAD) {
-                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
-                }
-                return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
-            case 'financial':
-                if (show_eu_related_content) {
-                    return <Icon icon='IcMt5CfdPlatform' size={128} />;
-                }
-                return <Icon icon='IcMt5FinancialPlatform' size={128} />;
-            default:
-                return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
-        }
+const getIconForTradersHub = (type: string | undefined, show_eu_related_content: boolean, product?: TProducts) => {
+    switch (type) {
+        case 'synthetic':
+            return 'Standard';
+        case 'all':
+            return product === PRODUCT.ZEROSPREAD ? 'ZeroSpread' : 'SwapFree';
+        case 'financial':
+            return show_eu_related_content ? 'CFDs' : 'Financial';
+        default:
+            return 'Financial';
     }
 };
+
+const getIconForMt5 = (type: string | undefined, show_eu_related_content: boolean, product?: TProducts) => {
+    switch (type) {
+        case 'synthetic':
+            return 'IcMt5StandardPlatform';
+        case 'all':
+            return product === PRODUCT.ZEROSPREAD ? 'IcMt5ZeroSpread' : 'IcMt5SwapFreePlatform';
+        case 'financial':
+            return show_eu_related_content ? 'IcMt5CfdPlatform' : 'IcMt5FinancialPlatform';
+        default:
+            return 'IcMt5FinancialStpPlatform';
+    }
+};
+
+const CFDPasswordSuccessIcon = ({ platform, type, show_eu_related_content, product }: TCFDPasswordSuccessIconProps) => {
+    const isTradersHub = window.location.pathname === routes.traders_hub;
+
+    if (platform === CFD_PLATFORMS.DXTRADE) {
+        return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
+    }
+
+    if (platform === CFD_PLATFORMS.CTRADER) {
+        return <TradingPlatformIcon icon='CTrader' size={128} />;
+    }
+
+    if (isTradersHub) {
+        const icon = getIconForTradersHub(type, show_eu_related_content, product);
+        return <TradingPlatformIcon icon={icon} size={128} />;
+    }
+
+    const icon = getIconForMt5(type, show_eu_related_content, product);
+    return <Icon icon={icon} size={128} />;
+};
+
 export default CFDPasswordSuccessIcon;

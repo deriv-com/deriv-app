@@ -58,6 +58,16 @@ type TGetCFDAccountKey = TGetAccount & {
     product?: TProduct;
 };
 
+export const PRODUCT = {
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    STP: 'stp',
+    FINANCIAL: 'financial',
+    STANDARD: 'standard',
+} as const;
+
 // * mt5_login_list returns these:
 // market_type: "financial" | "gaming"
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
@@ -113,7 +123,7 @@ export const getCFDAccountKey = ({
         }
     }
     if (market_type === 'financial') {
-        if (product === 'stp' && sub_account_type === 'financial_stp') {
+        if (product === PRODUCT.STP && sub_account_type === 'financial_stp') {
             return 'stp';
         } else if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {

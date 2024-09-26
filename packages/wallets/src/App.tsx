@@ -7,7 +7,7 @@ import WalletsAuthProvider from './AuthProvider';
 import './styles/fonts.scss';
 import './index.scss';
 
-const App: React.FC = () => {
+const App: React.FC<{ logout: () => Promise<void> }> = ({ logout }) => {
     const i18nInstance = initializeI18n({
         cdnUrl: `${process.env.CROWDIN_URL}/${process.env.WALLETS_TRANSLATION_PATH}`, // 'https://translations.deriv.com/deriv-app-wallets/staging'
         useSuspense: false,
@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
     return (
         <APIProvider standalone>
-            <WalletsAuthProvider>
+            <WalletsAuthProvider logout={logout}>
                 <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
                     <ModalProvider>
                         <AppContent />

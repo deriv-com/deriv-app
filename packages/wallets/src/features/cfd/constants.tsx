@@ -13,7 +13,7 @@ import {
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
-import { useTranslations } from '@deriv-com/translations';
+import { localize, useTranslations } from '@deriv-com/translations';
 import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
@@ -70,7 +70,7 @@ export const PlatformDetails = {
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         link: 'https://onelink.to/xf26jx',
         platform: 'mt5' as TPlatforms.MT5,
-        title: 'Deriv MT5 investor',
+        title: localize('Deriv MT5 Investor'),
     },
 } as const;
 

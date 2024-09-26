@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useTranslations } from '@deriv-com/translations';
 import { THooks } from '../../../../../../types';
 import { ClientVerificationStatusBadge } from '../../../../components';
 import { DocumentTile } from './components';
@@ -42,6 +43,7 @@ const tileProps: TTileProps = {
 
 const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
     const history = useHistory();
+    const { localize } = useTranslations();
 
     return (
         <div className='wallets-documents-list'>
@@ -49,18 +51,21 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
                 <DocumentTile
                     {...tileProps[statuses.poi_status]}
                     onClick={() => history.push('/account/proof-of-identity')}
-                    title='Proof of identity'
+                    title={localize('Proof of identity')}
                 />
             )}
             {'poa_status' in statuses && (
                 <DocumentTile
-                    {...tileProps[statuses.poi_status]}
+                    {...tileProps[statuses.poa_status]}
                     onClick={() => history.push('/account/proof-of-address')}
-                    title='Proof of address'
+                    title={localize('Proof of address')}
                 />
             )}
             {'valid_tin' in statuses && !statuses.valid_tin && (
-                <DocumentTile onClick={() => history.push('/account/personal-details')} title='Personal Details' />
+                <DocumentTile
+                    onClick={() => history.push('/account/personal-details')}
+                    title={localize('Personal Details')}
+                />
             )}
         </div>
     );

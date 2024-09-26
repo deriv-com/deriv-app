@@ -154,7 +154,7 @@ describe('Trade', () => {
 
         expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
         expect(screen.getByText('MarketSelector')).toBeInTheDocument();
-        expect(screen.getByText('Trade Parameters')).toBeInTheDocument();
+        expect(screen.getAllByText('Trade Parameters')).toHaveLength(2);
         expect(screen.getByText('Chart')).toBeInTheDocument();
         expect(screen.getByText('Purchase Button')).toBeInTheDocument();
         expect(screen.getByText('OnboardingGuide')).toBeInTheDocument();

@@ -11,13 +11,8 @@ type TVideoPreview = {
 };
 
 const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPreview) => (
-    <div className='guide-video__wrapper'>
-        <div
-            className='guide-video__preview'
-            data-testid='dt_video_preview'
-            onClick={toggleVideoPlayer}
-            onKeyDown={toggleVideoPlayer}
-        >
+    <div className='guide-video__wrapper' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
+        <div className='guide-video__preview' data-testid='dt_video_preview'>
             <Stream
                 className='guide-video'
                 letterboxColor='transparent'
@@ -37,7 +32,7 @@ const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPre
                 <Localize i18n_default_text='How to trade ' />
                 {contract_type}?
             </CaptionText>
-            <CaptionText>
+            <CaptionText color='quill-typography__color--default'>
                 <Localize i18n_default_text='Watch this video to learn about this trade type.' />
             </CaptionText>
         </div>

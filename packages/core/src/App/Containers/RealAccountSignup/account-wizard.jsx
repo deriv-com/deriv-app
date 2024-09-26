@@ -418,15 +418,15 @@ const AccountWizard = observer(props => {
                     closeRealAccountSignup();
                     setShouldShowSameDOBPhoneModal(true);
                 } else if (modifiedProps.real_account_signup_target === 'maltainvest') {
+                    modifiedProps.onOpenDepositModal();
+                } else if (modifiedProps.real_account_signup_target === 'samoa') {
+                    modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                } else {
+                    if (direct_deposit_flow) {
                         modifiedProps.onOpenDepositModal();
-                    } else if (modifiedProps.real_account_signup_target === 'samoa') {
-                        modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
-                    } else {
-                        if (direct_deposit_flow) {
-                            modifiedProps.onOpenDepositModal();
-                        }
-                        modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                     }
+                    modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                }
 
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**

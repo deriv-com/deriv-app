@@ -27,24 +27,23 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
         }
     };
 
-    const getChipLabel = () => {
-        const arrayLength = contractTypeFilter.length;
-        if (!arrayLength) return <Localize i18n_default_text='All trade types' key='All trade types' />;
-        if (arrayLength === 1) return AVAILABLE_CONTRACTS.find(type => type.id === contractTypeFilter[0])?.tradeType;
-        return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} key='Amount' />;
-    };
-
     return (
         <React.Fragment>
             <Chip.Standard
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
+                label={<Localize i18n_default_text='Trade types' key='trade_types_label' />}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
             >
-                <Text size='sm'>{getChipLabel()}</Text>
+                {!!changedOptions.length && (
+                    <Text>
+                        {/* Chip component throws a missing unique "key" prop error in quill-ui on test links, hence added a key */}
+                        <React.Fragment key='trade_types_count'>({changedOptions.length})</React.Fragment>
+                    </Text>
+                )}
             </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
@@ -64,7 +63,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                         ))}
                     </ActionSheet.Content>
                     <ActionSheet.Footer
-                        alignment='vertical'
+                        alignment='horizontal'
                         isSecondaryButtonDisabled={!changedOptions.length}
                         primaryAction={{
                             content: <Localize i18n_default_text='Apply' />,

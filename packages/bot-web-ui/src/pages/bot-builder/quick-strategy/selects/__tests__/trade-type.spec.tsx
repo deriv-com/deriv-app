@@ -48,22 +48,19 @@ window.Blockly = {
     },
 };
 
+let initial_value = {
+    durationtype: 1,
+    symbol: 'R_100',
+    tradetype: 'callput',
+};
+
 describe('<TradeType />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {
-        const mock_store = mockStore({
-            ui: {
-                is_mobile: true,
-            },
-        });
+        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
-        const initial_value = {
-            durationtype: 1,
-            symbol: 'R_100',
-            tradetype: 'callput',
-        };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -94,5 +91,41 @@ describe('<TradeType />', () => {
             userEvent.click(option_element);
         });
         expect(autocomplete_element).toHaveDisplayValue([/Rise\/Fall/i]);
+    });
+
+    it('should be empty list if tradetype not found on the first time the browser is used', async () => {
+        initial_value = {
+            durationtype: 1,
+            symbol: 'R_100',
+            tradetype: '',
+        };
+        render(<TradeType />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('dt_qs_tradetype');
+        userEvent.click(autocomplete_element);
+
+        expect(autocomplete_element).toHaveDisplayValue('');
+    });
+
+    it('should be empty list if symbol not found on the first time the browser is used', async () => {
+        initial_value = {
+            durationtype: 1,
+            symbol: '',
+            tradetype: '',
+        };
+        render(<TradeType />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('dt_qs_tradetype');
+        userEvent.click(autocomplete_element);
+        await waitFor(() => {
+            const option_element = screen.getByText('No results found');
+            userEvent.click(option_element);
+        });
+
+        expect(autocomplete_element).toHaveDisplayValue('');
     });
 });

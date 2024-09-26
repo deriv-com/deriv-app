@@ -44,6 +44,7 @@ const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
 
 const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
+    const { localize } = useTranslations();
     const [selection, setSelection] = useState<TSelectedManualDocument>();
 
     if (isAccountSettingsLoading) {
@@ -64,7 +65,7 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     }
 
     return (
-        <ModalStepWrapper title='Add a real MT5 account'>
+        <ModalStepWrapper title={localize('Add a real MT5 account')}>
             <DocumentSelection
                 onSelectDocument={document => {
                     setSelection(document);

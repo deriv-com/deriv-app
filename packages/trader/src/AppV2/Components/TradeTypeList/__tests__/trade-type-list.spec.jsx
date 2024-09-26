@@ -4,9 +4,7 @@ import userEvent from '@testing-library/user-event';
 import TradeTypeList from '../trade-type-list';
 
 jest.mock('../trade-type-list-item', () => {
-    const MockedComponent = ({ title, onRightIconClick }) => (
-        <div onClick={onRightIconClick}>{title}</div>
-    );
+    const MockedComponent = ({ title, onRightIconClick }) => <div onClick={onRightIconClick}>{title}</div>;
     MockedComponent.displayName = 'TradeTypeListItem';
     return MockedComponent;
 });

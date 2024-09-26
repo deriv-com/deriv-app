@@ -7,13 +7,13 @@ import {
     useSettings,
 } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { toMoment } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
-import { ModalStepWrapper, WalletButton } from '../Base';
+import { getFormattedDateString } from '../../utils/utils';
+import { ModalStepWrapper } from '../Base';
 import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
@@ -45,7 +45,7 @@ const DerivAppsGetAccount: React.FC = () => {
             const createAccountResponse = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
-                    date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
+                    date_of_birth: getFormattedDateString(Number(dateOfBirth), {}, 'YYYY-MM-DD', true),
                     first_name: firstName,
                     last_name: lastName,
                     residence: countryCode || '',
@@ -79,12 +79,12 @@ const DerivAppsGetAccount: React.FC = () => {
                     shouldHideHeader={isDesktop}
                 >
                     <CFDSuccess
+                        actionButtons={<DerivAppsSuccessFooter />}
                         description={localize(
                             'Transfer funds from your {{walletCurrencyType}} Wallet to your Options account to start trading.',
                             { walletCurrencyType: activeWallet?.wallet_currency_type }
                         )}
                         displayBalance={displayBalance}
-                        renderButton={() => <DerivAppsSuccessFooter />}
                         title={localize('Your Options account is ready')}
                     />
                 </ModalStepWrapper>,
@@ -103,18 +103,21 @@ const DerivAppsGetAccount: React.FC = () => {
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
                 <Text size='sm'>Options</Text>
-                <Text size={isDesktop ? '2xs' : 'xs'}>
+                <Text size='xs'>
                     <Localize i18n_default_text='One options account for all platforms.' />
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>
-                <WalletButton
-                    color='primary-light'
+                <Button
+                    borderWidth='sm'
+                    color='black'
                     disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
                     onClick={createTradingAccount}
+                    rounded='md'
+                    variant='outlined'
                 >
-                    <Localize i18n_default_text='Get' />
-                </WalletButton>
+                    <Localize i18n_default_text='Enable' />
+                </Button>
             </TradingAccountCard.Button>
         </TradingAccountCard>
     );

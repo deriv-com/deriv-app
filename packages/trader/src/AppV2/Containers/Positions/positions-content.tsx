@@ -129,7 +129,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         >
             {!hasNoPositions && (
                 <div className='positions-page__filter__wrapper'>
-                    {isClosedTab && (
+                    {isClosedTab ? (
                         <TimeFilter
                             timeFilter={timeFilter}
                             setTimeFilter={setTimeFilter}
@@ -138,11 +138,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                             setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                             setNoMatchesFound={setNoMatchesFound}
                         />
+                    ) : (
+                        <ContractTypeFilter
+                            contractTypeFilter={contractTypeFilter}
+                            onApplyContractTypeFilter={onApplyContractTypeFilter}
+                        />
                     )}
-                    <ContractTypeFilter
-                        contractTypeFilter={contractTypeFilter}
-                        onApplyContractTypeFilter={onApplyContractTypeFilter}
-                    />
                 </div>
             )}
             {shouldShowEmptyMessage ? (

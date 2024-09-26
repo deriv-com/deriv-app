@@ -12,11 +12,10 @@ import {
     LegacyClose2pxIcon,
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyIcon, WalletGradientBackground } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
-import useDevice from '../../../../hooks/useDevice';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -53,6 +52,11 @@ const getRealAccountTabs = () => {
 const getVirtualAccountTabs = () => {
     const virtualAccountTabs = [
         {
+            icon: <LabelPairedArrowsRotateMdRegularIcon />,
+            path: 'reset-balance',
+            text: <Localize i18n_default_text='Reset Balance' />,
+        },
+        {
             icon: <LabelPairedArrowUpArrowDownMdRegularIcon />,
             path: 'account-transfer',
             text: <Localize i18n_default_text='Transfer' />,
@@ -62,11 +66,6 @@ const getVirtualAccountTabs = () => {
             path: 'transactions',
             text: <Localize i18n_default_text='Transactions' />,
         },
-        {
-            icon: <LabelPairedArrowsRotateMdRegularIcon />,
-            path: 'reset-balance',
-            text: <Localize i18n_default_text='Reset Balance' />,
-        },
     ] as const;
 
     return virtualAccountTabs;
@@ -75,7 +74,7 @@ const getVirtualAccountTabs = () => {
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
@@ -85,10 +84,10 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {
-        if (isMobile && activeTabRef.current) {
+        if (!isDesktop && activeTabRef.current) {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
-    }, [location.pathname, isMobile]);
+    }, [location.pathname, isDesktop]);
 
     return (
         <WalletGradientBackground

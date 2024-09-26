@@ -1,16 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv/api';
-import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
-import initDatadogLogs from 'Utils/datadog-logs';
 import { TBlocklyEvents } from 'Types';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
-import SaveModal from '../dashboard/load-bot-preview/save-modal';
+import SaveModal from '../dashboard/bot-list/save-modal/save-modal';
 import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
 import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
@@ -27,14 +24,7 @@ const BotBuilder = observer(() => {
     const { is_desktop } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
-    const isMounted = useIsMounted();
-    const { data: remote_config_data } = useRemoteConfig(isMounted());
     let deleted_block_id: null | string = null;
-
-    React.useEffect(() => {
-        initDatadogLogs(remote_config_data.tracking_datadog);
-        window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
-    }, [remote_config_data.tracking_datadog]);
 
     React.useEffect(() => {
         onMount();

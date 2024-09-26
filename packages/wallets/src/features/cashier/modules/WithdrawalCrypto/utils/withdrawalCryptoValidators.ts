@@ -4,14 +4,15 @@ import { TWithdrawalCryptoContext } from '../provider';
 const helperMessageMapper = {
     balanceLessThanMinWithdrawalLimit: (balance: string, min: string) =>
         localize(
-            `Your balance (${balance}) is less than the current minimum withdrawal allowed (${min}). Please top up your wallet to continue with your withdrawal.`
+            'Your balance ({{balance}}) is less than the current minimum withdrawal allowed ({{min}}). Please top up your wallet to continue with your withdrawal.',
+            { balance, min }
         ),
-    decimalPlacesExceeded: (limit: number) => localize(`Up to ${limit} decimal places are allowed.`),
+    decimalPlacesExceeded: (limit: number) => localize('Up to {{limit}} decimal places are allowed.', { limit }),
     fieldRequired: localize('This field is required.'),
     insufficientFunds: localize('Insufficient funds'),
     invalidInput: localize('Should be a valid number.'),
     withdrawalLimitError: (min: string, max: string) => {
-        return localize(`The current allowed withdraw amount is ${min} to ${max}.`);
+        return localize('The current allowed withdraw amount is {{min}} to {{max}}.', { max, min });
     },
 };
 

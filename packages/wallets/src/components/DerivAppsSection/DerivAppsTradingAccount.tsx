@@ -11,7 +11,7 @@ import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
 const DerivAppsTradingAccount = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -22,7 +22,7 @@ const DerivAppsTradingAccount = () => {
     return (
         <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
             <TradingAccountCard.Icon>
-                <WalletMarketIcon icon='standard' size={isMobile ? 'md' : 'lg'} />
+                <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
                 <div className='wallets-deriv-apps-section__title-and-badge'>

@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { finishSign } from '../../images';
-import { modifyContextMenu, removeExtraInput } from '../../../utils';
+import { appendCollapsedMainBlocksFields, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -61,7 +61,9 @@ Blockly.Blocks.after_purchase = {
             event.type === Blockly.Events.BLOCK_CHANGE ||
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
-            removeExtraInput(this);
+            if (this.isCollapsed()) {
+                appendCollapsedMainBlocksFields(this);
+            }
         }
     },
     customContextMenu(menu) {

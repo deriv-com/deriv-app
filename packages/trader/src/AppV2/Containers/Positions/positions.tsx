@@ -1,19 +1,30 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { getPositionsV2TabIndexFromURL } from '@deriv/shared';
+import { useLocalStorageData } from '@deriv/hooks';
 import { Tab } from '@deriv-com/quill-ui';
 import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 import { useModulesStore } from 'Stores/useModulesStores';
 import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
 import { useHistory } from 'react-router-dom';
+import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 
 const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
     const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+    });
     const history = useHistory();
 
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const {
         positions: { onUnmount },
     } = useModulesStore();
@@ -68,6 +79,7 @@ const Positions = observer(() => {
                     </Tab.Content>
                 </Tab.Container>
             </div>
+            {!guide_dtrader_v2?.positions_page && is_logged_in && <OnboardingGuide type='positions_page' />}
         </BottomNav>
     );
 });

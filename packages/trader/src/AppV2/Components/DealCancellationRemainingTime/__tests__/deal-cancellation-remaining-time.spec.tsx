@@ -19,6 +19,7 @@ jest.mock('@deriv/stores', () => ({
 jest.mock('AppV2/Hooks/useContractDetails', () => jest.fn());
 
 describe('DealCancellationRemainingTime component', () => {
+    const cancellation_badge_testid = 'dt_deal_cancellation_badge';
     const mockCommon = {
         server_time: {
             unix: () => 1623441000,
@@ -44,7 +45,7 @@ describe('DealCancellationRemainingTime component', () => {
         render(<DealCancellationRemainingTime />);
 
         expect(screen.getByText('05:00')).toBeInTheDocument();
-        expect(screen.getByTestId('deal-cancellation-badge')).toBeInTheDocument();
+        expect(screen.getByTestId(cancellation_badge_testid)).toBeInTheDocument();
     });
 
     it('does not render the remaining time tag when end time is before start time', () => {
@@ -59,7 +60,7 @@ describe('DealCancellationRemainingTime component', () => {
         render(<DealCancellationRemainingTime />);
 
         expect(screen.queryByText('05:00')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('deal-cancellation-badge')).not.toBeInTheDocument();
+        expect(screen.queryByTestId(cancellation_badge_testid)).not.toBeInTheDocument();
     });
 
     it('does not render the remaining time tag when there is no cancellation date', () => {
@@ -72,6 +73,6 @@ describe('DealCancellationRemainingTime component', () => {
         render(<DealCancellationRemainingTime />);
 
         expect(screen.queryByText('05:00')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('deal-cancellation-badge')).not.toBeInTheDocument();
+        expect(screen.queryByTestId(cancellation_badge_testid)).not.toBeInTheDocument();
     });
 });

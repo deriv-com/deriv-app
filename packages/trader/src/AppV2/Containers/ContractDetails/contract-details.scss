@@ -1,33 +1,44 @@
+$FIXED_PADDING_HEIGHT: var(--core-size-1600);
+$HEADER_HEIGHT: var(--core-size-2000);
+$ONE_BUTTON_FOOTER_HEIGHT: var(--core-size-3200);
+$TWO_BUTTONS_FOOTER_HEIGHT: 120px;
+
 .contract-details {
-    background-color: var(--core-color-solid-slate-75);
+    background-color: var(--semantic-color-slate-solid-surface-frame-mid);
     padding: 0 var(--core-spacing-400);
     display: flex;
     flex-direction: column;
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
-    height: 100vh;
-    padding-bottom: var(--semantic-spacing-general-4xl);
+    height: 100%;
+    padding-bottom: var(--semantic-spacing-general-sm);
 
+    .contract-details-chart {
+        height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT));
+    }
     &--two-buttons {
-        padding-bottom: 186px;
+        height: 100%;
+        padding-bottom: $TWO_BUTTONS_FOOTER_HEIGHT;
+        .contract-details-chart {
+            height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $TWO_BUTTONS_FOOTER_HEIGHT));
+        }
     }
     &--one-button {
-        padding-bottom: 130px;
+        height: 100%;
+        padding-bottom: $ONE_BUTTON_FOOTER_HEIGHT;
+        .contract-details-chart {
+            height: min(360px, calc(100vh - $HEADER_HEIGHT - $FIXED_PADDING_HEIGHT - $ONE_BUTTON_FOOTER_HEIGHT));
+        }
     }
     .contract-card-wrapper {
         margin-top: var(--core-spacing-200);
     }
 }
 
-.placeholder {
-    background-color: var(--core-color-solid-slate-50);
-}
-
 .contract-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: var(--core-color-solid-slate-50);
     border-radius: var(--core-borderRadius-500);
     padding: var(--core-spacing-800);
 

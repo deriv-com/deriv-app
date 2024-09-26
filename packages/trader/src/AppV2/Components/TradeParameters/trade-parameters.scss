@@ -1,6 +1,6 @@
 .trade-params {
     border-radius: var(--core-borderRadius-400);
-    background-color: var(--core-color-solid-slate-50);
+    background-color: var(--semantic-color-slate-solid-surface-frame-low);
     padding: var(--core-spacing-800);
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@
             justify-content: center;
             gap: var(--core-spacing-400);
 
-            &--minimized {
+            &--horizontal {
                 align-items: center;
                 flex-direction: row;
                 justify-content: unset;
@@ -28,10 +28,6 @@
                 white-space: nowrap;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
-                max-height: 0px;
-                padding: 0px;
-                transition: transform 0.5s, opacity 0.5s, max-height 0.5s, padding 0.1s;
-
                 // if container has 2 children, then apply style to children
                 &:has(> :last-child:nth-child(2)) {
                     .trade-params__option--minimized {
@@ -42,27 +38,16 @@
                 &::-webkit-scrollbar {
                     display: none;
                 }
-                &--enter,
-                &--exit {
-                    opacity: 0;
-                    transform: translateY(100%);
-                    max-height: 0px;
-                    padding: 0px;
-                }
-                &--enter-done {
-                    opacity: 1;
-                    transform: translateY(0);
-                    max-height: var(--core-size-3600);
-                    padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400)
-                        var(--core-spacing-400);
-                }
+            }
+
+            &--minimized {
+                max-height: 104px;
+                padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
+
                 .quill-input__container {
                     width: unset;
                 }
             }
-        }
-        &-info-standalone {
-            padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         }
     }
     &__option {
@@ -75,10 +60,31 @@
         }
         .input {
             padding-inline-start: 0;
+            padding-block: 1px;
+            padding-inline-end: 2px;
+            height: unset;
         }
     }
     &--minimized {
-        height: var(--core-size-3600);
+        min-height: var(--core-size-3600);
         width: 100%;
+    }
+}
+
+.text-field--custom {
+    .quill-input {
+        &-no-label__wrapper {
+            position: relative;
+            .input {
+                padding-inline: var(--core-spacing-1700);
+            }
+        }
+        &-label__label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            inset-inline-start: 0;
+            z-index: 2;
+        }
     }
 }

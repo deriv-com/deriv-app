@@ -15,17 +15,12 @@ describe('<DepositNowOrLaterModal />', () => {
 
     const setShouldShowDepositNowOrLaterModal = jest.fn();
     const setShouldShowOneTimeDepositModal = jest.fn();
-    const toggleAccountSuccessModal = jest.fn();
 
     const mockDefault = mockStore({
-        client: {
-            is_mf_account: true,
-        },
         ui: {
             should_show_deposit_now_or_later_modal: true,
             setShouldShowDepositNowOrLaterModal,
             setShouldShowOneTimeDepositModal,
-            toggleAccountSuccessModal,
         },
     });
 
@@ -84,7 +79,7 @@ describe('<DepositNowOrLaterModal />', () => {
         expect(setShouldShowDepositNowOrLaterModal).toHaveBeenCalledWith(false);
     });
 
-    it('should call setShouldShowDepositNowOrLaterModal, setShouldShowOneTimeDepositModal and toggleAccountSuccessModal for MF account when try to click cancel or close button', () => {
+    it('should call setShouldShowDepositNowOrLaterModal and setShouldShowOneTimeDepositModal for ROW account when try to click cancel or close button', () => {
         render(<DepositNowOrLaterModal />, {
             wrapper: wrapper(),
         });
@@ -96,33 +91,5 @@ describe('<DepositNowOrLaterModal />', () => {
 
         expect(setShouldShowDepositNowOrLaterModal).toHaveBeenCalledWith(false);
         expect(setShouldShowOneTimeDepositModal).toHaveBeenCalledWith(false);
-        expect(toggleAccountSuccessModal).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call setShouldShowDepositNowOrLaterModal, setShouldShowOneTimeDepositModal and toggleAccountSuccessModal for not MF account when try to click cancel or close button', () => {
-        const mock = mockStore({
-            client: {
-                is_mf_account: false,
-            },
-            ui: {
-                should_show_deposit_now_or_later_modal: true,
-                setShouldShowDepositNowOrLaterModal,
-                setShouldShowOneTimeDepositModal,
-                toggleAccountSuccessModal,
-            },
-        });
-
-        render(<DepositNowOrLaterModal />, {
-            wrapper: wrapper(mock),
-        });
-
-        const close_button = screen.getByRole('button', {
-            name: /Deposit later/,
-        });
-        userEvent.click(close_button);
-
-        expect(setShouldShowDepositNowOrLaterModal).toHaveBeenCalledWith(false);
-        expect(setShouldShowOneTimeDepositModal).toHaveBeenCalledWith(false);
-        expect(toggleAccountSuccessModal).toHaveBeenCalledTimes(0);
     });
 });

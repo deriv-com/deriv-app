@@ -19,9 +19,10 @@ const trackAnalyticsEvent = (
 };
 
 const WalletsBannerUnsuccessful = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, common } = useStore();
     const { isDesktop, isMobile, isTablet } = useDevice();
     const { is_demo, toggleWalletsUpgrade } = traders_hub;
+    const { current_language } = common;
     const account_mode = is_demo ? 'demo' : 'real';
     let titleFontSize, descriptionFontSize, iconHeight, iconWidth;
 
@@ -52,7 +53,10 @@ const WalletsBannerUnsuccessful = observer(() => {
     };
 
     return (
-        <div className='wallets-banner wallets-banner-unsuccessful'>
+        <div
+            className='wallets-banner wallets-banner-unsuccessful'
+            key={`wallets-banner__${current_language}--unsuccessful`}
+        >
             <div className='wallets-banner__content wallets-banner-unsuccessful__content'>
                 <Localize
                     i18n_default_text='<0>Setup unsuccessful</0>'

@@ -1,0 +1,100 @@
+.guide-tooltip {
+    &__wrapper {
+        background-color: var(--component-textIcon-normal-prominent);
+        border-radius: var(--core-borderRadius-400);
+        padding: var(--core-size-800);
+        display: flex;
+        gap: var(--core-size-800);
+        flex-direction: column;
+        align-items: flex-start;
+        min-width: var(--core-size-4300);
+        transition: transform 0.5s ease-in;
+
+        @keyframes slide-in-tooltip {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        animation: slide-in-tooltip var(--core-motion-duration-100) linear;
+
+        &-scroll {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            padding-top: calc(100vh - 224px);
+
+            &-text {
+                color: var(--component-textIcon-static-prominentDark);
+            }
+        }
+    }
+
+    &__button {
+        align-self: flex-start;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+
+        &__title {
+            color: var(--component-textIcon-inverse-prominent);
+        }
+    }
+
+    &__content {
+        margin-inline-end: var(--core-spacing-1200);
+        color: var(--component-textIcon-inverse-prominent);
+    }
+
+    &__close {
+        position: relative;
+        inset-inline-start: var(--core-spacing-500);
+        inset-block-end: var(--core-spacing-500);
+    }
+
+    @keyframes bounce {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    &--bounce {
+        height: var(--core-spacing-3200);
+        width: var(--core-spacing-2400);
+        fill: var(--component-textIcon-static-prominentDark);
+        animation: bounce var(--core-motion-duration-400) ease-in-out var(--core-motion-duration-100) infinite;
+    }
+}
+
+.guide {
+    &__player {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        &__wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; // 16:9 aspect ratio (9/16 = 0.5625 or 56.25%)
+            overflow: hidden;
+
+            &--is-loading {
+                padding-top: unset;
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@
     gap: 0.4rem;
     padding: 4rem 1.8rem 0rem;
     border-radius: 2.4rem;
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 7rem 1.5rem 0;
     }
 

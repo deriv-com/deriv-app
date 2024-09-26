@@ -1627,7 +1627,7 @@ type TPrivateSocketEndpoints = {
                       /**
                        * This needs to be removed after updating api-types version
                        */
-                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
                       /**
                        * Legal requirements for the Landing Company
                        */
@@ -2238,10 +2238,25 @@ type TWhiteLabelLinks = {
 
 type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
     white_label_links: TWhiteLabelLinks['white_label_links'];
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
 };
 
 type MT5AccountListResponse = {
     mt5_login_list?: TExtendedMT5AccounListType[];
+};
+
+type TExtendTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
+};
+
+type TExtendTransferBetweenAccountsResponse = TransferBetweenAccountsResponse & {
+    accounts?: TExtendTransferAccount[];
 };
 
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
@@ -2721,7 +2736,7 @@ type TSocketEndpoints = {
     };
     transfer_between_accounts: {
         request: TransferBetweenAccountsRequest;
-        response: TransferBetweenAccountsResponse;
+        response: TExtendTransferBetweenAccountsResponse;
     };
     unsubscribe_email: {
         request: UnsubscribeEmailRequest;

@@ -43,7 +43,7 @@ describe('TransferNotAvailableProvider', () => {
                 <>
                     {result.title}
                     {result.description}
-                    {result.actionButton()}
+                    {result.actionButton}
                 </>
             );
         expect(
@@ -72,7 +72,7 @@ describe('TransferNotAvailableProvider', () => {
                 <>
                     {result.title}
                     {result.description}
-                    {result.actionButton()}
+                    {result.actionButton}
                 </>
             );
 
@@ -99,7 +99,7 @@ describe('TransferNotAvailableProvider', () => {
                 <>
                     {result.title}
                     {result.description}
-                    {result.actionButton()}
+                    {result.actionButton}
                 </>
             );
 
@@ -125,7 +125,7 @@ describe('TransferNotAvailableProvider', () => {
                 <>
                     {result.title}
                     {result.description}
-                    {result.actionButton()}
+                    {result.actionButton}
                 </>
             );
 

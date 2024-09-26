@@ -18,6 +18,11 @@
         padding: 1.6rem;
     }
 
+    &__content {
+        width: 100%;
+        max-width: 64.2rem;
+    }
+
     &__loader {
         width: 99.6rem;
         height: 69.8rem;
@@ -55,6 +60,16 @@
             min-width: auto;
         }
 
+        &-banner {
+            position: absolute;
+            background-color: rgba(75, 180, 179, 0.16);
+            animation-name: animate-verified-message;
+            animation-duration: 0.2s;
+            animation-fill-mode: forwards;
+            animation-delay: 2.5s;
+            transition: opacity 1s ease;
+        }
+
         &-onfido-container {
             width: 100%;
             min-height: 50rem;
@@ -88,22 +103,16 @@
             @include mobile-or-tablet-screen {
                 min-height: 50rem;
             }
-
-            & > .wallets-inline-message {
-                margin-top: 1.6rem;
-            }
         }
+    }
 
-        & > .wallets-inline-message {
-            position: absolute;
-            width: 100%;
-            top: 0.4rem;
-            transition: opacity 1s ease;
+    &__inline-message {
+        position: absolute;
+        top: 2.4rem;
+        width: auto;
 
-            animation-name: animate-verified-message;
-            animation-duration: 0.2s;
-            animation-fill-mode: forwards;
-            animation-delay: 2.5s;
+        @include mobile-or-tablet-screen {
+            top: 1.6rem;
         }
     }
 

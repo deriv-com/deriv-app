@@ -1,0 +1,11 @@
+.service-error-sheet {
+    &__body {
+        margin: var(--core-size-1200);
+        &__heading {
+            margin-bottom: var(--core-size-1200);
+        }
+    }
+    &__footer {
+        margin: var(--core-size-400);
+    }
+}

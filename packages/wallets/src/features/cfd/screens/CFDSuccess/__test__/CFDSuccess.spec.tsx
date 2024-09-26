@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen, within } from '@testing-library/react';
-import useDevice from '../../../../../hooks/useDevice';
 import CFDSuccess from '../CFDSuccess';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -10,11 +10,9 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        isDesktop: true,
-    })),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../../../components/WalletGradientBackground', () => ({
@@ -50,6 +48,11 @@ describe('CFDSuccess', () => {
         platform: 'mt5' as const,
         title: 'Test Title',
     };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
 
     it('renders default CFD success content', () => {
         render(<CFDSuccess {...mockProps} />);
@@ -101,15 +104,6 @@ describe('CFDSuccess', () => {
         render(<CFDSuccess {...mockProps} marketType='all' platform='ctrader' />);
 
         expect(screen.getByText('Deriv cTrader')).toBeInTheDocument();
-    });
-
-    it('does not render buttons on mobile', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
-        const mockRenderButton = jest.fn();
-
-        render(<CFDSuccess {...mockProps} renderButton={mockRenderButton} />);
-
-        expect(mockRenderButton).not.toHaveBeenCalled();
     });
 
     it('renders correct content when active wallet is undefined', () => {

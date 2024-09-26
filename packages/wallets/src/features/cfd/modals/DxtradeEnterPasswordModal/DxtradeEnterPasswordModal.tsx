@@ -7,10 +7,10 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CreatePasswordModal } from '../CreatePasswordModal';
@@ -21,7 +21,7 @@ import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
     const {
@@ -75,12 +75,12 @@ const DxtradeEnterPasswordModal = () => {
         if (!isResetPasswordSuccessful) return;
         if (!isDxtradePasswordNotSet) {
             show(
-                <ModalWrapper isFullscreen={isMobile}>
+                <ModalWrapper isFullscreen={!isDesktop}>
                     <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }
-    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
+    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isDesktop, isResetPasswordSuccessful, show]);
 
     if (status === 'error' && error?.error?.code === 'PasswordReset') {
         return (

@@ -1,11 +1,20 @@
 import React from 'react';
 import { ActionSheet, Text, TextField, TextFieldWithSteppers, ToggleSwitch } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES, formatMoney, isAccumulatorContract, isValidToCancel, getDecimalPlaces } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    formatMoney,
+    isAccumulatorContract,
+    isValidToCancel,
+    getDecimalPlaces,
+    getCurrencyDisplayCode,
+} from '@deriv/shared';
+import TotalProfitLoss from '../TotalProfitLoss';
+import { getProfit } from 'AppV2/Utils/positions-utils';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -20,12 +29,13 @@ const RiskManagementItem = observer(
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
-        const [stepperValue, setStepperValue] = React.useState(0);
+        const [stepperValue, setStepperValue] = React.useState<number | string>();
         const { contract_info, contract } = useContractDetails();
         const { contract_type, currency } = contract_info;
         const { validation_errors, updateLimitOrder, clearContractUpdateConfigValues } = contract;
         const is_valid_to_cancel = isValidToCancel(contract_info);
         const is_accumulator = isAccumulatorContract(contract_type);
+        const total_profit = getProfit(contract_info);
 
         React.useEffect(() => {
             if (value) {
@@ -41,10 +51,9 @@ const RiskManagementItem = observer(
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
         const errorMessage = validation_errors[errorKey]?.[0] ?? '';
 
-        const messageForMultiplier =
-            is_valid_to_cancel && !is_deal_cancellation ? (
-                <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
-            ) : null;
+        const messageForMultiplier = is_valid_to_cancel ? (
+            <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
+        ) : null;
 
         const info_message = {
             [CONTRACT_TYPES.ACCUMULATOR]: (
@@ -69,7 +78,7 @@ const RiskManagementItem = observer(
             clearContractUpdateConfigValues();
             if (value) {
                 setIsSheetOpen(true);
-                setStepperValue(0);
+                setStepperValue('');
                 setIsEnabled(true);
             } else {
                 contract.onChange?.({
@@ -146,24 +155,41 @@ const RiskManagementItem = observer(
                 >
                     <ActionSheet.Portal>
                         <ActionSheet.Header title={label} />
-                        <ActionSheet.Content>
+                        <ActionSheet.Content className='risk-management-item__action-sheet-content'>
                             {isSheetOpen && (
                                 <TextFieldWithSteppers
-                                    variant='fill'
-                                    inputSize='md'
-                                    textAlignment='center'
-                                    status={errorMessage ? 'error' : 'neutral'}
-                                    name={type}
-                                    unitRight={currency}
-                                    value={stepperValue}
+                                    allowDecimals
+                                    allowSign={false}
+                                    className='text-field--custom'
+                                    customType='commaRemoval'
                                     decimals={getDecimalPlaces(currency)}
-                                    onChange={onChange}
                                     message={errorMessage}
+                                    minusDisabled={Number(stepperValue) - 1 <= 0}
+                                    name={type}
+                                    noStatusIcon
+                                    onChange={onChange}
+                                    placeholder={localize('Amount')}
+                                    regex={/[^0-9.,]/g}
+                                    status={errorMessage ? 'error' : 'neutral'}
+                                    textAlignment='center'
+                                    inputMode='decimal'
+                                    unitLeft={getCurrencyDisplayCode(currency)}
+                                    value={stepperValue}
+                                    variant='fill'
+                                />
+                            )}
+                            {!!total_profit && (
+                                <TotalProfitLoss
+                                    currency={getCurrencyDisplayCode(currency)}
+                                    is_bold={false}
+                                    totalProfitLoss={total_profit}
                                 />
                             )}
                         </ActionSheet.Content>
                         <ActionSheet.Footer
-                            isPrimaryButtonDisabled={!!errorMessage || finalValue == stepperValue}
+                            isPrimaryButtonDisabled={
+                                !!errorMessage || finalValue == stepperValue || stepperValue === '' || stepperValue == 0
+                            }
                             shouldCloseOnPrimaryButtonClick
                             primaryAction={{
                                 content: <Localize i18n_default_text='Save' />,

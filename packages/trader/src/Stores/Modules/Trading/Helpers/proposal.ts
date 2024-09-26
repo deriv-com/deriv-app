@@ -39,6 +39,9 @@ type TObjExpiry = {
 type TValidationParams =
     | {
           validation_params?: {
+              payout?: {
+                  max: string;
+              };
               max_payout?: string;
               max_ticks?: number;
               stake?: {
@@ -49,11 +52,12 @@ type TValidationParams =
                   max: string;
                   min: string;
               };
+              stop_loss: { max: string; min: string };
           };
       }
     | undefined;
 
-type ExpandedProposal = Proposal & TValidationParams;
+export type ExpandedProposal = Proposal & TValidationParams;
 
 const isVisible = (elem: HTMLElement) => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
@@ -202,10 +206,14 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
               }
             : obj_expiry),
         ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
-            !isAccumulatorContract(type_of_contract) && {
+            !isAccumulatorContract(type_of_contract) &&
+            !isTurbosContract(type_of_contract) && {
                 barrier: store.barrier_1 || store.last_digit,
             }),
         ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
+        ...(isTurbosContract(type_of_contract) && {
+            payout_per_point: store.payout_per_point || store.last_digit,
+        }),
         limit_order,
         ...obj_accumulator,
         ...obj_multiplier,

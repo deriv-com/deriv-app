@@ -2,36 +2,48 @@
     position: relative;
     height: fit-content;
     width: 100%;
-    display: flex;
+    display: grid;
     justify-content: center;
     gap: 2.4rem;
     padding-bottom: 2.4rem;
 
-    @include mobile {
-        flex-direction: column;
+    @include desktop-screen {
+        grid-template-columns: 1fr 58.8rem 1fr;
+    }
+
+    @include mobile-or-tablet-screen {
         gap: 1.6rem;
     }
 
+    &__placeholder {
+        display: block;
+
+        @include mobile-or-tablet-screen {
+            display: none;
+        }
+    }
+
     &__main-content {
+        max-width: 58.8rem;
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
         position: relative;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
             gap: 1.6rem;
         }
     }
 
-    &__side-pane {
+    &__right-content {
         height: fit-content;
         display: flex;
         flex: 1 1 0;
         justify-content: flex-end;
 
         .wallets-transaction-status {
-            @include desktop {
+            @include desktop-screen {
                 margin-top: -2.4rem;
                 margin-right: 2.4rem;
             }

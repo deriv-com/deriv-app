@@ -1,15 +1,21 @@
 import { useLayoutEffect, useState } from 'react';
-import { useIsMounted } from 'usehooks-ts';
 
 const useFreshChat = () => {
     const [isReady, setIsReady] = useState(false);
-    const isMounted = useIsMounted();
+
+    const setDefaultSettings = () => {
+        window.fcSettings = {
+            onInit() {
+                window.fcWidget.on('widget:loaded', () => {
+                    setIsReady(true);
+                });
+            },
+        };
+    };
 
     useLayoutEffect(() => {
-        if (isMounted() && window.fcWidget?.isLoaded()) {
-            setIsReady(true);
-        }
-    }, [isMounted]);
+        setDefaultSettings();
+    }, []);
 
     return {
         isReady,

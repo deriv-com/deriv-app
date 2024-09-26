@@ -251,3 +251,36 @@ export const getOptionPerUnit = (unit: string, show_tick_from_5: boolean): { val
 
     return [[]];
 };
+
+export const getClosestTimeToCurrentGMT = (interval: number): string => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 5);
+
+    const options: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'UTC',
+    };
+    const formattedTime = new Intl.DateTimeFormat('en-GB', options).format(now);
+
+    const [hours, minutes] = formattedTime.split(':').map(Number);
+
+    const date = new Date();
+    date.setUTCHours(hours);
+    date.setUTCMinutes(minutes);
+
+    const roundedMinutes = Math.ceil(date.getUTCMinutes() / interval) * interval;
+
+    if (roundedMinutes >= 60) {
+        date.setUTCHours(date.getUTCHours() + 1);
+        date.setUTCMinutes(0);
+    } else {
+        date.setUTCMinutes(roundedMinutes);
+    }
+
+    const newHours = String(date.getUTCHours()).padStart(2, '0');
+    const newMinutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+    return `${newHours}:${newMinutes}`;
+};

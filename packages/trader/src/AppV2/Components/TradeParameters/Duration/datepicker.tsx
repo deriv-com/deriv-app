@@ -1,81 +1,75 @@
-import { ActionSheet, CaptionText, DatePicker, IconButton, Text } from '@deriv-com/quill-ui';
-import { LabelPairedCalendarSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
-import React, { useState } from 'react';
+import { DatePicker } from '@deriv-com/quill-ui';
+import { toMoment, useIsMounted } from '@deriv/shared';
+import React, { useEffect } from 'react';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const formatDate = (date: Date) => {
-    const utc_year = date.getFullYear();
-    const utc_month = date.getMonth();
-    const utc_day = date.getDate();
+const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => void; end_date: Date }) => {
+    const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
+    const { symbol } = useTraderStore();
+    const isMounted = useIsMounted();
 
-    const utc_date = new Date(Date.UTC(utc_year, utc_month, utc_day, 23, 59, 59));
-    const options: Intl.DateTimeFormatOptions = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        timeZone: 'UTC',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
+    const onChangeCalendarMonth = React.useCallback(
+        async (e = toMoment().format('YYYY-MM-DD')) => {
+            let new_disabled_days: number[] = [];
+            const events = await ContractType.getTradingEvents(e, symbol);
+            events?.forEach(evt => {
+                const dates = evt.dates.split(', ');
+                const idx = dates.indexOf('Fridays');
+                if (idx !== -1) {
+                    new_disabled_days = [6, 0];
+                }
+            });
+
+            if (isMounted()) {
+                setDisabledDays(new_disabled_days);
+            }
+        },
+        [isMounted, symbol]
+    );
+
+    useEffect(() => {
+        onChangeCalendarMonth();
+    }, []);
+
+    const getDisabledDays = ({ date }: { date: Date }) => {
+        const day = date.getDay();
+        return disabled_days.includes(day);
     };
-    const formatted_date = new Intl.DateTimeFormat('en-GB', options).format(utc_date);
-    return `${formatted_date} GMT`;
-};
-
-const DurationEndDatePicker = ({
-    expiry_date,
-    setExpiryDate,
-}: {
-    setExpiryDate: (date: Date) => void;
-    expiry_date: Date;
-}) => {
-    const [open_date_picker, setOpenDatePicker] = useState(false);
 
     return (
-        <div className='duration-container__date-picker'>
-            <div className='duration-container__date-picker__heading'>
-                <CaptionText color='quill-typography__color--subtle'>
-                    <Localize i18n_default_text='Expiry' />
-                </CaptionText>
-                <Text size='sm'>{formatDate(expiry_date)}</Text>
-            </div>
-            <div>
-                <IconButton
-                    size='md'
-                    color='black-white'
-                    variant='secondary'
-                    onClick={() => setOpenDatePicker(true)}
-                    icon={<LabelPairedCalendarSmBoldIcon />}
-                />
-                <ActionSheet.Root
-                    isOpen={open_date_picker}
-                    onClose={() => setOpenDatePicker(false)}
-                    position='left'
-                    expandable={false}
-                >
-                    <ActionSheet.Portal shouldCloseOnDrag>
-                        <ActionSheet.Header title={<Localize i18n_default_text='Pick an end date' />} />
-                        <div className='duration-datepicker'>
-                            <DatePicker
-                                hasFixedWidth={false}
-                                minDate={new Date()}
-                                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                                onChange={date => {
-                                    if (date && date instanceof Date) {
-                                        setExpiryDate(date);
-                                        setOpenDatePicker(false);
-                                    }
-                                }}
-                                wrapperClassName='duration-container__date-picker__sheet'
-                                disableCurrentDayMarker
-                            />
-                        </div>
-                    </ActionSheet.Portal>
-                </ActionSheet.Root>
-            </div>
+        <div className='duration-datepicker'>
+            <DatePicker
+                className='date-picker'
+                hasFixedWidth={false}
+                minDate={new Date()}
+                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                maxDetail='month'
+                view='month'
+                value={end_date}
+                defaultView='month'
+                tileDisabled={getDisabledDays}
+                onChange={date => {
+                    if (date && date instanceof Date) {
+                        setEndDate(date);
+                    }
+                }}
+                navigationLabel={({ date }) => (
+                    <span
+                        onClick={e => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        }}
+                        style={{ cursor: 'default' }}
+                    >
+                        {date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
+                    </span>
+                )}
+                wrapperClassName='duration-container__date-picker__sheet'
+                disableCurrentDayMarker
+            />
         </div>
     );
 };
 
-export default DurationEndDatePicker;
+export default DaysDatepicker;

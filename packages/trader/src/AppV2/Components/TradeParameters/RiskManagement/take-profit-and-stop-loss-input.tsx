@@ -37,6 +37,41 @@ type TTakeProfitAndStopLossInputProps = {
 };
 type TOnProposalResponse = TTradeStore['onProposalResponse'];
 
+const getProposalRequestObject = ({
+    is_take_profit_input,
+    is_enabled,
+    should_set_validation_params,
+    trade_store,
+    trade_type,
+    new_input_value,
+}: {
+    is_take_profit_input: boolean;
+    is_enabled: boolean;
+    should_set_validation_params: boolean;
+    trade_store: TTradeStore;
+    trade_type: string;
+    new_input_value?: string;
+}) => {
+    /* In order to get validation params for Multipliers when TP and SL are empty, 
+            we send '1' first, get validation params and set them into the state.*/
+    const input_value = should_set_validation_params ? '1' : new_input_value;
+    const store = {
+        ...trade_store,
+        ...{
+            ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+            has_cancellation: false,
+            ...(is_take_profit_input
+                ? { take_profit: is_enabled ? input_value : '' }
+                : { stop_loss: is_enabled ? input_value : '' }),
+        },
+    };
+
+    return createProposalRequestForContract(
+        store as Parameters<typeof createProposalRequestForContract>[0],
+        trade_type
+    );
+};
+
 const TakeProfitAndStopLossInput = ({
     classname,
     has_save_button = true,
@@ -92,25 +127,14 @@ const TakeProfitAndStopLossInput = ({
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
-    // TODO: remove when BE will send data for acceptable range in proposal
-    /* In order to get validation params for Multipliers when TP and SL are empty, 
-            we send '1' first, get validation params and set them into the state.*/
-    const input_value = should_set_validation_params ? '1' : new_input_value;
-    const store = {
-        ...trade_store,
-        ...{
-            ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
-            has_cancellation: false,
-            ...(is_take_profit_input
-                ? { take_profit: is_enabled ? input_value : '' }
-                : { stop_loss: is_enabled ? input_value : '' }),
-        },
-    };
-
-    const new_req = createProposalRequestForContract(
-        store as Parameters<typeof createProposalRequestForContract>[0],
-        Object.keys(trade_types)[0]
-    );
+    const new_req = getProposalRequestObject({
+        is_take_profit_input,
+        is_enabled,
+        should_set_validation_params,
+        trade_store,
+        trade_type: Object.keys(trade_types)[0],
+        new_input_value,
+    });
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         ['proposal', new_input_value ?? ''],
@@ -195,11 +219,11 @@ const TakeProfitAndStopLossInput = ({
                 });
             }
             is_api_response_received_ref.current = true;
-
-            return () => clearTimeout(focus_timeout.current);
         };
 
         if (response) onProposalResponse(response);
+
+        return () => clearTimeout(focus_timeout.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_enabled, new_input_value, response]);
 

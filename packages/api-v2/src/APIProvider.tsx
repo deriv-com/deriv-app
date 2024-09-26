@@ -36,7 +36,7 @@ type APIContextData = {
 const getWebSocketURL = () => {
     const endpoint = getSocketURL();
     const app_id = getAppId();
-    const language = getInitialLanguage() ?? 'EN';
+    const language = localStorage.getItem('i18n_language');
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
 

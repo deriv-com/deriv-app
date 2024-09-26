@@ -4,9 +4,8 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS, isDTraderV2 } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useFeatureFlags } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
 
@@ -22,8 +21,9 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
     const { isDesktop, isMobile } = useDevice();
+    const location = useLocation();
 
-    const { is_eu_country, is_logged_in, is_logging_in, has_any_real_account, is_landing_company_loaded } = client;
+    const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -35,18 +35,12 @@ const AppContents = observer(({ children }) => {
         is_dark_mode_on: is_dark_mode,
     } = ui;
 
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
-    const { pathname } = useLocation();
-
-    const isDTraderV2 =
-        is_dtrader_v2_enabled && isMobile && (pathname.startsWith(routes.trade) || pathname.startsWith('/contract/'));
-
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
+    const is_dtrader_v2 =
+        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
 
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
-
-    const location = useLocation();
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
@@ -118,9 +112,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
-                'app-contents--is-dtrader-v2': isDTraderV2,
-                'app-contents--is-dtrader-v2--with-banner':
-                    isDTraderV2 && !has_any_real_account && pathname === routes.trade && is_landing_company_loaded,
+                'app-contents--is-dtrader-v2': is_dtrader_v2,
             })}
             ref={scroll_ref}
         >

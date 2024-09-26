@@ -1,41 +1,31 @@
-import { useEffect } from 'react';
-import { Analytics } from '@deriv-com/analytics';
-import { useQuery } from '@deriv/api';
-import { getOSNameWithUAParser } from '@deriv/shared';
+import { useState } from 'react';
 import { useStore } from '@deriv/stores';
-import useAuthorize from './useAuthorize';
+
+type TError = { code?: string; name?: string; message: string };
 
 const useGetPasskeysList = () => {
     const { client } = useStore();
-    const { isSuccess } = useAuthorize();
-    const { is_passkey_supported } = client;
+    const { passkeys_list, fetchPasskeysList } = client;
 
-    const { data, error, isLoading, isFetching, refetch, ...rest } = useQuery('passkeys_list', {
-        options: {
-            enabled: is_passkey_supported && isSuccess,
-            retry: 0,
-        },
-    });
+    const [is_passkeys_list_loading, setIsPasskeysListLoading] = useState(false);
+    const [passkeys_list_error, setPasskeysListError] = useState<TError | null>(null);
 
-    useEffect(() => {
-        if (error) {
-            Analytics.trackEvent('ce_passkey_account_settings_form', {
-                action: 'error',
-                form_name: 'ce_passkey_account_settings_form',
-                operating_system: getOSNameWithUAParser(),
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                error_message: error?.message,
-            });
+    const refetchPasskeysList = async () => {
+        try {
+            setIsPasskeysListLoading(true);
+            await fetchPasskeysList();
+        } catch (e) {
+            setPasskeysListError(e as TError);
+        } finally {
+            setIsPasskeysListLoading(false);
         }
-    }, [error]);
+    };
 
     return {
-        passkeys_list: data?.passkeys_list,
-        passkeys_list_error: error ?? null,
-        reloadPasskeysList: refetch,
-        is_passkeys_list_loading: isLoading || isFetching,
-        ...rest,
+        passkeys_list,
+        passkeys_list_error,
+        is_passkeys_list_loading,
+        refetchPasskeysList,
     };
 };
 

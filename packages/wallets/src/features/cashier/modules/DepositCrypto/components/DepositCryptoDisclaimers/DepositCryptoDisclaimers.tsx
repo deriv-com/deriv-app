@@ -1,8 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount, useCryptoConfig } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { InlineMessage } from '../../../../../../components/Base';
+import { InlineMessage, Text } from '@deriv-com/ui';
 import './DepositCryptoDisclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.
@@ -46,7 +45,7 @@ const DepositCryptoDisclaimers = () => {
 
     return (
         <div className='wallets-deposit-crypto-disclaimers'>
-            <InlineMessage>
+            <InlineMessage iconPosition='top' variant='warning'>
                 <div className='wallets-deposit-crypto-disclaimers__content'>
                     <Text size='2xs' weight='bold'>
                         <Localize i18n_default_text='To avoid loss of funds:' />

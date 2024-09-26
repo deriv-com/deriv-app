@@ -38,12 +38,12 @@ describe('<ChatMessages />', () => {
     it('should render the bot message with appropriate styles', () => {
         render(<ChatMessages />);
         const bot_message = screen.getByText(
-            /Hello! This is where you can chat with the counterparty to confirm the order details./
+            /Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv/
         );
-        const bot_message2 = screen.getByText(/Note: In case of a dispute, we'll use this chat as a reference./);
+        const bot_message2 = screen.getByText(/In case of a dispute, we'll use this chat as a reference./);
         expect(bot_message).toBeInTheDocument();
         expect(bot_message2).toBeInTheDocument();
-        expect(bot_message).toHaveStyle('--text-lh: var(--text-lh-xl)');
-        expect(bot_message).toHaveStyle('--text-size: var(--text-size-xxs)');
+        expect(bot_message2).toHaveStyle('--text-lh: var(--text-lh-l)');
+        expect(bot_message2).toHaveStyle('--text-size: var(--text-size-xxs)');
     });
 });

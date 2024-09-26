@@ -151,6 +151,7 @@
             min-width: 36rem;
             height: 6.5rem;
             margin-bottom: 0;
+            text-align: left;
 
             .dc-input__hint {
                 margin: 0.5rem 0 -1.9rem 1.3rem;
@@ -198,10 +199,13 @@
     &__icon {
         display: flex;
         justify-content: center;
+        align-self: center;
     }
 
     &__balance {
         margin-left: auto;
+        display: flex;
+        align-items: center;
     }
 
     &__form-submit {

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useSettings } from '@deriv/api-v2';
+import { usePOI, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { THooks } from '../../../../types';
+import { Onfido } from '../DocumentService/components';
 import { DocumentSelection } from './components';
 import { getManualDocumentsMapper, TManualDocumentType } from './utils';
 
@@ -27,7 +28,10 @@ const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
     selection,
 }) => {
     const { localize } = useTranslations();
-    const SelectedDocument = getManualDocumentsMapper(localize)[selection].component;
+    const { data: poiData } = usePOI();
+    const SelectedDocument = poiData?.current.onfido_supported?.includes(selection)
+        ? Onfido
+        : getManualDocumentsMapper(localize)[selection].component;
 
     return (
         <SelectedDocument
@@ -40,6 +44,7 @@ const SelectedManualDocument: React.FC<TSelectedManualDocumentProps> = ({
 
 const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     const { data: accountSettings, isLoading: isAccountSettingsLoading } = useSettings();
+    const { localize } = useTranslations();
     const [selection, setSelection] = useState<TSelectedManualDocument>();
 
     if (isAccountSettingsLoading) {
@@ -60,7 +65,7 @@ const ManualService: React.FC<TManualServiceProps> = ({ onCompletion }) => {
     }
 
     return (
-        <ModalStepWrapper title='Add a real MT5 account'>
+        <ModalStepWrapper title={localize('Add a real MT5 account')}>
             <DocumentSelection
                 onSelectDocument={document => {
                     setSelection(document);

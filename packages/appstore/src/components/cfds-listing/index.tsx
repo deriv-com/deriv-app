@@ -1,17 +1,19 @@
 import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Loading, Text, StaticUrl } from '@deriv/components';
+import { Loading, Text } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
     formatMoney,
     getAuthenticationStatusInfo,
     Jurisdiction,
     MT5_ACCOUNT_STATUS,
+    TRADING_PLATFORM_STATUS,
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -20,7 +22,13 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
-import { useMT5SVGEligibleToMigrate, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import {
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
+    TradingPlatformStatus,
+    useGrowthbookGetFeatureValue,
+} from '@deriv/hooks';
+
 import './cfds-listing.scss';
 
 const MigrationBanner = makeLazyLoader(
@@ -67,7 +75,14 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType, toggleCTraderTransferModal, setProduct } = cfd;
+    const {
+        setAccountType,
+        toggleCTraderTransferModal,
+        setAccountUnavailableModal,
+        setServerMaintenanceModal,
+        setProduct,
+    } = cfd;
+
     const {
         account_status,
         is_landing_company_loaded,
@@ -96,7 +111,39 @@ const CFDsListing = observer(() => {
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
+    const { getPlatformStatus } = useTradingPlatformStatus();
+
+    const getTradingPlatformStatus = (platform: TradingPlatformStatus['platform']) => {
+        const status = getPlatformStatus(platform);
+
+        switch (status) {
+            case TRADING_PLATFORM_STATUS.MAINTENANCE:
+                return setServerMaintenanceModal(true);
+            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
+                return setAccountUnavailableModal(true);
+            case TRADING_PLATFORM_STATUS.ACTIVE:
+                return getAccount();
+            default:
+                break;
+        }
+    };
+
+    const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
+        account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
+    );
+    const hasMaintenanceStatus =
+        combined_cfd_mt5_accounts.some(account => account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE) ||
+        combined_cfd_mt5_accounts.some(
+            account => getPlatformStatus(account.platform ?? CFD_PLATFORMS.MT5) === TRADING_PLATFORM_STATUS.MAINTENANCE
+        );
+
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
+        if (current_acc_status === 'under_maintenance') {
+            return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+        } else if (current_acc_status === 'unavailable') {
+            return TRADING_PLATFORM_STATUS.UNAVAILABLE;
+        }
+
         if (jurisdiction) {
             switch (jurisdiction) {
                 case Jurisdiction.BVI: {
@@ -153,7 +200,7 @@ const CFDsListing = observer(() => {
                     return null;
             }
         }
-        return null;
+        return '';
     };
 
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
@@ -187,7 +234,7 @@ const CFDsListing = observer(() => {
             setPerformanceValue('switch_from_demo_to_real_time');
             setPerformanceValue('switch_from_real_to_demo_time');
         }
-    }, [is_populating_mt5_account_list]);
+    }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
     return (
         <ListingContainer
@@ -216,15 +263,16 @@ const CFDsListing = observer(() => {
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
-                        const track_account_subtitle = existing_account.tracking_name;
+                        const track_account_subtitle = existing_account.tracking_name ?? '';
 
                         const has_mt5_account_status =
-                            existing_account?.status || is_idv_revoked
+                            existing_account?.status || is_idv_revoked || hasMaintenanceStatus
                                 ? getMT5AccountAuthStatus(
                                       existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
-                                : null;
+                                : '';
+
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -249,6 +297,8 @@ const CFDsListing = observer(() => {
                                                 account_name: track_account_subtitle,
                                             });
                                         }
+                                        if (hasUnavailableAccount || hasMaintenanceStatus)
+                                            return setServerMaintenanceModal(true);
 
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
@@ -261,7 +311,7 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
@@ -423,7 +473,7 @@ const CFDsListing = observer(() => {
                                                 type: account.market_type,
                                             });
                                             setAppstorePlatform(account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(account.platform);
                                         }
                                     }}
                                     key={`trading_app_card_${account.name}`}
@@ -536,7 +586,7 @@ const CFDsListing = observer(() => {
                                                 type: account.market_type,
                                             });
                                             setAppstorePlatform(account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(account.platform);
                                         }
                                     }}
                                     key={`trading_app_card_${account.name}`}

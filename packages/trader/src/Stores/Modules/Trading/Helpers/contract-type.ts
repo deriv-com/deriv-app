@@ -25,7 +25,7 @@ import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { isSessionAvailable } from './start-date';
 import { ContractsFor, ContractsForSymbolResponse, TradingTimes, TradingTimesResponse } from '@deriv/api-types';
-import { TTradeStore } from '../../../../Types/common-prop.type';
+import { TConfig, TTradeStore } from 'Types';
 
 type TBarriers = Record<
     keyof TTradeStore['duration_min_max'],
@@ -37,18 +37,7 @@ type TBarriers = Record<
 > & {
     count: number;
 };
-type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
-    has_spot?: boolean;
-    durations?: ReturnType<typeof buildDurationConfig>;
-    trade_types?: { [key: string]: string };
-    barrier_category?: string;
-    barriers?: ReturnType<typeof buildBarriersConfig>;
-    forward_starting_dates?: ReturnType<typeof buildForwardStartingConfig>;
-    growth_rate_range?: number[];
-    multiplier_range?: number[];
-    cancellation_range?: string[];
-    barrier_choices?: string[];
-};
+
 type TNonAvailableContractsList = Record<'contract_category' | 'contract_display_name' | 'contract_type', string>[];
 type TTextValueStrings = {
     text: string;
@@ -195,7 +184,7 @@ export const ContractType = (() => {
             short_barriers,
             long_barriers,
             strike_price_choices,
-            wheel_picker_initial_values,
+            v2_params_initial_values,
         } = store;
 
         if (!contract_type) return {};
@@ -211,10 +200,10 @@ export const ContractType = (() => {
             case 'Call':
             case 'Put':
                 stored_barriers_data =
-                    wheel_picker_initial_values?.strike && isDTraderV2()
+                    v2_params_initial_values?.strike && isDTraderV2()
                         ? ({
                               ...strike_price_choices,
-                              barrier: wheel_picker_initial_values.strike,
+                              barrier: v2_params_initial_values.strike,
                           } as TTradeStore['strike_price_choices'])
                         : strike_price_choices;
                 break;
@@ -273,7 +262,8 @@ export const ContractType = (() => {
     };
 
     const getComponents = (c_type: string) => {
-        const check = ['duration', 'amount', ...contract_types[c_type].components].filter(
+        if (!contract_types) return {};
+        const check = ['duration', 'amount', ...(contract_types[c_type]?.components ?? [])].filter(
             component =>
                 !(
                     component === 'duration' &&

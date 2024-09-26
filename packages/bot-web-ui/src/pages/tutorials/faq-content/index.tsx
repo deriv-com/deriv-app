@@ -1,11 +1,11 @@
 import React, { KeyboardEvent } from 'react';
+import parse from 'html-react-parser';
 import { Accordion, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from '../tutorials.types';
-import parse from 'html-react-parser';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -35,7 +35,7 @@ const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) =
     );
 };
 
-const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
+export const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     if (wrapper_element) {
         wrapper_element.scrollTo({
             top: offset,
@@ -80,7 +80,10 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
             const previous_sibling_element = open_accordion_element?.previousElementSibling as HTMLElement;
             if (faq_wrapper_element.current && open_accordion_element) {
                 const offset = previous_sibling_element ? previous_sibling_element.offsetTop - 80 : 0;
-                scrollToElement(faq_wrapper_element?.current, offset);
+                const desktop_scroll_element = document.querySelector('.dc-tabs__content--tutorials') as HTMLElement;
+                const mobile_scroll_element = document.querySelector('.tutorials-mobile__faq') as HTMLElement;
+                const scroll_element = is_desktop ? desktop_scroll_element : mobile_scroll_element;
+                scrollToElement(scroll_element, offset);
             }
             if (timer_id?.current) clearTimeout(timer_id.current);
         }, 5);
@@ -118,34 +121,28 @@ const FAQContent = ({ faq_list, handleTabChange }: TFAQContent) => {
 
     return React.useMemo(
         () => (
-            <div data-testid='id-faq__wrapper'>
-                <div className='faq__wrapper' ref={faq_wrapper_element}>
-                    {faq_list?.length > 0 && (
-                        <>
-                            <Text
-                                as='p'
-                                line_height='xl'
-                                className='faq__wrapper__header'
-                                weight='bold'
-                                size={is_desktop ? 's' : 'xs'}
-                            >
-                                <Localize i18n_default_text='FAQ' />
-                            </Text>
-                            <div
-                                data-testid='id-accordion-test'
-                                onClick={handleAccordionClick}
-                                onKeyDown={handleKeyboardEvent}
-                            >
-                                <Accordion
-                                    className='faq__wrapper__content'
-                                    list={getList()}
-                                    icon_close=''
-                                    icon_open=''
-                                />
-                            </div>
-                        </>
-                    )}
-                </div>
+            <div className='faq__wrapper' data-testid='dt_faq_wrapper' ref={faq_wrapper_element}>
+                {faq_list?.length > 0 && (
+                    <>
+                        <Text
+                            as='p'
+                            line_height='xl'
+                            className='faq__wrapper__header'
+                            weight='bold'
+                            size={is_desktop ? 's' : 'xs'}
+                        >
+                            <Localize i18n_default_text='FAQ' />
+                        </Text>
+                        <div
+                            data-testid='dt_accordion_test'
+                            onClick={handleAccordionClick}
+                            onKeyDown={handleKeyboardEvent}
+                            tabIndex={0}
+                        >
+                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                        </div>
+                    </>
+                )}
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps

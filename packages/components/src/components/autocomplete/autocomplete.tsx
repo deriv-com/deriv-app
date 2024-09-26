@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { matchStringByChar, getPosition, getSearchNotFoundOption } from '@deriv/shared';
+import { matchStringByChar, getPosition } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList, { TItem } from '../dropdown-list';
 import { useBlockScroll } from '../../hooks/use-blockscroll';
 import { getEnglishCharacters } from '../../../utils/helper';
+import { localize } from '@deriv/translations';
 
 type TAutocompleteProps = {
     autoComplete: string;
@@ -36,6 +37,10 @@ type TAutocompleteProps = {
     data_testid: string;
     readOnly?: boolean;
 };
+/**
+ * Returns default value for the text to render when there are no matching results.
+ */
+export const getSearchNotFoundOption = () => localize('No results found');
 
 const KEY_CODE = {
     ENTER: 13,

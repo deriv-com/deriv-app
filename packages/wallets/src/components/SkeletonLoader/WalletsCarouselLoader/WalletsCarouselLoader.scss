@@ -6,6 +6,10 @@
     gap: 1.6rem;
     width: 100%;
     padding-block: 0.8rem;
+    max-width: 60rem;
+    margin-inline: auto;
+    overflow-x: hidden;
+    height: 33rem;
 
     &__title {
         margin: 0.8rem 1.4rem 0;
@@ -27,7 +31,7 @@
     }
 
     &__card {
-        height: 14.6rem;
+        height: 15rem;
         border-radius: 0.8rem;
 
         &:first-child {
@@ -35,7 +39,7 @@
         }
 
         &-body {
-            width: 24rem;
+            width: 24.8rem;
 
             &:first-child {
                 width: 28.8rem;

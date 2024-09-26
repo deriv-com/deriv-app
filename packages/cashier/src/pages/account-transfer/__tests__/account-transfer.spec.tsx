@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
-import { useCashierLocked } from '@deriv/hooks';
+import { useCashierLocked, useTradingPlatformStatus } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
@@ -28,6 +28,7 @@ jest.mock('../account-transfer-form/account-transfer-form-side-note', () =>
 
 jest.mock('@deriv/hooks');
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+const mockUseTradingPlatformStatus = useTradingPlatformStatus as jest.MockedFunction<typeof useTradingPlatformStatus>;
 
 describe('<AccountTransfer />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;
@@ -58,6 +59,15 @@ describe('<AccountTransfer />', () => {
                     },
                 },
             },
+        });
+        mockUseTradingPlatformStatus.mockReturnValue({
+            data: [
+                {
+                    platform: 'mt5',
+                    status: 'active',
+                },
+            ],
+            getPlatformStatus: jest.fn(),
         });
     });
 

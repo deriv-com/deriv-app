@@ -39,7 +39,12 @@ const mockData: TContractInfo = mockContractInfo({
     growth_rate: 10,
     entry_spot_display_value: '1000',
     is_expired: 1,
+    multiplier: 3,
+    reset_time: 1725422585,
     is_sold: 1,
+    high_barrier: '20',
+    low_barrier: '10',
+    selected_tick: 3,
 });
 
 describe('useOrderDetails', () => {
@@ -50,9 +55,9 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
-            [CARD_LABELS.MULTIPLIER]: '',
+            [CARD_LABELS.MULTIPLIER]: 'x3',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.COMMISSION]: '5.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
             [CARD_LABELS.STOP_LOSS]: '50.00 USD',
             [CARD_LABELS.STOP_OUT_LEVEL]: '30.00 USD',
@@ -67,6 +72,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.DURATION]: '5 Ticks',
             [CARD_LABELS.BARRIER]: '1000',
             [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
     });
 
@@ -77,7 +83,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.DURATION]: '5 Ticks',
             [CARD_LABELS.BARRIER]: '1000',
-            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1 USD',
             [CARD_LABELS.STAKE]: '100.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
         });
@@ -88,9 +94,10 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
-            [CARD_LABELS.DURATION]: '5 minutes',
+            [CARD_LABELS.DURATION]: '5 ticks',
             [CARD_LABELS.TARGET]: undefined,
             [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
     });
 
@@ -102,7 +109,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.DURATION]: '3/5 Ticks',
             [CARD_LABELS.GROWTH_RATE]: '1000%',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.TAKE_PROFIT]: '200 USD',
+            [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
         });
     });
 
@@ -113,8 +120,91 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.STRIKE_PRICE]: ' - ',
             [CARD_LABELS.DURATION]: '5 minutes',
-            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1 USD',
             [CARD_LABELS.STAKE]: '100.00 USD',
+        });
+    });
+
+    it('should return correct details for RUN_HIGH_LOW contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.RUN_HIGH_LOW.LOW;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: '19.55 USD',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+        });
+    });
+
+    it('should return correct details for Lookback contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.LB_CALL;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.MULTIPLIER]: 3,
+            [CARD_LABELS.LOW_SPOT]: '1000',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+        });
+    });
+
+    it('should return correct details for HighLook Lookback contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.LB_HIGH_LOW;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.MULTIPLIER]: 3,
+            [CARD_LABELS.LOW_SPOT]: '10',
+            [CARD_LABELS.HIGH_SPOT]: '20',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+        });
+    });
+
+    it('should return correct details for Reset contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.RESET.CALL;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: [
+                '5 Ticks',
+                {
+                    caption: expect.any(Object),
+                },
+            ],
+            [CARD_LABELS.BARRIER]: '1000',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: '19.55 USD',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.RESET_TIME]: ['04 Sept 2024', '04:03:05 GMT'],
+        });
+    });
+
+    it('should return correct details for Asian contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.ASIAN.UP;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.BARRIER]: '1000',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: '19.55 USD',
+        });
+    });
+
+    it('should return correct details for HighLow contract', () => {
+        mockData.contract_type = CONTRACT_TYPES.TICK_HIGH_LOW.HIGH;
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details).toEqual({
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.POTENTIAL_PAYOUT]: '19.55 USD',
+            [CARD_LABELS.SELECTED_TICK]: [
+                3,
+                {
+                    caption: '1000',
+                },
+            ],
         });
     });
 
@@ -136,9 +226,9 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(modifiedData));
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
-            [CARD_LABELS.MULTIPLIER]: '',
+            [CARD_LABELS.MULTIPLIER]: 'x3',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.COMMISSION]: '5.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: 'Not set',
             [CARD_LABELS.STOP_LOSS]: 'Not set',
             [CARD_LABELS.STOP_OUT_LEVEL]: '',

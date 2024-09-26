@@ -13,7 +13,6 @@ global.open = jest.fn();
 
 jest.mock('../../../helpers/urls', () => ({
     getStaticUrl: jest.fn(path => `https://deriv.app${path}`),
-    getUrlBinaryBot: jest.fn(() => 'https://binarybot.com'),
     getUrlSmartTrader: jest.fn(() => 'https://smarttrader.com'),
 }));
 
@@ -34,7 +33,6 @@ describe('LinkTitle', () => {
         { expectedUrl: 'https://deriv.app/dtrader', platform: 'trader' },
         { expectedUrl: 'https://deriv.app/dbot', platform: 'bot' },
         { expectedUrl: 'https://deriv.app/deriv-go', platform: 'derivgo' },
-        { expectedUrl: 'https://binarybot.com', platform: 'binarybot' },
         { expectedUrl: 'https://smarttrader.com', platform: 'smarttrader' },
     ];
 

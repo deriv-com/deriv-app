@@ -21,8 +21,8 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator',
 );
 jest.mock('Modules/Trading/Components/Form/TradeParams/trade-type-tabs', () => jest.fn(() => <div>TradeTypeTabs</div>));
 jest.mock('Modules/Trading/Components/Form/TradeParams/strike', () => jest.fn(() => <div>Strike</div>));
-jest.mock('Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector', () =>
-    jest.fn(() => <div>BarrierSelector</div>)
+jest.mock('Modules/Trading/Components/Form/TradeParams/Turbos/payout-selector', () =>
+    jest.fn(() => <div>PayoutSelector</div>)
 );
 jest.mock('Modules/Trading/Components/Form/TradeParams/amount', () => jest.fn(() => <div>Amount</div>));
 jest.mock('Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit', () =>
@@ -57,7 +57,7 @@ describe('<TradeParams />', () => {
         expect(screen.queryByText('Accumulator')).not.toBeInTheDocument();
         expect(screen.queryByText('TradeTypeTabs')).not.toBeInTheDocument();
         expect(screen.queryByText('Strike')).not.toBeInTheDocument();
-        expect(screen.queryByText('BarrierSelector')).not.toBeInTheDocument();
+        expect(screen.queryByText('PayoutSelector')).not.toBeInTheDocument();
         expect(screen.queryByText('Amount')).not.toBeInTheDocument();
         expect(screen.queryByText('TakeProfit')).not.toBeInTheDocument();
         expect(screen.queryByText('StopLoss')).not.toBeInTheDocument();
@@ -74,7 +74,7 @@ describe('<TradeParams />', () => {
             'accumulator',
             'trade_type_tabs',
             'strike',
-            'barrier_selector',
+            'payout_selector',
             'amount',
             'take_profit',
             'stop_loss',
@@ -90,7 +90,7 @@ describe('<TradeParams />', () => {
         expect(screen.getByText('Accumulator')).toBeInTheDocument();
         expect(screen.getByText('TradeTypeTabs')).toBeInTheDocument();
         expect(screen.getByText('Strike')).toBeInTheDocument();
-        expect(screen.getByText('BarrierSelector')).toBeInTheDocument();
+        expect(screen.getByText('PayoutSelector')).toBeInTheDocument();
         expect(screen.getByText('Amount')).toBeInTheDocument();
         expect(screen.getByText('TakeProfit')).toBeInTheDocument();
         expect(screen.getByText('StopLoss')).toBeInTheDocument();

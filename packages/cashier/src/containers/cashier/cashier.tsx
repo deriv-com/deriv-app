@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { Button, Div100vhContainer, FadeWrapper, PageOverlay, VerticalTab, Loading } from '@deriv/components';
+import { Div100vhContainer, FadeWrapper, PageOverlay, VerticalTab, Loading } from '@deriv/components';
 import {
     useAuthorize,
     useOnrampVisible,
@@ -61,9 +61,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isLoading: is_payment_agent_transfer_checking,
         isSuccess: is_payment_agent_transfer_visible_is_success,
     } = usePaymentAgentTransferVisible();
-    const { is_from_derivgo } = common;
+    const { current_language, is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
+    const { account_settings, currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } =
+        client;
     const {
         data: paymentAgentList,
         isLoading: is_payment_agent_list_loading,
@@ -105,6 +106,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         });
 
         return options;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         is_account_transfer_visible,
         is_onramp_visible,
@@ -112,6 +114,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
         p2p_notification_count,
+        account_settings.preferred_language,
+        current_language,
         routes_config,
     ]);
 
@@ -122,11 +126,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     const is_default_route = !!selected_route.default;
 
-    const getHeaderTitle = useMemo(() => {
+    const getHeaderTitle = () => {
         if (isDesktop || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
         return selected_route.getTitle?.();
-    }, [is_cashier_onboarding, is_default_route, is_loading, selected_route, isDesktop]);
+    };
 
     const updateActiveTab = useCallback(
         (path?: string) => {
@@ -260,7 +264,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <ErrorDialog error={error} />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     {isDesktop ? (
                         <VerticalTab
                             current_path={location.pathname}

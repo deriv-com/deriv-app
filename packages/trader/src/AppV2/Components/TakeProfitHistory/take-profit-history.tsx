@@ -1,10 +1,9 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
-import { formatDate, formatTime, TContractStore } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { formatDate, formatMoney, formatTime, TContractStore } from '@deriv/shared';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 type TContractHistory = {
     currency?: string;
@@ -50,7 +49,11 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
                             <Text size='sm' color='quill-typography__color--subtle'>
                                 {item.display_name}
                             </Text>
-                            <Text size='sm'>{`${FormatUtils.formatMoney(Number(item.order_amount))} ${currency}`}</Text>
+                            <Text size='sm'>
+                                {Math.abs(Number(item.order_amount)) === 0
+                                    ? localize('Cancelled')
+                                    : `${formatMoney(String(currency), String(item.order_amount), true)} ${currency}`}
+                            </Text>
                         </div>
                     </div>
                 ))}

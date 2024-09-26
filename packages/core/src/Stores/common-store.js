@@ -5,7 +5,6 @@ import { getAllowedLanguages } from '@deriv-com/translations';
 import {
     UNSUPPORTED_LANGUAGES,
     getAppId,
-    getUrlBinaryBot,
     getUrlSmartTrader,
     initMoment,
     setLocale,
@@ -61,6 +60,7 @@ export default class CommonStore extends BaseStore {
             setSelectedContractType: action.bound,
             setServerTime: action.bound,
             setServicesError: action.bound,
+            resetServicesError: action.bound,
             setWithdrawURL: action.bound,
             showError: action.bound,
             was_socket_opened: observable,
@@ -188,8 +188,6 @@ export default class CommonStore extends BaseStore {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
-            } else if (ext_url?.indexOf(getUrlBinaryBot()) === 0) {
-                this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });
             }
@@ -283,13 +281,15 @@ export default class CommonStore extends BaseStore {
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
     }
-
-    setServicesError(error) {
+    resetServicesError() {
+        this.services_error = {};
+    }
+    setServicesError(error, hide_toast = false) {
         this.services_error = error;
         if (isMobile()) {
             if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
-            } else {
+            } else if (!hide_toast) {
                 this.root_store.ui.addToast({
                     content: error.message,
                     type: 'error',

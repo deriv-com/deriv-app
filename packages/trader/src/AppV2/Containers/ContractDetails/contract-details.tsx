@@ -84,7 +84,7 @@ const ContractDetails = observer(() => {
                 })}
             >
                 <div className='contract-card-wrapper'>
-                    <ContractCard contractInfo={contract_info} serverTime={server_time} />
+                    <ContractCard contractInfo={contract_info} serverTime={server_time} currency={currency} />
                 </div>
                 <ContractDetailsChart />
                 <DealCancellation />

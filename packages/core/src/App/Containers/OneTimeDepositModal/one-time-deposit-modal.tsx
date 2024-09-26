@@ -12,7 +12,7 @@ import './one-time-deposit-modal.scss';
 const OneTimeDepositModal = observer(() => {
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { is_cr_account, is_logged_in, balance, currency } = client;
+    const { is_cr_account, is_logged_in, balance, currency, updateAccountStatus } = client;
     const {
         should_show_one_time_deposit_modal,
         setShouldShowOneTimeDepositModal,
@@ -21,8 +21,8 @@ const OneTimeDepositModal = observer(() => {
     } = ui;
 
     const currency_config = useCurrentCurrencyConfig();
-    const is_crypto_account = is_cr_account && currency_config?.is_crypto;
-    const { data: crypto_transactions, has_transactions } = useCryptoTransactions(is_logged_in && is_crypto_account);
+    const is_crypto_provider = currency_config?.platform.cashier.includes('crypto');
+    const { data: crypto_transactions, has_transactions } = useCryptoTransactions(is_logged_in && is_crypto_provider);
     const [is_account_deposited, setIsAccountDeposited] = React.useState(false);
 
     const onCloseModal = () => {
@@ -37,7 +37,7 @@ const OneTimeDepositModal = observer(() => {
         }
 
         // check crypto transactions
-        if (is_cr_account && currency_config?.is_crypto && crypto_transactions && has_transactions) {
+        if (is_crypto_provider && crypto_transactions && has_transactions) {
             if (crypto_transactions?.some(tx => tx.is_deposit)) {
                 setIsAccountDeposited(true);
             }
@@ -51,7 +51,7 @@ const OneTimeDepositModal = observer(() => {
         balance,
         crypto_transactions,
         currency_config,
-        is_cr_account,
+        is_crypto_provider,
         has_transactions,
         setIsAccountDeposited,
         setShouldShowOneTimeDepositModal,
@@ -68,6 +68,10 @@ const OneTimeDepositModal = observer(() => {
                 // @ts-expect-error currency propery will be added later
                 currency,
             });
+
+            return () => {
+                updateAccountStatus();
+            };
         }
     }, [should_show_one_time_deposit_modal]);
 
@@ -84,7 +88,7 @@ const OneTimeDepositModal = observer(() => {
                     should_header_stick_body={false}
                 >
                     <Modal.Body className='one-time-deposit-modal__body'>
-                        <OneTimeDepositModalContent is_crypto_account={is_crypto_account} />
+                        <OneTimeDepositModalContent is_crypto_provider={is_crypto_provider} />
                     </Modal.Body>
                 </Modal>
             ) : (
@@ -96,7 +100,7 @@ const OneTimeDepositModal = observer(() => {
                     is_modal_open={should_show_one_time_deposit_modal}
                     onClickClose={onCloseModal}
                 >
-                    <OneTimeDepositModalContent is_crypto_account={is_crypto_account} />
+                    <OneTimeDepositModalContent is_crypto_provider={is_crypto_provider} />
                 </MobileFullPageModal>
             )}
             <DepositNowOrLaterModal />

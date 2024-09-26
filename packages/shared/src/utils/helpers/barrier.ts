@@ -25,6 +25,6 @@ export const buildBarriersConfig = (contract: TContract, barriers = { count: con
 };
 
 export const getBarrierPipSize = (barrier: string) => {
-    if (barrier.length < 1 || isNaN(+barrier)) return 0;
+    if (!barrier || barrier.length < 1 || isNaN(+barrier)) return 0;
     return barrier.split('.')[1]?.length || 0;
 };

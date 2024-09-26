@@ -1,5 +1,5 @@
 import React from 'react';
-import SuccessDialog from '../Components/success-dialog.jsx';
+import SuccessDialog from '../Components/success-dialog';
 import { getTopUpConfig } from '../Helpers/constants';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';

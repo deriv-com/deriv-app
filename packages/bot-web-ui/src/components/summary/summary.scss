@@ -3,7 +3,7 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    background: linear-gradient(180deg, #f2f3f4 0%, rgba(242, 243, 244, 0) 80%);
+    background: linear-gradient(180deg, var(--general-section-2) 0%, rgba(242, 243, 244, 0) 80%);
     width: 100%;
 
     @include desktop-screen {

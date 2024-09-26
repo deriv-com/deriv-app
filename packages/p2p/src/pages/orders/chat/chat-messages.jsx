@@ -15,7 +15,16 @@ import './chat-messages.scss';
 const AdminMessage = () => (
     <div className='chat-messages-item chat-messages-item--admin'>
         <ChatMessageText color='general' type='admin'>
-            <Localize i18n_default_text="Hello! This is where you can chat with the counterparty to confirm the order details.<br />Note: In case of a dispute, we'll use this chat as a reference." />
+            <div className='chat-messages-item--admin-text'>
+                <Localize
+                    i18n_default_text='<0>Important:</0> Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv.'
+                    components={[<strong key={0} />]}
+                />
+            </div>
+            <Localize
+                i18n_default_text="<0>Note:</0> In case of a dispute, we'll use this chat as a reference."
+                components={[<strong key={0} />]}
+            />
         </ChatMessageText>
     </div>
 );

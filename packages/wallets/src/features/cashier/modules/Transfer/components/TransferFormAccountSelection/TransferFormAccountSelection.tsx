@@ -2,9 +2,8 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Divider, Text } from '@deriv-com/ui';
+import { Divider, Text, useDevice } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import type { TAccount, TAccountsList } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';
@@ -37,7 +36,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
     selectedAccount,
     toAccount,
 }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const modal = useModal();
 
     const transferToHint = useMemo(() => {
@@ -99,7 +98,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                             <Localize i18n_default_text='Wallets' />
                         );
                     const isLastAccountsGroup = index === Object.keys(accountsList).length - 1;
-                    const shouldShowDivider = !isMobile && !isSingleAccountsGroup && !isLastAccountsGroup;
+                    const shouldShowDivider = isDesktop && !isSingleAccountsGroup && !isLastAccountsGroup;
 
                     return (
                         <React.Fragment key={accountsGroupName}>
@@ -111,7 +110,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                     <Text size='sm' weight='bold'>
                                         {groupTitle}
                                     </Text>
-                                    {isMobile && <TitleLine />}
+                                    {!isDesktop && <TitleLine />}
                                 </div>
                                 <div className='wallets-transfer-form-account-selection__grouped-accounts'>
                                     {accounts.map(account => (

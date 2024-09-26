@@ -60,7 +60,7 @@ describe('<OneTimeDepositModalContent />', () => {
     });
 
     it('should render one time deposit modal content with crypto wallet', () => {
-        render(<OneTimeDepositModalContent is_crypto_account />, {
+        render(<OneTimeDepositModalContent is_crypto_provider />, {
             wrapper: wrapper(),
         });
 

@@ -1,8 +1,17 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { getAvailableContractTypes, getCategoriesSortedByKey } from 'Modules/Trading/Helpers/contract-type';
-import { TRADE_TYPES, unsupported_contract_types_list } from '@deriv/shared';
+import {
+    getContractTypePosition,
+    getSupportedContracts,
+    TRADE_TYPES,
+    unsupported_contract_types_list,
+} from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getTradeTypeTabsList } from './trade-params-utils';
+
+const getSortedIndex = (type: string) =>
+    getContractTypePosition(type as keyof ReturnType<typeof getSupportedContracts>) === 'bottom' ? 1 : 0;
 
 export const CONTRACT_LIST = {
     ACCUMULATORS: 'Accumulators',
@@ -47,3 +56,13 @@ export const getTradeTypesList = (contract_types_list: ReturnType<typeof useTrad
                 ![TRADE_TYPES.VANILLA.PUT, TRADE_TYPES.TURBOS.SHORT, TRADE_TYPES.RISE_FALL_EQUAL].includes(value)
         );
 };
+
+/* Gets the array of sorted contract types that are used to display purchased buttons and other info based on a selected trade type tab if applicable. */
+export const getDisplayedContractTypes = (
+    trade_types: ReturnType<typeof useTraderStore>['trade_types'],
+    contract_type: string,
+    trade_type_tab: string
+) =>
+    Object.keys(trade_types)
+        .filter(type => !getTradeTypeTabsList(contract_type).length || type === trade_type_tab)
+        .sort((a, b) => getSortedIndex(a) - getSortedIndex(b));

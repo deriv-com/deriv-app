@@ -1,13 +1,21 @@
 import { useCallback, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useAuthorize,
+    usePOI,
+    useTradingPlatformStatus,
+    useWalletAccountsList,
+} from '@deriv/api-v2';
 import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
+import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
     countLimitMessageFn,
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    tradingPlatformStatusMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
 
@@ -33,6 +41,16 @@ const useTransferMessages = ({
     const { data: walletAccounts } = useWalletAccountsList();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
+    const { getPlatformStatus } = useTradingPlatformStatus();
+
+    const platformStatus =
+        getPlatformStatus(fromAccount?.account_type ?? '') || getPlatformStatus(toAccount?.account_type ?? '');
+
+    const isServerMaintenance =
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
+        [fromAccount?.status, toAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
+    const isAccountUnavailable = [fromAccount?.status, toAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
+    const hasTradingPlatformStatus = isServerMaintenance || isAccountUnavailable;
 
     const isTransferBetweenWallets =
         fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';
@@ -68,6 +86,9 @@ const useTransferMessages = ({
         if (isTransferBetweenWallets) {
             messageFns.push(transferFeesBetweenWalletsMessageFn);
         }
+        if (hasTradingPlatformStatus) {
+            messageFns.push(tradingPlatformStatusMessageFn);
+        }
 
         messageFns.forEach(messageFn => {
             if (!activeWallet || !fromAccount) return;
@@ -78,6 +99,7 @@ const useTransferMessages = ({
                 displayMoney,
                 fiatAccount,
                 limits: accountLimits,
+                platformStatus,
                 sourceAccount: fromAccount,
                 sourceAmount,
                 targetAccount: toAccount,
@@ -102,8 +124,10 @@ const useTransferMessages = ({
         formData.fromAmount,
         formData.toAmount,
         fromAccount,
+        hasTradingPlatformStatus,
         isAccountVerified,
         isTransferBetweenWallets,
+        platformStatus,
         toAccount,
         walletAccounts,
     ]);

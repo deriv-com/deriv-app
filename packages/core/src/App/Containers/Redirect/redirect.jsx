@@ -1,22 +1,32 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore, getDomainName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
+import Cookies from 'js-cookie';
+import useLiveChat from '../../Components/Elements/LiveChat/use-livechat';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
 
-    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
-        client;
+    const {
+        currency,
+        has_wallet,
+        is_logged_in,
+        is_logging_in,
+        setNewEmail,
+        setVerificationCode,
+        verification_code,
+        loginid,
+        has_cookie_account,
+    } = client;
 
     const {
         openRealAccountSignup,
-        setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
@@ -24,6 +34,30 @@ const Redirect = observer(() => {
         toggleUpdateEmailModal,
         is_mobile,
     } = ui;
+
+    // TODO: remove this after oauth2 migration
+    // get data from cookies and populate local storage for clients
+    // to be logged in coming from OS subdomains
+    const client_accounts = Cookies.get('client.accounts');
+    const active_loginid = Cookies.get('active_loginid');
+
+    if (client_accounts && active_loginid) {
+        localStorage.setItem('client.accounts', client_accounts);
+        localStorage.setItem('active_loginid', active_loginid);
+
+        const domain = getDomainName();
+
+        // remove cookies after populating local storage
+        Cookies.remove('client.accounts', { domain, secure: true });
+        Cookies.remove('active_loginid', { domain, secure: true });
+        window.location.reload();
+    }
+
+    const liveChat = useLiveChat(has_cookie_account, loginid);
+
+    const openLivechat = () => {
+        liveChat.widget?.call('maximize');
+    };
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -125,8 +159,7 @@ const Redirect = observer(() => {
                         hash = 'demo';
                         break;
                     case '3':
-                        pathname = routes.passwords;
-                        setCFDPasswordResetModal(true);
+                        pathname = routes.traders_hub;
                         break;
                     default:
                         break;
@@ -184,6 +217,11 @@ const Redirect = observer(() => {
             } else {
                 history.push(routes.cashier_acc_transfer);
             }
+            redirected_to_route = true;
+            break;
+        }
+        case 'crypto_transactions_withdraw': {
+            history.push(`${routes.cashier_withdrawal}?action=${action_param}`);
             redirected_to_route = true;
             break;
         }
@@ -255,7 +293,10 @@ const Redirect = observer(() => {
             redirected_to_route = true;
             break;
         }
-
+        case 'livechat': {
+            openLivechat();
+            break;
+        }
         default:
             break;
     }

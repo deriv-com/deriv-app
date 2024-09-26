@@ -95,6 +95,7 @@ const AccountWizard = observer(props => {
         real_account_signup_form_step,
         setRealAccountSignupFormStep,
     } = client;
+    const { closeRealAccountSignup, setShouldShowSameDOBPhoneModal } = ui;
 
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
@@ -405,8 +406,18 @@ const AccountWizard = observer(props => {
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),
                 });
+
+                const status = await WS.wait('get_account_status');
+                const { get_account_status } = status;
+
                 modifiedProps.setIsRiskWarningVisible(false);
-                if (modifiedProps.real_account_signup_target === 'maltainvest') {
+
+                // check for duplicate DOB (day of birthday) and phone number
+                const is_duplicate_dob_phone = get_account_status?.status?.includes('duplicate_dob_phone');
+                if (is_duplicate_dob_phone) {
+                    closeRealAccountSignup();
+                    setShouldShowSameDOBPhoneModal(true);
+                } else if (modifiedProps.real_account_signup_target === 'maltainvest') {
                     modifiedProps.onOpenDepositModal();
                 } else if (modifiedProps.real_account_signup_target === 'samoa') {
                     modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
@@ -416,6 +427,7 @@ const AccountWizard = observer(props => {
                     }
                     modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
+
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**
                  * If IDV details are present, then submit IDV details

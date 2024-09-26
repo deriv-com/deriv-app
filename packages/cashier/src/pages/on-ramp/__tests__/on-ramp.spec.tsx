@@ -90,6 +90,8 @@ describe('<OnRamp />', () => {
                         setIsOnRampModalOpen: jest.fn(),
                         should_show_dialog: false,
                         onramp_popup_modal_title: 'Title of the onramp popup modal',
+                        onMountOnramp: jest.fn(),
+                        onUnmountOnramp: jest.fn(),
                     },
                     general_store: {
                         is_loading: false,

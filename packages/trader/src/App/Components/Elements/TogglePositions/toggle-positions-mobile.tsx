@@ -32,7 +32,6 @@ const TogglePositionsMobile = observer(
         onClickCancel,
     }: TTogglePositionsMobile) => {
         const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
-        const { has_wallet } = useStore().client;
         const [hidden_positions_ids, setHiddenPositionsIds] = React.useState<THiddenPositionsId[]>([]);
         const { isMobile, isTablet } = useDevice();
 
@@ -49,7 +48,6 @@ const TogglePositionsMobile = observer(
                 pathname.startsWith('/contract'));
 
         const hide_landscape_blocker =
-            !has_wallet &&
             !show_blocker_dtrader_mobile_landscape_view &&
             (is_hidden_landscape_blocker || should_show_dtrader_tablet_view);
 

@@ -3,7 +3,6 @@ import { Stream } from '@cloudflare/stream-react';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { LabelPairedPlayMdFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 type TVideoPreview = {
     contract_type: string;
@@ -11,43 +10,33 @@ type TVideoPreview = {
     video_src: string;
 };
 
-const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPreview) => {
-    // This check should be removed after adding a new video for Turbos
-    if (contract_type === CONTRACT_LIST.TURBOS) return null;
-
-    return (
-        <div className='guide-video__wrapper'>
-            <div
-                className='guide-video__preview'
-                data-testid='dt_video_preview'
-                onClick={toggleVideoPlayer}
-                onKeyDown={toggleVideoPlayer}
-            >
-                <Stream
-                    className='guide-video'
-                    letterboxColor='transparent'
-                    muted
-                    preload='auto'
-                    responsive={false}
-                    src={video_src}
-                    width='112px'
-                    height='73px'
-                />
-                <div className='guide-video__preview__icon__wrapper'>
-                    <LabelPairedPlayMdFillIcon className='guide-video__preview__icon' />
-                </div>
-            </div>
-            <div className='guide-video__description'>
-                <CaptionText bold color='quill-typography__color--default'>
-                    <Localize i18n_default_text='How to trade ' />
-                    {contract_type}?
-                </CaptionText>
-                <CaptionText>
-                    <Localize i18n_default_text='Watch this video to learn about this trade type.' />
-                </CaptionText>
+const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPreview) => (
+    <div className='guide-video__wrapper' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
+        <div className='guide-video__preview' data-testid='dt_video_preview'>
+            <Stream
+                className='guide-video'
+                letterboxColor='transparent'
+                muted
+                preload='auto'
+                responsive={false}
+                src={video_src}
+                width='112px'
+                height='73px'
+            />
+            <div className='guide-video__preview__icon__wrapper'>
+                <LabelPairedPlayMdFillIcon className='guide-video__preview__icon' />
             </div>
         </div>
-    );
-};
+        <div className='guide-video__description'>
+            <CaptionText bold color='quill-typography__color--default'>
+                <Localize i18n_default_text='How to trade ' />
+                {contract_type}?
+            </CaptionText>
+            <CaptionText color='quill-typography__color--default'>
+                <Localize i18n_default_text='Watch this video to learn about this trade type.' />
+            </CaptionText>
+        </div>
+    </div>
+);
 
 export default VideoPreview;

@@ -5,6 +5,7 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
@@ -13,16 +14,23 @@ import {
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { localize } from '@deriv-com/translations';
-import { TPlatforms } from '../../types';
+import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
-export const getMarketTypeDetails = () =>
+const zeroSpreadDetails = {
+    description: localize('Zero spread CFDs on financial and derived instruments'),
+    icon: <AccountsDmt5ZrsIcon height={48} width={48} />,
+    title: 'Zero Spread',
+};
+const swapFreeDetails = {
+    description: localize('Swap-free CFDs on selected financial and derived instruments'),
+    icon: <AccountsDmt5SwfIcon height={48} width={48} />,
+    title: 'Swap-Free',
+};
+
+export const getMarketTypeDetails = (product?: THooks.AvailableMT5Accounts['product']) =>
     ({
-        all: {
-            description: localize('Swap-free CFDs on selected financial and derived instruments'),
-            icon: <AccountsDmt5SwfIcon height={48} width={48} />,
-            title: 'Swap-Free',
-        },
+        all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails : swapFreeDetails,
         financial: {
             description: localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
@@ -80,31 +88,31 @@ export const getAppToContentMapper = () =>
             icon: <LabelPairedWindowsXlIcon />,
             link: ctraderLinks.windows,
             text: localize('Download'),
-            title: 'CTrader Windows App',
+            title: localize('CTrader Windows App'),
         },
         linux: {
             icon: <LabelPairedLinuxXlIcon />,
             link: whiteLabelLinks.linux,
             text: localize('Learn more'),
-            title: 'MetaTrader 5 Linux app',
+            title: localize('MetaTrader 5 Linux app'),
         },
         macos: {
             icon: <LabelPairedMacosXlIcon />,
             link: whiteLabelLinks.macos,
             text: localize('Download'),
-            title: 'MetaTrader 5 MacOS app',
+            title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
             icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
             link: whiteLabelLinks.webtrader_url,
             text: localize('Open'),
-            title: 'MetaTrader 5 web',
+            title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
             link: whiteLabelLinks.windows,
             text: localize('Download'),
-            title: 'MetaTrader 5 Windows app',
+            title: localize('MetaTrader 5 Windows app'),
         },
     } as const);
 
@@ -157,4 +165,36 @@ export const JURISDICTION = {
     MALTA_INVEST: 'maltainvest',
     SVG: 'svg',
     VANUATU: 'vanuatu',
+} as const;
+
+export const PRODUCT = {
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
+} as const;
+
+/**
+ * this comes from mt5_login_list endpoint
+ */
+export const MT5_ACCOUNT_STATUS = {
+    FAILED: 'failed',
+    MIGRATED_WITH_POSITION: 'migrated_with_position',
+    MIGRATED_WITHOUT_POSITION: 'migrated_without_position',
+    NEEDS_VERIFICATION: 'needs_verification',
+    PENDING: 'pending',
+    POA_PENDING: 'poa_pending',
+    POA_VERIFIED: 'poa_verified',
+    UNAVAILABLE: 'unavailable',
+    UNDER_MAINTENANCE: 'under_maintenance',
+} as const;
+
+/**
+ * this comes from trading_platform_status endpoint
+ */
+export const TRADING_PLATFORM_STATUS = {
+    ACTIVE: 'active',
+    DISABLED: 'disabled',
+    MAINTENANCE: 'maintenance',
+    UNAVAILABLE: 'unavailable',
 } as const;

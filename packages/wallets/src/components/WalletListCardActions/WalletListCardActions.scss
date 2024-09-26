@@ -4,6 +4,11 @@
         align-items: center;
         gap: 0.8rem;
 
+        /* stylelint-disable-next-line selector-class-pattern */
+        .deriv-button__border-width--sm {
+            border-radius: 1.2rem;
+        }
+
         &-label {
             font-weight: 700;
             display: none;
@@ -17,19 +22,6 @@
                 transform: translateX(0);
             }
         }
-    }
-
-    &__button {
-        display: flex;
-        cursor: pointer;
-        height: 3.2rem;
-        padding: 0.6rem 1.6rem;
-        justify-content: center;
-        align-items: center;
-        gap: 0.8rem;
-        border-radius: 6.4rem;
-        border: 0.1rem solid var(--system-light-3-less-prominent-text, #999);
-        background: none;
     }
 
     @keyframes show-actions-label {
@@ -49,7 +41,7 @@
     flex-direction: row;
     align-items: center;
     cursor: pointer;
-    min-width: 5.6rem;
+    gap: 3.2rem;
 
     &__container {
         display: flex;
@@ -57,15 +49,15 @@
         justify-content: center;
         align-items: center;
         gap: 0.8rem;
-        align-self: stretch;
     }
 
     &-content {
         display: flex;
-        width: 8rem;
         flex-direction: column;
         align-items: center;
         gap: 0.4rem;
+        width: 5.6rem;
+        white-space: nowrap;
 
         &-icon {
             border-radius: 1.2rem;

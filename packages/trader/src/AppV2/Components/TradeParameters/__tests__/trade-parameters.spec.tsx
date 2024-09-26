@@ -17,10 +17,11 @@ const TRADE_PARAMS = {
     ACCUMULATORS_INFORMATION: 'AccumulatorsInformation',
     MULTIPLIER: 'Multiplier',
     RISK_MANAGEMENT: 'RiskManagement',
-    MULTIPLIERS_INFORMATION: 'MultipliersInformation',
+    MULTIPLIERS_CANCELLATION_INFO: 'MultipliersDealCancellationInfo',
     TRADE_TYPE_TABS: 'TradeTypeTabs',
     STRIKE: 'Strike',
     PAYOUT_PER_POINT: 'PayoutPerPoint',
+    PAYOUT: 'payout',
     LAST_DIGIT_PREDICTION: 'LastDigitPrediction',
 };
 const data_test = 'dt_trade_param';
@@ -36,12 +37,13 @@ jest.mock('../AccumulatorsInformation', () =>
 );
 jest.mock('../Multiplier', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIER}</div>));
 jest.mock('../RiskManagement', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.RISK_MANAGEMENT}</div>));
-jest.mock('../MultipliersInformation', () =>
-    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_INFORMATION}</div>)
+jest.mock('../MultipliersDealCancellationInfo', () =>
+    jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO}</div>)
 );
 jest.mock('../TradeTypeTabs', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.TRADE_TYPE_TABS}</div>));
 jest.mock('../Strike', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.STRIKE}</div>));
 jest.mock('../PayoutPerPoint', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.PAYOUT_PER_POINT}</div>));
+jest.mock('../PayoutInfo', () => jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.PAYOUT}</div>));
 jest.mock('../LastDigitPrediction', () =>
     jest.fn(() => <div data-testid={data_test}>{TRADE_PARAMS.LAST_DIGIT_PREDICTION}</div>)
 );
@@ -99,14 +101,26 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
-    it('should render correct trade params for Multipliers', () => {
+    it('should render correct trade params for Multipliers if has_cancellation === false', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
-        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_INFORMATION)).toBeInTheDocument();
+        expect(screen.queryByText(TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO)).not.toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+    });
+
+    it('should render correct trade params for Multipliers if has_cancellation === true', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
+        default_mock_store.modules.trade.has_cancellation = true;
+        render(mockTradeParameters());
+
+        expect(screen.getByText(TRADE_PARAMS.MULTIPLIER)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.RISK_MANAGEMENT)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.MULTIPLIERS_CANCELLATION_INFO)).toBeInTheDocument();
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
@@ -128,7 +142,8 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getByText(TRADE_PARAMS.PAYOUT)).toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
     it('should render correct trade params for Touch/No Touch', () => {
@@ -139,7 +154,8 @@ describe('TradeParameters', () => {
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.BARRIER)).toBeInTheDocument();
         expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
-        expect(screen.getAllByTestId(data_test)).toHaveLength(4);
+        expect(screen.getByText(TRADE_PARAMS.PAYOUT)).toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
     it('should render correct trade params for Matches/Differs', () => {

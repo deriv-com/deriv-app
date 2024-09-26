@@ -32,6 +32,7 @@ const useTransactions = () => {
         },
         payload: {
             action_type: filter,
+            description: 1,
         },
     });
 

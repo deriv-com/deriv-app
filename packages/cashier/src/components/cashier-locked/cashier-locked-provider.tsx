@@ -16,6 +16,7 @@ type TProps = {
     is_withdrawal_locked: boolean;
     is_identity_verification_needed: boolean;
     is_pending_verification: boolean;
+    is_duplicate_dob_phone: boolean;
     is_account_to_be_closed_by_residence: boolean;
     account_time_of_closure?: number;
 };
@@ -33,6 +34,7 @@ const getMessage = ({
     is_withdrawal_locked,
     is_identity_verification_needed,
     is_pending_verification,
+    is_duplicate_dob_phone,
     is_account_to_be_closed_by_residence,
     account_time_of_closure,
 }: TProps) => {
@@ -339,6 +341,18 @@ const getMessage = ({
     }
 
     if (is_deposit_locked) {
+        if (is_duplicate_dob_phone) {
+            return {
+                icon: 'IcAccountError',
+                title: localize('Account already exists'),
+                description: (
+                    <Localize
+                        i18n_default_text="Your details match an existing account. You can't <0/>make deposits or trade with a new account. <0/>Need help? Reach out via live chat."
+                        components={[<br key={0} />]}
+                    />
+                ),
+            };
+        }
         if (ask_fix_details)
             return {
                 icon: 'IcCashierDepositLock',

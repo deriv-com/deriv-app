@@ -43,7 +43,7 @@ const LeavePageModal = ({ onLeavePage, onCancel }: TLeavePageModalProps) => {
         >
             <Modal.Body className='leave-page-modal__body'>
                 <Text color='prominent' size='xs'>
-                    <Localize i18n_default_text='Are you sure you want to leave this page? Changes made will not be saved.' />
+                    <Localize i18n_default_text='If you leave this page, your unsaved changes will be lost.' />
                 </Text>
             </Modal.Body>
             <Modal.Footer>

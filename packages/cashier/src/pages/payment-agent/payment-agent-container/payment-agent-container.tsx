@@ -9,6 +9,8 @@ import PaymentAgentWithdrawConfirm from '../payment-agent-withdraw-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import PaymentAgentReceipt from '../payment-agent-receipt';
 import './payment-agent-container.scss';
+import PaymentAgentSideNote from '../payment-agent-side-note';
+import { useDevice } from '@deriv-com/ui';
 
 type TPaymentAgentContainer = {
     is_deposit?: boolean;
@@ -43,6 +45,8 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
         supported_banks,
     } = payment_agent_store;
 
+    const { isDesktop } = useDevice();
+
     React.useEffect(() => {
         return () => {
             onChangePaymentMethod({ target: { value: '0' } });
@@ -75,6 +79,9 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
 
     return (
         <React.Fragment>
+            <div className='payment-agent-list__side-note-container'>
+                {!isDesktop ? <PaymentAgentSideNote /> : null}
+            </div>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>

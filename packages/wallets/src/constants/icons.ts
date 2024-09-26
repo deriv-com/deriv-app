@@ -6,6 +6,7 @@ import {
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     CurrencyAudIcon,
     CurrencyBtcIcon,
     CurrencyEthIcon,
@@ -15,10 +16,10 @@ import {
     CurrencyUsdcIcon,
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
+    CurrencyXrpIcon,
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     PartnersProductSmarttraderBrandLightLogoIcon,
     PaymentMethodBitcoinBrandIcon,
     PaymentMethodDerivDemoBrandDarkIcon,
@@ -26,11 +27,11 @@ import {
     PaymentMethodLitecoinBrandIcon,
     PaymentMethodTetherUsdtBrandIcon,
     PaymentMethodUsdCoinBrandIcon,
+    PaymentMethodXrpBrandIcon,
 } from '@deriv/quill-icons';
 import { TCurrencyIconTypes, TIconTypes } from '../types';
 
 export const AppIcons: TIconTypes = {
-    binarybot: PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     bot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
     derivgo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
     smarttrader: PartnersProductSmarttraderBrandLightLogoIcon,
@@ -38,6 +39,8 @@ export const AppIcons: TIconTypes = {
 };
 
 export const CFDPlatformIcons: TIconTypes = {
+    all_swap_free: AccountsDmt5SwfIcon,
+    all_zero_spread: AccountsDmt5ZrsIcon,
     ctrader: AccountsDerivCtraderIcon,
     dxtrade: AccountsDerivXIcon,
 };
@@ -69,6 +72,7 @@ export const roundedCurrencyIcons: TCurrencyIconTypes = {
     USDC: CurrencyUsdcIcon,
     USDT: CurrencyUsdtIcon,
     UST: CurrencyUsdtIcon,
+    XRP: CurrencyXrpIcon,
 };
 
 export const horizontalCurrencyIcons: TCurrencyIconTypes = {
@@ -81,4 +85,5 @@ export const horizontalCurrencyIcons: TCurrencyIconTypes = {
     USDC: PaymentMethodUsdCoinBrandIcon,
     USDT: PaymentMethodTetherUsdtBrandIcon,
     UST: PaymentMethodTetherUsdtBrandIcon,
+    XRP: PaymentMethodXrpBrandIcon,
 };

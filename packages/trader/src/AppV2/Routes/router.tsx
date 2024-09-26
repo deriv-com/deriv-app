@@ -6,9 +6,16 @@ import { observer, useStore } from '@deriv/stores';
 import Page404 from 'Modules/Page404';
 
 const Router: React.FC = () => {
-    const { client, common } = useStore();
+    const { client, common, portfolio } = useStore();
     const { is_logged_in } = client;
     const { current_language } = common;
+    const { onMount, onUnmount } = portfolio;
+
+    React.useEffect(() => {
+        onMount();
+        return onUnmount;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <Suspense fallback={<UILoader />}>

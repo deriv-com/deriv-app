@@ -21,10 +21,12 @@ const ReplayChart = observer(
         is_dark_theme_prop,
         is_accumulator_contract,
         is_reset_contract,
+        is_vertical_scroll_disabled,
     }: {
         is_dark_theme_prop?: boolean;
         is_accumulator_contract?: boolean;
         is_reset_contract?: boolean;
+        is_vertical_scroll_disabled?: boolean;
     }) => {
         const trade = useTraderStore();
         const { contract_replay, common, ui } = useStore();
@@ -127,6 +129,7 @@ const ReplayChart = observer(
                 contractInfo={contract_info}
                 contracts_array={getContractsArray()}
                 isLive={!has_ended}
+                isVerticalScrollEnabled={!is_vertical_scroll_disabled}
                 startWithDataFitMode={true}
             >
                 {markers_array.map(({ content_config, marker_config, react_key, type }) => (

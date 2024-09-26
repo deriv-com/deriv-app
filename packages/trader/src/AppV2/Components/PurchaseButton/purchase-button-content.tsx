@@ -6,53 +6,35 @@ import { getLocalizedBasis } from '@deriv/shared';
 import { Money } from '@deriv/components';
 
 type TPurchaseButtonContent = {
-    current_stake?: number | null;
+    error?: React.ReactNode;
+    has_no_button_content?: boolean;
     info: ReturnType<typeof useTraderStore>['proposal_info'][0] | Record<string, never>;
     is_reverse?: boolean;
-    is_high_low?: boolean;
 } & Pick<
     ReturnType<typeof useTraderStore>,
-    | 'currency'
-    | 'has_open_accu_contract'
-    | 'is_accumulator'
-    | 'is_multiplier'
-    | 'is_vanilla_fx'
-    | 'is_vanilla'
-    | 'is_turbos'
-    | 'is_touch'
+    'currency' | 'has_open_accu_contract' | 'is_multiplier' | 'is_vanilla' | 'is_turbos'
 >;
 
 const PurchaseButtonContent = ({
     currency,
-    current_stake,
+    error,
     has_open_accu_contract,
+    has_no_button_content,
     info,
-    is_accumulator,
-    is_high_low,
     is_multiplier,
     is_turbos,
     is_vanilla,
-    is_vanilla_fx,
     is_reverse,
-    is_touch,
 }: TPurchaseButtonContent) => {
-    const { current_stake: localized_current_stake, payout, stake } = getLocalizedBasis();
+    if (has_no_button_content && !error) return null;
+
+    const { payout, stake } = getLocalizedBasis();
 
     const getAmount = () => {
         const { stake, obj_contract_basis } = info;
-
-        if (is_multiplier) return stake;
-        if (is_accumulator) return Number(current_stake);
-        return obj_contract_basis?.value;
+        return is_multiplier ? stake : obj_contract_basis?.value;
     };
-    const getTextBasis = () => {
-        if (is_multiplier) return stake;
-        if (is_accumulator) return localized_current_stake;
-        return payout;
-    };
-
-    if (is_vanilla || is_vanilla_fx || is_turbos || is_high_low || is_touch) return null;
-    if (is_accumulator && !has_open_accu_contract) return null;
+    const getTextBasis = () => (is_multiplier ? stake : payout);
 
     const text_basis = getTextBasis();
     const amount = getAmount();
@@ -68,26 +50,30 @@ const PurchaseButtonContent = ({
             )}
             data-testid='dt_purchase_button_wrapper'
         >
-            {!is_content_empty && (
+            {(!is_content_empty || error) && (
                 <React.Fragment>
                     <CaptionText
                         as='span'
                         size='sm'
                         className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
+                        color='quill-typography__color--prominent'
                     >
-                        {text_basis}
+                        {!error && text_basis}
                     </CaptionText>
                     <CaptionText
                         as='span'
                         size='sm'
                         className={clsx(!has_open_accu_contract && 'purchase-button__information__item')}
+                        color='quill-typography__color--prominent'
                     >
-                        <Money
-                            amount={amount}
-                            currency={currency}
-                            should_format={!is_turbos && !is_vanilla}
-                            show_currency
-                        />
+                        {error || (
+                            <Money
+                                amount={amount}
+                                currency={currency}
+                                should_format={!is_turbos && !is_vanilla}
+                                show_currency
+                            />
+                        )}
                     </CaptionText>
                 </React.Fragment>
             )}

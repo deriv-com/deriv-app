@@ -1,9 +1,10 @@
 import React, { ComponentProps, FC } from 'react';
 import { Localize } from '@deriv-com/translations';
-import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { CreatePassword } from '../../screens';
+import '../EnterPasswordModal/EnterPasswordModal.scss';
 
 const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
     isLoading,
@@ -12,28 +13,47 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
     password,
     platform,
 }) => {
-    const { isMobile } = useDevice();
-    if (isMobile) {
+    const { isDesktop } = useDevice();
+    if (isDesktop) {
         return (
-            <ModalStepWrapper
-                renderFooter={() => {
-                    return (
-                        <WalletButton
+            <ModalWrapper>
+                <div className='wallets-password-modal'>
+                    <CreatePassword
+                        isLoading={isLoading}
+                        onPasswordChange={onPasswordChange}
+                        onPrimaryClick={onPrimaryClick}
+                        password={password}
+                        platform={platform}
+                    />
+                </div>
+            </ModalWrapper>
+        );
+    }
+
+    return (
+        <ModalStepWrapper
+            renderFooter={() => {
+                return (
+                    <div className='wallets-password-modal__footer'>
+                        <Button
                             disabled={!password || isLoading}
                             isFullWidth
                             isLoading={isLoading}
                             onClick={onPrimaryClick}
-                            size={isMobile ? 'lg' : 'md'}
+                            size='lg'
+                            textSize={isDesktop ? 'md' : 'sm'}
                         >
                             <Localize
                                 i18n_default_text='Create {{platformTitle}} password'
                                 values={{ platformTitle: PlatformDetails[platform].title }}
                             />
-                        </WalletButton>
-                    );
-                }}
-                title={''}
-            >
+                        </Button>
+                    </div>
+                );
+            }}
+            title={''}
+        >
+            <div className='wallets-password-modal__body'>
                 <CreatePassword
                     isLoading={isLoading}
                     onPasswordChange={onPasswordChange}
@@ -41,20 +61,8 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                     password={password}
                     platform={platform}
                 />
-            </ModalStepWrapper>
-        );
-    }
-
-    return (
-        <ModalWrapper>
-            <CreatePassword
-                isLoading={isLoading}
-                onPasswordChange={onPasswordChange}
-                onPrimaryClick={onPrimaryClick}
-                password={password}
-                platform={platform}
-            />
-        </ModalWrapper>
+            </div>
+        </ModalStepWrapper>
     );
 };
 

@@ -1,23 +1,47 @@
 .wallets-added-mt5 {
-    &__icon {
-        width: fit-content;
-
-        &--pending {
-            opacity: 0.5;
-        }
-    }
-
     &__actions {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
     }
 
+    &__badge {
+        width: fit-content;
+        span {
+            color: var(--status-warning, #ffad3a);
+        }
+        & a {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        &-icon {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-content: center;
+        }
+        &--error {
+            width: fit-content;
+            padding: 0 0.4rem;
+            gap: 0.4rem;
+            background: none;
+            outline: 1px solid var(--du-text-loss-danger);
+
+            &-link {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+        &--warning {
+            width: fit-content;
+            padding: 0 0.4rem;
+            gap: 0.4rem;
+            background: none;
+            outline: 1px solid var(--du-text-warning);
+        }
+    }
+
     &__details {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        flex-grow: 1;
         user-select: none;
 
         &-title {
@@ -25,43 +49,32 @@
             align-items: center;
             gap: 0.8rem;
             align-self: stretch;
-
-            &-landing-company {
-                display: flex;
-                height: 2.4rem;
-                padding: 0rem 0.4rem;
-                align-items: center;
-                gap: 0.4rem;
-                border-radius: 0.4rem;
-                background: var(--system-light-7-secondary-background, #f2f3f4);
-
-                & > .wallets-text {
-                    opacity: 0.7;
-                }
-            }
         }
 
-        &-badge {
-            width: fit-content;
+        &-landing-company {
+            display: flex;
+            height: 2.4rem;
+            padding: 0rem 0.4rem;
+            align-items: center;
+            gap: 0.4rem;
+            border-radius: 0.4rem;
+            background: var(--system-light-7-secondary-background, #f2f3f4);
 
-            & a {
-                cursor: pointer;
-                text-decoration: underline;
-            }
-
-            & > .wallets-inline-message {
-                padding: 0.5rem 0.8rem;
+            & > .wallets-text {
+                opacity: 0.7;
             }
         }
+    }
 
-        &-description {
-            font-size: 1.2rem;
-            line-height: 1.4rem;
-
-            @include mobile {
-                font-size: 1.4rem;
-                line-height: 2rem;
-            }
+    &__icon {
+        width: fit-content;
+        color: var(--status-warning, #ffad3a);
+        &--badge {
+            border: 1px solid var(--status-warning, #ffad3a);
+            border-radius: 1rem;
+        }
+        &--pending {
+            opacity: 0.5;
         }
     }
 }

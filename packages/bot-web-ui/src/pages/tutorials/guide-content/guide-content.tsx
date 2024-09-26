@@ -79,9 +79,11 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                     return (
                                         <div className='tutorials-wrap__group__cards' key={id}>
                                             <div
+                                                tabIndex={id}
                                                 className='tutorials-wrap--tour'
                                                 onClick={() => triggerTour(subtype)}
                                                 onKeyDown={handleKeyboardEvent}
+                                                data-testid='tutorials-wrap--tour'
                                             >
                                                 <div
                                                     className={classNames('tutorials-wrap__placeholder__tours', {

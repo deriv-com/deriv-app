@@ -8,7 +8,7 @@ import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useCurrentCurrencyConfig: jest.fn(() => ({ is_crypto: false })),
+    useCurrentCurrencyConfig: jest.fn(() => ({ platform: { cashier: ['doughflow'] } })),
     useCryptoTransactions: jest.fn(() => ({ data: [], has_transactions: false })),
 }));
 
@@ -108,7 +108,7 @@ describe('<OneTimeDepositModal />', () => {
             has_transactions: true,
         });
         (useCurrentCurrencyConfig as jest.Mock).mockReturnValueOnce({
-            is_crypto: true,
+            platform: { cashier: ['crypto'] },
         });
 
         const mock = mockStore({
@@ -137,11 +137,11 @@ describe('<OneTimeDepositModal />', () => {
             has_transactions: true,
         });
         (useCurrentCurrencyConfig as jest.Mock).mockReturnValueOnce({
-            is_crypto: true,
+            platform: { cashier: ['crypto'] },
         });
 
         const mock = mockStore({
-            client: { is_logged_in: true, is_cr_account: true },
+            client: { is_logged_in: true },
             ui: {
                 setShouldShowOneTimeDepositModal,
                 setShouldShowCryptoTransactionProcessingModal,

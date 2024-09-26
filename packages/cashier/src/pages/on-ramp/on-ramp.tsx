@@ -61,6 +61,8 @@ const OnRamp = observer(({ menu_options }: TOnRampProps) => {
     const {
         filtered_onramp_providers,
         is_onramp_modal_open,
+        onMountOnramp,
+        onUnmountOnramp,
         onramp_popup_modal_title,
         resetPopup,
         setIsOnRampModalOpen,
@@ -80,6 +82,14 @@ const OnRamp = observer(({ menu_options }: TOnRampProps) => {
             routeTo(selected_cashier_path);
         }
     }, [menu_options, routeTo, selected_cashier_path]);
+
+    React.useEffect(() => {
+        onMountOnramp();
+
+        return () => {
+            onUnmountOnramp();
+        };
+    }, [onMountOnramp, onUnmountOnramp]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({

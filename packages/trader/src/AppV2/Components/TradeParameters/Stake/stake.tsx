@@ -1,14 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
-import useSnackbarOnce from 'AppV2/Hooks/useSnackbarOnce';
-import { usePrevious } from '@deriv/components';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -32,15 +30,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         stop_out,
         trade_type_tab,
         trade_types,
+        symbol,
         validation_errors,
         validation_params,
         v2_params_initial_values,
     } = useTraderStore();
-    const showSnackbarOnce = useSnackbarOnce();
-    const prevAmount = React.useRef(0);
-    const prevContract = usePrevious(contract_type);
+    const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
+    const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -89,8 +87,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             : proposal_error_message_1) || validation_error_text;
     const has_both_errors = has_error_1 && has_error_2;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
-
+    const stake_error = has_both_errors ? two_contracts_error : validation_error_text;
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,
@@ -100,11 +97,20 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     });
 
     React.useEffect(() => {
-        if (prevContract !== contract_type) prevAmount.current = 0;
-        if ((two_contracts_error || stake_error) && prevAmount.current !== amount) {
-            showSnackbarOnce(<Localize i18n_default_text='Please adjust your stake.' />);
+        if ((two_contracts_error || stake_error) && !is_minimized && !displayed_error.current) {
+            displayed_error.current = true;
+            addSnackbar({
+                message: <Localize i18n_default_text='Please adjust your stake.' />,
+                status: 'fail',
+                hasCloseButton: true,
+                style: { marginBottom: '48px' },
+            });
         }
-    }, [two_contracts_error, stake_error, prevContract, contract_type, amount]);
+    }, [two_contracts_error, stake_error, contract_type]);
+
+    React.useEffect(() => {
+        displayed_error.current = false;
+    }, [contract_type, symbol]);
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;
@@ -157,7 +163,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         ));
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
-        setShouldShowError(e.target.value !== '');
+        if (stake_error) setShouldShowError(true);
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
@@ -170,9 +176,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 setV2ParamsInitialValues({ value: amount, name: 'stake' });
             }
             setIsOpen(false);
-            if (is_saved) {
-                prevAmount.current = amount;
-            }
         }
     };
 
@@ -183,10 +186,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
                 noStatusIcon
-                onClick={() => {
-                    setIsOpen(true);
-                    prevAmount.current = amount;
-                }}
+                onClick={() => setIsOpen(true)}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}

@@ -111,16 +111,12 @@ const Trade = observer(() => {
                         </div>
                         {is_accumulator && <AccumulatorStats />}
                     </div>
-                    {is_minimized_params_visible && (
-                        <div
-                            className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}
-                        >
-                            <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
-                                <TradeParameters is_minimized />
-                            </TradeParametersContainer>
-                            {!is_market_closed && <PurchaseButton />}
-                        </div>
-                    )}
+                    <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
+                        <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
+                            <TradeParameters is_minimized />
+                        </TradeParametersContainer>
+                        {!is_market_closed && <PurchaseButton />}
+                    </div>
                     {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (

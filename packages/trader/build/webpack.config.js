@@ -47,6 +47,7 @@ module.exports = function (env) {
                 '@deriv/account': '@deriv/account',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': `@deriv-com/analytics`,
+                'react/jsx-runtime': true,
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

@@ -378,7 +378,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
     }
 
     if (isDesktop) {
-        return <ModalWrapper hideCloseButton={createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
+        return <ModalWrapper hideCloseButton={isLoading || createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
     }
 
     return (

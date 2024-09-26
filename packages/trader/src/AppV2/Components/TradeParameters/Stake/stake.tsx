@@ -106,7 +106,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 style: { marginBottom: '48px' },
             });
         }
-    }, [two_contracts_error, stake_error, contract_type]);
+    }, [two_contracts_error, stake_error]);
 
     React.useEffect(() => {
         displayed_error.current = false;

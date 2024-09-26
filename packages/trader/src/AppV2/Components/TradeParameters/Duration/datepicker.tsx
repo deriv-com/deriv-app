@@ -30,6 +30,7 @@ const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => v
 
     useEffect(() => {
         onChangeCalendarMonth();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getDisabledDays = ({ date }: { date: Date }) => {

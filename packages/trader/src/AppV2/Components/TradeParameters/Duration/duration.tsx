@@ -29,6 +29,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
     const [end_date, setEndDate] = useState<Date>(new Date());
+    const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
 
     useEffect(() => {
@@ -42,7 +43,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
 
     const handleHour = React.useCallback(() => {
         if (expiry_time) {
-            setUnit('et');
+            setUnit('d');
+            setEndTime(expiry_time);
         } else {
             // eslint-disable-next-line no-lonely-if
             if (duration_unit === 'm' && duration > 59) {
@@ -114,6 +116,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                         end_date={end_date}
                         selected_hour={selected_hour}
                         setSelectedHour={setSelectedHour}
+                        end_time={end_time}
+                        setEndTime={setEndTime}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

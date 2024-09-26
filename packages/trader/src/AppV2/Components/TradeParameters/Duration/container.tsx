@@ -15,6 +15,8 @@ const DurationActionSheetContainer = observer(
         end_date,
         setEndDate,
         setUnit,
+        end_time,
+        setEndTime,
     }: {
         selected_hour: number[];
         setSelectedHour: (arg: number[]) => void;
@@ -22,10 +24,11 @@ const DurationActionSheetContainer = observer(
         end_date: Date;
         setEndDate: (arg: Date) => void;
         setUnit: (arg: string) => void;
+        end_time: string;
+        setEndTime: (arg: string) => void;
     }) => {
         const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
-        const [end_time, setEndTime] = useState<string>('');
         const [is24_hour_selected, setIs24HourSelected] = useState(false);
 
         const onAction = () => {

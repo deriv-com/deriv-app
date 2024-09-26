@@ -1,7 +1,7 @@
 import { ActionSheet, CaptionText, Text, TextField } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import DaysDatepicker from './datepicker';
 import EndTimePicker from './timepicker';
@@ -30,6 +30,13 @@ const DayInput = ({
         month: 'short',
         year: 'numeric',
     });
+
+    useEffect(() => {
+        if (formatted_date === formatted_current_date && !end_time) {
+            setEndTime('23:55');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [end_date]);
 
     return (
         <div className='duration-container__days-input'>
@@ -72,9 +79,17 @@ const DayInput = ({
                 expandable={false}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Pick an end date' />} />
+                    <ActionSheet.Header
+                        title={
+                            open ? (
+                                <Localize i18n_default_text='Pick an end date' />
+                            ) : (
+                                <Localize i18n_default_text='Pick an end time' />
+                            )
+                        }
+                    />
                     {open && <DaysDatepicker end_date={end_date} setEndDate={setEndDate} />}
-                    {open_timepicker && <EndTimePicker setEndTime={setEndTime} />}
+                    {open_timepicker && <EndTimePicker setEndTime={setEndTime} end_time={end_time} />}
                     <ActionSheet.Footer
                         alignment='vertical'
                         shouldCloseOnPrimaryButtonClick={false}

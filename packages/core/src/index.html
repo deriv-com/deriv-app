@@ -295,8 +295,17 @@
         <script src="https://static.deriv.com/scripts/freshchat.js" defer></script>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const auth = localStorage.getItem('temp_auth');
-                new FreshChat(auth ?? null);
+                //temp approach for testing. this needs to be removed
+                const temp_auth = localStorage.getItem('temp_auth') || null;
+                const active_loginid = localStorage.getItem('active_loginid');
+                const client_accounts = JSON.parse(localStorage.getItem('client.accounts')) || undefined;
+                const active_account = (client_accounts && client_accounts[active_loginid]) || null;
+                console.log(active_loginid ? active_account?.token : temp_auth);
+                new FreshChat({
+                    token: active_loginid ? active_account?.token : temp_auth,
+                    locale: 'en',
+                    hideButton: true,
+                });
             });
         </script>
         <!-- End FreshChat script -->

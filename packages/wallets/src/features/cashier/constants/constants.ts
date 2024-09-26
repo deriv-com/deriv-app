@@ -1,4 +1,9 @@
-import { TMarketTypes, TMT5LandingCompanyName, TWalletLandingCompanyName } from '../../../types';
+import {
+    TMarketTypes,
+    TMT5LandingCompanyName,
+    TProductForMarketDetails,
+    TWalletLandingCompanyName,
+} from '../../../types';
 
 type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
 
@@ -7,8 +12,12 @@ interface TDefinedMT5LandingCompanyDetails {
     shortcode: string;
 }
 
-interface TMT5MarketTypeDetails {
+interface TMT5MarketTypeDetails extends TMT5MarketTypeDetailsCommon {
     landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
+    product?: Record<TProductForMarketDetails, TMT5MarketTypeDetailsCommon>;
+}
+
+interface TMT5MarketTypeDetailsCommon {
     name: TMarketTypes.All;
     title: string;
 }
@@ -44,6 +53,16 @@ export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefin
 export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
     all: {
         name: 'all',
+        product: {
+            swap_free: {
+                name: 'all',
+                title: 'MT5 Swap-Free',
+            },
+            zero_spread: {
+                name: 'all',
+                title: 'MT5 Zero Spread',
+            },
+        },
         title: 'MT5 Swap-Free',
     },
     financial: {

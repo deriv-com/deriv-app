@@ -3,9 +3,9 @@
     padding-block: var(--core-spacing-400);
     align-items: flex-end;
     height: var(--core-size-2800);
-    gap: 0px;
+    gap: 0;
 
-    &:not(:first-child):not(.purchase-button--loading) {
+    &:not(.quill-button:first-child .purchase-button):not(.purchase-button--loading) {
         align-items: flex-start;
     }
     &--single {
@@ -37,7 +37,7 @@
         }
 
         &__item {
-            color: var(--core-color-solid-slate-50);
+            color: var(--component-button-label-color-sell-primary);
         }
     }
     &__wrapper {
@@ -46,10 +46,13 @@
         align-items: center;
         padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         gap: var(--core-spacing-400);
-        position: sticky;
+        position: fixed;
+        width: 100%;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
-        bottom: 0;
-
+        bottom: var(--core-spacing-2800);
+        &__un-auth {
+            bottom: var(--core-spacing-50);
+        }
         &.slide {
             &-enter {
                 transform: translateY(100%);
@@ -65,24 +68,6 @@
                 transform: translateY(100%);
                 transition: transform 150ms ease-in-out 300ms;
             }
-        }
-    }
-    &--disabled-background {
-        position: absolute;
-        background-color: var(--core-color-solid-slate-50);
-        top: 0;
-        inset-inline-start: var(--core-spacing-400);
-        width: calc((100% - var(--core-spacing-800) - var(--core-spacing-400)) / 2);
-        height: calc(100% - var(--core-spacing-400));
-        border-radius: var(--component-button-border-radius-lg);
-        z-index: -1;
-
-        &:last-child:not(.single) {
-            inset-inline-start: unset;
-            inset-inline-end: var(--core-spacing-400);
-        }
-        &.single {
-            width: calc(100% - var(--core-spacing-800));
         }
     }
 }

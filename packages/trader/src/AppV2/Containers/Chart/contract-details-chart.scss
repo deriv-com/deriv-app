@@ -1,6 +1,10 @@
 .contract-details-chart {
-    min-height: 360px;
     position: relative;
+    border-radius: var(--core-borderRadius-400);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--core-elevation-shadow-130);
+
     .ciq-disabled {
         display: none;
     }

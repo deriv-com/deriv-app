@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
-import useDevice from '../../../hooks/useDevice';
 import WalletListCard from '../WalletListCard';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -12,8 +11,10 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('../../../hooks/useDevice');
-const mockedUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('../../WalletListCardDetails/WalletListCardDetails', () => ({
     __esModule: true,
@@ -25,10 +26,6 @@ jest.mock('../../WalletCurrencyCard', () => ({
 }));
 
 describe('WalletListCard', () => {
-    beforeEach(() => {
-        mockedUseDevice.mockReturnValue({ isDesktop: true, isMobile: false, isTablet: false });
-    });
-
     afterEach(() => {
         jest.clearAllMocks();
     });

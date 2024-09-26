@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FormikValues } from 'formik';
-import { useResidenceList, useSettings } from '@deriv/api-v2';
+import { useQuery, useResidenceList, useSettings } from '@deriv/api-v2';
+import { TSocketRequestPayload } from '@deriv/api-v2/types';
 import { useTranslations } from '@deriv-com/translations';
 import { THooks } from '../../../../../types';
 
@@ -12,12 +13,31 @@ type TTaxInformationValues = {
     taxResidence: THooks.AccountSettings['tax_residence'];
 };
 
-const useTaxInformation = () => {
+const useTaxInformation = (selectedJurisdiction: string) => {
     const { localize } = useTranslations();
-    const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
+    const {
+        data: residenceList,
+        isLoading: isResidenceListLoading,
+        isSuccess: isResidenceListSuccess,
+    } = useResidenceList();
     const { data: accountSettings, error, isSuccess: isAccountSettingsSuccess, update } = useSettings();
+    const { data: landingCompanyDetailsData, isLoading: isLandingCompanyDetailsLoading } = useQuery(
+        'landing_company_details',
+        {
+            options: {
+                enabled: isAccountSettingsSuccess,
+            },
+            payload: {
+                country: accountSettings.country_code ?? '',
+                landing_company_details:
+                    selectedJurisdiction as TSocketRequestPayload<'landing_company_details'>['payload']['landing_company_details'],
+            },
+        }
+    );
     const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const isTinMandatory = !landingCompanyDetailsData?.landing_company_details?.tin_not_mandatory;
 
     const countryCodeToPatternMapper = useMemo(() => {
         const countryCodeToPatternMapping: Record<string, string> = {};
@@ -52,18 +72,12 @@ const useTaxInformation = () => {
     } as TTaxInformationValues;
 
     const onSubmit = (values: FormikValues | TTaxInformationValues) => {
-        if (
-            values &&
-            values.placeOfBirth &&
-            values.taxResidence &&
-            values.accountOpeningReason &&
-            values.taxIdentificationNumber
-        ) {
+        if (values && values.placeOfBirth && values.taxResidence && values.accountOpeningReason) {
             update({
                 account_opening_reason: values.accountOpeningReason,
                 citizen: values.citizenship,
                 place_of_birth: values.placeOfBirth,
-                tax_identification_number: values.taxIdentificationNumber,
+                ...(isTinMandatory && { tax_identification_number: values.taxIdentificationNumber }),
                 tax_residence: values.taxResidence,
             });
             setIsSubmissionInitiated(true);
@@ -82,8 +96,9 @@ const useTaxInformation = () => {
         countryList,
         error,
         initialValues,
-        isLoading,
+        isLoading: isResidenceListLoading || isLandingCompanyDetailsLoading,
         isSubmitted,
+        isTinMandatory,
         onSubmit,
     };
 };

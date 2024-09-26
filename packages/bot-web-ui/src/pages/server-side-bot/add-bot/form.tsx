@@ -17,12 +17,11 @@ import './add-bot.scss';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
-    const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setValue, form_data } = quick_strategy;
+    const { server_bot } = useDBotStore();
+    const { selected_strategy, setValue, form_data, current_duration_min_max } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_desktop } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max } = quick_strategy;
 
     const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
 

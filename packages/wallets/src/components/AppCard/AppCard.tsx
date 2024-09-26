@@ -1,7 +1,7 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 import type { TGenericSizes, THooks } from '../../types';
 import { AppCardBadge } from '../AppCardBadge';
-import { WalletText } from '../Base';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../WalletMarketCurrencyIcon';
 import './AppCard.scss';
@@ -15,6 +15,7 @@ type TProps = {
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
     marketType?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['marketType'];
     platform?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['platform'];
+    product?: React.ComponentProps<typeof WalletMarketCurrencyIcon>['product'];
     walletName?: JSX.Element | string;
 };
 
@@ -27,6 +28,7 @@ const AppCard: React.FC<TProps> = ({
     isDemoWallet = false,
     marketType,
     platform,
+    product,
     walletName,
 }) => {
     return (
@@ -47,17 +49,18 @@ const AppCard: React.FC<TProps> = ({
                             isDemo={isDemoWallet}
                             marketType={marketType}
                             platform={platform}
+                            product={product}
                         />
                     </div>
                     {cardSize !== 'sm' && (
                         <div className='wallets-app-card__bottom'>
-                            <WalletText size='2xs'>{appName}</WalletText>
-                            <WalletText color='less-prominent' size='2xs'>
+                            <Text size='2xs'>{appName}</Text>
+                            <Text color='less-prominent' size='2xs'>
                                 {walletName}
-                            </WalletText>
-                            <WalletText size='sm' weight='bold'>
+                            </Text>
+                            <Text size='sm' weight='bold'>
                                 {balance}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>

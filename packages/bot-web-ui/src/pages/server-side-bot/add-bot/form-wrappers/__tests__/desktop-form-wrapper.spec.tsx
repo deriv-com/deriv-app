@@ -6,7 +6,6 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { quick_strategy_content } from '../../../../tutorials/constants';
 import DesktopFormWrapper from '../desktop-form-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
@@ -66,7 +65,6 @@ describe('<DesktopFormWrapper />', () => {
         const mock_store = mockStore({});
         mock_dbot_store = mockDBotStore(mock_store, mock_ws);
         const initial_value = {};
-        mock_dbot_store?.quick_strategy.setFormVisibility(true);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
@@ -101,26 +99,12 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_dbot_store?.quick_strategy.is_open).toBeTruthy();
 
         const close_button = screen.getByTestId('qs-desktop-close-button');
         userEvent.click(close_button);
         userEvent.type(close_button, '{enter}');
         userEvent.keyboard('{Enter}');
         expect(onClickClose).toBeCalled();
-    });
-
-    it('should change the selected strategy', () => {
-        mock_dbot_store?.quick_strategy.setSelectedStrategy(quick_strategy_content[0].qs_name);
-        render(
-            <DesktopFormWrapper onClickClose={onClickClose}>
-                <div>test</div>
-            </DesktopFormWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_dbot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[0].qs_name);
     });
 
     it('should submit the form', async () => {
@@ -134,7 +118,6 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_dbot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: 'Add' });
         userEvent.click(submit_button);
         await waitFor(() => expect(mockOnSubmit).toBeCalled());

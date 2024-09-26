@@ -593,24 +593,15 @@
     &__dxtrade-button,
     &__platform-button {
         display: flex;
-        background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
-        padding: 0;
+        padding: 0 1.6rem;
+        border: 1px solid var(--border-normal-2);
 
         &-icon {
             margin-left: 0.6rem;
             margin-top: 0.1rem;
-        }
-
-        &-text {
-            padding: 0.5rem;
-
-            @include mobile-or-tablet-screen {
-                padding-right: 0.5rem;
-                white-space: nowrap;
-            }
         }
     }
     &__specs {
@@ -973,7 +964,8 @@
 
         @include mobile-or-tablet-screen {
             grid-template-columns: 1fr;
-            margin: 0 6.5rem 3rem;
+            margin: 0 auto 3rem;
+            min-width: 20rem;
         }
     }
 
@@ -998,19 +990,19 @@
                 }
 
                 &-row {
-                    grid-template-columns: 1fr 0.5fr 1.25fr;
+                    grid-template-columns: 1fr 1fr 1.4fr;
                     justify-items: center;
                     border-bottom: 0;
-                    padding: 0.4rem 0;
+                    padding: 0.4rem;
                     background-color: var(--general-hover);
                 }
             }
 
             &-row {
-                grid-template-columns: 1fr 0.5fr 1.25fr;
+                grid-template-columns: 1fr 1fr 1.4fr;
                 justify-items: center;
                 border-bottom: 0;
-                padding: 0.4rem 0;
+                padding: 0.4rem;
 
                 &:nth-child(even) {
                     background-color: var(--general-hover);
@@ -2420,6 +2412,9 @@
                     border-top: 1px solid var(--general-hover);
                 }
             }
+            @include tablet-portrait-screen {
+                margin-inline: 0;
+            }
         }
     }
     &__content {
@@ -2428,6 +2423,9 @@
         padding: 0 !important;
         &-center {
             justify-content: center;
+        }
+        @include mobile-or-tablet-screen {
+            border-top: none;
         }
     }
     &__password-success {
@@ -2465,9 +2463,44 @@
             border-bottom: 1px solid var(--general-hover);
         }
     }
-    @include mobile-or-tablet-screen {
-        &__footer-button {
+    &__footer-button {
+        @include mobile-or-tablet-screen {
             padding: 1rem;
+        }
+        @include tablet-portrait-screen {
+            width: 100%;
+            margin-block-end: auto;
+            .dc-form-submit-button {
+                gap: 0.8rem;
+                .dc-btn {
+                    margin: 0;
+                    flex: 1 0 auto;
+                }
+            }
+        }
+    }
+    &__header {
+        .dc-mobile-dialog__title {
+            @include tablet-portrait-screen {
+                margin-inline: auto;
+                font-size: var(--text-size-s);
+            }
+        }
+    }
+    &__wrapper {
+        &.dc-mobile-dialog__cfd-password-modal {
+            @include tablet-portrait-screen {
+                max-width: 60rem;
+            }
+        }
+    }
+    &__container {
+        &.cfd-password-modal__content.dc-modal__container_cfd-password-modal__body {
+            @include tablet-portrait-screen {
+                height: auto;
+                flex-grow: 0;
+                margin-block-end: 0;
+            }
         }
     }
 }

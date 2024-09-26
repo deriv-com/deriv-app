@@ -1,6 +1,6 @@
-import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
 import { MARTINGALE } from '../../../constants/quick-strategies';
+import { SERVER_BOT_CONFIG } from '../config';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -130,7 +130,7 @@ const SIZE: TConfigItem = {
         'floor',
         {
             type: 'min',
-            value: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            value: String(SERVER_BOT_CONFIG.DEFAULT.size),
             getMessage: (min: string | number) =>
                 localize('The value must be equal or greater than {{ min }}', { min }),
         },

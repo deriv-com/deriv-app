@@ -28,7 +28,7 @@
         gap: 0.8rem;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
     }
 

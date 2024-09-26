@@ -12,7 +12,7 @@ import './one-time-deposit-modal.scss';
 const OneTimeDepositModal = observer(() => {
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { is_logged_in, balance, currency } = client;
+    const { is_cr_account, is_logged_in, balance, currency, updateAccountStatus } = client;
     const {
         should_show_one_time_deposit_modal,
         setShouldShowOneTimeDepositModal,
@@ -68,6 +68,10 @@ const OneTimeDepositModal = observer(() => {
                 // @ts-expect-error currency propery will be added later
                 currency,
             });
+
+            return () => {
+                updateAccountStatus();
+            };
         }
     }, [should_show_one_time_deposit_modal]);
 

@@ -1,12 +1,12 @@
 .wallets-withdrawal-crypto-disclaimer {
     width: 100%;
 
-    & li {
-        align-self: stretch;
+    &__text {
+        font-size: 1rem;
         line-height: 1.4rem;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         max-width: 100%;
         max-height: 10.6rem;
     }

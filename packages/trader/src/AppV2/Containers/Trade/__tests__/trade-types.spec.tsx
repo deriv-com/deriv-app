@@ -34,8 +34,6 @@ const default_mock_store = {
         trade: {
             contract_type: 'rise_fall',
             contract_types_list,
-            onMount: jest.fn(),
-            onUnmount: jest.fn(),
         },
     },
 };
@@ -44,6 +42,7 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
     return (
         <TraderProviders store={mocked_store}>
             <TradeTypes
+                is_dark_mode_on={false}
                 onTradeTypeSelect={jest.fn()}
                 trade_types={mockGetTradeTypesList(default_mock_store.modules.trade.contract_types_list)}
                 contract_type='rise_fall'
@@ -53,13 +52,27 @@ const mockTradeTypes = (mocked_store = mockStore(default_mock_store)) => {
 };
 
 describe('TradeTypes', () => {
+    const originalScrollBy = HTMLElement.prototype.scrollBy;
+    const scrollByMock = jest.fn();
     beforeEach(() => {
         mockGetTradeTypesList.mockReturnValue([
+            { value: 'accumulator', text: 'Accumulator' },
+            { value: 'multipler', text: 'Multiplier' },
             { value: 'rise', text: 'Rise' },
             { value: 'fall', text: 'Fall' },
             { value: 'vanilla_call', text: 'Vanilla Call' },
             { value: 'vanilla_put', text: 'Vanilla Put' },
         ]);
+    });
+    beforeAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+    });
+    afterAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: originalScrollBy,
+        });
     });
 
     it('should render the TradeTypes component with pinned and other trade types', () => {
@@ -69,20 +82,11 @@ describe('TradeTypes', () => {
         expect(screen.getByText('Rise')).toBeInTheDocument();
     });
 
-    it('should open ActionSheet when View all button is clicked', async () => {
-        render(mockTradeTypes());
-
-        await userEvent.click(screen.getByText('View all'));
-
-        expect(screen.getByText('Trade types')).toBeInTheDocument();
-        expect(screen.getByText('Fall')).toBeInTheDocument();
-    });
-
     it('should handle adding and removing pinned trade types', async () => {
         render(mockTradeTypes());
 
         await userEvent.click(screen.getByText('View all'));
-        await userEvent.click(screen.getByText('Customize'));
+        await userEvent.click(screen.getByText('Customise'));
         const addButton = screen.getAllByTestId('dt_trade_type_list_item_right_icon')[0];
         await userEvent.click(addButton);
 
@@ -92,11 +96,13 @@ describe('TradeTypes', () => {
         expect(screen.getByText('Trade types')).toBeInTheDocument();
     });
 
-    it('should mount and unmount correctly', () => {
-        const { unmount } = render(mockTradeTypes());
-
-        expect(default_mock_store.modules.trade.onMount).toHaveBeenCalled();
-        unmount();
-        expect(default_mock_store.modules.trade.onUnmount).toHaveBeenCalled();
+    it('should scroll to the selected trade type when tradeList is clicked', async () => {
+        render(mockTradeTypes());
+        Object.defineProperty(HTMLElement.prototype, 'scrollBy', {
+            value: scrollByMock,
+        });
+        await userEvent.click(screen.getByText('Rise'));
+        await new Promise(resolve => setTimeout(resolve, 0));
+        expect(scrollByMock).toHaveBeenCalled();
     });
 });

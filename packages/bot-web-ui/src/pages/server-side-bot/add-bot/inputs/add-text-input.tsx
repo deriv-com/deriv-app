@@ -33,8 +33,9 @@ export default function QsTextInput({ name, field }: { name: string; field: any 
                         className='dc-input__field'
                         {...field}
                         onChange={e => {
-                            setFieldValue(name, e.target.value, true);
-                            setFieldTouched(name, true, true);
+                            const trimmedValue = e.target.value.replace(/^\s+/, '');
+                            setFieldValue(name, trimmedValue, true);
+                            setFieldTouched(name, true, false);
                         }}
                         value={values[name]}
                     />

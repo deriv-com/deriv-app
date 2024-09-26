@@ -1,0 +1,87 @@
+.payout-per-point-input {
+    padding-bottom: 0rem;
+    .popover_wrapper_class {
+        margin-top: 0.3rem;
+        .dc-popover__container {
+            margin-top: 5.8rem;
+        }
+    }
+    .actions-wrapper {
+        margin-top: 0.6rem;
+        display: flex;
+        justify-content: space-between;
+        .distance-to-current-spot {
+            display: flex;
+            .barrier-value {
+                margin-bottom: 0.8rem;
+                background-color: var(--general-section-1);
+                border: none;
+                border-bottom: 1px dotted var(--text-general);
+                padding: 0;
+                display: flex;
+                cursor: pointer;
+                .indicator-icon {
+                    margin-inline-start: 0.2rem;
+                    margin-top: 0.3rem;
+                }
+            }
+        }
+    }
+}
+
+.payout-per-point-mobile {
+    background: var(--general-section-1);
+    width: 100%;
+    border-radius: 0.4rem;
+    display: flex;
+    height: 250px;
+    padding: 0.6rem 0.8rem;
+    flex-direction: column;
+    &__header {
+        padding: 0.8rem;
+        display: flex;
+        &__title {
+            display: flex;
+            gap: 0;
+        }
+        .popover-icon {
+            margin-inline-start: 0.8rem;
+            margin-top: 0.2rem;
+        }
+        .cross-icon {
+            margin-top: 0.2rem;
+            margin-inline-start: auto;
+        }
+    }
+    .actions-wrapper {
+        display: flex;
+        justify-content: center;
+        .distance-to-current-spot {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.2rem;
+            &__value {
+                margin-top: 0.5rem;
+                margin-inline-start: 0.4rem;
+                background-color: var(--general-section-1);
+                border: none;
+                border-bottom: 1px dotted var(--text-general);
+                padding: 0;
+                display: flex;
+                cursor: pointer;
+                .indicator-icon {
+                    margin-inline-start: 0.2rem;
+                }
+            }
+        }
+    }
+
+    .save-button {
+        width: 100%;
+        border: 1px solid var(--text-less-prominent);
+        color: var(--text-prominent);
+        padding: 0.8px 1.6rem;
+        font-weight: bold;
+        margin-top: auto;
+    }
+}

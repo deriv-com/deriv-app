@@ -3,16 +3,16 @@ import { Checkbox, Dialog } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
+import { SERVER_BOT_LOSS_THRESHOLD_WARNING } from '../constants';
+import useSubmitHandler from '../form-wrappers/useSubmitHandler';
 import './loss-threshold-warning-dialog.scss';
 
 const base_classname = 'loss-threshold-warning-dialog';
 
 const LossThresholdWarningDialog = observer(() => {
-    const { quick_strategy } = useDBotStore();
-    const { loss_threshold_warning_data, setLossThresholdWarningData, initializeLossThresholdWarningData } =
-        quick_strategy;
-    const { proceedFormSubmission } = useQsSubmitHandler();
+    const { server_bot } = useDBotStore();
+    const { loss_threshold_warning_data, setLossThresholdWarningData, initializeLossThresholdWarningData } = server_bot;
+    const { proceedFormSubmission } = useSubmitHandler();
 
     const handleAmountEdit = () => {
         setLossThresholdWarningData({
@@ -27,9 +27,9 @@ const LossThresholdWarningDialog = observer(() => {
     };
 
     const handleDontShowAgain = () => {
-        const stored_dont_show_warning_value = localStorage?.getItem('qs-dont-show-loss-threshold-warning');
+        const stored_dont_show_warning_value = localStorage?.getItem(SERVER_BOT_LOSS_THRESHOLD_WARNING);
         const dont_show_warning = JSON.parse(stored_dont_show_warning_value ?? 'false');
-        localStorage.setItem('ssb-dont-show-loss-threshold-warning', `${!dont_show_warning}`);
+        localStorage.setItem(SERVER_BOT_LOSS_THRESHOLD_WARNING, `${!dont_show_warning}`);
     };
 
     return (

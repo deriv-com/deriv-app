@@ -60,6 +60,7 @@ export default class CommonStore extends BaseStore {
             setSelectedContractType: action.bound,
             setServerTime: action.bound,
             setServicesError: action.bound,
+            resetServicesError: action.bound,
             setWithdrawURL: action.bound,
             showError: action.bound,
             was_socket_opened: observable,
@@ -280,13 +281,15 @@ export default class CommonStore extends BaseStore {
     setWithdrawURL(withdraw_url) {
         this.withdraw_url = withdraw_url;
     }
-
-    setServicesError(error) {
+    resetServicesError() {
+        this.services_error = {};
+    }
+    setServicesError(error, hide_toast = false) {
         this.services_error = error;
         if (isMobile()) {
             if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
-            } else {
+            } else if (!hide_toast) {
                 this.root_store.ui.addToast({
                     content: error.message,
                     type: 'error',

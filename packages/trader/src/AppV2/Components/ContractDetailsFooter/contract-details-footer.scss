@@ -1,15 +1,25 @@
 .contract-details-footer {
     &--container {
-        padding: var(--semantic-spacing-general-md);
-        background-color: var(--core-color-solid-slate-50);
+        padding: 0 var(--semantic-spacing-general-sm) var(--semantic-spacing-general-sm);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: var(--semantic-spacing-gap-md);
         width: 100%;
-        box-shadow: var(--core-elevation-shadow-210);
         position: fixed;
         bottom: 0;
+        z-index: 2; // chart has z-index: 1, it should not overlap buttons if screen height is small
+    }
+
+    &-button__wrapper {
+        background-color: var(--semantic-color-slate-solid-surface-frame-low);
+        width: 100%;
+
+        button {
+            .dc-remaining-time {
+                font-size: var(--core-fontSize-100);
+            }
+        }
     }
 }

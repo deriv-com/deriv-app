@@ -67,22 +67,6 @@ jest.mock('@deriv/bot-skeleton', () => ({
             },
         },
     },
-    config: {
-        ...jest.requireActual('@deriv/bot-skeleton').config,
-        QUICK_STRATEGY: {
-            DISABLED: {
-                SYMBOLS: ['1HZ150V', '1HZ250V'],
-                SUBMARKETS: ['crash_index', 'non_stable_coin'],
-            },
-            DEFAULT: {
-                symbol: '1HZ100V',
-                tradetype: 'callput',
-                durationtype: 't',
-                size: 2,
-                unit: 1,
-            },
-        },
-    },
 }));
 
 jest.mock('../../../../xml/martingale.xml', () => '');
@@ -190,9 +174,9 @@ describe('<QuickStrategy />', () => {
     const mock_dbot_store = mockDBotStore(mock_store, mock_ws);
 
     beforeEach(() => {
-        mock_dbot_store?.quick_strategy?.setValue('durationtype', 't');
-        mock_dbot_store?.quick_strategy?.setSelectedStrategy('MARTINGALE');
-        mock_dbot_store?.quick_strategy?.setFormVisibility(true);
+        mock_dbot_store?.server_bot?.setValue('durationtype', 't');
+        mock_dbot_store?.server_bot?.setSelectedStrategy('MARTINGALE');
+
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_dbot_store}>

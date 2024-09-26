@@ -2,10 +2,10 @@ import React, { createRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { APIProvider } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
 import { useModal } from '../../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../../hooks/useDevice';
 import { useTransfer } from '../../../provider';
 import TransferFormDropdown from '../TransferFormDropdown';
 
@@ -21,9 +21,9 @@ jest.mock('../../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));
 
-jest.mock('../../../../../../../hooks/useDevice', () => ({
-    __esModule: true,
-    default: jest.fn(),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
 }));
 
 jest.mock('../../../provider', () => ({
@@ -65,9 +65,7 @@ describe('TransferFormDropdown', () => {
             show: showModalMock,
         });
 
-        (useDevice as jest.Mock).mockReturnValue({
-            isMobile: false,
-        });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
 
         (useTransfer as jest.Mock).mockReturnValue({
             accounts: {

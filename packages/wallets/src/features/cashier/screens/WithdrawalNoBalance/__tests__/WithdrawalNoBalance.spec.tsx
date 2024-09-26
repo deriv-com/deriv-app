@@ -17,35 +17,21 @@ jest.mock('@deriv/quill-icons', () => ({
     )),
 }));
 
-jest.mock('../../../../../components', () => ({
-    ...jest.requireActual('../../../../../components'),
-    WalletsActionScreen: jest.fn(({ description, descriptionSize, icon, renderButtons, title }) => (
-        <div>
-            <div>{icon}</div>
-            <span>
-                WalletsActionScreen-{title}/{description}/{descriptionSize}
-            </span>
-            <div>{renderButtons()}</div>
-        </div>
-    )),
-}));
-
 const mockActiveWallet = {
     balance: 0,
     currency: 'USD',
 };
 
 describe('WithdrawalNoBalance', () => {
-    it('should test whether WalletsActionScreen is rendered with correct props', () => {
+    it('should test whether action screen is rendered with correct props', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             <WithdrawalNoBalance activeWallet={mockActiveWallet} />
         );
 
+        expect(screen.getByText('No funds in USD Wallet')).toBeInTheDocument();
         expect(
-            screen.getByText(
-                `WalletsActionScreen-No funds in USD Wallet/You don't have funds in your USD Wallet to complete a withdrawal./md`
-            )
+            screen.getByText("You don't have funds in your USD Wallet to complete a withdrawal.")
         ).toBeInTheDocument();
 
         expect(screen.getByText('DerivLightCashierNoBalanceIcon-128px/128px')).toBeInTheDocument();

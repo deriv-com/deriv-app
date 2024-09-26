@@ -1,5 +1,5 @@
-import React, { InputHTMLAttributes, memo } from 'react';
-import WalletText, { WalletTextProps } from '../WalletText/WalletText';
+import React, { ComponentProps, InputHTMLAttributes, memo } from 'react';
+import { Text } from '@deriv-com/ui';
 
 export type HelperMessageProps = {
     inputValue?: InputHTMLAttributes<HTMLInputElement>['value'];
@@ -11,7 +11,7 @@ export type HelperMessageProps = {
 
 const HelperMessage: React.FC<HelperMessageProps> = memo(
     ({ inputValue, isError, maxLength, message, messageVariant = 'general' }) => {
-        const HelperMessageColors: Record<string, WalletTextProps['color']> = {
+        const HelperMessageColors: Record<string, ComponentProps<typeof Text>['color']> = {
             error: 'error',
             general: 'less-prominent',
             warning: 'warning',
@@ -21,19 +21,19 @@ const HelperMessage: React.FC<HelperMessageProps> = memo(
             <React.Fragment>
                 {message && (
                     <div className='wallets-textfield__message-container--msg'>
-                        <WalletText
+                        <Text
                             color={isError ? HelperMessageColors.error : HelperMessageColors[messageVariant]}
                             size='xs'
                         >
                             {message}
-                        </WalletText>
+                        </Text>
                     </div>
                 )}
                 {maxLength && (
                     <div className='wallets-textfield__message-container--maxchar'>
-                        <WalletText align='right' color='less-prominent' size='xs'>
+                        <Text align='right' color='less-prominent' size='xs'>
                             {inputValue?.toString().length || 0} / {maxLength}
-                        </WalletText>
+                        </Text>
                     </div>
                 )}
             </React.Fragment>

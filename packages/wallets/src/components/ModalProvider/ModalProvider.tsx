@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
-import useDevice from '../../hooks/useDevice';
+import { useDevice } from '@deriv-com/ui';
 import { THooks, TMarketTypes, TPlatforms } from '../../types';
 
 type TModalState = {
@@ -43,7 +43,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const [content, setContent] = useState<React.ReactNode | null>();
     const [modalOptions, setModalOptions] = useState<TModalOptions>({});
     const [modalState, setModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
@@ -93,9 +93,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'wallets_modal_root')
             return rootRef;
         // otherwise do the default behaviour, show Deriv.app header if on responsive
-        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || isMobile) return rootHeaderRef;
+        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || !isDesktop) return rootHeaderRef;
         return rootRef;
-    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isMobile]);
+    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isDesktop]);
 
     return (
         <ModalContext.Provider

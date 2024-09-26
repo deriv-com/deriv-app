@@ -1,45 +1,57 @@
+$BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
+
 .bottom-nav {
     display: flex;
     flex-direction: column;
     height: 100%;
 
     &-container {
-        display: flex;
-        padding: var(--core-spacing-400);
-        align-items: flex-start;
-        gap: var(--core-spacing-500);
+        padding: var(--core-spacing-200);
         width: 100%;
-        border-top: 1px solid var(--core-color-opacity-black-100); // waiting on quill tokens in deriv-app
-        background-color: var(--core-color-solid-slate-50);
+        border-top: 1px solid var(--component-navigationBar-border-color);
+        height: $BOTTOM_NAV_HEIGHT;
+        z-index: 30;
     }
-
     &-selection {
         flex: 1;
         overflow: auto;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-
     &-item {
-        all: unset;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        flex: 1 0 0;
-        height: var(--core-size-2100);
+        font-size: var(--core-fontSize-50);
 
-        &--active {
-            .bottom-nav-item-label {
-                color: var(--core-color-opacity-coral-600);
-            }
-            svg {
-                fill: var(--core-color-opacity-coral-600);
-            }
+        .quill-navigation-bottom-bar__action-label {
+            color: var(--component-navigationBar-label-color-default);
         }
 
-        &-label {
-            font-size: var(--core-fontSize-50);
-            line-height: var(--core-lineHeight-100);
+        svg {
+            fill: var(--component-navigationBar-icon-default);
+        }
+
+        &__position-badge {
+            z-index: 1;
+        }
+        &--active {
+            .quill-navigation-bottom-bar__action-label {
+                color: var(--component-navigationBar-label-color-selected);
+            }
+
+            svg {
+                fill: var(--component-navigationBar-icon-selected);
+            }
+        }
+        &--positions {
+            position: relative;
+
+            .user-guide__anchor {
+                position: absolute;
+                height: var(--core-size-3200);
+                width: var(--core-size-4600);
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -70%);
+            }
         }
     }
 }

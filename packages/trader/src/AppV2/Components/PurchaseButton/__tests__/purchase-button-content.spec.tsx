@@ -7,24 +7,16 @@ type TInfo = React.ComponentProps<typeof PurchaseButtonContent>['info'];
 
 const mock_props = {
     currency: 'USD',
-    current_stake: 12,
     has_open_accu_contract: false,
     info: {
-        has_error: false,
-        has_error_details: false,
         obj_contract_basis: {
             text: 'Payout',
             value: 19.23,
         },
-        payout: 19.23,
-        profit: '9.23',
     } as TInfo,
-    is_accumulator: false,
     is_multiplier: false,
-    is_touch: false,
     is_turbos: false,
     is_vanilla: false,
-    is_vanilla_fx: false,
     is_reverse: false,
 };
 const wrapper_data_test_id = 'dt_purchase_button_wrapper';
@@ -74,73 +66,21 @@ describe('PurchaseButtonContent', () => {
         expect(screen.getByText(/USD/i)).toBeInTheDocument();
     });
 
-    it('should not render text basis and amount for Accumulators (when there is no open contract and with it)', () => {
-        const accumulators_info = {
-            has_error: false,
-            has_error_details: false,
-            obj_contract_basis: {
-                text: '',
-                value: '',
-            },
-            maximum_payout: 4000,
-        };
-        const { rerender } = render(
-            <PurchaseButtonContent {...mock_props} is_accumulator info={accumulators_info as TInfo} />
-        );
+    it('should not render button content if has_no_button_content === true and there is no error', () => {
+        const { container } = render(<PurchaseButtonContent {...mock_props} has_no_button_content />);
 
-        expect(screen.queryByText(localized_basis.max_payout)).not.toBeInTheDocument();
-        expect(screen.queryByText(/4,000.00/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/USD/i)).not.toBeInTheDocument();
-
-        rerender(
-            <PurchaseButtonContent
-                {...mock_props}
-                is_accumulator
-                info={accumulators_info as TInfo}
-                has_open_accu_contract
-            />
-        );
-
-        expect(screen.getByText(localized_basis.current_stake)).toBeInTheDocument();
-        expect(screen.getByText(/12/)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 
-    it('should not render text basis and amount for Turbos', () => {
-        const turbos_info = {
-            has_error: false,
-            has_error_details: false,
-            obj_contract_basis: {
-                text: 'Payout per point',
-                value: '8.250455',
-            },
-        };
-        render(<PurchaseButtonContent {...mock_props} is_turbos info={turbos_info as TInfo} />);
+    it('should render error text as button content if error is not falsy', () => {
+        render(<PurchaseButtonContent {...mock_props} error='Mock error text' />);
 
-        expect(screen.queryByText(localized_basis.payout_per_point)).not.toBeInTheDocument();
-        expect(screen.queryByText(/8.250455/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/USD/i)).not.toBeInTheDocument();
+        expect(screen.getByText('Mock error text')).toBeInTheDocument();
     });
 
-    it('should not render text basis and amount for Vanilla (not fx and fx)', () => {
-        const vanilla_info = {
-            has_error: false,
-            has_error_details: false,
-            obj_contract_basis: {
-                text: 'Payout per point',
-                value: '12.77095',
-            },
-        };
-        const { rerender } = render(<PurchaseButtonContent {...mock_props} is_vanilla info={vanilla_info as TInfo} />);
+    it('should render error text as button content even if error is not falsy, but has_no_button_content === true', () => {
+        render(<PurchaseButtonContent {...mock_props} error='Mock error text' has_no_button_content />);
 
-        expect(screen.queryByText(localized_basis.payout_per_point)).not.toBeInTheDocument();
-        expect(screen.queryByText(/12.77095/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/USD/i)).not.toBeInTheDocument();
-
-        rerender(<PurchaseButtonContent {...mock_props} is_vanilla is_vanilla_fx info={vanilla_info as TInfo} />);
-
-        expect(screen.queryByText(localized_basis.payout_per_pip)).not.toBeInTheDocument();
-        expect(screen.queryByText(/12.77095/)).not.toBeInTheDocument();
-        expect(screen.queryByText(/USD/i)).not.toBeInTheDocument();
+        expect(screen.getByText('Mock error text')).toBeInTheDocument();
     });
 });

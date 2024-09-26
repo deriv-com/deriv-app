@@ -5,3 +5,13 @@
         gap: var(--semantic-spacing-gap-lg);
     }
 }
+
+// we have to force the below quill styles here because sometimes these classes in quill are getting overwritten by another quill-ui style .quill-typography
+.quill-modal__content {
+    &-title {
+        margin: var(--component-modal-spacing-bottom-padding-lg) var(--component-modal-spacing-overlay-padding-sm) 0 !important;
+    }
+    &-body {
+        margin: var(--component-modal-spacing-overlay-padding-sm) var(--component-modal-spacing-overlay-padding-sm) !important;
+    }
+}

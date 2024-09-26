@@ -1,0 +1,56 @@
+.duration-container {
+    &__chips {
+        display: flex;
+        width: 100vw;
+        overflow: auto;
+        position: relative;
+        inset-inline-start: calc(-1 * var(--core-spacing-400));
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        -ms-overflow-style: none;
+    }
+    &__wheel-picker-container {
+        padding: 0 var(--component-actionSheet-spacing-padding-md);
+        min-height: 268px;
+        &__day {
+            min-height: 228px;
+        }
+        &__loading {
+            display: none;
+        }
+    }
+    &__endtime {
+        text-align: center;
+    }
+    &__date-picker {
+        padding-left: var(--core-spacing-800);
+        padding-right: var(--core-spacing-800);
+        display: flex;
+        position: relative;
+        &__heading {
+            width: 100%;
+            text-align: center;
+            p {
+                margin-left: var(--core-spacing-1300);
+            }
+        }
+        &__sheet {
+            font-size: var(--core-spacing-800);
+        }
+    }
+}
+
+// Temp Solution for hiding the current date will remove once the flag for disabling
+// current date is functional
+.duration-datepicker {
+    .quill-date-picker .react-calendar__tile--now:after {
+        display: none;
+    }
+}

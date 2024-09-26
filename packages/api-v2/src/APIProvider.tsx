@@ -39,7 +39,7 @@ const getWebSocketURL = () => {
     const initial_language = getInitialLanguage();
     const wallet_allowed_languages = initial_language === 'EN' || initial_language === 'AR';
     // fallback to EN if language on initial load is not EN/AR
-    const language = !wallet_allowed_languages ? 'EN' : initial_language;
+    const language = wallet_allowed_languages ? initial_language : 'EN';
 
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };

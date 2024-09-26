@@ -33,9 +33,9 @@ export const platforms: TPlatforms = {
     p2p_v2: {
         icon_text: undefined,
         is_hard_redirect: true,
-        platform_name: 'P2P',
+        platform_name: 'Deirv P2P',
         route_to_path: '',
-        url: 'https://p2p.deriv.com',
+        url: process.env.NODE_ENV === 'production' ? 'https://p2p.deriv.com' : 'https://staging-p2p.deriv.com',
     },
 };
 

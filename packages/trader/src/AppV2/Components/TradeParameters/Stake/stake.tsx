@@ -97,7 +97,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     });
 
     React.useEffect(() => {
-        if ((two_contracts_error || stake_error) && !is_minimized && !displayed_error.current) {
+        if (stake_error && !is_minimized && !displayed_error.current) {
             displayed_error.current = true;
             addSnackbar({
                 message: <Localize i18n_default_text='Please adjust your stake.' />,
@@ -106,7 +106,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 style: { marginBottom: '48px' },
             });
         }
-    }, [two_contracts_error, stake_error]);
+    }, [stake_error]);
 
     React.useEffect(() => {
         displayed_error.current = false;

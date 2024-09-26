@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
-import CloseIcon from '../../../public/images/ic-close-dark.svg';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { useModal } from '../../ModalProvider';
 import './ModalWrapper.scss';
 
@@ -31,7 +31,9 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
                 'wallets-modal-wrapper--fullscreen': isFullscreen,
             })}
         >
-            {!hideCloseButton && <CloseIcon className='wallets-modal-wrapper__close-icon' onClick={hide} />}
+            {!hideCloseButton && (
+                <LegacyClose2pxIcon className='wallets-modal-wrapper__close-icon' iconSize='xs' onClick={hide} />
+            )}
             {children}
         </div>
     );

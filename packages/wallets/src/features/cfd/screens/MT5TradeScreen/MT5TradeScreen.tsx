@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Text, useDevice } from '@deriv-com/ui';
+import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { WalletBadge, WalletListCardBadge } from '../../../../components';
-import { InlineMessage } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
@@ -97,7 +96,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             ) {
                 case 'migrated_with_position':
                     return (
-                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                        <InlineMessage
+                            className='wallets-mt5-trade-screen__description-badge'
+                            type='outlined'
+                            variant='warning'
+                        >
                             <Text color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='No new positions' />
                             </Text>
@@ -105,7 +108,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     );
                 case 'migrated_without_position':
                     return (
-                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                        <InlineMessage
+                            className='wallets-mt5-trade-screen__description-badge'
+                            type='outlined'
+                            variant='warning'
+                        >
                             <Text color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='Account closed' />
                             </Text>
@@ -118,7 +125,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     }, [activeWalletData?.is_virtual, marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     return (
-        <div className='wallets-mt5-trade-screen'>
+        <div className='wallets-mt5-trade-screen' data-testid='dt_mt5_trade_screen'>
             <div className='wallets-mt5-trade-screen__content'>
                 <div className='wallets-mt5-trade-screen__content-header'>
                     <div className='wallets-mt5-trade-screen__description'>

@@ -5,7 +5,12 @@ import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useRe
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
+import { Router } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
+import { useSignupTrigger } from '../../../Hooks/useSignupTrigger';
+import { renderHook } from '@testing-library/react-hooks';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -21,7 +26,19 @@ jest.mock('AppV2/Components/BottomNav', () =>
         </div>
     ))
 );
-jest.mock('AppV2/Components/AccumulatorStats', () => jest.fn(() => <div>AccumulatorStats</div>));
+const mockHistoryPush = jest.fn();
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    redirectToLogin: jest.fn(),
+}));
+
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
@@ -31,6 +48,8 @@ jest.mock('../../Chart', () => ({
     ...jest.requireActual('../../Chart'),
     TradeChart: jest.fn(() => <div>Chart</div>),
 }));
+jest.mock('AppV2/Components/AccumulatorStats', () => jest.fn(() => <div>AccumulatorStats</div>));
+
 jest.mock('AppV2/Components/TradeParameters', () => ({
     ...jest.requireActual('AppV2/Components/TradeParameters'),
     TradeParametersContainer: jest.fn(({ children }) => <div>{children}</div>),
@@ -48,12 +67,16 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         contracts_for_company: mock_contract_data,
+        is_fetching_ref: { current: false },
+        trade_types: mock_contract_data.contracts_for_company.available,
     })),
 }));
+jest.mock('AppV2/Hooks/useSignupTrigger');
 
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
+    const history = createMemoryHistory();
     beforeEach(() => {
         default_mock_store = mockStore({
             modules: {
@@ -95,30 +118,35 @@ describe('Trade', () => {
                 },
             },
             client: { is_logged_in: true },
+            common: { resetServicesError: jest.fn() },
         });
+        (useSignupTrigger as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
         localStorage.clear();
     });
 
-    const mockTrade = () =>
-        render(
-            <TraderProviders store={default_mock_store}>
-                <ReportsStoreProvider>
-                    <ModulesProvider store={default_mock_store}>
-                        <Trade />
-                    </ModulesProvider>
-                </ReportsStoreProvider>
-            </TraderProviders>
+    const mockTrade = () => {
+        return (
+            <Router history={history}>
+                <TraderProviders store={default_mock_store}>
+                    <ReportsStoreProvider>
+                        <ModulesProvider store={default_mock_store}>
+                            <Trade />
+                        </ModulesProvider>
+                    </ReportsStoreProvider>
+                </TraderProviders>
+            </Router>
         );
+    };
 
     it('should render loader if there is no active_symbols or contract_types_list', () => {
         default_mock_store = mockStore({});
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
     it('should render trading page with all necessary components', () => {
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
         expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
@@ -134,21 +162,21 @@ describe('Trade', () => {
 
     it('should render Current Spot  component if it is digit contract type', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByText('Current Spot')).toBeInTheDocument();
     });
 
     it('should render AccumulatorStats if is_accumulator === true', () => {
         default_mock_store.modules.trade.is_accumulator = true;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });
 
     it('should call state setter when user scrolls BottomNav', () => {
         const spySetIsMinimizedParamsVisible = jest.spyOn(React, 'useState');
-        mockTrade();
+        render(mockTrade());
 
         fireEvent.scroll(screen.getByTestId('dt_bottom_nav'));
 
@@ -158,21 +186,84 @@ describe('Trade', () => {
     it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
         const field = { trade_page: true };
         localStorage.setItem(localStorage_key, JSON.stringify(field));
-        mockTrade();
-
+        render(mockTrade());
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 
     it('should not render OnboardingGuide if client is not logged in', () => {
         default_mock_store.client.is_logged_in = false;
-        mockTrade();
+        render(mockTrade());
 
         expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
+    it('should not render the ActionSheet when there is no error', () => {
+        render(mockTrade());
 
-    it('should not render Purchase Button if is_market_closed === true', () => {
-        default_mock_store.modules.trade.is_market_closed = true;
-        mockTrade();
-        expect(screen.queryByText('Purchase Button')).not.toBeInTheDocument();
+        expect(screen.queryByText('Insufficient balance')).not.toBeInTheDocument();
+        expect(screen.queryByText('Start trading with us')).not.toBeInTheDocument();
+    });
+
+    it('should display insufficient balance message when services_error is InsufficientBalance', () => {
+        default_mock_store.common.services_error = {
+            code: 'InsufficientBalance',
+            message: 'You do not have enough balance.',
+        };
+        render(mockTrade());
+        expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
+        expect(screen.getByText('You do not have enough balance.')).toBeInTheDocument();
+    });
+
+    it('should display authorization required message when services_error is AuthorizationRequired', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+        render(mockTrade());
+        expect(screen.getByText('Start trading with us')).toBeInTheDocument();
+        expect(screen.getByText('Log in or create a free account to place a trade.')).toBeInTheDocument();
+    });
+
+    it('should call history.push to deposit when Deposit now button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'InsufficientBalance',
+            message: 'You do not have enough balance.',
+        };
+        render(mockTrade());
+
+        const depositButton = screen.getByText('Deposit now');
+        userEvent.click(depositButton);
+        expect(history.location.pathname).toBe('/cashier/deposit');
+    });
+
+    it('should handle login when Login button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+
+        render(mockTrade());
+
+        const loginButton = screen.getByText('Login');
+        userEvent.click(loginButton);
+
+        expect(redirectToLogin).toHaveBeenCalled();
+    });
+
+    it('should handle sign-up when Create free account button is clicked', () => {
+        default_mock_store.common.services_error = {
+            code: 'AuthorizationRequired',
+            message: 'You need to log in to place a trade',
+            type: 'buy',
+        };
+        const { result } = renderHook(() => useSignupTrigger());
+
+        render(mockTrade());
+
+        const signupButton = screen.getByText('Create free account');
+        userEvent.click(signupButton);
+
+        expect(result.current.handleSignup).toHaveBeenCalled();
     });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { ApiHelpers } from '@deriv/bot-skeleton';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -49,19 +50,16 @@ window.Blockly = {
 
 describe('<DurationUnit />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeEach(() => {
-        const mock_store = mockStore({
-            ui: {
-                is_mobile: true,
-            },
-        });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
-            durationtype: 1,
+            durationtype: 's',
             symbol: 'R_100',
             tradetype: 'callput',
+            duration: 15,
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -101,5 +99,27 @@ describe('<DurationUnit />', () => {
             userEvent.click(option_element);
         });
         expect(autocomplete_element).toHaveDisplayValue('sample');
+    });
+
+    it('should be empty list if value not found', async () => {
+        mock_store.ui.is_desktop = true;
+        const mockAPI = ApiHelpers.instance as unknown as {
+            contracts_for: {
+                getDurations: jest.Mock<string, string[]>;
+            };
+        };
+        mockAPI.contracts_for.getDurations = jest.fn().mockReturnValue([]);
+
+        render(<DurationUnit />, {
+            wrapper,
+        });
+        const autocomplete_element = screen.getByTestId('dt_qs_durationtype');
+        userEvent.click(autocomplete_element);
+        await waitFor(() => {
+            const option_element = screen.getByText('No results found');
+            userEvent.click(option_element);
+        });
+
+        expect(autocomplete_element).toHaveDisplayValue('');
     });
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -11,9 +11,11 @@ import './CreatePasswordMT5.scss';
 
 type TProps = {
     isLoading?: boolean;
+    isTncChecked: boolean;
     isVirtual?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
+    onTncChange: () => void;
     password: string;
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
@@ -21,9 +23,11 @@ type TProps = {
 
 const CreatePasswordMT5: React.FC<TProps> = ({
     isLoading,
+    isTncChecked,
     isVirtual,
     onPasswordChange,
     onPrimaryClick,
+    onTncChange,
     password,
     platform,
     product,
@@ -32,7 +36,6 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
-    const [checked, setChecked] = useState(!(product === PRODUCT.ZEROSPREAD && !isVirtual));
 
     return (
         <div className='wallets-create-password-mt5'>
@@ -59,8 +62,8 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                 />
                 {product === PRODUCT.ZEROSPREAD && !isVirtual && (
                     <CFDPasswordModalTnc
-                        checked={checked}
-                        onChange={() => setChecked(prev => !prev)}
+                        checked={isTncChecked}
+                        onChange={onTncChange}
                         platform={platform}
                         product={product}
                     />
@@ -70,7 +73,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
             {isDesktop && (
                 <div className='wallets-create-password-mt5__footer'>
                     <Button
-                        disabled={!password || isLoading || disableButton || !checked}
+                        disabled={!password || isLoading || disableButton || !isTncChecked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

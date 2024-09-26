@@ -1,8 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
 import { Localize } from '@deriv-com/translations';
-import { Button, Loader } from '@deriv-com/ui';
-import useDevice from '../../../../../../hooks/useDevice';
+import { Button, Loader, useDevice } from '@deriv-com/ui';
 import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
 import type { TAccount, TInitialTransferFormValues } from '../../types';
@@ -12,7 +11,7 @@ import { TransferMessages } from '../TransferMessages';
 import './TransferForm.scss';
 
 const TransferForm = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { activeWallet, isLoading, requestTransferBetweenAccounts } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
@@ -62,14 +61,15 @@ const TransferForm = () => {
                         </div>
                         <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
                             <Button
+                                borderWidth='sm'
                                 disabled={
                                     !values.fromAmount ||
                                     !values.toAmount ||
                                     values.isError ||
                                     hasPlatformStatus(values)
                                 }
-                                size={isMobile ? 'md' : 'lg'}
-                                textSize={isMobile ? 'sm' : 'md'}
+                                size={isDesktop ? 'lg' : 'md'}
+                                textSize={isDesktop ? 'md' : 'sm'}
                                 type='submit'
                             >
                                 <Localize i18n_default_text='Transfer' />

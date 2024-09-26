@@ -8,5 +8,21 @@
     @include mobile-or-tablet-screen {
         width: 100%;
         padding: 0;
+        max-width: 60rem;
+        margin: 0 auto;
+    }
+
+    &__footer {
+        width: 100%;
+
+        @include desktop-screen {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        @include mobile-or-tablet-screen {
+            max-width: 60rem;
+            margin-inline: auto;
+        }
     }
 }

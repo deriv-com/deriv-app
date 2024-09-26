@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { WalletText } from '../../../../components/Base';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 import './DynamicLeverageMarketCard.scss';
@@ -24,22 +24,22 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     return (
         <div className='wallets-dynamic-leverage-modal__market'>
             <div className='wallets-dynamic-leverage-modal__market-title'>
-                <WalletText align='center' data-testid='dt_dynamic_leverage_market_title' size='sm' weight='bold'>
+                <Text align='center' data-testid='dt_dynamic_leverage_market_title' size='sm' weight='bold'>
                     {displayName}
-                </WalletText>
+                </Text>
                 {!!instruments.length && (
-                    <WalletText
+                    <Text
                         align='center'
                         data-testid='dt_dynamic_leverage_description_title'
                         fontStyle='italic'
                         size='2xs'
                     >
                         {`(${instruments.join(', ')})`}
-                    </WalletText>
+                    </Text>
                 )}
-                <WalletText align='center' color='error' data-testid='dt_dynamic_leverage_title' size='xs'>
+                <Text align='center' color='error' data-testid='dt_dynamic_leverage_title' size='xs'>
                     <Localize i18n_default_text='Up to {{min}}:{{max}}' values={{ max, min }} />
-                </WalletText>
+                </Text>
             </div>
             <div className='wallets-dynamic-leverage-modal__market-table'>
                 <div className='wallets-dynamic-leverage-modal__market-table-header-row'>
@@ -55,9 +55,9 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
                         >
                             {Object.entries(columns).map(([columnKey, value]) => (
                                 <div key={`${displayName}_${columnKey}_${value}`}>
-                                    <WalletText align='center' size='sm'>
+                                    <Text align='center' size='sm'>
                                         {value}
-                                    </WalletText>
+                                    </Text>
                                 </div>
                             ))}
                         </div>

@@ -54,7 +54,25 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         },
         {
             id: 2,
-            component: <TradeParamDefinition description={<Localize i18n_default_text='Content goes here.' />} />,
+            component: (
+                <TradeParamDefinition
+                    description={
+                        <>
+                            <p>
+                                <Localize i18n_default_text='It is the price where you can start receiving a payout from an option.' />
+                            </p>
+                            <br />
+                            <p>
+                                <Localize i18n_default_text='For a Call option, you receive a payout if the final price is higher than the strike price.' />
+                            </p>
+                            <br />
+                            <p>
+                                <Localize i18n_default_text='For a Put option, you receive a payout if the final price is lower than the strike price.' />
+                            </p>
+                        </>
+                    }
+                />
+            ),
         },
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');

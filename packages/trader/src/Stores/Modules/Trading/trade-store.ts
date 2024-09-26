@@ -41,6 +41,7 @@ import {
     formatMoney,
     getContractPath,
     routes,
+    isDtraderV2Enabled,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -56,7 +57,7 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
+import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
 import {
     ActiveSymbols,
@@ -74,6 +75,7 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
+import { safeParse } from '@deriv/utils';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -165,6 +167,7 @@ export type TV2ParamsInitialValues = {
     strike?: string | number;
     multiplier?: number;
     barrier_1?: number;
+    payout_per_point?: string;
 };
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
@@ -176,12 +179,7 @@ type TPrevChartLayout =
           is_used?: boolean;
       })
     | null;
-type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: TTextValueStrings[];
-    };
-};
+
 type TDurationMinMax = {
     [key: string]: { min: number; max: number };
 };
@@ -511,6 +509,7 @@ export default class TradeStore extends BaseStore {
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
             clearV2ParamsInitialValues: action.bound,
+            processContractsForV2: action.bound,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -572,7 +571,54 @@ export default class TradeStore extends BaseStore {
             setPayoutPerPoint: action.bound,
         });
 
-        // Adds intercept to change min_max value of duration validation
+        when(
+            () => !isEmptyObject(this.contract_types_list_v2),
+            () => {
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlContractType = searchParams.get('trade_type');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
+                const flattedContractTypesV2 = Object.values(this.contract_types_list_v2)
+                    .map(contract_type => contract_type.categories)
+                    .flatMap(categories => categories);
+                const isValidContractType = flattedContractTypesV2.some(
+                    contract_type => contract_type.value === urlContractType
+                );
+                if (urlContractType) {
+                    if (isValidContractType) {
+                        tradeStoreObj.contract_type = urlContractType;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.contract_type = urlContractType;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
+                }
+            }
+        );
+
+        when(
+            () => this.has_symbols_for_v2,
+            () => {
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                const searchParams = new URLSearchParams(window.location.search);
+                const urlSymbol = searchParams.get('symbol');
+                const tradeStoreString = sessionStorage.getItem('trade_store');
+                const tradeStoreObj = safeParse(tradeStoreString ?? '{}') ?? {};
+                const isValidSymbol = this.active_symbols.some(symbol => symbol.symbol === urlSymbol);
+
+                if (urlSymbol) {
+                    if (isValidSymbol) {
+                        tradeStoreObj.symbol = urlSymbol;
+                        sessionStorage.setItem('trade_store', JSON.stringify(tradeStoreObj));
+                        this.symbol = urlSymbol;
+                    } else {
+                        this.root_store.ui.toggleUrlUnavailableModal(true);
+                    }
+                }
+            }
+        );
+
         reaction(
             () => [this.contract_expiry_type, this.duration_min_max, this.duration_unit, this.expiry_type],
             () => {
@@ -631,7 +677,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
-                if (!isEmptyObject(this.contract_types_list)) {
+                if (!isEmptyObject(this.contract_types_list) || !isEmptyObject(this.contract_types_list_v2)) {
                     setTradeURLParams({ contractType: this.contract_type });
                 }
                 this.root_store.notifications.removeTradeNotifications();
@@ -803,7 +849,21 @@ export default class TradeStore extends BaseStore {
         await this.processNewValuesAsync({ active_symbols });
     }
 
+    async processContractsForV2() {
+        const contract_categories = ContractType.getContractCategories();
+        this.processNewValuesAsync({
+            ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
+                has_only_forward_starting_contracts: boolean;
+            }),
+        });
+        this.processNewValuesAsync(ContractType.getContractValues(this));
+    }
+
     async setContractTypes() {
+        if (this.is_dtrader_v2_enabled) {
+            return;
+        }
+
         let contractType: string | undefined = '';
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
@@ -1042,10 +1102,13 @@ export default class TradeStore extends BaseStore {
                         this.disablePurchaseButtons();
                         // invalidToken error will handle in socket-general.js
                         if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError({
-                                type: response.msg_type,
-                                ...response.error,
-                            });
+                            this.root_store.common.setServicesError(
+                                {
+                                    type: response.msg_type,
+                                    ...response.error,
+                                },
+                                this.is_dtrader_v2_enabled
+                            );
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
                             if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
@@ -1367,13 +1430,7 @@ export default class TradeStore extends BaseStore {
     }
 
     get is_dtrader_v2_enabled() {
-        const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
-
-        return (
-            is_dtrader_v2 &&
-            this.root_store.ui.is_mobile &&
-            (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
-        );
+        return isDtraderV2Enabled(this.root_store.ui.is_mobile);
     }
 
     get is_synthetics_available() {

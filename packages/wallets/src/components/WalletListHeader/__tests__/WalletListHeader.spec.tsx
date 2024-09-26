@@ -1,13 +1,13 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletListHeader from '../WalletListHeader';
 import '@testing-library/jest-dom';
 
-jest.mock('../../../hooks/useDevice', () =>
-    jest.fn(() => ({
-        isMobile: false,
-    }))
-);
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: () => ({ data: { is_virtual: false, loginid: 'real1' } }),
@@ -28,6 +28,10 @@ jest.mock('../../../hooks/useWalletAccountSwitcher', () => ({
 
 describe('WalletListHeader', () => {
     beforeEach(() => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    });
+
+    afterAll(() => {
         jest.clearAllMocks();
     });
 

@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { sellContract } from '../../images';
-import { modifyContextMenu, removeExtraInput } from '../../../utils';
+import { appendCollapsedMainBlocksFields, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -63,7 +63,9 @@ Blockly.Blocks.during_purchase = {
             event.type === Blockly.Events.BLOCK_CHANGE ||
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
-            removeExtraInput(this);
+            if (this.isCollapsed()) {
+                appendCollapsedMainBlocksFields(this);
+            }
         }
     },
     customContextMenu(menu) {

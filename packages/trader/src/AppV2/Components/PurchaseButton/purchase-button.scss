@@ -37,7 +37,7 @@
         }
 
         &__item {
-            color: var(--core-color-solid-slate-50);
+            color: var(--component-button-label-color-sell-primary);
         }
     }
     &__wrapper {
@@ -50,7 +50,9 @@
         width: 100%;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: var(--core-spacing-2800);
-
+        &__un-auth {
+            bottom: var(--core-spacing-50);
+        }
         &.slide {
             &-enter {
                 transform: translateY(100%);

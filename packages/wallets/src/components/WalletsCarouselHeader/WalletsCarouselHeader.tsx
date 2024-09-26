@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { IconButton } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletsCarouselHeader.scss';
@@ -19,13 +19,14 @@ type TProps = {
 const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isBalanceLoading, isDemo }) => {
     const history = useHistory();
     const { localize } = useTranslations();
+    const { isMobile } = useDevice();
 
     return (
         <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>
             <div className='wallets-carousel-header__content'>
                 <WalletCurrencyCard currency={currency} isDemo={isDemo} size='md' />
                 <div className='wallets-carousel-header__details'>
-                    <Text color='general' size='sm'>
+                    <Text color='general' size={isMobile ? 'sm' : 'xs'}>
                         {currency} Wallet
                     </Text>
                     {isBalanceLoading ? (
@@ -34,7 +35,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                             data-testid='dt_wallets_carousel_header_balance_loader'
                         />
                     ) : (
-                        <Text color='general' size='lg' weight='bold'>
+                        <Text color='general' size={isMobile ? 'lg' : 'md'} weight='bold'>
                             {balance}
                         </Text>
                     )}

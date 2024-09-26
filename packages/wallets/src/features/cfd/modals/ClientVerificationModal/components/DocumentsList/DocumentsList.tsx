@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { THooks } from '../../../../../../types';
+import { ClientVerificationStatusBadge } from '../../../../components';
 import { DocumentTile } from './components';
 import './DocumentsList.scss';
 
@@ -10,13 +11,33 @@ type TDocumentsListProps = {
 
 type TStatuses = 'expired' | 'none' | 'pending' | 'rejected' | 'suspected' | 'verified';
 
-const statusBadge: Record<TStatuses, JSX.Element | null> = {
-    expired: <div>Failed</div>,
-    none: <div>none</div>,
-    pending: <div>In review</div>,
-    rejected: <div>Failed</div>,
-    suspected: <div>Failed</div>,
-    verified: <div>Verified</div>,
+const getTileProps = (status: TStatuses): Pick<React.ComponentProps<typeof DocumentTile>, 'badge' | 'isDisabled'> => {
+    return {
+        expired: {
+            badge: <ClientVerificationStatusBadge variant='failed' />,
+            isDisabled: false,
+        },
+        none: {
+            badge: undefined,
+            isDisabled: false,
+        },
+        pending: {
+            badge: <ClientVerificationStatusBadge variant='in_review' />,
+            isDisabled: true,
+        },
+        rejected: {
+            badge: <ClientVerificationStatusBadge variant='failed' />,
+            isDisabled: false,
+        },
+        suspected: {
+            badge: <ClientVerificationStatusBadge variant='failed' />,
+            isDisabled: false,
+        },
+        verified: {
+            badge: <ClientVerificationStatusBadge variant='verified' />,
+            isDisabled: true,
+        },
+    }[status];
 };
 
 const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
@@ -26,14 +47,14 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
         <div className='wallets-documents-list'>
             {'poi_status' in statuses && (
                 <DocumentTile
-                    badge={statusBadge[statuses.poi_status]}
+                    {...getTileProps(statuses.poi_status)}
                     onClick={() => history.push('/account/proof-of-identity')}
                     title='Proof of identity'
                 />
             )}
             {'poa_status' in statuses && (
                 <DocumentTile
-                    badge={statusBadge[statuses.poa_status]}
+                    {...getTileProps(statuses.poa_status)}
                     onClick={() => history.push('/account/proof-of-address')}
                     title='Proof of address'
                 />

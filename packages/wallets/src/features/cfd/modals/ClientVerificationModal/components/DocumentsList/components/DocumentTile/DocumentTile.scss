@@ -10,9 +10,19 @@
     justify-content: space-between;
     cursor: pointer;
 
+    &:disabled {
+        cursor: not-allowed;
+    }
+
     &__status {
         display: flex;
         align-items: center;
         gap: 0.8rem;
+    }
+
+    &__chevron {
+        &--disabled {
+            fill: #d6d6d6;
+        }
     }
 }

@@ -14,6 +14,7 @@ import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 import PhoneNumberVerifiedModal from './phone-number-verified-modal';
 import CoolDownPeriodModal from './cool-down-period-modal';
+import { useIsMounted } from '@deriv/shared';
 
 type TOTPVerification = {
     phone_verification_type: string;
@@ -29,6 +30,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [is_button_disabled, setIsButtonDisabled] = useState(false);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
+    const isMounted = useIsMounted();
 
     const {
         sendPhoneOTPVerification,
@@ -54,7 +56,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     const reInitializeGetSettings = useCallback(() => {
         invalidate('get_settings').then(() => {
-            setIsButtonDisabled(false);
+            if (isMounted()) {
+                setIsButtonDisabled(false);
+            }
         });
     }, [invalidate]);
 

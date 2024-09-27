@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete & SelectNative components
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { SelectNative, Dropdown } from '@deriv/components';
@@ -38,7 +40,6 @@ const AccountOpeningReasonField = ({
                                 is_align_text_left
                                 list={account_opening_reason_list}
                                 error={meta.touched && meta.error ? meta.error : ''}
-                                /* @ts-expect-error [TODO] need to fix types for  Dropdown component*/
                                 required
                                 className={clsx({ 'focus-field': fieldFocused })}
                             />

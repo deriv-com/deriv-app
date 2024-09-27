@@ -39,6 +39,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
     const displayed_error = React.useRef(false);
+    const prevAmount = React.useRef(amount);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -97,7 +98,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     });
 
     React.useEffect(() => {
-        if (stake_error && !is_minimized && !displayed_error.current) {
+        if (stake_error && !is_minimized && !displayed_error.current && prevAmount.current === amount) {
             displayed_error.current = true;
             addSnackbar({
                 message: <Localize i18n_default_text='Please adjust your stake.' />,
@@ -106,7 +107,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 style: { marginBottom: '48px' },
             });
         }
-    }, [stake_error]);
+    }, [stake_error, prevAmount.current, amount]);
 
     React.useEffect(() => {
         displayed_error.current = false;
@@ -176,6 +177,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 setV2ParamsInitialValues({ value: amount, name: 'stake' });
             }
             setIsOpen(false);
+            if (is_saved) prevAmount.current = amount;
         }
     };
 
@@ -186,7 +188,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
                 noStatusIcon
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    setIsOpen(true);
+                    prevAmount.current === amount;
+                }}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}

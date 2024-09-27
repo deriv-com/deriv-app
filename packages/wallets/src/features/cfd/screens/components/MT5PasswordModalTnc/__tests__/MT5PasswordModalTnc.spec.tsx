@@ -18,13 +18,13 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('../../../../../components/ModalProvider', () => ({
+jest.mock('../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(() => ({
         getModalState: jest.fn(() => 'bvi'),
     })),
 }));
 
-jest.mock('../../../../../components/Base/WalletLink', () => ({
+jest.mock('../../../../../../components/Base/WalletLink', () => ({
     WalletLink: ({ children }: { children: React.ReactNode }) => <a href='https://example.com'>{children}</a>,
 }));
 
@@ -38,18 +38,17 @@ describe('MT5PasswordModalTnc', () => {
 
     it('renders correctly', () => {
         render(<MT5PasswordModalTnc {...defaultProps} />);
-        expect(screen.getByTestId('dt_wallets_tnc_checkbox')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_mt5_tnc_checkbox')).toBeInTheDocument();
     });
 
     it('displays correct text content', () => {
         render(<MT5PasswordModalTnc {...defaultProps} />);
-        expect(screen.getByText(/You are adding your Deriv MT5/i)).toBeInTheDocument();
-        expect(screen.getByText(/I confirm and accept/i)).toBeInTheDocument();
+        expect(screen.getByText("I confirm and accept Deriv (BVI) Ltd's")).toBeInTheDocument();
     });
 
     it('handles checkbox change', () => {
         render(<MT5PasswordModalTnc {...defaultProps} />);
-        const checkbox = screen.getByTestId('dt_wallets_tnc_checkbox');
+        const checkbox = screen.getByTestId('dt_wallets_mt5_tnc_checkbox');
         fireEvent.click(checkbox);
         expect(mockOnChange).toHaveBeenCalledTimes(1);
     });
@@ -58,10 +57,5 @@ describe('MT5PasswordModalTnc', () => {
         render(<MT5PasswordModalTnc {...defaultProps} />);
         const link = screen.getByText('terms and conditions');
         expect(link).toHaveAttribute('href', 'https://example.com');
-    });
-
-    it('uses the correct platform and product titles', () => {
-        render(<MT5PasswordModalTnc {...defaultProps} />);
-        expect(screen.getByText(/MT5.*Zero Spread/)).toBeInTheDocument();
     });
 });

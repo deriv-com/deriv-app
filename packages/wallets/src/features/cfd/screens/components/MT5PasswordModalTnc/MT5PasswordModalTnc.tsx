@@ -15,6 +15,7 @@ const MT5PasswordModalTnc = ({ checked, onChange }: TMT5PasswordModalTncProps) =
     const { isDesktop } = useDevice();
     const { getModalState } = useModal();
     const selectedJurisdiction = getModalState('selectedJurisdiction');
+    // TODO: replace the company name with the information provided by the trading_platform_account_available API's BE response
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (

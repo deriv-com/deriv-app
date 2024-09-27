@@ -107,7 +107,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 style: { marginBottom: '48px' },
             });
         }
-    }, [stake_error, prevAmount.current, amount]);
+    }, [stake_error, amount]);
 
     React.useEffect(() => {
         displayed_error.current = false;

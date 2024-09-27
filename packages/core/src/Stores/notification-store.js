@@ -1107,14 +1107,13 @@ export default class NotificationStore extends BaseStore {
             },
             phone_number_verification: {
                 key: 'phone_number_verification',
-                header: localize('Complete verification'),
+                header: localize('Complete phone verification'),
                 message: <Localize i18n_default_text='Secure your Deriv account by verifying your phone number.' />,
                 type: 'warning',
                 action: {
                     onClick: () => {
                         WS.verifyEmail(email, 'phone_number_verification');
                         localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
-
                     },
                     route: routes.phone_verification,
                     text: localize('Verify now'),

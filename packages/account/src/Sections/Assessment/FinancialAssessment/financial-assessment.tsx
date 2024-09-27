@@ -195,6 +195,7 @@ const FinancialAssessment = observer(() => {
         updateAccountStatus,
         is_authentication_needed,
         is_financial_information_incomplete,
+        account_settings,
     } = client;
     const { isMobile, isTablet, isDesktop } = useDevice();
     const { platform, routeBackInApp } = common;
@@ -391,7 +392,12 @@ const FinancialAssessment = observer(() => {
         return form_data;
     };
 
-    if (!employment_status) {
+    if (
+        !employment_status ||
+        !account_settings.account_opening_reason ||
+        !account_settings.tax_residence ||
+        !account_settings.tax_identification_number
+    ) {
         return <NavigateToPersonalDetails />;
     }
 

@@ -25,7 +25,11 @@ const useOauth2 = () => {
         featureFlag: 'hydra_be',
     });
 
+    console.log('oAuth2EnabledApps', oAuth2EnabledApps);
+
     const isOAuth2Enabled = useIsOAuth2Enabled(oAuth2EnabledApps, OAuth2EnabledAppsInitialised);
+
+    console.log('isOAuth2Enabled', isOAuth2Enabled);
 
     const oAuthGrowthbookConfig = {
         OAuth2EnabledApps: oAuth2EnabledApps,

@@ -10,12 +10,12 @@ import {
     useIsMounted,
 } from '@deriv/shared';
 import { useDebounceCallback } from 'usehooks-ts';
-import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
+import { focusAndOpenKeyboard, getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import { createProposalRequestForContract, ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
+import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 
 type TTakeProfitAndStopLossInputProps = {
@@ -36,41 +36,6 @@ type TTakeProfitAndStopLossInputProps = {
     type?: 'take_profit' | 'stop_loss';
 };
 type TOnProposalResponse = TTradeStore['onProposalResponse'];
-
-const getProposalRequestObject = ({
-    is_take_profit_input,
-    is_enabled,
-    should_set_validation_params,
-    trade_store,
-    trade_type,
-    new_input_value,
-}: {
-    is_take_profit_input: boolean;
-    is_enabled: boolean;
-    should_set_validation_params: boolean;
-    trade_store: TTradeStore;
-    trade_type: string;
-    new_input_value?: string;
-}) => {
-    /* In order to get validation params for Multipliers when TP and SL are empty, 
-            we send '1' first, get validation params and set them into the state.*/
-    const input_value = should_set_validation_params ? '1' : new_input_value;
-    const store = {
-        ...trade_store,
-        ...{
-            ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
-            has_cancellation: false,
-            ...(is_take_profit_input
-                ? { take_profit: is_enabled ? input_value : '' }
-                : { stop_loss: is_enabled ? input_value : '' }),
-        },
-    };
-
-    return createProposalRequestForContract(
-        store as Parameters<typeof createProposalRequestForContract>[0],
-        trade_type
-    );
-};
 
 const TakeProfitAndStopLossInput = ({
     classname,
@@ -195,7 +160,6 @@ const TakeProfitAndStopLossInput = ({
                 new_value: new_error,
             });
 
-            // TODO: remove when BE will send data for acceptable range in proposal
             /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
             Here we set them into the state in order to show further even if we got a validation error from API.*/
             if (

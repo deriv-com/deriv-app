@@ -18,7 +18,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useOauth2 } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -26,6 +26,7 @@ import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 
 const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
+    const { oAuthLogout } = useOauth2();
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -46,7 +47,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         switchAccount,
         resetVirtualBalance,
         has_active_real_account,
-        logout: logoutClient,
         upgradeable_landing_companies,
         real_account_creation_unlock_date,
         has_any_real_account,
@@ -100,13 +100,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
 
         // for DBot we need to logout first and only after this redirect to TH
-        if (window.location.pathname.startsWith(routes.bot)) {
-            await logoutClient();
-            history.push(routes.traders_hub);
-        } else {
-            history.push(routes.traders_hub);
-            await logoutClient();
-        }
+        await oAuthLogout();
     };
 
     const closeAccountsDialog = () => {

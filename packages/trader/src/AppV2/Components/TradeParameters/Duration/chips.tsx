@@ -1,4 +1,5 @@
 import { Chip, Text } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv/translations';
 import React from 'react';
 
 const DurationChips = ({
@@ -22,7 +23,7 @@ const DurationChips = ({
                     className='duration-container__chips__chip'
                     onClick={() => onChangeUnit(item.value)}
                 >
-                    <Text size='sm'>{item.value == 'd' ? 'End Time' : item.text}</Text>
+                    <Text size='sm'>{item.value == 'd' ? <Localize i18n_default_text='End Time' /> : item.text}</Text>
                 </Chip.Selectable>
             ))}
         </div>

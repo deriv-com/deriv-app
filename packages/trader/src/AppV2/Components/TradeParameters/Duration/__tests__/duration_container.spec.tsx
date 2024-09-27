@@ -1,10 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import DurationActionSheetContainer from '../container';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -127,6 +128,23 @@ describe('DurationActionSheetContainer', () => {
         });
     });
 
+    it('should call change duration on changing chips', async () => {
+        default_trade_store.modules.trade.duration_units_list = [
+            { value: 's', text: 'seconds' },
+            { value: 't', text: 'ticks' },
+            { value: 'm', text: 'minutes' },
+            { value: 'h', text: 'hours' },
+            { value: 'd', text: 'days' },
+        ];
+        renderDurationContainer(default_trade_store, 'h');
+
+        userEvent.click(screen.getByText('minutes'));
+        expect(screen.getByText('1 min')).toBeInTheDocument();
+        userEvent.click(screen.getByText('hours'));
+        expect(screen.getByText('1 h')).toBeInTheDocument();
+        userEvent.click(screen.getByText('End Time'));
+    });
+
     it('should call onChangeMultiple with correct data with seconds', () => {
         default_trade_store.modules.trade.duration = 20;
 
@@ -181,6 +199,9 @@ describe('DurationActionSheetContainer', () => {
 
     it('should open datepicker on clicking on date input in the days page', () => {
         renderDurationContainer(default_trade_store, 'd');
+        const mockEvents = [{ dates: 'Fridays, Saturdays', descrip: 'Some description' }];
+        jest.spyOn(ContractType, 'getTradingEvents').mockResolvedValue(mockEvents);
+
         const date_input = screen.getByTestId('dt_date_input');
         expect(date_input).toBeInTheDocument();
         userEvent.click(date_input);

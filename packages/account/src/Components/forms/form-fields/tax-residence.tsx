@@ -9,6 +9,7 @@ import { useResidenceList } from '@deriv/hooks';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import clsx from 'clsx';
 
 type TTaxResidenceFieldProps = {
     required?: boolean;
@@ -16,6 +17,7 @@ type TTaxResidenceFieldProps = {
     setIsTinPopoverOpen: (is_open: boolean) => void;
     is_tax_residence_popover_open: boolean;
     disabled: boolean;
+    fieldFocused?: boolean;
 };
 
 const TaxResidenceField = ({
@@ -24,6 +26,7 @@ const TaxResidenceField = ({
     setIsTinPopoverOpen,
     is_tax_residence_popover_open,
     disabled,
+    fieldFocused,
 }: TTaxResidenceFieldProps) => {
     const { data: residence_list } = useResidenceList();
     const { isDesktop } = useDevice();
@@ -51,6 +54,7 @@ const TaxResidenceField = ({
                             data-testid='tax_residence'
                             disabled={disabled}
                             required={required}
+                            className={clsx({ 'focus-field': fieldFocused })}
                         />
                     ) : (
                         <SelectNative
@@ -69,6 +73,7 @@ const TaxResidenceField = ({
                             required={required}
                             data_testid='tax_residence_mobile'
                             disabled={disabled}
+                            className={clsx({ 'focus-field': fieldFocused })}
                         />
                     )}
                     <div

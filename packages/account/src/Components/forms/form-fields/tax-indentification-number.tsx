@@ -3,6 +3,7 @@ import FormInputField from './form-input-field';
 import { Popover } from '@deriv/components';
 import { OECD_TIN_FORMAT_URL } from '../../../Constants/external-urls';
 import { useDevice } from '@deriv-com/ui';
+import clsx from 'clsx';
 
 type TTaxIdentificationNumberFieldProps = {
     required?: boolean;
@@ -10,6 +11,7 @@ type TTaxIdentificationNumberFieldProps = {
     is_tin_popover_open: boolean;
     setIsTinPopoverOpen: (is_open: boolean) => void;
     setIsTaxResidencePopoverOpen: (is_open: boolean) => void;
+    fieldFocused?: boolean;
 };
 
 const TaxIdentificationNumberField = ({
@@ -18,6 +20,7 @@ const TaxIdentificationNumberField = ({
     setIsTinPopoverOpen,
     setIsTaxResidencePopoverOpen,
     disabled,
+    fieldFocused,
 }: TTaxIdentificationNumberFieldProps) => {
     const { localize } = useTranslations();
 
@@ -32,6 +35,7 @@ const TaxIdentificationNumberField = ({
                 data-testid='tax_identification_number'
                 disabled={disabled}
                 required={required}
+                className={clsx({ 'focus-field': fieldFocused })}
             />
             <div
                 data-testid='tax_identification_number_pop_over'

@@ -439,7 +439,10 @@ const PersonalDetailsForm = observer(() => {
                                                 Boolean(account_settings?.account_opening_reason)
                                             }
                                             required
-                                            fieldFocused={field_ref_to_focus === 'account-opening-reason'}
+                                            fieldFocused={
+                                                !account_settings.account_opening_reason &&
+                                                field_ref_to_focus === 'account-opening-reason'
+                                            }
                                         />
                                     </Fragment>
                                 )}
@@ -452,6 +455,7 @@ const PersonalDetailsForm = observer(() => {
                                             handleChange={mutate}
                                             tin_validation_config={tin_validation_config}
                                             should_display_long_message={is_mf_account}
+                                            should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
                                         />
                                         {!is_virtual && (
                                             <Fragment>

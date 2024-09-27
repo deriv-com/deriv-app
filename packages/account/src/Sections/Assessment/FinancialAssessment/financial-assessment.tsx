@@ -40,6 +40,7 @@ import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';
 import { EmploymentStatusField } from 'Components/forms/form-fields';
 import { useDevice } from '@deriv-com/ui';
+import NavigateToPersonalDetails from './NavigateToPersonalDetails';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -389,6 +390,10 @@ const FinancialAssessment = observer(() => {
         }
         return form_data;
     };
+
+    if (!employment_status) {
+        return <NavigateToPersonalDetails />;
+    }
 
     return (
         <Formik initialValues={setInitialFormData()} enableReinitialize validate={validateFields} onSubmit={onSubmit}>

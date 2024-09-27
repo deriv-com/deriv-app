@@ -4,10 +4,9 @@ import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractTypesList } from 'AppV2/Utils/trade-types-utils';
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';
-import { getContractTypesConfig } from '@deriv/shared';
 
 type TGuide = {
     has_label?: boolean;
@@ -19,7 +18,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
         ui: { is_dark_mode_on },
     } = useStore();
     const { contract_type, is_vanilla } = useTraderStore();
-    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type]?.title;
+    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesList()[contract_type];
 
     const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
     const [selected_contract_type, setSelectedContractType] = React.useState(
@@ -27,9 +26,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
     );
     const [selected_term, setSelectedTerm] = React.useState<string>('');
 
-    const onChipSelect = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
-    }, []);
+    const onChipSelect = React.useCallback((id: string) => setSelectedContractType(id ?? ''), []);
 
     const onClose = React.useCallback(() => setIsDescriptionOpened(false), []);
 

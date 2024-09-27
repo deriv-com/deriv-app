@@ -52,6 +52,30 @@ describe('Duration', () => {
         expect(screen.getByDisplayValue('2 hours 5 minutes')).toBeInTheDocument();
     });
 
+    it('should render the correct value for duration in days', () => {
+        default_trade_store.modules.trade.duration = 6;
+        default_trade_store.modules.trade.duration_unit = 'd';
+        const mockDate = new Date(2024, 0, 1);
+        jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+
+        mockDuration();
+        expect(screen.getByLabelText('Duration')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 23:59:59 GMT')).toBeInTheDocument();
+    });
+
+    it('should render the correct value for duration in end time', () => {
+        default_trade_store.modules.trade.duration = 1;
+        default_trade_store.modules.trade.expiry_time = '23:55';
+        default_trade_store.modules.trade.expiry_type = 'endtime';
+
+        const mockDate = new Date(2024, 0, 1);
+        jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+
+        mockDuration();
+        expect(screen.getByLabelText('Duration')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Ends on 7 Jan 2024 23:55 GMT')).toBeInTheDocument();
+    });
+
     it('should open the ActionSheet when the text field is clicked', () => {
         default_trade_store.modules.trade.expiry_time = '12:30';
         mockDuration();

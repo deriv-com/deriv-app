@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import DurationActionSheetContainer from '../container';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
@@ -185,6 +185,16 @@ describe('DurationActionSheetContainer', () => {
         expect(date_input).toBeInTheDocument();
         userEvent.click(date_input);
         expect(screen.getByText('Pick an end date'));
+    });
+
+    it('should save and close datepicker on clicking done button', async () => {
+        renderDurationContainer(default_trade_store, 'd');
+        const date_input = screen.getByTestId('dt_date_input');
+        expect(date_input).toBeInTheDocument();
+        userEvent.click(date_input);
+        expect(screen.getByText('Pick an end date'));
+        userEvent.click(screen.getByText('Done'));
+        await waitFor(() => expect(screen.queryByText('Pick an end date')).not.toBeInTheDocument());
     });
 
     it('should not render chips if duration_units_list contains only ticks', () => {

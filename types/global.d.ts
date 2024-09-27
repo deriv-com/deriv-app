@@ -31,6 +31,14 @@ declare global {
         fcSettings: {
             [key: string]: any;
         };
+        FreshChat: {
+            initialize: (config: FreshChatConfig) => void;
+        };
+    }
+    interface FreshChatConfig {
+        token: string | null;
+        locale: string;
+        hideButton?: boolean;
     }
 }
 

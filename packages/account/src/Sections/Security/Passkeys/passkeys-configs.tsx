@@ -35,6 +35,15 @@ export const getPasskeyRenameValidationSchema = () =>
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
     });
 
+export const getEmailCodeValidationSchema = () =>
+    Yup.object().shape({
+        email_code: Yup.string()
+            .required('Must be only digits')
+            .min(6, 'Must be exactly 6 digits')
+            .max(6, 'Must be exactly 6 digits')
+            .matches(/^[0-9]+$/, 'Must be only digits'),
+    });
+
 export const clearRefTimeOut = (timeout_ref: MutableRefObject<NodeJS.Timeout | null>) => {
     if (timeout_ref.current) clearTimeout(timeout_ref.current);
 };

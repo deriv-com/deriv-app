@@ -88,9 +88,10 @@ const Passkeys = observer(() => {
     };
 
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, refetchPasskeysList } = useGetPasskeysList();
-    const { is_removing_in_progress, passkey_removing_error, removePasskey } = useRemovePasskey({
-        onSuccess: onSuccessPasskeyRemove,
-    });
+    const { is_removing_in_progress, passkey_removing_error, removePasskey, removePasskeyWithEmailCode } =
+        useRemovePasskey({
+            onSuccess: onSuccessPasskeyRemove,
+        });
     const { passkey_renaming_error, renamePasskey } = useRenamePasskey({ onSuccess: onSuccessPasskeyRename });
     const { createPasskey, startPasskeyRegistration, passkey_registration_error } = useRegisterPasskey({
         onSuccess: onSuccessPasskeyRegister,
@@ -197,7 +198,8 @@ const Passkeys = observer(() => {
         setPasskeyStatus(passkey_managing_status);
     };
 
-    const onPrimaryButtonClick = (passkey_data?: Partial<TCurrentManagedPasskey>) => {
+    // value is either passkey new name or email code
+    const onPrimaryButtonClick = (value?: string) => {
         if (
             passkey_status === PASSKEY_STATUS_CODES.NO_PASSKEY ||
             passkey_status === PASSKEY_STATUS_CODES.LIST ||
@@ -213,7 +215,7 @@ const Passkeys = observer(() => {
             history.push(routes.traders_hub);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
-            renamePasskey(current_managed_passkey.id, passkey_data?.name ?? current_managed_passkey.name);
+            renamePasskey(current_managed_passkey.id, value);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             setPasskeyStatus(main_screen_status_code);
@@ -225,7 +227,7 @@ const Passkeys = observer(() => {
             removePasskey(current_managed_passkey?.id, current_managed_passkey?.passkey_id);
         }
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVING_WITH_EMAIL) {
-            // TODO: implement email verification flow
+            removePasskeyWithEmailCode(current_managed_passkey.id, Number(value));
         }
     };
 

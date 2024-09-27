@@ -1,12 +1,11 @@
 import { Fragment, PropsWithChildren, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 import { Button, Text } from '@deriv/components';
-import { TCurrentManagedPasskey } from '../passkeys';
 import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';
 
 export type TPasskeysButtonOnClicks = {
-    onPrimaryButtonClick?: (passkey_data?: Partial<TCurrentManagedPasskey>) => void;
+    onPrimaryButtonClick?: (value?: string) => void;
     onSecondaryButtonClick?: () => void;
     onBackButtonClick?: () => void;
 };

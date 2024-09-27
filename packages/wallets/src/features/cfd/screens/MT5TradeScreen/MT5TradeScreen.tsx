@@ -48,7 +48,6 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: activeWalletData } = useActiveWalletAccount();
     const { data: availableCtraderAccounts } = useAvailableCTraderAccounts();
     const { isSuccess: isAccountCreated, mutate: createAccount } = useCreateOtherCFDAccount();
-
     const mt5Platform = CFD_PLATFORMS.MT5;
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
     const ctraderPlatform = CFD_PLATFORMS.CTRADER;

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import useAuthorizedQuery from '../useAuthorizedQuery';
+import useQuery from '../useQuery';
 
 const market_type_to_leverage_mapper: Record<string, number> = {
     gaming: 500,
@@ -9,8 +9,8 @@ const market_type_to_leverage_mapper: Record<string, number> = {
 
 /** A custom hook to get the list of available CTrader accounts. */
 const useAvailableCTraderAccounts = () => {
-    const { data: ctrader_available_accounts, ...rest } = useAuthorizedQuery('trading_platform_available_accounts', {
-        platform: 'ctrader',
+    const { data: ctrader_available_accounts, ...rest } = useQuery('trading_platform_available_accounts', {
+        payload: { platform: 'ctrader' },
     });
 
     const modified_ctrader_available_accounts = useMemo(
@@ -33,7 +33,7 @@ const useAvailableCTraderAccounts = () => {
     );
 
     return {
-        /** The available MT5 accounts */
+        /** The available ctrader accounts */
         data: modified_ctrader_available_accounts,
         ...rest,
     };

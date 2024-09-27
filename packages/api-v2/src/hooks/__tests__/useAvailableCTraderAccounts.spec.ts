@@ -1,11 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useAuthorizedQuery from '../../useAuthorizedQuery';
+import useQuery from '../../useQuery';
 import useAvailableCTraderAccounts from '../useAvailableCTraderAccounts';
 
-jest.mock('../../useAuthorizedQuery');
+jest.mock('../../useQuery');
 
 describe('useAvailableCTraderAccounts', () => {
-    const mockUseAuthorizedQuery = useAuthorizedQuery as jest.Mock;
+    const mockUseQuery = useQuery as jest.Mock;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -19,7 +19,7 @@ describe('useAvailableCTraderAccounts', () => {
             ],
         };
 
-        mockUseAuthorizedQuery.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: mockData,
             isLoading: false,
             isError: false,
@@ -34,7 +34,7 @@ describe('useAvailableCTraderAccounts', () => {
     });
 
     it('should return empty array when no accounts are available', () => {
-        mockUseAuthorizedQuery.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: null,
             isLoading: false,
             isError: false,
@@ -46,7 +46,7 @@ describe('useAvailableCTraderAccounts', () => {
     });
 
     it('should pass through other fields from useAuthorizedQuery', () => {
-        mockUseAuthorizedQuery.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: null,
             isLoading: true,
             isError: false,
@@ -63,7 +63,7 @@ describe('useAvailableCTraderAccounts', () => {
             trading_platform_available_accounts: [{ market_type: 'unknown', someOtherField: 'value' }],
         };
 
-        mockUseAuthorizedQuery.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: mockData,
             isLoading: false,
             isError: false,

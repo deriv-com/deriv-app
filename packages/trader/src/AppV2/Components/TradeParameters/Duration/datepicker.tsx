@@ -39,16 +39,16 @@ const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => v
     };
 
     return (
-        <div className='duration-datepicker'>
+        <div className='duration-datepicker duration-container__date-picker'>
             <DatePicker
                 className='date-picker'
                 hasFixedWidth={false}
                 minDate={new Date()}
                 maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                maxDetail='month'
+                // maxDetail='month'
                 view='month'
                 value={end_date}
-                defaultView='month'
+                // defaultView='month'
                 tileDisabled={getDisabledDays}
                 onChange={date => {
                     if (date && date instanceof Date) {

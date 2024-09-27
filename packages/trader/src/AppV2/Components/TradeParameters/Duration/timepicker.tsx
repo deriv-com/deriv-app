@@ -36,7 +36,7 @@ const EndTimePicker = ({ end_time, setEndTime }: { end_time: string; setEndTime:
     }, []);
 
     return (
-        <>
+        <div className='duration-container__time-picker'>
             <TimeWheelPickerContainer
                 is12Hour={false}
                 startTimeIn24Format={adjusted_start_time}
@@ -52,7 +52,7 @@ const EndTimePicker = ({ end_time, setEndTime }: { end_time: string; setEndTime:
                 </CaptionText>
                 <Text size='sm'>{`${current_gmt_time} GMT`}</Text>
             </div>
-        </>
+        </div>
     );
 };
 

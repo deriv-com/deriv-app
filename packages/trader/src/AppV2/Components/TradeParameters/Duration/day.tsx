@@ -1,4 +1,4 @@
-import { ActionSheet, CaptionText, Text, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, TextField } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useEffect } from 'react';
@@ -33,6 +33,7 @@ const DayInput = ({
 
     useEffect(() => {
         if (formatted_date === formatted_current_date && !end_time) {
+            // the last time of the timepicker
             setEndTime('23:55');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -48,7 +49,7 @@ const DayInput = ({
                 onClick={() => {
                     setOpen(true);
                 }}
-                leftIcon={<LabelPairedCalendarSmRegularIcon />}
+                leftIcon={<LabelPairedCalendarSmRegularIcon width={24} height={24} />}
             />
 
             <TextField
@@ -60,13 +61,13 @@ const DayInput = ({
                 onClick={() => {
                     setOpenTimePicker(true);
                 }}
-                leftIcon={<LabelPairedClockThreeSmRegularIcon />}
+                leftIcon={<LabelPairedClockThreeSmRegularIcon width={24} height={24} />}
             />
 
             <div className='duration-container__days-input__expiry'>
-                <CaptionText color='quill-typography__color--subtle'>
+                <Text size='sm' color='quill-typography__color--subtle'>
                     <Localize i18n_default_text='Expiry' />
-                </CaptionText>
+                </Text>
                 <Text size='sm'>{`${formatted_date} ${end_time || '12:59:59'} GMT`}</Text>
             </div>
             <ActionSheet.Root

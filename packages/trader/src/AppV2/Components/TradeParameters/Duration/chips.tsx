@@ -10,6 +10,9 @@ const DurationChips = ({
     onChangeUnit: (arg: string) => void;
     unit: string;
 }) => {
+    if (duration_units_list.length == 1) {
+        return <></>;
+    }
     return (
         <div className='duration-container__chips'>
             {duration_units_list.map((item, index) => (

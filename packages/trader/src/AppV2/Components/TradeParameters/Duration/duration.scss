@@ -34,6 +34,10 @@
             justify-content: space-between;
         }
     }
+    &__time-picker {
+        padding-left: var(--core-spacing-800);
+        padding-right: var(--core-spacing-800);
+    }
     &__endtime {
         text-align: center;
         margin-top: 20px;
@@ -62,6 +66,9 @@
     height: 90dvh;
     .react-calendar__viewContainer {
         overflow-y: visible;
+    }
+    .react-calendar__navigation__label {
+        pointer-events: none;
     }
 
     .quill-date-picker .react-calendar__tile--now:after {

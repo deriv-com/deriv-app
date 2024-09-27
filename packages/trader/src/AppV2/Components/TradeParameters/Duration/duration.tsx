@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -23,7 +23,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         proposal_info,
         trade_type_tab,
     } = useTraderStore();
-
+    const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
@@ -31,6 +31,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const [end_date, setEndDate] = useState<Date>(new Date());
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
+    const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const has_error = proposal_info[contract_type_object[0]]?.has_error;
 
     useEffect(() => {
         if (duration_unit == 'd') {
@@ -40,6 +42,17 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [duration_unit]);
+
+    useEffect(() => {
+        if (has_error && !is_minimized) {
+            addSnackbar({
+                message: <Localize i18n_default_text={proposal_info[contract_type_object[0]].message} />,
+                status: 'fail',
+                hasCloseButton: true,
+                style: { marginBottom: '48px' },
+            });
+        }
+    }, [has_error, contract_type_object[0]]);
 
     const handleHour = React.useCallback(() => {
         if (expiry_time) {
@@ -85,9 +98,6 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         return '';
     };
 
-    const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const has_error = proposal_info[contract_type_object[0]]?.has_error;
-
     return (
         <>
             <TextField
@@ -110,12 +120,12 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <DurationActionSheetContainer
-                        unit={unit}
-                        setUnit={setUnit}
-                        setEndDate={setEndDate}
-                        end_date={end_date}
                         selected_hour={selected_hour}
                         setSelectedHour={setSelectedHour}
+                        unit={unit}
+                        setUnit={setUnit}
+                        end_date={end_date}
+                        setEndDate={setEndDate}
                         end_time={end_time}
                         setEndTime={setEndTime}
                     />

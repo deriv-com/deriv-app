@@ -3,65 +3,52 @@ import { useHistory } from 'react-router-dom';
 import { useTranslations } from '@deriv-com/translations';
 import { THooks } from '../../../../../../types';
 import { ClientVerificationStatusBadge } from '../../../../components';
+import { getClientVerification } from '../../../../utils';
 import { DocumentTile } from './components';
 import './DocumentsList.scss';
 
 type TDocumentsListProps = {
-    statuses: THooks.SortedMT5Accounts['client_kyc_status'];
+    account: THooks.SortedMT5Accounts;
 };
 
+// TODO: remove this once API types for client_kyc_status is available in deriv-api-types
 type TStatuses = 'expired' | 'none' | 'pending' | 'rejected' | 'suspected' | 'verified';
 
-type TTileProps = Record<TStatuses, Pick<React.ComponentProps<typeof DocumentTile>, 'badge' | 'isDisabled'>>;
+type TStatusBadgeProps = Record<TStatuses, typeof ClientVerificationStatusBadge | undefined>;
 
-const tileProps: TTileProps = {
-    expired: {
-        badge: <ClientVerificationStatusBadge variant='failed' />,
-        isDisabled: false,
-    },
-    none: {
-        badge: undefined,
-        isDisabled: false,
-    },
-    pending: {
-        badge: <ClientVerificationStatusBadge variant='in_review' />,
-        isDisabled: true,
-    },
-    rejected: {
-        badge: <ClientVerificationStatusBadge variant='failed' />,
-        isDisabled: false,
-    },
-    suspected: {
-        badge: <ClientVerificationStatusBadge variant='failed' />,
-        isDisabled: false,
-    },
-    verified: {
-        badge: <ClientVerificationStatusBadge variant='verified' />,
-        isDisabled: true,
-    },
+const statusBadge: TStatusBadgeProps = {
+    expired: <ClientVerificationStatusBadge variant='failed' />,
+    pending: <ClientVerificationStatusBadge variant='in_review' />,
+    rejected: <ClientVerificationStatusBadge variant='failed' />,
+    suspected: <ClientVerificationStatusBadge variant='failed' />,
+    verified: <ClientVerificationStatusBadge variant='verified' />,
 };
 
-const DocumentsList: React.FC<TDocumentsListProps> = ({ statuses }) => {
+const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const history = useHistory();
     const { localize } = useTranslations();
+    const { hasPoaStatus, hasPoiStatus, hasTinStatus, isPoaRequired, isPoiRequired, isTinRequired, statuses } =
+        getClientVerification(account);
 
     return (
         <div className='wallets-documents-list'>
-            {'poi_status' in statuses && (
+            {hasPoiStatus && (
                 <DocumentTile
-                    {...tileProps[statuses.poi_status]}
+                    badge={statusBadge[statuses.poi_status]}
+                    disabled={!isPoiRequired}
                     onClick={() => history.push('/account/proof-of-identity')}
                     title={localize('Proof of identity')}
                 />
             )}
-            {'poa_status' in statuses && (
+            {hasPoaStatus && (
                 <DocumentTile
-                    {...tileProps[statuses.poa_status]}
+                    badge={statusBadge[statuses.poa_status]}
+                    disabled={!isPoaRequired}
                     onClick={() => history.push('/account/proof-of-address')}
                     title={localize('Proof of address')}
                 />
             )}
-            {'valid_tin' in statuses && !statuses.valid_tin && (
+            {hasTinStatus && isTinRequired && (
                 <DocumentTile
                     onClick={() => history.push('/account/personal-details')}
                     title={localize('Personal Details')}

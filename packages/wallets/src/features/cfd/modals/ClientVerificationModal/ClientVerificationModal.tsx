@@ -41,7 +41,7 @@ const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }
                 <Text align='center' size={isMobile ? 'md' : 'sm'}>
                     {description}
                 </Text>
-                <DocumentsList statuses={account.client_kyc_status} />
+                <DocumentsList account={account} />
             </div>
         </ModalStepWrapper>
     );

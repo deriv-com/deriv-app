@@ -44,7 +44,7 @@ const ClientVerificationStatusBadge: React.FC<TClientVerificationBadgeProps> = (
     const { color, content, icon } = badgeVariations[variant];
     return (
         <Badge
-            badgeSize={isDesktop ? 'sm' : 'lg'}
+            badgeSize='sm'
             className='wallets-client-verification-badge'
             color={color as TBadgeColor}
             onClick={onClick}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Popover, Icon, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
@@ -14,13 +14,13 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const liveChat = useLiveChat(has_cookie_account, loginid);
     const freshChat = useFreshChat();
 
-    const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
         defaultValue: true,
     });
 
     // const liveChatClickHandler = () => liveChat.widget?.call('maximize');
-    const chat = isGBLoaded && enable_freshworks_live_chat ? freshChat : liveChat;
+    const chat = enable_freshworks_live_chat ? freshChat : liveChat;
 
     if (!chat.isReady) return null;
 

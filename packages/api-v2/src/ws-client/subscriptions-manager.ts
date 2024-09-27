@@ -4,7 +4,7 @@ import { getQueryKeys } from '../utils';
 
 export default class SubscriptionsManager {
     backendSubscriptions: Map<string, Subscription> = new Map();
-    authorizedWs: WebSocket | undefined;
+    authorizedWs?: WebSocket;
 
     setAuthorizedWs(authorizedWs: WebSocket | undefined) {
         this.authorizedWs = authorizedWs;

@@ -291,8 +291,8 @@ describe('SubscriptionsManager', () => {
             JSON.stringify({ data: 'initial data', req_id: 2, subscription: { id: 'SUBSCRIPTION_ID' } })
         );
 
-        const subscription1 = await subscriptionPromise1;
-        const subscription2 = await subscriptionPromise2;
+        await subscriptionPromise1;
+        await subscriptionPromise2;
 
         await subscriptionsManager.close();
 
@@ -324,7 +324,7 @@ describe('SubscriptionsManager', () => {
     });
 
     it('does not crash if no authorized websocket available', async () => {
-        subscriptionsManager.setAuthorizedWs(undefined);
+        subscriptionsManager.setAuthorizedWs();
         await subscriptionsManager.close();
     });
 });

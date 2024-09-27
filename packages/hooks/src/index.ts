@@ -75,6 +75,7 @@ export { default as useServiceToken } from './useServiceToken';
 export { default as useStatesList } from './useStatesList';
 export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
 export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
+export { default as useTimeout } from './useTimeout';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';

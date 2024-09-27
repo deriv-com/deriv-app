@@ -1,17 +1,19 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Icon } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { DerivLightIcEmailSentPasskeyIcon } from '@deriv/quill-icons';
 import { InputGroupButton } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
-import React, { useEffect } from 'react';
+import { ResendCodeButton } from './resend-code-button';
 
 export const PasskeyRemoveWithEmail = observer(
     ({ onBackButtonClick, onPrimaryButtonClick }: TPasskeysButtonOnClicks) => {
         const { client } = useStore();
         const { email_address } = client;
         const { localize } = useTranslations();
-        const [code, setCode] = React.useState('');
+        const [code, setCode] = useState('');
+        const [error, setError] = useState<string>('');
 
         const getVerificationCodeToEmail = () => {
             // API call for email verification code
@@ -25,9 +27,18 @@ export const PasskeyRemoveWithEmail = observer(
             onPrimaryButtonClick?.(code);
         };
 
-        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
             setCode(e.target.value);
         };
+
+        const onSetDummyError = () => {
+            setError('show here error message');
+        };
+
+        const onClearError = () => {
+            setError('');
+        };
+
         return (
             <div className='passkeys'>
                 <Icon
@@ -59,7 +70,12 @@ export const PasskeyRemoveWithEmail = observer(
                         buttonCallback={onSubmitValues}
                         className='passkeys-status__description-code-input'
                         size={16}
+                        status={error ? 'error' : undefined}
+                        message={error}
                     />
+                    <ResendCodeButton onResend={getVerificationCodeToEmail} initialDelay={10} />
+                    <button onClick={onSetDummyError}>set error</button>
+                    <button onClick={onClearError}>clear error</button>
                 </PasskeysStatusLayout>
             </div>
         );

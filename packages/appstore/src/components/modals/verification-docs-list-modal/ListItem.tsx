@@ -7,6 +7,7 @@ import { Text, StatusBadge } from '@deriv/components';
 import { AUTH_STATUS_CODES } from '@deriv/shared';
 import './verification-docs-list-modal.scss';
 import { useDevice } from '@deriv-com/ui';
+import classNames from 'classnames';
 
 type TListItemProps = {
     id: string;
@@ -63,7 +64,12 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     };
 
     return (
-        <div className='verification-docs-list-modal__content-list-item' onClick={onClickItem}>
+        <div
+            className={classNames('verification-docs-list-modal__content-list-item', {
+                'verification-docs-list-modal__content-list-item--disabled': is_document_submitted,
+            })}
+            onClick={onClickItem}
+        >
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
                 <Localize i18n_default_text={text} />
             </Text>

@@ -8,6 +8,7 @@
         &-list {
             width: 100%;
             &-item {
+                cursor: pointer;
                 display: flex;
                 min-height: 5.6rem;
                 align-items: center;
@@ -16,6 +17,16 @@
                 padding: 0.8rem 1.6rem;
                 justify-content: space-between;
                 margin: 1.6rem auto;
+
+                &:hover {
+                    background: var(--icon-grey-background-hover);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Add shadow on hover
+                }
+
+                &--disabled {
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
             }
         }
     }

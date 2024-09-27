@@ -61,11 +61,4 @@ describe('Duration', () => {
 
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
-
-    it('should display expiry time in GMT when expiry_type is "time"', () => {
-        default_trade_store.modules.trade.expiry_type = 'end time';
-        default_trade_store.modules.trade.expiry_time = '12:30';
-        mockDuration();
-        expect(screen.getByDisplayValue('Ends at 12:30 GMT')).toBeInTheDocument();
-    });
 });

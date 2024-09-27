@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import DurationActionSheetContainer from '../container';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
@@ -15,11 +15,10 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 global.ResizeObserver = ResizeObserver;
 global.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedCalendarSmBoldIcon: jest.fn(({ onClick }) => (
-        <button onClick={onClick}>LabelPairedCalendarSmBoldIcon</button>
-    )),
+jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
+    ContractType: {
+        getTradingEvents: jest.fn(),
+    },
 }));
 
 jest.mock('@deriv-com/quill-ui', () => ({
@@ -41,19 +40,6 @@ jest.mock('@deriv-com/quill-ui', () => ({
 describe('DurationActionSheetContainer', () => {
     let default_trade_store: TCoreStores;
 
-    const trade_store = mockStore({
-        modules: {
-            trade: {
-                duration: 30,
-                duration_unit: 'm',
-                duration_units_list: ['t', 'm', 'h', 'd'],
-                onChangeMultiple: jest.fn(),
-                expiry_time: null,
-                contract_type: 'touch',
-            },
-        },
-    });
-
     beforeEach(() => {
         default_trade_store = mockStore({
             modules: {
@@ -73,14 +59,25 @@ describe('DurationActionSheetContainer', () => {
         mocked_store: TCoreStores,
         unit = 'm',
         setUnit = jest.fn(),
-        hours = {
-            selected_hour: [0, 0],
-            setSelectedHour: jest.fn(),
-        }
+        selected_hour = [0, 0],
+        setSelectedHour = jest.fn(),
+        end_date = new Date(),
+        setEndDate = jest.fn(),
+        end_time = '',
+        setEndTime = jest.fn()
     ) => {
         render(
             <TraderProviders store={mocked_store}>
-                <DurationActionSheetContainer {...hours} unit={unit} setUnit={setUnit} />
+                <DurationActionSheetContainer
+                    selected_hour={selected_hour}
+                    setSelectedHour={setSelectedHour}
+                    unit={unit}
+                    setUnit={setUnit}
+                    end_date={end_date}
+                    setEndDate={setEndDate}
+                    end_time={end_time}
+                    setEndTime={setEndTime}
+                />
             </TraderProviders>
         );
     };
@@ -103,10 +100,7 @@ describe('DurationActionSheetContainer', () => {
 
     it('should call onChangeMultiple with correct data with hours', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store, 'm', jest.fn(), {
-            selected_hour: [2, 10],
-            setSelectedHour: jest.fn(),
-        });
+        renderDurationContainer(default_trade_store, 'm', jest.fn(), [2, 10], jest.fn());
 
         userEvent.click(screen.getByText('Save'));
 
@@ -168,45 +162,31 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('Expiry')).toBeInTheDocument();
     });
 
-    it('should open datepicker on clicking on calendar icon in the days wheelpicker', () => {
-        default_trade_store.modules.trade.duration = 34;
+    it('should show End Time Screen on selecting the days unit', () => {
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
-        expect(screen.getByText('Pick an end date')).toBeInTheDocument();
+
+        const date_input = screen.getByTestId('dt_date_input');
+        const time_input = screen.getByDisplayValue('12:59:59 GMT');
+        expect(date_input).toBeInTheDocument();
+        expect(time_input).toBeInTheDocument();
     });
 
-    it('should select value when clicked on any date on datepicker', () => {
-        default_trade_store.modules.trade.duration = 2;
+    it('should open timepicker on clicking on time input in the days page', () => {
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
-        expect(screen.getByText('Date Picker')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Save'));
-        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            duration: 2,
-            duration_unit: 'd',
-            expiry_time: null,
-            expiry_type: 'duration',
-        });
+        const time_input = screen.getByDisplayValue('12:59:59 GMT');
+        expect(time_input).toBeInTheDocument();
+        userEvent.click(time_input);
+        expect(screen.getByText('Pick an end time'));
     });
 
-    it('should show Current Time when End time is selected', () => {
-        default_trade_store.modules.trade.expiry_time = '16:30';
-        renderDurationContainer(default_trade_store, 'et');
-        expect(screen.getByText('Current time')).toBeInTheDocument();
+    it('should open datepicker on clicking on date input in the days page', () => {
+        renderDurationContainer(default_trade_store, 'd');
+        const date_input = screen.getByTestId('dt_date_input');
+        expect(date_input).toBeInTheDocument();
+        userEvent.click(date_input);
+        expect(screen.getByText('Pick an end date'));
     });
 
-    it('should handle expiry time selection for end time ("et")', () => {
-        renderDurationContainer(default_trade_store, 'et');
-        const end_time_chip = screen.getByText('End Time');
-        userEvent.click(end_time_chip);
-        userEvent.click(screen.getByText('Save'));
-        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            expiry_time: expect.any(String),
-            expiry_type: 'endtime',
-        });
-    });
     it('should not render chips if duration_units_list contains only ticks', () => {
         default_trade_store.modules.trade.duration = 1;
         default_trade_store.modules.trade.duration_unit = 't';

@@ -44,6 +44,8 @@ const DayInput = ({
             <TextField
                 variant='fill'
                 readOnly
+                name='date'
+                data-testid='dt_date_input'
                 textAlignment='center'
                 value={formatted_date}
                 onClick={() => {
@@ -56,6 +58,7 @@ const DayInput = ({
                 variant='fill'
                 readOnly
                 textAlignment='center'
+                name='time'
                 value={formatted_date !== formatted_current_date || !end_time ? '12:59:59 GMT' : end_time}
                 disabled={formatted_date !== formatted_current_date}
                 onClick={() => {

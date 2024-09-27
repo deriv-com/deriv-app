@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StandaloneGripDotsVerticalBoldIcon, StandaloneCircleMinusFillIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
 
@@ -25,6 +25,7 @@ const DraggableListItem: React.FC<TDraggableListItemProps> = ({
         <StandaloneGripDotsVerticalBoldIcon iconSize='sm' fill='var(--component-textIcon-normal-default)' />
     );
     const default_right_icon = <StandaloneCircleMinusFillIcon fill='var(--core-color-solid-red-700)' iconSize='sm' />;
+    const [is_moved, setIsMoved] = useState<boolean>(false);
 
     return (
         <div className={clsx('draggable-list-item', { 'draggable-list-item--active': active })}>
@@ -43,6 +44,15 @@ const DraggableListItem: React.FC<TDraggableListItemProps> = ({
                 className={clsx('draggable-list-item__icon', { 'draggable-list-item__icon--disabled': disabled })}
                 data-testid='dt_draggable_list_item_icon'
                 onClick={onRightIconClick}
+                onTouchMove={() => {
+                    if (!is_moved) setIsMoved(true);
+                }}
+                onTouchEnd={() => {
+                    if (!is_moved && onRightIconClick) {
+                        onRightIconClick();
+                    }
+                    setIsMoved(false);
+                }}
                 disabled={disabled}
             >
                 {rightIcon || default_right_icon}

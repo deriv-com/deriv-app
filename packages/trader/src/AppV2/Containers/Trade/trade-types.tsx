@@ -227,7 +227,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
         const other_item = !is_contract_type_in_pinned
             ? getItems(other_trade_types).find(
-                  item => item.id === contract_type || checkContractTypePrefix([item.id, contract_type])
+                  item => item && (item.id === contract_type || checkContractTypePrefix([item.id, contract_type]))
               )
             : null;
 

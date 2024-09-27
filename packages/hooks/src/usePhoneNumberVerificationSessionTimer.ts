@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { WS } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import dayjs from 'dayjs';
 
@@ -10,6 +10,7 @@ const usePhoneNumberVerificationSessionTimer = () => {
     const { client } = useStore();
     const { account_settings } = client;
     const { phone_number_verification } = account_settings;
+    const isMounted = useIsMounted();
 
     const formatTime = useCallback((totalSeconds: number) => {
         if (totalSeconds <= 0) {
@@ -34,10 +35,12 @@ const usePhoneNumberVerificationSessionTimer = () => {
                 // next_request is to compare request_in_miliseconds with server's response time
                 const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
-                if (next_request > 0) {
-                    setSessionTimer(next_request);
-                } else {
-                    setSessionTimer(0);
+                if (isMounted()) {
+                    if (next_request > 0) {
+                        setSessionTimer(next_request);
+                    } else {
+                        setSessionTimer(0);
+                    }
                 }
             }
         });

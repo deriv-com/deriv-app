@@ -5,9 +5,8 @@ import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
+import { MT5PasswordModalTnc, MT5LicenceMessage } from '../components';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
-import { MT5LicenceMessage } from '../components';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
@@ -64,7 +63,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                 />
                 {!isVirtual && <MT5LicenceMessage account={account} />}
                 {!isVirtual && account.shortcode !== 'svg' && (
-                    <CFDPasswordModalTnc account={account} checked={isTncChecked} onChange={onTncChange} />
+                    <MT5PasswordModalTnc account={account} checked={isTncChecked} onChange={onTncChange} />
                 )}
             </div>
 

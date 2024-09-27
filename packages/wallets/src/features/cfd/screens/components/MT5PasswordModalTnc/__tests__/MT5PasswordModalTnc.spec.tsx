@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import CFDPasswordModalTnc, { type TCFDPasswordModalTncProps } from '../CFDPasswordModalTnc';
+import MT5PasswordModalTnc, { type TMT5PasswordModalTncProps } from '../MT5PasswordModalTnc';
 
 jest.mock('@deriv-com/ui', () => ({
     Checkbox: jest.fn(({ checked, label, onChange }) => (
@@ -30,41 +30,38 @@ jest.mock('../../../../../components/Base/WalletLink', () => ({
 
 const mockOnChange = jest.fn();
 
-describe('CFDPasswordModalTnc', () => {
-    const defaultProps: TCFDPasswordModalTncProps = {
+describe('MT5PasswordModalTnc', () => {
+    const defaultProps: TMT5PasswordModalTncProps = {
         checked: false,
         onChange: mockOnChange,
-        platform: 'mt5',
-        product: 'zero_spread',
     };
 
     it('renders correctly', () => {
-        render(<CFDPasswordModalTnc {...defaultProps} />);
+        render(<MT5PasswordModalTnc {...defaultProps} />);
         expect(screen.getByTestId('dt_wallets_tnc_checkbox')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_wallets_tnc_inline_message')).toBeInTheDocument();
     });
 
     it('displays correct text content', () => {
-        render(<CFDPasswordModalTnc {...defaultProps} />);
+        render(<MT5PasswordModalTnc {...defaultProps} />);
         expect(screen.getByText(/You are adding your Deriv MT5/i)).toBeInTheDocument();
         expect(screen.getByText(/I confirm and accept/i)).toBeInTheDocument();
     });
 
     it('handles checkbox change', () => {
-        render(<CFDPasswordModalTnc {...defaultProps} />);
+        render(<MT5PasswordModalTnc {...defaultProps} />);
         const checkbox = screen.getByTestId('dt_wallets_tnc_checkbox');
         fireEvent.click(checkbox);
         expect(mockOnChange).toHaveBeenCalledTimes(1);
     });
 
     it('renders the terms and conditions link', () => {
-        render(<CFDPasswordModalTnc {...defaultProps} />);
+        render(<MT5PasswordModalTnc {...defaultProps} />);
         const link = screen.getByText('terms and conditions');
         expect(link).toHaveAttribute('href', 'https://example.com');
     });
 
     it('uses the correct platform and product titles', () => {
-        render(<CFDPasswordModalTnc {...defaultProps} />);
+        render(<MT5PasswordModalTnc {...defaultProps} />);
         expect(screen.getByText(/MT5.*Zero Spread/)).toBeInTheDocument();
     });
 });

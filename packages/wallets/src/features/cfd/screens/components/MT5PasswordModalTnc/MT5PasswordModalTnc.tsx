@@ -1,27 +1,27 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
 import { Checkbox, Text, useDevice } from '@deriv-com/ui';
-import { WalletLink } from '../../../../components/Base';
-import { useModal } from '../../../../components/ModalProvider';
-import { companyNamesAndUrls } from '../../constants';
-import './CFDPasswordModalTnc.scss';
+import { WalletLink } from '../../../../../components/Base';
+import { useModal } from '../../../../../components/ModalProvider';
+import { companyNamesAndUrls } from '../../../constants';
+import './MT5PasswordModalTnc.scss';
 
-export type TCFDPasswordModalTncProps = {
+export type TMT5PasswordModalTncProps = {
     checked: boolean;
     onChange: () => void;
 };
 
-const CFDPasswordModalTnc = ({ checked, onChange }: TCFDPasswordModalTncProps) => {
+const MT5PasswordModalTnc = ({ checked, onChange }: TMT5PasswordModalTncProps) => {
     const { isDesktop } = useDevice();
     const { getModalState } = useModal();
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='wallets-cfd-modal-tnc'>
+        <div className='wallets-mt5-modal-tnc'>
             <Checkbox
                 checked={checked}
-                data-testid='dt_wallets_tnc_checkbox'
+                data-testid='dt_wallets_mt5_tnc_checkbox'
                 label={
                     <Text size={isDesktop ? 'xs' : 'sm'}>
                         <Localize
@@ -33,11 +33,11 @@ const CFDPasswordModalTnc = ({ checked, onChange }: TCFDPasswordModalTncProps) =
                         />
                     </Text>
                 }
-                name='zerospread-checkbox'
+                name='mt5-tnc-checkbox'
                 onChange={onChange}
             />
         </div>
     );
 };
 
-export default CFDPasswordModalTnc;
+export default MT5PasswordModalTnc;

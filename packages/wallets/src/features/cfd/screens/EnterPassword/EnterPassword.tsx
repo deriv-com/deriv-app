@@ -5,9 +5,8 @@ import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
-import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
-import { MT5LicenceMessage } from '../components';
+import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './EnterPassword.scss';
 
 // Note: this component requires a proper refactor to remove props for keys available under the `account` prop
@@ -98,7 +97,7 @@ const EnterPassword: React.FC<TProps> = ({
                 {passwordError && <Text size={isDesktop ? 'sm' : 'md'}>{passwordErrorHints}</Text>}
                 {account && !isVirtual && <MT5LicenceMessage account={account} />}
                 {account && account.shortcode !== JURISDICTION.SVG && platform === CFD_PLATFORMS.MT5 && !isVirtual && (
-                    <CFDPasswordModalTnc checked={isTncChecked} onChange={() => onTncChange?.()} />
+                    <MT5PasswordModalTnc checked={isTncChecked} onChange={() => onTncChange?.()} />
                 )}
             </div>
             {isDesktop && (

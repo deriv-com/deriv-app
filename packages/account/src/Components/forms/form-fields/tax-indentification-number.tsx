@@ -2,7 +2,7 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import FormInputField from './form-input-field';
 import { Popover } from '@deriv/components';
 import { OECD_TIN_FORMAT_URL } from '../../../Constants/external-urls';
-import { isDesktop } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
 type TTaxIdentificationNumberFieldProps = {
     required?: boolean;
@@ -20,6 +20,9 @@ const TaxIdentificationNumberField = ({
     disabled,
 }: TTaxIdentificationNumberFieldProps) => {
     const { localize } = useTranslations();
+
+    const { isDesktop } = useDevice();
+
     return (
         <div className='details-form__tax'>
             <FormInputField
@@ -39,7 +42,7 @@ const TaxIdentificationNumberField = ({
                 }}
             >
                 <Popover
-                    alignment={isDesktop() ? 'right' : 'left'}
+                    alignment={isDesktop ? 'right' : 'left'}
                     icon='info'
                     is_open={is_tin_popover_open}
                     message={

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete & SelectNative components
-
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { SelectNative, Dropdown } from '@deriv/components';
@@ -36,29 +33,28 @@ const AccountOpeningReasonField = ({
                                 placeholder={
                                     required ? localize('Account opening reason*') : localize('Account opening reason')
                                 }
-                                name={field.name}
+                                {...field}
                                 disabled={disabled}
                                 is_align_text_left
                                 list={account_opening_reason_list}
-                                {...field}
-                                error={meta.touched && meta.error}
+                                error={meta.touched && meta.error ? meta.error : ''}
+                                /* @ts-expect-error [TODO] need to fix types for  Dropdown component*/
                                 required
                                 className={clsx({ 'focus-field': fieldFocused })}
                             />
                         ) : (
                             <SelectNative
                                 placeholder={localize('Please select')}
-                                name={field.name}
+                                {...field}
                                 label={
                                     required ? localize('Account opening reason*') : localize('Account opening reason')
                                 }
                                 list_items={account_opening_reason_list}
-                                error={meta.touched && meta.error}
+                                error={meta.touched && meta.error ? meta.error : ''}
                                 onChange={e => {
                                     field.onChange(e);
                                     setFieldValue('account_opening_reason', e.target.value, true);
                                 }}
-                                {...field}
                                 required
                                 data_testid='account_opening_reason_mobile'
                                 disabled={disabled}

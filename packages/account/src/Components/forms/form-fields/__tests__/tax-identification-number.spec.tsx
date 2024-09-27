@@ -5,6 +5,13 @@ import userEvent from '@testing-library/user-event';
 import TaxIdentificationNumber from '../tax-indentification-number';
 
 describe('Testing <TaxIdentificationNumber/> component', () => {
+    const renderFunction = (props: React.ComponentProps<typeof TaxIdentificationNumber>) =>
+        render(
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+                <TaxIdentificationNumber {...props} />
+            </Formik>
+        );
+
     it('should render TIN Field component', () => {
         const props: React.ComponentProps<typeof TaxIdentificationNumber> = {
             required: true,
@@ -13,11 +20,8 @@ describe('Testing <TaxIdentificationNumber/> component', () => {
             setIsTinPopoverOpen: jest.fn(),
             setIsTaxResidencePopoverOpen: jest.fn(),
         };
-        render(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <TaxIdentificationNumber {...props} />
-            </Formik>
-        );
+
+        renderFunction(props);
 
         expect(screen.getByText(/Tax identification number*/)).toBeInTheDocument;
     });
@@ -30,11 +34,8 @@ describe('Testing <TaxIdentificationNumber/> component', () => {
             setIsTinPopoverOpen: jest.fn(),
             setIsTaxResidencePopoverOpen: jest.fn(),
         };
-        render(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <TaxIdentificationNumber {...props} />
-            </Formik>
-        );
+
+        renderFunction(props);
 
         expect(screen.getByText(/Tax identification number/)).toBeInTheDocument;
     });
@@ -47,11 +48,8 @@ describe('Testing <TaxIdentificationNumber/> component', () => {
             setIsTinPopoverOpen: jest.fn(),
             setIsTaxResidencePopoverOpen: jest.fn(),
         };
-        render(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <TaxIdentificationNumber {...props} />
-            </Formik>
-        );
+
+        renderFunction(props);
 
         const popover = screen.getByTestId('tax_identification_number_pop_over');
         userEvent.click(popover);

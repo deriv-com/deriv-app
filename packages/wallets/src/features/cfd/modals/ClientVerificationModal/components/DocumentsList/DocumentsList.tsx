@@ -51,7 +51,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
             {hasTinStatus && isTinRequired && (
                 <DocumentTile
                     onClick={() => history.push('/account/personal-details')}
-                    title={localize('Personal Details')}
+                    title={localize('Personal details')}
                 />
             )}
         </div>

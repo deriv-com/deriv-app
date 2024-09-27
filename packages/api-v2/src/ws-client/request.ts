@@ -73,7 +73,7 @@ function request<T extends TSocketSubscribableEndpointNames>(
 /**
  * responsible for sending request over given WS and thats it,
  * response is not expected, fire and forget,
- * e.g. to unsubscribe - send unsubscribe requiest away and dont wait for response, e.g. when closing connection
+ * e.g. to unsubscribe - send unsubscribe request away and don't wait for response, e.g. when closing connection
  */
 function send<T extends TSocketSubscribableEndpointNames>(
     ws: WebSocket,

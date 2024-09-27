@@ -307,7 +307,7 @@ describe('<PersonalDetails/>', () => {
         expect(await screen.findByText(/date of birth is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/place of birth is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/citizenship is required/i)).toBeInTheDocument();
-        expect(await screen.findByText(/You should enter 9-35 numbers./i)).toBeInTheDocument();
+        expect(await screen.findByText(/You should enter 9-20 numbers./i)).toBeInTheDocument();
 
         fireEvent.change(first_name, { target: { value: '123' } });
         fireEvent.change(last_name, { target: { value: 'abcd' } });

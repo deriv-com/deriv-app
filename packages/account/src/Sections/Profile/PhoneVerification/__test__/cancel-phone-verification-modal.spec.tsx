@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import CancelPhoneVerificationModal from '../cancel-phone-verification-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 const mock_push = jest.fn();
 jest.mock('react-router', () => ({
@@ -24,12 +25,14 @@ jest.mock('@deriv/hooks', () => ({
     usePhoneNumberVerificationSessionTimer: jest.fn(() => ({
         should_show_session_timeout_modal: false,
     })),
+    useGrowthbookGetFeatureValue: jest.fn(),
 }));
 
 describe('CancelPhoneVerificationModal', () => {
     let modal_root_el: HTMLElement;
 
     beforeAll(() => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true]);
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);

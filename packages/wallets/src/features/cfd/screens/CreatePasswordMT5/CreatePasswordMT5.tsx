@@ -8,9 +8,10 @@ import { validPassword, validPasswordMT5 } from '../../../../utils/password-vali
 import { MT5PasswordModalTnc, MT5LicenceMessage } from '../components';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import './CreatePasswordMT5.scss';
+import { TModifiedMT5Accounts } from '../../types';
 
 type TProps = {
-    account: THooks.SortedMT5Accounts;
+    account: TModifiedMT5Accounts;
     isLoading?: boolean;
     isTncChecked: boolean;
     isVirtual?: boolean;
@@ -63,7 +64,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                 />
                 {!isVirtual && <MT5LicenceMessage account={account} />}
                 {!isVirtual && account.shortcode !== 'svg' && (
-                    <MT5PasswordModalTnc account={account} checked={isTncChecked} onChange={onTncChange} />
+                    <MT5PasswordModalTnc checked={isTncChecked} onChange={onTncChange} />
                 )}
             </div>
 

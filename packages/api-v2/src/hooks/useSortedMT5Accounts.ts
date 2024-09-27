@@ -57,6 +57,7 @@ const useSortedMT5Accounts = (regulation?: string) => {
 
         const added_accounts = modified_data.filter(account => account.is_added);
         const non_added_accounts = modified_data.filter(
+            // @ts-expect-error - remove this once kyc_status types are available for mt5_login_list and trading_platform_available_accounts from BE
             account => !account.is_added && account.is_default_jurisdiction === 'true' && account.product !== 'stp'
         );
 

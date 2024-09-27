@@ -1,12 +1,12 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
 import { InlineMessage, Text, useDevice } from '@deriv-com/ui';
-import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../../constants';
+import { TModifiedMT5Accounts } from '../../../types';
 import './MT5LicenceMessage.scss';
 
 type TMT5LicenseMessageProps = {
-    account: THooks.SortedMT5Accounts;
+    account: TModifiedMT5Accounts;
 };
 
 const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {

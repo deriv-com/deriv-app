@@ -13,18 +13,18 @@ import { Button, Loader, useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import { THooks } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
+import { TModifiedMT5Accounts } from '../../types';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 import './MT5PasswordModal.scss';
 
 type TProps = {
-    account: THooks.SortedMT5Accounts;
+    account: TModifiedMT5Accounts;
     isVirtual?: boolean;
 };
 
@@ -33,7 +33,7 @@ export type TPlatformPasswordChange = {
     newPassword: string;
 };
 
-const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual }) => {
+const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const [isTncChecked, setIsTncChecked] = useState(
         // tnc is automatically checked for real SVG accounts and all demo accounts
         account.shortcode === JURISDICTION.SVG || isVirtual

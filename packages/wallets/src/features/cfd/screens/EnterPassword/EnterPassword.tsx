@@ -6,12 +6,13 @@ import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
+import { TModifiedMT5Accounts } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './EnterPassword.scss';
 
 // Note: this component requires a proper refactor to remove props for keys available under the `account` prop
 type TProps = {
-    account?: THooks.SortedMT5Accounts;
+    account?: TModifiedMT5Accounts;
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
     isTncChecked?: boolean;

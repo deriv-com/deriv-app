@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { THooks } from '../../../../../../types';
 import MT5LicenseMessage from '../MT5LicenceMessage';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -15,17 +14,18 @@ const mockRegulatedAccount = {
     product: 'financial',
     regulatory_authority: 'mock_regulatory_authority',
     shortcode: 'bvi',
-} as unknown as THooks.SortedMT5Accounts;
+};
 
 const mockNonRegulatedAccount = {
     market_type: 'all',
     name: 'mock_company_name',
     product: 'swap_free',
     shortcode: 'svg',
-} as unknown as THooks.SortedMT5Accounts;
+};
 
 describe('<MT5LicenceMessage />', () => {
     it('should show message for regulated account', () => {
+        // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<MT5LicenseMessage account={mockRegulatedAccount} />);
 
         expect(
@@ -36,6 +36,7 @@ describe('<MT5LicenceMessage />', () => {
     });
 
     it('should show message for non-regulated account', () => {
+        // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<MT5LicenseMessage account={mockNonRegulatedAccount} />);
 
         expect(

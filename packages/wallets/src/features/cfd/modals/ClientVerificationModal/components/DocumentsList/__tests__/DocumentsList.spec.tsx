@@ -32,6 +32,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poa_status: 'none',
                         valid_tin: 1,
@@ -47,6 +48,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poi_status: 'none',
                         valid_tin: 1,
@@ -62,6 +64,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poa_status: 'none',
                         poi_status: 'none',
@@ -77,6 +80,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poi_status: 'none',
                     },
@@ -96,6 +100,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poa_status: 'none',
                     },
@@ -115,6 +120,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         valid_tin: 1,
                     },
@@ -134,6 +140,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poi_status: 'verified',
                     },
@@ -150,6 +157,7 @@ describe('<DocumentsList />', () => {
         render(
             <DocumentsList
                 account={{
+                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
                         poa_status: 'verified',
                     },

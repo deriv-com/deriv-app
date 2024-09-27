@@ -4,14 +4,14 @@ import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import { TModifiedMT5Accounts } from '../../../types';
 import { getClientVerification } from '../../../utils';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
-    account: THooks.SortedMT5Accounts;
+    account: TModifiedMT5Accounts;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {

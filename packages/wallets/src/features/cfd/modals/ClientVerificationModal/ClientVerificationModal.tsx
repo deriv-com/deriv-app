@@ -3,16 +3,16 @@ import { DerivLightUploadPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
-import { THooks } from '../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE } from '../../constants';
+import { TModifiedMT5Accounts } from '../../types';
 import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
 
 type TClientVerificationModal = {
-    account: THooks.SortedMT5Accounts;
+    account: TModifiedMT5Accounts;
 };
 
-const getDescriptionText = (account: THooks.SortedMT5Accounts) => {
+const getDescriptionText = (account: TModifiedMT5Accounts) => {
     const { title } = getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL];
 
     if (account.is_added) {

@@ -272,7 +272,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                     }}
                     password={password}
                     platform={mt5Platform}
-                    product={product}
                 />
             );
 

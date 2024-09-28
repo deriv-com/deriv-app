@@ -3,12 +3,12 @@ import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
-import { THooks, TPlatforms } from '../../../../types';
+import { TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { MT5PasswordModalTnc, MT5LicenceMessage } from '../components';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
-import './CreatePasswordMT5.scss';
 import { TModifiedMT5Accounts } from '../../types';
+import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
+import './CreatePasswordMT5.scss';
 
 type TProps = {
     account: TModifiedMT5Accounts;
@@ -20,7 +20,6 @@ type TProps = {
     onTncChange: () => void;
     password: string;
     platform: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'];
 };
 
 const CreatePasswordMT5: React.FC<TProps> = ({

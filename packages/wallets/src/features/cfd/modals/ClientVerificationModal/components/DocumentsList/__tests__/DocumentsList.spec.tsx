@@ -122,7 +122,7 @@ describe('<DocumentsList />', () => {
                 account={{
                     // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
-                        valid_tin: 1,
+                        valid_tin: 0,
                     },
                 }}
             />

@@ -14,7 +14,7 @@ import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
  * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
  */
-const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
+const useOauth2 = ({ handleLogout }: { handleLogout?: () => Promise<void> } = {}) => {
     const [oAuth2EnabledApps, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue<TOAuth2EnabledAppList>({
         featureFlag: 'hydra_be',
     });
@@ -26,7 +26,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
         OAuth2EnabledAppsInitialised,
     };
 
-    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout);
+    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout ?? (() => Promise.resolve()));
     return { isOAuth2Enabled, oAuthLogout };
 };
 

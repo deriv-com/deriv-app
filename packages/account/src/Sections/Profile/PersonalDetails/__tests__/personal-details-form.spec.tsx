@@ -44,7 +44,6 @@ describe('<PersonalDetailsForm />', () => {
                 place_of_birth: 'Thailand',
                 citizen: 'Thailand',
                 email_consent: 1,
-                last_name: 'Doe',
             },
         },
     });

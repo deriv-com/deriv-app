@@ -43,7 +43,7 @@ const TradingAccountJurisdictionStatusInfo: React.FC<TTradingAccountJurisdiction
 }) => {
     const { show } = useModal();
     if (isAccountDisabled) {
-        return <WalletStatusBadge padding='tight' status='disabled' />;
+        return <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />;
     }
     if (isJurisdictionPending) {
         return (

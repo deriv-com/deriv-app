@@ -152,7 +152,9 @@ const WalletListCardDropdown = () => {
                                                 )
                                             )}
                                         </div>
-                                        {wallet.isDisabled && <WalletStatusBadge padding='tight' status='disabled' />}
+                                        {wallet.isDisabled && (
+                                            <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />
+                                        )}
                                     </div>
                                 </li>
                             ))}

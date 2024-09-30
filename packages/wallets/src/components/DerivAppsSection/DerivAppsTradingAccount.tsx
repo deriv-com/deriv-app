@@ -66,7 +66,7 @@ const DerivAppsTradingAccount = () => {
                     </TradingAccountCard.Content>
                     <TradingAccountCard.Button>
                         {activeLinkedToTradingAccount?.is_disabled ? (
-                            <WalletStatusBadge padding='tight' status='disabled' />
+                            <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />
                         ) : (
                             <button
                                 className='wallets-deriv-apps-section__button'

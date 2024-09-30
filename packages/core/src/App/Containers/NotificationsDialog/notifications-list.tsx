@@ -75,6 +75,10 @@ const NotificationsList = observer(() => {
                                     {getButtonSettings(item)?.route && !getButtonSettings(item)?.onClick ? (
                                         <BinaryLink
                                             onClick={() => {
+                                                const buttonSettings = getButtonSettings(item);
+                                                if (buttonSettings?.onClick) {
+                                                    buttonSettings.onClick();
+                                                }
                                                 toggleNotificationsModal();
                                                 onActionTrackEvent(item.key);
                                             }}

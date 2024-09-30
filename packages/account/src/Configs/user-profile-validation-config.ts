@@ -27,6 +27,17 @@ type TINDepdendents = {
     is_tin_auto_set?: boolean;
 };
 
+Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
+    return this.test('is-valid-phone-number-length', message || localize('You should enter 9-20 numbers.'), value => {
+        if (typeof value === 'string') {
+            // Remove the leading '+' symbol before validation
+            const phoneNumber = value.startsWith('+') ? value.slice(1) : value;
+            return /^[0-9]{9,20}$/.test(phoneNumber);
+        }
+        return false;
+    });
+});
+
 const makeTinOptional = (
     tin_config: TinValidations,
     employment_status: string,
@@ -175,8 +186,8 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
             }),
         phone: Yup.string()
             .required(localize('Phone is required.'))
-            .min(9, localize('You should enter 9-20 numbers.'))
-            .max(20, localize('You should enter 9-20 characters.'))
+            // @ts-expect-error yup validation giving type error
+            .validatePhoneNumberLength(localize('You should enter 9-20 numbers.'))
             .matches(phoneNumber, localize('Please enter a valid phone number (e.g. +15417541234).')),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
         citizen: Yup.string().when({

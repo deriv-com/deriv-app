@@ -17,11 +17,8 @@ runs:
   - name: List the state of node modules
     if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
     continue-on-error: true
-    run: npm list
-    shell: bash
-  - name: Install npm packages
-    run: npm ci
-    shell: bash
-  - name: Bootstrap 
-    run: npm run bootstrap:ci
+    run: |
+      npm list
+      npm ci
+      npm run bootstrap:ci
     shell: bash

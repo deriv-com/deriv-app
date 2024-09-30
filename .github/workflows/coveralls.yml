@@ -12,12 +12,48 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: Setup Node
-        uses: './.github/actions/setup_node'
-      - name: Install dependencies
-        uses: "./.github/actions/npm_install_from_cache"
-      - name: Build
-        uses: "./.github/actions/build"
+      # Step 2: Set up Node.js
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8
+        with:
+            node-version: 18.x
+      # Step 3: Cache Node.js modules (optional)
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            package-lock.json
+          key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+      # Step 4: Install dependencies
+      - name: Install npm packages
+        run: npm ci
+        shell: bash
+      - name: Bootstrap 
+        run: npm run bootstrap:ci
+        shell: bash
+      # Step 5: Generate Nx Cache Key
+      # This step generates a cache key based on the latest git commit hash affecting Nx projects
+      - name: Generate Nx cache key
+        id: generate_cache_key
+        run: |
+          echo "Cache key = nx-cache-$(git rev-parse HEAD)"
+          echo "::set-output name=cache_key::nx-cache-$(git rev-parse HEAD)"
+      # Step 6: Cache Nx build cache
+      - name: Cache Nx build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/.cache/nx
+          key: ${{ steps.generate_cache_key.outputs.cache_key }}
+          restore-keys: |
+            nx-cache-${{ runner.os }}-
+      # Step 7: Run Nx Build (Only Affected Projects)
+      - name: Run Nx build for affected projects
+        run: |
+          npx nx run-many --target=build --parallel --exclude=apps --base=HEAD~1
       - name: Test
         run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
       - name: Coveralls

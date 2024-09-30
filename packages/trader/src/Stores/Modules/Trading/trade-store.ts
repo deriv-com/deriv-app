@@ -1331,11 +1331,8 @@ export default class TradeStore extends BaseStore {
         // and we need to restore previous chart type and granularity when accumulator is unselected
         const {
             chart_type,
-            granularity,
-            saveChartType,
             saved_chart_type,
             saved_granularity,
-            saveGranularity,
             setChartTypeAndGranularity,
             updateChartType,
             updateGranularity,
@@ -1355,13 +1352,9 @@ export default class TradeStore extends BaseStore {
             } else if (has_line_chart) {
                 setChartTypeAndGranularity('line', 0);
                 setTradeURLParams({ chartType: 'line', granularity: 0 });
-                (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
-                (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
             } else {
                 setChartTypeAndGranularity('candles', 60);
                 setTradeURLParams({ chartType: 'candles', granularity: 60 });
-                (saved_chart_type || chart_type) && saveChartType(saved_chart_type || chart_type);
-                (saved_granularity || granularity) && saveGranularity(saved_granularity || granularity);
             }
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {

@@ -89,13 +89,13 @@ const Trade = observer(() => {
     React.useEffect(() => {
         if (!default_stake || prev_contract_type === contract_type) return;
 
+        // Set stake to default value (from contracts_for API) and disabling TP when user switched to another trade type
         setV2ParamsInitialValues({ value: default_stake, name: 'stake' });
         onChangeMultiple({
             amount: default_stake,
             has_take_profit: false,
             take_profit: '',
         });
-        // Set stake to default value (from contracts_for API) and disabling TP when user switched to another trade type
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_type, default_stake, prev_contract_type]);
 

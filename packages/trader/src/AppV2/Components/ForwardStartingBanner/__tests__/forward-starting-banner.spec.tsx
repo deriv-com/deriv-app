@@ -1,7 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { toMoment } from '@deriv/shared';
+import { getStartTime, hasForwardContractStarted, isForwardStarting, toMoment } from '@deriv/shared';
 import ForwardStartingBanner from '../forward-starting-banner';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isForwardStarting: jest.fn(),
+    getStartTime: jest.fn(),
+    hasForwardContractStarted: jest.fn(),
+}));
 
 const mocked_date = 1727251488;
 const banner_text = 'This contract starts on';
@@ -89,6 +96,9 @@ const mocked_props = {
 
 describe('ForwardStartingBanner', () => {
     it('should render component if it is a forward starting contract and it has not started yet', () => {
+        (isForwardStarting as jest.Mock).mockReturnValueOnce(true);
+        (hasForwardContractStarted as jest.Mock).mockReturnValueOnce(false);
+        (getStartTime as jest.Mock).mockReturnValueOnce(124525522);
         render(<ForwardStartingBanner {...mocked_props} />);
 
         expect(screen.getByText(banner_text)).toBeInTheDocument();

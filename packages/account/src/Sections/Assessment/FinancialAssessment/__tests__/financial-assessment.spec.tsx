@@ -44,11 +44,20 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('<FinancialAssessment/>', () => {
-    const mock = mockStore({});
-    const renderComponent = () =>
+    const mock = mockStore({
+        client: {
+            account_settings: {
+                account_opening_reason: 'Hedging',
+                tax_residence: 'Germany',
+                tax_identification_number: '123456789',
+                employment_status: 'Employed',
+            },
+        },
+    });
+    const renderComponent = (store_config = mock) =>
         render(
             <BrowserRouter>
-                <StoreProvider store={mock}>
+                <StoreProvider store={store_config}>
                     <FinancialAssessment />
                 </StoreProvider>
             </BrowserRouter>

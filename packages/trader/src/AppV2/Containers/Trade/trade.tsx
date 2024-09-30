@@ -36,6 +36,7 @@ const Trade = observer(() => {
         symbol,
         is_accumulator,
         is_market_closed,
+        v2_params_initial_values,
         onMount,
         onChange,
         onChangeMultiple,
@@ -51,7 +52,7 @@ const Trade = observer(() => {
 
     const is_crypto = isCryptocurrency(currency ?? '');
     const default_stake = is_crypto
-        ? getMinPayout(currency ?? '')
+        ? Number(v2_params_initial_values.stake)
         : available_contract_types?.[contract_type]?.config?.default_stake;
     const prev_contract_type = usePrevious(contract_type);
 

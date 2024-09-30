@@ -37,8 +37,10 @@ const Trade = observer(() => {
         onMount,
         onChange,
         onUnmount,
+        setV2ParamsInitialValues,
     } = useTraderStore();
-    const { trade_types } = useContractsForCompany();
+    const { trade_types, available_contract_types } = useContractsForCompany();
+    // console.log('available_contract_types', available_contract_types);
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
@@ -81,6 +83,12 @@ const Trade = observer(() => {
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        setV2ParamsInitialValues({ value: 10, name: 'stake' });
+        onChange({ target: { name: 'amount', value: 10 } });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [contract_type]);
 
     return (
         <BottomNav onScroll={onScroll}>

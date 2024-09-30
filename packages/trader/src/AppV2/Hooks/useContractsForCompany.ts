@@ -146,7 +146,7 @@ const useContractsForCompany = () => {
                     }
                     const config: TConfig = available_contract_types[type].config || {};
                     config.barrier_category = contract.barrier_category as TConfig['barrier_category'];
-
+                    config.default_stake = contract.default_stake;
                     available_contract_types[type].config = config;
                 });
 

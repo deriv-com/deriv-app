@@ -1,10 +1,9 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
@@ -31,12 +30,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         stop_out,
         trade_type_tab,
         trade_types,
+        symbol,
         validation_errors,
         validation_params,
         v2_params_initial_values,
     } = useTraderStore();
+    const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
+    const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -85,8 +87,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             : proposal_error_message_1) || validation_error_text;
     const has_both_errors = has_error_1 && has_error_2;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
-
+    const stake_error = has_both_errors ? two_contracts_error : validation_error_text;
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,
@@ -94,6 +95,22 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    React.useEffect(() => {
+        if (stake_error && !is_minimized && !displayed_error.current && !is_open) {
+            displayed_error.current = true;
+            addSnackbar({
+                message: <Localize i18n_default_text='Please adjust your stake.' />,
+                status: 'fail',
+                hasCloseButton: true,
+                style: { marginBottom: '48px' },
+            });
+        }
+    }, [stake_error]);
+
+    React.useEffect(() => {
+        displayed_error.current = false;
+    }, [contract_type, symbol]);
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;
@@ -139,14 +156,14 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 i18n_default_text='Acceptable range: {{min_stake}} to {{max_stake}} {{currency}}'
                 values={{
                     currency: getCurrencyDisplayCode(currency),
-                    min_stake: FormatUtils.formatMoney(+details.min_stake),
-                    max_stake: FormatUtils.formatMoney(+details.max_stake),
+                    min_stake: formatMoney(currency, +details.min_stake, true),
+                    max_stake: formatMoney(currency, +details.max_stake, true),
                 }}
             />
         ));
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
-        setShouldShowError(e.target.value !== '');
+        if (stake_error) setShouldShowError(true);
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 

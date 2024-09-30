@@ -35,8 +35,8 @@ jobs:
           key: nx-cache-${{ runner.os }}-${{ hashFiles('nx.json', 'workspace.json', '**/project.json') }}
           restore-keys: |
             nx-cache-${{ runner.os }}-
-      - name: Run Nx build for affected projects
-        run: npm run build:allcache
+      - name: Run Nx build
+        run: npm run build:all
         shell: bash
       - name: Test
         run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage

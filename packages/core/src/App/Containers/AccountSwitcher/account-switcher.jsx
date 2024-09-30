@@ -26,7 +26,6 @@ import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 
 const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
-    const { oAuthLogout } = useOauth2();
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -43,6 +42,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         is_virtual,
         has_fiat,
         mt5_login_list,
+        logout: logoutClient,
         obj_total_balance,
         switchAccount,
         resetVirtualBalance,
@@ -93,13 +93,25 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
     };
 
+    const logoutHandler = async () => {
+        // for DBot we need to logout first and only after this redirect to TH
+        if (window.location.pathname.startsWith(routes.bot)) {
+            await logoutClient();
+            history.push(routes.traders_hub);
+        } else {
+            history.push(routes.traders_hub);
+            await logoutClient();
+        }
+    };
+
+    const { oAuthLogout } = useOauth2({ handleLogout: logoutHandler });
+
     const handleLogout = async () => {
         closeAccountsDialog();
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        // for DBot we need to logout first and only after this redirect to TH
         await oAuthLogout();
     };
 

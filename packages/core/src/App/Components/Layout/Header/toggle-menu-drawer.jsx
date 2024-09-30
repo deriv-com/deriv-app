@@ -11,6 +11,7 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
+    useOauth2,
 } from '@deriv/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -140,6 +141,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
+
+    const handleLogout = React.useCallback(async () => {
+        toggleDrawer();
+        history.push(routes.traders_hub);
+        await logoutClient();
+    }, [history, logoutClient, toggleDrawer]);
+
+    const { oAuthLogout } = useOauth2({ handleLogout });
 
     const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -448,14 +457,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item
-                                        onClick={() => {
-                                            toggleDrawer();
-                                            history.push(routes.traders_hub);
-                                            logoutClient();
-                                        }}
-                                        className='dc-mobile-drawer__item'
-                                    >
+                                    <MobileDrawer.Item onClick={oAuthLogout} className='dc-mobile-drawer__item'>
                                         <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}

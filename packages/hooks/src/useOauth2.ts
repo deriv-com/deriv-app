@@ -1,8 +1,5 @@
 import { useIsOAuth2Enabled, TOAuth2EnabledAppList, useOAuth2 } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
-import { useStore } from '@deriv/stores';
-import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv/shared';
 
 /**
  * Provides an object with two properties: `isOAuth2Enabled` and `oAuthLogout`.
@@ -17,10 +14,7 @@ import { routes } from '@deriv/shared';
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
  * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
  */
-const useOauth2 = () => {
-    const history = useHistory();
-    const { client } = useStore();
-    const { logout: logoutClient } = client;
+const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     const [oAuth2EnabledApps, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue<TOAuth2EnabledAppList>({
         featureFlag: 'hydra_be',
     });
@@ -32,18 +26,7 @@ const useOauth2 = () => {
         OAuth2EnabledAppsInitialised,
     };
 
-    const logoutHandler = async () => {
-        // for DBot we need to logout first and only after this redirect to TH
-        if (window.location.pathname.startsWith(routes.bot)) {
-            await logoutClient();
-            history.push(routes.traders_hub);
-        } else {
-            history.push(routes.traders_hub);
-            await logoutClient();
-        }
-    };
-
-    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, logoutHandler);
+    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout);
     return { isOAuth2Enabled, oAuthLogout };
 };
 

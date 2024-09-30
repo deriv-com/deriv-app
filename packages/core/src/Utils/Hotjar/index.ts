@@ -35,7 +35,7 @@ const initHotjar = (client: TCoreStores['client']) => {
         (window as any).hj('identify', user_id, {
             'Account created': account_open_date ? toMoment(account_open_date).format('YYYY-MM-DD') : '',
             'Account type': account_type,
-            'Passkey usage': !!client.passkeys_list.length,
+            'Passkey usage': !!client.passkeys_list?.length,
             'User country': client.clients_country,
         });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');

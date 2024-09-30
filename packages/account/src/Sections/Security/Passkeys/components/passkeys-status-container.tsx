@@ -10,7 +10,7 @@ import { PasskeyRemoved } from './passkey-removed';
 import { PasskeyRename } from './passkey-rename';
 import { PasskeyRemoveWithEmail } from './passkey-remove-with-email';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
-import { PasskeyRemoveRetry } from 'Sections/Security/Passkeys/components/passkey-remove-retry';
+import { PasskeyRemoveRetry } from './passkey-remove-retry';
 
 type TPasskeysStatusContainer = {
     current_managed_passkey: TCurrentManagedPasskey;

@@ -83,5 +83,5 @@ export const sortCategoriesInTradeTypeOrder = (trade_types: TContractType[], cat
         .map((item: { value: string }) => {
             return categories.find(category => category.id === item.value);
         })
-        .filter(item => item != undefined) as TCategories[];
+        .filter(item => item) as TCategories[];
 };

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
-import moment from 'moment';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Loader, Text } from '@deriv-com/ui';
 import { DatePicker, Dropzone, FormField, ModalStepWrapper } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { THooks } from '../../../../../../types';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { Footer } from '../../../components';
 import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -106,7 +106,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={moment().add(2, 'days').toDate()}
+                                        minDate={getAdjustedDate(2, 'days')}
                                         name='drivingLicenseExpiryDate'
                                     />
                                 </div>

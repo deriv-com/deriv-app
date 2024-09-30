@@ -81,6 +81,7 @@ export default class ClientStore extends BaseStore {
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_client_store_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
@@ -118,6 +119,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -161,6 +163,7 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -203,6 +206,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
@@ -240,6 +244,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -361,6 +366,7 @@ export default class ClientStore extends BaseStore {
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
             cleanUp: action.bound,
+            setIsClientStoreInitialized: action.bound,
             logout: action.bound,
             setLogout: action.bound,
             storeClientAccounts: action.bound,
@@ -410,6 +416,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -1670,6 +1677,7 @@ export default class ClientStore extends BaseStore {
             window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
         );
 
+        this.setIsClientStoreInitialized();
         return true;
     }
 
@@ -1982,6 +1990,10 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    setIsClientStoreInitialized() {
+        this.is_client_store_initialized = true;
+    }
+
     setAccountSettings(settings) {
         const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
         if (!is_equal_settings) {
@@ -2242,10 +2254,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2324,7 +2338,7 @@ export default class ClientStore extends BaseStore {
 
     async onSetCitizen(citizen) {
         if (!citizen) return;
-        WS.setSettings({
+        WS.authorized.setSettings({
             set_settings: 1,
             citizen,
         });
@@ -2740,6 +2754,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPasskeySupported(is_passkey_supported = false) {
         this.is_passkey_supported = is_passkey_supported;
+    }
+
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

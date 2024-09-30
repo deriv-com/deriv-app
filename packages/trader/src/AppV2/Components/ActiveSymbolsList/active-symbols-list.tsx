@@ -3,7 +3,6 @@ import { observer } from '@deriv/stores';
 import React, { useState, useEffect, useRef } from 'react';
 import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
-import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -13,20 +12,17 @@ type TActiveSymbolsList = {
 };
 
 const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
-    const { default_symbol } = useActiveSymbols();
-
-    const [isSearching, setIsSearching] = useState(false);
-    const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
-    const [searchValue, setSearchValue] = useState('');
     const { setTickData, symbol } = useTraderStore();
+    const [isSearching, setIsSearching] = useState(false);
+    const [selectedSymbol, setSelectedSymbol] = useState(symbol);
+    const [searchValue, setSearchValue] = useState('');
 
     const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setSelectedSymbol(symbol ?? default_symbol);
+        setSelectedSymbol(symbol);
         setTickData(null);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, default_symbol]);
+    }, [setTickData, symbol]);
 
     return (
         <React.Fragment>

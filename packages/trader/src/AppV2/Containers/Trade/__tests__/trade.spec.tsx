@@ -67,6 +67,8 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         contracts_for_company: mock_contract_data,
+        is_fetching_ref: { current: false },
+        trade_types: mock_contract_data.contracts_for_company.available,
     })),
 }));
 jest.mock('AppV2/Hooks/useSignupTrigger');

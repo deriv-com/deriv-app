@@ -546,105 +546,101 @@ const PersonalDetailsForm = observer(() => {
                                             should_display_long_message={is_mf_account}
                                             should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
                                         />
-                                        {!is_virtual && (
-                                            <Fragment>
-                                                {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
-                                                <FormSubHeader title={localize('Address')} />
-                                                <div className='account-address__details-section'>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            maxLength={70}
-                                                            name='address_line_1'
-                                                            id='address_line_1'
-                                                            label={localize('First line of address*')}
-                                                            value={values.address_line_1}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            error={errors.address_line_1}
-                                                            required
-                                                            disabled={isFieldDisabled('address_line_1')}
-                                                            data-testid='dt_address_line_1'
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            maxLength={70}
-                                                            name='address_line_2'
-                                                            id='address_line_2'
-                                                            label={localize('Second line of address (optional)')}
-                                                            value={values.address_line_2}
-                                                            error={errors.address_line_2}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            required
-                                                            disabled={isFieldDisabled('address_line_2')}
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            name='address_city'
-                                                            id='address_city'
-                                                            label={localize('Town/City*')}
-                                                            value={values.address_city}
-                                                            error={errors.address_city}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            required
-                                                            disabled={isFieldDisabled('address_city')}
-                                                            data-testid='dt_address_city'
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        {states_list.length ? (
-                                                            <FormSelectField
-                                                                label={localize('State/Province (optional)')}
-                                                                name='address_state'
-                                                                list_items={states_list}
-                                                                disabled={isFieldDisabled('address_state')}
-                                                            />
-                                                        ) : (
-                                                            <Input
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                type='text'
-                                                                name='address_state'
-                                                                id='address_state'
-                                                                label={localize('State/Province (optional)')}
-                                                                value={values.address_state}
-                                                                error={errors.address_state}
-                                                                onChange={handleChange}
-                                                                onBlur={handleBlur}
-                                                                disabled={isFieldDisabled('address_state')}
-                                                            />
-                                                        )}
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            name='address_postcode'
-                                                            id='address_postcode'
-                                                            label={localize('Postal/ZIP code')}
-                                                            value={values.address_postcode}
-                                                            error={errors.address_postcode}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            disabled={isFieldDisabled('address_postcode')}
-                                                        />
-                                                    </fieldset>
-                                                </div>
-                                            </Fragment>
-                                        )}
+                                        {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
+                                        <FormSubHeader title={localize('Address')} />
+                                        <div className='account-address__details-section'>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    maxLength={70}
+                                                    name='address_line_1'
+                                                    id='address_line_1'
+                                                    label={localize('First line of address*')}
+                                                    value={values.address_line_1}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={errors.address_line_1}
+                                                    required
+                                                    disabled={isFieldDisabled('address_line_1')}
+                                                    data-testid='dt_address_line_1'
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    maxLength={70}
+                                                    name='address_line_2'
+                                                    id='address_line_2'
+                                                    label={localize('Second line of address (optional)')}
+                                                    value={values.address_line_2}
+                                                    error={errors.address_line_2}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('address_line_2')}
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_city'
+                                                    id='address_city'
+                                                    label={localize('Town/City*')}
+                                                    value={values.address_city}
+                                                    error={errors.address_city}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    disabled={isFieldDisabled('address_city')}
+                                                    data-testid='dt_address_city'
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                {states_list.length ? (
+                                                    <FormSelectField
+                                                        label={localize('State/Province (optional)')}
+                                                        name='address_state'
+                                                        list_items={states_list}
+                                                        disabled={isFieldDisabled('address_state')}
+                                                    />
+                                                ) : (
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        name='address_state'
+                                                        id='address_state'
+                                                        label={localize('State/Province (optional)')}
+                                                        value={values.address_state}
+                                                        error={errors.address_state}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        disabled={isFieldDisabled('address_state')}
+                                                    />
+                                                )}
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    autoComplete='off' // prevent chrome autocomplete
+                                                    type='text'
+                                                    name='address_postcode'
+                                                    id='address_postcode'
+                                                    label={localize('Postal/ZIP code')}
+                                                    value={values.address_postcode}
+                                                    error={errors.address_postcode}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    disabled={isFieldDisabled('address_postcode')}
+                                                />
+                                            </fieldset>
+                                        </div>
                                     </div>
                                 )}
                                 {!!current_landing_company?.support_professional_client && (

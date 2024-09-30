@@ -17,13 +17,14 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn, useOauth2 } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import initHotjar from '../Utils/Hotjar';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { is_client_store_initialized, has_wallet, setIsPasskeySupported } = store.client;
+    const { is_client_store_initialized, has_wallet, setIsPasskeySupported, setIsPhoneNumberVerificationEnabled } =
+        store.client;
     const { current_language } = store.common;
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -35,6 +36,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
     });
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'phone_number_verification',
+    });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
@@ -43,6 +47,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     React.useEffect(() => {
         switchLanguage(current_language);
     }, [current_language, switchLanguage]);
+
+    React.useEffect(() => {
+        if (isPhoneNumberVerificationGBLoaded) {
+            setIsPhoneNumberVerificationEnabled(!!isPhoneNumberVerificationEnabled);
+        }
+    }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

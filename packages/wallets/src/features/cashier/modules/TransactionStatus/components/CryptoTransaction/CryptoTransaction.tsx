@@ -5,9 +5,9 @@ import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { THooks } from '../../../../../../types';
-import { getFormattedDateString } from '../../../../../../utils/utils';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { getFormattedConfirmations, getStatusName } from '../../../../helpers/transaction-helpers';
 import './CryptoTransaction.scss';
@@ -105,12 +105,10 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     {transaction.formatted_amount}
                 </Text>
                 <Text color='less-prominent' size='2xs'>
-                    {getFormattedDateString(
-                        transaction.submit_date,
-                        { day: 'numeric', month: 'short', year: 'numeric' },
-                        undefined,
-                        true
-                    )}
+                    {FormatUtils.getFormattedDateString(transaction.submit_date, {
+                        dateOptions: { day: 'numeric', month: 'short', year: 'numeric' },
+                        unix: true,
+                    })}
                 </Text>
             </div>
             {transaction?.transaction_fee && (

@@ -125,6 +125,7 @@ const TradeChart = observer(() => {
     if (!symbol || !active_symbols.length) return null;
     return (
         <SmartChart
+            key={`${symbol}`}
             ref={ref}
             barriers={barriers}
             contracts_array={markers_array}

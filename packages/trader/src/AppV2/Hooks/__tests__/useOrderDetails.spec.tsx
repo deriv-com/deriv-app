@@ -1,5 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    TContractInfo,
+    getCardLabelsV2,
+    mockContractInfo,
+    getStartTime,
+    hasForwardContractStarted,
+    isForwardStarting,
+} from '@deriv/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -15,6 +23,9 @@ jest.mock('@deriv/shared', () => ({
     isResetContract: jest.fn(),
     addComma: jest.fn(),
     ...jest.requireActual('@deriv/shared'),
+    isForwardStarting: jest.fn(),
+    getStartTime: jest.fn(),
+    hasForwardContractStarted: jest.fn(),
 }));
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
@@ -74,6 +85,14 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.STAKE]: '100.00 USD',
             [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
+    });
+
+    it('should return correct barriers details for Forward starting contract', () => {
+        (isForwardStarting as jest.Mock).mockReturnValue(true);
+        (hasForwardContractStarted as jest.Mock).mockReturnValue(false);
+        (getStartTime as jest.Mock).mockReturnValue(124525522);
+        const { result } = renderHook(() => useOrderDetails(mockData));
+        expect(result.current?.details[CARD_LABELS.BARRIER]).toEqual('TBD');
     });
 
     it('should return correct details for Turbos contract', () => {

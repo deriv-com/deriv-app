@@ -4136,7 +4136,7 @@
     "-74095551": "Sekunden seit der Epoche",
     "-15528039": "Gibt die Anzahl der Sekunden seit dem 1. Januar 1970 zurück",
     "-729807788": "Dieser Block gibt die Anzahl der Sekunden seit dem 1. Januar 1970 zurück.",
-    "-1467024744": "Lasse die Blöcke nach einer bestimmten Anzahl von Ticks im Inneren laufen",
+    "-1467024744": "Führen Sie die Blöcke nach einer bestimmten Anzahl von Ticks aus",
     "-173765342": "Dieser Block verzögert die Ausführung um eine bestimmte Anzahl von Ticks. Sie können innerhalb dieses Blocks beliebige Blöcke platzieren. Die Ausführung anderer Blöcke in Ihrer Strategie wird pausiert, bis die Anweisungen in diesem Block ausgeführt werden.",
     "-1370107306": "{{ dummy }} {{ stack_input }} Nach {{ number }} Sekunde (n) ausführen",
     "-558838192": "Verzögerter Lauf",

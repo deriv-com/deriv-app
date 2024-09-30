@@ -49,7 +49,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     useEffect(() => {
         if (has_error && !is_minimized) {
             const error_obj = proposal_info[contract_type_object[0]];
-            if (error_obj.error_field !== 'symbol') {
+            if (error_obj.error_field === 'duration') {
                 addSnackbar({
                     message: <Localize i18n_default_text={error_obj.message} />,
                     status: 'fail',

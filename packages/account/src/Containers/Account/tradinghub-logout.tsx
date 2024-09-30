@@ -16,7 +16,11 @@ const TradingHubLogout = ({ handleOnLogout }: { handleOnLogout: () => Promise<vo
             className='dc-vertical-tab__header-account__logout-tab'
             onClick={oAuthLogout}
             data-testid='dt_logout_tab'
-            onKeyDown={oAuthLogout}
+            onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    oAuthLogout();
+                }
+            }}
             role='button'
             tabIndex={0}
         >

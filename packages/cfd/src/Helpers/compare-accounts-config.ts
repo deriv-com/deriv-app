@@ -56,6 +56,7 @@ const getHighlightedIconLabel = (
             id: 'synthetic_indices',
             icon: 'Synthetics',
             text: localize('Synthetic indices'),
+            is_asterisk: selected_region === REGION.EU,
         },
         { id: 'basket_indices', icon: 'Baskets', text: localize('Basket indices') },
         { id: 'derived_FX', icon: 'DerivedFX', text: localize('Derived FX') },

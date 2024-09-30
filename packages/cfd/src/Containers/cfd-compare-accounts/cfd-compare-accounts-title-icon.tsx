@@ -49,7 +49,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
                     )}
                 </div>
             </div>
-            <hr className='compare-cfd-account-underline' />
+            <div className='compare-cfd-account-underline' />
         </React.Fragment>
     );
 };

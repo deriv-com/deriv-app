@@ -169,8 +169,13 @@
         }
     }
     &-underline {
-        border-top: 0.5rem solid var(--less-prominent);
-        width: 12rem;
+        height: 1px;
+        width: 75%;
+        background-color: var(--general-hover);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0.4rem;
     }
     &__button {
         width: calc(100% - 4rem);

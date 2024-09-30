@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
-import { Loading } from '@deriv/components';
+import { Loading, usePrevious } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -36,6 +36,7 @@ const Trade = observer(() => {
         is_market_closed,
         onMount,
         onChange,
+        onChangeMultiple,
         onUnmount,
         setV2ParamsInitialValues,
     } = useTraderStore();
@@ -47,7 +48,7 @@ const Trade = observer(() => {
     });
 
     const default_stake = available_contract_types?.[contract_type]?.config?.default_stake;
-
+    const prev_contract_type = usePrevious(contract_type);
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({
@@ -80,17 +81,23 @@ const Trade = observer(() => {
     }, []);
 
     React.useEffect(() => {
+        if (!default_stake || prev_contract_type === contract_type) return;
+
+        setV2ParamsInitialValues({ value: default_stake, name: 'stake' });
+        onChangeMultiple({
+            amount: default_stake,
+            has_take_profit: false,
+            take_profit: '',
+        });
+        // Set stake to default value (from contracts_for API) and disabling TP when user switched to another trade type
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [contract_type, default_stake, prev_contract_type]);
+
+    React.useEffect(() => {
         onMount();
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        if (!default_stake) return;
-        setV2ParamsInitialValues({ value: default_stake, name: 'stake' });
-        onChange({ target: { name: 'amount', value: default_stake } });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contract_type, default_stake]);
 
     return (
         <BottomNav onScroll={onScroll}>

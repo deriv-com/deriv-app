@@ -24,12 +24,12 @@
         }
     }
     &__days-input {
-        padding: 16px;
+        padding: var(--core-spacing-800);
         display: flex;
         flex-direction: column;
         gap: 16px;
         &__expiry {
-            margin-top: 70px;
+            margin-top: var(--core-size-3500);
             display: flex;
             justify-content: space-between;
         }
@@ -40,7 +40,7 @@
     }
     &__endtime {
         text-align: center;
-        margin-top: 20px;
+        margin-top: var(--core-size-1000);
     }
     &__date-picker {
         padding-left: var(--core-spacing-800);

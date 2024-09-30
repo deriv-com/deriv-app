@@ -78,6 +78,7 @@ const DurationActionSheetContainer = observer(
         const onChangeUnit = React.useCallback(
             (value: string) => {
                 setUnit(value);
+                setSelectedTime([]);
                 if (value !== 'h') {
                     setIs24HourSelected(false);
                     setSelectedHour([]);

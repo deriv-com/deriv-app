@@ -56,6 +56,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+    const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
         is_client_store_initialized,
@@ -110,11 +111,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             if (is_dark_mode_on) {
                 setDarkMode(false);
             }
-            if (current_language !== 'EN') {
+            if (!wallets_allowed_languages) {
                 changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
+    }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode, wallets_allowed_languages]);
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>

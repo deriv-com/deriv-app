@@ -21,7 +21,9 @@ const DraggableListItem: React.FC<TDraggableListItemProps> = ({
     rightIcon,
     title,
 }) => {
-    const default_left_icon = <StandaloneGripDotsVerticalBoldIcon iconSize='sm' />;
+    const default_left_icon = (
+        <StandaloneGripDotsVerticalBoldIcon iconSize='sm' fill='var(--component-textIcon-normal-default)' />
+    );
     const default_right_icon = <StandaloneCircleMinusFillIcon fill='var(--core-color-solid-red-700)' iconSize='sm' />;
 
     return (

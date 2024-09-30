@@ -14,7 +14,7 @@ const RiskManagementInfoModal = ({ header_content, body_content, info_message }:
     return (
         <>
             <button onClick={() => setIsVisible(!isVisible)}>
-                <LabelPairedCircleInfoSmRegularIcon />
+                <LabelPairedCircleInfoSmRegularIcon fill='var(--component-textIcon-normal-default)' />
             </button>
             <Modal
                 handleBarIndex={2}

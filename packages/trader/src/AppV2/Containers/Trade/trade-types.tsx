@@ -14,6 +14,7 @@ type TTradeTypesProps = {
     onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
+    is_dark_mode_on: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
 type TItem = {
@@ -30,7 +31,7 @@ type TResultItem = {
     items: TItem[];
 };
 
-const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTypesProps) => {
+const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mode_on }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
     const trade_types_ref = React.useRef<HTMLDivElement>(null);
@@ -247,13 +248,16 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types }: TTradeTyp
             ))}
             {should_show_view_all && (
                 <Button
-                    variant='tertiary'
                     key='trade-types-all'
                     onClick={handleOpenActionSheet}
+                    variant='tertiary'
                     className='trade__trade-types-header'
-                    color='black-white'
-                    label={<Localize i18n_default_text='View all' />}
-                />
+                    color={is_dark_mode_on ? 'white' : 'black'}
+                >
+                    <Text size='sm' bold underlined color='var(--component-button-label-color-blackWhite-tertiary)'>
+                        {<Localize i18n_default_text='View all' />}
+                    </Text>
+                </Button>
             )}
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal>

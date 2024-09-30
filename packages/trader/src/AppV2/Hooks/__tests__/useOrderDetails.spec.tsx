@@ -21,6 +21,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
     getBarrierValue: jest.fn(),
 }));
 
+const mocked_date = 1727251488;
 const mockData: TContractInfo = mockContractInfo({
     transaction_ids: { buy: 12345, sell: 67890 },
     buy_price: 100,
@@ -57,7 +58,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.MULTIPLIER]: 'x3',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.COMMISSION]: '5.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
             [CARD_LABELS.STOP_LOSS]: '50.00 USD',
             [CARD_LABELS.STOP_OUT_LEVEL]: '30.00 USD',
@@ -74,6 +75,26 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.STAKE]: '100.00 USD',
             [CARD_LABELS.POTENTIAL_PAYOUT]: 19.55,
         });
+    });
+
+    it('should return correct barriers details for Forward starting contract', () => {
+        const { result } = renderHook(() =>
+            useOrderDetails(
+                mockContractInfo({
+                    contract_type: 'CALL',
+                    date_expiry: mocked_date + 3000,
+                    date_settlement: mocked_date + 3000,
+                    date_start: mocked_date + 2000,
+                    expiry_time: mocked_date + 3000,
+                    is_forward_starting: 1,
+                    is_sold: 0,
+                    purchase_time: 1727096132,
+                    shortcode: `CALL_1HZ10V_19.54_${mocked_date + 2000}F_${mocked_date + 3000}_S0P_0`,
+                    status: 'open',
+                })
+            )
+        );
+        expect(result.current?.details[CARD_LABELS.BARRIER]).toEqual('TBD');
     });
 
     it('should return correct details for Turbos contract', () => {
@@ -228,7 +249,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.MULTIPLIER]: 'x3',
             [CARD_LABELS.STAKE]: '100.00 USD',
-            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.COMMISSION]: '5.00 USD',
             [CARD_LABELS.TAKE_PROFIT]: 'Not set',
             [CARD_LABELS.STOP_LOSS]: 'Not set',
             [CARD_LABELS.STOP_OUT_LEVEL]: '',

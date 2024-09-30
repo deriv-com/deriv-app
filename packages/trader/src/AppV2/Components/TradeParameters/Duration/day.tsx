@@ -59,7 +59,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={formatted_date !== formatted_current_date || !end_time ? '12:59:59 GMT' : end_time}
+                value={formatted_date !== formatted_current_date || !end_time ? '23:59:59 GMT' : end_time}
                 disabled={formatted_date !== formatted_current_date}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -71,7 +71,7 @@ const DayInput = ({
                 <Text size='sm' color='quill-typography__color--subtle'>
                     <Localize i18n_default_text='Expiry' />
                 </Text>
-                <Text size='sm'>{`${formatted_date} ${end_time || '12:59:59'} GMT`}</Text>
+                <Text size='sm'>{`${formatted_date} ${end_time || '23:59:59'} GMT`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}

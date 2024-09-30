@@ -26,7 +26,15 @@ jobs:
       - name: Bootstrap 
         run: npm run bootstrap:ci
         shell: bash
-      - uses: nrwl/nx-set-shas@v4
+      # Step 5: Cache Nx build cache
+      - name: Cache Nx build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules/.cache/nx
+          key: nx-cache-${{ runner.os }}-${{ hashFiles('nx.json', 'workspace.json', '**/project.json') }}
+          restore-keys: |
+            nx-cache-${{ runner.os }}-
       - name: Run Nx build for affected projects
         run: npm run build:allcache
         shell: bash

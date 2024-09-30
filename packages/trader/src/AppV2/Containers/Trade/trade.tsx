@@ -50,7 +50,6 @@ const Trade = observer(() => {
     });
 
     const is_crypto = isCryptocurrency(currency ?? '');
-    //if it's a crypto account, we need to handle conversion
     const default_stake = is_crypto
         ? getMinPayout(currency ?? '')
         : available_contract_types?.[contract_type]?.config?.default_stake;

@@ -1374,6 +1374,11 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
+                if (this.is_dtrader_v2_enabled)
+                    this.setV2ParamsInitialValues({
+                        value: obj_new_values.amount ?? '',
+                        name: 'stake',
+                    });
             }
             this.currency = obj_new_values.currency ?? '';
         }

@@ -58,7 +58,8 @@ export const PasskeyRemoveWithEmail = observer(
                 >
                     <InputGroupButton
                         buttonLabel={localize('Verify')}
-                        label={localize('Enter 6-digit code')}
+                        label={code.length === 6 ? localize('Verification code') : localize('Enter 6-digit code')}
+                        placeholder={localize('Enter 6-digit code')}
                         inputMode='numeric'
                         buttonColor='coral'
                         type='number'

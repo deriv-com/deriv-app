@@ -32,7 +32,6 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
     getBarrierValue: jest.fn(),
 }));
 
-const mocked_date = 1727251488;
 const mockData: TContractInfo = mockContractInfo({
     transaction_ids: { buy: 12345, sell: 67890 },
     buy_price: 100,

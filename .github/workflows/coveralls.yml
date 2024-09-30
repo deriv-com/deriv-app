@@ -26,7 +26,7 @@ jobs:
       - name: Bootstrap 
         run: npm run bootstrap:ci
         shell: bash
-      # Step 5: Cache Nx build cache
+      # Step 5: Cache Nx build cachee
       - name: Cache Nx build cache
         uses: actions/cache@v3
         with:

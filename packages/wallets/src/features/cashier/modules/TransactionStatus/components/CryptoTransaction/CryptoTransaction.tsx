@@ -32,7 +32,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
         ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
         : localize('Pending');
     const formattedAddressHash = transaction.address_hash
-        ? getTruncatedString(transaction.address_hash, { type: 'head' })
+        ? getTruncatedString(transaction.address_hash, { type: 'middle' })
         : localize('NA');
     const formattedConfirmations = getFormattedConfirmations(transaction.confirmations, transaction.status_code);
 

@@ -54,10 +54,6 @@ const useInfiniteTransactions = () => {
 
         return flatten_data?.map(transaction => ({
             ...transaction,
-            /** The transaction amount in currency format. */
-            display_amount: displayMoney(transaction?.amount || 0, display_code, {
-                fractional_digits,
-            }),
             /** The balance of account after the transaction in currency format. */
             display_balance_after: displayMoney(transaction?.balance_after || 0, display_code, { fractional_digits }),
         }));

@@ -5,6 +5,7 @@ import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletMoney } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { THooks } from '../../../../../../types';
 import { getFormattedDateString } from '../../../../../../utils/utils';
@@ -13,6 +14,7 @@ import { getFormattedConfirmations, getStatusName } from '../../../../helpers/tr
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
+    currency: THooks.ActiveAccount['currency'];
     currencyDisplayCode: THooks.CurrencyConfig['code'];
     currencyDisplayFraction?: THooks.CurrencyConfig['fractional_digits'];
     // TODO: Remove transaction_fee from transaction type once API is updated
@@ -21,7 +23,8 @@ type TCryptoTransaction = {
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({
-    currencyDisplayCode: currency,
+    currency,
+    currencyDisplayCode,
     currencyDisplayFraction,
     transaction,
 }) => {
@@ -72,9 +75,12 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
             <div className='wallets-crypto-transaction__type-and-status'>
                 <Text align='start' lineHeight='sm' size='xs'>
                     {transaction.is_deposit ? (
-                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
+                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency: currencyDisplayCode }} />
                     ) : (
-                        <Localize i18n_default_text='Withdrawal {{currency}}' values={{ currency }} />
+                        <Localize
+                            i18n_default_text='Withdrawal {{currency}}'
+                            values={{ currency: currencyDisplayCode }}
+                        />
                     )}
                 </Text>
                 <div className='wallets-crypto-transaction__status'>
@@ -102,7 +108,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
             </div>
             <div className='wallets-crypto-transaction__amount-and-date'>
                 <Text align='start' color='less-prominent' size='2xs'>
-                    {transaction.formatted_amount}
+                    <WalletMoney amount={transaction.amount} currency={currency} />
                 </Text>
                 <Text align='start' color='less-prominent' size='2xs'>
                     {getFormattedDateString(
@@ -118,7 +124,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     <Localize
                         i18n_default_text='Transaction fee: {{fee}} {{currency}}'
                         values={{
-                            currency,
+                            currency: currencyDisplayCode,
                             fee: Number(transaction.transaction_fee).toFixed(currencyDisplayFraction),
                         }}
                     />

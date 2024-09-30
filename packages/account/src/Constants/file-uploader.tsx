@@ -91,5 +91,9 @@ export const getSupportedProofOfAddressDocuments = (): Required<TListItem>[] => 
             value: 'rental_agreement',
             text: localize('Rental/tenancy agreement'),
         },
+        {
+            text: localize('Others'),
+            value: 'poa_others',
+        },
     ];
 };

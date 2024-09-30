@@ -23,10 +23,7 @@ const DurationWheelPicker = observer(
     }) => {
         const { duration_min_max } = useTraderStore();
 
-        const options = React.useMemo(
-            () => getOptionPerUnit(unit, duration_min_max?.tick?.min === 5),
-            [unit, duration_min_max]
-        );
+        const options = React.useMemo(() => getOptionPerUnit(unit, duration_min_max), [unit, duration_min_max]);
 
         return (
             <div className={clsx('duration-container__wheel-picker-container')}>
@@ -50,7 +47,6 @@ const DurationWheelPicker = observer(
                             } else {
                                 setIs24HourSelected(false);
                             }
-
                             setWheelPickerValue(index, val);
                         }}
                     />

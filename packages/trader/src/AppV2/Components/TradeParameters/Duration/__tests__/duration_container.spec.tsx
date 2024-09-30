@@ -28,7 +28,7 @@ jest.mock('@deriv-com/quill-ui', () => ({
         <div>
             <button
                 onClick={() => {
-                    const mockDate = new Date(2023, 8, 10);
+                    const mockDate = new Date(2024, 8, 10);
                     onChange(mockDate);
                 }}
             >
@@ -172,6 +172,47 @@ describe('DurationActionSheetContainer', () => {
             duration: 60,
             expiry_time: null,
             expiry_type: 'duration',
+        });
+    });
+
+    it('should call onChangeMultiple with correct endtime with endtime', () => {
+        default_trade_store.modules.trade.expiry_time = '23:35';
+
+        renderDurationContainer(
+            default_trade_store,
+            'd',
+            jest.fn(),
+            [0, 0],
+            jest.fn(),
+            new Date(),
+            jest.fn(),
+            '11:35',
+            jest.fn()
+        );
+        userEvent.click(screen.getByText('Save'));
+
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            expiry_time: '11:35',
+            expiry_type: 'endtime',
+        });
+    });
+
+    it('should call onChangeMultiple with correct day', () => {
+        default_trade_store.modules.trade.duration_unit = 'd';
+        default_trade_store.modules.trade.duration = '3';
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        renderDurationContainer(default_trade_store, 'd', jest.fn(), [0, 0], jest.fn(), tomorrow);
+
+        userEvent.click(screen.getByText('Save'));
+
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            duration: 1,
+            duration_unit: 'd',
+            expiry_type: 'duration',
+            expiry_time: null,
         });
     });
 

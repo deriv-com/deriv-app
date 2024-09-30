@@ -95,7 +95,6 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         if (expiry_time) {
             return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT`;
         }
-        return '';
     };
 
     return (

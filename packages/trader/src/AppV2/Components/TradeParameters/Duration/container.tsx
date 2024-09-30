@@ -32,44 +32,46 @@ const DurationActionSheetContainer = observer(
         const [is24_hour_selected, setIs24HourSelected] = useState(false);
 
         const onAction = () => {
-            if (end_time) {
-                setSelectedHour([]);
+            if (unit === 'h') {
+                const minutes = selected_hour[0] * 60 + selected_hour[1];
+                const hour = Math.floor(duration / 60);
+                const min = duration % 60;
+                setSelectedHour([hour, min]);
+                setEndTime('');
                 onChangeMultiple({
-                    expiry_time: end_time,
-                    expiry_type: 'endtime',
+                    duration_unit: 'm',
+                    duration: Number(minutes),
+                    expiry_time: null,
+                    expiry_type: 'duration',
                 });
-            } else {
-                // eslint-disable-next-line no-lonely-if
-                if (unit === 'h') {
-                    const minutes = selected_hour[0] * 60 + selected_hour[1];
-                    const hour = Math.floor(duration / 60);
-                    const min = duration % 60;
-                    setSelectedHour([hour, min]);
+            } else if (unit === 'd') {
+                const difference_in_time = end_date.getTime() - new Date().getTime();
+                const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
+                setSelectedHour([]);
+
+                if (end_time) {
                     onChangeMultiple({
-                        duration_unit: 'm',
-                        duration: Number(minutes),
-                        expiry_time: null,
-                        expiry_type: 'duration',
+                        expiry_time: end_time,
+                        expiry_type: 'endtime',
                     });
-                } else if (unit === 'd') {
-                    const difference_in_time = end_date.getTime() - new Date().getTime();
-                    const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
-                    setSelectedHour([]);
+                } else {
+                    setEndTime('');
                     onChangeMultiple({
                         duration_unit: 'd',
                         duration: Number(difference_in_days),
                         expiry_time: null,
                         expiry_type: 'duration',
                     });
-                } else {
-                    setSelectedHour([]);
-                    onChangeMultiple({
-                        duration_unit: unit,
-                        duration: Number(selected_time),
-                        expiry_time: null,
-                        expiry_type: 'duration',
-                    });
                 }
+            } else {
+                setEndTime('');
+                setSelectedHour([]);
+                onChangeMultiple({
+                    duration_unit: unit,
+                    duration: Number(selected_time),
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
             }
         };
 

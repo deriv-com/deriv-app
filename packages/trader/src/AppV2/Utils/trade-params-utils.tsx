@@ -211,47 +211,6 @@ export const getSnackBarText = ({
         return <Localize i18n_default_text='DC has been turned off.' />;
 };
 
-export const getOptionPerUnit = (unit: string, show_tick_from_5: boolean): { value: number; label: ReactNode }[][] => {
-    const unitConfig: Record<
-        string,
-        { start: number; end: number; label: ReactNode } | (() => { value: number; label: ReactNode }[][])
-    > = {
-        m: { start: 1, end: 59, label: <Localize i18n_default_text='min' /> },
-        s: { start: 15, end: 59, label: <Localize i18n_default_text='sec' /> },
-        d: { start: 1, end: 365, label: <Localize i18n_default_text='days' /> },
-        t: { start: show_tick_from_5 ? 5 : 1, end: 10, label: <Localize i18n_default_text='tick' /> },
-        h: () => {
-            const hour_options = generateOptions(1, 24, 'h');
-            const minute_options = generateOptions(0, 59, 'min');
-            return [hour_options, minute_options];
-        },
-    };
-
-    const generateOptions = (start: number, end: number, label: ReactNode) => {
-        return Array.from({ length: end - start + 1 }, (_, i) => ({
-            value: start + i,
-            label: (
-                <React.Fragment key={start + i}>
-                    {start + i} {label}
-                </React.Fragment>
-            ),
-        }));
-    };
-
-    const config = unitConfig[unit];
-
-    if (typeof config === 'function') {
-        return config();
-    }
-
-    if (config) {
-        const { start, end, label } = config;
-        return [generateOptions(start, end, label)];
-    }
-
-    return [[]];
-};
-
 export const getClosestTimeToCurrentGMT = (interval: number): string => {
     const now = new Date();
     now.setMinutes(now.getMinutes() + 5);
@@ -283,4 +242,70 @@ export const getClosestTimeToCurrentGMT = (interval: number): string => {
     const newMinutes = String(date.getUTCMinutes()).padStart(2, '0');
 
     return `${newHours}:${newMinutes}`;
+};
+
+export const getOptionPerUnit = (
+    unit: string,
+    duration_min_max: Record<string, { min: number; max: number }>
+): { value: number; label: React.ReactNode }[][] => {
+    const generateOptions = (start: number, end: number, label: React.ReactNode) => {
+        return Array.from({ length: end - start + 1 }, (_, i) => ({
+            value: start + i,
+            label: (
+                <React.Fragment key={start + i}>
+                    {start + i} {label}
+                </React.Fragment>
+            ),
+        }));
+    };
+
+    const { intraday, tick, daily } = duration_min_max;
+
+    const unitConfig: Record<
+        string,
+        { start: number; end: number; label: React.ReactNode } | (() => { value: number; label: React.ReactNode }[][])
+    > = {
+        m: {
+            start: Math.max(1, intraday?.min / 60),
+            end: Math.min(59, intraday?.max / 60),
+            label: <Localize i18n_default_text='min' />,
+        },
+        s: {
+            start: Math.max(15, intraday?.min),
+            end: Math.min(59, intraday?.max),
+            label: <Localize i18n_default_text='sec' />,
+        },
+        d: {
+            start: Math.max(1, daily?.min / 86400),
+            end: Math.min(365, daily?.max / 86400),
+            label: <Localize i18n_default_text='days' />,
+        },
+        t: {
+            start: Math.max(1, tick?.min),
+            end: Math.min(10, tick?.max),
+            label: <Localize i18n_default_text='tick' />,
+        },
+        h: () => {
+            const hour_options = generateOptions(
+                Math.max(1, intraday?.min / 3600),
+                Math.min(24, intraday?.max / 3600),
+                <Localize i18n_default_text='h' />
+            );
+            const minute_options = generateOptions(0, 59, <Localize i18n_default_text='min' />);
+            return [hour_options, minute_options];
+        },
+    };
+
+    const config = unitConfig[unit];
+
+    if (typeof config === 'function') {
+        return config();
+    }
+
+    if (config) {
+        const { start, end, label } = config;
+        return [generateOptions(Math.ceil(start), Math.floor(end), label)];
+    }
+
+    return [[]];
 };

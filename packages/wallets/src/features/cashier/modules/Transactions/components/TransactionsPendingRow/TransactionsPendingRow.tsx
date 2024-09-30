@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
@@ -9,6 +8,7 @@ import { Button, Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import { THooks } from '../../../../../../types';
+import { getFormattedDateString, getFormattedTimeString } from '../../../../../../utils/utils';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import {
     getFormattedConfirmations,
@@ -143,7 +143,12 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                             />
                             <TransactionsPendingRowField
                                 name={localize('Date')}
-                                value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                                value={getFormattedDateString(
+                                    transaction.submit_date,
+                                    { day: '2-digit', month: 'short', year: 'numeric' },
+                                    undefined,
+                                    true
+                                )}
                                 valueTextProps={{
                                     color: 'general',
                                 }}
@@ -153,10 +158,9 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-time': isDesktop }}
                         name={localize('Time')}
-                        value={moment
-                            .unix(transaction.submit_date)
-                            .utc()
-                            .format(isDesktop ? 'DD MMM YYYY HH:mm:ss [GMT]' : 'HH:mm:ss [GMT]')}
+                        value={`${
+                            isDesktop && `${getFormattedDateString(transaction.submit_date, {}, undefined, true)} `
+                        }${getFormattedTimeString(transaction.submit_date, true)}`}
                         valueTextProps={{
                             color: 'general',
                             size: isDesktop ? '2xs' : 'xs',

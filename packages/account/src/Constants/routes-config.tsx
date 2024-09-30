@@ -4,7 +4,6 @@
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    Passkeys,
     PersonalDetails,
     ProofOfIdentity,
     ProofOfAddress,
@@ -24,6 +23,16 @@ const Page404 = makeLazyLoader(
 
 const Passwords = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/Passwords')),
+    () => <Loading />
+)();
+
+const PhoneVerificationPage = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/PhoneVerification')),
+    () => <Loading />
+)();
+
+const Passkeys = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passkeys')),
     () => <Loading />
 )();
 
@@ -105,6 +114,12 @@ const initRoutesConfig = () => [
                 getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
+                    {
+                        path: routes.phone_verification,
+                        component: PhoneVerificationPage,
+                        getTitle: () => localize('Phone number verification'),
+                        is_hidden: true,
+                    },
                     {
                         path: routes.personal_details,
                         component: PersonalDetails,

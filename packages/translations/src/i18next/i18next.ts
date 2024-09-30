@@ -25,6 +25,7 @@ const ALL_LANGUAGES = Object.freeze({
     RU: 'Русский',
     SI: 'සිංහල',
     TR: 'Türkçe',
+    UZ: "O'zbek",
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
@@ -49,6 +50,7 @@ export const getAllowedLanguages = () => {
         SI: 'සිංහල',
         TH: 'ไทย',
         TR: 'Türkçe',
+        UZ: "O'zbek",
         VI: 'Tiếng Việt',
         ZH_CN: '简体中文',
         ZH_TW: '繁體中文',
@@ -73,6 +75,15 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
+const getParsedLanguageValue = (key: string) => {
+    const value = localStorage.getItem(key) || '';
+    try {
+        return JSON.parse(value);
+    } catch {
+        return value;
+    }
+};
+
 const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
@@ -95,7 +106,7 @@ export const getAllLanguages = () => ALL_LANGUAGES;
 export const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
-    const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
+    const local_storage_language = getParsedLanguageValue(LANGUAGE_KEY);
 
     if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();

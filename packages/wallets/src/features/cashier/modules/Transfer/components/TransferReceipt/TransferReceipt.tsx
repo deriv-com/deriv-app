@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { LegacyArrowLeft2pxIcon, LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
-import { AppCard, WalletCard } from '../../../../../../components';
+import { AppCard, WalletCard, WalletMoney } from '../../../../../../components';
 import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
@@ -12,7 +12,7 @@ import './TransferReceipt.scss';
 type TReceiptCardProps = {
     account: NonNullable<ReturnType<typeof useTransfer>['receipt']>['fromAccount'];
     activeWallet: ReturnType<typeof useTransfer>['activeWallet'];
-    balance: string;
+    balance: JSX.Element | string;
 };
 
 const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balance }) => {
@@ -59,15 +59,7 @@ const TransferReceipt = () => {
     const { feeAmount, fromAccount, fromAmount, toAccount, toAmount } = receipt;
 
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
-    const displayTransferredFromAmount = `${fromAmount.toFixed(fromAccount?.currencyConfig?.fractional_digits)} ${
-        fromAccount?.currencyConfig?.display_code
-    }`;
-    const displayTransferredToAmount = `${toAmount.toFixed(toAccount?.currencyConfig?.fractional_digits)} ${
-        toAccount?.currencyConfig?.display_code
-    }`;
-    const transferredAmountMessage = isSameCurrency
-        ? displayTransferredFromAmount
-        : `${displayTransferredFromAmount} (${displayTransferredToAmount})`;
+
     const feeMessage = feeAmount ? (
         <Localize
             i18n_default_text='Transfer fees: {{feeAmount}} {{displayCode}}'
@@ -86,7 +78,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={fromAccount}
                     activeWallet={activeWallet}
-                    balance={`-${displayTransferredFromAmount}`}
+                    balance={<WalletMoney amount={-fromAmount} currency={fromAccount?.currency} hasSign />}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
                     {isRtl ? <LegacyArrowLeft2pxIcon iconSize='xs' /> : <LegacyArrowRight2pxIcon iconSize='xs' />}
@@ -94,7 +86,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={toAccount}
                     activeWallet={activeWallet}
-                    balance={`+${displayTransferredToAmount}`}
+                    balance={<WalletMoney amount={toAmount} currency={toAccount?.currency} hasSign />}
                 />
             </div>
             <div
@@ -103,9 +95,24 @@ const TransferReceipt = () => {
                 })}
             >
                 <div className='wallets-transfer-receipt__amount'>
-                    <Text size='xl' weight='bold'>
-                        {transferredAmountMessage}
-                    </Text>
+                    {isSameCurrency && (
+                        <Text size='xl' weight='bold'>
+                            <WalletMoney amount={fromAmount} currency={fromAccount?.currency} />
+                        </Text>
+                    )}
+                    {!isSameCurrency && (
+                        <div className='wallets-transfer-receipt__amount-conversion'>
+                            <Text as='div' size='xl' weight='bold'>
+                                <WalletMoney amount={fromAmount} currency={fromAccount?.currency} />
+                                {'\u00A0'}
+                            </Text>
+                            <Text as='div' size='xl' weight='bold'>
+                                {'('}
+                                <WalletMoney amount={toAmount} currency={toAccount?.currency} />
+                                {')'}
+                            </Text>
+                        </div>
+                    )}
                     {Boolean(feeMessage) && (
                         <Text color='less-prominent' size='md'>
                             {feeMessage}

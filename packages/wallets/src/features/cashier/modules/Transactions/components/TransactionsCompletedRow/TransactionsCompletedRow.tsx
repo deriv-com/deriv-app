@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDebounceCallback } from 'usehooks-ts';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
-import { WalletClipboard } from '../../../../../../components';
+import { WalletClipboard, WalletMoney } from '../../../../../../components';
 import { THooks } from '../../../../../../types';
 import parseCryptoLongcode from '../../../../../../utils/parse-crypto-longcode';
 import { getTransactionLabels } from '../../constants';
@@ -97,8 +97,7 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
                     size='xs'
                     weight='bold'
                 >
-                    {transaction.amount && transaction.amount > 0 ? '+' : ''}
-                    {transaction.display_amount}
+                    <WalletMoney amount={transaction.amount} currency={currency} hasSign />
                 </Text>
                 <Text color='primary' size='2xs'>
                     <Localize

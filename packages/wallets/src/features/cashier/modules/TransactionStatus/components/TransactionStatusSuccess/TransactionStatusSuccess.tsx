@@ -26,6 +26,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                     {filteredTransactions?.slice(0, 3).map((transaction, index) => (
                         <React.Fragment key={transaction.id}>
                             <CryptoTransaction
+                                currency={wallet.currency || ''}
                                 currencyDisplayCode={wallet.currency_config?.code || ''}
                                 currencyDisplayFraction={wallet.currency_config?.fractional_digits || 0}
                                 key={transaction.id}

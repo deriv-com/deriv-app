@@ -15,5 +15,5 @@ export const displayMoney = (
         locale: 'en-US',
     });
 
-    return `${formattedAmount} ${currency}`;
+    return formattedAmount + (currency ? ` ${currency}` : '');
 };

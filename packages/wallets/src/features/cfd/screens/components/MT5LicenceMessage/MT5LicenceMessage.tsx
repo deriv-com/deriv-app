@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../../constants';
 import { TModifiedMT5Accounts } from '../../../types';
@@ -11,6 +11,7 @@ type TMT5LicenseMessageProps = {
 
 const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const isSvg = account.shortcode === JURISDICTION.SVG;
 
     return (
@@ -21,8 +22,9 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
                     <Localize
                         i18n_default_text='You are adding your {{accountTitle}} {{accountName}} account under {{companyName}} (company no. 273 LLC 2020).'
                         values={{
-                            accountName: getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL]
-                                .title,
+                            accountName: getMarketTypeDetails(localize, account.product)[
+                                account.market_type || MARKET_TYPE.ALL
+                            ].title,
                             accountTitle: PlatformDetails.mt5.title,
                             companyName: account.name,
                         }}
@@ -31,8 +33,9 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
                     <Localize
                         i18n_default_text='You are adding your {{accountTitle}} {{accountName}} account under {{companyName}}, regulated by the {{regulatoryAuthority}}{{licenceNumber}}.'
                         values={{
-                            accountName: getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL]
-                                .title,
+                            accountName: getMarketTypeDetails(localize, account.product)[
+                                account.market_type || MARKET_TYPE.ALL
+                            ].title,
                             accountTitle: PlatformDetails.mt5.title,
                             companyName: account.name,
                             licenceNumber: account.licence_number ? ` (licence no. ${account.licence_number})` : '',

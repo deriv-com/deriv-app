@@ -12,34 +12,26 @@ type TClientVerificationModal = {
     account: TModifiedMT5Accounts;
 };
 
-const getDescriptionText = (account: TModifiedMT5Accounts) => {
-    const { title } = getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL];
-
-    if (account.is_added) {
-        return <Localize i18n_default_text='Your account needs verification.' />;
-    }
-
-    return (
-        <Localize
-            i18n_default_text={
-                'Once your account details are complete, your {{accountName}} account will be ready for you.'
-            }
-            values={{ accountName: `MT5 ${title}` }}
-        />
-    );
-};
-
 const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }) => {
     const { localize } = useTranslations();
     const { isMobile } = useDevice();
-    const description = getDescriptionText(account);
+    const { title } = getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL];
 
     return (
         <ModalStepWrapper title={account.is_added ? localize('Verify account') : localize('Create account')}>
             <div className='wallets-client-verification-modal'>
                 <DerivLightUploadPoiIcon height={128} width={128} />
                 <Text align='center' size={isMobile ? 'md' : 'sm'}>
-                    {description}
+                    {account.is_added ? (
+                        <Localize i18n_default_text='Your account needs verification.' />
+                    ) : (
+                        <Localize
+                            i18n_default_text={
+                                'Once your account details are complete, your {{accountName}} account will be ready for you.'
+                            }
+                            values={{ accountName: `MT5 ${title}` }}
+                        />
+                    )}
                 </Text>
                 <DocumentsList account={account} />
             </div>

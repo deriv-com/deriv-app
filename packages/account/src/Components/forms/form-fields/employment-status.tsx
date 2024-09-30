@@ -4,13 +4,15 @@ import { Dropdown, SelectNative } from '@deriv/components';
 import { useTranslations } from '@deriv-com/translations';
 import { getEmploymentStatusList } from '../../../Constants/financial-information-list';
 import { useDevice } from '@deriv-com/ui';
+import clsx from 'clsx';
 
 type TEmploymentStatusFieldProps = {
     required: boolean;
     is_disabled: boolean;
+    fieldFocused?: boolean;
 };
 
-const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusFieldProps) => {
+const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploymentStatusFieldProps) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
@@ -21,7 +23,6 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                     {isDesktop ? (
                         <Dropdown
                             {...field}
-                            className='dropdown-field'
                             placeholder={required ? localize('Employment status*') : localize('Employment status')}
                             is_align_text_left
                             name={field.name}
@@ -34,6 +35,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                             handleBlur={handleBlur}
                             error={meta.touched ? meta.error : undefined}
                             disabled={is_disabled}
+                            className={clsx('dropdown-field', { 'focus-field': fieldFocused })}
                         />
                     ) : (
                         <SelectNative
@@ -49,6 +51,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                                 handleChange(e);
                             }}
                             disabled={is_disabled}
+                            className={clsx({ 'focus-field': fieldFocused })}
                         />
                     )}
                 </div>

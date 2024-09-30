@@ -22,6 +22,7 @@ type TEmploymentTaxDetailsContainerProps = {
     handleChange: (value: string) => void;
     tin_validation_config: TinValidations;
     id?: string;
+    should_focus_fields?: boolean;
 };
 
 const EmploymentTaxDetailsContainer = observer(
@@ -31,11 +32,14 @@ const EmploymentTaxDetailsContainer = observer(
         should_display_long_message,
         tin_validation_config,
         handleChange,
+        should_focus_fields,
     }: TEmploymentTaxDetailsContainerProps) => {
         const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
         const { data: residence_list } = useResidenceList();
         const { client } = useStore();
+
+        const { is_virtual, account_settings } = client;
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -117,22 +121,26 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const is_tin_required = !client.is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
 
         const should_show_no_tax_details_checkbox =
             (tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||
             Boolean(values.tin_skipped);
 
         const should_show_tax_confirm_checkbox =
-            !client.account_settings.tax_identification_number || touched.tax_identification_number;
+            !account_settings.tax_identification_number || touched.tax_identification_number;
 
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
         return (
             <div id={'employment-tax-section'}>
-                <EmploymentStatusField required is_disabled={isFieldDisabled('employment_status')} />
+                <EmploymentStatusField
+                    required
+                    is_disabled={isFieldDisabled('employment_status')}
+                    fieldFocused={should_focus_fields && !account_settings.employment_status}
+                />
 
-                {!client.account_settings.tax_identification_number && should_show_no_tax_details_checkbox && (
+                {!account_settings.tax_identification_number && should_show_no_tax_details_checkbox && (
                     <Checkbox
                         name='tin_skipped'
                         className='employment_tax_detail_field-checkbox'
@@ -164,6 +172,9 @@ const EmploymentTaxDetailsContainer = observer(
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
+                        fieldFocused={
+                            should_focus_fields && (!account_settings.tax_residence || !account_settings.residence)
+                        }
                     />
                 </div>
                 <div ref={tin_ref} className='account-form__fieldset'>
@@ -173,6 +184,12 @@ const EmploymentTaxDetailsContainer = observer(
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
+                        fieldFocused={
+                            should_focus_fields &&
+                            values.employment_status &&
+                            !values.tin_skipped &&
+                            (should_display_long_message || is_tin_required)
+                        }
                     />
                 </div>
                 {should_show_tax_confirm_checkbox && (

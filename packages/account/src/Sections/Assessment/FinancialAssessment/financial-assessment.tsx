@@ -40,6 +40,7 @@ import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';
 import { EmploymentStatusField } from 'Components/forms/form-fields';
 import { useDevice } from '@deriv-com/ui';
+import NavigateToPersonalDetails from './NavigateToPersonalDetails';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -194,6 +195,7 @@ const FinancialAssessment = observer(() => {
         updateAccountStatus,
         is_authentication_needed,
         is_financial_information_incomplete,
+        account_settings,
     } = client;
     const { isMobile, isTablet, isDesktop } = useDevice();
     const { platform, routeBackInApp } = common;
@@ -389,6 +391,15 @@ const FinancialAssessment = observer(() => {
         }
         return form_data;
     };
+
+    if (
+        !employment_status ||
+        !account_settings.account_opening_reason ||
+        !account_settings.tax_residence ||
+        !account_settings.tax_identification_number
+    ) {
+        return <NavigateToPersonalDetails />;
+    }
 
     return (
         <Formik initialValues={setInitialFormData()} enableReinitialize validate={validateFields} onSubmit={onSubmit}>

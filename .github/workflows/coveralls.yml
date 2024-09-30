@@ -52,8 +52,8 @@ jobs:
             nx-cache-${{ runner.os }}-
       # Step 7: Run Nx Build (Only Affected Projects)
       - name: Run Nx build for affected projects
-        run: |
-          npx nx run-many --target=build --parallel --exclude=apps --base=HEAD~1
+        run: npm run build:allcache
+        shell: bash
       - name: Test
         run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
       - name: Coveralls

@@ -71,7 +71,6 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     return (
         <React.Fragment>
             <Modal
-                handleBarIndex={2}
                 isOpened={is_modal_open}
                 isNonExpandable
                 isMobile

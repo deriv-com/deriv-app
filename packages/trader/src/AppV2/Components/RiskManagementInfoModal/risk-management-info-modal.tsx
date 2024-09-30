@@ -17,7 +17,6 @@ const RiskManagementInfoModal = ({ header_content, body_content, info_message }:
                 <LabelPairedCircleInfoSmRegularIcon fill='var(--component-textIcon-normal-default)' />
             </button>
             <Modal
-                handleBarIndex={2}
                 isNonExpandable
                 shouldCloseModalOnSwipeDown
                 isOpened={isVisible}

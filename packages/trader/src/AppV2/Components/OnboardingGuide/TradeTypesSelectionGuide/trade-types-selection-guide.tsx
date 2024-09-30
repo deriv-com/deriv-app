@@ -31,7 +31,6 @@ const TradeTypesSelectionGuide = () => {
 
     return (
         <Modal
-            handleBarIndex={2}
             isOpened={is_modal_open}
             isNonExpandable
             isMobile

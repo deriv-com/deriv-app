@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StandaloneGripDotsVerticalBoldIcon, StandaloneCircleMinusFillIcon } from '@deriv/quill-icons';
 import clsx from 'clsx';
+import { isTouchDevice } from '@deriv/shared';
 
 type TDraggableListItemProps = {
     active?: boolean;
@@ -43,7 +44,9 @@ const DraggableListItem: React.FC<TDraggableListItemProps> = ({
             <button
                 className={clsx('draggable-list-item__icon', { 'draggable-list-item__icon--disabled': disabled })}
                 data-testid='dt_draggable_list_item_icon'
-                onClick={onRightIconClick}
+                onClick={() => {
+                    if (!isTouchDevice() && onRightIconClick) onRightIconClick();
+                }}
                 onTouchMove={() => {
                     if (!is_moved) setIsMoved(true);
                 }}

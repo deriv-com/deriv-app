@@ -14,6 +14,17 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 
 global.ResizeObserver = ResizeObserver;
 
+jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        activeSymbols: [
+            { symbol: 'EURUSD', display_name: 'EUR/USD', exchange_is_open: 1 },
+            { symbol: 'GBPUSD', display_name: 'GBP/USD', exchange_is_open: 0 },
+            { symbol: 'CADAUD', display_name: 'CAD/AUD', exchange_is_open: 0 },
+        ],
+    })),
+}));
+
 describe('Duration', () => {
     let default_trade_store: TCoreStores;
 

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { getUnitMap } from '@deriv/shared';
+import { getUnitMap, isMarketClosed } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 
 type TDurationProps = {
     is_minimized?: boolean;
@@ -22,6 +23,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         trade_types,
         proposal_info,
         trade_type_tab,
+        symbol,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
@@ -33,6 +35,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
     const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const has_error = proposal_info[contract_type_object[0]]?.has_error;
+    const { activeSymbols } = useActiveSymbols();
 
     useEffect(() => {
         if (duration_unit == 'd') {
@@ -45,13 +48,17 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
 
     useEffect(() => {
         if (has_error && !is_minimized) {
-            addSnackbar({
-                message: <Localize i18n_default_text={proposal_info[contract_type_object[0]].message} />,
-                status: 'fail',
-                hasCloseButton: true,
-                style: { marginBottom: '48px' },
-            });
+            const error_obj = proposal_info[contract_type_object[0]];
+            if (error_obj.error_field !== 'symbol') {
+                addSnackbar({
+                    message: <Localize i18n_default_text={error_obj.message} />,
+                    status: 'fail',
+                    hasCloseButton: true,
+                    style: { marginBottom: '48px' },
+                });
+            }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [has_error, contract_type_object[0]]);
 
     const handleHour = React.useCallback(() => {
@@ -105,6 +112,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '-minimized' : ''}`} />}
                 value={getInputValues()}
                 noStatusIcon
+                disabled={isMarketClosed(activeSymbols, symbol)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setOpen(true)}
                 status={has_error ? 'error' : 'neutral'}

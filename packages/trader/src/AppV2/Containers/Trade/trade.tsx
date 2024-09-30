@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading, usePrevious } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
+import { getMinPayout, isCryptocurrency } from '@deriv/shared';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -30,6 +31,7 @@ const Trade = observer(() => {
     const {
         active_symbols,
         contract_type,
+        currency,
         has_cancellation,
         symbol,
         is_accumulator,
@@ -47,8 +49,13 @@ const Trade = observer(() => {
         positions_page: false,
     });
 
-    const default_stake = available_contract_types?.[contract_type]?.config?.default_stake;
+    const is_crypto = isCryptocurrency(currency ?? '');
+    //if it's a crypto account, we need to handle conversion
+    const default_stake = is_crypto
+        ? getMinPayout(currency ?? '')
+        : available_contract_types?.[contract_type]?.config?.default_stake;
     const prev_contract_type = usePrevious(contract_type);
+
     const symbols = React.useMemo(
         () =>
             active_symbols.map(({ display_name, symbol: underlying }) => ({

@@ -22,6 +22,13 @@ jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
     },
 }));
 
+jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        activeSymbols: [{ symbol: '1HZ100V', display_name: '"Volatility 100 (1s) Index"', exchange_is_open: 1 }],
+    })),
+}));
+
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
     DatePicker: jest.fn(({ onChange }) => (
@@ -47,10 +54,31 @@ describe('DurationActionSheetContainer', () => {
                 trade: {
                     duration: 30,
                     duration_unit: 'm',
-                    duration_units_list: ['t', 'm', 'h', 'd'],
+                    duration_units_list: [
+                        { value: 's', text: 'seconds' },
+                        { value: 't', text: 'ticks' },
+                        { value: 'm', text: 'minutes' },
+                        { value: 'h', text: 'hours' },
+                        { value: 'd', text: 'days' },
+                    ],
+                    duration_min_max: {
+                        daily: {
+                            min: 86400,
+                            max: 31536000,
+                        },
+                        intraday: {
+                            min: 15,
+                            max: 86400,
+                        },
+                        tick: {
+                            min: 1,
+                            max: 10,
+                        },
+                    },
                     onChangeMultiple: jest.fn(),
                     expiry_time: null,
                     contract_type: 'call',
+                    symbol: '1HZ100V',
                 },
             },
         });
@@ -91,7 +119,7 @@ describe('DurationActionSheetContainer', () => {
 
     it('should select duration in hours if duration is more than 59 minutes', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store, 'h');
+        renderDurationContainer(default_trade_store, 'h', jest.fn(), [2, 10]);
 
         const duration_chip = screen.getByText('1 h');
         userEvent.click(duration_chip);
@@ -129,13 +157,6 @@ describe('DurationActionSheetContainer', () => {
     });
 
     it('should call change duration on changing chips', async () => {
-        default_trade_store.modules.trade.duration_units_list = [
-            { value: 's', text: 'seconds' },
-            { value: 't', text: 'ticks' },
-            { value: 'm', text: 'minutes' },
-            { value: 'h', text: 'hours' },
-            { value: 'd', text: 'days' },
-        ];
         renderDurationContainer(default_trade_store, 'h');
 
         userEvent.click(screen.getByText('minutes'));
@@ -205,9 +226,7 @@ describe('DurationActionSheetContainer', () => {
         tomorrow.setDate(today.getDate() + 1);
 
         renderDurationContainer(default_trade_store, 'd', jest.fn(), [0, 0], jest.fn(), tomorrow);
-
         userEvent.click(screen.getByText('Save'));
-
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration: 1,
             duration_unit: 'd',

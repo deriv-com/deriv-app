@@ -4,7 +4,7 @@ import { TLanguageType } from '../types';
 
 const useLanguage = (preferredLanguage: TLanguageType | null) => {
     const [language, setLanguage] = useState<TLanguageType>(() => {
-        return preferredLanguage || 'EN';
+        return preferredLanguage ?? 'EN';
     });
     const initialLang = getInitialLanguage() as TLanguageType;
     const isFirstRender = useRef(true);

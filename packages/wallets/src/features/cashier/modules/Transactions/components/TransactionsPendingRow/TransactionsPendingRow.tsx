@@ -39,6 +39,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
         : localize('NA');
     const formattedConfirmations = getFormattedConfirmations(transaction.confirmations, transaction.status_code);
     const statusDescription = getStatusDescription(transaction.transaction_type, transaction.status_code);
+    const tooltipAlignment = isRtl ? 'left' : 'right';
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -116,7 +117,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                 ? {
                                       link: transaction.transaction_url,
                                       text: localize('View transaction hash on Blockchain'),
-                                      tooltipAlignment: isRtl ? 'left' : 'right',
+                                      tooltipAlignment,
                                   }
                                 : undefined
                         }
@@ -128,7 +129,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         hint={{
                             link: transaction.address_url,
                             text: localize('View address on Blockchain'),
-                            tooltipAlignment: isRtl ? 'left' : 'right',
+                            tooltipAlignment,
                         }}
                         name={localize('Address')}
                         value={formattedAddressHash}

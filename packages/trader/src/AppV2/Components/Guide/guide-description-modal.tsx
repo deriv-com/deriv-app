@@ -98,6 +98,7 @@ const GuideDescriptionModal = ({
                             data_testid='dt_video_player'
                             height='180px'
                             is_mobile
+                            increased_drag_area
                             src={video_src}
                         />
                     </div>

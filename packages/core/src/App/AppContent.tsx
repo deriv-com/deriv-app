@@ -17,7 +17,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookIsOn, useLiveChat } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import initHotjar from '../Utils/Hotjar';
 
@@ -34,6 +34,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         email,
         setIsPasskeySupported,
         account_settings,
+        setIsPhoneNumberVerificationEnabled,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
@@ -47,6 +48,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     });
     const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
+    });
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'phone_number_verification',
     });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -70,6 +74,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     React.useEffect(() => {
         switchLanguage(current_language);
     }, [current_language, switchLanguage]);
+
+    React.useEffect(() => {
+        if (isPhoneNumberVerificationGBLoaded) {
+            setIsPhoneNumberVerificationEnabled(!!isPhoneNumberVerificationEnabled);
+        }
+    }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

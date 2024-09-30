@@ -34,23 +34,7 @@ jobs:
       - name: Bootstrap 
         run: npm run bootstrap:ci
         shell: bash
-      # Step 5: Generate Nx Cache Key
-      # This step generates a cache key based on the latest git commit hash affecting Nx projects
-      - name: Generate Nx cache key
-        id: generate_cache_key
-        run: |
-          echo "Cache key = nx-cache-$(git rev-parse HEAD)"
-          echo "::set-output name=cache_key::nx-cache-$(git rev-parse HEAD)"
-      # Step 6: Cache Nx build cache
-      - name: Cache Nx build cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules/.cache/nx
-          key: ${{ steps.generate_cache_key.outputs.cache_key }}
-          restore-keys: |
-            nx-cache-${{ runner.os }}-
-      # Step 7: Run Nx Build (Only Affected Projects)
+      - uses: nrwl/nx-set-shas@v4
       - name: Run Nx build for affected projects
         run: npm run build:allcache
         shell: bash

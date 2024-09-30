@@ -7,7 +7,7 @@ import {
 } from '../../Components/forms/form-fields';
 import { isFieldImmutable } from '../../Helpers/utils';
 import { Checkbox, useOnClickOutside } from '@deriv/components';
-import { useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { getLegalEntityName } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/hooks';
@@ -35,7 +35,6 @@ const EmploymentTaxDetailsContainer = observer(
         const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
         const { data: residence_list } = useResidenceList();
-        const { localize } = useTranslations();
         const { client } = useStore();
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
@@ -151,7 +150,7 @@ const EmploymentTaxDetailsContainer = observer(
                             );
                         }}
                         value={values.tin_skipped}
-                        label={localize('I do not have tax information')}
+                        label={<Localize i18n_default_text='I do not have tax information' />}
                         withTabIndex={0}
                         data-testid='tin_skipped'
                         label_font_size={!isDesktop ? 'xxs' : 'xs'}
@@ -186,14 +185,16 @@ const EmploymentTaxDetailsContainer = observer(
                         }
                         value={values.tax_identification_confirm}
                         label={
-                            should_display_long_message
-                                ? localize(
-                                      'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                                      {
-                                          legal_entity_name: getLegalEntityName('maltainvest'),
-                                      }
-                                  )
-                                : localize('I confirm that my tax information is accurate and complete.')
+                            should_display_long_message ? (
+                                <Localize
+                                    i18n_default_text='I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.'
+                                    values={{
+                                        legal_entity_name: getLegalEntityName('maltainvest'),
+                                    }}
+                                />
+                            ) : (
+                                <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
+                            )
                         }
                         withTabIndex={0}
                         data-testid='tax_identification_confirm'

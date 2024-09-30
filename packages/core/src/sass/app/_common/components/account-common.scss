@@ -1037,6 +1037,6 @@
 }
 
 .focus-field {
-    border-radius: 4px;
+    border-radius: $BORDER_RADIUS;
     border: 1px solid var(--text-prominent);
 }

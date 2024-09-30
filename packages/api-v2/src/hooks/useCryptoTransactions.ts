@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSubscription from '../useSubscription';
-import useActiveAccount from './useActiveAccount';
-import { displayMoney } from '../utils';
 
 type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useSubscription<'cashier_payments'>>['data']>['cashier_payments']
@@ -25,10 +23,6 @@ type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type
 const useCryptoTransactions = () => {
     const { subscribe, data, ...rest } = useSubscription('cashier_payments');
     const [transactions, setTransactions] = useState<TModifiedTransaction[]>();
-
-    const { data: account } = useActiveAccount();
-    const display_code = account?.currency_config?.display_code || 'USD';
-    const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     // Reset transactions data
     const resetData = useCallback(() => setTransactions(undefined), []);
@@ -68,14 +62,12 @@ const useCryptoTransactions = () => {
 
         return transactions.map(transaction => ({
             ...transaction,
-            /** Formatted amount */
-            formatted_amount: displayMoney(transaction.amount || 0, display_code, { fractional_digits }),
             /** Determine if the transaction is a deposit or not. */
             is_deposit: transaction.transaction_type === 'deposit',
             /** Determine if the transaction is a withdrawal or not. */
             is_withdrawal: transaction.transaction_type === 'withdrawal',
         }));
-    }, [display_code, fractional_digits, transactions]);
+    }, [transactions]);
 
     // Sort transactions by submit time.
     const sorted_transactions = useMemo(

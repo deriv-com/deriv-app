@@ -5,8 +5,8 @@ import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
+import { WalletCurrencyCard, WalletMoney } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../../types';
 import { getFormattedDateString, getFormattedTimeString } from '../../../../../../utils/utils';
@@ -25,10 +25,10 @@ type TProps = {
 };
 
 const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
-    const { data } = useActiveWalletAccount();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
-    const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
+    const displayCode = useMemo(() => activeWallet?.currency_config?.display_code || 'USD', [activeWallet]);
     const modal = useModal();
     const isRtl = useIsRtl();
     const formattedTransactionHash = transaction.transaction_hash
@@ -94,7 +94,11 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
             <Divider color='var(--border-divider)' />
             <div className='wallets-transactions-pending-row'>
                 <div className='wallets-transactions-pending-row__wallet-info'>
-                    <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
+                    <WalletCurrencyCard
+                        currency={activeWallet?.currency || 'USD'}
+                        isDemo={activeWallet?.is_virtual}
+                        size='md'
+                    />
                     <div className='wallets-transactions-pending-row__column'>
                         <Text align='start' color='primary' size='xs'>
                             {getTransactionLabels(localize)[transaction.transaction_type]}
@@ -138,7 +142,15 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         <React.Fragment>
                             <TransactionsPendingRowField
                                 name={localize('Amount')}
-                                value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`}
+                                value={
+                                    <WalletMoney
+                                        amount={
+                                            transaction.is_deposit ? transaction.amount : -(transaction.amount || 0)
+                                        }
+                                        currency={activeWallet?.currency}
+                                        hasSign
+                                    />
+                                }
                                 valueTextProps={{
                                     color: transaction.is_deposit ? 'success' : 'red',
                                 }}
@@ -177,8 +189,11 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                 size='sm'
                                 weight='bold'
                             >
-                                {transaction.is_deposit ? '+' : '-'}
-                                {transaction.formatted_amount}
+                                <WalletMoney
+                                    amount={transaction.is_deposit ? transaction.amount : -(transaction.amount || 0)}
+                                    currency={activeWallet?.currency}
+                                    hasSign
+                                />
                             </Text>
                         </div>
                     )}

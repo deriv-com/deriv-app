@@ -123,7 +123,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                 <Localize
                     components={[
                         <a
-                            className='wallets-crypto-transaction__red-text'
+                            className='wallets-crypto-transaction__red-textt'
                             href={transaction.address_url}
                             key={0}
                             rel='noopener noreferrer'

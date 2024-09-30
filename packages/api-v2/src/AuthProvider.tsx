@@ -41,7 +41,7 @@ type AuthProviderProps = {
     cookieTimeout?: number;
     loginIDKey?: string;
     selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
-    logout: () => Promise<void>;
+    logout?: () => Promise<void>;
 };
 
 // Create the context
@@ -192,12 +192,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                         setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(async () => {
-                        await logout().finally(() => {
-                            setIsAuthorized(false);
-                            setIsLoading(false);
-                            setIsInitializing(false);
-                            setIsError(true);
-                        });
+                        await logout?.();
+                        setIsLoading(false);
+                        setIsInitializing(false);
+                        setIsError(true);
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -207,12 +205,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             })
             .catch(async () => {
                 if (isMounted) {
-                    await logout().finally(() => {
-                        setIsAuthorized(false);
-                        setIsLoading(false);
-                        setIsInitializing(false);
-                        setIsError(true);
-                    });
+                    await logout?.();
+                    setIsAuthorized(false);
+                    setIsLoading(false);
+                    setIsInitializing(false);
+                    setIsError(true);
                 }
             });
 
@@ -243,7 +240,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                     setIsSwitching(false);
                 })
                 .catch(async () => {
-                    await logout();
+                    await logout?.();
                 });
         },
         [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]

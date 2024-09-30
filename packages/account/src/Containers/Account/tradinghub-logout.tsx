@@ -12,7 +12,14 @@ import { Localize } from '@deriv/translations';
 const TradingHubLogout = ({ handleOnLogout }: { handleOnLogout: () => Promise<void> }) => {
     const { oAuthLogout } = useOauth2({ handleLogout: handleOnLogout });
     return (
-        <div className='dc-vertical-tab__header-account__logout-tab' onClick={oAuthLogout} data-testid='dt_logout_tab'>
+        <div
+            className='dc-vertical-tab__header-account__logout-tab'
+            onClick={oAuthLogout}
+            data-testid='dt_logout_tab'
+            onKeyDown={oAuthLogout}
+            role='button'
+            tabIndex={0}
+        >
             <div className='dc-vertical-tab__header-account__logout'>
                 <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
                 <Text size='xs' weight='bold'>

@@ -17,7 +17,7 @@ type TErrorContent = {
 
 const TransferErrorScreen: React.FC<TProps> = ({ error, resetError }) => {
     const defaultContent: TErrorContent = {
-        buttonText: <Localize i18n_default_text='Make an another transfer' />,
+        buttonText: <Localize i18n_default_text='Make another transfer' />,
         message: error.message,
         onClick: () => {
             resetError?.();

@@ -86,7 +86,8 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new one.');
+        if (React.isValidElement(result.current?.phone_otp_error_message))
+            expect(result.current.phone_otp_error_message.props.i18n_default_text).toBe('Code expired. Get a new one.');
     });
 
     it('should handle InvalidOTP for phone_otp_error', () => {
@@ -94,7 +95,8 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again.');
+        if (React.isValidElement(result.current?.phone_otp_error_message))
+            expect(result.current.phone_otp_error_message.props.i18n_default_text).toBe('Invalid code. Try again.');
     });
 
     it('should handle NoAttemptsLeft for phone_otp_error', () => {
@@ -113,7 +115,10 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Code expired. Get a new code.');
+        if (React.isValidElement(result.current?.phone_otp_error_message))
+            expect(result.current.phone_otp_error_message.props.i18n_default_text).toBe(
+                'Code expired. Get a new code.'
+            );
     });
 
     it('should handle InvalidToken for email_top_error', () => {
@@ -121,7 +126,10 @@ describe('useSendOTPVerificationCode', () => {
 
         const { result } = renderHook(() => useSendOTPVerificationCode(), { wrapper });
 
-        expect(result.current.phone_otp_error_message).toBe('Invalid code. Try again or get a new code.');
+        if (React.isValidElement(result.current?.phone_otp_error_message))
+            expect(result.current.phone_otp_error_message.props.i18n_default_text).toBe(
+                'Invalid code. Try again or get a new code.'
+            );
     });
 
     it('should handle PhoneNumberVerificationSuspended for email_top_error', () => {

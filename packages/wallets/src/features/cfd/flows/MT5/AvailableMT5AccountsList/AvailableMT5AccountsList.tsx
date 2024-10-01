@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { THooks } from 'src/types';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
@@ -16,7 +17,7 @@ import { getClientVerification } from '../../../utils';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {
-    account: TModifiedMT5Accounts;
+    account: THooks.SortedMT5Accounts;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -32,7 +33,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const platformStatus = getPlatformStatus(account.platform);
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
     const isVirtual = activeWallet?.is_virtual;
-    const { isVerificationRequired } = getClientVerification(account);
+    const { isVerificationRequired } = getClientVerification(account as TModifiedMT5Accounts);
 
     const onButtonClick = useCallback(() => {
         if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
@@ -45,9 +46,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
                 if (!isVirtual && isVerificationRequired) {
-                    show(<ClientVerificationModal account={account} />);
+                    show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />);
                 } else {
-                    show(<MT5PasswordModal account={account} isVirtual={isVirtual} />);
+                    show(<MT5PasswordModal account={account as TModifiedMT5Accounts} isVirtual={isVirtual} />);
                 }
                 setModalState('marketType', account.market_type);
                 setModalState('selectedJurisdiction', account.shortcode);

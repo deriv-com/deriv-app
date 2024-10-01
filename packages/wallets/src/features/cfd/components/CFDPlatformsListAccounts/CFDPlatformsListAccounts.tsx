@@ -51,7 +51,6 @@ const CFDPlatformsListAccounts: React.FC = () => {
                     return <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />;
 
                 return (
-                    // @ts-expect-error - remove this once kyc_status types are available for mt5_login_list and trading_platform_available_accounts from BE
                     <AvailableMT5AccountsList account={account} key={`available-mt5-list${account.name}-${index}`} />
                 );
             })}

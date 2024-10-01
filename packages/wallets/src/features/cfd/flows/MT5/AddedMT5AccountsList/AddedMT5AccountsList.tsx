@@ -26,7 +26,7 @@ import { MT5TradeModal, TradingPlatformStatusModal, VerificationFailedModal } fr
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
-    account: THooks.MT5AccountsList;
+    account: THooks.SortedMT5Accounts;
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {

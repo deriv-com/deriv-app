@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -18,7 +18,6 @@ const DerivAppsTradingAccount = () => {
     const { localize } = useTranslations();
     const { isDesktop } = useDevice();
     const history = useHistory();
-    const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
@@ -56,7 +55,6 @@ const DerivAppsTradingAccount = () => {
                             <Text align='start' size='sm' weight='bold'>
                                 {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
                                     fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                                    preferred_language: authorizeData?.preferred_language,
                                 })}
                             </Text>
                         )}

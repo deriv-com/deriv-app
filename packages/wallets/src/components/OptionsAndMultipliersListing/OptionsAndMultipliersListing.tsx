@@ -1,10 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { getOptionsAndMultipliersContent } from '../../constants/constants';
+import useIsRtl from '../../hooks/useIsRtl';
 import { TRoute } from '../../routes/Router';
 import { WalletLink } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
@@ -14,7 +18,9 @@ import './OptionsAndMultipliersListing.scss';
 
 const OptionsAndMultipliersListing = () => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const history = useHistory();
+    const isRtl = useIsRtl();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     return (
@@ -36,7 +42,7 @@ const OptionsAndMultipliersListing = () => {
                 <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
-                {getOptionsAndMultipliersContent().map(account => {
+                {getOptionsAndMultipliersContent(localize).map(account => {
                     const { description, key, redirect, title } = account;
                     return (
                         <TradingAccountCard
@@ -62,10 +68,17 @@ const OptionsAndMultipliersListing = () => {
                                 </TradingAccountCard.Content>
                                 {activeLinkedToTradingAccount?.loginid && (
                                     <TradingAccountCard.Button>
-                                        <LabelPairedChevronRightCaptionRegularIcon
-                                            data-testid='dt_label_paired_chevron'
-                                            width={16}
-                                        />
+                                        {isRtl ? (
+                                            <LabelPairedChevronLeftCaptionRegularIcon
+                                                data-testid='dt_label_paired_chevron'
+                                                width={16}
+                                            />
+                                        ) : (
+                                            <LabelPairedChevronRightCaptionRegularIcon
+                                                data-testid='dt_label_paired_chevron'
+                                                width={16}
+                                            />
+                                        )}
                                     </TradingAccountCard.Button>
                                 )}
                             </TradingAccountCard.Section>

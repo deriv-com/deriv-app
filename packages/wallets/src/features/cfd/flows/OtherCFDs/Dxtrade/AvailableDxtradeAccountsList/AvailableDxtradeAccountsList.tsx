@@ -1,14 +1,19 @@
 import React from 'react';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { PlatformDetails } from '../../../../constants';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
 
 const AvailableDxtradeAccountsList: React.FC = () => {
     const { show } = useModal();
+    const isRtl = useIsRtl();
 
     return (
         <TradingAccountCard onClick={() => show(<DxtradeEnterPasswordModal />)}>
@@ -27,7 +32,11 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                     </Text>
                 </TradingAccountCard.Content>
                 <TradingAccountCard.Button>
-                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                    {isRtl ? (
+                        <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                    ) : (
+                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                    )}
                 </TradingAccountCard.Button>
             </TradingAccountCard.Section>
         </TradingAccountCard>

@@ -1,15 +1,20 @@
 import React from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
+import useIsRtl from '../../../../../hooks/useIsRtl';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
 
 const AddedCTraderAccountsList: React.FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { show } = useModal();
+    const isRtl = useIsRtl();
 
     return (
         <React.Fragment>
@@ -32,7 +37,11 @@ const AddedCTraderAccountsList: React.FC = () => {
                             </Text>
                         </TradingAccountCard.Content>
                         <TradingAccountCard.Button>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                            {isRtl ? (
+                                <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                            ) : (
+                                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                            )}
                         </TradingAccountCard.Button>
                     </TradingAccountCard.Section>
                 </TradingAccountCard>

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
+    LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
     LabelPairedCircleExclamationLgBoldIcon,
     LabelPairedTriangleExclamationMdBoldIcon,
@@ -11,6 +12,7 @@ import { InlineMessage, Text } from '@deriv-com/ui';
 import { WalletDisabledAccountModal, WalletStatusBadge } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
+import useIsRtl from '../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../types';
 import { PlatformStatusBadge } from '../../../components/PlatformStatusBadge';
 import {
@@ -99,13 +101,14 @@ const TradingAccountJurisdictionStatusInfo: React.FC<TTradingAccountJurisdiction
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const [shouldShowDisabledAccountModal, setShouldShowDisabledAccountModal] = useState(false);
-    const { localize } = useTranslations();
     const { getVerificationStatus } = useJurisdictionStatus();
+    const { localize } = useTranslations();
+    const isRtl = useIsRtl();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails(account.product)[account.market_type ?? MARKET_TYPE.ALL];
+    const { title } = getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL];
     const { show } = useModal();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -123,7 +126,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     // @ts-expect-error The enabled property exists, but the api-types are invalid
     const isAccountDisabled = !account?.rights?.enabled;
     const shouldShowBalance = !(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && !isAccountDisabled;
-
     return (
         <>
             <TradingAccountCard
@@ -153,7 +155,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 }}
             >
                 <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                    {getMarketTypeDetails(account.product)[account.market_type || MARKET_TYPE.ALL].icon}
+                    {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
                 </TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
                     <TradingAccountCard.Content
@@ -162,9 +164,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         })}
                     >
                         <div className='wallets-added-mt5__details-title'>
-                            <Text align='start' size='sm'>
-                                {title}
-                            </Text>
+                            <Text size='sm'>{title}</Text>
                         </div>
                         {shouldShowBalance && (
                             <Text align='start' size='sm' weight='bold'>
@@ -195,7 +195,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             />
                         ) : (
                             <div className='wallets-available-mt5__icon'>
-                                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                {isRtl ? (
+                                    <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                                ) : (
+                                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                )}
                             </div>
                         )}
                     </TradingAccountCard.Button>

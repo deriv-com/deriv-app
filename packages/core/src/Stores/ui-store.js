@@ -130,6 +130,11 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //phone number verification
+    should_show_phone_number_otp = false;
+    is_forced_to_exit_pnv = false;
+    is_phone_verification_completed = false;
+
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
 
@@ -170,6 +175,7 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
+    is_redirected_from_email = false;
     is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
@@ -250,6 +256,8 @@ export default class UIStore extends BaseStore {
             header_extension: observable,
             is_account_needed_modal_on: observable,
             is_account_settings_visible: observable,
+            is_forced_to_exit_pnv: observable,
+            is_phone_verification_completed: observable,
 
             is_accounts_switcher_on: observable,
 
@@ -261,6 +269,7 @@ export default class UIStore extends BaseStore {
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_from_signup_account: observable,
+            is_redirected_from_email: observable,
             is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
@@ -299,6 +308,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_phone_number_otp: observable,
             should_show_same_dob_phone_modal: observable,
             should_show_deposit_now_or_later_modal: observable,
             should_show_crypto_transaction_processing_modal: observable,
@@ -352,6 +362,7 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
+            setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -361,6 +372,8 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
+            setIsForcedToExitPnv: action.bound,
+            setIsPhoneVerificationCompleted: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsFromSignupAccount: action.bound,
             setIsNativepickerVisible: action.bound,
@@ -372,6 +385,7 @@ export default class UIStore extends BaseStore {
             toggleShouldShowRealAccountsList: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
+            setRedirectFromEmail: action.bound,
             setIsWalletModalVisible: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -450,6 +464,18 @@ export default class UIStore extends BaseStore {
 
     setIsRealTabEnabled(is_real_tab_enabled) {
         this.is_real_tab_enabled = is_real_tab_enabled;
+    }
+
+    setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {
+        this.should_show_phone_number_otp = should_show_phone_number_otp;
+    }
+
+    setIsForcedToExitPnv(is_forced_to_exit_pnv) {
+        this.is_forced_to_exit_pnv = is_forced_to_exit_pnv;
+    }
+
+    setIsPhoneVerificationCompleted(is_phone_verification_completed) {
+        this.is_phone_verification_completed = is_phone_verification_completed;
     }
 
     setHashedValue(url_hashed_values) {
@@ -864,6 +890,10 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setRedirectFromEmail(value) {
+        this.is_redirected_from_email = value;
     }
 
     setIsWalletModalVisible(value) {

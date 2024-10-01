@@ -40,14 +40,14 @@ const DocumentSubmission: React.FC = () => {
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
-                    <Text size='sm' weight='bold'>
+                    <Text align='start' size='sm' weight='bold'>
                         {localize(
                             'We accept only these types of documents as proof of address. The document must be recent (issued within last {{timePeriod}} months) and include your name and address:',
                             { timePeriod: isEuRegion ? '6' : '12' }
                         )}
                     </Text>
 
-                    <ul className='wallets-poa__document__container__disclaimer__list'>
+                    <ul className='wallets-poa__document__container__disclaimer-list'>
                         {listItems.map(item => (
                             <li key={`list-item-${item}`}>
                                 <Text size='sm'>{item}</Text>

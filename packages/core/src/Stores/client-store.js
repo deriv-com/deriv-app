@@ -119,6 +119,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -161,6 +162,7 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -240,6 +242,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -412,6 +415,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -2254,10 +2258,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2753,6 +2759,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPasskeySupported(is_passkey_supported = false) {
         this.is_passkey_supported = is_passkey_supported;
+    }
+
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

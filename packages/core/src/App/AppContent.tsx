@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
+import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import P2PIFrame from 'Modules/P2PIFrame';
@@ -38,7 +39,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         featureFlag: 'phone_number_verification',
     });
     const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(true);
+    const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
     const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';

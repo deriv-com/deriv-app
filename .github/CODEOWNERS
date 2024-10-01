@@ -64,7 +64,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @balakrishna-deriv @yashim-deriv @wojciech-deriv @matin-deriv @markwylde-deriv
+*                                                               @balakrishna-deriv @yashim-deriv @wojciech-deriv @matin-deriv
 
 
 # ==============================================================

@@ -19,8 +19,9 @@
                 margin: 1.6rem auto;
 
                 &:hover {
-                    background: var(--icon-grey-background-hover);
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); // Add shadow on hover
+                    background: var(--state-normal);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    transition-delay: 0.2s;
                 }
 
                 &--disabled {

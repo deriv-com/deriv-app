@@ -82,40 +82,44 @@ const useRequestPhoneNumberOTP = () => {
         };
     };
 
+    const phone_number_taken_message = (
+        <Localize
+            i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0>live chat</0> for help.'
+            components={[
+                <span
+                    key={0}
+                    className='phone-verification__card--inputfield__livechat'
+                    onClick={() => window.LC_API.open_chat_window()}
+                />,
+            ]}
+        />
+    );
+    const request_other_carrier_message = (
+        <Localize
+            i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+            values={{
+                current_carrier: getCurrentCarrier(),
+                other_carriers: getOtherCarrier(),
+            }}
+        />
+    );
+    const invalid_phone_message = (
+        <Localize i18n_default_text='Enter a valid phone number, including the country code (e.g. +15417541234).' />
+    );
+
     const formatError = ({ code, message }: TFormatError) => {
         setIsDisabledRequestButton(true);
         switch (code) {
             case 'PhoneNumberTaken':
-                setErrorMessage(
-                    <Localize
-                        i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0>live chat</0> for help.'
-                        components={[
-                            <span
-                                key={0}
-                                className='phone-verification__card--inputfield__livechat'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
-                            />,
-                        ]}
-                    />
-                );
+                setErrorMessage(phone_number_taken_message);
                 break;
             case 'PhoneNumberVerificationSuspended':
                 setIsDisabledRequestButton(false);
-                setErrorMessage(
-                    <Localize
-                        i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
-                        values={{
-                            current_carrier: getCurrentCarrier(),
-                            other_carriers: getOtherCarrier(),
-                        }}
-                    />
-                );
+                setErrorMessage(request_other_carrier_message);
                 break;
             case 'InvalidPhone':
                 setIsDisabledRequestButton(false);
-                setErrorMessage(
-                    <Localize i18n_default_text='Enter a valid phone number, including the country code (e.g. +15417541234).' />
-                );
+                setErrorMessage(invalid_phone_message);
                 break;
             default:
                 setErrorMessage(message);

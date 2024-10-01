@@ -15,7 +15,7 @@ jest.mock('@deriv/hooks', () => ({
     useGetStatus: jest.fn(() => ({
         client_kyc_status: { poi_status: 'rejected', poa_status: 'verified', valid_tin: 1 },
     })),
-    useIsSelectedMT5AccountCreated: jest.fn(() => ({ is_selected_MT5_account_created: true })),
+    useIsSelectedMT5AccountCreated: jest.fn(() => ({ is_selected_MT5_account_created: false })),
 }));
 
 jest.mock('@deriv/quill-icons', () => ({
@@ -68,8 +68,8 @@ describe('<VerificationDocsListModal />', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    it('should render the modal', () => {
-        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValueOnce({ is_selected_MT5_account_created: true });
+    it('should render the modal with details when mt5 account is created', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: true });
         (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: false });
         (useGetStatus as jest.Mock).mockReturnValueOnce({
             client_kyc_status: {
@@ -79,13 +79,53 @@ describe('<VerificationDocsListModal />', () => {
             },
         });
         renderComponent({});
-        expect(screen.getByText('Verify your account')).toBeInTheDocument();
+        expect(screen.getByText('Verification required')).toBeInTheDocument();
+        expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
+        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
+        expect(screen.getByText('Proof of address')).toBeInTheDocument();
+        expect(screen.queryByText('Personal Details')).not.toBeInTheDocument();
     });
 
-    it('should show the DerivLightUploadPoiIcon and text', () => {
-        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValueOnce({ is_selected_MT5_account_created: true });
+    it('should render the modal with details when mt5 account is not created', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
+        (useGetStatus as jest.Mock).mockReturnValueOnce({
+            client_kyc_status: {
+                poi_status: 'pending',
+                poa_status: 'none',
+                valid_tin: 0,
+            },
+        });
         renderComponent({});
         expect(screen.getByText('DerivLightUploadPoiIcon')).toBeInTheDocument();
+        expect(screen.getByText('Complete your profile')).toBeInTheDocument();
+        expect(screen.getByText('Complete your account details to proceed:')).toBeInTheDocument();
+        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
+        expect(screen.getByText('Proof of address')).toBeInTheDocument();
+        expect(screen.queryByText('Personal Details')).toBeInTheDocument();
+    });
+    it('should render the modal with details when platform is not mt5', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
+        (useGetStatus as jest.Mock).mockReturnValueOnce({
+            client_kyc_status: {
+                poi_status: 'pending',
+                poa_status: 'none',
+            },
+        });
+        const mock_store = mockStore({
+            traders_hub: {
+                is_verification_docs_list_modal_visible: true,
+                setVerificationModalOpen: jest.fn(),
+            },
+            common: {
+                platform: '',
+            },
+        });
+        renderComponent({ store: mock_store });
+        expect(screen.getByText('DerivLightUploadPoiIcon')).toBeInTheDocument();
+        expect(screen.getByText('Verification required')).toBeInTheDocument();
         expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
+        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
+        expect(screen.getByText('Proof of address')).toBeInTheDocument();
+        expect(screen.queryByText('Personal Details')).not.toBeInTheDocument();
     });
 });

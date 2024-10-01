@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from '@deriv/components';
 import { ACCOUNT_BADGE_STATUS, TAccountBadgeStatus } from '@deriv/shared';
 import { Localize } from '@deriv-com/translations';
 

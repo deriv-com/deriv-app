@@ -79,17 +79,19 @@ const VerificationDocsListModal = observer(() => {
     const { platform } = common;
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     const { isMobile } = useDevice();
-    const title =
-        platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created
-            ? localize('Complete your profile')
-            : localize('Verification required');
+    const getTitle = () =>
+        platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
+            <Localize i18n_default_text='Complete your profile' />
+        ) : (
+            <Localize i18n_default_text='Verification required' />
+        );
     return (
         <Suspense fallback={<UILoader />}>
             {!isMobile ? (
                 <Modal
                     is_open={is_verification_docs_list_modal_visible}
                     toggleModal={() => setVerificationModalOpen(false)}
-                    title={title}
+                    title={getTitle()}
                     width='44rem'
                     should_header_stick_body={false}
                     has_close_icon
@@ -99,7 +101,7 @@ const VerificationDocsListModal = observer(() => {
             ) : (
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={title}
+                    title={getTitle()}
                     visible={is_verification_docs_list_modal_visible}
                     onClose={() => setVerificationModalOpen(false)}
                 >

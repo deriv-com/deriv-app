@@ -218,7 +218,6 @@ const TradingAppCard = ({
                         }
                     >
                         {getAppDescription()}
-                        {/* {is_existing_real_ctrader_account ? '' : app_desc} */}
                     </Text>
                     {mt5_acc_auth_status && action_type === 'multi-action' && (
                         <StatusBadge

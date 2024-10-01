@@ -2013,8 +2013,12 @@ export default class ClientStore extends BaseStore {
     }
 
     async updateMT5AccountDetails() {
-        await WS.mt5LoginList().then(this.responseMt5LoginList);
-        WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
+        if (this.is_logged_in) {
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized
+                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
+                .then(this.responseTradingPlatformAvailableAccounts);
+        }
     }
 
     setInitialized(is_initialized) {

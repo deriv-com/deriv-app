@@ -53,10 +53,10 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { isMobile } = useDevice();
     const { setVerificationModalOpen } = traders_hub;
     const history = useHistory();
-    const is_document_submitted = [AUTH_STATUS_CODES.PENDING, AUTH_STATUS_CODES.VERIFIED].includes(status);
+    const is_document_verified = status === AUTH_STATUS_CODES.VERIFIED;
 
     const onClickItem = () => {
-        if (is_document_submitted) {
+        if (is_document_verified) {
             return;
         }
         history.push(route);
@@ -66,7 +66,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     return (
         <div
             className={classNames('verification-docs-list-modal__content-list-item', {
-                'verification-docs-list-modal__content-list-item--disabled': is_document_submitted,
+                'verification-docs-list-modal__content-list-item--disabled': is_document_verified,
             })}
             onClick={onClickItem}
         >
@@ -86,7 +86,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
                     />
                     <LabelPairedChevronRightMdRegularIcon
                         className='verification-docs-list-modal__card--icon'
-                        fill={is_document_submitted ? 'var(--text-disabled-1)' : 'var(--text-prominent)'}
+                        fill={is_document_verified ? 'var(--text-disabled-1)' : 'var(--text-prominent)'}
                     />
                 </div>
             )}

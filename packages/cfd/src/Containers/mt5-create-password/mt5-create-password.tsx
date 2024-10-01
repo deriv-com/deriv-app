@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, FormikErrors, FormikHelpers, Form } from 'formik';
+import { Formik, FormikErrors, FormikHelpers } from 'formik';
 import { FormSubmitButton, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { getCFDPlatformLabel, getCFDPlatformNames, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -69,13 +69,15 @@ const MT5CreatePassword = ({
                 validateForm,
             }) => (
                 <React.Fragment>
-                    <Form>
+                    <form className='mt5-password-modal-form'>
                         <div
                             className='mt5-password-modal__content dc-modal__container_mt5-password-modal__body'
                             data-testid='dt_mt5_create_password'
                         >
                             <div className='mt5-password-modal__create-password-content'>
-                                <Icon icon='IcMt5Password' size={100} />
+                                <div className='mt5-password-modal__create-password-icon'>
+                                    <Icon icon='IcMt5Password' size={100} />
+                                </div>
 
                                 <Text
                                     size='xs'
@@ -141,7 +143,7 @@ const MT5CreatePassword = ({
                                 />
                             </div>
                         </div>
-                    </Form>
+                    </form>
                 </React.Fragment>
             )}
         </Formik>

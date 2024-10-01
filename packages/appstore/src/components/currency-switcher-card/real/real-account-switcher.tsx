@@ -48,6 +48,7 @@ const AccountNeedsVerification = observer(() => {
                 icon={badge_icon}
                 text={badge_text}
                 icon_size={badge_icon_size}
+                onClick={onClickBanner}
             />
         </CurrencySwitcherContainer>
     );

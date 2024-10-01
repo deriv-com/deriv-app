@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ListItem from '../ListItem';
-import { useStore, StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import { StatusBadge } from '@deriv/components';
 import { AUTH_STATUS_CODES } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

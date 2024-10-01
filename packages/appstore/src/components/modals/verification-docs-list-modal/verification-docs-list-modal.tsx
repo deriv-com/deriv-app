@@ -4,7 +4,7 @@ import { DerivLightUploadPoiIcon, DerivLightWaitingPoaIcon } from '@deriv/quill-
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
-import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES, CFD_text } from '@deriv/shared';
+import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES } from '@deriv/shared';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import ListItem from './ListItem';
 import './verification-docs-list-modal.scss';
@@ -26,10 +26,8 @@ const getIcon = (items: TItems[]) => {
 
 const VerificationDocsListModalContent = observer(() => {
     const {
-        modules: { cfd },
         common: { platform },
     } = useStore();
-    const { mt5_companies, account_type } = cfd;
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
@@ -61,13 +59,7 @@ const VerificationDocsListModalContent = observer(() => {
             {getIcon(items)}
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
                 {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
-                    <Localize
-                        i18n_default_text='Once your account details are complete, your {{platform}} {{product}} account will be ready for you.'
-                        values={{
-                            platform: CFD_text[platform],
-                            product: mt5_companies[account_type.category][account_type.type]?.title || '',
-                        }}
-                    />
+                    <Localize i18n_default_text='Complete your account details to proceed:' />
                 ) : (
                     <Localize i18n_default_text='Your account needs verification.' />
                 )}
@@ -89,8 +81,8 @@ const VerificationDocsListModal = observer(() => {
     const { isMobile } = useDevice();
     const title =
         platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created
-            ? localize('Create account')
-            : localize('Verify your account');
+            ? localize('Complete your profile')
+            : localize('Verification required');
     return (
         <Suspense fallback={<UILoader />}>
             {!isMobile ? (

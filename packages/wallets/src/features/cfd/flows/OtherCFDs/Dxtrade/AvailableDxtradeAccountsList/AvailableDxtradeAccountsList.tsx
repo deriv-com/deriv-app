@@ -26,8 +26,11 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                         Deriv X
                     </Text>
                 </p>
-                <Text align='start' size='xs'>
-                    <Localize i18n_default_text='CFDs on financial and derived instruments via a customisable platform.' />
+                <Text size='xs'>
+                    <Localize
+                        components={[<strong key={0} />]}
+                        i18n_default_text='CFDs on financial and derived instruments, <0>powered by TradingView</0>.'
+                    />
                 </Text>
             </TradingAccountCard.Content>
             <TradingAccountCard.Button>

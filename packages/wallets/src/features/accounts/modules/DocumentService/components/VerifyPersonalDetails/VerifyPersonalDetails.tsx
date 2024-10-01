@@ -49,7 +49,7 @@ const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error, o
     return (
         <div className='wallets-verify-personal-details'>
             <InlineMessage iconPosition='top' variant='warning'>
-                <Text size='sm'>
+                <Text align='start' size='sm'>
                     <Localize
                         components={[<strong key={0} />]}
                         i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as it appears on your identity document.'

@@ -3,8 +3,8 @@ import { useFormikContext } from 'formik';
 import { useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpFromBracketXlFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Dropzone, WalletText } from '../../../../../../components';
-import useDevice from '../../../../../../hooks/useDevice';
+import { Text, useDevice } from '@deriv-com/ui';
+import { Dropzone } from '../../../../../../components';
 import { TDocumentSubmission } from '../../types';
 import { getExampleImagesConfig } from '../../utils';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
@@ -33,32 +33,32 @@ const DocumentSubmission: React.FC = () => {
     return (
         <div className='wallets-poa__document'>
             <div className='wallets-poa__document__title'>
-                <WalletText weight='bold'>
+                <Text weight='bold'>
                     <Localize i18n_default_text='Document submission' />
-                </WalletText>
+                </Text>
                 <div className='wallets-poa__document__title__divider' />
             </div>
             <div className='wallets-poa__document__container'>
                 <div className='wallets-poa__document__container__disclaimer'>
-                    <WalletText size='sm' weight='bold'>
+                    <Text align='start' size='sm' weight='bold'>
                         {localize(
                             'We accept only these types of documents as proof of address. The document must be recent (issued within last {{timePeriod}} months) and include your name and address:',
                             { timePeriod: isEuRegion ? '6' : '12' }
                         )}
-                    </WalletText>
+                    </Text>
 
-                    <ul className='wallets-poa__document__container__disclaimer__list'>
+                    <ul className='wallets-poa__document__container__disclaimer-list'>
                         {listItems.map(item => (
                             <li key={`list-item-${item}`}>
-                                <WalletText size='sm'>{item}</WalletText>
+                                <Text size='sm'>{item}</Text>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div className='wallets-poa__document__container__common-mistakes'>
-                    <WalletText size='sm' weight='bold'>
+                    <Text size='sm' weight='bold'>
                         <Localize i18n_default_text='Common mistakes' />
-                    </WalletText>
+                    </Text>
 
                     <div className='wallets-common-mistakes__content'>
                         {getExampleImagesConfig().map(config => (
@@ -71,9 +71,9 @@ const DocumentSubmission: React.FC = () => {
                     </div>
                 </div>
                 <div className='wallets-poa__document__container__upload'>
-                    <WalletText size='sm' weight='bold'>
+                    <Text size='sm' weight='bold'>
                         <Localize i18n_default_text='Upload file' />
-                    </WalletText>
+                    </Text>
                     <Dropzone
                         defaultFile={values.poaFile}
                         description={localize(
@@ -90,12 +90,12 @@ const DocumentSubmission: React.FC = () => {
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
-                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>
+                        <Text size={!isDesktop ? 'xs' : 'sm'}>
                             <Localize i18n_default_text='Supported formats : JPEG, JPG, PNG, PDF, and GIF only' />
-                        </WalletText>
-                        <WalletText size={!isDesktop ? 'xs' : 'sm'}>
+                        </Text>
+                        <Text size={!isDesktop ? 'xs' : 'sm'}>
                             <Localize i18n_default_text='Maximum size : 8MB' />
-                        </WalletText>
+                        </Text>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@
         border: 0.1rem solid #e6e6e6;
         border-radius: 0.4rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
 
@@ -29,12 +29,12 @@
             align-items: center;
             height: 100%;
             gap: 0.8rem;
-
-            & .wallets-clipboard {
-                padding: 1rem;
-                border-left: 1px solid #e6e6e6;
-                box-sizing: border-box;
-            }
         }
+    }
+
+    &__clipboard {
+        padding: 1rem;
+        border-inline-start: 1px solid #e6e6e6;
+        box-sizing: border-box;
     }
 }

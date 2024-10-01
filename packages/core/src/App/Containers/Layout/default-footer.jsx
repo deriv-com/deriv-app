@@ -32,7 +32,7 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 
 const Footer = observer(() => {
     const { client, common, ui, traders_hub } = useStore();
-    const { has_wallet, is_logged_in, landing_company_shortcode, is_eu, is_virtual } = client;
+    const { is_logged_in, landing_company_shortcode, is_eu, is_virtual } = client;
     const { current_language } = common;
     const {
         enableApp,
@@ -94,13 +94,11 @@ const Footer = observer(() => {
                     enableApp={enableApp}
                     settings_extension={settings_extension}
                 />
-                {!has_wallet && (
-                    <ToggleLanguageSettings
-                        is_settings_visible={is_language_settings_modal_on}
-                        toggleSettings={toggleLanguageSettingsModal}
-                        lang={current_language}
-                    />
-                )}
+                <ToggleLanguageSettings
+                    is_settings_visible={is_language_settings_modal_on}
+                    toggleSettings={toggleLanguageSettingsModal}
+                    lang={current_language}
+                />
                 <ToggleFullScreen />
             </div>
         </footer>

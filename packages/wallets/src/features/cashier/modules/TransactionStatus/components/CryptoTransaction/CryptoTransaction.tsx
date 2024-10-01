@@ -1,19 +1,20 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletMoney } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
+import { getFormattedDateString } from '../../../../../../utils/utils';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { getFormattedConfirmations, getStatusName } from '../../../../helpers/transaction-helpers';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
+    currency: THooks.ActiveAccount['currency'];
     currencyDisplayCode: THooks.CurrencyConfig['code'];
     currencyDisplayFraction?: THooks.CurrencyConfig['fractional_digits'];
     // TODO: Remove transaction_fee from transaction type once API is updated
@@ -22,12 +23,13 @@ type TCryptoTransaction = {
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({
-    currencyDisplayCode: currency,
+    currency,
+    currencyDisplayCode,
     currencyDisplayFraction,
     transaction,
 }) => {
     const { hide, show } = useModal();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const formattedTransactionHash = transaction.transaction_hash
         ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
@@ -71,11 +73,14 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
     return (
         <div className='wallets-crypto-transaction'>
             <div className='wallets-crypto-transaction__type-and-status'>
-                <Text lineHeight='sm' size='xs'>
+                <Text align='start' lineHeight='sm' size='xs'>
                     {transaction.is_deposit ? (
-                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency }} />
+                        <Localize i18n_default_text='Deposit {{currency}}' values={{ currency: currencyDisplayCode }} />
                     ) : (
-                        <Localize i18n_default_text='Withdrawal {{currency}}' values={{ currency }} />
+                        <Localize
+                            i18n_default_text='Withdrawal {{currency}}'
+                            values={{ currency: currencyDisplayCode }}
+                        />
                     )}
                 </Text>
                 <div className='wallets-crypto-transaction__status'>
@@ -87,10 +92,10 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                                 .replace('_', '-')}`
                         )}
                     />
-                    <Text lineHeight='2xs' size='2xs'>
+                    <Text align='start' lineHeight='2xs' size='2xs'>
                         {getStatusName(transaction.status_code)}
                     </Text>
-                    {!!transaction.is_valid_to_cancel && !isMobile && (
+                    {!!transaction.is_valid_to_cancel && isDesktop && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
                             data-testid='dt-wallets-crypto-transactions-cancel-button'
@@ -102,25 +107,30 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                 </div>
             </div>
             <div className='wallets-crypto-transaction__amount-and-date'>
-                <Text color='less-prominent' size='2xs'>
-                    {transaction.formatted_amount}
+                <Text align='start' color='less-prominent' size='2xs'>
+                    <WalletMoney amount={transaction.amount} currency={currency} />
                 </Text>
-                <Text color='less-prominent' size='2xs'>
-                    {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
+                <Text align='start' color='less-prominent' size='2xs'>
+                    {getFormattedDateString(
+                        transaction.submit_date,
+                        { day: 'numeric', month: 'short', year: 'numeric' },
+                        undefined,
+                        true
+                    )}
                 </Text>
             </div>
             {transaction?.transaction_fee && (
-                <Text color='less-prominent' lineHeight='xs' size='2xs'>
+                <Text align='start' color='less-prominent' lineHeight='xs' size='2xs'>
                     <Localize
                         i18n_default_text='Transaction fee: {{fee}} {{currency}}'
                         values={{
-                            currency,
+                            currency: currencyDisplayCode,
                             fee: Number(transaction.transaction_fee).toFixed(currencyDisplayFraction),
                         }}
                     />
                 </Text>
             )}
-            <Text lineHeight='2xs' size='2xs'>
+            <Text align='start' lineHeight='2xs' size='2xs'>
                 <Localize
                     components={[
                         <a
@@ -135,7 +145,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     values={{ address: formattedAddressHash }}
                 />
             </Text>
-            <Text lineHeight='2xs' size='2xs'>
+            <Text align='start' lineHeight='2xs' size='2xs'>
                 <Localize
                     components={[
                         <a
@@ -152,7 +162,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
             </Text>
             {transaction.is_deposit && (
                 <div>
-                    <Text lineHeight='2xs' size='2xs'>
+                    <Text align='start' lineHeight='2xs' size='2xs'>
                         <Localize
                             components={[<span className='wallets-crypto-transaction__red-text' key={0} />]}
                             i18n_default_text='Confirmations: <0>{{confirmations}}</0>'
@@ -161,7 +171,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({
                     </Text>
                 </div>
             )}
-            {!!transaction.is_valid_to_cancel && isMobile && (
+            {!!transaction.is_valid_to_cancel && !isDesktop && (
                 <div className='wallets-crypto-transaction__cancel-button-container'>
                     <Button
                         borderWidth='sm'

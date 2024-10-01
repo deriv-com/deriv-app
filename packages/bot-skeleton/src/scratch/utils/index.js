@@ -24,13 +24,14 @@ export const inject_workspace_options = {
 
 export const updateXmlValues = blockly_options => {
     if (!window.Blockly) return;
-    const { strategy_id, convertedDom, file_name, from } = blockly_options;
+    const { strategy_id, convertedDom, file_name, from, block_string } = blockly_options;
     window.Blockly.xmlValues = {
         ...window.Blockly.xmlValues,
         strategy_id,
         convertedDom,
         file_name,
         from,
+        block_string,
     };
 };
 
@@ -208,7 +209,7 @@ export const load = async ({
             workspace,
             Array.from(blockly_xml).map(xml_block => xml_block.getAttribute('type'))
         );
-        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from });
+        updateXmlValues({ strategy_id, convertedDom: xml, file_name, from, block_string });
         if (is_collection) {
             loadBlocks(xml, drop_event, event_group, workspace);
         } else {
@@ -657,14 +658,12 @@ const download_option = {
 };
 
 export const excludeOptionFromContextMenu = (menu, exclude_items) => {
-    if (exclude_items && exclude_items.length > 0) {
-        for (let i = menu.length - 1; i >= 0; i--) {
-            const menu_text = localize(menu[i].text);
-            if (exclude_items.includes(menu_text)) {
-                menu.splice(i, 1);
-            } else {
-                menu[i].text = menu_text;
-            }
+    for (let i = 0; i <= menu.length - 1; i++) {
+        const menu_text = localize(menu[i].text);
+        if (exclude_items.includes(menu_text)) {
+            menu.splice(i, 1);
+        } else {
+            menu[i].text = menu_text;
         }
     }
 };
@@ -703,5 +702,16 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
         if (all_context_menu_options.includes(localized_text)) {
             menu[i].text = localized_text;
         }
+    }
+};
+
+export const evaluateExpression = value => {
+    if (!value) return 'invalid_input';
+    try {
+        // eslint-disable-next-line no-new-func
+        const result = new Function(`return ${value.trim()}`)();
+        return isNaN(result) ? 'invalid_input' : result;
+    } catch (e) {
+        return 'invalid_input';
     }
 };

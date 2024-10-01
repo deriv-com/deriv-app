@@ -11,6 +11,8 @@ type TProps = {
 
 const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecondaryClick }) => {
     const { isDesktop } = useDevice();
+
+    const textSize = isDesktop ? 'sm' : 'md';
     const { localize } = useTranslations();
 
     if (isDesktop) {
@@ -33,12 +35,12 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                             color='black'
                             onClick={onSecondaryClick}
                             size='lg'
-                            textSize='sm'
+                            textSize={textSize}
                             variant='outlined'
                         >
                             <Localize i18n_default_text='Forgot password?' />
                         </Button>
-                        <Button onClick={onPrimaryClick} size='lg' textSize='sm'>
+                        <Button onClick={onPrimaryClick} size='lg' textSize={textSize}>
                             <Localize i18n_default_text='Try later' />
                         </Button>
                     </div>

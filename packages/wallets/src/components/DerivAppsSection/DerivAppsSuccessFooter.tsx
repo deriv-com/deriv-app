@@ -1,8 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
-import useDevice from '../../hooks/useDevice';
+import { Button, useDevice } from '@deriv-com/ui';
 import { useModal } from '../ModalProvider';
 import './DerivAppsSuccessFooter.scss';
 

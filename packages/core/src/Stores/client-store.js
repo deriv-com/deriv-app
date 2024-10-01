@@ -81,6 +81,7 @@ export default class ClientStore extends BaseStore {
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_client_store_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
@@ -118,6 +119,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -161,7 +163,9 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_passkey_notification = false;
+    passkeys_list = [];
 
     subscriptions = {};
     exchange_rates = {};
@@ -202,6 +206,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
@@ -239,6 +244,8 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
+            passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
             account_open_date: computed,
@@ -359,6 +366,7 @@ export default class ClientStore extends BaseStore {
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
             cleanUp: action.bound,
+            setIsClientStoreInitialized: action.bound,
             logout: action.bound,
             setLogout: action.bound,
             storeClientAccounts: action.bound,
@@ -408,8 +416,10 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
+            fetchPasskeysList: action.bound,
             setShouldShowPasskeyNotification: action.bound,
             getExchangeRate: action.bound,
             subscribeToExchangeRate: action.bound,
@@ -1526,7 +1536,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
+            this.setLoginId(loginid_param);
         else this.setLoginId(LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
@@ -1555,13 +1566,20 @@ export default class ClientStore extends BaseStore {
             }
             if (redirect_url) {
                 const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    action_param
-                );
+                const has_action = [
+                    'crypto_transactions_withdraw',
+                    'payment_agent_withdraw',
+                    'payment_withdraw',
+                    'reset_password',
+                ].includes(action_param);
 
                 if (has_action) {
                     const query_string = filterUrlQuery(search, ['platform', 'code', 'action', 'loginid']);
-                    if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
+                    if (
+                        [routes.cashier_withdrawal, routes.cashier_pa, routes.cashier_transactions_crypto].includes(
+                            redirect_route
+                        )
+                    ) {
                         // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
                         window.location.replace(`/redirect?${query_string}`);
                     } else {
@@ -1659,6 +1677,7 @@ export default class ClientStore extends BaseStore {
             window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
         );
 
+        this.setIsClientStoreInitialized();
         return true;
     }
 
@@ -1971,6 +1990,10 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    setIsClientStoreInitialized() {
+        this.is_client_store_initialized = true;
+    }
+
     setAccountSettings(settings) {
         const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
         if (!is_equal_settings) {
@@ -2231,10 +2254,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2313,7 +2338,7 @@ export default class ClientStore extends BaseStore {
 
     async onSetCitizen(citizen) {
         if (!citizen) return;
-        WS.setSettings({
+        WS.authorized.setSettings({
             set_settings: 1,
             citizen,
         });
@@ -2731,6 +2756,10 @@ export default class ClientStore extends BaseStore {
         this.is_passkey_supported = is_passkey_supported;
     }
 
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
+    }
+
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {
         this.should_show_passkey_notification = should_show_passkey_notification;
     }
@@ -2757,11 +2786,16 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    async fetchPasskeysList() {
+        const data = await WS.authorized.send({ passkeys_list: 1 });
+        this.passkeys_list = data?.passkeys_list;
+    }
+
     async fetchShouldShowPasskeyNotification() {
         if (this.root_store.ui?.is_mobile) {
             try {
-                const data = await WS.authorized.send({ passkeys_list: 1 });
-                const is_passkeys_empty = data?.passkeys_list?.length === 0;
+                await this.fetchPasskeysList();
+                const is_passkeys_empty = this.passkeys_list.length === 0;
                 if (!is_passkeys_empty) {
                     this.setPasskeysStatusToCookie('available');
                 }

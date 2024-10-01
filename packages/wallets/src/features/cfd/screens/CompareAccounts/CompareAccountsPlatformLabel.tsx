@@ -1,5 +1,6 @@
 import React from 'react';
-import { WalletText } from '../../../../components';
+import { useTranslations } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import { TPlatforms } from '../../../../types';
 import { getPlatformType } from './compareAccountsConfig';
 import { headerColor, platformLabel } from './constants';
@@ -11,6 +12,7 @@ type TCompareAccountsPlatformLabel = {
 
 const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabel) => {
     const platformType = getPlatformType(platform);
+    const { localize } = useTranslations();
 
     return (
         <div
@@ -20,9 +22,9 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
             `}
             data-testid='dt_wallets_compare_accounts_platform_label'
         >
-            <WalletText align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
-                {platformLabel[platformType]}
-            </WalletText>
+            <Text align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>
+                {platformLabel(localize)[platformType]}
+            </Text>
         </div>
     );
 };

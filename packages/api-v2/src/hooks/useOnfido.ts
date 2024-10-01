@@ -1,4 +1,5 @@
 import { useCallback, useRef, useMemo, useEffect, useState } from 'react';
+import { LocalStorageUtils } from '@deriv-com/utils';
 import useOnfidoServiceToken from './useOnfidoServiceToken';
 import { ALPHA_2_TO_ALPHA_3, ONFIDO_PHRASES } from '../constants';
 import useSettings from './useSettings';
@@ -96,14 +97,15 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
     );
 
     const initOnfido = useCallback(async () => {
-        const i18NLanguage = window.localStorage.getItem('i18n_language')?.toLowerCase() ?? 'en';
+        const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+        const i18NLanguage = localizeLanguage || 'en';
         const onfidoCountryCode =
             countryCode.length !== 3 ? ALPHA_2_TO_ALPHA_3[countryCode.toUpperCase()] : countryCode;
         try {
             onfidoRef.current = await window.Onfido.init({
                 containerId: onfidoContainerId,
                 language: {
-                    locale: i18NLanguage,
+                    locale: i18NLanguage.toLowerCase(),
                     phrases: ONFIDO_PHRASES,
                     mobilePhrases: ONFIDO_PHRASES,
                 },

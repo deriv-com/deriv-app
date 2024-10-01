@@ -4,9 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Dropdown, Text } from '@deriv-com/ui';
+import { Dropdown, Text, useDevice } from '@deriv-com/ui';
 import { ToggleSwitch } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import { getTransactionLabels } from './constants';
 import './Transactions.scss';
@@ -36,7 +35,7 @@ const Transactions = () => {
     const { localize } = useTranslations();
 
     const { isLoading } = useCurrencyConfig();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     const { location } = useHistory();
     const initialShowPending = Boolean(
@@ -56,12 +55,12 @@ const Transactions = () => {
                 .map(key => ({
                     text:
                         key === 'deposit' && wallet?.is_virtual
-                            ? getTransactionLabels().reset_balance
+                            ? getTransactionLabels(localize).reset_balance
                             : //@ts-expect-error we only need partial filter values
-                              getTransactionLabels()[key],
+                              getTransactionLabels(localize)[key],
                     value: key,
                 })),
-        [isPendingActive, wallet?.is_virtual]
+        [isPendingActive, wallet?.is_virtual, localize]
     );
 
     useEffect(() => {
@@ -82,13 +81,13 @@ const Transactions = () => {
     return (
         <div
             className={classNames('wallets-transactions', {
-                'wallets-transactions--crypto-mobile': wallet?.is_crypto && isMobile,
+                'wallets-transactions--crypto-mobile': wallet?.is_crypto && !isDesktop,
             })}
         >
             <div className='wallets-transactions__header'>
                 {wallet?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
-                        <Text size='sm'>
+                        <Text align='start' size='sm'>
                             <Localize i18n_default_text='Pending Transactions' />
                         </Text>
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />

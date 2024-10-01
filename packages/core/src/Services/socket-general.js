@@ -224,6 +224,7 @@ const BinarySocketGeneral = (() => {
                         'portfolio',
                         'proposal_open_contract',
                         'change_email',
+                        'phone_number_challenge',
                     ].includes(msg_type)
                 ) {
                     return;
@@ -271,7 +272,8 @@ const BinarySocketGeneral = (() => {
 
     const subscribeBalances = () => {
         WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
-        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
+        if (client_store.currency)
+            WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
     const authorizeAccount = response => {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Formik, FormikValues } from 'formik';
-import moment from 'moment';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Divider, Loader } from '@deriv-com/ui';
-import { DatePicker, Dropzone, FormField, ModalStepWrapper, WalletText } from '../../../../../../components';
+import { Divider, Loader, Text } from '@deriv-com/ui';
+import { DatePicker, Dropzone, FormField, ModalStepWrapper } from '../../../../../../components';
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { THooks } from '../../../../../../types';
+import { getAdjustedDate } from '../../../../../../utils/utils';
 import { Footer } from '../../../components';
 import { getGeneralDocumentRules, TManualDocumentComponent } from '../../utils';
 import { DocumentRules } from '../DocumentRules';
@@ -97,9 +97,9 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                     >
                         <div className='wallets-identity-card-upload' data-testid='dt_identity-card-upload'>
                             <div className='wallets-identity-card-upload__wrapper'>
-                                <WalletText>
+                                <Text align='start'>
                                     <Localize i18n_default_text='First, enter your Identity card number and the expiry date.' />
-                                </WalletText>
+                                </Text>
                                 <div className='wallets-identity-card-upload__input-group'>
                                     <FormField
                                         defaultValue={values.identityCardNumber ?? ''}
@@ -108,7 +108,7 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                     />
                                     <DatePicker
                                         label={localize('Expiry date*')}
-                                        minDate={moment().add(2, 'days').toDate()}
+                                        minDate={getAdjustedDate(2, 'days')}
                                         name='identityCardExpiryDate'
                                     />
                                 </div>
@@ -118,9 +118,9 @@ const IdentityCardUpload: TManualDocumentComponent = ({ documentIssuingCountryCo
                                     height={2}
                                 />
                                 <div className='wallets-identity-card-upload__document-upload'>
-                                    <WalletText>
+                                    <Text align='start'>
                                         <Localize i18n_default_text='Next, upload the front and back of your identity card.' />
-                                    </WalletText>
+                                    </Text>
                                     <div className='wallets-identity-card-upload__dropzone'>
                                         <Dropzone
                                             buttonText={localize('Drop file or click here to upload')}

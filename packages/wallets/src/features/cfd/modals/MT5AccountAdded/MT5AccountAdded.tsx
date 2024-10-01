@@ -48,45 +48,50 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const marketTypeTitle =
         marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
-            : getMarketTypeDetails(product)[marketType].title;
+            : getMarketTypeDetails(localize, product)[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
     })`;
 
     const isDemo = activeWallet?.is_virtual;
+    const buttonSize = isDesktop ? 'md' : 'lg';
 
     const renderAccountSuccessButton = useCallback(
         (isTransferAllowed = false) => {
             if (isTransferAllowed) {
                 return (
-                    <WalletButtonGroup isFlex isFullWidth>
-                        <Button
-                            borderWidth='sm'
-                            color='black'
-                            onClick={hide}
-                            size={isDesktop ? 'md' : 'lg'}
-                            textSize='sm'
-                            variant='outlined'
-                        >
-                            <Localize i18n_default_text='Maybe later' />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                hide();
-                                history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
-                            }}
-                            size={isDesktop ? 'md' : 'lg'}
-                            textSize='sm'
-                        >
-                            <Localize i18n_default_text='Transfer funds' />
-                        </Button>
-                    </WalletButtonGroup>
+                    <div className='wallets-mt5-password-modal__footer'>
+                        <WalletButtonGroup isFlex isFullWidth>
+                            <Button
+                                borderWidth='sm'
+                                color='black'
+                                onClick={hide}
+                                size={buttonSize}
+                                textSize='sm'
+                                variant='outlined'
+                            >
+                                <Localize i18n_default_text='Maybe later' />
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    hide();
+                                    history.push('/wallet/account-transfer', {
+                                        toAccountLoginId: addedAccount?.loginid,
+                                    });
+                                }}
+                                size={buttonSize}
+                                textSize='sm'
+                            >
+                                <Localize i18n_default_text='Transfer funds' />
+                            </Button>
+                        </WalletButtonGroup>
+                    </div>
                 );
             }
             return (
                 <div className='wallets-success-btn'>
-                    <Button isFullWidth onClick={hide} size={isDesktop ? 'md' : 'lg'} textSize='sm'>
+                    <Button isFullWidth onClick={hide} size={buttonSize} textSize='sm'>
                         <Localize i18n_default_text='OK' />
                     </Button>
                 </div>
@@ -208,11 +213,19 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
 
     if (isLoading) return null;
 
-    if (!isDesktop) {
-        return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;
+    if (isDesktop) {
+        return (
+            <ModalWrapper hideCloseButton>
+                <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
+            </ModalWrapper>
+        );
     }
 
-    return <ModalWrapper hideCloseButton>{renderMainContent}</ModalWrapper>;
+    return (
+        <ModalStepWrapper renderFooter={renderAccountSuccessButton}>
+            <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
+        </ModalStepWrapper>
+    );
 };
 
 export default MT5AccountAdded;

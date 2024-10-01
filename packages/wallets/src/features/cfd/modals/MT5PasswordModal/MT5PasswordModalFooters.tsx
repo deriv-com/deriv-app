@@ -1,10 +1,9 @@
 import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv-com/translations';
-import { Button } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 
 type TProps = {
     disabled: ComponentProps<typeof Button>['disabled'];
@@ -60,6 +59,7 @@ export const MT5PasswordModalFooter = ({
     onSecondaryClick,
 }: Exclude<TProps, 'isDemo'>) => {
     const { isDesktop } = useDevice();
+    const walletButtonSize = isDesktop ? 'md' : 'lg';
 
     return (
         <WalletButtonGroup isFullWidth>
@@ -68,7 +68,7 @@ export const MT5PasswordModalFooter = ({
                 color='black'
                 isFullWidth
                 onClick={onSecondaryClick}
-                size={isDesktop ? 'md' : 'lg'}
+                size={walletButtonSize}
                 textSize='sm'
                 variant='outlined'
             >
@@ -79,7 +79,7 @@ export const MT5PasswordModalFooter = ({
                 isFullWidth
                 isLoading={isLoading}
                 onClick={onPrimaryClick}
-                size={isDesktop ? 'md' : 'lg'}
+                size={walletButtonSize}
                 textSize='sm'
             >
                 <Localize i18n_default_text='Add account' />

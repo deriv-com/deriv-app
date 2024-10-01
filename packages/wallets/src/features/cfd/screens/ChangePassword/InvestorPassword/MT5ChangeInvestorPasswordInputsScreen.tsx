@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { ActionScreen, Button, Text } from '@deriv-com/ui';
+import { ActionScreen, Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
-import useDevice from '../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
@@ -27,8 +26,8 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
-    const { isMobile } = useDevice();
-    const buttonTextSize = isMobile ? 'md' : 'sm';
+    const { isDesktop } = useDevice();
+    const buttonTextSize = isDesktop ? 'sm' : 'md';
 
     const {
         error: changeInvestorPasswordError,
@@ -127,10 +126,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             }
             description={
                 <>
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
                     </Text>
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
                     </Text>
                     {changeInvestorPasswordError && (

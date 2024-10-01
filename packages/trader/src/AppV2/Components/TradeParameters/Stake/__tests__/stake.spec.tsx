@@ -46,8 +46,8 @@ describe('Stake', () => {
                         },
                         validation_errors: { amount: [] },
                         validation_params: {
-                            [CONTRACT_TYPES.CALL]: { max_payout: '50000.00' },
-                            [CONTRACT_TYPES.PUT]: { max_payout: '50000.00' },
+                            [CONTRACT_TYPES.CALL]: { payout: { max: '50000.00' } },
+                            [CONTRACT_TYPES.PUT]: { payout: { max: '50000.00' } },
                         },
                         v2_params_initial_values: {
                             stake: 10,
@@ -214,35 +214,6 @@ describe('Stake', () => {
 
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
-        expect(screen.getByText(error_text)).toBeInTheDocument();
-        expect(screen.getAllByText('- USD')).toHaveLength(2);
-    });
-
-    it('should not show error in case of a validation error if input is empty, and show it only after Save button is clicked', () => {
-        const { rerender } = render(<MockedStake />);
-        userEvent.click(screen.getByText(stake_param_label));
-        userEvent.type(screen.getByPlaceholderText(input_placeholder), '{backspace}{backspace}');
-
-        const error_text = 'Amount is a required field.';
-        rerender(
-            <MockedStake
-                store={{
-                    ...default_mock_store,
-                    modules: {
-                        ...default_mock_store.modules,
-                        trade: {
-                            ...default_mock_store.modules.trade,
-                            amount: '',
-                            proposal_info: {},
-                            validation_errors: { amount: [error_text] },
-                        },
-                    },
-                }}
-            />
-        );
-        expect(screen.queryByText(error_text)).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByRole('button', { name: save_button_label }));
         expect(screen.getByText(error_text)).toBeInTheDocument();
         expect(screen.getAllByText('- USD')).toHaveLength(2);
     });

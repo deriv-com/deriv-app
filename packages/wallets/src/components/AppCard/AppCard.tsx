@@ -1,7 +1,7 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 import type { TGenericSizes, THooks } from '../../types';
 import { AppCardBadge } from '../AppCardBadge';
-import { WalletText } from '../Base';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../WalletMarketCurrencyIcon';
 import './AppCard.scss';
@@ -9,7 +9,7 @@ import './AppCard.scss';
 type TProps = {
     activeWalletCurrency?: THooks.ActiveWalletAccount['currency'];
     appName?: JSX.Element | string;
-    balance?: string;
+    balance?: JSX.Element | string;
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
@@ -54,13 +54,13 @@ const AppCard: React.FC<TProps> = ({
                     </div>
                     {cardSize !== 'sm' && (
                         <div className='wallets-app-card__bottom'>
-                            <WalletText size='2xs'>{appName}</WalletText>
-                            <WalletText color='less-prominent' size='2xs'>
+                            <Text size='2xs'>{appName}</Text>
+                            <Text color='less-prominent' size='2xs'>
                                 {walletName}
-                            </WalletText>
-                            <WalletText size='sm' weight='bold'>
+                            </Text>
+                            <Text size='sm' weight='bold'>
                                 {balance}
-                            </WalletText>
+                            </Text>
                         </div>
                     )}
                 </div>

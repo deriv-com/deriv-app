@@ -12,10 +12,11 @@ jest.mock('@deriv-com/quill-ui', () => ({
     }),
 }));
 describe('BottomNav', () => {
+    const default_mock_store = mockStore({});
     const mockedTradeContainer = <div>MockedTrade</div>;
     const mockedPositionsContainer = <div>MockedPositions</div>;
     const renderedBottomNav = (
-        <StoreProvider store={mockStore({})}>
+        <StoreProvider store={default_mock_store}>
             <BrowserRouter>
                 <BottomNav>
                     <div>{mockedTradeContainer}</div>
@@ -29,15 +30,18 @@ describe('BottomNav', () => {
         expect(container).toBeInTheDocument();
     });
     it('should render the correct number of BottomNavItem components', () => {
+        default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
         expect(screen.getByText('Positions')).toBeInTheDocument();
         expect(screen.getByText('Trade')).toBeInTheDocument();
     });
     it('should render MockedTrade by default since selected index is 0', () => {
+        default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
         expect(screen.getByText('MockedTrade')).toBeInTheDocument();
     });
     it('should render MockedPositions if 2nd MockedBottomNavItem is selected', () => {
+        default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
         userEvent.click(screen.getByText('Positions'));
         expect(screen.getByText('MockedPositions')).toBeInTheDocument();

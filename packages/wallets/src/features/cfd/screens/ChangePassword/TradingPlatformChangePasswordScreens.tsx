@@ -24,10 +24,9 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
-
-    const buttonTextSize = isMobile ? 'md' : 'sm';
+    const buttonTextSize = isDesktop ? 'sm' : 'md';
     const { title } = PlatformDetails[platform];
 
     const isDerivX = platform === PlatformDetails.dxtrade.platform;

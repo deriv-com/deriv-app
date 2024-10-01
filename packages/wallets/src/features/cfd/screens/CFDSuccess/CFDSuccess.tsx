@@ -2,10 +2,9 @@ import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 import { WalletMarketCurrencyIcon, WalletSuccess } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
-import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, MARKET_TYPE, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
@@ -50,7 +49,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = getMarketTypeDetails(product)[marketType].title;
+            marketTypeTitle = getMarketTypeDetails(localize, product)[marketType].title;
         }
     }
 

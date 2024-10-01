@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
-import { FormDropdown, FormField, ModalStepWrapper, WalletText } from '../../../../components';
+import { Loader, Text } from '@deriv-com/ui';
+import { FormDropdown, FormField, ModalStepWrapper } from '../../../../components';
 import { Footer } from '../components';
 import { NeedHelpMessage } from './components';
 import { useTaxInformation } from './hooks';
@@ -56,12 +56,12 @@ const TaxInformation: React.FC<TTaxInformationProps> = ({ onCompletion, selected
                             {!isLoading && (
                                 <>
                                     <div className='wallets-tax-information__header'>
-                                        <WalletText align='center' as='h2' color='prominent' weight='bold'>
+                                        <Text align='center' as='h2' color='prominent' weight='bold'>
                                             <Localize i18n_default_text='Complete your personal details' />
-                                        </WalletText>
-                                        <WalletText align='center' size='xs'>
+                                        </Text>
+                                        <Text align='center' size='xs'>
                                             <Localize i18n_default_text='Any information you provide is confidential and will be used for verification purposes only.' />
-                                        </WalletText>
+                                        </Text>
                                     </div>
                                     <NeedHelpMessage />
                                     <div className='wallets-tax-information__form'>

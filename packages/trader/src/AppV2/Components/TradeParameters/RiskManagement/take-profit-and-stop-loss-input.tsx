@@ -3,7 +3,14 @@ import clsx from 'clsx';
 import debounce from 'lodash.debounce';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { CONTRACT_TYPES, getCurrencyDisplayCode, getDecimalPlaces, useIsMounted, WS } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    getCurrencyDisplayCode,
+    getDecimalPlaces,
+    isCryptocurrency,
+    useIsMounted,
+    WS,
+} from '@deriv/shared';
 import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -77,8 +84,8 @@ const TakeProfitAndStopLossInput = ({
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
-    const should_set_validation_params =
-        is_multiplier && is_enabled && (new_input_value === '' || typeof new_input_value === 'undefined');
+    const is_crypto_currency = isCryptocurrency(currency);
+    const should_set_validation_params = is_multiplier && is_enabled && !new_input_value && !is_crypto_currency;
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
@@ -266,6 +273,7 @@ const TakeProfitAndStopLossInput = ({
                 <TextFieldWithSteppers
                     allowDecimals
                     customType='commaRemoval'
+                    className='text-field--custom'
                     disabled={!is_enabled}
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
@@ -282,7 +290,7 @@ const TakeProfitAndStopLossInput = ({
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'
-                    value={new_input_value}
+                    value={new_input_value ?? ''}
                 />
                 {!is_enabled && (
                     <button

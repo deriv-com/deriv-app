@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Text, useDevice } from '@deriv-com/ui';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
-import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
 import { ModalStepWrapper, WalletPasswordFieldLazy } from '../Base';
@@ -144,17 +143,17 @@ const WalletsResetMT5Password = ({
 
     return (
         <ModalStepWrapper
-            renderFooter={isDesktop ? undefined : renderButtons}
+            renderFooter={!isDesktop ? renderButtons : undefined}
             shouldHideFooter={isDesktop}
             shouldHideHeader={isDesktop}
             title={localize('Manage {{title}} password', { title })}
         >
             <div className='wallets-reset-mt5-password'>
-                <Text align={isDesktop ? 'left' : 'center'} weight='bold'>
+                <Text align={isDesktop ? 'start' : 'center'} weight='bold'>
                     <Localize i18n_default_text='Create a new {{title}} password' values={{ title }} />
                 </Text>
                 {isMT5 && !isInvestorPassword && (
-                    <Text size='sm'>
+                    <Text align='start' size='sm'>
                         <Localize
                             i18n_default_text='You can use this password for all your {{title}} accounts.'
                             values={{ title }}
@@ -171,7 +170,9 @@ const WalletsResetMT5Password = ({
                     onChange={e => setPassword(e.target.value)}
                     password={password}
                 />
-                <Text size='sm'>{modalDescription[platform]}</Text>
+                <Text align='start' size='sm'>
+                    {modalDescription[platform]}
+                </Text>
                 {isDesktop && renderButtons()}
             </div>
         </ModalStepWrapper>

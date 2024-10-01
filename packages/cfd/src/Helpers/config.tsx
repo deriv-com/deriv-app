@@ -83,8 +83,8 @@ export const PlatformsDesktopDownload = ({
                 );
             case CFD_PLATFORMS.DXTRADE:
                 return getDXTradeWebTerminalLink(
-                    is_demo ? 'demo' : 'real',
-                    dxtrade_tokens && dxtrade_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
+                    is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
+                    dxtrade_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
             default:
                 return '';
@@ -103,23 +103,8 @@ export const PlatformsDesktopDownload = ({
                     }
                 }}
             >
-                {platform === CFD_PLATFORMS.CTRADER ? (
-                    <Icon
-                        className='cfd-trade-modal__platform-button-icon'
-                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                        width={60}
-                        height={30}
-                    />
-                ) : (
-                    <Icon
-                        className='cfd-trade-modal__platform-button-icon'
-                        icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                        width={36}
-                        height={30}
-                    />
-                )}
                 <div className='cfd-trade-modal__platform-button-text'>
-                    <Text color='colored-background' size='xxs' weight='bold'>
+                    <Text color='general' size='xxs' weight='bold'>
                         <Localize i18n_default_text='Web terminal' />
                     </Text>
                 </div>

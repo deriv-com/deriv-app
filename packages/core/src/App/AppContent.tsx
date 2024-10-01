@@ -51,7 +51,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const isMounted = useIsMounted();
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();

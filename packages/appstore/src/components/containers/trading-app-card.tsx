@@ -101,8 +101,6 @@ const TradingAppCard = ({
         return app_desc;
     };
 
-  
-
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
         switch (mt5_acc_auth_status) {
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:

@@ -91,7 +91,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                     >
                         <div className='wallets-passport-upload' data-testid='dt_passport-document-upload'>
                             <div className='wallets-passport-upload__wrapper'>
-                                <Text>
+                                <Text align='start'>
                                     <Localize i18n_default_text='First, enter your Passport number and the expiry date.' />
                                 </Text>
                                 <div className='wallets-passport-upload__input-group'>
@@ -108,7 +108,7 @@ const PassportUpload: TManualDocumentComponent = ({ documentIssuingCountryCode, 
                                     height={2}
                                 />
                                 <div className='wallets-passport-upload__document-upload'>
-                                    <Text>
+                                    <Text align='start'>
                                         <Localize i18n_default_text='Next, upload the page of your passport that contains your photo.' />
                                     </Text>
                                     <Dropzone

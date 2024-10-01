@@ -105,8 +105,10 @@ const DerivAppsGetAccount: React.FC = () => {
                 <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
             </TradingAccountCard.Icon>
             <TradingAccountCard.Content>
-                <Text size='sm'>Options</Text>
-                <Text size='xs'>
+                <Text align='start' size='sm'>
+                    <Localize i18n_default_text='Options' />
+                </Text>
+                <Text align='start' size='xs'>
                     <Localize i18n_default_text='One options account for all platforms.' />
                 </Text>
             </TradingAccountCard.Content>

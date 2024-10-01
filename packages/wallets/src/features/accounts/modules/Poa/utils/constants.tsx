@@ -9,7 +9,7 @@ import {
 import { localize } from '@deriv-com/translations';
 
 type TExampleImageConfig = {
-    description: React.ReactNode;
+    description: string;
     image: React.ComponentType<React.SVGAttributes<SVGElement>>;
 };
 

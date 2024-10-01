@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@deriv/api';
 import { TSocketError } from '@deriv/api/types';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 import { useStore } from '@deriv/stores';
 import useSettings from './useSettings';
-
 /** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
     const [phone_otp_error_message, setPhoneOtpErrorMessage] = useState<React.ReactNode>('');
@@ -29,28 +28,17 @@ const useSendOTPVerificationCode = () => {
         requestOnSMS,
         requestOnWhatsApp,
     } = useRequestPhoneNumberOTP();
-
-    const phone_code_expired_message = <Localize i18n_default_text='Code expired. Get a new one.' />;
-    const email_code_expired_message = <Localize i18n_default_text='Code expired. Get a new code.' />;
-    const invalid_phone_code_message = <Localize i18n_default_text='Invalid code. Try again.' />;
-    const invalid_email_code_message = <Localize i18n_default_text='Invalid code. Try again or get a new code.' />;
-    const request_other_carrier_message = (
-        <Localize
-            i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
-            values={{
-                current_carrier: getCurrentCarrier(),
-                other_carriers: getOtherCarrier(),
-            }}
-        />
-    );
-
+    const getPhoneOtpErrorMessage = (error_code: string) => {
+        if (error_code === 'PhoneCodeExpired') {
+            return localize('Code expired. Get a new one.');
+        }
+        return localize('Invalid code. Try again.');
+    };
     const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
             case 'PhoneCodeExpired':
-                setPhoneOtpErrorMessage(phone_code_expired_message);
-                break;
             case 'InvalidOTP':
-                setPhoneOtpErrorMessage(invalid_phone_code_message);
+                setPhoneOtpErrorMessage(getPhoneOtpErrorMessage(error.code));
                 break;
             case 'NoAttemptsLeft':
                 refetch();
@@ -62,29 +50,43 @@ const useSendOTPVerificationCode = () => {
                 break;
         }
     };
-
+    const getEmailOtpErrorMessage = (error: TSocketError<'phone_number_challenge'>['error']) => {
+        switch (error.code) {
+            case 'EmailCodeExpired':
+                return localize('Code expired. Get a new code.');
+            case 'InvalidToken':
+                return localize('Invalid code. Try again or get a new code.');
+            case 'PhoneNumberVerificationSuspended':
+                return (
+                    <Localize
+                        i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
+                        values={{
+                            current_carrier: getCurrentCarrier(),
+                            other_carriers: getOtherCarrier(),
+                        }}
+                    />
+                );
+            default:
+                return error.message;
+        }
+    };
     const formatEmailOtpError = (error: TSocketError<'phone_number_challenge'>['error']) => {
         switch (error.code) {
             case 'EmailCodeExpired':
-                setPhoneOtpErrorMessage(email_code_expired_message);
-                break;
             case 'InvalidToken':
-                setPhoneOtpErrorMessage(invalid_email_code_message);
+            case 'PhoneNumberVerificationSuspended':
+                setPhoneOtpErrorMessage(getEmailOtpErrorMessage(error));
                 break;
             case 'NoAttemptsLeft':
                 refetch();
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
                 break;
-            case 'PhoneNumberVerificationSuspended':
-                setPhoneOtpErrorMessage(request_other_carrier_message);
-                break;
             default:
                 setPhoneOtpErrorMessage(error.message);
                 break;
         }
     };
-
     useEffect(() => {
         if (phone_otp_error) {
             // @ts-expect-error will remove once solved
@@ -94,11 +96,9 @@ const useSendOTPVerificationCode = () => {
             formatEmailOtpError(email_otp_error);
         }
     }, [phone_otp_error, email_otp_error]);
-
     const sendPhoneOTPVerification = (value: string) => {
         mutate({ payload: { otp: value } });
     };
-
     return {
         data,
         sendPhoneOTPVerification,
@@ -117,5 +117,4 @@ const useSendOTPVerificationCode = () => {
         ...rest,
     };
 };
-
 export default useSendOTPVerificationCode;

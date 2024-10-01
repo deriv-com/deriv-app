@@ -22,7 +22,7 @@ const RootComponent = observer(props => {
     return has_wallet ? (
         <Wallets
             logout={async () => {
-                logout();
+                await logout();
             }}
         />
     ) : (

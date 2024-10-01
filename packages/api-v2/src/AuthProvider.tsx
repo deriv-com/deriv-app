@@ -5,6 +5,7 @@ import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken
 import useMutation from './useMutation';
 import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
 import useAPI from './useAPI';
+import { API_ERROR_CODES } from './constants';
 
 // Define the type for the context state
 type AuthContextType = {
@@ -40,6 +41,8 @@ type AuthProviderProps = {
     selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
     logout?: () => Promise<void>;
 };
+
+type TAuthorizeError = ReturnType<typeof useMutation<'authorize'>>['error'];
 
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -188,8 +191,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                         setIsSuccess(true);
                         setLoginid(res?.authorize?.loginid ?? '');
                     })
-                    .catch(async () => {
-                        await logout?.();
+                    .catch(async (e: TAuthorizeError) => {
+                        if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                            await logout?.();
+                        }
                         setIsLoading(false);
                         setIsInitializing(false);
                         setIsError(true);
@@ -202,7 +207,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             })
             .catch(async () => {
                 if (isMounted) {
-                    await logout?.();
                     setIsAuthorized(false);
                     setIsLoading(false);
                     setIsInitializing(false);
@@ -236,8 +240,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                     setIsLoading(false);
                     setIsSwitching(false);
                 })
-                .catch(async () => {
-                    await logout?.();
+                .catch(async (e: TAuthorizeError) => {
+                    if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                        await logout?.();
+                    }
                 });
         },
         [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]

@@ -35,7 +35,7 @@
                     height: 9.8rem;
                 }
                 &__field[type='textarea'] {
-                    height: 8.6rem;
+                    padding-top: 1rem;
                 }
             }
         }
@@ -53,9 +53,6 @@
                     }
                     &__container {
                         height: 12.1rem;
-                    }
-                    &__field[type='textarea'] {
-                        padding-top: 1rem;
                     }
                 }
             }

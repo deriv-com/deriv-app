@@ -150,7 +150,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 const minutes = duration % 60;
                 return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             } else if (duration_unit === 'd') {
-                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT+0 dd`;
+                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT+0`;
             }
             return `${duration} ${duration_unit_text}`;
         }

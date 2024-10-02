@@ -33,7 +33,7 @@ describe('Duration', () => {
             modules: {
                 trade: {
                     onChange: jest.fn(),
-                    validation_errors: { barrier_1: [] },
+                    validation_errors: { duration: [] },
                     duration: 30,
                     duration_unit: 'm',
                     expiry_type: 'duration',
@@ -70,7 +70,7 @@ describe('Duration', () => {
         global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
         mockDuration();
         expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 16:00:00 GMT')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 16:00:00 GMT+0')).toBeInTheDocument();
         global.Date = RealDate;
     });
 
@@ -82,7 +82,7 @@ describe('Duration', () => {
         global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
         mockDuration();
         expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Ends on 1 Jan 2024 23:55 GMT')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Ends on 1 Jan 2024 23:55 GMT+0')).toBeInTheDocument();
         global.Date = RealDate;
     });
 

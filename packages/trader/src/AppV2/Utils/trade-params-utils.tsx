@@ -260,7 +260,6 @@ export const getOptionPerUnit = (
     };
 
     const { intraday, tick, daily } = duration_min_max;
-
     const unitConfig: Record<
         string,
         { start: number; end: number; label: React.ReactNode } | (() => { value: number; label: React.ReactNode }[][])
@@ -286,12 +285,16 @@ export const getOptionPerUnit = (
             label: <Localize i18n_default_text='tick' />,
         },
         h: () => {
-            const hour_options = generateOptions(
-                Math.max(1, intraday?.min / 3600),
-                Math.min(24, intraday?.max / 3600),
-                <Localize i18n_default_text='h' />
-            );
-            const minute_options = generateOptions(0, 59, <Localize i18n_default_text='min' />);
+            const hour_start = Math.max(1, Math.floor(intraday?.min / 3600));
+            const hour_end = Math.min(24, Math.floor(intraday?.max / 3600));
+
+            const hour_options = generateOptions(hour_start, hour_end, <Localize i18n_default_text='h' />);
+
+            const minute_start = 0;
+            const minute_end = intraday?.max % 3600 === 0 ? 0 : 59;
+
+            const minute_options = generateOptions(minute_start, minute_end, <Localize i18n_default_text='min' />);
+
             return [hour_options, minute_options];
         },
     };

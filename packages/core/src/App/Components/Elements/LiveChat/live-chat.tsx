@@ -19,8 +19,10 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
         defaultValue: true,
     });
 
-    // const liveChatClickHandler = () => liveChat.widget?.call('maximize');
     const chat = enable_freshworks_live_chat ? freshChat : liveChat;
+    useEffect(() => {
+        //chat is ready
+    }, [chat.isReady]);
 
     if (!chat.isReady) return null;
 

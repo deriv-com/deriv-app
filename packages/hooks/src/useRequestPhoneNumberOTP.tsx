@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@deriv/api';
-import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { getCarriers, getUseRequestPhoneNumberOTPErrorMessage, VERIFICATION_SERVICES } from '@deriv/shared';
 import useSettings from './useSettings';
 import { useStore } from '@deriv/stores';
 
@@ -35,11 +34,11 @@ const useRequestPhoneNumberOTP = () => {
     }, [email_otp_error]);
 
     const getOtherCarrier = () => {
-        return carrier === VERIFICATION_SERVICES.SMS ? localize('WhatsApp') : localize('SMS');
+        return carrier === VERIFICATION_SERVICES.SMS ? getCarriers().WHATSAPP : getCarriers().SMS;
     };
 
     const getCurrentCarrier = () => {
-        return carrier === VERIFICATION_SERVICES.SMS ? localize('SMS') : localize('WhatsApp');
+        return carrier === VERIFICATION_SERVICES.SMS ? getCarriers().SMS : getCarriers().WHATSAPP;
     };
 
     const requestOnSMS = () => {
@@ -82,48 +81,20 @@ const useRequestPhoneNumberOTP = () => {
         };
     };
 
-    const phone_number_taken_message = (
-        <Localize
-            i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0>live chat</0> for help.'
-            components={[
-                <span
-                    key={0}
-                    className='phone-verification__card--inputfield__livechat'
-                    onClick={() => window.LC_API.open_chat_window()}
-                />,
-            ]}
-        />
-    );
-    const request_other_carrier_message = (
-        <Localize
-            i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
-            values={{
-                current_carrier: getCurrentCarrier(),
-                other_carriers: getOtherCarrier(),
-            }}
-        />
-    );
-    const invalid_phone_message = (
-        <Localize i18n_default_text='Enter a valid phone number, including the country code (e.g. +15417541234).' />
-    );
-
     const formatError = ({ code, message }: TFormatError) => {
-        setIsDisabledRequestButton(true);
-        switch (code) {
-            case 'PhoneNumberTaken':
-                setErrorMessage(phone_number_taken_message);
-                break;
-            case 'PhoneNumberVerificationSuspended':
-                setIsDisabledRequestButton(false);
-                setErrorMessage(request_other_carrier_message);
-                break;
-            case 'InvalidPhone':
-                setIsDisabledRequestButton(false);
-                setErrorMessage(invalid_phone_message);
-                break;
-            default:
-                setErrorMessage(message);
-                break;
+        const errorCases = {
+            // This boolean value is used to disable the request button: setIsDisabledRequestButton()
+            PhoneNumberTaken: true,
+            PhoneNumberVerificationSuspended: false,
+            InvalidPhone: false,
+        };
+
+        if (code in errorCases) {
+            setIsDisabledRequestButton(errorCases[code as keyof typeof errorCases]);
+            setErrorMessage(getUseRequestPhoneNumberOTPErrorMessage(code, getCurrentCarrier, getOtherCarrier));
+        } else {
+            setIsDisabledRequestButton(true);
+            setErrorMessage(message);
         }
     };
 

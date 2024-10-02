@@ -9,7 +9,7 @@ const useFreshChat = () => {
     const { client } = useStore();
     const { loginid, accounts } = client;
     const active_account = accounts?.[loginid ?? ''];
-    const token = active_account.token || null;
+    const token = active_account ? active_account.token : null;
 
     useEffect(() => {
         const initFreshChat = async () => {

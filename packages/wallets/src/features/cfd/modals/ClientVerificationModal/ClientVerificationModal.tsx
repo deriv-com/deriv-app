@@ -27,9 +27,9 @@ const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }
                     ) : (
                         <Localize
                             i18n_default_text={
-                                'Once your account details are complete, your {{accountName}} account will be ready for you.'
+                                'Once your account details are complete, your MT5 {{accountName}} account will be ready for you.'
                             }
-                            values={{ accountName: `MT5 ${title}` }}
+                            values={{ accountName: `${title}` }}
                         />
                     )}
                 </Text>

@@ -38,7 +38,9 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
                             ].title,
                             accountTitle: PlatformDetails.mt5.title,
                             companyName: account.name,
-                            licenceNumber: account.licence_number ? ` (licence no. ${account.licence_number})` : '',
+                            licenceNumber: account.licence_number
+                                ? ` (${localize('licence no.')} ${account.licence_number})`
+                                : '',
                             regulatoryAuthority: account.regulatory_authority,
                         }}
                     />

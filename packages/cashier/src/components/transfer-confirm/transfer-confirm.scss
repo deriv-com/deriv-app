@@ -31,6 +31,10 @@
             row-gap: 1.2rem;
         }
 
+        &-details {
+            text-align: end;
+        }
+
         > :last-child {
             max-width: 50%;
 

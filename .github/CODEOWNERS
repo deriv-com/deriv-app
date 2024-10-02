@@ -71,7 +71,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @ali-hosseini-deriv @balakrishna-deriv @matin-deriv @wojciech-deriv @yashim-deriv 
+*                                                               @ali-hosseini-deriv @dan-deriv @matin-deriv @wojciech-deriv @yashim-deriv 
 
 
 # ==============================================================
@@ -164,7 +164,7 @@
 #  Deprecated - do not use. For -v2 projects use api-v2. For old projects - do not use api nor api-v2, use old patterns / old hooks. 
 # ==============================================================
 
-/packages/api/**/*                                              @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
+/packages/api/**/*                                              @ali-hosseini-deriv @wojciech-deriv
 
 # ==============================================================
 #  deriv-app/api-v2

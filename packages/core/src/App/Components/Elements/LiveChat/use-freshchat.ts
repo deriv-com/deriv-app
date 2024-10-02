@@ -16,7 +16,7 @@ const useFreshChat = () => {
             if (scriptStatus === 'ready') {
                 if (window.FreshChat && window.fcSettings) {
                     window.FreshChat.initialize({
-                        token: localStorage.getItem('temp_auth') || token,
+                        token,
                         locale: 'en',
                         hideButton: true,
                     });

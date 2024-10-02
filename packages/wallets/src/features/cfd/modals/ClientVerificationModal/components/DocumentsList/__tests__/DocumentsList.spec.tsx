@@ -28,7 +28,7 @@ jest.mock('../components', () => ({
 }));
 
 describe('<DocumentsList />', () => {
-    it('should not render poi tile', () => {
+    it('poi tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -44,7 +44,7 @@ describe('<DocumentsList />', () => {
         expect(screen.queryByText('Proof of identity')).not.toBeInTheDocument();
     });
 
-    it('should not render poa tile', () => {
+    it('poi tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -60,7 +60,7 @@ describe('<DocumentsList />', () => {
         expect(screen.queryByText('Proof of address')).not.toBeInTheDocument();
     });
 
-    it('should not render personal details tile', () => {
+    it('personal details tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -76,7 +76,7 @@ describe('<DocumentsList />', () => {
         expect(screen.queryByText('Personal details')).not.toBeInTheDocument();
     });
 
-    it('check on click, poi tile redirects to correct page', async () => {
+    it('on click poi tile redirects to correct page', async () => {
         render(
             <DocumentsList
                 account={{
@@ -96,7 +96,7 @@ describe('<DocumentsList />', () => {
         });
     });
 
-    it('check on click, poa tile redirects to correct page', async () => {
+    it('on click poa tile redirects to correct page', async () => {
         render(
             <DocumentsList
                 account={{
@@ -116,7 +116,7 @@ describe('<DocumentsList />', () => {
         });
     });
 
-    it('check on click, personal details tile redirects to correct page', async () => {
+    it('on click personal details tile redirects to correct page', async () => {
         render(
             <DocumentsList
                 account={{
@@ -136,7 +136,7 @@ describe('<DocumentsList />', () => {
         });
     });
 
-    it('should render poi tile with correct badge', () => {
+    it('renders poi tile with correct badge', () => {
         render(
             <DocumentsList
                 account={{
@@ -153,7 +153,7 @@ describe('<DocumentsList />', () => {
         expect(within(poiTile).getByText('verified')).toBeInTheDocument;
     });
 
-    it('should render poa tile with correct badge', () => {
+    it('renders poa tile with correct badge', () => {
         render(
             <DocumentsList
                 account={{

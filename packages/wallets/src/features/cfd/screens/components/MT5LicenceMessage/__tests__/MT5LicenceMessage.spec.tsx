@@ -24,7 +24,7 @@ const mockNonRegulatedAccount = {
 };
 
 describe('<MT5LicenceMessage />', () => {
-    it('should show message for regulated account', () => {
+    it('displays correct message for regulated account', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<MT5LicenseMessage account={mockRegulatedAccount} />);
 
@@ -35,7 +35,7 @@ describe('<MT5LicenceMessage />', () => {
         );
     });
 
-    it('should show message for non-regulated account', () => {
+    it('displays correct message for non-regulated account', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<MT5LicenseMessage account={mockNonRegulatedAccount} />);
 

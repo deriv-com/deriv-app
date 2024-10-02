@@ -29,7 +29,7 @@ const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }
                             i18n_default_text={
                                 'Once your account details are complete, your MT5 {{accountName}} account will be ready for you.'
                             }
-                            values={{ accountName: `${title}` }}
+                            values={{ accountName: title }}
                         />
                     )}
                 </Text>

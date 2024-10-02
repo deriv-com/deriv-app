@@ -4,11 +4,11 @@
     "version": "1.0.0",
     "description": "Deriv account management module",
     "author": "Deriv.com",
-    "homepage": "https://github.com/binary-com/deriv-app",
+    "homepage": "https://github.com/deriv-com/deriv-app",
     "license": "Apache-2.0",
     "main": "dist/account/js/account.js",
     "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
+        "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "engines": {
         "node": "18.x"

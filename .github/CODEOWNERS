@@ -4,7 +4,7 @@
 # ==================================================================================
 # ==================================================================================
 #
-#  Configuration of code ownership and review approvals for the binary-com/deriv-app repo.
+#  Configuration of code ownership and review approvals for the deriv-com/deriv-app repo.
 #
 #  More info: https://help.github.com/articles/about-codeowners/
 #
@@ -44,15 +44,14 @@
 #  hirad-deriv
 #  jim-deriv
 #  likhith-deriv
-#  maryia-deriv
 #  matin-deriv
 #  nada-deriv
 #  nijil-deriv
 #  sandeep-deriv
 #  shafin-deriv
 #  vinu-deriv
-#  yashim-deriv
 #  wojciech-deriv
+#  yashim-deriv
 
 ######################################################################################################
 #
@@ -79,7 +78,7 @@
 #  deriv-app/account
 # ==============================================================
 
-/packages/account/**/*                                          @amina-deriv @likhith-deriv @matin-deriv 
+/packages/account/**/*                                          @ali-hosseini-deriv @amina-deriv @likhith-deriv @matin-deriv 
 
 
 # ==============================================================
@@ -116,7 +115,7 @@
 #  deriv-app/cfd
 # ==============================================================
 
-/packages/cfd/**/*                                              @habib-deriv @hirad-deriv
+/packages/cfd/**/*                                              @ali-hosseini-deriv @habib-deriv @hirad-deriv
 
 
 # ==============================================================
@@ -136,7 +135,7 @@
 #  deriv-app/p2p
 # ==============================================================
 
-/packages/p2p/**/*                                              @farrah-deriv @matin-deriv @nada-deriv
+/packages/p2p/**/*                                              @ali-hosseini-deriv @farrah-deriv @matin-deriv @nada-deriv
 
 
 # ==============================================================
@@ -150,14 +149,14 @@
 #  deriv-app/reports
 # ==============================================================
 
-/packages/reports/**/*                                          @heorhi-deriv @maryia-deriv @nijil-deriv @vinu-deriv @wojciech-deriv 
+/packages/reports/**/*                                          @heorhi-deriv @nijil-deriv @vinu-deriv @wojciech-deriv 
 
 
 # ==============================================================
 #  deriv-app/trader
 # ==============================================================
 
-/packages/trader/**/*                                           @maryia-deriv @nijil-deriv @vinu-deriv @wojciech-deriv 
+/packages/trader/**/*                                           @nijil-deriv @vinu-deriv @wojciech-deriv 
 
 
 # ==============================================================

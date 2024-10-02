@@ -86,22 +86,28 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         symbol,
         duration_units_list,
         expiry_epoch,
+        validation_errors,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
     const duration_unit_text = name_plural ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
+    const [expiry_time_string, setExpiryTimeString] = useState('');
     const [end_date, setEndDate] = useState<Date>(new Date());
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
     const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const has_error =
-        proposal_info[contract_type_object[0]]?.has_error &&
-        proposal_info[contract_type_object[0]]?.error_field === 'duration';
+        (proposal_info[contract_type_object[0]]?.has_error &&
+            proposal_info[contract_type_object[0]]?.error_field === 'duration') ||
+        validation_errors.duration.length > 0;
     const { activeSymbols } = useActiveSymbols();
     const isInitialMount = useRef(true);
-    const expiry_time_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8);
+
+    useEffect(() => {
+        setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
+    }, [expiry_epoch]);
 
     useEffect(() => {
         if (duration_unit == 'd') {
@@ -144,19 +150,19 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 const minutes = duration % 60;
                 return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             } else if (duration_unit === 'd') {
-                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT`;
+                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT+0 dd`;
             }
             return `${duration} ${duration_unit_text}`;
         }
         if (expiry_time) {
-            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT`;
+            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT+0`;
         }
     };
 
     useEffect(() => {
         if (has_error && !is_minimized) {
-            const error_obj = proposal_info[contract_type_object[0]];
-            if (error_obj.error_field === 'duration') {
+            const error_obj = proposal_info[contract_type_object[0]] || validation_errors?.durations?.[0];
+            if (error_obj?.error_field === 'duration') {
                 addSnackbar({
                     message: <Localize i18n_default_text={error_obj.message} />,
                     status: 'fail',
@@ -222,6 +228,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                         setUnit={setUnit}
                         end_date={end_date}
                         setEndDate={setEndDate}
+                        expiry_time_string={expiry_time_string}
                         end_time={end_time}
                         setEndTime={setEndTime}
                     />

@@ -106,6 +106,7 @@ describe('DurationActionSheetContainer', () => {
                     setEndDate={setEndDate}
                     end_time={end_time}
                     setEndTime={setEndTime}
+                    expiry_time_string='24th Aug 2024'
                 />
             </TraderProviders>
         );

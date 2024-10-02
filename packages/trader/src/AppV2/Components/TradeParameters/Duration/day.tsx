@@ -54,11 +54,13 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
+    expiry_time_string,
 }: {
     setEndTime: (arg: string) => void;
     setEndDate: (arg: Date) => void;
     end_date: Date;
     end_time: string;
+    expiry_time_string: string;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
@@ -71,7 +73,6 @@ const DayInput = ({
         market_close_times,
         duration_units_list,
         start_date,
-        expiry_epoch,
         start_time,
         duration_min_max,
     } = useTraderStore();
@@ -126,8 +127,6 @@ const DayInput = ({
         (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
         has_intraday_duration_unit;
 
-    const expiry_time_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8);
-
     const getMomentContractStartDateTime = () => {
         const minDurationDate = getMinDuration();
         const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
@@ -166,14 +165,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={
-                    // eslint-disable-next-line no-nested-ternary
-                    !is_24_hours_contract && expiry_time_string
-                        ? expiry_time_string
-                        : formatted_date !== formatted_current_date || !end_time
-                        ? '23:59:59 GMT'
-                        : end_time
-                }
+                value={`${(is_24_hours_contract ? end_time : expiry_time_string) || '23:59:59'} GMT+0`}
                 disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -186,14 +178,7 @@ const DayInput = ({
                     <Localize i18n_default_text='Expiry' />
                 </Text>
                 <Text size='sm'>{`
-                ${formatted_date} ${
-                    // eslint-disable-next-line no-nested-ternary
-                    !is_24_hours_contract && expiry_time_string
-                        ? expiry_time_string
-                        : formatted_date !== formatted_current_date || !end_time
-                        ? '23:59:59'
-                        : end_time
-                } GMT`}</Text>
+                ${formatted_date} ${(is_24_hours_contract ? end_time : expiry_time_string) || '23:59:59'} GMT+0`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}

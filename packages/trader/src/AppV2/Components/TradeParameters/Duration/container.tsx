@@ -17,6 +17,7 @@ const DurationActionSheetContainer = observer(
         setUnit,
         end_time,
         setEndTime,
+        expiry_time_string,
     }: {
         selected_hour: number[];
         setSelectedHour: (arg: number[]) => void;
@@ -26,6 +27,7 @@ const DurationActionSheetContainer = observer(
         setUnit: (arg: string) => void;
         end_time: string;
         setEndTime: (arg: string) => void;
+        expiry_time_string: string;
     }) => {
         const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
@@ -114,7 +116,13 @@ const DurationActionSheetContainer = observer(
                 )}
 
                 {unit === 'd' && (
-                    <DayInput setEndTime={setEndTime} setEndDate={setEndDate} end_date={end_date} end_time={end_time} />
+                    <DayInput
+                        setEndTime={setEndTime}
+                        setEndDate={setEndDate}
+                        end_date={end_date}
+                        end_time={end_time}
+                        expiry_time_string={expiry_time_string}
+                    />
                 )}
                 <ActionSheet.Footer
                     alignment='vertical'

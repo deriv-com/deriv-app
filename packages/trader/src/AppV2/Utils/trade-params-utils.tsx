@@ -7,7 +7,7 @@ import {
     TRADE_TYPES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
@@ -291,7 +291,13 @@ export const getOptionPerUnit = (
             const hour_options = generateOptions(hour_start, hour_end, <Localize i18n_default_text='h' />);
 
             const minute_start = 0;
-            const minute_end = intraday?.max % 3600 === 0 ? 0 : 59;
+
+            let minute_end = 0;
+            if (intraday?.max % 3600 !== 0) {
+                minute_end = Math.floor((intraday?.max % 3600) / 60);
+            } else if (intraday?.max >= 86400) {
+                minute_end = 59;
+            }
 
             const minute_options = generateOptions(minute_start, minute_end, <Localize i18n_default_text='min' />);
 

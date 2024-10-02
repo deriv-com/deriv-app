@@ -260,7 +260,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                 </Button>
             )}
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header
                         title={<Localize i18n_default_text='Trade types' />}
                         icon={!is_editing && <Guide />}

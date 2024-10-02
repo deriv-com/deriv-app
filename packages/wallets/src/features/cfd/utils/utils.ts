@@ -1,21 +1,24 @@
 import { TModifiedMT5Accounts } from '../types';
 
+const requiredDocumentStatuses = ['expired', 'none', 'rejected', 'suspected'];
+
 export const getClientVerification = (account: TModifiedMT5Accounts) => {
+    const hasOverallStatus = 'status' in account;
+    const overallStatus = account.status;
     const hasClientKycStatus = 'client_kyc_status' in account;
-    const statuses = account.client_kyc_status;
+    const documentStatuses = account.client_kyc_status;
 
-    const hasPoiStatus = hasClientKycStatus && 'poi_status' in statuses;
-    const hasPoaStatus = hasClientKycStatus && 'poa_status' in statuses;
-    const hasTinStatus = hasClientKycStatus && 'valid_tin' in statuses;
+    const hasPoiStatus = hasClientKycStatus && 'poi_status' in documentStatuses;
+    const hasPoaStatus = hasClientKycStatus && 'poa_status' in documentStatuses;
+    const hasTinStatus = hasClientKycStatus && 'valid_tin' in documentStatuses;
 
-    const requiredStatuses = ['expired', 'none', 'rejected', 'suspected'];
-
-    const isPoiRequired = hasPoiStatus && requiredStatuses.includes(statuses.poi_status);
-    const isPoaRequired = hasPoaStatus && requiredStatuses.includes(statuses.poa_status);
-    const isTinRequired = hasTinStatus && !statuses.valid_tin;
+    const isPoiRequired = hasPoiStatus && requiredDocumentStatuses.includes(documentStatuses.poi_status);
+    const isPoaRequired = hasPoaStatus && requiredDocumentStatuses.includes(documentStatuses.poa_status);
+    const isTinRequired = hasTinStatus && !documentStatuses.valid_tin;
 
     return {
         hasClientKycStatus,
+        hasOverallStatus,
         hasPoaStatus,
         hasPoiStatus,
         hasTinStatus,
@@ -23,6 +26,6 @@ export const getClientVerification = (account: TModifiedMT5Accounts) => {
         isPoiRequired,
         isTinRequired,
         isVerificationRequired: isPoiRequired || isPoaRequired || isTinRequired,
-        statuses,
+        statuses: { ...documentStatuses, overallStatus },
     };
 };

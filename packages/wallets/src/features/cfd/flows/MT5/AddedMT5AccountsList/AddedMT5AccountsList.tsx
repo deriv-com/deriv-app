@@ -23,6 +23,8 @@ import {
     TRADING_PLATFORM_STATUS,
 } from '../../../constants';
 import { MT5TradeModal, TradingPlatformStatusModal, VerificationFailedModal } from '../../../modals';
+import { TModifiedMT5Accounts } from '../../../types';
+import { AddedMT5AccountStatusBadge } from './components';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
@@ -82,16 +84,18 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <div className='wallets-added-mt5__details-title'>
                     <Text size='sm'>{title}</Text>
                 </div>
-                {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
+                {/* {!(jurisdictionStatus.is_failed || jurisdictionStatus.is_pending) && (
                     <Text align='start' size='sm' weight='bold'>
                         {account.display_balance}
                     </Text>
-                )}
+                )} */}
 
                 <Text align='start' as='p' size='xs'>
                     {account.display_login}
                 </Text>
-                {jurisdictionStatus.is_pending && (
+
+                <AddedMT5AccountStatusBadge account={account as TModifiedMT5Accounts} />
+                {/* {jurisdictionStatus.is_pending && (
                     <InlineMessage
                         className='wallets-added-mt5__badge--warning'
                         icon={
@@ -139,7 +143,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             />
                         </Text>
                     </InlineMessage>
-                )}
+                )} */}
             </TradingAccountCard.Content>
             <TradingAccountCard.Button
                 className={classNames('wallets-added-mt5__icon', {

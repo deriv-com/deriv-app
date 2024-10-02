@@ -32,7 +32,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
         {Array.isArray(label) ? (
             <div className='transfer-confirm__row-label'>
                 {label.map(label_text => (
-                    <Text as='div' key={label_text} size='xs' align='left'>
+                    <Text as='div' key={label_text} size='xs' align='end'>
                         {label_text}
                     </Text>
                 ))}
@@ -43,7 +43,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
         {Array.isArray(value) ? (
             <div className='transfer-confirm__row-value'>
                 {value.map(v => (
-                    <Text as='div' key={v} size='xs' weight='bold' align='right'>
+                    <Text as='div' key={v} size='xs' weight='bold' align='start'>
                         {v}
                     </Text>
                 ))}
@@ -52,7 +52,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
             <Text
                 size='xs'
                 weight='bold'
-                align='right'
+                align='start'
                 className={classNames({
                     description: item_key === 'description',
                 })}
@@ -127,7 +127,7 @@ const TransferConfirm = ({
             <div className='transfer-confirm__warnings'>
                 {warning_messages.map(warning => (
                     <WarningBullet key={warning.key}>
-                        <Text as='p' size='xxs' line_height='m' color='loss-danger' align='left'>
+                        <Text as='p' size='xxs' line_height='m' color='loss-danger' align='end'>
                             {warning}
                         </Text>
                     </WarningBullet>

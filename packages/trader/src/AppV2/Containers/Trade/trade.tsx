@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading, usePrevious } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
-import { getMinPayout, isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency } from '@deriv/shared';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';

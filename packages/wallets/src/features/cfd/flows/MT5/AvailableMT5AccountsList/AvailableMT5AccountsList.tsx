@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { THooks } from 'src/types';
 import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
@@ -10,6 +9,7 @@ import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
+import { THooks } from '../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
 import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import { TModifiedMT5Accounts } from '../../../types';

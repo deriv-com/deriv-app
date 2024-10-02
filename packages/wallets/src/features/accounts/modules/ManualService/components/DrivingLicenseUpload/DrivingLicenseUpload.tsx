@@ -95,7 +95,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                     >
                         <div className='wallets-driving-license-upload' data-testid='dt_driving-license-upload'>
                             <div className='wallets-driving-license-upload__wrapper'>
-                                <Text>
+                                <Text align='start'>
                                     <Localize i18n_default_text='First, enter your Driving licence number and the expiry date.' />
                                 </Text>
                                 <div className='wallets-driving-license-upload__input-group'>
@@ -116,7 +116,7 @@ const DrivingLicenseUpload: TManualDocumentComponent = ({ documentIssuingCountry
                                     height={2}
                                 />
                                 <div className='wallets-driving-license-upload__document-upload'>
-                                    <Text>
+                                    <Text align='start'>
                                         <Localize i18n_default_text='Next, upload the front and back of your driving licence.' />
                                     </Text>
                                     <div className='wallets-driving-license-upload__dropzone'>

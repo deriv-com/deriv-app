@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
@@ -13,6 +13,64 @@ type TDurationProps = {
     is_minimized?: boolean;
 };
 
+function getSmallestDuration(
+    obj: { [x: string]: { min: number; max: number } | { min: number } },
+    durationUnits: any[]
+) {
+    const keysPriority = ['tick', 'intraday', 'daily'];
+    let smallestValueInSeconds = Infinity;
+    let smallestUnit: 's' | 'm' | 'h' | 'd' | null = null;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of keysPriority) {
+        if (obj[key]) {
+            if (key === 'tick') {
+                const tickUnit = durationUnits.find((item: { value: string }) => item.value === 't');
+                if (tickUnit) {
+                    return { value: obj[key].min, unit: 't' };
+                }
+            }
+
+            if (obj[key].min < smallestValueInSeconds) {
+                smallestValueInSeconds = obj[key].min;
+
+                if (key === 'intraday') {
+                    if (smallestValueInSeconds >= 60 && smallestValueInSeconds < 3600) {
+                        smallestUnit = 'm';
+                    } else if (smallestValueInSeconds >= 3600 && smallestValueInSeconds < 86400) {
+                        smallestUnit = 'h';
+                    }
+                } else if (key === 'daily') {
+                    smallestUnit = 'd';
+                }
+            }
+        }
+    }
+
+    if (smallestUnit) {
+        const validUnit = durationUnits.find((item: { value: string; text: string }) => item.value === smallestUnit);
+        if (validUnit) {
+            let convertedValue;
+            switch (smallestUnit) {
+                case 'm':
+                    convertedValue = smallestValueInSeconds / 60;
+                    break;
+                case 'h':
+                    convertedValue = smallestValueInSeconds / 3600;
+                    break;
+                case 'd':
+                    convertedValue = smallestValueInSeconds / 86400;
+                    break;
+                default:
+                    convertedValue = 1;
+            }
+            return { value: convertedValue, unit: smallestUnit };
+        }
+    }
+
+    return null;
+}
+
 const Duration = observer(({ is_minimized }: TDurationProps) => {
     const {
         duration,
@@ -23,7 +81,11 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         trade_types,
         proposal_info,
         trade_type_tab,
+        onChangeMultiple,
+        duration_min_max,
         symbol,
+        duration_units_list,
+        expiry_epoch,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
@@ -34,8 +96,12 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
     const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const has_error = proposal_info[contract_type_object[0]]?.has_error;
+    const has_error =
+        proposal_info[contract_type_object[0]]?.has_error &&
+        proposal_info[contract_type_object[0]]?.error_field === 'duration';
     const { activeSymbols } = useActiveSymbols();
+    const isInitialMount = useRef(true);
+    const expiry_time_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8);
 
     useEffect(() => {
         if (duration_unit == 'd') {
@@ -43,8 +109,49 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             newDate.setDate(newDate.getDate() + duration);
             setEndDate(newDate);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [duration_unit]);
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            const timer = setTimeout(() => {
+                isInitialMount.current = false;
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+
+        const result = getSmallestDuration(duration_min_max, duration_units_list);
+        if (result?.unit == 'd') {
+            setEndDate(new Date());
+        }
+
+        onChangeMultiple({
+            duration_unit: result?.unit,
+            duration: result?.value,
+            expiry_time: null,
+            expiry_type: 'duration',
+        });
+    }, [symbol, contract_type, duration_min_max, duration_units_list]);
+
+    const getInputValues = () => {
+        const formatted_date = end_date.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+        });
+        if (expiry_type == 'duration') {
+            if (duration_unit === 'm' && duration > 59) {
+                const hours = Math.floor(duration / 60);
+                const minutes = duration % 60;
+                return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
+            } else if (duration_unit === 'd') {
+                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT`;
+            }
+            return `${duration} ${duration_unit_text}`;
+        }
+        if (expiry_time) {
+            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT`;
+        }
+    };
 
     useEffect(() => {
         if (has_error && !is_minimized) {
@@ -80,34 +187,16 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     }, [duration, duration_unit, expiry_time]);
 
     useEffect(() => {
-        handleHour();
-    }, [handleHour, is_open]);
-
-    const getInputValues = () => {
-        const formatted_date = end_date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        });
-        if (expiry_type == 'duration') {
-            if (duration_unit === 'm' && duration > 59) {
-                const hours = Math.floor(duration / 60);
-                const minutes = duration % 60;
-                return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
-            } else if (duration_unit === 'd') {
-                return `${localize('Ends on')} ${formatted_date}, 23:59:59 GMT`;
-            }
-            return `${duration} ${duration_unit_text}`;
+        if (is_open) {
+            handleHour();
         }
-        if (expiry_time) {
-            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT`;
-        }
-    };
+    }, [is_open]);
 
     return (
         <>
             <TextField
                 variant='fill'
+                key={`${duration}-$${duration_unit}`}
                 readOnly
                 label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '-minimized' : ''}`} />}
                 value={getInputValues()}

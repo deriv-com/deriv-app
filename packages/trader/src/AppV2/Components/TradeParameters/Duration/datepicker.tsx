@@ -4,7 +4,15 @@ import React, { useEffect } from 'react';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => void; end_date: Date }) => {
+const DaysDatepicker = ({
+    start_date,
+    end_date,
+    setEndDate,
+}: {
+    start_date: Date;
+    setEndDate: (arg: Date) => void;
+    end_date: Date;
+}) => {
     const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
     const { symbol } = useTraderStore();
     const isMounted = useIsMounted();
@@ -43,7 +51,7 @@ const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => v
             <DatePicker
                 className='date-picker'
                 hasFixedWidth={false}
-                minDate={new Date()}
+                minDate={new Date(start_date)}
                 maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
                 view='month'
                 value={end_date}
@@ -54,7 +62,6 @@ const DaysDatepicker = ({ end_date, setEndDate }: { setEndDate: (arg: Date) => v
                     }
                 }}
                 wrapperClassName='duration-container__date-picker__sheet'
-                disableCurrentDayMarker
             />
         </div>
     );

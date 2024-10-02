@@ -7,13 +7,46 @@ import DaysDatepicker from './datepicker';
 import EndTimePicker from './timepicker';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { setTime, toMoment } from '@deriv/shared';
+import { hasIntradayDurationUnit, isTimeValid, setTime, toMoment } from '@deriv/shared';
 import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
 import { getClosestTimeToCurrentGMT } from 'AppV2/Utils/trade-params-utils';
+import { Moment } from 'moment';
 
 const timeToMinutes = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
+};
+
+export const toDate = (value: string | number | Date | Moment): Date => {
+    if (!value) return new Date();
+
+    if (value instanceof Date && !isNaN(value.getTime())) {
+        return value;
+    }
+
+    if (typeof value === 'number') {
+        return new Date(value * 1000);
+    }
+
+    const parsedDate = new Date(value as Date);
+    if (isNaN(parsedDate.getTime())) {
+        const today = new Date();
+        const daysInMonth = new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 0).getDate();
+        const valueAsNumber = Date.parse(value as string) / (1000 * 60 * 60 * 24);
+        return valueAsNumber > daysInMonth
+            ? new Date(today.setUTCDate(today.getUTCDate() + Number(value)))
+            : new Date(value as Date);
+    }
+
+    return parsedDate;
+};
+
+export const setMinTime = (dateObj: Date, time?: string) => {
+    const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
+    dateObj?.setHours(Number(hour));
+    dateObj?.setMinutes(Number(minute) || 0);
+    dateObj?.setSeconds(Number(second) || 0);
+    return dateObj;
 };
 
 const DayInput = ({
@@ -32,7 +65,16 @@ const DayInput = ({
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const { common } = useStore();
     const { server_time } = common;
-    const { expiry_date, market_open_times, market_close_times } = useTraderStore();
+    const {
+        expiry_date,
+        market_open_times,
+        market_close_times,
+        duration_units_list,
+        start_date,
+        expiry_epoch,
+        start_time,
+        duration_min_max,
+    } = useTraderStore();
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -67,13 +109,42 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         return () => clearInterval(interval);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [end_time, adjusted_start_time]);
 
     useEffect(() => {
         if (formatted_date === formatted_current_date && !end_time) {
             setEndTime(adjusted_start_time);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [end_date]);
+
+    let is_24_hours_contract = false;
+
+    const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
+    is_24_hours_contract =
+        (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
+        has_intraday_duration_unit;
+
+    const expiry_time_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8);
+
+    const getMomentContractStartDateTime = () => {
+        const minDurationDate = getMinDuration();
+        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
+        return setMinTime(minDurationDate, time ?? '');
+    };
+
+    const getMinDuration = () => {
+        const server_date = toDate(server_time);
+        return hasIntradayDurationUnit(duration_units_list)
+            ? new Date(server_date)
+            : new Date(server_date.getTime() + (duration_min_max?.daily?.min || 0) * 1000);
+    };
+
+    const getMinDateExpiry = () => {
+        const min_date = new Date(getMomentContractStartDateTime());
+        return min_date;
+    };
 
     return (
         <div className='duration-container__days-input'>
@@ -95,8 +166,15 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={formatted_date !== formatted_current_date || !end_time ? '23:59:59 GMT' : end_time}
-                disabled={formatted_date !== formatted_current_date}
+                value={
+                    // eslint-disable-next-line no-nested-ternary
+                    !is_24_hours_contract && expiry_time_string
+                        ? expiry_time_string
+                        : formatted_date !== formatted_current_date || !end_time
+                        ? '23:59:59 GMT'
+                        : end_time
+                }
+                disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
                 }}
@@ -107,7 +185,15 @@ const DayInput = ({
                 <Text size='sm' color='quill-typography__color--subtle'>
                     <Localize i18n_default_text='Expiry' />
                 </Text>
-                <Text size='sm'>{`${formatted_date} ${end_time || '23:59:59'} GMT`}</Text>
+                <Text size='sm'>{`
+                ${formatted_date} ${
+                    // eslint-disable-next-line no-nested-ternary
+                    !is_24_hours_contract && expiry_time_string
+                        ? expiry_time_string
+                        : formatted_date !== formatted_current_date || !end_time
+                        ? '23:59:59'
+                        : end_time
+                } GMT`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}
@@ -128,7 +214,9 @@ const DayInput = ({
                             )
                         }
                     />
-                    {open && <DaysDatepicker end_date={end_date} setEndDate={setEndDate} />}
+                    {open && (
+                        <DaysDatepicker start_date={getMinDateExpiry()} end_date={end_date} setEndDate={setEndDate} />
+                    )}
                     {open_timepicker && (
                         <EndTimePicker
                             setEndTime={setEndTime}

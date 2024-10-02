@@ -70,7 +70,7 @@ describe('Duration', () => {
         global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
         mockDuration();
         expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 23:59:59 GMT')).toBeInTheDocument();
+        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 16:00:00 GMT')).toBeInTheDocument();
         global.Date = RealDate;
     });
 

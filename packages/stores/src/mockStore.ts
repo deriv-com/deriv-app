@@ -779,6 +779,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),
                 setPayoutPerPoint: jest.fn(),
+                setDefaultStake: jest.fn(),
                 stake_boundary: {},
                 start_date: 0,
                 stop_loss: 0,

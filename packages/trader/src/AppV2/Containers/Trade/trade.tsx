@@ -42,6 +42,7 @@ const Trade = observer(() => {
         onChangeMultiple,
         onUnmount,
         setV2ParamsInitialValues,
+        setDefaultStake,
     } = useTraderStore();
     const { trade_types, available_contract_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -99,6 +100,13 @@ const Trade = observer(() => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_type, default_stake, prev_contract_type]);
+
+    React.useEffect(() => {
+        if (default_stake) {
+            setDefaultStake(default_stake);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [default_stake]);
 
     React.useEffect(() => {
         onMount();

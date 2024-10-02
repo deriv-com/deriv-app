@@ -243,6 +243,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list: Array<TTextValueStrings> = [];
     currency = '';
+    default_stake: number | undefined;
     stake_boundary: Partial<TStakeBoundary> = {};
 
     // Duration
@@ -425,6 +426,7 @@ export default class TradeStore extends BaseStore {
             contract_types_list: observable,
             contract_types_list_v2: observable,
             currency: observable,
+            default_stake: observable,
             digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
@@ -475,6 +477,7 @@ export default class TradeStore extends BaseStore {
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             setHoveredBarrier: action.bound,
+            setDefaultStake: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
             setDigitStats: action.bound,
@@ -976,6 +979,10 @@ export default class TradeStore extends BaseStore {
         this.hovered_barrier = hovered_value;
     }
 
+    setDefaultStake(default_stake?: number) {
+        this.default_stake = default_stake;
+    }
+
     setPreviousSymbol(symbol: string) {
         if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
     }
@@ -1391,6 +1398,14 @@ export default class TradeStore extends BaseStore {
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol ?? ''));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
+            // Set stake to default one (from contracts_for) on symbol switch
+            if (this.default_stake && this.is_dtrader_v2_enabled) {
+                this.setV2ParamsInitialValues({
+                    value: this.default_stake ?? '',
+                    name: 'stake',
+                });
+                obj_new_values.amount = this.default_stake;
+            }
         }
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented

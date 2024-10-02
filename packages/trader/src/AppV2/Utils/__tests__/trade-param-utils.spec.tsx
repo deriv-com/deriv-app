@@ -390,7 +390,6 @@ describe('getProposalRequestObject', () => {
     it('should return correct object for proposal for Turbos with TP', () => {
         expect(getProposalRequestObject(mocked_args)).toEqual({
             proposal: 1,
-            subscribe: 1,
             amount: 10,
             basis: 'stake',
             contract_type: TRADE_TYPES.TURBOS.LONG,
@@ -409,7 +408,6 @@ describe('getProposalRequestObject', () => {
         };
         expect(getProposalRequestObject(mocked_args)).toEqual({
             proposal: 1,
-            subscribe: 1,
             amount: 10,
             basis: 'stake',
             contract_type: TRADE_TYPES.TURBOS.LONG,
@@ -425,7 +423,6 @@ describe('getProposalRequestObject', () => {
         mocked_args = {
             ...mocked_args,
             is_take_profit_input: false,
-            // should_set_validation_params: false,
             trade_store: default_mock_store.modules.trade,
             trade_type: TRADE_TYPES.MULTIPLIER,
             new_input_value: '5',
@@ -433,7 +430,6 @@ describe('getProposalRequestObject', () => {
 
         expect(getProposalRequestObject(mocked_args)).toEqual({
             proposal: 1,
-            subscribe: 1,
             amount: 10,
             basis: 'stake',
             contract_type: 'multiplier',
@@ -459,7 +455,6 @@ describe('getProposalRequestObject', () => {
 
         expect(getProposalRequestObject(mocked_args)).toEqual({
             proposal: 1,
-            subscribe: 1,
             amount: 10,
             basis: 'stake',
             contract_type: 'multiplier',
@@ -467,6 +462,32 @@ describe('getProposalRequestObject', () => {
             symbol: '1HZ100V',
             barrier: 5,
             limit_order: { stop_loss: 1 },
+            multiplier: 0,
+            cancellation: undefined,
+        });
+    });
+
+    it('should return correct object for proposal for Multipliers with SL if should_subscribe === true', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
+        mocked_args = {
+            ...mocked_args,
+            is_take_profit_input: false,
+            should_subscribe: true,
+            trade_store: default_mock_store.modules.trade,
+            trade_type: TRADE_TYPES.MULTIPLIER,
+            new_input_value: '5',
+        };
+
+        expect(getProposalRequestObject(mocked_args)).toEqual({
+            proposal: 1,
+            subscribe: 1,
+            amount: 10,
+            basis: 'stake',
+            contract_type: 'multiplier',
+            currency: 'USD',
+            symbol: '1HZ100V',
+            barrier: 5,
+            limit_order: { stop_loss: 5 },
             multiplier: 0,
             cancellation: undefined,
         });

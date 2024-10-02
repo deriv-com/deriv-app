@@ -103,10 +103,7 @@ const TakeProfitAndStopLossInput = ({
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         ['proposal', new_input_value ?? ''],
-        {
-            ...new_req,
-            subscribe: undefined,
-        },
+        new_req,
         {
             enabled: is_enabled,
         }

@@ -258,6 +258,7 @@ export const getProposalRequestObject = ({
     is_take_profit_input,
     is_enabled,
     should_set_validation_params,
+    should_subscribe = false,
     trade_store,
     trade_type,
     new_input_value,
@@ -265,6 +266,7 @@ export const getProposalRequestObject = ({
     is_take_profit_input: boolean;
     is_enabled: boolean;
     should_set_validation_params: boolean;
+    should_subscribe?: boolean;
     trade_store: TTradeStore;
     trade_type: string;
     new_input_value?: string;
@@ -282,9 +284,12 @@ export const getProposalRequestObject = ({
                 : { stop_loss: is_enabled ? input_value : '' }),
         },
     };
-
-    return createProposalRequestForContract(
+    const request = createProposalRequestForContract(
         store as Parameters<typeof createProposalRequestForContract>[0],
         trade_type
-    );
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & { subscribe?: number };
+
+    if (!should_subscribe) delete request.subscribe;
+
+    return request;
 };

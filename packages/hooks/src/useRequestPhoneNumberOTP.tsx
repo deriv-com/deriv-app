@@ -83,6 +83,7 @@ const useRequestPhoneNumberOTP = () => {
 
     const formatError = ({ code, message }: TFormatError) => {
         const errorCases = {
+            // This boolean value is used to disable the request button: setIsDisabledRequestButton()
             PhoneNumberTaken: true,
             PhoneNumberVerificationSuspended: false,
             InvalidPhone: false,

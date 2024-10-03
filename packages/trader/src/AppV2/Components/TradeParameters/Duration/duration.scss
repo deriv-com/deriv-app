@@ -22,6 +22,9 @@
         &__loading {
             display: none;
         }
+        &__single {
+            min-height: 236px;
+        }
     }
     &__days-input {
         padding: var(--core-spacing-800);

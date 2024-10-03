@@ -174,7 +174,7 @@ const FormWrapper = observer(
                             </ThemedScrollbars>
                             {!is_selected_strategy_step && (
                                 <div className='qs__body__content__footer'>
-                                    <Button transparent disabled={!is_selected_strategy_step} onClick={onBack}>
+                                    <Button transparent disabled={is_selected_strategy_step} onClick={onBack}>
                                         {localize('Back')}
                                     </Button>
                                     <Button secondary disabled={!isValid} onClick={onEdit}>

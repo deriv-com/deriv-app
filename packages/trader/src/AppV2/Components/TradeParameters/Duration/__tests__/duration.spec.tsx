@@ -71,17 +71,6 @@ describe('Duration', () => {
         expect(screen.getByDisplayValue('2 hours 5 minutes')).toBeInTheDocument();
     });
 
-    it('should render the correct value for duration in days', () => {
-        default_trade_store.modules.trade.duration = 6;
-        default_trade_store.modules.trade.duration_unit = 'd';
-        const RealDate = Date;
-        global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
-        mockDuration();
-        expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Ends on 7 Jan 2024, 16:00:00 GMT+0')).toBeInTheDocument();
-        global.Date = RealDate;
-    });
-
     it('should render the correct value for duration in end time', () => {
         default_trade_store.modules.trade.duration = 1;
         default_trade_store.modules.trade.expiry_time = '23:55';

@@ -106,7 +106,11 @@ const DayInput = ({
         };
         updateCurrentGmtTime();
         const interval = setInterval(updateCurrentGmtTime, 1000);
-        if (end_time !== '' && Math.abs(timeToMinutes(adjusted_start_time) - timeToMinutes(end_time)) === 5) {
+        if (
+            end_time !== '' &&
+            Math.abs(timeToMinutes(adjusted_start_time) - timeToMinutes(end_time)) === 5 &&
+            !open_timepicker
+        ) {
             setEndTime(adjusted_start_time);
         }
         return () => clearInterval(interval);

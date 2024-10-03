@@ -92,18 +92,26 @@ const TakeProfitAndStopLossInput = ({
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
-    const new_req = getProposalRequestObject({
-        is_take_profit_input,
-        is_enabled,
-        should_set_validation_params,
+    /* In order to get validation params for Multipliers when TP and SL are empty, 
+            we send '1' first, get validation params and set them into the state.*/
+    const input_value = should_set_validation_params ? '1' : new_input_value;
+    const new_values = {
+        ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+        has_cancellation: false,
+        ...(is_take_profit_input
+            ? { take_profit: is_enabled ? input_value : '' }
+            : { stop_loss: is_enabled ? input_value : '' }),
+    };
+
+    const proposal_req = getProposalRequestObject({
+        new_values,
         trade_store,
         trade_type: Object.keys(trade_types)[0],
-        new_input_value,
     });
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         ['proposal', new_input_value ?? ''],
-        new_req,
+        proposal_req,
         {
             enabled: is_enabled,
         }

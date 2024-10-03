@@ -378,12 +378,12 @@ describe('getProposalRequestObject', () => {
             },
         });
         mocked_args = {
-            is_take_profit_input: true,
-            is_enabled: true,
-            should_set_validation_params: false,
+            new_values: {
+                has_take_profit: true,
+                take_profit: '5',
+            },
             trade_store: default_mock_store.modules.trade,
             trade_type: TRADE_TYPES.TURBOS.LONG,
-            new_input_value: '5',
         };
     });
 
@@ -401,11 +401,9 @@ describe('getProposalRequestObject', () => {
     });
 
     it('should return correct object for proposal for Turbos without TP', () => {
-        mocked_args = {
-            ...mocked_args,
-            is_enabled: false,
-            new_input_value: '',
-        };
+        mocked_args.new_values.has_take_profit = false;
+        mocked_args.new_values.take_profit = '';
+
         expect(getProposalRequestObject(mocked_args)).toEqual({
             proposal: 1,
             amount: 10,
@@ -421,11 +419,12 @@ describe('getProposalRequestObject', () => {
     it('should return correct object for proposal for Multipliers with SL', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         mocked_args = {
-            ...mocked_args,
-            is_take_profit_input: false,
+            new_values: {
+                has_stop_loss: true,
+                stop_loss: '5',
+            },
             trade_store: default_mock_store.modules.trade,
             trade_type: TRADE_TYPES.MULTIPLIER,
-            new_input_value: '5',
         };
 
         expect(getProposalRequestObject(mocked_args)).toEqual({
@@ -445,12 +444,12 @@ describe('getProposalRequestObject', () => {
     it('should return correct object for proposal for Multipliers with SL if user have not typed anything', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         mocked_args = {
-            ...mocked_args,
-            is_take_profit_input: false,
-            should_set_validation_params: true,
+            new_values: {
+                has_stop_loss: true,
+                stop_loss: '1',
+            },
             trade_store: default_mock_store.modules.trade,
             trade_type: TRADE_TYPES.MULTIPLIER,
-            new_input_value: '',
         };
 
         expect(getProposalRequestObject(mocked_args)).toEqual({
@@ -470,12 +469,13 @@ describe('getProposalRequestObject', () => {
     it('should return correct object for proposal for Multipliers with SL if should_subscribe === true', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         mocked_args = {
-            ...mocked_args,
-            is_take_profit_input: false,
+            new_values: {
+                has_stop_loss: true,
+                stop_loss: '5',
+            },
             should_subscribe: true,
             trade_store: default_mock_store.modules.trade,
             trade_type: TRADE_TYPES.MULTIPLIER,
-            new_input_value: '5',
         };
 
         expect(getProposalRequestObject(mocked_args)).toEqual({

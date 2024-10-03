@@ -3,7 +3,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { Chip, Text, ActionSheet, Button } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
-import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
+import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import { safeParse } from '@deriv/utils';
@@ -58,19 +58,18 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     const [other_trade_types, setOtherTradeTypes] = useState<TResultItem[]>([]);
     const [pinned_trade_types, setPinnedTradeTypes] = useState<TResultItem[]>(saved_pinned_trade_types);
 
-    const sorted_trade_types_array = useMemo(() => {
-        const array = createArrayFromCategories(trade_types);
-        return array.sort((a, b) => a.title?.localeCompare(b.title));
+    const trade_types_array = useMemo(() => {
+        return createArrayFromCategories(trade_types);
     }, [trade_types]);
 
     const getPinnedItems = useCallback(() => {
-        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
+        const pinned_items = filterItems(getItems(saved_pinned_trade_types), trade_types_array);
 
         if (pinned_items.length === 0) {
-            pinned_items.push(...sorted_trade_types_array.slice(0, 5));
+            pinned_items.push(...trade_types_array.slice(0, trade_types_array.length));
         }
         return pinned_items;
-    }, [saved_pinned_trade_types, sorted_trade_types_array]);
+    }, [saved_pinned_trade_types, trade_types_array]);
 
     const setTradeTypes = useCallback(() => {
         const pinned_items = getPinnedItems();
@@ -86,15 +85,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
         const default_other_trade_types = [
             {
                 id: 'other',
-                items: sorted_trade_types_array.filter(
-                    item => !pinned_items.some(pinned_item => pinned_item.id === item.id)
-                ),
+                items: trade_types_array.filter(item => !pinned_items.some(pinned_item => pinned_item.id === item.id)),
             },
         ];
 
         setPinnedTradeTypes(default_pinned_trade_types);
         setOtherTradeTypes(default_other_trade_types);
-    }, [getPinnedItems, sorted_trade_types_array]);
+    }, [getPinnedItems, trade_types_array]);
 
     useEffect(() => {
         setTradeTypes();
@@ -114,12 +111,12 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const handleAddPinnedClick = (item: TItem) => {
-        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setPinnedTradeTypes(prev_pinned => modifyPinnedCategories(prev_pinned, item, 'add'));
     };
 
     const handleRemovePinnedClick = (item: TItem) => {
-        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setOtherTradeTypes(prev_others => modifyOtherCategories(prev_others, item));
     };
 
@@ -147,13 +144,10 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
         return updated_categories;
     };
 
-    const modifyCategories = (categories: TResultItem[], item: TItem, action: 'remove' = 'remove') =>
+    const modifyCategories = (categories: TResultItem[], item: TItem) =>
         categories.map(category => ({
             ...category,
-            items:
-                action === 'remove'
-                    ? category.items.filter(i => i.id !== item.id)
-                    : category.items.filter(i => i.id !== item.id).sort((a, b) => a.title?.localeCompare(b.title)),
+            items: category.items.filter(i => i.id !== item.id),
         }));
 
     const modifyOtherCategories = (categories: TResultItem[], item: TItem) => {
@@ -169,10 +163,12 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
             });
         }
 
-        return updated_categories.map(category => ({
-            ...category,
-            items: category.items.sort((a, b) => a.title?.localeCompare(b.title)),
-        }));
+        return updated_categories.map(category => {
+            return {
+                ...category,
+                items: sortCategoriesInTradeTypeOrder(trade_types, category.items),
+            };
+        });
     };
 
     const scrollToSelectedTradeType = () => {
@@ -183,7 +179,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     'button[data-state="selected"]'
                 ) as HTMLButtonElement;
                 if (selected_chip) {
-                    position_x = selected_chip.getBoundingClientRect().x - 8 || 0;
+                    position_x =
+                        selected_chip.getBoundingClientRect().x -
+                            (window.innerWidth - selected_chip.getBoundingClientRect().width) / 2 || 0;
                 }
                 trade_types_ref.current.scrollBy({
                     left: position_x,
@@ -229,7 +227,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
         const other_item = !is_contract_type_in_pinned
             ? getItems(other_trade_types).find(
-                  item => item.id === contract_type || checkContractTypePrefix([item.id, contract_type])
+                  item => item && (item.id === contract_type || checkContractTypePrefix([item.id, contract_type]))
               )
             : null;
 

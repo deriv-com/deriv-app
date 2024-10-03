@@ -27,6 +27,7 @@ type TDesktopFormWrapper = {
 const QuickSelectionPanel = ({
     selected_trade_type,
     selected_startegy_label,
+    children,
 }: Pick<TDesktopFormWrapper, 'selected_trade_type' | 'children'> & { selected_startegy_label: string }) => (
     <>
         <div className='qs__selected-options'>

@@ -124,27 +124,15 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const modifyPinnedCategories = (categories: TResultItem[], item: TItem, action: 'add' | 'remove') => {
-        const updated_categories = [...categories];
-        const pinned_category = updated_categories.find(cat => cat.id === 'pinned');
-
-        if (action === 'add') {
-            if (pinned_category) {
-                pinned_category.items.push(item);
-            } else {
-                updated_categories.push({
-                    id: 'pinned',
-                    title: localize('Pinned'),
-                    items: [item],
-                });
+        return categories.map(category => {
+            if (category.id === 'pinned') {
+                return {
+                    ...category,
+                    items: action === 'add' ? [...category.items, item] : category.items.filter(i => i.id !== item.id),
+                };
             }
-        } else if (action === 'remove') {
-            updated_categories.map(category => ({
-                ...category,
-                items: category.items.filter(i => i.id !== item.id),
-            }));
-        }
-
-        return updated_categories;
+            return category;
+        });
     };
 
     const modifyCategories = (categories: TResultItem[], item: TItem, action: 'remove' = 'remove') =>
@@ -157,22 +145,15 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
         }));
 
     const modifyOtherCategories = (categories: TResultItem[], item: TItem) => {
-        const updated_categories = [...categories];
-        const other_category = updated_categories.find(cat => cat.id === 'other');
-
-        if (other_category) {
-            other_category.items.unshift(item);
-        } else {
-            updated_categories.push({
-                id: 'other',
-                items: [item],
-            });
-        }
-
-        return updated_categories.map(category => ({
-            ...category,
-            items: category.items.sort((a, b) => a.title?.localeCompare(b.title)),
-        }));
+        return categories.map(category => {
+            if (category.id === 'other') {
+                return {
+                    ...category,
+                    items: [...category.items, item].sort((a, b) => a.title.localeCompare(b.title)),
+                };
+            }
+            return category;
+        });
     };
 
     const scrollToSelectedTradeType = () => {

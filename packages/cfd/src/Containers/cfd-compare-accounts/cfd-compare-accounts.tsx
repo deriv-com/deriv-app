@@ -69,7 +69,7 @@ const CompareCFDs = observer(() => {
             <Localize
                 i18n_default_text='Deriv MT5 CFDs {{title}} account'
                 values={{
-                    title: is_demo ? localize('Demo') : localize('real'),
+                    title: is_demo ? localize('demo') : localize('real'),
                 }}
             />
         ) : (

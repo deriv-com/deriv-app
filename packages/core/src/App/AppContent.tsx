@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
-import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import P2PIFrame from 'Modules/P2PIFrame';
@@ -38,10 +37,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(isMounted());
+    const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+    const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';
 
     React.useEffect(() => {
         switchLanguage(current_language);
@@ -82,11 +81,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             if (store.ui.is_dark_mode_on) {
                 store.ui.setDarkMode(false);
             }
-            if (store.common.current_language !== 'EN') {
+            if (!wallets_allowed_languages) {
                 store.common.changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, store.common, store.ui]);
+    }, [has_wallet, store.common, store.ui, wallets_allowed_languages]);
 
     return (
         <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>

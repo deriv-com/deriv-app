@@ -10,7 +10,6 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
-import { start } from 'repl';
 
 type TDurationProps = {
     is_minimized?: boolean;

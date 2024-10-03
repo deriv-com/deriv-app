@@ -18,42 +18,42 @@ describe('DepositCryptoDisclaimers', () => {
         jest.clearAllMocks();
     });
 
-    it('should render with default disclaimer', () => {
+    it('renders with default disclaimer', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: {} });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: {} });
 
         render(<DepositCryptoDisclaimers />);
 
         expect(screen.getByText('To avoid loss of funds:')).toBeInTheDocument();
-        expect(screen.getByText('Do not send other cryptocurrencies to this address.')).toBeInTheDocument();
-        expect(
-            screen.getByText('Make sure to copy your Deriv account address correctly into your crypto wallet.')
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Incorrect transfers may result in the loss of funds./)).toBeInTheDocument();
         expect(screen.queryByText(/A minimum deposit value of/)).not.toBeInTheDocument();
         expect(
             screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
     });
 
-    it('should render with minimum deposit disclaimer for active currency', () => {
+    it('renders with minimum deposit disclaimer for active currency', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: { minimum_deposit: 10 } });
 
         render(<DepositCryptoDisclaimers />);
 
         expect(screen.getByText('To avoid loss of funds:')).toBeInTheDocument();
-        expect(screen.getByText('Do not send other cryptocurrencies to this address.')).toBeInTheDocument();
+        expect(screen.getByText('Only send Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy your Deriv account address correctly into your crypto wallet.')
+            screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/A minimum deposit value of/)).toBeInTheDocument();
-        expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'In your crypto wallet, select the Ethereum (ETH) network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
+            )
+        ).toBeInTheDocument();
         expect(
             screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
     });
 
-    it('should render with specific minimum deposit disclaimer for tUSDT', () => {
+    it('renders with specific minimum deposit disclaimer for tUSDT', () => {
         const tUSDTData = {
             currency: 'tUSDT',
             currency_config: {
@@ -67,13 +67,16 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />);
 
-        expect(screen.getByText('To avoid loss of funds:')).toBeInTheDocument();
-        expect(screen.getByText('Do not send other cryptocurrencies to this address.')).toBeInTheDocument();
+        expect(screen.getByText('Only send Tron (TRC20) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy your Deriv account address correctly into your crypto wallet.')
+            screen.getByText('Make sure to copy the Deriv tUSDT Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'In your crypto wallet, select the Tron (TRC20) network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/A minimum deposit value of/)).toBeInTheDocument();
-        expect(screen.getByText(/Tron \(TRC20\) network/)).toBeInTheDocument();
         expect(screen.getByText(/Otherwise, a fee is applied./)).toBeInTheDocument();
         expect(
             screen.getByText("You'll receive an email when your deposit starts being processed.")

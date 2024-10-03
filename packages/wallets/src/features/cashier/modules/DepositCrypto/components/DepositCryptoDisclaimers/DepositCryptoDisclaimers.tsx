@@ -51,15 +51,20 @@ const DepositCryptoDisclaimers = () => {
                     <ul className='wallets-deposit-crypto-disclaimers__points'>
                         {cryptoConfig?.minimum_deposit && minimumDepositDisclaimer}
                         <li>
-                            <Localize i18n_default_text='Do not send other cryptocurrencies to this address.' />
-                        </li>
-                        <li>
-                            <Localize i18n_default_text='Make sure to copy your Deriv account address correctly into your crypto wallet.' />
+                            <Localize
+                                i18n_default_text='Only send {{currency}} to this address.'
+                                values={{ currency: currency && cryptoCurrencyToNetworkMapper[currency] }}
+                            />
                         </li>
                         <li>
                             <Localize
-                                components={[<strong key={0} />]}
-                                i18n_default_text='In your cryptocurrency wallet, make sure to select <0>{{currency}} network</0> when you transfer funds to Deriv.'
+                                i18n_default_text='Make sure to copy the Deriv {{currency}} Wallet address to your crypto wallet.'
+                                values={{ currency }}
+                            />
+                        </li>
+                        <li>
+                            <Localize
+                                i18n_default_text='In your crypto wallet, select the {{currency}} network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
                                 values={{ currency: currency && cryptoCurrencyToNetworkMapper[currency] }}
                             />
                         </li>

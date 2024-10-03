@@ -52,15 +52,22 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                 <br />
                 <ul className='deposit-crypto-disclaimers__list'>
                     {crypto_config?.minimum_deposit && <li>{minimum_deposit_disclaimer}</li>}
-                    <li>{localize('Do not send other currencies to this address.')}</li>
                     <li>
-                        {localize('Make sure to copy your Deriv account address correctly into your crypto wallet.')}
+                        <Localize
+                            i18n_default_text='Only send {{network_name}} to this address.'
+                            values={{ network_name: crypto_currency_to_network_mapper[currency_config?.code] }}
+                        />
                     </li>
                     <li>
                         <Localize
-                            i18n_default_text='In your cryptocurrency wallet, make sure to select the <0>{{network_name}} network</0> when you transfer funds to Deriv.'
+                            i18n_default_text='Make sure to copy the Deriv {{currency}} Wallet address to your crypto wallet.'
+                            values={{ currency }}
+                        />
+                    </li>
+                    <li>
+                        <Localize
+                            i18n_default_text='In your crypto wallet, select the {{network_name}} network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
                             values={{ network_name: crypto_currency_to_network_mapper[currency_config?.code] }}
-                            components={[<strong key={0} />]}
                         />
                     </li>
                 </ul>

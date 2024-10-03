@@ -20,20 +20,23 @@ const useFreshChat = () => {
                         locale: 'en',
                         hideButton: true,
                     });
-                    window.fcSettings = {
-                        onInit() {
-                            window.fcWidget.on('widget:loaded', () => {
-                                // eslint-disable-next-line no-console
-                                console.log('widget loaded');
-                                setIsReady(true);
-                            });
-                        },
-                    };
                 }
             }
         };
         initFreshChat();
     }, [scriptStatus, token]);
+
+    useLayoutEffect(() => {
+        window.fcSettings = {
+            onInit() {
+                window.fcWidget.on('widget:loaded', () => {
+                    // eslint-disable-next-line no-console
+                    console.log('widget loaded');
+                    setIsReady(true);
+                });
+            },
+        };
+    }, []);
 
     return {
         isReady,

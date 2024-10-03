@@ -11,6 +11,25 @@ const stake_param_label = 'Stake';
 const input_placeholder = 'Amount';
 const save_button_label = 'Save';
 
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        available_contract_types: {
+            vanillalongcall: {
+                title: 'Call/Put',
+                trade_types: ['VANILLALONGCALL'],
+                basis: ['stake'],
+                components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
+                barrier_count: 1,
+                config: {
+                    barrier_category: 'euro_non_atm',
+                    default_stake: 10,
+                },
+            },
+        },
+    })),
+}));
+
 describe('Stake', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
@@ -283,5 +302,12 @@ describe('Stake', () => {
         userEvent.click(screen.getByText(stake_param_label));
 
         expect(screen.queryByText(error_text_rise)).not.toBeInTheDocument();
+    });
+
+    it('should set default stake if available_contract_types object contains it ', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
+        render(<MockedStake />);
+
+        expect(default_mock_store.modules.trade.setDefaultStake).toHaveBeenCalledWith(10);
     });
 });

@@ -12,66 +12,9 @@ import { createMemoryHistory } from 'history';
 import { useSignupTrigger } from '../../../Hooks/useSignupTrigger';
 import { renderHook } from '@testing-library/react-hooks';
 
-type TTradeTypes = {
-    value: string;
-    text: string;
-    barrier_category: string;
-}[];
-
 const mock_contract_data = {
     contracts_for_company: {
-        available: [
-            {
-                value: 'accumulator',
-                text: 'Accumulators',
-                barrier_category: 'american',
-            },
-            {
-                value: 'vanillalongcall',
-                text: 'Vanillas',
-                barrier_category: 'euro_atm',
-            },
-            {
-                value: 'turboslong',
-                text: 'Turbos',
-                barrier_category: 'american',
-            },
-            {
-                value: 'multiplier',
-                text: 'Multipliers',
-                barrier_category: 'american',
-            },
-            {
-                value: 'rise_fall',
-                text: 'Rise/Fall',
-                barrier_category: 'euro_atm',
-            },
-            {
-                value: 'high_low',
-                text: 'Higher/Lower',
-                barrier_category: 'euro_atm',
-            },
-            {
-                value: 'touch',
-                text: 'Touch/No Touch',
-                barrier_category: 'american',
-            },
-            {
-                value: 'match_diff',
-                text: 'Matches/Differs',
-                barrier_category: 'non_financial',
-            },
-            {
-                value: 'even_odd',
-                text: 'Even/Odd',
-                barrier_category: 'non_financial',
-            },
-            {
-                value: 'over_under',
-                text: 'Over/Under',
-                barrier_category: 'non_financial',
-            },
-        ],
+        available: [{ contract_type: 'type_1' }, { contract_type: 'type_2' }, { contract_type: 'unsupported_type' }],
     },
 };
 const localStorage_key = 'guide_dtrader_v2';
@@ -99,28 +42,7 @@ jest.mock('@deriv/shared', () => ({
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
 jest.mock('AppV2/Components/CurrentSpot', () => jest.fn(() => <div>Current Spot</div>));
 jest.mock('AppV2/Components/PurchaseButton', () => jest.fn(() => <div>Purchase Button</div>));
-jest.mock('../trade-types', () =>
-    jest.fn(
-        ({
-            trade_types,
-            onTradeTypeSelect,
-        }: {
-            trade_types: TTradeTypes;
-            onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-        }) => (
-            <div>
-                <p>Trade Types Selection</p>
-                <p>
-                    {trade_types.map(item => (
-                        <button key={item.text} value={item.value} onClick={onTradeTypeSelect}>
-                            {item.text}
-                        </button>
-                    ))}
-                </p>
-            </div>
-        )
-    )
-);
+jest.mock('../trade-types', () => jest.fn(() => <div>Trade Types Selection</div>));
 jest.mock('AppV2/Components/MarketSelector', () => jest.fn(() => <div>MarketSelector</div>));
 jest.mock('../../Chart', () => ({
     ...jest.requireActual('../../Chart'),
@@ -146,19 +68,6 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     default: jest.fn(() => ({
         is_fetching_ref: { current: false },
         trade_types: mock_contract_data.contracts_for_company.available,
-        available_contract_types: {
-            vanillalongcall: {
-                title: 'Call/Put',
-                trade_types: ['VANILLALONGCALL'],
-                basis: ['stake'],
-                components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
-                barrier_count: 1,
-                config: {
-                    barrier_category: 'euro_non_atm',
-                    default_stake: 10,
-                },
-            },
-        },
     })),
 }));
 jest.mock('AppV2/Hooks/useSignupTrigger');
@@ -205,8 +114,6 @@ describe('Trade', () => {
                             symbol_type: 'stockindex',
                         },
                     ],
-                    onChangeMultiple: jest.fn(),
-                    setV2ParamsInitialValues: jest.fn(),
                 },
             },
             client: { is_logged_in: true },
@@ -357,22 +264,5 @@ describe('Trade', () => {
         userEvent.click(signupButton);
 
         expect(result.current.handleSignup).toHaveBeenCalled();
-    });
-
-    it('should set default stake and TP when user is switching to another trade type (to call onChangeMultiple and setV2ParamsInitialValues', () => {
-        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
-        render(mockTrade());
-
-        userEvent.click(screen.getByText('Rise/Fall'));
-
-        expect(default_mock_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            amount: 10,
-            has_take_profit: false,
-            take_profit: '',
-        });
-        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledWith({
-            value: 10,
-            name: 'stake',
-        });
     });
 });

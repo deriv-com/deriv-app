@@ -1398,15 +1398,30 @@ export default class TradeStore extends BaseStore {
             this.setMarketStatus(isMarketClosed(this.active_symbols, obj_new_values.symbol ?? ''));
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
-            // Set stake to default one (from contracts_for) on symbol switch
-            if (this.default_stake && this.is_dtrader_v2_enabled) {
+        }
+
+        // Set stake to default one (from contracts_for) on symbol or contract type switch.
+        // On contract type we also additionally reset take profit
+        if (this.default_stake && this.is_dtrader_v2_enabled) {
+            const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
+            const has_contract_type_changed =
+                obj_new_values.contract_type &&
+                obj_old_values?.contract_type &&
+                obj_new_values.contract_type !== obj_old_values.contract_type;
+
+            if (has_symbol_changed || has_contract_type_changed) {
                 this.setV2ParamsInitialValues({
                     value: this.default_stake ?? '',
                     name: 'stake',
                 });
                 obj_new_values.amount = this.default_stake;
             }
+            if (has_contract_type_changed) {
+                obj_new_values.has_take_profit = false;
+                obj_new_values.take_profit = '';
+            }
         }
+
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);

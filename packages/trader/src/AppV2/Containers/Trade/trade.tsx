@@ -2,9 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
-import { Loading, usePrevious } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
-import { isCryptocurrency } from '@deriv/shared';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -31,31 +30,20 @@ const Trade = observer(() => {
     const {
         active_symbols,
         contract_type,
-        currency,
         has_cancellation,
         symbol,
         is_accumulator,
         is_market_closed,
-        v2_params_initial_values,
         onMount,
         onChange,
-        onChangeMultiple,
         onUnmount,
-        setV2ParamsInitialValues,
-        setDefaultStake,
     } = useTraderStore();
-    const { trade_types, available_contract_types } = useContractsForCompany();
+    const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
     });
-
-    const is_crypto = isCryptocurrency(currency ?? '');
-    const default_stake = is_crypto
-        ? Number(v2_params_initial_values.stake)
-        : available_contract_types?.[contract_type]?.config?.default_stake;
-    const prev_contract_type = usePrevious(contract_type);
 
     const symbols = React.useMemo(
         () =>
@@ -87,26 +75,6 @@ const Trade = observer(() => {
             setIsMinimizedParamsVisible(chart_bottom_Y <= container_bottom_Y);
         }
     }, []);
-
-    React.useEffect(() => {
-        if (!default_stake || prev_contract_type === contract_type) return;
-
-        // Set stake to default value (from contracts_for API) and disabling TP when user switched to another trade type
-        setV2ParamsInitialValues({ value: default_stake, name: 'stake' });
-        onChangeMultiple({
-            amount: default_stake,
-            has_take_profit: false,
-            take_profit: '',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contract_type, default_stake, prev_contract_type]);
-
-    React.useEffect(() => {
-        if (default_stake) {
-            setDefaultStake(default_stake);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [default_stake]);
 
     React.useEffect(() => {
         onMount();

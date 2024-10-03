@@ -3,10 +3,11 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces, isCryptocurrency } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -27,6 +28,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         onChange,
         proposal_info,
         setV2ParamsInitialValues,
+        setDefaultStake,
         stop_out,
         trade_type_tab,
         trade_types,
@@ -36,6 +38,14 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
+    const { available_contract_types } = useContractsForCompany();
+
+    // default_stake resetting data
+    const is_crypto = isCryptocurrency(currency ?? '');
+    const default_stake = is_crypto
+        ? Number(v2_params_initial_values.stake)
+        : available_contract_types?.[contract_type]?.config?.default_stake;
+
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -93,6 +103,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    React.useEffect(() => {
+        if (default_stake) setDefaultStake(default_stake);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [default_stake]);
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation } from '@deriv/api';
 import { TSocketError } from '@deriv/api/types';
-import { localize, Localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 import { useStore } from '@deriv/stores';
 import useSettings from './useSettings';
+import { emailOTPErrorMessage, phoneOTPErrorMessage } from '@deriv/shared';
 
 /** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
@@ -30,62 +30,50 @@ const useSendOTPVerificationCode = () => {
         requestOnWhatsApp,
     } = useRequestPhoneNumberOTP();
 
-    const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
-        switch (error.code) {
-            case 'PhoneCodeExpired':
-                setPhoneOtpErrorMessage(localize('Code expired. Get a new one.'));
-                break;
-            case 'InvalidOTP':
-                setPhoneOtpErrorMessage(localize('Invalid code. Try again.'));
-                break;
-            case 'NoAttemptsLeft':
-                refetch();
-                setIsForcedToExitPnv(true);
-                setShowCoolDownPeriodModal(true);
-                break;
-            default:
-                setPhoneOtpErrorMessage(error.message);
-                break;
-        }
-    };
+    type OTPErrorCode =
+        | 'PhoneCodeExpired'
+        | 'InvalidOTP'
+        | 'EmailCodeExpired'
+        | 'InvalidToken'
+        | 'NoAttemptsLeft'
+        | 'PhoneNumberVerificationSuspended';
 
-    const formatEmailOtpError = (error: TSocketError<'phone_number_challenge'>['error']) => {
-        switch (error.code) {
-            case 'EmailCodeExpired':
-                setPhoneOtpErrorMessage(localize('Code expired. Get a new code.'));
-                break;
-            case 'InvalidToken':
-                setPhoneOtpErrorMessage(localize('Invalid code. Try again or get a new code.'));
-                break;
-            case 'NoAttemptsLeft':
+    const formatOtpError = (error: TSocketError<'phone_number_verify' | 'phone_number_challenge'>['error']) => {
+        const errorHandlers: Record<OTPErrorCode, () => void> = {
+            PhoneCodeExpired: () => setPhoneOtpErrorMessage(phoneOTPErrorMessage('PhoneCodeExpired')),
+            InvalidOTP: () => setPhoneOtpErrorMessage(phoneOTPErrorMessage('InvalidOTP')),
+            EmailCodeExpired: () =>
+                setPhoneOtpErrorMessage(emailOTPErrorMessage('EmailCodeExpired', getCurrentCarrier, getOtherCarrier)),
+            InvalidToken: () =>
+                setPhoneOtpErrorMessage(emailOTPErrorMessage('InvalidToken', getCurrentCarrier, getOtherCarrier)),
+            NoAttemptsLeft: () => {
                 refetch();
                 setIsForcedToExitPnv(true);
                 setShowCoolDownPeriodModal(true);
-                break;
-            case 'PhoneNumberVerificationSuspended':
+            },
+            PhoneNumberVerificationSuspended: () =>
                 setPhoneOtpErrorMessage(
-                    <Localize
-                        i18n_default_text="We're unable to send codes via {{ current_carrier }} right now. Get your code by {{other_carriers}}."
-                        values={{
-                            current_carrier: getCurrentCarrier(),
-                            other_carriers: getOtherCarrier(),
-                        }}
-                    />
-                );
-                break;
-            default:
-                setPhoneOtpErrorMessage(error.message);
-                break;
+                    emailOTPErrorMessage('PhoneNumberVerificationSuspended', getCurrentCarrier, getOtherCarrier)
+                ),
+        };
+
+        const errorCode = error.code as OTPErrorCode;
+
+        if (errorCode in errorHandlers) {
+            errorHandlers[errorCode]();
+        } else {
+            setPhoneOtpErrorMessage(error.message);
         }
     };
 
+    // Usage in useEffect
     useEffect(() => {
         if (phone_otp_error) {
             // @ts-expect-error will remove once solved
-            formatPhoneOtpError(phone_otp_error);
+            formatOtpError(phone_otp_error);
         } else if (email_otp_error) {
             // @ts-expect-error will remove once solved
-            formatEmailOtpError(email_otp_error);
+            formatOtpError(email_otp_error);
         }
     }, [phone_otp_error, email_otp_error]);
 

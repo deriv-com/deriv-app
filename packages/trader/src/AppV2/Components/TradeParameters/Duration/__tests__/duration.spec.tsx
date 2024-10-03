@@ -25,6 +25,14 @@ jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
     })),
 }));
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    toMoment: jest.fn(() => ({
+        clone: jest.fn(),
+        isSame: jest.fn(),
+    })),
+}));
+
 describe('Duration', () => {
     let default_trade_store: TCoreStores;
 

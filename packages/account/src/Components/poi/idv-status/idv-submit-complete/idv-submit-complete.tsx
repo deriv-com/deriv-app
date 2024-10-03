@@ -42,7 +42,7 @@ const IdvSubmitComplete = observer(
                     <Localize i18n_default_text="We'll review your proof of identity again and will give you an update as soon as possible." />
                 );
             return (
-                <Localize i18n_default_text='Your proof of identity is under review.We’ll get back to you within 5 minutes.' />
+                <Localize i18n_default_text='Your proof of identity is under review. We’ll get back to you within 5 minutes.' />
             );
         };
 

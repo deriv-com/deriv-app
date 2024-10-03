@@ -54,7 +54,7 @@ describe('<IdvSubmitComplete/>', () => {
         expect(screen.queryByText('Your profile is updated')).not.toBeInTheDocument();
         expect(screen.queryByText('Review in progress')).toBeInTheDocument();
         expect(
-            screen.queryByText('Your proof of identity is under review.We’ll get back to you within 5 minutes.')
+            screen.queryByText('Your proof of identity is under review. We’ll get back to you within 5 minutes.')
         ).toBeInTheDocument();
         expect(screen.queryByText('To start trading, you also need to verify your address.')).not.toBeInTheDocument();
     });
@@ -70,7 +70,7 @@ describe('<IdvSubmitComplete/>', () => {
         expect(screen.getByText('DerivLightWaitingPoiIcon')).toBeInTheDocument();
         expect(screen.queryByText('Review in progress')).toBeInTheDocument();
         expect(
-            screen.queryByText('Your proof of identity is under review.We’ll get back to you within 5 minutes.')
+            screen.queryByText('Your proof of identity is under review. We’ll get back to you within 5 minutes.')
         ).toBeInTheDocument();
         expect(screen.queryByText('To start trading, you also need to verify your address.')).toBeInTheDocument();
         expect(screen.queryByText('Next')).toBeInTheDocument();

@@ -1,16 +1,16 @@
-import React from 'react';
-import { useFormikContext } from 'formik';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { useFormikContext } from 'formik';
+import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsEditStrategyEvent } from '../../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../../config';
+import '../../quick-strategy.scss';
 import { TFormData, TFormValues } from '../../types';
 import StrategyTabContent from '../strategy-tab-content';
 import useQsSubmitHandler from '../useQsSubmitHandler';
-import '../../quick-strategy.scss';
 import QSStepper from './qs-stepper';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
@@ -23,6 +23,29 @@ type TDesktopFormWrapper = {
     selected_trade_type: string;
     setSelectedTradeType: (selected_trade_type: string) => void;
 };
+
+const QuickSelectionPanel = ({
+    selected_trade_type,
+    selected_startegy_label,
+}: Pick<TDesktopFormWrapper, 'selected_trade_type' | 'children'> & { selected_startegy_label: string }) => (
+    <>
+        <div className='qs__selected-options'>
+            <div className='qs__selected-options__item'>
+                <Text size='xs'>{localize('Trade type')}</Text>
+                <Text size='xs' weight='bold'>
+                    {selected_trade_type}
+                </Text>
+            </div>
+            <div className='qs__selected-options__item'>
+                <Text size='xs'>{localize('Strategy')}</Text>
+                <Text size='xs' weight='bold'>
+                    {selected_startegy_label}
+                </Text>
+            </div>
+        </div>
+        <StrategyTabContent formfields={children} active_tab={'TRADE_PARAMETERS'} />
+    </>
+);
 
 const FormWrapper = observer(
     ({
@@ -40,8 +63,6 @@ const FormWrapper = observer(
         const { handleSubmit } = useQsSubmitHandler();
 
         const selected_startegy_label = STRATEGIES[selected_strategy as keyof typeof STRATEGIES].label;
-        const is_verified_or_completed_step =
-            current_step === QsSteps.StrategyVerified || current_step === QsSteps.StrategyCompleted;
         const is_selected_strategy_step = current_step === QsSteps.StrategySelect;
 
         React.useEffect(() => {
@@ -77,6 +98,38 @@ const FormWrapper = observer(
 
         const onBack = () => {
             setCurrentStep(QsSteps.StrategySelect);
+        };
+
+        const renderContent = () => {
+            switch (current_step) {
+                case QsSteps.StrategySelect:
+                    return (
+                        <StrategyTemplatePicker
+                            setCurrentStep={setCurrentStep}
+                            setSelectedTradeType={setSelectedTradeType}
+                        />
+                    );
+                case QsSteps.StrategyVerified:
+                    return (
+                        <QuickSelectionPanel
+                            selected_trade_type={selected_trade_type}
+                            selected_startegy_label={selected_startegy_label}
+                        >
+                            {children}
+                        </QuickSelectionPanel>
+                    );
+                case QsSteps.StrategyCompleted:
+                    return (
+                        <QuickSelectionPanel
+                            selected_trade_type={selected_trade_type}
+                            selected_startegy_label={selected_startegy_label}
+                        >
+                            {children}
+                        </QuickSelectionPanel>
+                    );
+                default:
+                    return null;
+            }
         };
 
         return (
@@ -116,35 +169,11 @@ const FormWrapper = observer(
                                 autohide={false}
                                 refSetter={scroll_ref}
                             >
-                                {is_selected_strategy_step && (
-                                    <StrategyTemplatePicker
-                                        setCurrentStep={setCurrentStep}
-                                        setSelectedTradeType={setSelectedTradeType}
-                                    />
-                                )}
-                                {is_verified_or_completed_step && (
-                                    <>
-                                        <div className='qs__selected-options'>
-                                            <div className='qs__selected-options__item'>
-                                                <Text size='xs'>{localize('Trade type')}</Text>
-                                                <Text size='xs' weight='bold'>
-                                                    {selected_trade_type}
-                                                </Text>
-                                            </div>
-                                            <div className='qs__selected-options__item'>
-                                                <Text size='xs'>{localize('Strategy')}</Text>
-                                                <Text size='xs' weight='bold'>
-                                                    {selected_startegy_label}
-                                                </Text>
-                                            </div>
-                                        </div>
-                                        <StrategyTabContent formfields={children} active_tab={'TRADE_PARAMETERS'} />
-                                    </>
-                                )}
+                                {renderContent()}
                             </ThemedScrollbars>
-                            {is_verified_or_completed_step && (
+                            {!is_selected_strategy_step && (
                                 <div className='qs__body__content__footer'>
-                                    <Button transparent disabled={is_selected_strategy_step} onClick={onBack}>
+                                    <Button transparent disabled={!is_selected_strategy_step} onClick={onBack}>
                                         {localize('Back')}
                                     </Button>
                                     <Button secondary disabled={!isValid} onClick={onEdit}>

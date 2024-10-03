@@ -66,8 +66,9 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     </li>
                     <li>
                         <Localize
-                            i18n_default_text='In your crypto wallet, select the {{network_name}} network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
+                            i18n_default_text='In your crypto wallet, select the <0>{{network_name}} network</0> when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
                             values={{ network_name: crypto_currency_to_network_mapper[currency_config?.code] }}
+                            components={[<strong key={0} />]}
                         />
                     </li>
                 </ul>

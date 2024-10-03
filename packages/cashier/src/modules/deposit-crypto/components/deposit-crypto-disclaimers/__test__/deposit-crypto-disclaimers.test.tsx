@@ -42,7 +42,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv BTC Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/select the Bitcoin \(BTC\) network when transferring to Deriv./)).toBeInTheDocument();
+        expect(screen.getByText(/Bitcoin \(BTC\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for ETH', () => {
@@ -54,7 +54,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/select the Ethereum \(ETH\) network when transferring to Deriv./)).toBeInTheDocument();
+        expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for LTC', () => {
@@ -66,7 +66,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv LTC Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/select the Litecoin \(LTC\) network when transferring to Deriv./)).toBeInTheDocument();
+        expect(screen.getByText(/Litecoin \(LTC\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for USDC', () => {
@@ -78,9 +78,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv USDC Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(
-            screen.getByText(/select the Ethereum \(ERC20\) network when transferring to Deriv./)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Ethereum \(ERC20\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for UST', () => {
@@ -92,7 +90,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv UST Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/select the Omnicore network when transferring to Deriv./)).toBeInTheDocument();
+        expect(screen.getByText(/Omnicore network/)).toBeInTheDocument();
     });
 
     test('should show correct message for eUSDT', () => {
@@ -104,8 +102,6 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv eUSDT Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(
-            screen.getByText(/select the Ethereum \(ERC20\) network when transferring to Deriv./)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/\(ERC20\) network/)).toBeInTheDocument();
     });
 });

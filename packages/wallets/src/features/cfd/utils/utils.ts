@@ -26,6 +26,7 @@ export const getClientVerification = (account: TModifiedMT5Accounts) => {
         isPoiRequired,
         isTinRequired,
         isVerificationRequired: isPoiRequired || isPoaRequired || isTinRequired,
-        statuses: { ...documentStatuses, overallStatus },
+        overallStatus,
+        statuses: documentStatuses,
     };
 };

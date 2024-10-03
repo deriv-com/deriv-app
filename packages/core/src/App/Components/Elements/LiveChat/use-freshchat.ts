@@ -26,16 +26,26 @@ const useFreshChat = () => {
         initFreshChat();
     }, [scriptStatus, token]);
 
-    useLayoutEffect(() => {
-        window.fcSettings = {
-            onInit() {
+    useEffect(() => {
+        const checkFcWidget = () => {
+            if (typeof window !== 'undefined' && window.fcWidget) {
                 window.fcWidget.on('widget:loaded', () => {
                     // eslint-disable-next-line no-console
-                    console.log('widget loaded');
+                    console.log('fc widget loaded');
                     setIsReady(true);
                 });
-            },
+            } else {
+                setIsReady(false);
+            }
         };
+
+        // Check when the component mounts
+        checkFcWidget();
+
+        // Optionally, recheck at intervals if needed (e.g., when window.fcWidget might load later)
+        const intervalId = setInterval(checkFcWidget, 1000); // Check every 1 second
+
+        return () => clearInterval(intervalId); // Cleanup the interval on unmount
     }, []);
 
     return {

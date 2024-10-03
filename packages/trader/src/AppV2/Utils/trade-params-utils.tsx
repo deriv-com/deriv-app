@@ -1,5 +1,6 @@
 import {
     CONTRACT_TYPES,
+    isTimeValid,
     isTouchContract,
     isTurbosContract,
     isVanillaContract,
@@ -7,6 +8,7 @@ import {
     TRADE_TYPES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Moment } from 'moment';
 import React from 'react';
 
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
@@ -317,4 +319,121 @@ export const getOptionPerUnit = (
     }
 
     return [[]];
+};
+
+export const getSmallestDuration = (
+    obj: { [x: string]: { min: number; max: number } | { min: number } },
+    durationUnits: any[]
+) => {
+    const keysPriority = ['tick', 'intraday', 'daily'];
+    let smallestValueInSeconds = Infinity;
+    let smallestUnit: 's' | 'm' | 'h' | 'd' | null = null;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of keysPriority) {
+        if (obj[key]) {
+            if (key === 'tick') {
+                const tickUnit = durationUnits.find((item: { value: string }) => item.value === 't');
+                if (tickUnit) {
+                    return { value: obj[key].min, unit: 't' };
+                }
+            }
+
+            if (obj[key].min < smallestValueInSeconds) {
+                smallestValueInSeconds = obj[key].min;
+
+                if (key === 'intraday') {
+                    if (smallestValueInSeconds >= 60 && smallestValueInSeconds < 3600) {
+                        smallestUnit = 'm';
+                    } else if (smallestValueInSeconds >= 3600 && smallestValueInSeconds < 86400) {
+                        smallestUnit = 'h';
+                    }
+                } else if (key === 'daily') {
+                    smallestUnit = 'd';
+                }
+            }
+        }
+    }
+
+    if (smallestUnit) {
+        const validUnit = durationUnits.find((item: { value: string; text: string }) => item.value === smallestUnit);
+        if (validUnit) {
+            let convertedValue;
+            switch (smallestUnit) {
+                case 'm':
+                    convertedValue = smallestValueInSeconds / 60;
+                    break;
+                case 'h':
+                    convertedValue = smallestValueInSeconds / 3600;
+                    break;
+                case 'd':
+                    convertedValue = smallestValueInSeconds / 86400;
+                    break;
+                default:
+                    convertedValue = 1;
+            }
+            return { value: convertedValue, unit: smallestUnit };
+        }
+    }
+
+    return null;
+};
+
+export const getDatePickerStartDate = (
+    duration_units_list: { value: string }[],
+    server_time: Moment,
+    start_time: string | null,
+    duration_min_max: Record<string, { min: number; max: number }>
+) => {
+    const hasIntradayDurationUnit = (duration_units_list: { value: string }[]) => {
+        return duration_units_list.some((unit: { value: string }) => ['m', 'h'].indexOf(unit.value) !== -1);
+    };
+
+    const setMinTime = (dateObj: Date, time?: string) => {
+        const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
+        dateObj?.setHours(Number(hour));
+        dateObj?.setMinutes(Number(minute) || 0);
+        dateObj?.setSeconds(Number(second) || 0);
+        return dateObj;
+    };
+
+    const toDate = (value: string | number | Date | Moment): Date => {
+        if (!value) return new Date();
+
+        if (value instanceof Date && !isNaN(value.getTime())) {
+            return value;
+        }
+
+        if (typeof value === 'number') {
+            return new Date(value * 1000);
+        }
+
+        const parsedDate = new Date(value as Date);
+        if (isNaN(parsedDate.getTime())) {
+            const today = new Date();
+            const daysInMonth = new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 0).getDate();
+            const valueAsNumber = Date.parse(value as string) / (1000 * 60 * 60 * 24);
+            return valueAsNumber > daysInMonth
+                ? new Date(today.setUTCDate(today.getUTCDate() + Number(value)))
+                : new Date(value as Date);
+        }
+
+        return parsedDate;
+    };
+
+    const getMinDuration = (server_time: string | number | Date | Moment, duration_units_list: { value: string }[]) => {
+        const server_date = toDate(server_time);
+        return hasIntradayDurationUnit(duration_units_list)
+            ? new Date(server_date)
+            : new Date(server_date.getTime() + (duration_min_max?.daily?.min || 0) * 1000);
+    };
+
+    const getMomentContractStartDateTime = () => {
+        const minDurationDate = getMinDuration(server_time, duration_units_list);
+        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
+        return setMinTime(minDurationDate, time ?? '');
+    };
+
+    const min_date = new Date(getMomentContractStartDateTime());
+    return min_date;
 };

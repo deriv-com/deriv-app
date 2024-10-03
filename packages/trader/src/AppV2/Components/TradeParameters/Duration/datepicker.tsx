@@ -45,7 +45,6 @@ const DaysDatepicker = ({
         const day = date.getDay();
         return disabled_days.includes(day);
     };
-
     return (
         <div className='duration-datepicker duration-container__date-picker'>
             <DatePicker

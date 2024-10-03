@@ -7,46 +7,13 @@ import DaysDatepicker from './datepicker';
 import EndTimePicker from './timepicker';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { hasIntradayDurationUnit, isTimeValid, setTime, toMoment } from '@deriv/shared';
+import { hasIntradayDurationUnit, setTime, toMoment } from '@deriv/shared';
 import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
-import { getClosestTimeToCurrentGMT } from 'AppV2/Utils/trade-params-utils';
-import { Moment } from 'moment';
+import { getClosestTimeToCurrentGMT, getDatePickerStartDate } from 'AppV2/Utils/trade-params-utils';
 
 const timeToMinutes = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
-};
-
-export const toDate = (value: string | number | Date | Moment): Date => {
-    if (!value) return new Date();
-
-    if (value instanceof Date && !isNaN(value.getTime())) {
-        return value;
-    }
-
-    if (typeof value === 'number') {
-        return new Date(value * 1000);
-    }
-
-    const parsedDate = new Date(value as Date);
-    if (isNaN(parsedDate.getTime())) {
-        const today = new Date();
-        const daysInMonth = new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 0).getDate();
-        const valueAsNumber = Date.parse(value as string) / (1000 * 60 * 60 * 24);
-        return valueAsNumber > daysInMonth
-            ? new Date(today.setUTCDate(today.getUTCDate() + Number(value)))
-            : new Date(value as Date);
-    }
-
-    return parsedDate;
-};
-
-export const setMinTime = (dateObj: Date, time?: string) => {
-    const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
-    dateObj?.setHours(Number(hour));
-    dateObj?.setMinutes(Number(minute) || 0);
-    dateObj?.setSeconds(Number(second) || 0);
-    return dateObj;
 };
 
 const DayInput = ({
@@ -131,24 +98,6 @@ const DayInput = ({
         (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
         has_intraday_duration_unit;
 
-    const getMomentContractStartDateTime = () => {
-        const minDurationDate = getMinDuration();
-        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
-        return setMinTime(minDurationDate, time ?? '');
-    };
-
-    const getMinDuration = () => {
-        const server_date = toDate(server_time);
-        return hasIntradayDurationUnit(duration_units_list)
-            ? new Date(server_date)
-            : new Date(server_date.getTime() + (duration_min_max?.daily?.min || 0) * 1000);
-    };
-
-    const getMinDateExpiry = () => {
-        const min_date = new Date(getMomentContractStartDateTime());
-        return min_date;
-    };
-
     return (
         <div className='duration-container__days-input'>
             <TextField
@@ -204,7 +153,16 @@ const DayInput = ({
                         }
                     />
                     {open && (
-                        <DaysDatepicker start_date={getMinDateExpiry()} end_date={end_date} setEndDate={setEndDate} />
+                        <DaysDatepicker
+                            start_date={getDatePickerStartDate(
+                                duration_units_list,
+                                server_time,
+                                start_time,
+                                duration_min_max
+                            )}
+                            end_date={end_date}
+                            setEndDate={setEndDate}
+                        />
                     )}
                     {open_timepicker && (
                         <EndTimePicker

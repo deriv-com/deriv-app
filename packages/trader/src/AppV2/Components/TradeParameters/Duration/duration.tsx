@@ -8,68 +8,13 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
+import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
+import { useStore } from '@deriv/stores';
+import { start } from 'repl';
 
 type TDurationProps = {
     is_minimized?: boolean;
 };
-
-function getSmallestDuration(
-    obj: { [x: string]: { min: number; max: number } | { min: number } },
-    durationUnits: any[]
-) {
-    const keysPriority = ['tick', 'intraday', 'daily'];
-    let smallestValueInSeconds = Infinity;
-    let smallestUnit: 's' | 'm' | 'h' | 'd' | null = null;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const key of keysPriority) {
-        if (obj[key]) {
-            if (key === 'tick') {
-                const tickUnit = durationUnits.find((item: { value: string }) => item.value === 't');
-                if (tickUnit) {
-                    return { value: obj[key].min, unit: 't' };
-                }
-            }
-
-            if (obj[key].min < smallestValueInSeconds) {
-                smallestValueInSeconds = obj[key].min;
-
-                if (key === 'intraday') {
-                    if (smallestValueInSeconds >= 60 && smallestValueInSeconds < 3600) {
-                        smallestUnit = 'm';
-                    } else if (smallestValueInSeconds >= 3600 && smallestValueInSeconds < 86400) {
-                        smallestUnit = 'h';
-                    }
-                } else if (key === 'daily') {
-                    smallestUnit = 'd';
-                }
-            }
-        }
-    }
-
-    if (smallestUnit) {
-        const validUnit = durationUnits.find((item: { value: string; text: string }) => item.value === smallestUnit);
-        if (validUnit) {
-            let convertedValue;
-            switch (smallestUnit) {
-                case 'm':
-                    convertedValue = smallestValueInSeconds / 60;
-                    break;
-                case 'h':
-                    convertedValue = smallestValueInSeconds / 3600;
-                    break;
-                case 'd':
-                    convertedValue = smallestValueInSeconds / 86400;
-                    break;
-                default:
-                    convertedValue = 1;
-            }
-            return { value: convertedValue, unit: smallestUnit };
-        }
-    }
-
-    return null;
-}
 
 const Duration = observer(({ is_minimized }: TDurationProps) => {
     const {
@@ -87,6 +32,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         duration_units_list,
         expiry_epoch,
         validation_errors,
+        start_time,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
@@ -104,6 +50,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         validation_errors.duration.length > 0;
     const { activeSymbols } = useActiveSymbols();
     const isInitialMount = useRef(true);
+    const { common } = useStore();
+    const { server_time } = common;
 
     useEffect(() => {
         setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
@@ -136,6 +84,16 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             expiry_time: null,
             expiry_type: 'duration',
         });
+        const startDate = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
+
+        const areDatesEqual =
+            new Date(startDate).getDate() === end_date.getDate() &&
+            new Date(startDate).getMonth() === end_date.getMonth() &&
+            new Date(startDate).getFullYear() === end_date.getFullYear();
+
+        if (!areDatesEqual) {
+            setEndDate(new Date(startDate));
+        }
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
 
     const getInputValues = () => {

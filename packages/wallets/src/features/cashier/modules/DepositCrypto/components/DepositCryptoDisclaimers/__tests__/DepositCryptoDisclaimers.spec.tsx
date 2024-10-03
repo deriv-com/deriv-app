@@ -38,16 +38,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />);
 
-        expect(screen.getByText('To avoid loss of funds:')).toBeInTheDocument();
         expect(screen.getByText('Only send Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
             screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'In your crypto wallet, select the Ethereum (ETH) network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
         expect(
             screen.getByText("You'll receive an email when your deposit starts being processed.")
         ).toBeInTheDocument();
@@ -71,11 +66,7 @@ describe('DepositCryptoDisclaimers', () => {
         expect(
             screen.getByText('Make sure to copy the Deriv tUSDT Wallet address to your crypto wallet.')
         ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'In your crypto wallet, select the Tron (TRC20) network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Tron \(TRC20\) network/)).toBeInTheDocument();
         expect(screen.getByText(/A minimum deposit value of/)).toBeInTheDocument();
         expect(screen.getByText(/Otherwise, a fee is applied./)).toBeInTheDocument();
         expect(

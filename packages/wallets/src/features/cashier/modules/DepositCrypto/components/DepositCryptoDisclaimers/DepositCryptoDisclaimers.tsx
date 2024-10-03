@@ -64,7 +64,8 @@ const DepositCryptoDisclaimers = () => {
                         </li>
                         <li>
                             <Localize
-                                i18n_default_text='In your crypto wallet, select the {{currency}} network when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
+                                components={[<strong key={0} />]}
+                                i18n_default_text='In your crypto wallet, select the <0>{{currency}} network</0> when transferring to Deriv. Incorrect transfers may result in the loss of funds.'
                                 values={{ currency: currency && cryptoCurrencyToNetworkMapper[currency] }}
                             />
                         </li>

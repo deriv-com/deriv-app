@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
 const useFreshChat = () => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
+    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
 
     const { client } = useStore();
@@ -23,6 +23,8 @@ const useFreshChat = () => {
                     window.fcSettings = {
                         onInit() {
                             window.fcWidget.on('widget:loaded', () => {
+                                // eslint-disable-next-line no-console
+                                console.log('widget loaded');
                                 setIsReady(true);
                             });
                         },

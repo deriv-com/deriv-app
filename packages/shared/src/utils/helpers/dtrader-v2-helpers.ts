@@ -15,10 +15,12 @@ export const getPositionsV2TabIndexFromURL = () => {
 
     if (searchParams.toString()) {
         const current_opened_tab = [...searchParams.values()].filter(value =>
-            positions_v2_tab_names_array.includes(value)
+            positions_v2_tab_names_array.includes(value?.toLowerCase())
         );
-        if (!current_opened_tab[0]) return 0;
-        return current_opened_tab[0] === POSITIONS_V2_TAB_NAME.OPEN.toLowerCase() ? 0 : 1;
+        return current_opened_tab[0]?.toLowerCase() === POSITIONS_V2_TAB_NAME.OPEN.toLowerCase() ||
+            !current_opened_tab[0]
+            ? 0
+            : 1;
     }
     return 0;
 };

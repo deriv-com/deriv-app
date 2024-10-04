@@ -177,10 +177,6 @@ const CompositeCalendarMobile = React.memo(
             setIsOpen(true);
         };
 
-        React.useEffect(() => {
-            setAppliedDateRange(input_date_range || duration_list?.find(range => range.value === 'all_time'));
-        }, [duration_list, input_date_range]);
-
         return (
             <React.Fragment>
                 <div className='composite-calendar__input-fields composite-calendar__input-fields--fill'>

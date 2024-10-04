@@ -33,16 +33,13 @@ const TwoMonthPickerLoadable = Loadable<TTwoMonthPickerLoadable, typeof TwoMonth
 });
 
 const CompositeCalendar = observer((props: TCompositeCalendar) => {
-    const { common, ui } = useStore();
+    const { ui } = useStore();
     const { current_focus, setCurrentFocus } = ui;
-    const { current_language } = common;
-
     const { onChange, to, from } = props;
     const { isDesktop } = useDevice();
     const [show_to, setShowTo] = React.useState(false);
     const [show_from, setShowFrom] = React.useState(false);
-
-    const getList = () => [
+    const [list] = React.useState([
         {
             value: 'all_time',
             label: localize('All time'),
@@ -73,13 +70,7 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
             onClick: () => selectDateRange(90),
             duration: 90,
         },
-    ];
-    const [list, setList] = React.useState(getList());
-
-    React.useEffect(() => {
-        setList(getList());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [current_language]);
+    ]);
 
     const wrapper_ref = React.useRef<HTMLInputElement>(null);
 

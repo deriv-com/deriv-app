@@ -26,7 +26,7 @@ describe('getPositionsV2TabIndexFromURL', () => {
     });
 
     it('should return 0 if it is an open tab in location.search', () => {
-        location.search = `?lang=KM&tab_name=${POSITIONS_V2_TAB_NAME.OPEN.toLowerCase()}`;
+        location.search = `?tab_name=${POSITIONS_V2_TAB_NAME.OPEN.toLowerCase()}`;
         expect(getPositionsV2TabIndexFromURL()).toBe(0);
     });
 

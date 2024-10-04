@@ -11,9 +11,7 @@ const getClientKycStatus = (status: TModifiedMT5Accounts['status']): TBadgeVaria
     switch (status) {
         case MT5_ACCOUNT_STATUS.POA_FAILED:
         case MT5_ACCOUNT_STATUS.PROOF_FAILED:
-        case MT5_ACCOUNT_STATUS.POA_OUTDATED:
             return 'failed';
-        case MT5_ACCOUNT_STATUS.POA_PENDING:
         case MT5_ACCOUNT_STATUS.VERIFICATION_PENDING:
             return 'in_review';
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:

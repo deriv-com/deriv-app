@@ -16,8 +16,8 @@ describe('Dropzone', () => {
         const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
         const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
-        await waitFor(() => {
-            userEvent.upload(input, file);
+        await waitFor(async () => {
+            await userEvent.upload(input, file);
         });
         expect(input.files).toHaveLength(1);
     });
@@ -45,8 +45,8 @@ describe('Dropzone', () => {
             />
         );
         const input = screen.getByTestId('dt_dropzone-input');
-        await waitFor(() => {
-            userEvent.upload(input, file);
+        await waitFor(async () => {
+            await userEvent.upload(input, file);
         });
         expect(screen.getByText('File uploaded is not supported')).toBeInTheDocument();
     });
@@ -63,8 +63,8 @@ describe('Dropzone', () => {
             />
         );
         const input = screen.getByTestId('dt_dropzone-input');
-        await waitFor(() => {
-            userEvent.upload(input, file);
+        await waitFor(async () => {
+            await userEvent.upload(input, file);
         });
         expect(onFileChange).toHaveBeenCalled();
     });
@@ -73,8 +73,8 @@ describe('Dropzone', () => {
         const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} maxSize={1} />);
         const input = screen.getByTestId('dt_dropzone-input');
-        await waitFor(() => {
-            userEvent.upload(input, file);
+        await waitFor(async () => {
+            await userEvent.upload(input, file);
         });
         expect(screen.getByText('File size should be 8MB or less')).toBeInTheDocument();
     });

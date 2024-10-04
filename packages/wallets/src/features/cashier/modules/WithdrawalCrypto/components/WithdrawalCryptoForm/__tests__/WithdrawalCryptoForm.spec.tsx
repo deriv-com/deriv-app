@@ -82,8 +82,8 @@ describe('WithdrawalCryptoForm', () => {
 
         await act(async () => {
             await userEvent.type(cryptoAddressInput, 'SampleAddress', { delay: 1 });
-            userEvent.type(cryptoAmountInput, '123');
-            userEvent.click(submitButton);
+            await userEvent.type(cryptoAmountInput, '123');
+            await userEvent.click(submitButton);
         });
 
         expect(mockValues.requestCryptoWithdrawal).toBeCalledWith({
@@ -107,8 +107,8 @@ describe('WithdrawalCryptoForm', () => {
 
         await act(async () => {
             await userEvent.type(cryptoAddressInput, 'SampleAddress', { delay: 1 });
-            userEvent.type(cryptoAmountInput, '123');
-            userEvent.click(checkbox);
+            await userEvent.type(cryptoAmountInput, '123');
+            await userEvent.click(checkbox);
         });
 
         expect(screen.getByText('122.99770000')).toBeInTheDocument();

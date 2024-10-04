@@ -128,9 +128,9 @@ describe('<TransferForm />', () => {
 
         render(<TransferForm />, { wrapper });
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const transferSubmitButton = within(screen.getByTestId('dt_transfer_form_submit_btn')).getByRole('button');
-            userEvent.click(transferSubmitButton);
+            await userEvent.click(transferSubmitButton);
         });
 
         await waitFor(() => {

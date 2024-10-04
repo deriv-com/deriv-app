@@ -73,7 +73,7 @@ describe('WithdrawalCryptoForm', () => {
         const checkbox = screen.getByLabelText('Priority withdrawal');
 
         await act(async () => {
-            userEvent.click(checkbox);
+            await userEvent.click(checkbox);
         });
 
         expect(screen.getByText('122.99770000')).toBeInTheDocument();

@@ -21,7 +21,7 @@ const mock_close = jest.fn();
 
 const setBoundary = () => {
     // eslint-disable-next-line testing-library/no-node-access
-    spyOn(document.querySelector('.main') as Element, 'getBoundingClientRect').and.returnValue({
+    jest.spyOn(document.querySelector('.main') as Element, 'getBoundingClientRect').and.returnValue({
         width: 1920,
         height: 1080,
         top: 0,

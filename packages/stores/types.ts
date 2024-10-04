@@ -416,6 +416,7 @@ export type TClientStore = {
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
+    available_onramp_currencies: Array<string>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;

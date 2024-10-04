@@ -258,6 +258,7 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
+            available_onramp_currencies: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -611,6 +612,15 @@ export default class ClientStore extends BaseStore {
         }, []);
 
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
+    }
+
+    get available_onramp_currencies() {
+        return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
+            if (values.platform.ramp.length > 0) {
+                currencies.push(currency);
+            }
+            return currencies;
+        }, []);
     }
 
     get has_fiat() {

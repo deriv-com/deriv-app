@@ -347,7 +347,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         );
     }
 
-    if (createMT5AccountSuccess && !isMT5PasswordNotSet) {
+    if (createMT5AccountSuccess) {
         return (
             <MT5AccountAdded
                 account={createMT5AccountData}

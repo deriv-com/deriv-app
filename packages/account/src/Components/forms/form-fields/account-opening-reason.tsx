@@ -13,6 +13,7 @@ type TAccountOpeningReasonFieldProps = {
     setFieldValue: (field: string, value: string, should_validate?: boolean) => void;
     disabled: boolean;
     fieldFocused?: boolean;
+    is_modal?: boolean;
 };
 
 const AccountOpeningReasonField = ({
@@ -21,6 +22,7 @@ const AccountOpeningReasonField = ({
     setFieldValue,
     disabled,
     fieldFocused,
+    is_modal,
 }: TAccountOpeningReasonFieldProps) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
@@ -42,6 +44,7 @@ const AccountOpeningReasonField = ({
                                 error={meta.touched && meta.error ? meta.error : ''}
                                 required
                                 className={clsx({ 'focus-field': fieldFocused })}
+                                list_portal_id={is_modal ? 'modal_root' : ''}
                             />
                         ) : (
                             <SelectNative

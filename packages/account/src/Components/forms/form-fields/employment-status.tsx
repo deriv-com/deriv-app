@@ -29,6 +29,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploym
                             list={getEmploymentStatusList()}
                             value={field.value}
                             onChange={(e: { target: { name: string; value: string } }) => {
+                                setFieldValue('tin_skipped', 0, true);
                                 setFieldValue(field.name, e.target?.value, true);
                                 handleChange(e);
                             }}
@@ -47,6 +48,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploym
                             value={field.value}
                             error={meta.touched ? meta.error : undefined}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                setFieldValue('tin_skipped', 0, true);
                                 setFieldTouched('employment_status', true);
                                 handleChange(e);
                             }}

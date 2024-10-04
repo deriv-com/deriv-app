@@ -41,6 +41,10 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { is_virtual, account_settings } = client;
 
+        const { tin_employment_status_bypass } = tin_validation_config;
+
+        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
 
@@ -60,12 +64,6 @@ const EmploymentTaxDetailsContainer = observer(
             setIsTaxResidencePopoverOpen(false);
             setIsTinPopoverOpen(false);
         };
-
-        useEffect(() => {
-            if (touched.employment_status) {
-                setFieldValue('tin_skipped', 0, true);
-            }
-        }, [values.employment_status, setFieldValue, touched.employment_status]);
 
         useEffect(() => {
             if (values.tax_residence) {
@@ -124,10 +122,6 @@ const EmploymentTaxDetailsContainer = observer(
         useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
 
         useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
-
-        const { tin_employment_status_bypass } = tin_validation_config;
-
-        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
 
         const should_show_no_tax_details_checkbox =
             (tin_employment_status_bypass?.includes(values.employment_status) && !!values.tax_residence) ||

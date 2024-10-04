@@ -446,6 +446,7 @@ const PersonalDetailsForm = props => {
                                     (values?.account_opening_reason && has_real_account)
                                 }
                                 required
+                                is_modal
                             />
                         )}
                     </React.Fragment>

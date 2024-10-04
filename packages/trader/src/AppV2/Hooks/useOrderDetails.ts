@@ -311,7 +311,7 @@ const transformHighLow = (data: TContractInfo, CARD_LABELS: TCardLabels) => {
 };
 
 // Map of contract types to their respective transform functions
-const transformFunctionMap = {
+const transformFunctionMap: Record<string, (data: TContractInfo, card_label: TCardLabels) => Record<string, any>> = {
     [CONTRACT_TYPES.TURBOS.LONG]: transformTurbosData,
     [CONTRACT_TYPES.TURBOS.SHORT]: transformTurbosData,
     [CONTRACT_TYPES.MULTIPLIER.DOWN]: transformMultiplierData,
@@ -353,11 +353,8 @@ const transformFunctionMap = {
 const useOrderDetails = (contract_info: TContractInfo) => {
     const contractInfo = contract_info;
     if (!contractInfo.contract_type) return;
-
-    const CARD_LABELS = getCardLabelsV2();
-
-    const transformFunction = transformFunctionMap[contractInfo.contract_type as keyof typeof transformFunctionMap];
-    const details = transformFunction ? transformFunction(contractInfo, CARD_LABELS) : {};
+    const transformFunction = transformFunctionMap[contractInfo.contract_type];
+    const details = transformFunction ? transformFunction(contractInfo, getCardLabelsV2()) : {};
     return {
         details,
     };

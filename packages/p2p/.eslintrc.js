@@ -9,6 +9,5 @@ module.exports = {
     },
     rules: {
         'simple-import-sort/imports': 'warn',
-        '@typescript-eslint/no-unsafe-declaration-merging': 'warn',
     },
 };

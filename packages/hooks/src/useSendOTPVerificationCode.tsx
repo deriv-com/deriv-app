@@ -75,7 +75,7 @@ const useSendOTPVerificationCode = () => {
                 action: 'error',
                 subform_name: 'verify_phone_otp_screen',
                 // @ts-expect-error will remove once solved
-                error_message: phone_otp_error.code,
+                error_code: phone_otp_error.code,
             });
             // @ts-expect-error will remove once solved
             formatOtpError(phone_otp_error);

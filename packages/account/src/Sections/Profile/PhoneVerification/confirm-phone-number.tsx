@@ -57,7 +57,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 action: 'error',
                 subform_name: 'verify_phone_screen',
                 //@ts-expect-error will fix this later
-                error_message: email_otp_error.code,
+                error_code: email_otp_error.code,
             });
             invalidate('get_settings').then(() => setIsButtonLoading(false));
         }

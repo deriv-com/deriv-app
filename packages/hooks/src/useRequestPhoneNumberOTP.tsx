@@ -78,7 +78,7 @@ const useRequestPhoneNumberOTP = () => {
                 action: 'error',
                 subform_name: 'verify_phone_screen',
                 // @ts-expect-error will remove once solved
-                error_message: err.code,
+                error_code: err.code,
             });
             formatError(err as TFormatError);
             error = err;

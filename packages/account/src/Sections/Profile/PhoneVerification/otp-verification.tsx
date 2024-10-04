@@ -67,7 +67,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 action: 'error',
                 subform_name: should_show_phone_number_otp ? 'verify_phone_otp_screen' : 'verify_email_screen',
                 // @ts-expect-error will remove once solved
-                error_message: email_otp_error.code,
+                error_code: email_otp_error.code,
             });
         }
     }, [email_otp_error, trackPhoneVerificationEvents, should_show_phone_number_otp]);

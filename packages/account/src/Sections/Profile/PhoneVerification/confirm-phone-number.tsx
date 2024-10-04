@@ -54,7 +54,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     useEffect(() => {
         if (email_otp_error) {
             trackPhoneVerificationEvents({
-                action: 'request_phone_otp_error',
+                action: 'error',
                 subform_name: 'verify_phone_screen',
                 //@ts-expect-error will fix this later
                 error_message: email_otp_error.code,

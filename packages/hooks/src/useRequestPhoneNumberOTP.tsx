@@ -75,7 +75,7 @@ const useRequestPhoneNumberOTP = () => {
             });
         } catch (err) {
             trackPhoneVerificationEvents({
-                action: 'set_phone_number_error',
+                action: 'error',
                 subform_name: 'verify_phone_screen',
                 // @ts-expect-error will remove once solved
                 error_message: err.code,

@@ -72,7 +72,7 @@ const useSendOTPVerificationCode = () => {
     useEffect(() => {
         if (phone_otp_error) {
             trackPhoneVerificationEvents({
-                action: 'phone_otp_error',
+                action: 'error',
                 subform_name: 'verify_phone_otp_screen',
                 // @ts-expect-error will remove once solved
                 error_message: phone_otp_error.code,

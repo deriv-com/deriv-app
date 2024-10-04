@@ -13,6 +13,7 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
+    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -42,6 +43,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import dayjs from 'dayjs';
 import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
@@ -308,6 +310,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     async handleClientNotifications() {
+        const current_time = dayjs();
         const {
             account_list,
             account_settings,
@@ -318,6 +321,8 @@ export default class NotificationStore extends BaseStore {
             is_eu,
             is_identity_verification_needed,
             is_logged_in,
+            is_virtual,
+            is_phone_number_verification_enabled,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -345,7 +350,17 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-
+        const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
+            account_settings?.phone_number_verification?.next_email_attempt,
+            current_time
+        );
+        const show_phone_number_verification_notification =
+            !(window.location.pathname === routes.phone_verification) &&
+            !account_settings?.phone_number_verification?.verified &&
+            account_settings?.phone &&
+            !is_next_email_attempt_timer_running &&
+            !is_virtual &&
+            is_phone_number_verification_enabled;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -392,6 +407,12 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
+            }
+
+            if (show_phone_number_verification_notification) {
+                this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.phone_number_verification });
             }
 
             if (malta_account && is_financial_information_incomplete) {
@@ -767,7 +788,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -1078,6 +1099,21 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            phone_number_verification: {
+                key: 'phone_number_verification',
+                header: localize('Complete phone verification'),
+                message: <Localize i18n_default_text='Secure your Deriv account by verifying your phone number.' />,
+                type: 'warning',
+                action: {
+                    onClick: () => {
+                        WS.verifyEmail(email, 'phone_number_verification');
+                        localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
+                    },
+                    route: routes.phone_verification,
+                    text: localize('Verify now'),
+                },
+                should_show_again: true,
             },
             poa_rejected_for_mt5: {
                 action: {

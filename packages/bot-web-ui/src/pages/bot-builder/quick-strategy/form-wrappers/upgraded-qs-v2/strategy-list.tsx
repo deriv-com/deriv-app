@@ -47,6 +47,55 @@ const StrategyList = ({
         setIsResultFound(has_visible_strategies);
     }, [search_value, trade_types, trade_types_values, is_searching]);
 
+    const allChipStategyTemplate = React.useCallback(
+        () =>
+            trade_types.map((trade_type, index) => {
+                const has_visible_strategies =
+                    filterVisibleContent(trade_type) ||
+                    (Array.isArray(trade_types_values[0]) &&
+                        trade_types_values[0]?.some(
+                            (strategy: TTradeType) =>
+                                strategy.name === trade_type &&
+                                strategy.value.some(value => filterVisibleContent(value.label))
+                        ));
+
+                const strategies =
+                    (Array.isArray(trade_types_values[0]) &&
+                        trade_types_values[0]?.find(strategy => strategy.name === trade_type)?.value) ||
+                    trade_types_values?.find(strategy => strategy.name === trade_type)?.value ||
+                    [];
+                return (
+                    trade_type !== 'All' && (
+                        <div key={index} className='strategy-template-picker__strategy'>
+                            {has_visible_strategies && (
+                                <div className='strategy-template-picker__title'>
+                                    <Text size='xs' weight='bold'>
+                                        {trade_type}
+                                    </Text>
+                                </div>
+                            )}
+                            {strategies.map(
+                                (strategy: TStrategyValue, idx: number) =>
+                                    shouldShowStrategies(trade_type, strategy.label) && (
+                                        <div className='strategy-template-picker__links' key={idx}>
+                                            <Link
+                                                color={'var(--text-prominent)'}
+                                                hasChevron
+                                                size='sm'
+                                                onClick={() => onSelectStrategy(strategy.name, trade_type)}
+                                            >
+                                                {strategy.label}
+                                            </Link>
+                                        </div>
+                                    )
+                            )}
+                        </div>
+                    )
+                );
+            }),
+        [trade_types]
+    );
+
     return (
         <div className='strategy-template-picker__strategies'>
             {!is_result_found && (
@@ -55,50 +104,7 @@ const StrategyList = ({
                 </div>
             )}
             {option === 0 ? (
-                trade_types.map((trade_type, index) => {
-                    const has_visible_strategies =
-                        filterVisibleContent(trade_type) ||
-                        (Array.isArray(trade_types_values[0]) &&
-                            trade_types_values[0]?.some(
-                                (strategy: TTradeType) =>
-                                    strategy.name === trade_type &&
-                                    strategy.value.some(value => filterVisibleContent(value.label))
-                            ));
-
-                    const strategies =
-                        (Array.isArray(trade_types_values[0]) &&
-                            trade_types_values[0]?.find(strategy => strategy.name === trade_type)?.value) ||
-                        trade_types_values?.find(strategy => strategy.name === trade_type)?.value ||
-                        [];
-                    return (
-                        trade_type !== 'All' && (
-                            <div key={index} className='strategy-template-picker__strategy'>
-                                {has_visible_strategies && (
-                                    <div className='strategy-template-picker__title'>
-                                        <Text size='xs' weight='bold'>
-                                            {trade_type}
-                                        </Text>
-                                    </div>
-                                )}
-                                {strategies.map(
-                                    (strategy: TStrategyValue, idx: number) =>
-                                        shouldShowStrategies(trade_type, strategy.label) && (
-                                            <div className='strategy-template-picker__links' key={idx}>
-                                                <Link
-                                                    color={'var(--text-prominent)'}
-                                                    hasChevron
-                                                    size='sm'
-                                                    onClick={() => onSelectStrategy(strategy.name, trade_type)}
-                                                >
-                                                    {strategy.label}
-                                                </Link>
-                                            </div>
-                                        )
-                                )}
-                            </div>
-                        )
-                    );
-                })
+                allChipStategyTemplate()
             ) : (
                 <div className='strategy-template-picker__strategy'>
                     {is_content_visible && (

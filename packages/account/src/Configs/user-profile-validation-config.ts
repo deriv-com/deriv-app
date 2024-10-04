@@ -38,15 +38,10 @@ Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
     });
 });
 
-const makeTinOptional = (
-    tin_config: TinValidations,
-    employment_status: string,
-    { is_mf, is_real, tin_skipped, is_tin_auto_set }: TINDepdendents
-) => {
-    const should_bypass_tin = tin_config?.tin_employment_status_bypass?.includes(employment_status);
+const makeTinOptional = ({ is_mf, is_real, tin_skipped, is_tin_auto_set }: TINDepdendents) => {
     const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
     if (is_real) {
-        return check_if_tin_skipped || should_bypass_tin;
+        return check_if_tin_skipped;
     }
     // Check For Virtual account
     if (is_mf) {
@@ -76,9 +71,8 @@ export const getEmploymentAndTaxValidationSchema = ({
             otherwise: Yup.bool().notRequired(),
         }),
         tax_identification_number: Yup.string()
-            .when(['employment_status', 'tin_skipped'], {
-                is: (employment_status: string, tin_skipped: boolean) =>
-                    makeTinOptional(tin_config, employment_status, { is_mf, is_real, tin_skipped, is_tin_auto_set }),
+            .when(['tin_skipped'], {
+                is: (tin_skipped: boolean) => makeTinOptional({ is_mf, is_real, tin_skipped, is_tin_auto_set }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })

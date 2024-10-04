@@ -101,7 +101,7 @@ const FormWrapper = observer(
             setCurrentStep(QsSteps.StrategySelect);
         };
 
-        const renderContent = () => {
+        const renderContent = React.useCallback(() => {
             switch (current_step) {
                 case QsSteps.StrategySelect:
                     return (
@@ -131,7 +131,14 @@ const FormWrapper = observer(
                 default:
                     return null;
             }
-        };
+        }, [
+            current_step,
+            selected_trade_type,
+            selected_startegy_label,
+            children,
+            setCurrentStep,
+            setSelectedTradeType,
+        ]);
 
         return (
             !is_stop_bot_dialog_open && (

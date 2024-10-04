@@ -62,8 +62,10 @@ const EmploymentTaxDetailsContainer = observer(
         };
 
         useEffect(() => {
-            setFieldValue('tin_skipped', 0, true);
-        }, [values.employment_status, setFieldValue]);
+            if (touched.employment_status) {
+                setFieldValue('tin_skipped', 0, true);
+            }
+        }, [values.employment_status, setFieldValue, touched.employment_status]);
 
         useEffect(() => {
             if (values.tax_residence) {

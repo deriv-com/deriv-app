@@ -65,8 +65,8 @@ const getCommonFields = (data: TContractInfo, CARD_LABELS: TCardLabels) => {
 
     return {
         [CARD_LABELS.REFERENCE_ID]: [
-            data.transaction_ids?.buy ? `${data.transaction_ids.buy} (Buy)` : '',
-            data.transaction_ids?.sell ? `${data.transaction_ids.sell} (Sell)` : '',
+            data.transaction_ids?.buy ? `${data.transaction_ids.buy} (${CARD_LABELS.BUY})` : '',
+            data.transaction_ids?.sell ? `${data.transaction_ids.sell} (${CARD_LABELS.SELL})` : '',
         ],
         [CARD_LABELS.STAKE]:
             data.buy_price && data.currency
@@ -159,7 +159,6 @@ const transformDigitsData = (data: TContractInfo, CARD_LABELS: TCardLabels) => {
 
 // For Accumulators
 const transformAccumulatorData = (data: TContractInfo, CARD_LABELS: TCardLabels) => {
-    // const CARD_LABELS = getCardLabelsV2();
     const commonFields = getCommonFields(data, CARD_LABELS);
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],

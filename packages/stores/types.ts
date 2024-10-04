@@ -476,7 +476,6 @@ export type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
-    is_tnc_needed: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -544,6 +543,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tnc_status?: Record<string, number>;
         phone_number_verification?: {
             verified?: 0 | 1;
             next_attempt?: number;
@@ -866,6 +866,8 @@ type TUiStore = {
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
     setHashedValue: (value: string) => void;
     url_hashed_values: string;
+    is_tnc_update_modal_open: boolean;
+    toggleTncUpdateModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

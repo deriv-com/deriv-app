@@ -113,6 +113,12 @@
                 display: flex;
                 flex-direction: column;
                 text-align: center;
+
+                &__phone-number {
+                    @include rtl {
+                        direction: ltr;
+                    }
+                }
             }
 
             &-otp-container {

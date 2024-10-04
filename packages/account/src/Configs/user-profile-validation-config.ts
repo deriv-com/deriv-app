@@ -48,10 +48,11 @@ const makeTinOptional = (
     if (is_real) {
         return check_if_tin_skipped || should_bypass_tin;
     }
+    // Check For Virtual account
     if (is_mf) {
         return check_if_tin_skipped;
     }
-    return should_bypass_tin;
+    return true;
 };
 
 export const getEmploymentAndTaxValidationSchema = ({

@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration, useIsTNCNeeded } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -71,6 +71,10 @@ const OneTimeDepositModal = React.lazy(() =>
     import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
 );
 
+const TncStatusUpdateModal = React.lazy(() =>
+    import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
+);
+
 const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore();
     const {
@@ -102,6 +106,8 @@ const AppModals = observer(() => {
         should_show_account_success_modal,
         should_show_crypto_transaction_processing_modal,
         should_show_same_dob_phone_modal,
+        is_tnc_update_modal_open,
+        toggleTncUpdateModal,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -112,6 +118,14 @@ const AppModals = observer(() => {
     const { is_migrated } = useWalletMigration();
 
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
+
+    const is_tnc_needed = useIsTNCNeeded();
+
+    React.useEffect(() => {
+        if (is_tnc_needed) {
+            toggleTncUpdateModal(true);
+        }
+    }, [is_tnc_needed, toggleTncUpdateModal]);
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
@@ -221,6 +235,10 @@ const AppModals = observer(() => {
 
         if (should_show_same_dob_phone_modal) {
             ComponentToLoad = <SameDOBPhoneModal />;
+        }
+
+        if (is_tnc_update_modal_open) {
+            ComponentToLoad = <TncStatusUpdateModal />;
         }
     }
 

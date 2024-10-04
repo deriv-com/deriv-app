@@ -8,6 +8,14 @@
     align-items: center;
     gap: 2.4rem;
 
+    &__description {
+        max-width: 36rem;
+
+        @include mobile-or-tablet-screen {
+            max-width: 100%;
+        }
+    }
+
     @include mobile-or-tablet-screen {
         min-width: 100%;
     }

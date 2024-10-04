@@ -62,6 +62,10 @@ const EmploymentTaxDetailsContainer = observer(
         };
 
         useEffect(() => {
+            setFieldValue('tin_skipped', 0, true);
+        }, [values.employment_status, setFieldValue]);
+
+        useEffect(() => {
             if (values.tax_residence) {
                 const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
                 if (tax_residence) {
@@ -167,7 +171,9 @@ const EmploymentTaxDetailsContainer = observer(
                 )}
                 <div ref={tax_residence_ref} className='account-form__fieldset'>
                     <TaxResidenceField
-                        disabled={isFieldDisabled('tax_residence')}
+                        disabled={
+                            isFieldDisabled('tax_residence') || (values.tin_skipped && !account_settings.tin_skipped)
+                        }
                         is_tax_residence_popover_open={is_tax_residence_popover_open}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}

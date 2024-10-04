@@ -7,21 +7,33 @@ import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { useEffect } from 'react';
 
-const SessionTimeoutModal = observer(() => {
+const SessionTimeoutModal = observer(({ is_at_otp_verification }: { is_at_otp_verification: boolean }) => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { localize } = useTranslations();
     const { should_show_session_timeout_modal } = usePhoneNumberVerificationSessionTimer();
     const { ui } = useStore();
-    const { is_phone_verification_completed, setShouldShowPhoneNumberOTP, setIsForcedToExitPnv } = ui;
+    const {
+        is_phone_verification_completed,
+        setShouldShowPhoneNumberOTP,
+        setIsForcedToExitPnv,
+        should_show_phone_number_otp,
+    } = ui;
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+
+    const getSubformName = () => {
+        if (is_at_otp_verification) {
+            return should_show_phone_number_otp ? 'verify_phone_otp_screen' : 'verify_email_screen';
+        }
+        return 'verify_phone_screen';
+    };
 
     useEffect(() => {
         if (should_show_session_timeout_modal) {
             setIsForcedToExitPnv(true);
             trackPhoneVerificationEvents({
-                action: 'open',
-                subform_name: 'session_timeout_popup',
+                action: 'open_session_expired_popup',
+                subform_name: getSubformName(),
             });
         }
     }, [should_show_session_timeout_modal, trackPhoneVerificationEvents]);

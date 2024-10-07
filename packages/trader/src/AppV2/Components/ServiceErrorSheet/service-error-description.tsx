@@ -17,7 +17,6 @@ const ServiceErrorDescription: React.FC<ServiceErrorProps> = ({
     is_mf_verification_pending_modal_visible,
     services_error_message,
 }) => {
-    //TODO: check text, I think it's incorrect
     if (is_insufficient_balance) {
         return (
             <>

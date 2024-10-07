@@ -43,6 +43,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         id: id_1,
         message: message_1 = '',
         payout: payout_1 = 0,
+        error_field: error_field_1,
     } = proposal_info[contract_types[0]] ?? {};
     // second contract type data:
     const {
@@ -50,10 +51,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         id: id_2,
         message: message_2 = '',
         payout: payout_2 = 0,
+        error_field: error_field_2,
     } = proposal_info[contract_types[1]] ?? {};
     const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
-    const proposal_error_message_1 = has_error_1 ? message_1 : '';
-    const proposal_error_message_2 = has_error_2 ? message_2 : '';
+    const proposal_error_message_1 = has_error_1 && error_field_1 === 'amount' ? message_1 : '';
+    const proposal_error_message_2 = has_error_2 && error_field_2 === 'amount' ? message_2 : '';
     const proposal_error_message =
         proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):

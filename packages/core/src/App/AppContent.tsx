@@ -1,7 +1,6 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
-import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import P2PIFrame from 'Modules/P2PIFrame';
@@ -17,7 +16,7 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookGetFeatureValue, useGrowthbookIsOn } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import initHotjar from '../Utils/Hotjar';
 
@@ -29,6 +28,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
+    const { isOAuth2Enabled } = useOauth2();
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
     });
@@ -38,8 +38,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(isMounted());
+    const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
     const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';
@@ -103,8 +102,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            <SmartTraderIFrame />
-            <P2PIFrame />
+            {!isOAuth2Enabled && <SmartTraderIFrame />}
+            {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

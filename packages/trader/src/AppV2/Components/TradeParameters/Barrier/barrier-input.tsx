@@ -28,6 +28,7 @@ const BarrierInput = observer(
     }) => {
         const { barrier_1, onChange, validation_errors, tick_data, setV2ParamsInitialValues } = useTraderStore();
         const [option, setOption] = React.useState(0);
+        const { pip_size } = tick_data ?? {};
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
@@ -39,6 +40,7 @@ const BarrierInput = observer(
             } else {
                 setOption(2);
             }
+            onChange({ target: { name: 'barrier_1', value: barrier_1 } });
         }, []);
 
         const handleChipSelect = (index: number) => {
@@ -100,6 +102,7 @@ const BarrierInput = observer(
                                     }
                                     value={barrier_1}
                                     allowDecimals
+                                    decimals={pip_size}
                                     allowSign={false}
                                     inputMode='decimal'
                                     regex={/[^0-9.,]/g}
@@ -116,6 +119,7 @@ const BarrierInput = observer(
                                     name='barrier_1'
                                     noStatusIcon
                                     addonLabel={option == 0 ? '+' : '-'}
+                                    decimals={pip_size}
                                     value={barrier_1.replace(/[+-]/g, '')}
                                     allowDecimals
                                     inputMode='decimal'

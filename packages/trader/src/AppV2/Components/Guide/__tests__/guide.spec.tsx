@@ -170,6 +170,6 @@ describe('Guide', () => {
         await userEvent.click(screen.getByText(CONTRACT_LIST.ACCUMULATORS));
         await userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
 
-        await screen.findByText(term_definition);
+        expect(await screen.findByText(term_definition)).toBeInTheDocument();
     });
 });

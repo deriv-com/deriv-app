@@ -10,12 +10,12 @@ jest.mock('@deriv/api', () => ({
         data: {
             website_status: {
                 currencies_config: {
-                    BTC: { type: 'crypto', name: 'Bitcoin' },
-                    ETH: { type: 'crypto', name: 'Ethereum' },
-                    LTC: { type: 'crypto', name: 'Litecoin' },
-                    USDC: { type: 'crypto', name: 'USDC' },
-                    UST: { type: 'crypto', name: 'UST' },
-                    eUSDT: { type: 'crypto', name: 'eUSDT' },
+                    BTC: { display_code: 'BTC', type: 'crypto', name: 'Bitcoin' },
+                    ETH: { display_code: 'ETH', type: 'crypto', name: 'Ethereum' },
+                    LTC: { display_code: 'LTC', type: 'crypto', name: 'Litecoin' },
+                    USDC: { display_code: 'USDC', type: 'crypto', name: 'USD Coin' },
+                    UST: { display_code: 'USDT', type: 'crypto', name: 'TerraUSD' },
+                    eUSDT: { display_code: 'eUSDT', type: 'crypto', name: 'ERC20' },
                 },
             },
         },
@@ -38,7 +38,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Bitcoin \(BTC\)/)).toBeInTheDocument();
+        expect(screen.getByText('Only send Bitcoin (BTC) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv BTC Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Bitcoin \(BTC\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for ETH', () => {
@@ -46,7 +50,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Ethereum \(ETH\)/)).toBeInTheDocument();
+        expect(screen.getByText('Only send Ethereum (ETH) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for LTC', () => {
@@ -54,7 +62,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Litecoin \(LTC\)/)).toBeInTheDocument();
+        expect(screen.getByText('Only send Litecoin (LTC) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv LTC Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Litecoin \(LTC\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for USDC', () => {
@@ -62,7 +74,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
+        expect(screen.getByText('Only send USD Coin (USDC) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv USDC Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Ethereum \(ERC20\) network/)).toBeInTheDocument();
     });
 
     test('should show correct message for UST', () => {
@@ -70,7 +86,11 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Omnicore/)).toBeInTheDocument();
+        expect(screen.getByText('Only send TerraUSD (USDT) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv UST Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Omnicore network/)).toBeInTheDocument();
     });
 
     test('should show correct message for eUSDT', () => {
@@ -78,6 +98,10 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />, { wrapper: createWrapper(mock) });
 
-        expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
+        expect(screen.getByText('Only send ERC20 (eUSDT) to this address.')).toBeInTheDocument();
+        expect(
+            screen.getByText('Make sure to copy the Deriv eUSDT Wallet address to your crypto wallet.')
+        ).toBeInTheDocument();
+        expect(screen.getByText(/\(ERC20\) network/)).toBeInTheDocument();
     });
 });

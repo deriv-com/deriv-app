@@ -205,7 +205,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                         setIsFetching(false);
                     });
             })
-            .catch(async () => {
+            .catch(() => {
                 if (isMounted) {
                     setIsAuthorized(false);
                     setIsLoading(false);
@@ -232,18 +232,17 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
             setIsAuthorized(false);
             try {
-                await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } }).then(authorizeResponse => {
-                    setIsAuthorized(true);
-                    setLoginid(newLoginId);
-                    processAuthorizeResponse(authorizeResponse);
-
-                    setIsLoading(false);
-                    setIsSwitching(false);
-                });
+                const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+                setIsAuthorized(true);
+                setLoginid(newLoginId);
+                processAuthorizeResponse(authorizeResponse);
             } catch (e: unknown) {
                 if (typeof e === 'object' && (e as TAuthorizeError)?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
                     await logout?.();
                 }
+            } finally {
+                setIsLoading(false);
+                setIsSwitching(false);
             }
         },
         [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]

@@ -73,17 +73,12 @@ const useSortedMT5Accounts = (regulation?: string) => {
     }, [activeAccount?.is_virtual, all_available_mt5_accounts, isEU, mt5_accounts]);
 
     const sorted_data = useMemo(() => {
-        const sorting_order = ['synthetic', 'financial', 'swap_free', 'zero_spread'];
+        const sorting_order = ['standard', 'financial', 'swap_free', 'zero_spread'];
 
         if (!modified_data) return;
 
         const sorted_data = sorting_order.reduce((acc, sort_order) => {
-            const accounts = modified_data.filter(account => {
-                if (account.market_type === 'all') {
-                    return account.product === sort_order;
-                }
-                return account.market_type === sort_order;
-            });
+            const accounts = modified_data.filter(account => account.product === sort_order);
             if (!accounts.length) return acc;
             return [...acc, ...accounts];
         }, [] as typeof modified_data);

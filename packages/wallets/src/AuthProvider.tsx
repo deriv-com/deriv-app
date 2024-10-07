@@ -23,8 +23,8 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
             if (!defaultFiatWallet) {
                 const defaultWallet = loginIds.filter((loginId: string) => {
                     const { account_category: accountCategory, is_disabled: isDisabled } = accountsObject[loginId];
-                    const isWallet = accountCategory == 'wallet' && !isDisabled;
-                    return isWallet;
+                    const isWallet = accountCategory == 'wallet';
+                    return isWallet && !isDisabled;
                 })[0];
                 return defaultWallet;
             }

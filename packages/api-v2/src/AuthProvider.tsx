@@ -231,20 +231,20 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             setIsSwitching(true);
 
             setIsAuthorized(false);
-            await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } })
-                .then(authorizeResponse => {
+            try {
+                await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } }).then(authorizeResponse => {
                     setIsAuthorized(true);
                     setLoginid(newLoginId);
                     processAuthorizeResponse(authorizeResponse);
 
                     setIsLoading(false);
                     setIsSwitching(false);
-                })
-                .catch(async (e: TAuthorizeError) => {
-                    if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
-                        await logout?.();
-                    }
                 });
+            } catch (e: unknown) {
+                if (typeof e === 'object' && (e as TAuthorizeError)?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                    await logout?.();
+                }
+            }
         },
         [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]
     );

@@ -1,9 +1,9 @@
 import { useStore } from '@deriv/stores';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
 const useFreshChat = () => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
+    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
     const [isReady, setIsReady] = useState(false);
 
     const { client } = useStore();

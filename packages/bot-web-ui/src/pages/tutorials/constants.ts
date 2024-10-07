@@ -107,7 +107,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    'For more info, <a href="https://blog.deriv.com/posts/how-to-build-a-basic-trading-bot-with-dbot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on the basics of building a trading bot.'
+                    'For more info, <a href="https://deriv.com/blog/posts/build-a-basic-trading-bot-with-deriv-bot" rel="noopener noreferrer" target="_blank">check out this blog post</a> on the basics of building a trading bot.'
                 ),
             },
         ],

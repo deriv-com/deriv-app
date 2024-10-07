@@ -6,7 +6,7 @@ import { isProduction } from '../config/config';
 export const UNSUPPORTED_LANGUAGES = isProduction() ? ['ID', 'MN'] : ['MN'];
 
 /**
- * Returns List of supported languages for Wallets.
+ * Returns List of unsupported languages for Wallets.
  */
 export const WALLETS_UNSUPPORTED_LANGUAGES = [
     'BN',

@@ -9,8 +9,10 @@ describe('DepositCryptoDisclaimers', () => {
     const mockData = {
         currency: 'ETH',
         currency_config: {
+            display_code: 'ETH',
             fractional_digits: 2,
             is_tUSDT: false,
+            name: 'Ethereum',
         },
     };
 
@@ -53,7 +55,9 @@ describe('DepositCryptoDisclaimers', () => {
             currency: 'tUSDT',
             currency_config: {
                 ...mockData.currency_config,
+                display_code: 'tUSDT',
                 is_tUSDT: true,
+                name: 'Tether TRC20',
             },
         };
 
@@ -62,7 +66,7 @@ describe('DepositCryptoDisclaimers', () => {
 
         render(<DepositCryptoDisclaimers />);
 
-        expect(screen.getByText('Only send Tron (TRC20) to this address.')).toBeInTheDocument();
+        expect(screen.getByText('Only send Tether TRC20 (tUSDT) to this address.')).toBeInTheDocument();
         expect(
             screen.getByText('Make sure to copy the Deriv tUSDT Wallet address to your crypto wallet.')
         ).toBeInTheDocument();

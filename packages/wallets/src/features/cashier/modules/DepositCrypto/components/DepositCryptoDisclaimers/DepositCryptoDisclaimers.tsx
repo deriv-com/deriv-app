@@ -52,8 +52,11 @@ const DepositCryptoDisclaimers = () => {
                         {cryptoConfig?.minimum_deposit && minimumDepositDisclaimer}
                         <li>
                             <Localize
-                                i18n_default_text='Only send {{currency}} to this address.'
-                                values={{ currency: currency && cryptoCurrencyToNetworkMapper[currency] }}
+                                i18n_default_text='Only send {{currencyConfigName}} ({{currencyConfigCode}}) to this address.'
+                                values={{
+                                    currencyConfigCode: data?.currency_config?.display_code,
+                                    currencyConfigName: data?.currency_config?.name,
+                                }}
                             />
                         </li>
                         <li>

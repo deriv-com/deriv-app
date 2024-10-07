@@ -50,7 +50,7 @@ export { default as useMT5SVGEligibleToMigrate } from './useMT5SVGEligibleToMigr
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
 export { default as useNeedPOI } from './useNeedPOI';
-export { default as useNeedTNC } from './useNeedTNC';
+export { default as useIsTNCNeeded } from './useIsTNCNeeded';
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useP2PAdvertInfo } from './useP2PAdvertInfo';
@@ -96,4 +96,5 @@ export { default as usePhoneNumberVerificationSessionTimer } from './usePhoneNum
 export { default as useIsPhoneNumberVerified } from './useIsPhoneNumberVerified';
 export { default as usePhoneVerificationAnalytics } from './usePhoneVerificationAnalytics';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
+export { default as useOauth2 } from './useOauth2';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

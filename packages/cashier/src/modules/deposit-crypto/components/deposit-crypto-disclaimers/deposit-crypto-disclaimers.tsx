@@ -54,8 +54,11 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     {crypto_config?.minimum_deposit && <li>{minimum_deposit_disclaimer}</li>}
                     <li>
                         <Localize
-                            i18n_default_text='Only send {{network_name}} to this address.'
-                            values={{ network_name: crypto_currency_to_network_mapper[currency_config?.code] }}
+                            i18n_default_text='Only send {{currency_name}} ({{currency_code}}) to this address.'
+                            values={{
+                                currency_name: currency_config?.name || '',
+                                currency_code: currency_config?.display_code || '',
+                            }}
                         />
                     </li>
                     <li>

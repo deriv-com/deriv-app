@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, useNotifications } from '@deriv-com/quill-ui';
+import { Button, useNotifications, useSnackbar } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
     getCardLabelsV2,
@@ -12,6 +12,7 @@ import {
     getIndicativePrice,
     hasContractEntered,
     isAccumulatorContract,
+    isEmptyObject,
     isOpen,
     isValidToSell,
 } from '@deriv/shared';
@@ -26,10 +27,13 @@ const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
+    const { addSnackbar } = useSnackbar();
     const {
         contract_replay: { is_market_closed },
         portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
+        common: { services_error },
+        ui: { is_mf_verification_pending_modal_visible },
     } = useStore();
     const {
         contract_type,
@@ -95,7 +99,31 @@ const PurchaseButton = observer(() => {
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const cardLabels = getCardLabelsV2();
 
+    const { code, message, type } = services_error || {};
+    const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
+    const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
+    const is_account_verification_required = code === 'PleaseAuthenticate';
+    // Error modal is shown only for next four types. For the rest - snackbar.
+    const should_show_error_snackbar =
+        !isEmptyObject(services_error) &&
+        !is_insufficient_balance &&
+        !is_authorization_required &&
+        !is_account_verification_required &&
+        !is_mf_verification_pending_modal_visible;
+
     const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
+
+    React.useEffect(() => {
+        if (should_show_error_snackbar) {
+            addSnackbar({
+                message,
+                status: 'fail',
+                hasCloseButton: true,
+                style: { marginBottom: '48px' },
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [should_show_error_snackbar]);
 
     const getButtonType = (index: number, trade_type: string) => {
         const tab_index = getTradeTypeTabsList(contract_type).findIndex(tab => tab.contract_type === trade_type);

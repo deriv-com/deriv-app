@@ -17,7 +17,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
     disabledAccounts.forEach((disabledAccount, index) => {
         if (disabledAccountsLength > 1) {
             if (index === disabledAccountsLength - 1) {
-                disabledAccountsCurrencies += ` and ${disabledAccount.currency}`;
+                disabledAccountsCurrencies += ` ${localize('and')} ${disabledAccount.currency}`;
             } else {
                 disabledAccountsCurrencies += `${disabledAccount.currency}, `;
             }

@@ -35,11 +35,19 @@ const DerivAppsTradingAccount = () => {
                     }
                 }}
             >
-                <TradingAccountCard.Icon className='wallets-deriv-apps-section--disabled-icon'>
+                <TradingAccountCard.Icon
+                    className={classNames({
+                        'wallets-deriv-apps-section--disabled-icon': activeLinkedToTradingAccount?.is_disabled,
+                    })}
+                >
                     <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
                 </TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
-                    <TradingAccountCard.Content className='wallets-deriv-apps-section--disabled-content'>
+                    <TradingAccountCard.Content
+                        className={classNames({
+                            'wallets-deriv-apps-section--disabled-content': activeLinkedToTradingAccount?.is_disabled,
+                        })}
+                    >
                         <div className='wallets-deriv-apps-section__title-and-badge'>
                             <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Options' />

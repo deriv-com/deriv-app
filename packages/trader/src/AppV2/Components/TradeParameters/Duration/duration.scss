@@ -28,11 +28,12 @@
     }
     &__days-input {
         padding: var(--core-spacing-800);
+        padding-bottom: var(--core-spacing-50);
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: var(--core-spacing-400);
         &__expiry {
-            margin-top: var(--core-size-3500);
+            margin-top: 102px;
             display: flex;
             justify-content: space-between;
         }

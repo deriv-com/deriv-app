@@ -132,8 +132,7 @@ const DayInput = ({
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
     is_24_hours_contract =
-        (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
-        has_intraday_duration_unit;
+        (!!start_date || toMoment(expiry_date).isSame(toMoment(server_time), 'day')) && has_intraday_duration_unit;
 
     const handleDate = (date: Date) => {
         const difference_in_time = date.getTime() - new Date().getTime();
@@ -162,7 +161,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT+0`}
+                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
                 disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -175,7 +174,7 @@ const DayInput = ({
                     <Localize i18n_default_text='Expiry' />
                 </Text>
                 <Text size='sm'>{`
-                ${formatted_date} ${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT+0`}</Text>
+                ${formatted_date} ${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}

@@ -11,7 +11,12 @@ import {
     isDigitContractWinning,
     isSmallScreen,
     getOptionPerUnit,
+    getSmallestDuration,
+    getDatePickerStartDate,
+    getProposalRequestObject,
 } from '../trade-params-utils';
+import moment from 'moment';
+import { mockStore } from '@deriv/stores';
 
 describe('getTradeParams', () => {
     it('should return correct object with keys for Rise/Fall', () => {
@@ -338,5 +343,147 @@ describe('getOptionPerUnit', () => {
         const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
         expect(view).toEqual([...Array(10)].map((_, i) => `${i + 1} tick`));
+    });
+});
+
+describe('getSmallestDuration', () => {
+    const durationUnits = [
+        { value: 's', text: 'Seconds' },
+        { value: 'm', text: 'Minutes' },
+        { value: 'h', text: 'Hours' },
+        { value: 'd', text: 'Days' },
+        { value: 't', text: 'Ticks' },
+    ];
+
+    it('should return tick duration when "tick" exists in object', () => {
+        const obj = { tick: { min: 5 } };
+        const result = getSmallestDuration(obj, durationUnits);
+        expect(result).toEqual({ value: 5, unit: 't' });
+    });
+
+    it('should return the smallest intraday duration in minutes', () => {
+        const obj = { intraday: { min: 300 } };
+        const result = getSmallestDuration(obj, durationUnits);
+        expect(result).toEqual({ value: 5, unit: 'm' });
+    });
+
+    it('should return the smallest intraday duration in hours', () => {
+        const obj = { intraday: { min: 7200 } };
+        const result = getSmallestDuration(obj, durationUnits);
+        expect(result).toEqual({ value: 2, unit: 'h' });
+    });
+
+    it('should return the smallest daily duration', () => {
+        const obj = { daily: { min: 86400 } };
+        const result = getSmallestDuration(obj, durationUnits);
+        expect(result).toEqual({ value: 1, unit: 'd' });
+    });
+
+    it('should return null if no valid smallest unit is found', () => {
+        const obj = {};
+        const result = getSmallestDuration(obj, durationUnits);
+        expect(result).toBeNull();
+    });
+});
+
+describe('getDatePickerStartDate', () => {
+    const duration_min_max = {
+        daily: { min: 86400, max: 172800 },
+    };
+
+    const durationUnits = [
+        { value: 'm', text: 'Minutes' },
+        { value: 'h', text: 'Hours' },
+        { value: 'd', text: 'Days' },
+    ];
+
+    beforeAll(() => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => new Date('2024-10-08T08:00:00Z').getTime());
+    });
+
+    afterAll(() => {
+        jest.restoreAllMocks();
+    });
+
+    it('should return the minimum date considering intraday duration', () => {
+        const start_time = null;
+        const result = getDatePickerStartDate(durationUnits, moment(), start_time, duration_min_max);
+        expect(result).toBeInstanceOf(Date);
+        expect(result.toISOString()).toContain('2024-10-08');
+    });
+
+    it('should set the correct time when a start time is provided', () => {
+        const start_time = '12:30:00';
+        const result = getDatePickerStartDate(durationUnits, moment(), start_time, duration_min_max);
+        expect(result).toBeInstanceOf(Date);
+        expect(result.getHours()).toBe(12);
+        expect(result.getMinutes()).toBe(30);
+    });
+
+    it('should add min duration to the current time when no intraday duration exists', () => {
+        const nonIntradayUnits = [{ value: 'd', text: 'Days' }];
+        const result = getDatePickerStartDate(nonIntradayUnits, moment(), null, duration_min_max);
+        expect(result).toBeInstanceOf(Date);
+        expect(result.toISOString()).toContain('2024-10-09');
+    });
+});
+
+describe('getProposalRequestObject', () => {
+    const trade = mockStore({}).modules.trade;
+
+    const trade_store = {
+        ...trade,
+        onChange: jest.fn(),
+        duration: 30,
+        duration_unit: 'm',
+        expiry_type: 'duration',
+        symbol: 'R_100',
+    };
+
+    const new_values = {
+        duration: '10t',
+        amount: 20,
+    };
+
+    it('should merge new values into trade_store and create a proposal request object', () => {
+        const result = getProposalRequestObject({
+            new_values,
+            trade_store,
+            trade_type: 'CALL',
+        });
+        expect(result).toEqual(
+            expect.objectContaining({
+                amount: 20,
+                barrier: 5,
+                basis: '',
+                contract_type: 'CALL',
+                currency: '',
+                duration: 10,
+                duration_unit: 'm',
+                limit_order: undefined,
+                proposal: 1,
+                symbol: 'R_100',
+            })
+        );
+    });
+
+    it('should include subscribe field when should_subscribe is true', () => {
+        const result = getProposalRequestObject({
+            new_values,
+            should_subscribe: true,
+            trade_store,
+            trade_type: 'CALL',
+        });
+        expect(result.subscribe).toBe(1);
+    });
+
+    it('should not include subscribe field when should_subscribe is false', () => {
+        const result = getProposalRequestObject({
+            new_values,
+            should_subscribe: false,
+            trade_store,
+            trade_type: 'CALL',
+        });
+        expect(result.subscribe).toBeUndefined();
     });
 });

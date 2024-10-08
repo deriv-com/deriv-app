@@ -28,7 +28,7 @@ const EndTimePicker = ({
                 <CaptionText color='quill-typography__color--subtle'>
                     <Localize i18n_default_text='Current time' />
                 </CaptionText>
-                <Text size='sm'>{`${current_gmt_time} GMT+0`}</Text>
+                <Text size='sm'>{`${current_gmt_time} GMT`}</Text>
             </div>
         </div>
     );

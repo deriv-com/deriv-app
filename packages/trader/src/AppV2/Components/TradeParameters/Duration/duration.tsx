@@ -77,12 +77,14 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             setEndDate(new Date());
         }
 
-        onChangeMultiple({
-            duration_unit: result?.unit,
-            duration: result?.value,
-            expiry_time: null,
-            expiry_type: 'duration',
-        });
+        const start_duration = setTimeout(() => {
+            onChangeMultiple({
+                duration_unit: result?.unit,
+                duration: result?.value,
+                expiry_time: null,
+                expiry_type: 'duration',
+            });
+        }, 10);
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
         const are_dates_equal =
@@ -93,6 +95,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         if (!are_dates_equal) {
             setEndDate(new Date(start_date));
         }
+
+        return () => clearTimeout(start_duration);
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
 
     const getInputValues = () => {
@@ -107,18 +111,18 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 const minutes = duration % 60;
                 return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             } else if (duration_unit === 'd') {
-                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT+0`;
+                return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT`;
             }
             return `${duration} ${duration_unit_text}`;
         }
         if (expiry_time) {
-            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT+0`;
+            return `${localize('Ends on')} ${formatted_date} ${expiry_time} GMT`;
         }
     };
 
     useEffect(() => {
         if (has_error && !is_minimized) {
-            const error_obj = proposal_info[contract_type_object[0]] || validation_errors?.durations?.[0];
+            const error_obj = proposal_info[contract_type_object[0]] || validation_errors?.duration?.[0];
             if (error_obj?.error_field === 'duration') {
                 addSnackbar({
                     message: <Localize i18n_default_text={error_obj.message} />,

@@ -246,14 +246,14 @@ describe('DurationActionSheetContainer', () => {
         renderDurationContainer(default_trade_store, 'd');
 
         const date_input = screen.getByTestId('dt_date_input');
-        const time_input = screen.getByDisplayValue('23:59:59 GMT+0');
+        const time_input = screen.getByDisplayValue('23:59:59 GMT');
         expect(date_input).toBeInTheDocument();
         expect(time_input).toBeInTheDocument();
     });
 
     it('should open timepicker on clicking on time input in the days page', () => {
         renderDurationContainer(default_trade_store, 'd');
-        const time_input = screen.getByDisplayValue('23:59:59 GMT+0');
+        const time_input = screen.getByDisplayValue('23:59:59 GMT');
         expect(time_input).toBeInTheDocument();
         userEvent.click(time_input);
         expect(screen.getByText('Pick an end time'));

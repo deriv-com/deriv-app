@@ -15,7 +15,16 @@ type TDurationProps = {
 };
 
 const Barrier = observer(({ is_minimized }: TDurationProps) => {
-    const { barrier_1, onChange, duration_unit, setV2ParamsInitialValues, v2_params_initial_values, validation_errors, proposal_info, trade_type_tab } = useTraderStore();
+    const {
+        barrier_1,
+        onChange,
+        duration_unit,
+        setV2ParamsInitialValues,
+        v2_params_initial_values,
+        validation_errors,
+        proposal_info,
+        trade_type_tab,
+    } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';

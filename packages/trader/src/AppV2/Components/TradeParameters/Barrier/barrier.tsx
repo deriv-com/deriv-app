@@ -1,14 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import Carousel from 'AppV2/Components/Carousel';
 import BarrierDescription from './barrier-description';
 import BarrierInput from './barrier-input';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import { useSnackbar } from '@deriv-com/quill-ui';
 
 type TDurationProps = {
     is_minimized?: boolean;

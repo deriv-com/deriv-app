@@ -109,8 +109,8 @@ const TakeProfitAndStopLossInput = ({
         trade_type: Object.keys(trade_types)[0],
     });
 
-    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
-        ['proposal', new_input_value ?? ''],
+    const { data: response, refetch } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        ['proposal'],
         proposal_req,
         {
             enabled: is_enabled,
@@ -197,14 +197,14 @@ const TakeProfitAndStopLossInput = ({
     }, [is_enabled, new_input_value, response]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = String(e.target.value);
-        if (value === new_input_value) return;
         is_api_response_received_ref.current = false;
+        let value = String(e.target.value);
         if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
         setFEErrorText('');
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
+        refetch();
     };
 
     const debouncedOnInputChange = useDebounceCallback(onInputChange, 300);

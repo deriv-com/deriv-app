@@ -569,8 +569,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const is_incorrect_mt5_password_format_error =
         error_type === 'InvalidTradingPlatformPasswordFormat' || error_type === 'IncorrectMT5PasswordFormat';
 
-    const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
-
     const [new_password_value, setNewPasswordValue] = React.useState('');
 
     // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
@@ -961,11 +959,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
-                onSubmit={
-                    !is_eu_user && platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified
-                        ? closeModal
-                        : closeOpenSuccess
-                }
+                onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 message={getSuccssMessage()}
                 icon={

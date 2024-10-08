@@ -197,8 +197,9 @@ const TakeProfitAndStopLossInput = ({
     }, [is_enabled, new_input_value, response]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        is_api_response_received_ref.current = false;
         let value = String(e.target.value);
+        if (value === new_input_value) return;
+        is_api_response_received_ref.current = false;
         if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
         setFEErrorText('');

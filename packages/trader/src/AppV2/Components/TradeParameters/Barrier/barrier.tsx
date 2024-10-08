@@ -57,6 +57,12 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
         }
     }, [proposal_info]);
 
+    React.useEffect(() => {
+        if (is_open) {
+            setBarrierErrorShown(false);
+        }
+    }, [is_open]);
+
     const barrier_carousel_pages = [
         {
             id: 1,

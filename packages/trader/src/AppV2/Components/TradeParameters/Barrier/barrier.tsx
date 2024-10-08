@@ -51,6 +51,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                 message,
                 hasCloseButton: true,
                 status: 'fail',
+                style: { marginBottom: '48px' },
             });
             setBarrierErrorShown(true);
         }
@@ -80,6 +81,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
             <TextField
                 variant='fill'
                 readOnly
+                noStatusIcon
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
                 value={v2_params_initial_values.barrier_1 || barrier_1}
                 onClick={() => setIsOpen(true)}

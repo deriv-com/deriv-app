@@ -107,7 +107,7 @@ const BarrierInput = observer(
                                     regex={/[^0-9.,]/g}
                                     textAlignment='center'
                                     onChange={handleOnChange}
-                                    placeholder={localize('Distance to spot')}
+                                    placeholder={localize('Price')}
                                     variant='fill'
                                     message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
                                 />

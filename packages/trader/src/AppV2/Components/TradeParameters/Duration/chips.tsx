@@ -11,21 +11,39 @@ const DurationChips = ({
     onChangeUnit: (arg: string) => void;
     unit: string;
 }) => {
-    if (duration_units_list.length == 1) {
+    const show_end_time = duration_units_list.length > 1;
+
+    if (!show_end_time) {
         return <></>;
     }
+
     return (
         <div className='duration-container__chips'>
-            {duration_units_list.map((item, index) => (
+            {duration_units_list.map(
+                (item, index) =>
+                    item.value !== 'd' && (
+                        <Chip.Selectable
+                            key={`${item.text}-${index}`}
+                            selected={unit == item.value}
+                            className='duration-container__chips__chip'
+                            onClick={() => onChangeUnit(item.value)}
+                        >
+                            <Text size='sm'>{item.text}</Text>
+                        </Chip.Selectable>
+                    )
+            )}
+            {show_end_time && (
                 <Chip.Selectable
-                    key={`${item.text}-${index}`}
-                    selected={unit == item.value}
+                    key='end-time'
+                    selected={unit === 'd'}
                     className='duration-container__chips__chip'
-                    onClick={() => onChangeUnit(item.value)}
+                    onClick={() => onChangeUnit('d')}
                 >
-                    <Text size='sm'>{item.value == 'd' ? <Localize i18n_default_text='End Time' /> : item.text}</Text>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='End Time' />
+                    </Text>
                 </Chip.Selectable>
-            ))}
+            )}
         </div>
     );
 };

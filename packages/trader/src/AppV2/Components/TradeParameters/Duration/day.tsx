@@ -150,6 +150,7 @@ const DayInput = ({
                 data-testid='dt_date_input'
                 textAlignment='center'
                 value={formatted_date}
+                disabled={duration_units_list.filter(item => item.value === 'd').length === 0}
                 onClick={() => {
                     setOpen(true);
                 }}

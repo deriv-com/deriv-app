@@ -14,12 +14,7 @@ const TradeParametersContainer = ({
     is_minimized,
     is_minimized_visible,
 }: React.PropsWithChildren<TTradeParametersContainer>) => {
-    const [is_minimized_and_visible, setIsMinimizedAndVisible] = React.useState(is_minimized && is_minimized_visible);
-
-    React.useEffect(() => {
-        setIsMinimizedAndVisible(is_minimized && is_minimized_visible);
-    }, [is_minimized, is_minimized_visible]);
-
+    const is_minimized_and_visible = is_minimized && is_minimized_visible;
     return (
         <section
             className={clsx('', {

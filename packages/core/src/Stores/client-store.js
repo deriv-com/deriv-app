@@ -258,6 +258,7 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
+            available_onramp_currencies: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -277,7 +278,6 @@ export default class ClientStore extends BaseStore {
             is_identity_verification_needed: computed,
             is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
-            is_tnc_needed: computed,
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
@@ -613,6 +613,15 @@ export default class ClientStore extends BaseStore {
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
 
+    get available_onramp_currencies() {
+        return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
+            if (values.platform.ramp.length > 0) {
+                currencies.push(currency);
+            }
+            return currencies;
+        }, []);
+    }
+
     get has_fiat() {
         return Object.values(this.accounts).some(
             item =>
@@ -726,14 +735,6 @@ export default class ClientStore extends BaseStore {
     get real_account_creation_unlock_date() {
         const { cooling_off_expiration_date } = this.account_settings;
         return cooling_off_expiration_date;
-    }
-
-    get is_tnc_needed() {
-        if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings || {};
-        const { terms_conditions_version } = this.website_status || {};
-
-        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
 
     get is_social_signup() {

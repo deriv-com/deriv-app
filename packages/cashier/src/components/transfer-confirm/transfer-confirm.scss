@@ -67,7 +67,7 @@
         &-bullet {
             background-color: var(--text-loss-danger);
             border-radius: 100%;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
             width: 0.4rem;
             height: 0.4rem;
             flex: none;
@@ -81,7 +81,7 @@
     &__checkbox {
         width: 40rem;
         .dc-checkbox__box {
-            margin-left: 0;
+            margin-inline-start: 0;
         }
     }
     &__checkbox-label {
@@ -94,7 +94,7 @@
         justify-content: flex-end;
 
         > :not(:first-child) {
-            margin-left: 0.8rem;
+            margin-inline-start: 0.8rem;
         }
 
         @include mobile-or-tablet-screen {

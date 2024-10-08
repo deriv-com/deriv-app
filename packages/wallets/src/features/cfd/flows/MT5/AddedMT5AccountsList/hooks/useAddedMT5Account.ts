@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { ClientVerificationStatusBadge } from 'src/features/cfd/components';
 import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
+import { ClientVerificationStatusBadge } from '../../../../components';
 import { getMarketTypeDetails, MARKET_TYPE, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../constants';
 import { TModifiedMT5Accounts } from '../../../../types';
 
@@ -36,10 +36,9 @@ const useAddedMT5Account = (account: TModifiedMT5Accounts) => {
         account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
 
     const showPlatformStatus =
-        (account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
-            account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
-            platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE) &&
-        !kycStatus;
+        account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
+        account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     const showClientVerificationModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE && !!kycStatus;
     const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE;

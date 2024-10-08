@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -30,12 +30,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         stop_out,
         trade_type_tab,
         trade_types,
+        symbol,
         validation_errors,
         validation_params,
         v2_params_initial_values,
     } = useTraderStore();
+    const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
+    const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     // first contract type data:
     const {
@@ -43,6 +46,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         id: id_1,
         message: message_1 = '',
         payout: payout_1 = 0,
+        error_field: error_field_1,
     } = proposal_info[contract_types[0]] ?? {};
     // second contract type data:
     const {
@@ -50,10 +54,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         id: id_2,
         message: message_2 = '',
         payout: payout_2 = 0,
+        error_field: error_field_2,
     } = proposal_info[contract_types[1]] ?? {};
     const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
-    const proposal_error_message_1 = has_error_1 ? message_1 : '';
-    const proposal_error_message_2 = has_error_2 ? message_2 : '';
+    const proposal_error_message_1 = has_error_1 && error_field_1 === 'amount' ? message_1 : '';
+    const proposal_error_message_2 = has_error_2 && error_field_2 === 'amount' ? message_2 : '';
     const proposal_error_message =
         proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
@@ -84,8 +89,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             : proposal_error_message_1) || validation_error_text;
     const has_both_errors = has_error_1 && has_error_2;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = contract_types[1] ? two_contracts_error : validation_error_text;
-
+    const stake_error = has_both_errors ? two_contracts_error : validation_error_text;
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,
@@ -93,6 +97,22 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    React.useEffect(() => {
+        if (stake_error && !is_minimized && !displayed_error.current && !is_open) {
+            displayed_error.current = true;
+            addSnackbar({
+                message: <Localize i18n_default_text='Please adjust your stake.' />,
+                status: 'fail',
+                hasCloseButton: true,
+                style: { marginBottom: '48px' },
+            });
+        }
+    }, [stake_error]);
+
+    React.useEffect(() => {
+        displayed_error.current = false;
+    }, [contract_type, symbol]);
 
     React.useEffect(() => {
         const initial_stake = v2_params_initial_values?.stake;
@@ -145,7 +165,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         ));
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
-        setShouldShowError(e.target.value !== '');
+        if (stake_error) setShouldShowError(true);
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 

@@ -43,7 +43,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 }
 
                 if (showClientVerificationModal) {
-                    return show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />);
+                    return show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />, {
+                        defaultRootId: 'wallets_modal_root',
+                    });
                 }
 
                 if (showMT5TradeModal) {
@@ -52,7 +54,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             marketType={account.market_type ?? MARKET_TYPE.ALL}
                             mt5Account={account}
                             platform={PlatformDetails.mt5.platform}
-                        />
+                        />,
+                        { defaultRootId: 'wallets_modal_root' }
                     );
                 }
             }}

@@ -48,6 +48,18 @@ const SuccessModal: FC<TProps> = ({
         </WalletButtonGroup>
     );
 
+    const title = isDemo ? (
+        <Localize
+            i18n_default_text='Your {{platformTitle}} demo account is ready'
+            values={{ platformTitle: PlatformDetails[platform].title }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text='Your {{platformTitle}} account is ready'
+            values={{ platformTitle: PlatformDetails[platform].title }}
+        />
+    );
+
     if (isDesktop) {
         return (
             <ModalWrapper hideCloseButton>
@@ -57,19 +69,7 @@ const SuccessModal: FC<TProps> = ({
                     displayBalance={displayBalance}
                     marketType={marketType}
                     platform={platform}
-                    title={
-                        isDemo ? (
-                            <Localize
-                                i18n_default_text='Your {{platformTitle}} demo account is ready'
-                                values={{ platformTitle: PlatformDetails[platform].title }}
-                            />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Your {{platformTitle}} account is ready'
-                                values={{ platformTitle: PlatformDetails[platform].title }}
-                            />
-                        )
-                    }
+                    title={title}
                 />
             </ModalWrapper>
         );
@@ -83,19 +83,7 @@ const SuccessModal: FC<TProps> = ({
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                title={
-                    isDemo ? (
-                        <Localize
-                            i18n_default_text='Your {{platformTitle}} demo account is ready'
-                            values={{ platformTitle: PlatformDetails[platform].title }}
-                        />
-                    ) : (
-                        <Localize
-                            i18n_default_text='Your {{platformTitle}} account is ready'
-                            values={{ platformTitle: PlatformDetails[platform].title }}
-                        />
-                    )
-                }
+                title={title}
             />
         </ModalStepWrapper>
     );

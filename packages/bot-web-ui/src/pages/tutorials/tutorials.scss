@@ -143,6 +143,12 @@
 }
 
 .faq {
+    &__description {
+        a {
+            text-decoration: underline;
+            color: var(--button-primary-default);
+        }
+    }
     &__wrapper {
         overflow: auto;
         padding-bottom: 18px;

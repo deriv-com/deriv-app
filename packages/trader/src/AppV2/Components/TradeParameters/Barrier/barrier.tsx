@@ -48,7 +48,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
 
         if (has_error && error_field === 'barrier' && !barrier_error_shown && !is_open && !is_minimized) {
             addSnackbar({
-                message: message,
+                message,
                 hasCloseButton: true,
                 status: 'fail',
             });

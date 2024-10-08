@@ -69,7 +69,7 @@
             min-height: 13.6rem;
 
             &:has(.trade-params__options__wrapper--horizontal:not(:only-child)) {
-                padding-bottom: 6.4rem;
+                min-height: 16.8rem;
             }
         }
     }

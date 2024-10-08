@@ -16,7 +16,6 @@ import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useRemoteConfig } from '@deriv/api';
-import { useIsMounted } from '@deriv/shared';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -47,8 +46,7 @@ const Footer = observer(() => {
         toggleSettingsModal,
         toggleLanguageSettingsModal,
     } = ui;
-    const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(isMounted());
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
     const { show_eu_related_content } = traders_hub;
 

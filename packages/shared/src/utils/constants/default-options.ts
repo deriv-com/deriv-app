@@ -9,15 +9,14 @@ export const UNSUPPORTED_LANGUAGES = isProduction() ? ['ID', 'MN'] : ['MN'];
  * Returns List of unsupported languages for Wallets.
  */
 export const WALLETS_UNSUPPORTED_LANGUAGES = [
+    ...UNSUPPORTED_LANGUAGES,
     'BN',
     'DE',
     'ES',
-    'ID',
     'IT',
     'SW',
     'KM',
     'KO',
-    'MN',
     'PL',
     'PT',
     'RU',

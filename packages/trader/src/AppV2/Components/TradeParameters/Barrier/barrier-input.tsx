@@ -59,7 +59,6 @@ const BarrierInput = observer(
                 newValue = `0${newValue}`;
             }
 
-            setV2ParamsInitialValues({ name: 'barrier_1', value: newValue });
             onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 

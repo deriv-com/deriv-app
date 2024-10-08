@@ -32,7 +32,7 @@ const PurchaseButton = observer(() => {
         contract_replay: { is_market_closed },
         portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
-        common: { services_error },
+        common: { services_error, resetServicesError },
         ui: { is_mf_verification_pending_modal_visible },
     } = useStore();
     const {
@@ -48,6 +48,7 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
         proposal_info,
+        purchase_info,
         onPurchaseV2,
         symbol,
         trade_type_tab,
@@ -110,7 +111,7 @@ const PurchaseButton = observer(() => {
         !is_authorization_required &&
         !is_account_verification_required &&
         !is_mf_verification_pending_modal_visible;
-
+    const timer_ref = React.useRef<NodeJS.Timeout | undefined>();
     const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
 
     React.useEffect(() => {
@@ -118,9 +119,13 @@ const PurchaseButton = observer(() => {
             addSnackbar({
                 message,
                 status: 'fail',
+                standalone: true,
                 hasCloseButton: true,
-                style: { marginBottom: '48px' },
+                onCloseAction: resetServicesError,
+                style: { marginBottom: '48px', width: 'calc(100% - var(--core-spacing-800)' },
             });
+
+            timer_ref.current = setTimeout(() => resetServicesError(), 4000);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_error_snackbar]);
@@ -176,7 +181,12 @@ const PurchaseButton = observer(() => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
-                        const is_disabled = !is_trade_enabled_v2 || info.has_error;
+                        const is_disabled =
+                            !is_trade_enabled_v2 ||
+                            info.has_error ||
+                            !info.id ||
+                            !is_purchase_enabled ||
+                            !!purchase_info.error;
 
                         const getErrorMessage = () => {
                             if (['amount', 'stake'].includes(info.error_field ?? '')) {

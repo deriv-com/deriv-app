@@ -18,6 +18,7 @@ const DurationActionSheetContainer = observer(
         end_time,
         setEndTime,
         expiry_time_string,
+        setExpiryTimeString,
     }: {
         selected_hour: number[];
         setSelectedHour: (arg: number[]) => void;
@@ -28,12 +29,15 @@ const DurationActionSheetContainer = observer(
         end_time: string;
         setEndTime: (arg: string) => void;
         expiry_time_string: string;
+        setExpiryTimeString: (arg: string) => void;
     }) => {
         const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
         const [is24_hour_selected, setIs24HourSelected] = useState(false);
+        const [temp_expiry_time, setTempExpiryTime] = React.useState(expiry_time_string);
 
         const onAction = () => {
+            setExpiryTimeString(temp_expiry_time);
             if (unit === 'h') {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
                 const hour = Math.floor(duration / 60);
@@ -50,7 +54,6 @@ const DurationActionSheetContainer = observer(
                 const difference_in_time = end_date.getTime() - new Date().getTime();
                 const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
                 setSelectedHour([]);
-
                 if (end_time) {
                     onChangeMultiple({
                         expiry_time: end_time,
@@ -121,7 +124,8 @@ const DurationActionSheetContainer = observer(
                         setEndDate={setEndDate}
                         end_date={end_date}
                         end_time={end_time}
-                        expiry_time_string={expiry_time_string}
+                        setTempExpiryTime={setTempExpiryTime}
+                        temp_expiry_time={temp_expiry_time}
                     />
                 )}
                 <ActionSheet.Footer

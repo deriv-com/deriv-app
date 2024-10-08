@@ -10,6 +10,8 @@ import {
 import { Localize, localize } from '@deriv/translations';
 import { Moment } from 'moment';
 import React from 'react';
+import { createProposalRequestForContract } from 'Stores/Modules/Trading/Helpers/proposal';
+import { TTradeStore } from 'Types';
 
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
@@ -436,4 +438,30 @@ export const getDatePickerStartDate = (
 
     const min_date = new Date(getMomentContractStartDateTime());
     return min_date;
+};
+
+export const getProposalRequestObject = ({
+    new_values = {},
+    should_subscribe = false,
+    trade_store,
+    trade_type,
+}: {
+    new_values: Record<string, unknown>;
+    should_subscribe?: boolean;
+    trade_store: TTradeStore;
+    trade_type: string;
+}) => {
+    const store = {
+        ...trade_store,
+        ...new_values,
+    };
+
+    const request = createProposalRequestForContract(
+        store as Parameters<typeof createProposalRequestForContract>[0],
+        trade_type
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & { subscribe?: number };
+
+    if (!should_subscribe) delete request.subscribe;
+
+    return request;
 };

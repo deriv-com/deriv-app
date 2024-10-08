@@ -83,15 +83,15 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             expiry_time: null,
             expiry_type: 'duration',
         });
-        const startDate = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
+        const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
-        const areDatesEqual =
-            new Date(startDate).getDate() === end_date.getDate() &&
-            new Date(startDate).getMonth() === end_date.getMonth() &&
-            new Date(startDate).getFullYear() === end_date.getFullYear();
+        const are_dates_equal =
+            new Date(start_date).getDate() === end_date.getDate() &&
+            new Date(start_date).getMonth() === end_date.getMonth() &&
+            new Date(start_date).getFullYear() === end_date.getFullYear();
 
-        if (!areDatesEqual) {
-            setEndDate(new Date(startDate));
+        if (!are_dates_equal) {
+            setEndDate(new Date(start_date));
         }
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
 
@@ -186,6 +186,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                         end_date={end_date}
                         setEndDate={setEndDate}
                         expiry_time_string={expiry_time_string}
+                        setExpiryTimeString={setExpiryTimeString}
                         end_time={end_time}
                         setEndTime={setEndTime}
                     />

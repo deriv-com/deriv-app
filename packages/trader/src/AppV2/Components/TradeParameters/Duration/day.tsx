@@ -1,7 +1,7 @@
 import { ActionSheet, Text, TextField } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DaysDatepicker from './datepicker';
 import EndTimePicker from './timepicker';
@@ -9,7 +9,13 @@ import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { hasIntradayDurationUnit, setTime, toMoment } from '@deriv/shared';
 import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
-import { getClosestTimeToCurrentGMT, getDatePickerStartDate } from 'AppV2/Utils/trade-params-utils';
+import {
+    getClosestTimeToCurrentGMT,
+    getDatePickerStartDate,
+    getProposalRequestObject,
+} from 'AppV2/Utils/trade-params-utils';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
 
 const timeToMinutes = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
@@ -21,18 +27,21 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
-    expiry_time_string,
+    temp_expiry_time,
+    setTempExpiryTime,
 }: {
     setEndTime: (arg: string) => void;
     setEndDate: (arg: Date) => void;
     end_date: Date;
     end_time: string;
-    expiry_time_string: string;
+    temp_expiry_time: string;
+    setTempExpiryTime: (arg: string) => void;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const { common } = useStore();
+    const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
     const {
         expiry_date,
@@ -42,7 +51,35 @@ const DayInput = ({
         start_date,
         start_time,
         duration_min_max,
+        trade_types,
+        contract_type,
     } = useTraderStore();
+    const trade_store = useTraderStore();
+
+    const new_values = {
+        duration_unit: 'd',
+        duration: day || '',
+        expiry_time: null,
+        expiry_type: 'duration',
+        contract_type,
+    };
+    const proposal_req = getProposalRequestObject({
+        new_values,
+        trade_store,
+        trade_type: Object.keys(trade_types)[0],
+    });
+
+    const { data: response } = useDtraderQuery<ProposalResponse>(['proposal', JSON.stringify(day)], proposal_req, {
+        enabled: day !== null,
+    });
+
+    useEffect(() => {
+        if (response?.proposal?.date_expiry) {
+            setTempExpiryTime(
+                new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[1].substring(0, 8)
+            );
+        }
+    }, [response]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -98,6 +135,12 @@ const DayInput = ({
         (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
         has_intraday_duration_unit;
 
+    const handleDate = (date: Date) => {
+        const difference_in_time = date.getTime() - new Date().getTime();
+        const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
+        setDay(Number(difference_in_days));
+        setEndDate(date);
+    };
     return (
         <div className='duration-container__days-input'>
             <TextField
@@ -118,7 +161,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(is_24_hours_contract ? end_time : expiry_time_string) || '23:59:59'} GMT+0`}
+                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT+0`}
                 disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -131,7 +174,7 @@ const DayInput = ({
                     <Localize i18n_default_text='Expiry' />
                 </Text>
                 <Text size='sm'>{`
-                ${formatted_date} ${(is_24_hours_contract ? end_time : expiry_time_string) || '23:59:59'} GMT+0`}</Text>
+                ${formatted_date} ${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT+0`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}
@@ -161,7 +204,7 @@ const DayInput = ({
                                 duration_min_max
                             )}
                             end_date={end_date}
-                            setEndDate={setEndDate}
+                            setEndDate={handleDate}
                         />
                     )}
                     {open_timepicker && (

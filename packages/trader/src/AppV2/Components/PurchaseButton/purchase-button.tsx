@@ -181,12 +181,7 @@ const PurchaseButton = observer(() => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
-                        const is_disabled =
-                            !is_trade_enabled_v2 ||
-                            info.has_error ||
-                            !info.id ||
-                            !is_purchase_enabled ||
-                            !!purchase_info.error;
+                        const is_disabled = !is_trade_enabled_v2 || info.has_error || !!purchase_info.error;
 
                         const getErrorMessage = () => {
                             if (['amount', 'stake'].includes(info.error_field ?? '')) {

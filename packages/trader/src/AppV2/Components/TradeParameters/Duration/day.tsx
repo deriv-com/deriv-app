@@ -79,7 +79,7 @@ const DayInput = ({
                 new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[1].substring(0, 8)
             );
         }
-    }, [response]);
+    }, [response, setTempExpiryTime]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -132,7 +132,8 @@ const DayInput = ({
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
     is_24_hours_contract =
-        (!!start_date || toMoment(expiry_date).isSame(toMoment(server_time), 'day')) && has_intraday_duration_unit;
+        (!!start_date || toMoment(expiry_date || end_date).isSame(toMoment(server_time), 'day')) &&
+        has_intraday_duration_unit;
 
     const handleDate = (date: Date) => {
         const difference_in_time = date.getTime() - new Date().getTime();

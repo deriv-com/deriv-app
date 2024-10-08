@@ -188,6 +188,9 @@ export default class UIStore extends BaseStore {
     is_additional_kyc_info_modal_open = false;
     is_kyc_information_submitted_modal_open = false;
 
+    // tnc update
+    is_tnc_update_modal_open = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -297,6 +300,7 @@ export default class UIStore extends BaseStore {
             is_verification_submitted: observable,
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
+            is_tnc_update_modal_open: observable,
             isUrlUnavailableModalVisible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -441,6 +445,7 @@ export default class UIStore extends BaseStore {
             setShouldShowDepositNowOrLaterModal: action.bound,
             setShouldShowCryptoTransactionProcessingModal: action.bound,
             setShouldShowSameDOBPhoneModal: action.bound,
+            toggleTncUpdateModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -1018,5 +1023,9 @@ export default class UIStore extends BaseStore {
 
     setShouldShowSameDOBPhoneModal(value) {
         this.should_show_same_dob_phone_modal = value;
+    }
+
+    toggleTncUpdateModal(value) {
+        this.is_tnc_update_modal_open = value;
     }
 }

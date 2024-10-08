@@ -446,7 +446,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" rel="noopener noreferrer" target="_blank">Watch this video</a> to learn how to build a trading bot on Deriv Bot. Also, <a href="https://blog.deriv.com/posts/how-to-build-a-basic-trading-bot-with-dbot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on building a trading bot.'
+                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" rel="noopener noreferrer" target="_blank">Watch this video</a> to learn how to build a trading bot on Deriv Bot. Also, <a href="https://deriv.com/blog/posts/build-a-basic-trading-bot-with-deriv-bot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

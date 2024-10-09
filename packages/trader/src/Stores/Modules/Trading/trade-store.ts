@@ -13,7 +13,6 @@ import {
     getCardLabelsV2,
     getContractPath,
     getContractSubtype,
-    getContractTypesConfig,
     getCurrencyDisplayCode,
     getMinPayout,
     getPlatformSettings,

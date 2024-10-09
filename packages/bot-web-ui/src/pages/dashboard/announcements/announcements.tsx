@@ -95,9 +95,9 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
     }, [read_announcements_map]);
 
     const openAccumulatorsVideo = () => {
-        const accumulator_video = guide_content.find(guide_content => guide_content.id === 4);
-        if (accumulator_video) {
-            showVideoDialog({ url: accumulator_video.url, type: 'url' });
+        const accumulators_video = guide_content.find(guide_content => guide_content.id === 4);
+        if (accumulators_video) {
+            showVideoDialog({ url: accumulators_video.url, type: 'url' });
         }
     };
 

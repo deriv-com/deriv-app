@@ -32,14 +32,13 @@ const OnboardingTourMobile = observer(() => {
     const hide_prev_button = [1, 2, 8];
     const is_tour_active = active_tour === 'onboarding';
 
-    const checkTokenForTour = () => {
-        const token = getSetting('onboard_tour_token');
-        if (!token && active_tab === 0) {
-            setActiveTour('onboarding');
-        }
-    };
-
     React.useEffect(() => {
+        const checkTokenForTour = () => {
+            const token = getSetting('onboard_tour_token');
+            if (!token && active_tab === 0) {
+                setActiveTour('onboarding');
+            }
+        };
         checkTokenForTour();
     }, [active_tab]);
 

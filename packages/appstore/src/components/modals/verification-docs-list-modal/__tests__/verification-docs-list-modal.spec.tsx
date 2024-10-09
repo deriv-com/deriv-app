@@ -20,9 +20,8 @@ jest.mock('@deriv/hooks', () => ({
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
-    DerivLightUploadPoiIcon: () => <div>DerivLightUploadPoiIcon</div>,
     LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
-    DerivLightWaitingPoaIcon: () => <div>DerivLightWaitingPoaIcon</div>,
+    DerivLightUserVerificationIcon: () => <div>DerivLightUserVerificationIcon</div>,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -83,7 +82,7 @@ describe('<VerificationDocsListModal />', () => {
         expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('Proof of address')).toBeInTheDocument();
-        expect(screen.queryByText('Personal Details')).not.toBeInTheDocument();
+        expect(screen.queryByText('Additional information')).not.toBeInTheDocument();
     });
 
     it('should render the modal with details when mt5 account is not created', () => {
@@ -96,12 +95,14 @@ describe('<VerificationDocsListModal />', () => {
             },
         });
         renderComponent({});
-        expect(screen.getByText('DerivLightUploadPoiIcon')).toBeInTheDocument();
+        expect(screen.getByText('DerivLightUserVerificationIcon')).toBeInTheDocument();
         expect(screen.getByText('Complete your profile')).toBeInTheDocument();
-        expect(screen.getByText('Complete your account details to proceed:')).toBeInTheDocument();
+        expect(
+            screen.getByText('Confirm your details to open the account. After verification, you can begin trading.')
+        ).toBeInTheDocument();
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('Proof of address')).toBeInTheDocument();
-        expect(screen.queryByText('Personal Details')).toBeInTheDocument();
+        expect(screen.queryByText('Additional information')).toBeInTheDocument();
     });
     it('should render the modal with details when platform is not mt5', () => {
         (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
@@ -121,11 +122,11 @@ describe('<VerificationDocsListModal />', () => {
             },
         });
         renderComponent({ store: mock_store });
-        expect(screen.getByText('DerivLightUploadPoiIcon')).toBeInTheDocument();
+        expect(screen.getByText('DerivLightUserVerificationIcon')).toBeInTheDocument();
         expect(screen.getByText('Verification required')).toBeInTheDocument();
         expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('Proof of address')).toBeInTheDocument();
-        expect(screen.queryByText('Personal Details')).not.toBeInTheDocument();
+        expect(screen.queryByText('Additional information ')).not.toBeInTheDocument();
     });
 });

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { DerivLightUploadPoiIcon, DerivLightWaitingPoaIcon } from '@deriv/quill-icons';
+import { DerivLightUserVerificationIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
@@ -14,14 +14,6 @@ type TItems = {
     text: string;
     status: string | number;
     route: string;
-};
-
-const getIcon = (items: TItems[]) => {
-    const icon_size = { height: '120px', width: '120px' };
-    if (items.every(item => item?.id === 'address' && item?.status === AUTH_STATUS_CODES.PENDING)) {
-        return <DerivLightWaitingPoaIcon {...icon_size} />;
-    }
-    return <DerivLightUploadPoiIcon {...icon_size} />;
 };
 
 const VerificationDocsListModalContent = observer(() => {
@@ -49,17 +41,17 @@ const VerificationDocsListModalContent = observer(() => {
         },
         valid_tin === 0 && {
             id: 'tax',
-            text: 'Personal Details',
+            text: 'Additional information',
             status: valid_tin,
             route: routes.personal_details,
         },
     ].filter(Boolean) as TItems[];
     return (
         <div className='verification-docs-list-modal__content'>
-            {getIcon(items)}
+            <DerivLightUserVerificationIcon height='120px' width='120px' />
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
                 {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
-                    <Localize i18n_default_text='Complete your account details to proceed:' />
+                    <Localize i18n_default_text='Confirm your details to open the account. After verification, you can begin trading.' />
                 ) : (
                     <Localize i18n_default_text='Your account needs verification.' />
                 )}

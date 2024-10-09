@@ -70,7 +70,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
             })}
             onClick={onClickItem}
         >
-            <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl'>
+            <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' weight='bold'>
                 <Localize i18n_default_text={text} />
             </Text>
             {status === AUTH_STATUS_CODES.NONE || (id === 'tax' && status === 0) ? (

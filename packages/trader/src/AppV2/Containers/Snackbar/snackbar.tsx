@@ -50,7 +50,6 @@ const Snackbar = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_error_snackbar]);
 
-    if (!has_services_error) return null;
     return <SnackbarController />;
 });
 

@@ -213,7 +213,7 @@ const TakeProfitAndStopLossInput = ({
         if (!is_api_response_received_ref.current && is_enabled) return;
 
         if (error_text && is_enabled) return;
-        if (new_input_value === '' && is_enabled) {
+        if (!new_input_value && is_enabled) {
             setFEErrorText(
                 is_take_profit_input
                     ? localize('Please enter a take profit amount.')

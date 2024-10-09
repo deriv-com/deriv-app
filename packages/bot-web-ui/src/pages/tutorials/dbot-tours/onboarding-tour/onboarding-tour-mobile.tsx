@@ -31,8 +31,22 @@ const OnboardingTourMobile = observer(() => {
     const test_id = tour_step_key === 8 ? 'finish-onboard-tour' : 'next-onboard-tour';
     const hide_prev_button = [1, 2, 8];
     const is_tour_active = active_tour === 'onboarding';
+    
+    const getItemFromLocalStorage = (key: string): Promise<string | null> => {
+        return new Promise(resolve => {
+            const value = getSetting(key);
+            resolve(value);
+        });
+    };
+    const checkTokenForTour = async () => {
+        const token = await getItemFromLocalStorage('onboard_tour_token');
+        if (!token && active_tab === 0) {
+            setActiveTour('onboarding');
+        }
+    };
 
     React.useEffect(() => {
+        checkTokenForTour();
         DBOT_ONBOARDING_MOBILE.forEach(data => {
             if (data.tour_step_key === tour_step) {
                 setTourData(data);

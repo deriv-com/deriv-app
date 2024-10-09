@@ -85,7 +85,8 @@ const TakeProfitAndStopLossInput = ({
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
     const is_crypto_currency = isCryptocurrency(currency);
-    const should_set_validation_params = is_multiplier && is_enabled && !new_input_value && !is_crypto_currency;
+    const should_set_validation_params =
+        is_multiplier && is_enabled && !new_input_value && Number(new_input_value) !== 0 && !is_crypto_currency;
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
@@ -109,8 +110,8 @@ const TakeProfitAndStopLossInput = ({
         trade_type: Object.keys(trade_types)[0],
     });
 
-    const { data: response, refetch } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
-        ['proposal'],
+    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        ['proposal', ...Object.entries(new_values).flat().join('-')],
         proposal_req,
         {
             enabled: is_enabled,
@@ -204,7 +205,6 @@ const TakeProfitAndStopLossInput = ({
         setFEErrorText('');
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
-        refetch();
     };
 
     const debouncedOnInputChange = useDebounceCallback(onInputChange, 300);

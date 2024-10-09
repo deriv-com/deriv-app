@@ -36,7 +36,9 @@ const OnboardingTourMobile = observer(() => {
         const checkTokenForTour = () => {
             const token = getSetting('onboard_tour_token');
             if (!token && active_tab === 0) {
-                setActiveTour('onboarding');
+                setTimeout(() => {
+                    setActiveTour('onboarding');
+                }, 100);
             }
         };
         checkTokenForTour();

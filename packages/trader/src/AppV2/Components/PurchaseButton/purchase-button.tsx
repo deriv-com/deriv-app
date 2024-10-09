@@ -105,12 +105,12 @@ const PurchaseButton = observer(() => {
     const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
     const is_account_verification_required = code === 'PleaseAuthenticate';
     // Error modal is shown only for next four types. For the rest - snackbar.
-    const should_show_error_snackbar =
-        !isEmptyObject(services_error) &&
-        !is_insufficient_balance &&
-        !is_authorization_required &&
-        !is_account_verification_required &&
-        !is_mf_verification_pending_modal_visible;
+    const is_modal_error =
+        is_insufficient_balance ||
+        is_authorization_required ||
+        is_account_verification_required ||
+        is_mf_verification_pending_modal_visible;
+    const should_show_error_snackbar = !isEmptyObject(services_error) && !is_modal_error;
     const timer_ref = React.useRef<NodeJS.Timeout | undefined>();
     const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
 
@@ -181,7 +181,8 @@ const PurchaseButton = observer(() => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
-                        const is_disabled = !is_trade_enabled_v2 || info.has_error || !!purchase_info.error;
+                        const is_disabled =
+                            !is_trade_enabled_v2 || info.has_error || (!!purchase_info.error && !is_modal_error);
 
                         const getErrorMessage = () => {
                             if (['amount', 'stake'].includes(info.error_field ?? '')) {

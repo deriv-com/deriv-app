@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet } from '@deriv-com/quill-ui';
 import { getLanguage, Localize } from '@deriv/translations';
 import { isEmptyObject, redirectToLogin, routes } from '@deriv/shared';
@@ -13,6 +14,7 @@ const ServiceErrorSheet = observer(() => {
     const { is_mf_verification_pending_modal_visible, setIsMFVericationPendingModal } = ui;
     const { has_wallet, is_virtual } = client;
     const { services_error, resetServicesError } = common;
+    const { clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
     const { handleSignup } = useSignupTrigger();
     const history = useHistory();
 
@@ -28,7 +30,13 @@ const ServiceErrorSheet = observer(() => {
             is_account_verification_required ||
             is_mf_verification_pending_modal_visible);
 
-    const onClose = () => setIsOpen(false);
+    const onClose = () => {
+        setIsOpen(false);
+        if (services_error.type === 'buy') {
+            clearPurchaseInfo();
+            resetPurchase();
+        }
+    };
 
     const getActionButtonProps = () => {
         if (is_insufficient_balance) {

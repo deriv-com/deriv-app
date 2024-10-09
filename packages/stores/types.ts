@@ -1198,6 +1198,7 @@ type TTradersHubStore = {
     selected_jurisdiction_kyc_status: Record<string, string>;
     setSelectedJurisdictionKYCStatus: (value: Record<string, string>) => void;
     getDefaultJurisdiction: () => string;
+    getMT5AccountKYCStatus: () => void;
 };
 
 type TContractReplay = {

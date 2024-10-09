@@ -157,7 +157,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                     setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
                     excludedClickOutsideClass={action_button_class_name}
-                    appElement={document.getElementById('deriv_app') || undefined}
+                    appElement={document.getElementById('deriv_app')}
                 />
             </div>
             {selected_announcement?.announcement && (

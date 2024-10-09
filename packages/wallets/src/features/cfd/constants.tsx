@@ -189,14 +189,17 @@ export const MT5_ACCOUNT_STATUS = {
     UNAVAILABLE: 'unavailable',
     UNDER_MAINTENANCE: 'under_maintenance',
     // TODO: remove all the statuses below once the KYC statuses are consolidated by BE
+    // eslint-disable-next-line sort-keys
     POA_FAILED: 'poa_failed',
     POA_OUTDATED: 'poa_outdated',
     PROOF_FAILED: 'proof_failed',
 
+    // eslint-disable-next-line sort-keys
     NEEDS_VERIFICATION: 'needs_verification',
     POA_PENDING: 'poa_pending',
+    // eslint-disable-next-line sort-keys
     VERIFICATION_PENDING: 'verification_pending',
-
+    // eslint-disable-next-line sort-keys
     POA_VERIFIED: 'poa_verified',
 } as const;
 

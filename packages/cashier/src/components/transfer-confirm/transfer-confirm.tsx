@@ -43,7 +43,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
         {Array.isArray(value) ? (
             <div className='transfer-confirm__row-value'>
                 {value.map(v => (
-                    <Text as='div' key={v} size='xs' weight='bold' align='right'>
+                    <Text as='div' key={v} size='xs' weight='bold' align='end'>
                         {v}
                     </Text>
                 ))}
@@ -52,7 +52,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
             <Text
                 size='xs'
                 weight='bold'
-                align='right'
+                align='end'
                 className={classNames({
                     description: item_key === 'description',
                 })}

@@ -47,6 +47,9 @@ const OnboardingTourMobile = observer(() => {
 
     React.useEffect(() => {
         checkTokenForTour();
+    }, [active_tab]);
+
+    React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {
             if (data.tour_step_key === tour_step) {
                 setTourData(data);

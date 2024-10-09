@@ -10,6 +10,11 @@ const currenciesPaymentAgentAvailability = (legal_allowed_currencies, all_paymen
     return result;
 };
 
+const currenciesOnRampAvailability = legal_allowed_currencies => {
+    return legal_allowed_currencies.filter(({ platform }) => platform.ramp.length > 0);
+};
+
 export default {
+    currenciesOnRampAvailability,
     currenciesPaymentAgentAvailability,
 };

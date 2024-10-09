@@ -84,9 +84,7 @@ const AppWrapper = observer(() => {
         } else {
             window.location.hash = hash[active_tab] || hash[0];
         }
-        if (tour_list[active_tab] !== active_tour) {
-            setActiveTour('');
-        }
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab]);
 

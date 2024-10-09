@@ -162,7 +162,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
+                value={`${(formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
                 disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -175,7 +175,9 @@ const DayInput = ({
                     <Localize i18n_default_text='Expiry' />
                 </Text>
                 <Text size='sm'>{`
-                ${formatted_date} ${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}</Text>
+                ${formatted_date} ${
+                    (formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'
+                } GMT`}</Text>
             </div>
             <ActionSheet.Root
                 isOpen={open || open_timepicker}

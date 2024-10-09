@@ -180,7 +180,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
-            activeWalletExchangeRates: { rates: { BTC: 0.00002, USD: 1 } },
+            activeWalletExchangeRates: { rates: { BTC: 1, USD: 60000 } },
             displayMoney: mockDisplayMoney,
             limits: {
                 lifetime_transfers: {
@@ -203,9 +203,10 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             },
             message: (
                 <Localize
-                    i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to {{targetAccountName}} is {{formattedSourceCurrencyRemainder}} (Approximate to {{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
                     values={{
                         formattedSourceCurrencyRemainder: '5.00000000 BTC',
+                        formattedSourceCurrencyRemainderInUSD: '300000.00 USD',
                         sourceAccountName: cryptoAccount.accountName,
                         targetAccountName: fiatAccount.accountName,
                     }}
@@ -254,13 +255,13 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
-            activeWalletExchangeRates: { rates: { BTC: 1 } },
+            activeWalletExchangeRates: { rates: { BTC: 1, USD: 60000 } },
             displayMoney: mockDisplayMoney,
             limits: {
                 lifetime_transfers: {
                     crypto_to_crypto: {
-                        allowed: 1000,
-                        available: 500,
+                        allowed: 10,
+                        available: 5,
                     },
                 },
             },
@@ -277,8 +278,11 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             },
             message: (
                 <Localize
-                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
-                    values={{ formattedSourceCurrencyRemainder: '500.00000000 BTC' }}
+                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}} (Approximate to {{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
+                    values={{
+                        formattedSourceCurrencyRemainder: '5.00000000 BTC',
+                        formattedSourceCurrencyRemainderInUSD: '300000.00 USD',
+                    }}
                 />
             ),
             type: 'success',

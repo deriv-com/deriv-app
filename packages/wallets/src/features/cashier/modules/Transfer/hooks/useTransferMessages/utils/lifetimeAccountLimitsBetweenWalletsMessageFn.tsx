@@ -41,40 +41,28 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     )
         return null;
 
-    const transferDirection = activeWallet.loginid === sourceAccount.loginid ? 'from' : 'to';
-
-    const allowedSumConverted =
-        allowedSumActiveWalletCurrency *
-        (activeWalletExchangeRates?.rates?.[
-            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
-        ] ?? 1);
-    const availableSumConverted =
-        availableSumActiveWalletCurrency *
-        (activeWalletExchangeRates?.rates?.[
-            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
-        ] ?? 1);
-
-    const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
-
-    const sourceCurrencyRemainder =
-        transferDirection === 'from' ? availableSumActiveWalletCurrency : availableSumConverted;
-
     const formattedSourceCurrencyLimit = displayMoney?.(
-        sourceCurrencyLimit,
+        allowedSumActiveWalletCurrency,
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+
+    const formattedSourceCurrencyRemainder = displayMoney?.(
+        availableSumActiveWalletCurrency,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
 
     const formattedSourceCurrencyLimitInUSD = displayMoney?.(
-        sourceCurrencyLimit * (activeWalletExchangeRates?.rates?.USD ?? 1),
+        allowedSumActiveWalletCurrency * (activeWalletExchangeRates?.rates?.USD ?? 1),
         activeWalletExchangeRates?.rates?.USD ? 'USD' : sourceAccount.currencyConfig.display_code,
         activeWalletExchangeRates?.rates?.USD ? 2 : sourceAccount.currencyConfig.fractional_digits
     );
 
-    const formattedSourceCurrencyRemainder = displayMoney?.(
-        sourceCurrencyRemainder,
-        sourceAccount.currencyConfig.display_code,
-        sourceAccount.currencyConfig.fractional_digits
+    const formattedSourceCurrencyRemainderInUSD = displayMoney?.(
+        availableSumActiveWalletCurrency * (activeWalletExchangeRates?.rates?.USD ?? 1),
+        activeWalletExchangeRates?.rates?.USD ? 'USD' : sourceAccount.currencyConfig.display_code,
+        activeWalletExchangeRates?.rates?.USD ? 2 : sourceAccount.currencyConfig.fractional_digits
     );
 
     if (availableSumActiveWalletCurrency === 0) {
@@ -154,9 +142,10 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                     />
                 ) : (
                     <Localize
-                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                        i18n_default_text='Your remaining lifetime transfer limit from {{sourceAccountName}} to {{targetAccountName}} is {{formattedSourceCurrencyRemainder}} (Approximate to {{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
                         values={{
                             formattedSourceCurrencyRemainder,
+                            formattedSourceCurrencyRemainderInUSD,
                             sourceAccountName: sourceAccount.accountName,
                             targetAccountName: targetAccount.accountName,
                         }}
@@ -171,8 +160,8 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         case 'crypto_to_crypto':
             message = (
                 <Localize
-                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
-                    values={{ formattedSourceCurrencyRemainder }}
+                    i18n_default_text='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}} (Approximate to {{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
+                    values={{ formattedSourceCurrencyRemainder, formattedSourceCurrencyRemainderInUSD }}
                 />
             );
 

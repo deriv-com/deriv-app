@@ -24,6 +24,9 @@ declare global {
             on: (key: string, callback: VoidFunction) => void;
             setConfig: (config: Record<string, Record<string, any>>) => void;
             isLoaded: () => boolean;
+            user: {
+                setLocale(locale: string): void;
+            };
         };
         fcWidgetMessengerConfig: {
             config: Record<string, Record<string, any>>;
@@ -37,7 +40,7 @@ declare global {
     }
     interface FreshChatConfig {
         token: string | null;
-        locale: string;
+        locale?: string;
         hideButton?: boolean;
     }
 }

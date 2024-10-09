@@ -632,6 +632,7 @@ export default class UIStore extends BaseStore {
     }
 
     toggleLanguageSettingsModal() {
+        window.fcWidget?.close();
         this.is_language_settings_modal_on = !this.is_language_settings_modal_on;
     }
 

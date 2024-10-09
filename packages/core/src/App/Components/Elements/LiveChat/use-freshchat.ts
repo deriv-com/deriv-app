@@ -1,15 +1,10 @@
-import { useStore } from '@deriv/stores';
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
-const useFreshChat = () => {
+const useFreshChat = (token: string | null) => {
     const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
 
-    const { client } = useStore();
-    const { loginid, accounts } = client;
-    const active_account = accounts?.[loginid ?? ''];
-    const token = active_account ? active_account.token : null;
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined' && window.fcWidget) {
@@ -26,7 +21,6 @@ const useFreshChat = () => {
             if (scriptStatus === 'ready' && window.FreshChat && window.fcSettings) {
                 window.FreshChat.initialize({
                     token,
-                    locale: 'en',
                     hideButton: true,
                 });
 

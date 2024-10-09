@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import { STRATEGIES } from '../../config';
 
 export enum QsSteps {
@@ -7,117 +6,64 @@ export enum QsSteps {
     StrategyCompleted,
 }
 
-export type TStrategyValue = {
-    id: number;
-    label: string;
-    name: string;
+type TTradeTypesItemsIndex = {
+    [key: string]: number;
 };
 
-export type TTradeType = {
-    id: number;
+export const TRADE_TYPE_INDEX: TTradeTypesItemsIndex = Object.freeze({
+    // ALL: 0,
+    // ACCUMULATORS: 1,
+    OPTIONS: 0,
+    // MULTIPLIERS: 3,
+});
+
+// export const TRADE_TYPES = ['All', 'Accumulators', 'Options', 'Multipliers'];
+export const TRADE_TYPES = ['Options'];
+
+export type TTStrategyTradeAssociation = {
     name: string;
-    value: TStrategyValue[];
+    display_name: string;
+    id: number;
+    parent: Array<string>;
 };
 
-const TRADE_TYPE_KIT: Record<string, TTradeType> = {
-    // ACCUMULATOR: {
-    //     id: 0,
-    //     name: localize('Accumulator'),
-    //     value: [
-    //         {
-    //             id: 0,
-    //             label: STRATEGIES.MARTINGALE.label,
-    //             name: 'MARTINGALE'
-    //         },
-    //         {
-    //             id: 1,
-    //             label: STRATEGIES.D_ALEMBERT.label,
-    //             name: 'D_ALEMBERT'
-    //         },
-    //         {
-    //             id: 2,
-    //             label: STRATEGIES.REVERSE_MARTINGALE.label,
-    //             name: 'REVERSE_MARTINGALE'
-    //         },
-    //         {
-    //             id: 3,
-    //             label: STRATEGIES.REVERSE_D_ALEMBERT.label,
-    //             name: 'REVERSE_D_ALEMBERT'
-    //         }
-    //     ],
-    // },
-    OPTIONS: {
-        id: 1,
-        name: localize('Options'),
-        value: [
-            {
-                id: 0,
-                label: STRATEGIES.MARTINGALE.label,
-                name: 'MARTINGALE',
-            },
-            {
-                id: 1,
-                label: STRATEGIES.D_ALEMBERT.label,
-                name: 'D_ALEMBERT',
-            },
-            {
-                id: 2,
-                label: STRATEGIES.OSCARS_GRIND.label,
-                name: 'OSCARS_GRIND',
-            },
-            {
-                id: 3,
-                label: STRATEGIES.REVERSE_MARTINGALE.label,
-                name: 'REVERSE_MARTINGALE',
-            },
-            {
-                id: 4,
-                label: STRATEGIES.REVERSE_D_ALEMBERT.label,
-                name: 'REVERSE_D_ALEMBERT',
-            },
-            {
-                id: 5,
-                label: STRATEGIES.STRATEGY_1_3_2_6.label,
-                name: 'STRATEGY_1_3_2_6',
-            },
-        ],
+export type TStrategyTradeAssociations = Array<TTStrategyTradeAssociation>;
+
+export const STRATEGY_TRADE_ASSOCIATIONS: TStrategyTradeAssociations = [
+    {
+        name: 'MARTINGALE',
+        display_name: STRATEGIES.MARTINGALE.label,
+        id: 0,
+        parent: ['Options', 'Multipliers', 'Accumulators'],
     },
-    // MULTIPLIERS: {
-    //     id: 2,
-    //     name: localize('Multipliers'),
-    //     value: [
-    //         {
-    //             id: 0,
-    //             label: STRATEGIES.MARTINGALE.label,
-    //             name: 'MARTINGALE'
-    //         },
-    //         {
-    //             id: 1,
-    //             label: STRATEGIES.D_ALEMBERT.label,
-    //             name: 'D_ALEMBERT'
-    //         },
-    //         {
-    //             id: 2,
-    //             label: STRATEGIES.REVERSE_MARTINGALE.label,
-    //             name: 'REVERSE_MARTINGALE'
-    //         },
-    //         {
-    //             id: 3,
-    //             label: STRATEGIES.REVERSE_D_ALEMBERT.label,
-    //             name: 'REVERSE_D_ALEMBERT'
-    //         },
-    //         {
-    //             id: 4,
-    //             label: STRATEGIES.STRATEGY_1_3_2_6.label,
-    //             name: 'STRATEGY_1_3_2_6'
-    //         }
-    //     ],
-    // },
-};
-
-export const TRADE_TYPE_STRATEGY: Record<string, TTradeType | TTradeType[]> = {
-    // All: [TRADE_TYPE_KIT.ACCUMULATOR, TRADE_TYPE_KIT.MULTIPLIERS, TRADE_TYPE_KIT.OPTIONS],
-    // Accumulator: TRADE_TYPE_KIT.ACCUMULATOR,
-    Options: TRADE_TYPE_KIT.OPTIONS,
-    // Multipliers: TRADE_TYPE_KIT.MULTIPLIERS,
-};
+    {
+        name: 'D_ALEMBERT',
+        display_name: STRATEGIES.D_ALEMBERT.label,
+        id: 1,
+        parent: ['Options', 'Multipliers', 'Accumulators'],
+    },
+    {
+        name: 'REVERSE_MARTINGALE',
+        display_name: STRATEGIES.REVERSE_MARTINGALE.label,
+        id: 2,
+        parent: ['Options', 'Multipliers', 'Accumulators'],
+    },
+    {
+        name: 'REVERSE_D_ALEMBERT',
+        display_name: STRATEGIES.REVERSE_D_ALEMBERT.label,
+        id: 3,
+        parent: ['Options', 'Multipliers', 'Accumulators'],
+    },
+    {
+        name: 'OSCARS_GRIND',
+        display_name: STRATEGIES.OSCARS_GRIND.label,
+        id: 4,
+        parent: ['Options'],
+    },
+    {
+        name: 'STRATEGY_1_3_2_6',
+        display_name: STRATEGIES.STRATEGY_1_3_2_6.label,
+        id: 5,
+        parent: ['Options', 'Multipliers'],
+    },
+];

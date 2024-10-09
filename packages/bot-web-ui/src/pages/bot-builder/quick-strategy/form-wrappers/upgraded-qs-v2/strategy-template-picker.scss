@@ -119,3 +119,12 @@
         }
     }
 }
+
+.quick-strategy {
+    &__wrapper .dc-page-overlay {
+        &__header-title {
+            text-align: left;
+            margin-left: 1.6rem;
+        }
+    }
+}

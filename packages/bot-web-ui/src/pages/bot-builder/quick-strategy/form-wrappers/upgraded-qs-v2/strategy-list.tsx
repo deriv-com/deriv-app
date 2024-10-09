@@ -1,136 +1,115 @@
 import React from 'react';
-import { Link } from '@deriv-com/quill-ui';
 import { Text } from '@deriv/components';
-import { TStrategyValue, TTradeType } from './trade-constants';
 import { localize } from '@deriv/translations';
+import { Link } from '@deriv-com/quill-ui';
+import {
+    STRATEGY_TRADE_ASSOCIATIONS,
+    TRADE_TYPE_INDEX,
+    TRADE_TYPES,
+    TStrategyTradeAssociations,
+} from './trade-constants';
 
 type TStrategyListProps = {
-    option: number;
-    trade_types: string[];
-    trade_types_values: (TTradeType | TTradeType[])[];
+    selector_chip_value: number;
     search_value: string;
     is_searching: boolean;
     onSelectStrategy: (strategy: string, trade_type: string) => void;
 };
+type TStrategyBlock = {
+    title: string;
+    items: TStrategyTradeAssociations;
+    onSelectStrategy: (strategy: string, trade_type: string) => void;
+};
+type TStrategyTypes = { type: string; items: TStrategyTradeAssociations }[];
 
-const StrategyList = ({
-    option,
-    trade_types,
-    trade_types_values,
-    search_value,
-    is_searching,
-    onSelectStrategy,
-}: TStrategyListProps) => {
-    const [is_result_found, setIsResultFound] = React.useState(true);
-    const filterVisibleContent = (strategy: string) => {
-        const is_strategy_match_value = strategy.toLowerCase().includes(search_value.toLowerCase());
-        return (is_searching && is_strategy_match_value) || !is_searching;
+const StrategyBlock = ({ title, items, onSelectStrategy }: TStrategyBlock) => {
+    return items.length > 0 ? (
+        <div className='strategy-template-picker__strategy'>
+            <div className='strategy-template-picker__title'>
+                <Text size='xs' weight='bold'>
+                    {title}
+                </Text>
+            </div>
+            {items.map((item, index) => (
+                <div className='strategy-template-picker__links' key={index}>
+                    <Link
+                        color='var(--text-prominent)'
+                        hasChevron
+                        size='sm'
+                        onClick={() => onSelectStrategy(item.name, title)}
+                    >
+                        {item.display_name}
+                    </Link>
+                </div>
+            ))}
+        </div>
+    ) : null;
+};
+
+const StrategyList = ({ selector_chip_value, search_value, is_searching, onSelectStrategy }: TStrategyListProps) => {
+    const result: TStrategyTradeAssociations = [];
+    let is_parent_match_value = false;
+
+    const filterVisibleParents = (parent: string) => {
+        is_parent_match_value = parent.toLowerCase().includes(search_value.toLowerCase());
+        return (is_searching && is_parent_match_value) || !is_searching;
     };
-    const is_trade_type_visible = filterVisibleContent(trade_types[option]);
-    const trade_type_value = (trade_types_values[option] as TTradeType).value;
-    const is_content_visible =
-        is_trade_type_visible || trade_type_value?.some(strategy => filterVisibleContent(strategy.label));
-    const shouldShowStrategies = (trade_types: string, strategy: string) =>
-        !filterVisibleContent(trade_types) ? filterVisibleContent(strategy) : true;
 
-    React.useEffect(() => {
-        const has_visible_strategies = trade_types.some(trade_type => {
-            const strategies = Array.isArray(trade_types_values[0])
-                ? trade_types_values[0]?.find(strategy => strategy.name === trade_type)?.value
-                : trade_types_values?.find(strategy => strategy.name === trade_type)?.value;
-            return (
-                filterVisibleContent(trade_type) ||
-                strategies?.some((value: TStrategyValue) => filterVisibleContent(value.label))
-            );
-        });
-
-        setIsResultFound(has_visible_strategies);
-    }, [search_value, trade_types, trade_types_values, is_searching]);
-
-    const allChipStategyTemplate = React.useCallback(
-        () =>
-            trade_types.map((trade_type, index) => {
-                const has_visible_strategies =
-                    filterVisibleContent(trade_type) ||
-                    (Array.isArray(trade_types_values[0]) &&
-                        trade_types_values[0]?.some(
-                            (strategy: TTradeType) =>
-                                strategy.name === trade_type &&
-                                strategy.value.some(value => filterVisibleContent(value.label))
-                        ));
-
-                const strategies =
-                    (Array.isArray(trade_types_values[0]) &&
-                        trade_types_values[0]?.find(strategy => strategy.name === trade_type)?.value) ||
-                    trade_types_values?.find(strategy => strategy.name === trade_type)?.value ||
-                    [];
-                return (
-                    trade_type !== 'All' && (
-                        <div key={index} className='strategy-template-picker__strategy'>
-                            {has_visible_strategies && (
-                                <div className='strategy-template-picker__title'>
-                                    <Text size='xs' weight='bold'>
-                                        {trade_type}
-                                    </Text>
-                                </div>
-                            )}
-                            {strategies.map(
-                                (strategy: TStrategyValue, idx: number) =>
-                                    shouldShowStrategies(trade_type, strategy.label) && (
-                                        <div className='strategy-template-picker__links' key={idx}>
-                                            <Link
-                                                color={'var(--text-prominent)'}
-                                                hasChevron
-                                                size='sm'
-                                                onClick={() => onSelectStrategy(strategy.name, trade_type)}
-                                            >
-                                                {strategy.label}
-                                            </Link>
-                                        </div>
-                                    )
-                            )}
-                        </div>
-                    )
-                );
-            }),
-        [trade_types]
+    const is_display_name_match = STRATEGY_TRADE_ASSOCIATIONS.some(item =>
+        item.display_name.toLowerCase().includes(search_value.toLowerCase())
     );
 
-    return (
+    STRATEGY_TRADE_ASSOCIATIONS.filter(
+        item =>
+            item.parent.some(parent => filterVisibleParents(parent)) ||
+            item.display_name.toLowerCase().includes(search_value.toLowerCase())
+    ).forEach(item => {
+        const tmp_item = { ...item };
+        if (is_searching && search_value !== '') {
+            if (is_display_name_match) {
+                tmp_item.parent = [...item.parent];
+            } else {
+                const matched_parents = tmp_item.parent.filter(parent =>
+                    TRADE_TYPES.some(
+                        type =>
+                            parent.toLowerCase().includes(type.toLowerCase()) &&
+                            type.toLowerCase().includes(search_value.toLowerCase())
+                    )
+                );
+                tmp_item.parent = matched_parents.length > 0 ? matched_parents : item.parent;
+            }
+        } else {
+            tmp_item.parent = [...item.parent];
+        }
+        result.push(tmp_item);
+    });
+
+    const options = result.filter(item => item.parent.includes(TRADE_TYPES[TRADE_TYPE_INDEX.OPTIONS]));
+    const multiplier = result.filter(item => item.parent.includes(TRADE_TYPES[TRADE_TYPE_INDEX.MULTIPLIERS]));
+    const accumulator = result.filter(item => item.parent.includes(TRADE_TYPES[TRADE_TYPE_INDEX.ACCUMULATORS]));
+
+    const selected_chip_value = TRADE_TYPES[selector_chip_value];
+
+    const strategy_types: TStrategyTypes = [
+        { type: 'Options', items: options },
+        { type: 'Multipliers', items: multiplier },
+        { type: 'Accumulators', items: accumulator },
+    ];
+
+    const should_render = (type: string) => selected_chip_value === 'All' || selected_chip_value === type;
+
+    const filtered_strategies = strategy_types.filter(({ type }) => should_render(type));
+    const has_visible_strategies = filtered_strategies.some(({ items }) => items.length > 0);
+
+    return result.length > 0 && has_visible_strategies ? (
         <div className='strategy-template-picker__strategies'>
-            {!is_result_found && (
-                <div className='no-results'>
-                    <Text size='xs'>{localize('No results found')}</Text>
-                </div>
-            )}
-            {option === 0 ? (
-                allChipStategyTemplate()
-            ) : (
-                <div className='strategy-template-picker__strategy'>
-                    {is_content_visible && (
-                        <div className='strategy-template-picker__title'>
-                            <Text size='xs' weight='bold'>
-                                {trade_types[option]}
-                            </Text>
-                        </div>
-                    )}
-                    {trade_type_value.map(
-                        (strategy: TStrategyValue, index: number) =>
-                            shouldShowStrategies(trade_types[option], strategy.label) && (
-                                <div className='strategy-template-picker__links' key={index}>
-                                    <Link
-                                        color={'var(--text-prominent)'}
-                                        hasChevron
-                                        size='sm'
-                                        onClick={() => onSelectStrategy(strategy.name, trade_types[option])}
-                                    >
-                                        {strategy.label}
-                                    </Link>
-                                </div>
-                            )
-                    )}
-                </div>
-            )}
+            {filtered_strategies.map(({ type, items }) => (
+                <StrategyBlock key={type} title={type} items={items} onSelectStrategy={onSelectStrategy} />
+            ))}
+        </div>
+    ) : (
+        <div className='no-results'>
+            <Text size='xs'>{localize('No results found')}</Text>
         </div>
     );
 };

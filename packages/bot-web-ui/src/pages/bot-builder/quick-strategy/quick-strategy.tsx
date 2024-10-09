@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
 import { config as qs_config } from '@deriv/bot-skeleton';
-import { MobileFullPageModal, Modal } from '@deriv/components';
+import { MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
@@ -252,13 +252,17 @@ const QuickStrategy = observer(() => {
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
                         header={
-                            is_next_qs_enabled
-                                ? localize(
-                                      `Step ${
-                                          current_step === QsSteps.StrategyCompleted ? 2 : 1
-                                      }/2: Choose your strategy`
-                                  )
-                                : localize('Quick Strategy')
+                            is_next_qs_enabled ? (
+                                <Text size='xs' weight='bold'>
+                                    {localize(
+                                        `Step ${
+                                            current_step === QsSteps.StrategyCompleted ? 2 : 1
+                                        }/2: Choose your strategy`
+                                    )}
+                                </Text>
+                            ) : (
+                                localize('Quick Strategy')
+                            )
                         }
                         onClickClose={handleClose}
                         height_offset='8rem'

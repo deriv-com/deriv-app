@@ -10,41 +10,32 @@ const useFreshChat = () => {
     const { loginid, accounts } = client;
     const active_account = accounts?.[loginid ?? ''];
     const token = active_account ? active_account.token : null;
-
     useEffect(() => {
-        const initFreshChat = async () => {
-            if (scriptStatus === 'ready') {
-                if (window.FreshChat && window.fcSettings) {
-                    window.FreshChat.initialize({
-                        token,
-                        locale: 'en',
-                        hideButton: true,
-                    });
-                }
+        const checkFcWidget = (intervalId: NodeJS.Timeout) => {
+            if (typeof window !== 'undefined' && window.fcWidget) {
+                // eslint-disable-next-line no-console
+                console.log('fc widget loaded');
+                setIsReady(true);
+                clearInterval(intervalId);
             }
         };
+
+        const initFreshChat = async () => {
+            if (scriptStatus === 'ready' && window.FreshChat && window.fcSettings) {
+                window.FreshChat.initialize({
+                    token,
+                    locale: 'en',
+                    hideButton: true,
+                });
+
+                const intervalId = setInterval(() => checkFcWidget(intervalId), 500);
+
+                return () => clearInterval(intervalId); // Cleanup interval on unmount or script change
+            }
+        };
+
         initFreshChat();
     }, [scriptStatus, token]);
-
-    useEffect(() => {
-        const checkFcWidget = () => {
-            if (typeof window !== 'undefined' && window.fcWidget) {
-                window.fcWidget.on('widget:loaded', () => {
-                    // eslint-disable-next-line no-console
-                    console.log('fc widget loaded');
-                    setIsReady(true);
-                });
-            } else {
-                setIsReady(false);
-            }
-        };
-
-        checkFcWidget();
-
-        const intervalId = setInterval(checkFcWidget, 1000);
-
-        return () => clearInterval(intervalId);
-    }, []);
 
     return {
         isReady,

@@ -185,12 +185,19 @@ export const MT5_ACCOUNT_STATUS = {
     FAILED: 'failed',
     MIGRATED_WITH_POSITION: 'migrated_with_position',
     MIGRATED_WITHOUT_POSITION: 'migrated_without_position',
-    NEEDS_VERIFICATION: 'needs_verification',
     PENDING: 'pending',
-    POA_PENDING: 'poa_pending',
-    POA_VERIFIED: 'poa_verified',
     UNAVAILABLE: 'unavailable',
     UNDER_MAINTENANCE: 'under_maintenance',
+    // TODO: remove all the statuses below once the KYC statuses are consolidated by BE
+    POA_FAILED: 'poa_failed',
+    POA_OUTDATED: 'poa_outdated',
+    PROOF_FAILED: 'proof_failed',
+
+    NEEDS_VERIFICATION: 'needs_verification',
+    POA_PENDING: 'poa_pending',
+    VERIFICATION_PENDING: 'verification_pending',
+
+    POA_VERIFIED: 'poa_verified',
 } as const;
 
 /**

@@ -21,7 +21,11 @@ const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }
         <ModalStepWrapper title={account.is_added ? localize('Verify account') : localize('Create account')}>
             <div className='wallets-client-verification-modal'>
                 <DerivLightUploadPoiIcon height={128} width={128} />
-                <Text align='center' size={isMobile ? 'md' : 'sm'}>
+                <Text
+                    align='center'
+                    className='wallets-client-verification-modal__description'
+                    size={isMobile ? 'md' : 'sm'}
+                >
                     {account.is_added ? (
                         <Localize i18n_default_text='Your account needs verification.' />
                     ) : (

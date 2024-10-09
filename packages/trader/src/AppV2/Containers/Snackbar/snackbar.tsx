@@ -11,7 +11,6 @@ const Snackbar = observer(() => {
     } = useStore();
     const { addSnackbar } = useSnackbar();
     const { pathname } = useLocation();
-    const timer_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     const { code, message, type } = services_error || {};
     const has_services_error = !isEmptyObject(services_error);
@@ -41,11 +40,10 @@ const Snackbar = observer(() => {
                 status: 'fail',
                 standalone: true,
                 hasCloseButton: true,
-                onCloseAction: resetServicesError,
+                hasFixedHeight: false,
+                onSnackbarRemove: resetServicesError,
                 style: { marginBottom: '48px', width: 'calc(100% - var(--core-spacing-800)' },
             });
-
-            timer_ref.current = setTimeout(() => resetServicesError(), 4000);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_error_snackbar]);

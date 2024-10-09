@@ -51,7 +51,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         isLoading: tradingPlatformPasswordChangeLoading,
         mutateAsync: tradingPasswordChangeMutateAsync,
     } = useTradingPlatformPasswordChange();
-    const { data: accountStatusData, isLoading: isAccountStatusDataLoading } = useAccountStatus();
+    const { data: accountStatusData, isLoading: accountStatusLoading } = useAccountStatus();
     const { data: availableMT5AccountsData } = useAvailableMT5Accounts();
     const {
         error: emailVerificationError,
@@ -76,6 +76,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const hasMT5Account = mt5AccountsData?.find(account => account.login);
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
     const selectedJurisdiction = isVirtual ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
+
+    const isLoading = accountStatusLoading || createMT5AccountLoading || tradingPlatformPasswordChangeLoading;
 
     const updateMT5Password =
         createMT5AccountStatus === 'error' &&
@@ -247,6 +249,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     ]);
 
     const PasswordComponent = useMemo(() => {
+        if (isLoading) return <Loader />;
+
         if (isMT5PasswordNotSet && platform !== CFD_PLATFORMS.MT5)
             return (
                 <CreatePassword
@@ -323,9 +327,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         localize,
         createMT5AccountError?.error?.code,
         sendEmailVerification,
+        setIsTncChecked,
+        isLoading,
     ]);
 
-    if (isAccountStatusDataLoading) {
+    if (accountStatusLoading) {
         return <Loader />;
     }
 
@@ -379,7 +385,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     }
 
     if (isDesktop) {
-        return <ModalWrapper hideCloseButton={createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
+        return <ModalWrapper hideCloseButton={isLoading || createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
     }
 
     return (

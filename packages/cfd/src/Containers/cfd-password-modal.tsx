@@ -639,12 +639,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === CATEGORY.REAL) {
-            if (is_eu_user) {
-                toggleAccountTransferModal();
-            } else {
-                sessionStorage.setItem('cfd_transfer_to_login_id', new_account_response.login || '');
-                history.push(routes.cashier_acc_transfer);
-            }
+            toggleAccountTransferModal();
         }
     };
 

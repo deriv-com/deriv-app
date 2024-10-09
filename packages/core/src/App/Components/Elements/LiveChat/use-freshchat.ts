@@ -13,10 +13,12 @@ const useFreshChat = () => {
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined' && window.fcWidget) {
-                // eslint-disable-next-line no-console
-                console.log('fc widget loaded');
-                setIsReady(true);
-                clearInterval(intervalId);
+                window.fcWidget.on('widget:loaded', () => {
+                    // eslint-disable-next-line no-console
+                    console.log('fc widget loaded');
+                    setIsReady(true);
+                    clearInterval(intervalId);
+                });
             }
         };
 

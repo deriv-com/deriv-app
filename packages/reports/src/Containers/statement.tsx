@@ -252,6 +252,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 className='reports__meta--statement'
                 filter_component={<FilterComponent />}
                 is_statement
+                // key param is needed to force rerendering of the ReportsMeta component on language change
                 key={current_language}
             />
             {is_switching ? (

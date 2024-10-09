@@ -132,7 +132,7 @@ const DayInput = ({
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
     is_24_hours_contract =
-        (!!start_date || toMoment(expiry_date || end_date).isSame(toMoment(server_time), 'day')) &&
+        (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
         has_intraday_duration_unit;
 
     const handleDate = (date: Date) => {
@@ -226,6 +226,9 @@ const DayInput = ({
                                 setOpenTimePicker(false);
                                 if (formatted_date !== formatted_current_date) {
                                     setEndTime('');
+                                }
+                                if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
+                                    setEndTime(adjusted_start_time);
                                 }
                             },
                         }}

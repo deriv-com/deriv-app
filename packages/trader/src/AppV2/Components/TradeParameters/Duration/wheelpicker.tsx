@@ -5,6 +5,7 @@ import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { Localize } from '@deriv/translations';
 
 const DurationWheelPicker = observer(
     ({
@@ -12,15 +13,11 @@ const DurationWheelPicker = observer(
         setWheelPickerValue,
         selected_hour,
         selected_time,
-        is24_hour_selected,
-        setIs24HourSelected,
     }: {
         unit: string;
         setWheelPickerValue: (index: number, value: string | number) => void;
         selected_hour: number[];
         selected_time: number[];
-        is24_hour_selected: boolean;
-        setIs24HourSelected: (arg: boolean) => void;
     }) => {
         const { duration_min_max, duration_units_list } = useTraderStore();
         const options = React.useMemo(() => getOptionPerUnit(unit, duration_min_max), [unit, duration_min_max]);
@@ -31,7 +28,6 @@ const DurationWheelPicker = observer(
             }
             return duration_units_list.length === 1 ? '230px' : '268px';
         };
-
         return (
             <div
                 className={clsx('duration-container__wheel-picker-container', {
@@ -40,20 +36,23 @@ const DurationWheelPicker = observer(
                 })}
             >
                 <WheelPickerContainer
-                    data={!is24_hour_selected ? options : [options[0], [{ ...options[1][0] }]]}
+                    data={
+                        selected_hour.length > 0 && selected_hour[0] == 24
+                            ? [
+                                  options[0],
+                                  [
+                                      {
+                                          value: 0,
+                                          label: <Localize i18n_default_text='0 min' />,
+                                      },
+                                  ],
+                              ]
+                            : options
+                    }
                     defaultValue={[String(selected_time)]}
                     containerHeight={handleContainerHeight()}
                     inputValues={unit == 'h' ? selected_hour : selected_time}
                     setInputValues={(index, val) => {
-                        if (unit == 'h') {
-                            if (index == 0 && val === 24) {
-                                setIs24HourSelected(true);
-                            } else if (index == 0 && val !== 24) {
-                                setIs24HourSelected(false);
-                            }
-                        } else {
-                            setIs24HourSelected(false);
-                        }
                         setWheelPickerValue(index, val);
                     }}
                 />

@@ -33,7 +33,6 @@ const DurationActionSheetContainer = observer(
     }) => {
         const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
-        const [is24_hour_selected, setIs24HourSelected] = useState(false);
         const [temp_expiry_time, setTempExpiryTime] = React.useState(expiry_time_string);
 
         const onAction = () => {
@@ -85,7 +84,6 @@ const DurationActionSheetContainer = observer(
                 setUnit(value);
                 setSelectedTime([]);
                 if (value !== 'h') {
-                    setIs24HourSelected(false);
                     setSelectedHour([]);
                 }
             },
@@ -113,8 +111,6 @@ const DurationActionSheetContainer = observer(
                         setWheelPickerValue={setWheelPickerValue}
                         selected_hour={selected_hour}
                         selected_time={selected_time}
-                        is24_hour_selected={is24_hour_selected}
-                        setIs24HourSelected={setIs24HourSelected}
                     />
                 )}
 

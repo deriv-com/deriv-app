@@ -1,5 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv/shared';
+import {
+    CONTRACT_TYPES,
+    TContractInfo,
+    getCardLabelsV2,
+    mockContractInfo,
+    getStartTime,
+    hasForwardContractStarted,
+    isForwardStarting,
+} from '@deriv/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -15,13 +23,15 @@ jest.mock('@deriv/shared', () => ({
     isResetContract: jest.fn(),
     addComma: jest.fn(),
     ...jest.requireActual('@deriv/shared'),
+    isForwardStarting: jest.fn(),
+    getStartTime: jest.fn(),
+    hasForwardContractStarted: jest.fn(),
 }));
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
     getBarrierValue: jest.fn(),
 }));
 
-const mocked_date = 1727251488;
 const mockData: TContractInfo = mockContractInfo({
     transaction_ids: { buy: 12345, sell: 67890 },
     buy_price: 100,
@@ -78,22 +88,10 @@ describe('useOrderDetails', () => {
     });
 
     it('should return correct barriers details for Forward starting contract', () => {
-        const { result } = renderHook(() =>
-            useOrderDetails(
-                mockContractInfo({
-                    contract_type: 'CALL',
-                    date_expiry: mocked_date + 3000,
-                    date_settlement: mocked_date + 3000,
-                    date_start: mocked_date + 2000,
-                    expiry_time: mocked_date + 3000,
-                    is_forward_starting: 1,
-                    is_sold: 0,
-                    purchase_time: 1727096132,
-                    shortcode: `CALL_1HZ10V_19.54_${mocked_date + 2000}F_${mocked_date + 3000}_S0P_0`,
-                    status: 'open',
-                })
-            )
-        );
+        (isForwardStarting as jest.Mock).mockReturnValue(true);
+        (hasForwardContractStarted as jest.Mock).mockReturnValue(false);
+        (getStartTime as jest.Mock).mockReturnValue(124525522);
+        const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details[CARD_LABELS.BARRIER]).toEqual('TBD');
     });
 

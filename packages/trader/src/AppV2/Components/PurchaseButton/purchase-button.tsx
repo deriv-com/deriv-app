@@ -20,13 +20,13 @@ import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
 import { CSSTransition } from 'react-transition-group';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { usePrevious } from '@deriv/components';
+import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
     const {
-        contract_replay: { is_market_closed },
         portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
         common: { services_error },
@@ -96,17 +96,7 @@ const PurchaseButton = observer(() => {
     const current_stake =
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const cardLabels = getCardLabelsV2();
-
-    const { code, type } = services_error || {};
-    const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
-    const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
-    const is_account_verification_required = code === 'PleaseAuthenticate';
-    // Error modal is shown only for next four types. For the rest - snackbar.
-    const is_modal_error =
-        is_insufficient_balance ||
-        is_authorization_required ||
-        is_account_verification_required ||
-        is_mf_verification_pending_modal_visible;
+    const is_modal_error = checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
     const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
 
     const getButtonType = (index: number, trade_type: string) => {

@@ -8,12 +8,10 @@ import TraderProviders from '../../../../trader-providers';
 import * as fileUtils from '@deriv/shared';
 import ServiceErrorSheet from '../service-error-sheet';
 
-const mockHistoryPush = jest.fn();
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
-        push: mockHistoryPush,
+        push: jest.fn(),
     }),
 }));
 jest.mock('@deriv/shared', () => ({
@@ -110,8 +108,7 @@ describe('ServiceErrorSheet', () => {
     });
 
     it('should not render Action Sheet if there is no services_error', () => {
-        default_mock_store.common.services_error =
-            undefined as unknown as typeof default_mock_store.common.services_error;
+        default_mock_store.common.services_error = {};
         const { container } = render(mockTrade());
 
         expect(container).toBeEmptyDOMElement();

@@ -7,6 +7,7 @@ import { isEmptyObject, redirectToLogin, routes } from '@deriv/shared';
 import { useHistory } from 'react-router';
 import { useSignupTrigger } from 'AppV2/Hooks/useSignupTrigger';
 import ServiceErrorDescription from './service-error-description';
+import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
 
 const ServiceErrorSheet = observer(() => {
     const [is_open, setIsOpen] = useState(false);
@@ -22,13 +23,9 @@ const ServiceErrorSheet = observer(() => {
     const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
     const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
     const is_account_verification_required = code === 'PleaseAuthenticate';
-    // Error modal is shown only for next four types. For the rest - snackbar.
     const should_show_error_modal =
         !isEmptyObject(services_error) &&
-        (is_insufficient_balance ||
-            is_authorization_required ||
-            is_account_verification_required ||
-            is_mf_verification_pending_modal_visible);
+        checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
 
     const onClose = () => {
         setIsOpen(false);
@@ -98,7 +95,7 @@ const ServiceErrorSheet = observer(() => {
     };
 
     useEffect(() => {
-        setIsOpen(should_show_error_modal);
+        setIsOpen(!!should_show_error_modal);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_error_modal]);
 

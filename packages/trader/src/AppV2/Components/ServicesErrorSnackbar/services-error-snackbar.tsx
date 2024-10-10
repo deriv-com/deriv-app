@@ -5,6 +5,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { useSnackbar, SnackbarController } from '@deriv-com/quill-ui';
 import { isEmptyObject, isValidToCancel, routes } from '@deriv/shared';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
+import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
 
 const ServicesErrorSnackbar = observer(() => {
     const {
@@ -17,26 +18,18 @@ const ServicesErrorSnackbar = observer(() => {
     const { addSnackbar } = useSnackbar();
     const { pathname } = useLocation();
 
-    const { code, message, type } = services_error || {};
+    const { message } = services_error || {};
     const has_services_error = !isEmptyObject(services_error);
-    const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
-    const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
-    const is_account_verification_required = code === 'PleaseAuthenticate';
-    // Error modal is shown only for next four types. For the rest - snackbar.
-    const is_modal_error =
-        is_insufficient_balance ||
-        is_authorization_required ||
-        is_account_verification_required ||
-        is_mf_verification_pending_modal_visible;
+    const is_modal_error = checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
 
-    const getShouldShowErrorSnackBar = () => {
+    const checkShouldShowErrorSnackBar = () => {
         if (!has_services_error) return false;
         if (pathname === routes.trade) return has_services_error && !is_modal_error;
         if (pathname === routes.trader_positions || location.pathname.startsWith('/contract/'))
             return has_services_error;
         return false;
     };
-    const should_show_error_snackbar = getShouldShowErrorSnackBar();
+    const should_show_error_snackbar = checkShouldShowErrorSnackBar();
     const bottom_position =
         location.pathname.startsWith('/contract/') && is_multiplier && isValidToCancel(contract_info)
             ? '104px'

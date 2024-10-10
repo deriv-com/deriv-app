@@ -1,14 +1,18 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { useSnackbar, SnackbarController } from '@deriv-com/quill-ui';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { isEmptyObject, isValidToCancel, routes } from '@deriv/shared';
+import useContractDetails from 'AppV2/Hooks/useContractDetails';
 
 const Snackbar = observer(() => {
     const {
         common: { services_error, resetServicesError },
         ui: { is_mf_verification_pending_modal_visible },
     } = useStore();
+    const { is_multiplier } = useTraderStore();
+    const { contract_info } = useContractDetails();
     const { addSnackbar } = useSnackbar();
     const { pathname } = useLocation();
 
@@ -32,7 +36,10 @@ const Snackbar = observer(() => {
         return false;
     };
     const should_show_error_snackbar = getShouldShowErrorSnackBar();
-
+    const bottom_position =
+        location.pathname.startsWith('/contract/') && is_multiplier && isValidToCancel(contract_info)
+            ? '104px'
+            : '48px';
     React.useEffect(() => {
         if (should_show_error_snackbar) {
             addSnackbar({
@@ -42,7 +49,7 @@ const Snackbar = observer(() => {
                 hasCloseButton: true,
                 hasFixedHeight: false,
                 onSnackbarRemove: resetServicesError,
-                style: { marginBottom: '48px', width: 'calc(100% - var(--core-spacing-800)' },
+                style: { marginBottom: bottom_position, width: 'calc(100% - var(--core-spacing-800)' },
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

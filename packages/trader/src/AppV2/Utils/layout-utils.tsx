@@ -68,6 +68,6 @@ export const checkIsServiceModalError = ({
         is_insufficient_balance ||
         is_authorization_required ||
         is_account_verification_required ||
-        is_mf_verification_pending_modal_visible
+        !!is_mf_verification_pending_modal_visible
     );
 };

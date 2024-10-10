@@ -95,7 +95,7 @@ const ServiceErrorSheet = observer(() => {
     };
 
     useEffect(() => {
-        setIsOpen(!!should_show_error_modal);
+        setIsOpen(should_show_error_modal);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_show_error_modal]);
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useNotifications } from '@deriv-com/quill-ui';
@@ -164,27 +163,6 @@ const PurchaseButton = observer(() => {
                         const is_disabled =
                             !is_trade_enabled_v2 || info.has_error || (!!purchase_info.error && !is_modal_error);
 
-                        const getErrorMessage = () => {
-                            if (['amount', 'stake'].includes(info.error_field ?? '')) {
-                                return <Localize i18n_default_text='Invalid stake' />;
-                            }
-
-                            /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
-                            E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
-                            const float_number_search_regex = /\d+(\.\d+)?/g;
-                            const is_max_payout_exceeded =
-                                info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
-
-                            if (is_max_payout_exceeded) {
-                                return <Localize i18n_default_text='Exceeds max payout' />;
-                            }
-
-                            const api_error = info.has_error && !is_market_closed && !!info.message ? info.message : '';
-                            return api_error;
-                        };
-
-                        const error_message = getErrorMessage();
-
                         return (
                             <React.Fragment key={trade_type}>
                                 <Button
@@ -211,7 +189,6 @@ const PurchaseButton = observer(() => {
                                     {!is_loading && (
                                         <PurchaseButtonContent
                                             {...purchase_button_content_props}
-                                            error={error_message}
                                             has_no_button_content={has_no_button_content}
                                             info={info}
                                             is_reverse={!!index}

@@ -9,7 +9,7 @@ import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
-import Snackbar from './Containers/Snackbar';
+import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 
 type Apptypes = {
     passthrough: {
@@ -33,7 +33,7 @@ const App = ({ passthrough }: Apptypes) => {
                         <SnackbarProvider>
                             <Notifications />
                             <Router />
-                            <Snackbar />
+                            <ServicesErrorSnackbar />
                         </SnackbarProvider>
                     </NotificationsProvider>
                 </ModulesProvider>

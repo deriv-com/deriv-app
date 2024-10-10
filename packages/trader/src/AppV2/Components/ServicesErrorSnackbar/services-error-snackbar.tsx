@@ -6,10 +6,11 @@ import { useSnackbar, SnackbarController } from '@deriv-com/quill-ui';
 import { isEmptyObject, isValidToCancel, routes } from '@deriv/shared';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 
-const Snackbar = observer(() => {
+const ServicesErrorSnackbar = observer(() => {
     const {
         common: { services_error, resetServicesError },
         ui: { is_mf_verification_pending_modal_visible },
+        client: { is_logged_in },
     } = useStore();
     const { is_multiplier } = useTraderStore();
     const { contract_info } = useContractDetails();
@@ -40,16 +41,19 @@ const Snackbar = observer(() => {
         location.pathname.startsWith('/contract/') && is_multiplier && isValidToCancel(contract_info)
             ? '104px'
             : '48px';
+
     React.useEffect(() => {
         if (should_show_error_snackbar) {
             addSnackbar({
                 message,
                 status: 'fail',
-                standalone: true,
                 hasCloseButton: true,
                 hasFixedHeight: false,
                 onSnackbarRemove: resetServicesError,
-                style: { marginBottom: bottom_position, width: 'calc(100% - var(--core-spacing-800)' },
+                style: {
+                    marginBottom: is_logged_in ? bottom_position : '-8px',
+                    width: 'calc(100% - var(--core-spacing-800)',
+                },
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,4 +62,4 @@ const Snackbar = observer(() => {
     return <SnackbarController />;
 });
 
-export default Snackbar;
+export default ServicesErrorSnackbar;

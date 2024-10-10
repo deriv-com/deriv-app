@@ -14,6 +14,15 @@
                 gap: 0.8rem;
                 margin-top: 2.4rem;
             }
+            &__phone-number-container {
+                display: flex;
+
+                &__phone-number {
+                    @include rtl {
+                        direction: ltr;
+                    }
+                }
+            }
         }
     }
 

@@ -322,6 +322,121 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
+    it('handles lifetime limit for fiat transfers when source amount greater than available sum', () => {
+        const resultCryptoToFiat = lifetimeAccountLimitsBetweenWalletsMessageFn({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            activeWallet: { currency: 'BTC' },
+            activeWalletExchangeRates: { rates: { BTC: 1, USD: 60000 } },
+            displayMoney: mockDisplayMoney,
+            limits: {
+                lifetime_transfers: {
+                    crypto_to_fiat: {
+                        allowed: 10,
+                        available: 5,
+                    },
+                },
+            },
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            sourceAccount: cryptoAccount,
+            sourceAmount: 15,
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            targetAccount: fiatAccount,
+        });
+        expect(resultCryptoToFiat).toEqual({
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
+            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit is up to {{formattedSourceCurrencyRemainder}} ({{formattedConvertedSourceCurrencyRemainder}}). Verify your account to upgrade the limit.'
+                    values={{
+                        formattedConvertedSourceCurrencyRemainder: '300000.00 USD',
+                        formattedSourceCurrencyRemainder: '5.00000000 BTC',
+                    }}
+                />
+            ),
+            type: 'error',
+        });
+
+        const resultFiatToCrypto = lifetimeAccountLimitsBetweenWalletsMessageFn({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            activeWallet: { currency: 'USD' },
+            activeWalletExchangeRates: { rates: { BTC: 0.00002, USD: 1 } },
+            displayMoney: mockDisplayMoney,
+            limits: {
+                lifetime_transfers: {
+                    fiat_to_crypto: {
+                        allowed: 10000,
+                        available: 5000,
+                    },
+                },
+            },
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            sourceAccount: fiatAccount,
+            sourceAmount: 7000,
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            targetAccount: cryptoAccount,
+        });
+        expect(resultFiatToCrypto).toEqual({
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
+            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit is up to {{formattedSourceCurrencyRemainder}} ({{formattedConvertedSourceCurrencyRemainder}}). Verify your account to upgrade the limit.'
+                    values={{
+                        formattedConvertedSourceCurrencyRemainder: '0.10000000 BTC',
+                        formattedSourceCurrencyRemainder: '5000.00 USD',
+                    }}
+                />
+            ),
+            type: 'error',
+        });
+    });
+
+    it('handles lifetime limit for crypto to crypto transfers when source amount greater than available sum', () => {
+        const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            activeWallet: { currency: 'BTC' },
+            activeWalletExchangeRates: { rates: { BTC: 1, USD: 60000 } },
+            displayMoney: mockDisplayMoney,
+            limits: {
+                lifetime_transfers: {
+                    crypto_to_crypto: {
+                        allowed: 10,
+                        available: 5,
+                    },
+                },
+            },
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            sourceAccount: cryptoAccount,
+            sourceAmount: 15,
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            targetAccount: cryptoAccount,
+        });
+        expect(result).toEqual({
+            action: {
+                buttonLabel: <Localize i18n_default_text='Verify' />,
+                navigateTo: '/account/proof-of-identity',
+                shouldOpenInNewTab: true,
+            },
+            message: (
+                <Localize
+                    i18n_default_text='The lifetime transfer limit is up to {{formattedSourceCurrencyRemainder}} ({{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
+                    values={{
+                        formattedSourceCurrencyRemainder: '5.00000000 BTC',
+                        formattedSourceCurrencyRemainderInUSD: '300000.00 USD',
+                    }}
+                />
+            ),
+            type: 'error',
+        });
+    });
+
     it('returns null if sourceAccount currency does not match activeWallet currency and no exchange rate', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook

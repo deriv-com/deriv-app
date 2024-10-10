@@ -135,7 +135,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
     const max_delay = 15;
     const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
 
-    const { error = {}, msg_type = '' } = error_obj;
+    const { error = {}, msg_type = '', echo_req = {} } = error_obj;
     const { code = '', message = '' } = error;
     let message_to_print = '';
 
@@ -147,7 +147,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                     {
                         message_type: error.msg_type,
                         delay: next_delay_in_seconds,
-                        request: error.echo_req.req_id,
+                        request: echo_req?.req_id,
                     }
                 );
 

@@ -16,6 +16,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     displayMoney,
     limits,
     sourceAccount,
+    sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
     if (sourceAccount?.account_category !== 'wallet' || targetAccount?.account_category !== 'wallet') return null;
@@ -41,14 +42,11 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     )
         return null;
 
+    const availableSumConverted =
+        availableSumActiveWalletCurrency * (activeWalletExchangeRates?.rates?.[targetAccount.currency] ?? 1);
+
     const formattedSourceCurrencyLimit = displayMoney?.(
         allowedSumActiveWalletCurrency,
-        sourceAccount.currencyConfig.display_code,
-        sourceAccount.currencyConfig.fractional_digits
-    );
-
-    const formattedSourceCurrencyRemainder = displayMoney?.(
-        availableSumActiveWalletCurrency,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
@@ -57,6 +55,18 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         allowedSumActiveWalletCurrency * (activeWalletExchangeRates?.rates?.USD ?? 1),
         activeWalletExchangeRates?.rates?.USD ? 'USD' : sourceAccount.currencyConfig.display_code,
         activeWalletExchangeRates?.rates?.USD ? 2 : sourceAccount.currencyConfig.fractional_digits
+    );
+
+    const formattedSourceCurrencyRemainder = displayMoney?.(
+        availableSumActiveWalletCurrency,
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+
+    const formattedConvertedSourceCurrencyRemainder = displayMoney?.(
+        availableSumConverted,
+        targetAccount.currencyConfig.display_code,
+        targetAccount.currencyConfig.fractional_digits
     );
 
     const formattedSourceCurrencyRemainderInUSD = displayMoney?.(
@@ -87,6 +97,38 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
             message,
             type: 'error' as const,
         };
+    } else if (sourceAmount > availableSumActiveWalletCurrency) {
+        switch (limitsCaseKey) {
+            case 'fiat_to_crypto':
+            case 'crypto_to_fiat':
+                message = (
+                    <Localize
+                        i18n_default_text='The lifetime transfer limit is up to {{formattedSourceCurrencyRemainder}} ({{formattedConvertedSourceCurrencyRemainder}}). Verify your account to upgrade the limit.'
+                        values={{ formattedConvertedSourceCurrencyRemainder, formattedSourceCurrencyRemainder }}
+                    />
+                );
+
+                return {
+                    action: verifyPOIAction,
+                    message,
+                    type: 'error' as const,
+                };
+            case 'crypto_to_crypto':
+                message = (
+                    <Localize
+                        i18n_default_text='The lifetime transfer limit is up to {{formattedSourceCurrencyRemainder}} ({{formattedSourceCurrencyRemainderInUSD}}). Verify your account to upgrade the limit.'
+                        values={{ formattedSourceCurrencyRemainder, formattedSourceCurrencyRemainderInUSD }}
+                    />
+                );
+
+                return {
+                    action: verifyPOIAction,
+                    message,
+                    type: 'error' as const,
+                };
+            default:
+                return null;
+        }
     }
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)

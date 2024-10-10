@@ -42,16 +42,13 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
-    const [should_redirect, setShouldRedirect] = React.useState(false);
-
     useP2PCompletedOrdersNotification();
 
     // TODO: This will redirect the internal users to the standalone application temporarily. Remove this once the standalone application is ready.
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                setShouldRedirect(true);
-                window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                window.location.replace(is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging);
             }
         }
     }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
@@ -301,7 +298,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading || should_redirect) {
+    if (is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
         return <Loading className='p2p__loading' />;
     }
 

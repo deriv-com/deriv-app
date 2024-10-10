@@ -2,8 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useSnackbar } from '@deriv-com/quill-ui';
-import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { getSnackBarText } from 'AppV2/Utils/trade-params-utils';
 import TakeProfitAndStopLossInput from './take-profit-and-stop-loss-input';
 
@@ -25,11 +24,11 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
 
     const { addSnackbar } = useSnackbar();
 
-    const [tp_error_text, setTPErrorText] = React.useState(validation_errors?.take_profit?.[0] ?? '');
+    const [tp_error_text, setTPErrorText] = React.useState<React.ReactNode>(validation_errors?.take_profit?.[0] ?? '');
     const tp_ref = React.useRef({ has_take_profit, take_profit, tp_error_text: validation_errors?.take_profit?.[0] });
     const is_api_response_tp_received_ref = React.useRef(false);
 
-    const [sl_error_text, setSLErrorText] = React.useState(validation_errors?.stop_loss?.[0] ?? '');
+    const [sl_error_text, setSLErrorText] = React.useState<React.ReactNode>(validation_errors?.stop_loss?.[0] ?? '');
     const sl_ref = React.useRef({ has_stop_loss, stop_loss, sl_error_text: validation_errors?.stop_loss?.[0] });
     const is_api_response_sl_received_ref = React.useRef(false);
 
@@ -51,8 +50,8 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
 
         const is_tp_empty = !take_profit_current && has_take_profit_current;
         const is_sl_empty = !stop_loss_current && has_stop_loss_current;
-        if (is_tp_empty) setTPErrorText(localize('Please enter a take profit amount.'));
-        if (is_sl_empty) setSLErrorText(localize('Please enter a stop loss amount.'));
+        if (is_tp_empty) setTPErrorText(<Localize i18n_default_text='Please enter a take profit amount.' />);
+        if (is_sl_empty) setSLErrorText(<Localize i18n_default_text='Please enter a stop loss amount.' />);
         if ((tp_error_text_current && has_take_profit_current) || (sl_error_text_current && has_stop_loss_current))
             return;
         if (is_sl_empty || is_tp_empty) return;

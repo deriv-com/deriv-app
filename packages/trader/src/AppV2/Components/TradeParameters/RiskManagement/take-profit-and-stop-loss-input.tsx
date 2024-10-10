@@ -22,7 +22,7 @@ type TTakeProfitAndStopLossInputProps = {
     classname?: string;
     has_save_button?: boolean;
     has_actionsheet_wrapper?: boolean;
-    initial_error_text?: string;
+    initial_error_text?: React.ReactNode;
     onActionSheetClose: () => void;
     parent_ref?: React.MutableRefObject<{
         has_take_profit?: boolean;
@@ -131,7 +131,7 @@ const TakeProfitAndStopLossInput = ({
             ''
         );
 
-    const updateParentRef = ({ field_name, new_value }: { field_name: string; new_value: string | boolean }) => {
+    const updateParentRef = ({ field_name, new_value }: { field_name: string; new_value: React.ReactNode }) => {
         if (!parent_ref?.current || !field_name) return;
         parent_ref.current = { ...parent_ref.current, [field_name]: new_value };
     };

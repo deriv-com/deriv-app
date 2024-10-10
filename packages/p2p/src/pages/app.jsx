@@ -8,7 +8,7 @@ import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-import { URLConstants } from '@deriv-com/utils';
+// import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -48,7 +48,8 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                window.location.replace(is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging);
+                // window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                window.location.href = 'http://localhost:5173';
             }
         }
     }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);

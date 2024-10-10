@@ -243,6 +243,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list: Array<TTextValueStrings> = [];
     currency = '';
+    default_stake: number | undefined;
     stake_boundary: Partial<TStakeBoundary> = {};
 
     // Duration
@@ -418,6 +419,7 @@ export default class TradeStore extends BaseStore {
             contract_types_list: observable,
             contract_types_list_v2: observable,
             currency: observable,
+            default_stake: observable,
             digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
@@ -468,6 +470,7 @@ export default class TradeStore extends BaseStore {
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             setHoveredBarrier: action.bound,
+            setDefaultStake: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
             setDigitStats: action.bound,
@@ -968,6 +971,10 @@ export default class TradeStore extends BaseStore {
         this.hovered_barrier = hovered_value;
     }
 
+    setDefaultStake(default_stake?: number) {
+        this.default_stake = default_stake;
+    }
+
     setPreviousSymbol(symbol: string) {
         if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
     }
@@ -1331,6 +1338,11 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
+                if (this.is_dtrader_v2_enabled)
+                    this.setV2ParamsInitialValues({
+                        value: obj_new_values.amount ?? '',
+                        name: 'stake',
+                    });
             }
             this.currency = obj_new_values.currency ?? '';
         }
@@ -1344,6 +1356,31 @@ export default class TradeStore extends BaseStore {
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
+
+        // Set stake to default one (from contracts_for) on symbol or contract type switch.
+        // On contract type we also additionally reset take profit
+        if (this.default_stake && this.is_dtrader_v2_enabled) {
+            const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
+            const has_contract_type_changed =
+                obj_new_values.contract_type &&
+                obj_old_values?.contract_type &&
+                obj_new_values.contract_type !== obj_old_values.contract_type;
+
+            if (has_symbol_changed || has_contract_type_changed) {
+                const is_crypto = isCryptocurrency(this.currency ?? '');
+                const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
+                this.setV2ParamsInitialValues({
+                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    name: 'stake',
+                });
+                obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
+            }
+            if (has_contract_type_changed) {
+                obj_new_values.has_take_profit = false;
+                obj_new_values.take_profit = '';
+            }
+        }
+
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);

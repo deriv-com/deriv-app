@@ -22,7 +22,7 @@ export const isDTraderV2 = () =>
     !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && window.innerWidth < 600;
 
 export const redirectToDTraderStandalone = () => {
-    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.use_dtrader_standalone;
+    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.redirect_to_dtrader_standalone;
 };
 
 export const getTradeNotificationMessage = (shortcode: string) => {

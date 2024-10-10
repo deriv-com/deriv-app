@@ -986,11 +986,13 @@ type TContractTradeStore = {
         epoch_array: [number];
     }>;
     onUnmount: () => void;
-    prev_chart_type: string;
     prev_contract: TContractStore | Record<string, never>;
-    prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
-    savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
+    saveChartType: (chart_type: string) => void;
+    saved_chart_type: string;
+    saved_granularity: number | null;
+    saveGranularity: (granularity: number | null) => void;
+    setChartTypeAndGranularity: any;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean

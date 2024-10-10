@@ -40,7 +40,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send Bitcoin (BTC) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv BTC Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv BTC account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Bitcoin \(BTC\) network/)).toBeInTheDocument();
     });
@@ -52,7 +54,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv ETH account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
     });
@@ -64,7 +68,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send Litecoin (LTC) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv LTC Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv LTC account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Litecoin \(LTC\) network/)).toBeInTheDocument();
     });
@@ -76,7 +82,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send USD Coin (USDC) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv USDC Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv USDC account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Ethereum \(ERC20\) network/)).toBeInTheDocument();
     });
@@ -88,7 +96,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send TerraUSD (USDT) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv UST Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv UST account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Omnicore network/)).toBeInTheDocument();
     });
@@ -100,7 +110,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send ERC20 (eUSDT) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv eUSDT Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv eUSDT account address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/\(ERC20\) network/)).toBeInTheDocument();
     });

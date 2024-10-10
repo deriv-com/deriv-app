@@ -2,6 +2,7 @@ import React from 'react';
 import { Stepper } from '@deriv-com/quill-ui';
 import { LinearProgressBar } from '@deriv-com/ui';
 import { QsSteps } from './trade-constants';
+import "./stepper.scss";
 
 type TQSStepper = {
     current_step: QsSteps;

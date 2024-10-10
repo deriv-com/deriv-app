@@ -174,6 +174,8 @@ export const isResetContract = (contract_type = '') => /RESET/i.test(contract_ty
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
+export const isUpDownContract = (contract_type = '') => /rise_fall|high_low/i.test(contract_type);
+
 export const getAccuBarriersDefaultTimeout = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
 };

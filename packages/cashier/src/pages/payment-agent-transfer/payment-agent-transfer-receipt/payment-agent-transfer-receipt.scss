@@ -121,10 +121,10 @@
                     max-width: 23.4rem;
 
                     &:first-child {
-                        margin-right: 0.4rem;
+                        margin-inline-end: 0.4rem;
                     }
                     &:last-child {
-                        margin-left: 0.4rem;
+                        margin-inline-start: 0.4rem;
                     }
 
                     @include mobile-or-tablet-screen {
@@ -143,6 +143,14 @@
             &__transferred-icon {
                 width: 1.6rem !important;
                 height: 1.6rem !important;
+
+                @include rtl {
+                    transform: rotate(360deg);
+
+                    @include mobile-or-tablet-screen {
+                        transform: rotate(270deg);
+                    }
+                }
 
                 @include mobile-or-tablet-screen {
                     margin: 0;

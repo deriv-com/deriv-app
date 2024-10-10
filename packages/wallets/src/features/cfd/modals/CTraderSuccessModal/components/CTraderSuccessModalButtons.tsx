@@ -8,7 +8,7 @@ import { THooks } from '../../../../../types';
 type TCTraderSuccessModalButtons = {
     createdAccount?: THooks.CreateOtherCFDAccount;
     hide: () => void;
-    isDemo: boolean;
+    isDemo?: boolean;
 };
 
 const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSuccessModalButtons) => {

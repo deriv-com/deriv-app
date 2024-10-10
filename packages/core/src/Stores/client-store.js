@@ -170,8 +170,6 @@ export default class ClientStore extends BaseStore {
     subscriptions = {};
     exchange_rates = {};
 
-    should_show_trustpilot_notification = false;
-
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
@@ -249,7 +247,6 @@ export default class ClientStore extends BaseStore {
             is_phone_number_verification_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
-            should_show_trustpilot_notification: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -436,6 +433,7 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            should_show_trustpilot_notification: computed,
         });
 
         reaction(

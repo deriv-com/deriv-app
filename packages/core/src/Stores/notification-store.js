@@ -837,10 +837,6 @@ export default class NotificationStore extends BaseStore {
                     onClick: () => {
                         window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
                         this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
-                        this.removeNotificationMessage({
-                            key: this.client_notifications.trustpilot.key,
-                            should_show_again: false,
-                        });
                     },
                     text: localize('Go to Trustpilot'),
                 },
@@ -848,6 +844,7 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Trustpilot',
                 className: 'trustpilot',
                 type: 'trustpilot',
+                should_show_again: false,
             },
             currency: {
                 key: 'currency',

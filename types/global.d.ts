@@ -24,6 +24,7 @@ declare global {
             on: (key: string, callback: VoidFunction) => void;
             setConfig: (config: Record<string, Record<string, any>>) => void;
             isLoaded: () => boolean;
+            isInitialized: () => boolean;
             user: {
                 setLocale(locale: string): void;
             };

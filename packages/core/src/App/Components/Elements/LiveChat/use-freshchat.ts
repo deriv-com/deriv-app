@@ -4,16 +4,27 @@ import { useScript } from 'usehooks-ts';
 const useFreshChat = (token: string | null) => {
     const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
+    const language = localStorage.getItem('i18n_language') || 'EN';
 
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
-            if (typeof window !== 'undefined' && window.fcWidget) {
-                window.fcWidget.on('widget:loaded', () => {
+            if (typeof window !== 'undefined') {
+                // window.fcWidget.on('widget:loaded', () => {
+                //     // eslint-disable-next-line no-console
+                //     console.log('fc widget loaded');
+                //     window.fcWidget?.user.setLocale(language.toLowerCase());
+                //     setIsReady(true);
+                //     clearInterval(intervalId);
+                // });
+                if (window.fcWidget?.isInitialized() == true && !isReady) {
                     // eslint-disable-next-line no-console
                     console.log('fc widget loaded');
+                    window.fcWidget?.user.setLocale(language.toLowerCase());
+                    // eslint-disable-next-line no-console
+                    console.log('fc lang set to', language.toLowerCase());
                     setIsReady(true);
                     clearInterval(intervalId);
-                });
+                }
             }
         };
 
@@ -31,7 +42,7 @@ const useFreshChat = (token: string | null) => {
         };
 
         initFreshChat();
-    }, [scriptStatus, token]);
+    }, [isReady, language, scriptStatus, token]);
 
     return {
         isReady,

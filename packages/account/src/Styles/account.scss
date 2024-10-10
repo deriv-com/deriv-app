@@ -348,6 +348,21 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 1rem;
             }
 
+            &--phone {
+                &_container {
+                    display: flex;
+                }
+
+                &_input {
+                    width: 100%;
+
+                    .dc-input__container {
+                        border-start-end-radius: 0;
+                        border-end-end-radius: 0;
+                    }
+                }
+            }
+
             .datepicker {
                 max-width: unset;
 

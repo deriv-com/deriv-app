@@ -73,31 +73,38 @@
 }
 
 .qs {
-    &__body__content {
-        padding: 0 !important;
+    &__body {
+        &__content {
+            padding: 0 !important;
 
-        .deriv-linear-progress-bar {
-            margin: 0;
-
-            &__track {
-                position: fixed;
-                z-index: 1;
+            .deriv-linear-progress-bar {
                 margin: 0;
+
+                &__track {
+                    position: fixed;
+                    z-index: 1;
+                    margin: 0;
+                }
+            }
+
+            &__footer {
+                .dc-btn--transparent {
+                    @include desktop-screen {
+                        left: 2.4rem;
+                        position: absolute;
+                    }
+                }
             }
         }
 
-        &__footer {
-            // &--mobile-fixed { // if we need fixed position
-            //     height: 4rem;
-            //     position: fixed;
-            //     bottom: 1px;
-            //     width: 100%;
-            // }
+        &__sidebar {
+            .qs-stepper {
+                margin: 0 1.6rem;
 
-            .dc-btn--transparent {
-                @include desktop-screen {
-                    left: 2.4rem;
-                    position: absolute;
+                .step {
+                    .quill-typography {
+                        font-size: 1.4rem;
+                    }
                 }
             }
         }

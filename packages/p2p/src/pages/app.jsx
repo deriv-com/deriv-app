@@ -48,6 +48,7 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
+                window.name = 'p2p';
                 // window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
                 window.location.href = 'http://localhost:5173';
             }
@@ -299,7 +300,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
+    if (is_logging_in || general_store.is_loading || (isGBLoaded && is_p2p_standalone_enabled)) {
         return <Loading className='p2p__loading' />;
     }
 

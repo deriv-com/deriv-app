@@ -45,7 +45,7 @@ describe('ModalTradeWrapper', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
-    it('renders correctly for desktop', () => {
+    it('renders desktop content for modal trade wrapper', () => {
         render(
             <ModalTradeWrapper platform='mt5'>
                 <div>Mocked Modal Content</div>
@@ -59,7 +59,7 @@ describe('ModalTradeWrapper', () => {
         expect(screen.getByTestId('dt_modal_footer')).toBeInTheDocument();
     });
 
-    it('renders correctly for mobile', () => {
+    it('renders mobile content for modal trade wrapper', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         render(

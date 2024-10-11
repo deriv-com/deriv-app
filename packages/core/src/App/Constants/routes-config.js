@@ -14,12 +14,7 @@ const CFDCompareAccounts = React.lazy(() =>
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "trader" */ '@deriv/trader');
-    })
-);
+const Trader = React.lazy(() => import(/* webpackChunkName: "trader" */ '@deriv/trader'));
 
 const Reports = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved

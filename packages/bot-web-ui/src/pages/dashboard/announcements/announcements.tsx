@@ -1,17 +1,18 @@
 import React from 'react';
-import { observer } from '@deriv/stores';
-import { Text } from '@deriv/components';
-import { Notifications as Announcement } from '@deriv-com/ui';
-import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { Text } from '@deriv/components';
+import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Notifications as Announcement } from '@deriv-com/ui';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { guide_content } from '../../tutorials/constants';
+import { performButtonAction } from './utils/accumulator-helper-functions';
+import { MessageAnnounce, TitleAnnounce } from './announcement-components';
 import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
-import { MessageAnnounce, TitleAnnounce } from './announcement-components';
-import { performButtonAction } from './utils/accumulator-helper-functions';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -22,6 +23,7 @@ type TAnnouncements = {
 const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const {
         load_modal: { toggleLoadModal },
+        dashboard: { showVideoDialog },
     } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
@@ -92,9 +94,19 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [read_announcements_map]);
 
+    const openAccumulatorsVideo = () => {
+        const accumulators_video = guide_content.find(guide_content => guide_content.id === 4);
+        if (accumulators_video) {
+            showVideoDialog({ url: accumulators_video.url, type: 'url' });
+        }
+    };
+
     const handleOnCancel = () => {
         if (selected_announcement?.switch_tab_on_cancel) {
             handleTabChange(selected_announcement.switch_tab_on_cancel);
+            if (selected_announcement.announcement.id === 'ACCUMULATOR_ANNOUNCE') {
+                openAccumulatorsVideo();
+            }
         }
         selected_announcement?.onCancel?.();
         setSelectedAnnouncement(null);

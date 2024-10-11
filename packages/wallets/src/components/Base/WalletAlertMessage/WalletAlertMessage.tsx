@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import classNames from 'classnames';
 import { LegacyLossIcon, LegacySettlementFillIcon, LegacyWarningIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import './WalletAlertMessage.scss';
@@ -41,7 +42,13 @@ const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
         <div className='wallets-alert-message' data-testid='dt_wallet-alert-message'>
             <div className='wallets-alert-message__icon-container'>
                 <div className='wallets-alert-message__icon-container__line' />
-                <Icon className='wallets-alert-message__icon-container__icon' fill={fill} iconSize='xs' />
+                <Icon
+                    className={classNames('wallets-alert-message__icon-container__icon', {
+                        'wallets-alert-message__icon-container__icon--info': type === 'info',
+                    })}
+                    fill={fill}
+                    iconSize='xs'
+                />
             </div>
             <div className='wallets-alert-message__message-container'>
                 <Text align='start' color={color} size='xs'>

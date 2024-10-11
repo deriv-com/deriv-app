@@ -420,6 +420,7 @@ const PersonalDetailsForm = observer(() => {
                                                     //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                                     value={values.phone}
                                                     hint={hintMessage()}
+                                                    className='account-form__fieldset--phone-number-input'
                                                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                         let phone_number = e.target.value.replace(/\D/g, '');
                                                         phone_number =

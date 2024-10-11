@@ -851,7 +851,6 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Trustpilot',
                 className: 'trustpilot',
                 type: 'trustpilot',
-                should_show_again: false,
             },
             currency: {
                 key: 'currency',

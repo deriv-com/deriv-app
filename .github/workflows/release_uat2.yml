@@ -1,0 +1,53 @@
+name: Deriv App Release to UAT Environment
+on:
+  workflow_dispatch:
+
+jobs:
+  build_test_and_publish:
+    name: Build, Test and Publish to Cloudflare UAT
+    runs-on: Runner_16cores_Deriv-app
+    environment: Staging
+    steps:
+    - name: Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+    - name: Setup Node
+      uses: "./.github/actions/setup_node"
+    - name: Install Dependencies
+      uses: "./.github/actions/npm_install_from_cache"
+    - name: Download Remote Config Backup File
+      uses: ./.github/actions/download_remote_config_backup
+      with:
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+    - name: Build
+      uses: "./.github/actions/build"
+      with:
+        NODE_ENV: staging
+        CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}
+        DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }}
+        DATADOG_CLIENT_TOKEN: ${{ vars.DATADOG_CLIENT_TOKEN }}
+        IS_GROWTHBOOK_ENABLED: ${{ vars.IS_GROWTHBOOK_ENABLED }}
+        DATADOG_CLIENT_TOKEN_LOGS: ${{ vars.DATADOG_CLIENT_TOKEN_LOGS }}
+        DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ vars.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+        DATADOG_SESSION_SAMPLE_RATE: ${{ vars.DATADOG_SESSION_SAMPLE_RATE }}
+        DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ vars.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+        GD_API_KEY: ${{ secrets.GD_API_KEY }}
+        GD_APP_ID: ${{ secrets.GD_APP_ID }}
+        GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
+        RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
+        GROWTHBOOK_CLIENT_KEY: ${{ vars.GROWTHBOOK_CLIENT_KEY }}
+        GROWTHBOOK_DECRYPTION_KEY: ${{ vars.GROWTHBOOK_DECRYPTION_KEY }}
+        REF_NAME: ${{ github.ref_name }}
+        REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+        TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
+    - name: Versioning
+      uses: "./.github/actions/versioning"
+      with:
+        release_type: uat2
+    - name: Run tests
+      run: npm test
+    - name: Publish to Cloudflare Pages UAT
+      uses: "./.github/actions/publish_to_pages_uat"
+      with:
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        BRANCH_NAME: uat2

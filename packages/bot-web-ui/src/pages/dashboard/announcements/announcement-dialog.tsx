@@ -1,9 +1,9 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
-import './announcement-dialog.scss';
-import { TAnnounce, TContentItem } from './config';
 import { IconAnnounceModal } from './announcement-components';
+import { TAnnounce, TContentItem } from './config';
+import './announcement-dialog.scss';
 
 type TAccumulatorAnnouncementDialog = {
     announcement: TAnnounce;

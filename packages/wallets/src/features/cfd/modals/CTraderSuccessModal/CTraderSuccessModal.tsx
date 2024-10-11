@@ -11,7 +11,7 @@ import { CTraderSuccessModalButtons } from './components';
 
 type TCTraderSuccessModal = {
     createdAccount?: THooks.CreateOtherCFDAccount;
-    isDemo: boolean;
+    isDemo?: boolean;
     walletCurrencyType: THooks.WalletAccountsList['wallet_currency_type'];
 };
 
@@ -38,6 +38,18 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
               }
           );
 
+    const title = isDemo ? (
+        <Localize
+            i18n_default_text='Your {{ctraderTitle}} demo account is ready'
+            values={{ ctraderTitle: PlatformDetails.ctrader.title }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text='Your {{ctraderTitle}} account is ready'
+            values={{ ctraderTitle: PlatformDetails.ctrader.title }}
+        />
+    );
+
     if (isDesktop) {
         return (
             <ModalWrapper hideCloseButton>
@@ -49,19 +61,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                     displayBalance={cTraderAccount.display_balance}
                     marketType='all'
                     platform={PlatformDetails.ctrader.platform}
-                    title={
-                        isDemo ? (
-                            <Localize
-                                i18n_default_text='Your {{ctraderTitle}} demo account is ready'
-                                values={{ ctraderTitle: PlatformDetails.ctrader.title }}
-                            />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Your {{ctraderTitle}} account is ready'
-                                values={{ ctraderTitle: PlatformDetails.ctrader.title }}
-                            />
-                        )
-                    }
+                    title={title}
                 />
             </ModalWrapper>
         );
@@ -81,15 +81,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
                 displayBalance={cTraderAccount.display_balance}
                 marketType='all'
                 platform={PlatformDetails.ctrader.platform}
-                title={
-                    <Localize
-                        i18n_default_text='Your {{ctraderTitle}}{{demoTitle}} account is ready'
-                        values={{
-                            ctraderTitle: PlatformDetails.ctrader.title,
-                            demoTitle: isDemo ? localize('demo') : '',
-                        }}
-                    />
-                }
+                title={title}
             />
         </ModalStepWrapper>
     );

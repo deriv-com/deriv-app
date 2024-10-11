@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Chip, Text, ActionSheet, Button } from '@deriv-com/quill-ui';
+import { Button, Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
@@ -258,7 +258,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                 </Button>
             )}
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header
                         title={<Localize i18n_default_text='Trade types' />}
                         icon={!is_editing && <Guide />}

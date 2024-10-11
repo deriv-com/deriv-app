@@ -9,12 +9,15 @@
 }
 
 .wallets-cashier-content {
+    width: 100%;
+    max-width: 128rem;
     display: flex;
     position: relative;
     justify-content: center;
     gap: 2.4rem;
     flex: 1;
     padding: 4.8rem 1.6rem 0;
+    margin: 0 auto;
     background-color: #ffffff;
     overflow: scroll;
     //prevent content bouncing on scroll on iPhone devices

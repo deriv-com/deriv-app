@@ -11,6 +11,7 @@ import { rudderStackSendDashboardClickEvent } from '../../../analytics/ruddersta
 import { useComponentVisibility } from '../../../hooks';
 import { TRecentStrategy } from './types';
 import './index.scss';
+import { localize } from '@deriv/translations';
 
 type TRecentWorkspace = {
     workspace: TRecentStrategy;
@@ -79,7 +80,6 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspace) => {
 
     const is_active_mobile = selected_strategy_id === workspace.id && is_dropdown_visible;
     const text_size = is_desktop ? 'xs' : 'xxs';
-
     return (
         <div
             className={classnames('bot-list__item', {
@@ -92,7 +92,7 @@ const RecentWorkspace = observer(({ workspace }: TRecentWorkspace) => {
             <div className='bot-list__item__label'>
                 <div className='text-wrapper' title={workspace.name}>
                     <Text align='left' as='p' size={text_size} line_height='l'>
-                        {workspace.name}
+                        {workspace.name || localize('Untitled Bot')}
                     </Text>
                 </div>
             </div>

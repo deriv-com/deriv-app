@@ -4,44 +4,69 @@ import { renderHook } from '@testing-library/react-hooks';
 import useOnrampVisible from '../useOnrampVisible';
 
 describe('useOnrampVisible', () => {
-    test("should return false if client's currency is not crypto", () => {
+    test('returns false if onramp is not available for current currency', () => {
         const mock = mockStore({
             client: {
-                is_crypto: jest.fn(() => false),
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
-        const { result } = renderHook(() => useOnrampVisible(), { wrapper });
-
-        expect(result.current).toBe(false);
-    });
-
-    test("should return false if client's currency is crypto but client is virtual", () => {
-        const mock = mockStore({
-            client: {
-                is_crypto: jest.fn(() => true),
-                is_virtual: true,
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
-        const { result } = renderHook(() => useOnrampVisible(), { wrapper });
-
-        expect(result.current).toBe(false);
-    });
-
-    test("should return true if client's currency is crypto and client is not virtual", () => {
-        const mock = mockStore({
-            client: {
-                is_crypto: jest.fn(() => true),
+                currency: 'USD',
                 is_virtual: false,
+                website_status: {
+                    currencies_config: {
+                        //@ts-expect-error we only need partial values
+                        USD: { platform: { cashier: ['doughflow'], ramp: [] } },
+                        //@ts-expect-error we only need partial values
+                        BTC: { platform: { cashier: ['crypto'], ramp: ['ramp'] } },
+                    },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useOnrampVisible(), { wrapper });
+
+        expect(result.current).toBe(false);
+    });
+
+    test("returns false if client's account is virtual", () => {
+        const mock = mockStore({
+            client: {
+                currency: 'USD',
+                is_virtual: true,
+                website_status: {
+                    currencies_config: {
+                        //@ts-expect-error we only need partial values
+                        USD: { platform: { cashier: ['doughflow'], ramp: [] } },
+                        //@ts-expect-error we only need partial values
+                        BTC: { platform: { cashier: ['crypto'], ramp: ['ramp'] } },
+                    },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useOnrampVisible(), { wrapper });
+
+        expect(result.current).toBe(false);
+    });
+
+    test("returns true if onramp is available for current currency and client's account is not virtual", () => {
+        const mock = mockStore({
+            client: {
+                currency: 'BTC',
+                is_virtual: false,
+                website_status: {
+                    currencies_config: {
+                        //@ts-expect-error we only need partial values
+                        USD: { platform: { cashier: ['doughflow'], ramp: [] } },
+                        //@ts-expect-error we only need partial values
+                        BTC: { platform: { cashier: ['crypto'], ramp: ['ramp'] } },
+                    },
+                },
             },
         });
 

@@ -32,6 +32,7 @@ describe('CFDPlatformsListEmptyState', () => {
     it('renders proper content', () => {
         render(<CFDPlatformsListEmptyState />);
 
+        expect(screen.getByText('Transfer funds')).toBeInTheDocument();
         expect(
             screen.getByText(
                 `To trade CFDs, you'll need to use your ${fiatCurrency} Wallet. Click Transfer to move your ${cryptoCurrency} to your ${fiatCurrency} Wallet.`
@@ -42,7 +43,7 @@ describe('CFDPlatformsListEmptyState', () => {
     it('redirects to `wallet/account-transfer` route if the user is clicking on `Transfer` button', () => {
         render(<CFDPlatformsListEmptyState />);
 
-        const transferBtn = screen.getByRole('button', { name: 'Transfer' });
+        const transferBtn = screen.getByTestId('dt_cfd_empty_state_transfer_button');
         userEvent.click(transferBtn);
 
         expect(mockPush).toHaveBeenCalledWith('/wallet/account-transfer', { shouldSelectDefaultWallet: true });

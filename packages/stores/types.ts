@@ -416,6 +416,7 @@ export type TClientStore = {
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
+    available_onramp_currencies: Array<string>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;
@@ -476,7 +477,6 @@ export type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
-    is_tnc_needed: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -528,7 +528,7 @@ export type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
-    website_status: { mt5_status: TMt5StatusServer; dx_trade_status: TDXTraderStatusServerType };
+    website_status: WebsiteStatus;
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
@@ -544,6 +544,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tnc_status?: Record<string, number>;
         phone_number_verification?: {
             verified?: 0 | 1;
             next_attempt?: number;
@@ -866,6 +867,8 @@ type TUiStore = {
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
     setHashedValue: (value: string) => void;
     url_hashed_values: string;
+    is_tnc_update_modal_open: boolean;
+    toggleTncUpdateModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -983,11 +986,13 @@ type TContractTradeStore = {
         epoch_array: [number];
     }>;
     onUnmount: () => void;
-    prev_chart_type: string;
     prev_contract: TContractStore | Record<string, never>;
-    prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
-    savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
+    saveChartType: (chart_type: string) => void;
+    saved_chart_type: string;
+    saved_granularity: number | null;
+    saveGranularity: (granularity: number | null) => void;
+    setChartTypeAndGranularity: any;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean

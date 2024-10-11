@@ -409,46 +409,52 @@ const PersonalDetailsForm = observer(() => {
                                 </fieldset>
                                 {!is_virtual && (
                                     <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='phone'
-                                            id={'phone'}
-                                            label={localize('Phone number*')}
-                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                            value={values.phone}
-                                            hint={hintMessage()}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                let phone_number = e.target.value.replace(/\D/g, '');
-                                                phone_number = phone_number.length === 0 ? '+' : `+${phone_number}`;
-                                                setFieldValue('phone', phone_number, true);
-                                                setStatus('');
-                                            }}
-                                            onBlur={handleBlur}
-                                            required
-                                            error={errors.phone}
-                                            disabled={
-                                                isFieldDisabled('phone') ||
-                                                !!next_email_otp_request_timer ||
-                                                is_email_otp_timer_loading
-                                            }
-                                            data-testid='dt_phone'
-                                        />
-                                        {isPhoneNumberVerificationEnabled && (
-                                            <VerifyButton
-                                                is_verify_button_disabled={
-                                                    isFieldDisabled('phone') ||
-                                                    !isValid ||
-                                                    !stripped_phone_number ||
-                                                    is_email_otp_timer_loading
-                                                }
-                                                values={values}
-                                                residence_list={residence_list}
-                                                states_list={states_list}
-                                                next_email_otp_request_timer={next_email_otp_request_timer}
-                                                setStatus={setStatus}
-                                            />
-                                        )}
+                                        <div className='account-form__fieldset--phone_container'>
+                                            <div className='account-form__fieldset--phone_input'>
+                                                <Input
+                                                    data-lpignore='true'
+                                                    type='text'
+                                                    name='phone'
+                                                    id={'phone'}
+                                                    label={localize('Phone number*')}
+                                                    //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                                    value={values.phone}
+                                                    hint={hintMessage()}
+                                                    className='account-form__fieldset--phone-number-input'
+                                                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                                        let phone_number = e.target.value.replace(/\D/g, '');
+                                                        phone_number =
+                                                            phone_number.length === 0 ? '+' : `+${phone_number}`;
+                                                        setFieldValue('phone', phone_number, true);
+                                                        setStatus('');
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    required
+                                                    error={errors.phone}
+                                                    disabled={
+                                                        isFieldDisabled('phone') ||
+                                                        !!next_email_otp_request_timer ||
+                                                        is_email_otp_timer_loading
+                                                    }
+                                                    data-testid='dt_phone'
+                                                />
+                                            </div>
+                                            {isPhoneNumberVerificationEnabled && (
+                                                <VerifyButton
+                                                    is_verify_button_disabled={
+                                                        isFieldDisabled('phone') ||
+                                                        !isValid ||
+                                                        !stripped_phone_number ||
+                                                        is_email_otp_timer_loading
+                                                    }
+                                                    values={values}
+                                                    residence_list={residence_list}
+                                                    states_list={states_list}
+                                                    next_email_otp_request_timer={next_email_otp_request_timer}
+                                                    setStatus={setStatus}
+                                                />
+                                            )}
+                                        </div>
                                     </fieldset>
                                 )}
                                 <Fragment>

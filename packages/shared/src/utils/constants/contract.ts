@@ -30,7 +30,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration?: boolean };
+    config?: { hide_duration?: boolean; default_stake?: number };
 };
 
 type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;

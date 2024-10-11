@@ -14,6 +14,15 @@
                 gap: 0.8rem;
                 margin-top: 2.4rem;
             }
+            &__phone-number-container {
+                display: flex;
+
+                &__phone-number {
+                    @include rtl {
+                        direction: ltr;
+                    }
+                }
+            }
         }
     }
 
@@ -72,6 +81,15 @@
             @include mobile-screen {
                 width: 100%;
             }
+            &__phone-number-input {
+                @include rtl {
+                    direction: ltr;
+
+                    .label {
+                        direction: rtl;
+                    }
+                }
+            }
 
             &__livechat {
                 color: var(--core-color-solid-red-900, $color-red-12);
@@ -104,6 +122,12 @@
                 display: flex;
                 flex-direction: column;
                 text-align: center;
+
+                &__phone-number {
+                    @include rtl {
+                        direction: ltr;
+                    }
+                }
             }
 
             &-otp-container {

@@ -10,8 +10,11 @@ export const timeSince = timestamp => {
     if (secondPast < 3600) {
         return localize('{{minutePast}}m ago', { minutePast: parseInt(secondPast / 60) });
     }
-    if (secondPast <= 86400) {
+    if (secondPast < 86400) {
         return localize('{{hourPast}}h ago', { hourPast: parseInt(secondPast / 3600) });
+    }
+    if (secondPast <= 432000) {
+        return localize('{{days}} days ago', { days: parseInt(secondPast / 86400) });
     }
 
     const timestampDate = new Date(timestamp);

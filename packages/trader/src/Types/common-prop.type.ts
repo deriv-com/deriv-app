@@ -154,6 +154,7 @@ export type TContractTypesList = {
 };
 
 export type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
+    default_stake?: number;
     has_spot?: boolean;
     durations?: ReturnType<typeof buildDurationConfig>;
     trade_types?: { [key: string]: string };

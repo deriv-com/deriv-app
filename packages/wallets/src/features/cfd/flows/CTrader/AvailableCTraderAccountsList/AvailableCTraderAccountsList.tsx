@@ -43,7 +43,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
             show(
                 <CTraderSuccessModal
                     createdAccount={createdAccount}
-                    isDemo={accountType === 'demo'}
+                    isDemo={activeWallet?.is_virtual}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}
                 />
             );

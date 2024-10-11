@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCtraderAccountsList, useDxtradeAccountsList, useSortedMT5Accounts } from '@deriv/api-v2';
+import { useCtraderAccountsList, useDxtradeAccountsList, useLandingCompany, useSortedMT5Accounts } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import {
     AddedCTraderAccountsList,
@@ -27,12 +27,19 @@ const CFDPlatformsListAccounts: React.FC = () => {
         isFetchedAfterMount: isDxtradeFetchedAfterMount,
         isLoading: isDxtradeLoading,
     } = useDxtradeAccountsList();
+    const { data: landingCompany, isLoading: isLandingCompanyLoading } = useLandingCompany();
 
-    const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading;
+    const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading || isLandingCompanyLoading;
     const isFetchedAfterMount = isMT5FetchedAfterMount || isCtraderFetchedAfterMount || isDxtradeFetchedAfterMount;
 
     const hasCTraderAccount = !!ctraderAccountsList?.length;
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
+
+    const financialRestrictedCountry =
+        landingCompany?.financial_company?.shortcode === 'svg' && !landingCompany?.gaming_company;
+    const cfdRestrictedCountry =
+        landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
+    const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
     if (isLoading || !isFetchedAfterMount) {
         return (
@@ -54,8 +61,12 @@ const CFDPlatformsListAccounts: React.FC = () => {
                     <AvailableMT5AccountsList account={account} key={`available-mt5-list${account.name}-${index}`} />
                 );
             })}
-            {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-            {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+            {!isRestricted && (
+                <>
+                    {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
+                    {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+                </>
+            )}
         </div>
     );
 };

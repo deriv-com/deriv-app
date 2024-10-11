@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
+import AddCurrencyNote from './add-currency-note.jsx';
 import CurrencyProvider from './choose-currency';
 import { observer, useStore } from '@deriv/stores';
 import './currency-selector.scss';
@@ -202,11 +203,9 @@ const AddCurrency = observer(({ onSubmit, hasNoAvailableCrypto, is_add_crypto, i
                             <AddCrypto />
                         </div>
                     </ThemedScrollbars>
-                    <div className='add-currency__note-wrapper'>
-                        <Text as='p' color='prominent' align='center' size='xxs' className='add-currency__note'>
-                            {localize('Some currencies may not be supported by payment agents in your country.')}
-                        </Text>
-                    </div>
+                    <AddCurrencyNote
+                        message={localize('Some currencies may not be supported by payment agents in your country.')}
+                    />
                     <FormSubmitButton
                         className='currency-selector__button'
                         is_disabled={isSubmitting || !values.currency}

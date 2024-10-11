@@ -24,8 +24,6 @@
                     display: none;
                 }
                 @include mobile-screen {
-                    min-width: 17rem;
-                    max-width: 26rem;
                     width: auto;
 
                     .cq-menu-btn {
@@ -39,10 +37,7 @@
                             margin-left: auto;
                         }
                         .cq-symbol {
-                            font-size: 1.2rem;
-                        }
-                        .cq-chart-price {
-                            display: none;
+                            font-size: 1.4rem;
                         }
                     }
                 }

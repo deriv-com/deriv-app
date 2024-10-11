@@ -156,7 +156,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 {should_show_phone_number_otp ? (
                     <Text size='sm'>
                         <Localize
-                            i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}. <0></0>'
+                            i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at <1>{{users_phone_number}}</1>. <0></0>'
                             values={{
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
                                 users_phone_number: account_settings?.phone,
@@ -171,6 +171,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                                     onClick={() =>
                                         setOtpVerification({ show_otp_verification: false, phone_verification_type })
                                     }
+                                />,
+                                <span
+                                    key={1}
+                                    className='phone-verification__card--email-verification-content__phone-number'
                                 />,
                             ]}
                         />

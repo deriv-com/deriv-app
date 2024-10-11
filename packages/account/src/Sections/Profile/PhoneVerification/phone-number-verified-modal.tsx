@@ -59,12 +59,15 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
             <Modal.Header title={<Localize i18n_default_text='Phone number verified' />} />
             <Modal.Body>
                 <div className='phone-verification__verified-modal--contents'>
-                    <Text>
-                        <Localize
-                            i18n_default_text='{{ phone }} is verified as your phone number.'
-                            values={{ phone }}
-                        />
-                    </Text>
+                    <div className='phone-verification__verified-modal--contents__phone-number-container'>
+                        <div className='phone-verification__verified-modal--contents__phone-number-container__phone-number'>
+                            {phone}
+                        </div>
+                        &nbsp;
+                        <Text>
+                            <Localize i18n_default_text=' is verified as your phone number.' />
+                        </Text>
+                    </div>
                 </div>
             </Modal.Body>
         </Modal>

@@ -24,6 +24,16 @@ function request<T extends TSocketSubscribableEndpointNames>(
     const req_id = ++reqSeqNumber;
 
     const promise: Promise<TSocketResponseData<T>> = new Promise((resolve, reject) => {
+        if (ws.readyState === ws.CLOSED || ws.readyState === ws.CLOSING) {
+            reject(new Error('WS is closed or closing'));
+            return;
+        }
+
+        if (ws.readyState !== ws.OPEN) {
+            reject(new Error('WS is not open'));
+            return;
+        }
+
         const timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
             reject(new Error(`Request timeout, request: ${name}, payload: ${JSON.stringify(payload)}`));
@@ -61,6 +71,37 @@ function request<T extends TSocketSubscribableEndpointNames>(
 }
 
 /**
+ * responsible for sending request over given WS and thats it,
+ * response is not expected, fire and forget,
+ * e.g. to unsubscribe - send unsubscribe request away and don't wait for response, e.g. when closing connection
+ */
+function send<T extends TSocketSubscribableEndpointNames>(
+    ws: WebSocket,
+    name: TSocketEndpointNames,
+    payload: TSocketRequestPayload<T>['payload']
+): void {
+    const req_id = ++reqSeqNumber;
+
+    if (ws.readyState === ws.CLOSED || ws.readyState === ws.CLOSING) {
+        console.error('WS is closed or closing'); // eslint-disable-line no-console
+        return;
+    }
+
+    if (ws.readyState !== ws.OPEN) {
+        console.error('WS is not open'); // eslint-disable-line no-console
+        return;
+    }
+
+    ws.send(
+        JSON.stringify({
+            [name]: 1,
+            ...payload,
+            req_id,
+        })
+    );
+}
+
+/**
  * reset request sequence number
  * used in tests
  * havent found better way to reset it within tests themselves
@@ -71,3 +112,4 @@ export function resetReqSeqNumber() {
 }
 
 export default request;
+export { send };

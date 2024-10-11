@@ -1,10 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import DurationActionSheetContainer from '../container';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -15,11 +16,17 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 global.ResizeObserver = ResizeObserver;
 global.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedCalendarSmBoldIcon: jest.fn(({ onClick }) => (
-        <button onClick={onClick}>LabelPairedCalendarSmBoldIcon</button>
-    )),
+jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
+    ContractType: {
+        getTradingEvents: jest.fn(),
+    },
+}));
+
+jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        activeSymbols: [{ symbol: '1HZ100V', display_name: '"Volatility 100 (1s) Index"', exchange_is_open: 1 }],
+    })),
 }));
 
 jest.mock('@deriv-com/quill-ui', () => ({
@@ -28,7 +35,7 @@ jest.mock('@deriv-com/quill-ui', () => ({
         <div>
             <button
                 onClick={() => {
-                    const mockDate = new Date(2023, 8, 10);
+                    const mockDate = new Date(2024, 8, 10);
                     onChange(mockDate);
                 }}
             >
@@ -47,10 +54,31 @@ describe('DurationActionSheetContainer', () => {
                 trade: {
                     duration: 30,
                     duration_unit: 'm',
-                    duration_units_list: ['t', 'm', 'h', 'd'],
+                    duration_units_list: [
+                        { value: 's', text: 'seconds' },
+                        { value: 't', text: 'ticks' },
+                        { value: 'm', text: 'minutes' },
+                        { value: 'h', text: 'hours' },
+                        { value: 'd', text: 'days' },
+                    ],
+                    duration_min_max: {
+                        daily: {
+                            min: 86400,
+                            max: 31536000,
+                        },
+                        intraday: {
+                            min: 15,
+                            max: 86400,
+                        },
+                        tick: {
+                            min: 1,
+                            max: 10,
+                        },
+                    },
                     onChangeMultiple: jest.fn(),
                     expiry_time: null,
                     contract_type: 'call',
+                    symbol: '1HZ100V',
                 },
             },
         });
@@ -60,14 +88,27 @@ describe('DurationActionSheetContainer', () => {
         mocked_store: TCoreStores,
         unit = 'm',
         setUnit = jest.fn(),
-        hours = {
-            selected_hour: [0, 0],
-            setSelectedHour: jest.fn(),
-        }
+        selected_hour = [0, 0],
+        setSelectedHour = jest.fn(),
+        end_date = new Date(),
+        setEndDate = jest.fn(),
+        end_time = '',
+        setEndTime = jest.fn()
     ) => {
         render(
             <TraderProviders store={mocked_store}>
-                <DurationActionSheetContainer {...hours} unit={unit} setUnit={setUnit} />
+                <DurationActionSheetContainer
+                    selected_hour={selected_hour}
+                    setSelectedHour={setSelectedHour}
+                    unit={unit}
+                    setUnit={setUnit}
+                    end_date={end_date}
+                    setEndDate={setEndDate}
+                    end_time={end_time}
+                    setEndTime={setEndTime}
+                    expiry_time_string='24th Aug 2024'
+                    setExpiryTimeString={() => jest.fn()}
+                />
             </TraderProviders>
         );
     };
@@ -80,7 +121,7 @@ describe('DurationActionSheetContainer', () => {
 
     it('should select duration in hours if duration is more than 59 minutes', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store, 'h');
+        renderDurationContainer(default_trade_store, 'h', jest.fn(), [2, 10]);
 
         const duration_chip = screen.getByText('1 h');
         userEvent.click(duration_chip);
@@ -90,10 +131,7 @@ describe('DurationActionSheetContainer', () => {
 
     it('should call onChangeMultiple with correct data with hours', () => {
         default_trade_store.modules.trade.duration = 130;
-        renderDurationContainer(default_trade_store, 'm', jest.fn(), {
-            selected_hour: [2, 10],
-            setSelectedHour: jest.fn(),
-        });
+        renderDurationContainer(default_trade_store, 'm', jest.fn(), [2, 10], jest.fn());
 
         userEvent.click(screen.getByText('Save'));
 
@@ -118,6 +156,16 @@ describe('DurationActionSheetContainer', () => {
             expiry_time: null,
             expiry_type: 'duration',
         });
+    });
+
+    it('should call change duration on changing chips', async () => {
+        renderDurationContainer(default_trade_store, 'h');
+
+        userEvent.click(screen.getByText('minutes'));
+        expect(screen.getByText('1 min')).toBeInTheDocument();
+        userEvent.click(screen.getByText('hours'));
+        expect(screen.getByText('1 h')).toBeInTheDocument();
+        userEvent.click(screen.getByText('End Time'));
     });
 
     it('should call onChangeMultiple with correct data with seconds', () => {
@@ -150,50 +198,88 @@ describe('DurationActionSheetContainer', () => {
         });
     });
 
+    it('should call onChangeMultiple with correct endtime with endtime', () => {
+        default_trade_store.modules.trade.expiry_time = '23:35';
+
+        renderDurationContainer(
+            default_trade_store,
+            'd',
+            jest.fn(),
+            [0, 0],
+            jest.fn(),
+            new Date(),
+            jest.fn(),
+            '11:35',
+            jest.fn()
+        );
+        userEvent.click(screen.getByText('Save'));
+
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            expiry_time: '11:35',
+            expiry_type: 'endtime',
+        });
+    });
+
+    it('should call onChangeMultiple with correct day', () => {
+        default_trade_store.modules.trade.duration_unit = 'd';
+        default_trade_store.modules.trade.duration = '3';
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        renderDurationContainer(default_trade_store, 'd', jest.fn(), [0, 0], jest.fn(), tomorrow);
+        userEvent.click(screen.getByText('Save'));
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            duration: 1,
+            duration_unit: 'd',
+            expiry_type: 'duration',
+            expiry_time: null,
+        });
+    });
+
     it('should show Expiry Date when days are selected', () => {
         renderDurationContainer(default_trade_store, 'd');
         expect(screen.getByText('Expiry')).toBeInTheDocument();
     });
 
-    it('should open datepicker on clicking on calendar icon in the days wheelpicker', () => {
-        default_trade_store.modules.trade.duration = 34;
+    it('should show End Time Screen on selecting the days unit', () => {
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
-        expect(screen.getByText('Pick an end date')).toBeInTheDocument();
+
+        const date_input = screen.getByTestId('dt_date_input');
+        const time_input = screen.getByDisplayValue('23:59:59 GMT');
+        expect(date_input).toBeInTheDocument();
+        expect(time_input).toBeInTheDocument();
     });
 
-    it('should select value when clicked on any date on datepicker', () => {
-        default_trade_store.modules.trade.duration = 2;
+    it('should open timepicker on clicking on time input in the days page', () => {
         renderDurationContainer(default_trade_store, 'd');
-        expect(screen.getByText('LabelPairedCalendarSmBoldIcon')).toBeInTheDocument();
-        userEvent.click(screen.getByText('LabelPairedCalendarSmBoldIcon'));
-        expect(screen.getByText('Date Picker')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Save'));
-        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            duration: 2,
-            duration_unit: 'd',
-            expiry_time: null,
-            expiry_type: 'duration',
-        });
+        const time_input = screen.getByDisplayValue('23:59:59 GMT');
+        expect(time_input).toBeInTheDocument();
+        userEvent.click(time_input);
+        expect(screen.getByText('Pick an end time'));
     });
 
-    it('should show Current Time when End time is selected', () => {
-        default_trade_store.modules.trade.expiry_time = '16:30';
-        renderDurationContainer(default_trade_store, 'et');
-        expect(screen.getByText('Current time')).toBeInTheDocument();
+    it('should open datepicker on clicking on date input in the days page', () => {
+        renderDurationContainer(default_trade_store, 'd');
+        const mockEvents = [{ dates: 'Fridays, Saturdays', descrip: 'Some description' }];
+        jest.spyOn(ContractType, 'getTradingEvents').mockResolvedValue(mockEvents);
+
+        const date_input = screen.getByTestId('dt_date_input');
+        expect(date_input).toBeInTheDocument();
+        userEvent.click(date_input);
+        expect(screen.getByText('Pick an end date'));
     });
 
-    it('should handle expiry time selection for end time ("et")', () => {
-        renderDurationContainer(default_trade_store, 'et');
-        const end_time_chip = screen.getByText('End Time');
-        userEvent.click(end_time_chip);
-        userEvent.click(screen.getByText('Save'));
-        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
-            expiry_time: expect.any(String),
-            expiry_type: 'endtime',
-        });
+    it('should save and close datepicker on clicking done button', async () => {
+        renderDurationContainer(default_trade_store, 'd');
+        const date_input = screen.getByTestId('dt_date_input');
+        expect(date_input).toBeInTheDocument();
+        userEvent.click(date_input);
+        expect(screen.getByText('Pick an end date'));
+        userEvent.click(screen.getByText('Done'));
+        await waitFor(() => expect(screen.queryByText('Pick an end date')).not.toBeInTheDocument());
     });
+
     it('should not render chips if duration_units_list contains only ticks', () => {
         default_trade_store.modules.trade.duration = 1;
         default_trade_store.modules.trade.duration_unit = 't';

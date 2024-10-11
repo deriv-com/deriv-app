@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount, useCurrencyConfig, useDepositCryptoAddress } from '@deriv/api-v2';
-import { Divider, Loader } from '@deriv-com/ui';
+import { Divider, Loader, useDevice } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
@@ -15,9 +15,11 @@ const DepositCrypto = () => {
     const { data: depositCryptoAddress, error, isLoading } = useDepositCryptoAddress();
     const { data: activeWallet } = useActiveWalletAccount();
     const { getConfig } = useCurrencyConfig();
+    const { isDesktop } = useDevice();
 
     const depositCryptoError = error?.error;
     const isTUSDT = activeWallet?.currency && getConfig(activeWallet.currency)?.is_tUSDT;
+    const isOnrampAvailable = activeWallet?.currency_config && activeWallet.currency_config.platform.ramp.length > 0;
 
     if (isLoading) return <Loader />;
 
@@ -33,8 +35,8 @@ const DepositCrypto = () => {
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />
-                <Divider color='var(--border-divider)' height={2} />
-                <DepositCryptoTryFiatOnRamp />
+                {(!isDesktop || isOnrampAvailable) && <Divider color='var(--border-divider)' height={2} />}
+                {isOnrampAvailable && <DepositCryptoTryFiatOnRamp />}
             </div>
             <div className='wallets-deposit-crypto__right-content'>
                 <TransactionStatus transactionType='deposit' />

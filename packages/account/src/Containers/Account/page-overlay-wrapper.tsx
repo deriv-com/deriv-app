@@ -53,9 +53,9 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
-    const onClickLogout = () => {
+    const onClickLogout = async () => {
         history.push(shared_routes.traders_hub);
-        logout();
+        await logout();
     };
 
     if (!isDesktop && selected_route) {

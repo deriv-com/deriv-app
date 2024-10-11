@@ -9,7 +9,6 @@ import AccumulatorsChartElements from 'Modules/SmartChart/Components/Markers/acc
 import ToolbarWidgets from 'Modules/SmartChart/Components/toolbar-widgets';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import useDefaultSymbol from 'AppV2/Hooks/useDefaultSymbol';
-import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 
 type TBottomWidgetsParams = {
     digits: number[];
@@ -73,7 +72,6 @@ const TradeChart = observer(() => {
         wsSendRequest,
         wsSubscribe,
     } = useTraderStore();
-    const is_digit_trade_type = isDigitTradeType(contract_type);
     const is_accumulator = isAccumulatorContract(contract_type);
     const settings = {
         countdown: is_chart_countdown_visible,
@@ -86,13 +84,6 @@ const TradeChart = observer(() => {
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
-
-    const chartKey = React.useMemo(() => {
-        if (is_digit_trade_type) {
-            return symbol;
-        }
-        return null;
-    }, [symbol, is_digit_trade_type]);
 
     React.useEffect(() => {
         if ((is_accumulator || show_digits_stats) && ref.current?.hasPredictionIndicators()) {
@@ -125,7 +116,6 @@ const TradeChart = observer(() => {
     if (!symbol || !active_symbols.length) return null;
     return (
         <SmartChart
-            key={chartKey}
             ref={ref}
             barriers={barriers}
             contracts_array={markers_array}

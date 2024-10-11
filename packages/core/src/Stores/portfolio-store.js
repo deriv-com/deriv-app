@@ -319,6 +319,7 @@ export default class PortfolioStore extends BaseStore {
                             type: response.msg_type,
                             ...response.error,
                         },
+                        // Temporary switching off old snackbar for DTrader-V2
                         isDtraderV2Enabled(this.root_store.ui.is_mobile)
                     );
                 } else if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
@@ -352,6 +353,7 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     },
+                    // Temporary switching off old snackbar for dTrader-V2
                     isDtraderV2Enabled(this.root_store.ui.is_mobile)
                 );
             }

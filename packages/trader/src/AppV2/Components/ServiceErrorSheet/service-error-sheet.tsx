@@ -7,7 +7,7 @@ import { isEmptyObject, redirectToLogin, routes } from '@deriv/shared';
 import { useHistory } from 'react-router';
 import { useSignupTrigger } from 'AppV2/Hooks/useSignupTrigger';
 import ServiceErrorDescription from './service-error-description';
-import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
+import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 
 const ServiceErrorSheet = observer(() => {
     const [is_open, setIsOpen] = useState(false);
@@ -20,9 +20,10 @@ const ServiceErrorSheet = observer(() => {
     const history = useHistory();
 
     const { code, message, type } = services_error || {};
-    const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
-    const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
-    const is_account_verification_required = code === 'PleaseAuthenticate';
+    const is_insufficient_balance =
+        code === SERVICE_ERROR.INSUFFICIENT_BALANCE || code === SERVICE_ERROR.INVALID_CONTRACT_PROPOSAL;
+    const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
+    const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
     const should_show_error_modal =
         !isEmptyObject(services_error) &&
         checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
@@ -94,6 +95,14 @@ const ServiceErrorSheet = observer(() => {
         }
     };
 
+    const getErrorType = () => {
+        if (is_insufficient_balance) return SERVICE_ERROR.INSUFFICIENT_BALANCE;
+        if (is_authorization_required) return SERVICE_ERROR.AUTHORIZATION_REQUIRED;
+        if (is_account_verification_required) return SERVICE_ERROR.PLEASE_AUTHENTICATE;
+        if (is_mf_verification_pending_modal_visible) return SERVICE_ERROR.PENDING_VERIFICATION;
+        return null;
+    };
+
     useEffect(() => {
         setIsOpen(should_show_error_modal);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,13 +127,7 @@ const ServiceErrorSheet = observer(() => {
         >
             <ActionSheet.Portal showHandlebar shouldCloseOnDrag>
                 <div className='service-error-sheet__body'>
-                    <ServiceErrorDescription
-                        is_authorization_required={is_authorization_required}
-                        is_insufficient_balance={is_insufficient_balance}
-                        is_account_verification_required={is_account_verification_required}
-                        is_mf_verification_pending_modal_visible={is_mf_verification_pending_modal_visible}
-                        services_error_message={message}
-                    />
+                    <ServiceErrorDescription error_type={getErrorType()} services_error_message={message} />
                 </div>
                 <ActionSheet.Footer
                     className='service-error-sheet__footer'

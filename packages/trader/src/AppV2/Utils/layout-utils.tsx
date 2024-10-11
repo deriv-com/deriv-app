@@ -52,6 +52,14 @@ export const getChartHeight = ({
     return height;
 };
 
+export const SERVICE_ERROR = {
+    INSUFFICIENT_BALANCE: 'InsufficientBalance',
+    INVALID_CONTRACT_PROPOSAL: 'InvalidContractProposal',
+    AUTHORIZATION_REQUIRED: 'AuthorizationRequired',
+    PLEASE_AUTHENTICATE: 'PleaseAuthenticate',
+    PENDING_VERIFICATION: 'PendingVerification',
+};
+
 export const checkIsServiceModalError = ({
     services_error,
     is_mf_verification_pending_modal_visible,
@@ -61,9 +69,10 @@ export const checkIsServiceModalError = ({
 }) => {
     const { code, type } = services_error || {};
     // Error modal is shown only for next four types. For the rest - snackbar.
-    const is_insufficient_balance = code === 'InsufficientBalance' || code === 'InvalidContractProposal';
-    const is_authorization_required = code === 'AuthorizationRequired' && type === 'buy';
-    const is_account_verification_required = code === 'PleaseAuthenticate';
+    const is_insufficient_balance =
+        code === SERVICE_ERROR.INSUFFICIENT_BALANCE || code === SERVICE_ERROR.INVALID_CONTRACT_PROPOSAL;
+    const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
+    const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
     return (
         is_insufficient_balance ||
         is_authorization_required ||

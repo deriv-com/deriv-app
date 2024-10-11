@@ -390,6 +390,7 @@ export default class ContractStore extends BaseStore {
                             type: response.msg_type,
                             ...response.error,
                         },
+                        // Temporary switching off old snackbar for DTrader-V2
                         isDtraderV2Enabled(this.root_store.ui.is_mobile)
                     );
                     return;

@@ -46,7 +46,7 @@ describe('ServicesErrorSnackbar', () => {
         );
     };
 
-    it('should call useSnackbar if it is trading page, there is a services_error and it is not a modal error', () => {
+    it('calls useSnackbar if it is trading page, there is a services_error and it is not a modal error', () => {
         (useLocation as jest.Mock).mockReturnValue({
             pathname: '/dtrader',
         });
@@ -55,7 +55,7 @@ describe('ServicesErrorSnackbar', () => {
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
-    it('should call useSnackbar if it is positions page and there is a services_error', () => {
+    it('calls useSnackbar if it is positions page and there is a services_error', () => {
         (useLocation as jest.Mock).mockReturnValue({
             pathname: '/dtrader/positions',
         });
@@ -64,7 +64,7 @@ describe('ServicesErrorSnackbar', () => {
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
-    it('should not call useSnackbar if it is reports page and there is a services_error', () => {
+    it('does not call useSnackbar if it is reports page and there is a services_error', () => {
         (useLocation as jest.Mock).mockReturnValue({
             pathname: '/reports',
         });
@@ -73,7 +73,7 @@ describe('ServicesErrorSnackbar', () => {
         expect(mockAddSnackbar).not.toHaveBeenCalled();
     });
 
-    it('should not call useSnackbar if there is no services_error', () => {
+    it('does not call useSnackbar if there is no services_error', () => {
         default_mock_store.common.services_error = {};
         render(mockServicesErrorSnackbar());
 

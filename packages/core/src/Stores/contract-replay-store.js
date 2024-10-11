@@ -236,6 +236,7 @@ export default class ContractReplayStore extends BaseStore {
                             type: response.msg_type,
                             ...response.error,
                         },
+                        // Temporary switching off old snackbar for dTrader-V2
                         isDtraderV2Enabled(this.root_store.ui.is_mobile)
                     );
                 } else {
@@ -262,6 +263,7 @@ export default class ContractReplayStore extends BaseStore {
                     type: response.msg_type,
                     ...response.error,
                 },
+                // Temporary switching off old snackbar for DTrader-V2
                 isDtraderV2Enabled(this.root_store.ui.is_mobile)
             );
         } else if (!response.error && response.sell) {

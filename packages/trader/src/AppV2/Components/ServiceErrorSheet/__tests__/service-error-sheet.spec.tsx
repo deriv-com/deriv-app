@@ -55,7 +55,7 @@ describe('ServiceErrorSheet', () => {
         );
     };
 
-    it('should render Action Sheet with correct text and button functionality for InsufficientBalance type of error', () => {
+    it('renders the Action Sheet with appropriate message and action for InsufficientBalance error', () => {
         render(mockTrade());
 
         expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
@@ -64,14 +64,14 @@ describe('ServiceErrorSheet', () => {
         expect(default_mock_store.common.resetServicesError).toBeCalled();
     });
 
-    it('should render Action Sheet with correct text for InvalidContractProposal type of error', () => {
+    it('renders the Action Sheet with appropriate message for InvalidContractProposal error', () => {
         default_mock_store.common.services_error.code = 'InvalidContractProposal';
         render(mockTrade());
 
         expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
     });
 
-    it('should render Action Sheet with correct text and buttons functionality for AuthorizationRequired type of error', () => {
+    it('renders the Action Sheet with appropriate message and actions for AuthorizationRequired error', () => {
         const spyRedirectToLogin = jest.spyOn(fileUtils, 'redirectToLogin');
         default_mock_store.common.services_error.code = 'AuthorizationRequired';
         render(mockTrade());
@@ -85,7 +85,7 @@ describe('ServiceErrorSheet', () => {
         expect(spyRedirectToLogin).toBeCalled();
     });
 
-    it('should render Action Sheet with correct text and button functionality for PleaseAuthenticate type of error', () => {
+    it('renders the Action Sheet with appropriate message and action for PleaseAuthenticate error', () => {
         default_mock_store.common.services_error.code = 'PleaseAuthenticate';
         render(mockTrade());
 
@@ -95,7 +95,7 @@ describe('ServiceErrorSheet', () => {
         expect(default_mock_store.common.resetServicesError).toBeCalled();
     });
 
-    it('should render Action Sheet with correct text and button functionality if is_mf_verification_pending_modal_visible === true', () => {
+    it('renders the Action Sheet with appropriate message and action if is_mf_verification_pending_modal_visible === true', () => {
         default_mock_store.common.services_error.code = '';
         default_mock_store.ui.is_mf_verification_pending_modal_visible = true;
         render(mockTrade());
@@ -107,7 +107,7 @@ describe('ServiceErrorSheet', () => {
         expect(default_mock_store.ui.setIsMFVericationPendingModal).toBeCalled();
     });
 
-    it('should not render Action Sheet if there is no services_error', () => {
+    it('does not render the Action Sheet if there is no services_error', () => {
         default_mock_store.common.services_error = {};
         const { container } = render(mockTrade());
 

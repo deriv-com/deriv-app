@@ -19,20 +19,31 @@ function useRemoteConfig(enabled = false) {
     const [data, setData] = useState(initData);
 
     useEffect(() => {
-        enabled &&
+        let isMounted = true;
+
+        if (enabled) {
             remoteConfigQuery()
                 .then(async res => {
-                    const resHash = await ObjectUtils.hashObject(res);
-                    const dataHash = await ObjectUtils.hashObject(data);
-                    if (resHash !== dataHash) {
-                        setData(res);
+                    if (isMounted) {
+                        const resHash = await ObjectUtils.hashObject(res);
+                        const dataHash = await ObjectUtils.hashObject(data);
+                        if (resHash !== dataHash) {
+                            setData(res);
+                        }
                     }
                 })
                 .catch(error => {
-                    // eslint-disable-next-line no-console
-                    console.log('Remote Config error: ', error);
+                    if (isMounted) {
+                        // eslint-disable-next-line no-console
+                        console.log('Remote Config error: ', error);
+                    }
                 });
-    }, [enabled]);
+        }
+
+        return () => {
+            isMounted = false;
+        };
+    }, [enabled, data]);
 
     return { data };
 }

@@ -10,6 +10,19 @@ import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
 import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
 import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
+import { isSafari } from '@deriv/shared';
+
+export const replaceDropdownIconsForSafari = (block_dropdown_instance, type) => {
+    const is_safari = isSafari();
+    if (is_safari && DBotStore?.instance) {
+        const { dashboard } = DBotStore.instance;
+        const is_dark_mode = dashboard.is_dark_mode;
+        const icon = is_dark_mode ? 'arrow-down-white.svg' : 'arrow-down.svg';
+        const dropdown_bold = `${block_dropdown_instance.workspace.options.pathToMedia}${icon}`;
+        const block = block_dropdown_instance.getField(type);
+        block.svgArrow.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', dropdown_bold);
+    }
+};
 
 export const inject_workspace_options = {
     media: `${__webpack_public_path__}media/`,

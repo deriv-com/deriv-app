@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.lists_sort = {
     init() {
@@ -51,6 +51,10 @@ Blockly.Blocks.lists_sort = {
                 'Sorts the items in a given list, by their numeric or alphabetical value, in either ascending or descending order.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'TYPE');
+        replaceDropdownIconsForSafari(this, 'DIRECTION');
     },
     getRequiredValueInputs() {
         return {

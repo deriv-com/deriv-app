@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.math_trig = {
     init() {
@@ -44,6 +44,9 @@ Blockly.Blocks.math_trig = {
             display_name: localize('Trigonometric functions'),
             description: localize('This block performs trigonometric functions.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OP');
     },
     getRequiredValueInputs() {
         return {

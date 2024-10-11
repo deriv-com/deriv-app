@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../../../utils';
 
 Blockly.Blocks.console = {
     init() {
@@ -44,6 +44,9 @@ Blockly.Blocks.console = {
                 "This block displays messages in the developer's console with an input that can be either a string of text, a number, boolean, or an array of data."
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CONSOLE_TYPE');
     },
     getRequiredValueInputs() {
         return {

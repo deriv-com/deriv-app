@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.text_trim = {
     init() {
@@ -34,6 +34,9 @@ Blockly.Blocks.text_trim = {
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'MODE');
     },
     meta() {
         return {

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.math_arithmetic = {
     init() {
@@ -46,6 +46,9 @@ Blockly.Blocks.math_arithmetic = {
             display_name: localize('Arithmetical operations'),
             description: localize('This block performs arithmetic operations between two numbers.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OP');
     },
     getRequiredValueInputs() {
         return {

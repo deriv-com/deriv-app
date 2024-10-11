@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.text_charAt = {
     init() {
@@ -58,6 +58,9 @@ Blockly.Blocks.text_charAt = {
                 'Returns the specific character from a given string of text according to the selected option. '
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'WHERE');
     },
     mutationToDom() {
         const container = document.createElement('mutation');

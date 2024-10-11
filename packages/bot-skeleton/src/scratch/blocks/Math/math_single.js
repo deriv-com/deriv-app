@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.math_single = {
     init() {
@@ -41,6 +41,9 @@ Blockly.Blocks.math_single = {
             display_name: localize('Operations on a given number'),
             description: localize('This block performs the selected operations to a given number.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OP');
     },
     getRequiredValueInputs() {
         return {

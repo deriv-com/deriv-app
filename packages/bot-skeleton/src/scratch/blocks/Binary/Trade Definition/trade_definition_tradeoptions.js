@@ -1,7 +1,12 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu } from '../../../utils';
+import {
+    runIrreversibleEvents,
+    runGroupedEvents,
+    modifyContextMenu,
+    replaceDropdownIconsForSafari,
+} from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -84,6 +89,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                         input_target.setFieldValue(new_value.toString(), 'NUM');
                     }
                 });
+            replaceDropdownIconsForSafari(this, 'DURATIONTYPE_LIST');
         }
 
         if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyoutVisible) {

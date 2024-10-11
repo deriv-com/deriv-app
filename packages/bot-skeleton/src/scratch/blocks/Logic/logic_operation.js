@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.logic_operation = {
     init() {
@@ -38,6 +38,9 @@ Blockly.Blocks.logic_operation = {
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OP');
     },
     meta() {
         return {

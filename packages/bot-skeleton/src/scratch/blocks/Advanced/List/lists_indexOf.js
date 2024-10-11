@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.lists_indexOf = {
     init() {
@@ -48,6 +48,9 @@ Blockly.Blocks.lists_indexOf = {
             display_name: localize('List item position'),
             description: localize('This block gives you the position of an item in a given list.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'END');
     },
     getRequiredValueInputs() {
         return {

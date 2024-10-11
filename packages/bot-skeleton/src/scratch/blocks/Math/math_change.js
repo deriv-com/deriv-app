@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.math_change = {
     /**
@@ -61,6 +61,9 @@ Blockly.Blocks.math_change = {
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CONSTANT');
     },
 };
 

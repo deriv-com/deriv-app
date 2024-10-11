@@ -102,17 +102,6 @@ const BotBuilder = observer(() => {
             },
         });
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (isSafari()) {
-                const images: NodeListOf<SVGImageElement> = document.querySelectorAll('.blocklyEditableText image');
-                images.forEach((img: SVGImageElement) => {
-                    const newIconUrl = getImageLocation(is_dark_mode_on ? 'arrow-down-white.svg' : 'arrow-down.svg');
-                    img?.setAttributeNS?.('http://www.w3.org/1999/xlink', 'xlink:href', newIconUrl);
-                });
-            }
-        }, 100);
-    }, [is_dark_mode_on]);
 
     return (
         <>

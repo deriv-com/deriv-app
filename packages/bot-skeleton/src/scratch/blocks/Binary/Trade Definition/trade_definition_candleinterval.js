@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.trade_definition_candleinterval = {
     init() {
@@ -27,6 +27,7 @@ Blockly.Blocks.trade_definition_candleinterval = {
         if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
+        replaceDropdownIconsForSafari(this, 'CANDLEINTERVAL_LIST');
 
         this.enforceLimitations();
     },

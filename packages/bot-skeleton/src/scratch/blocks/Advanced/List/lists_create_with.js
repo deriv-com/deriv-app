@@ -1,6 +1,11 @@
 import { localize } from '@deriv/translations';
 import { plusIconDark } from '../../images';
-import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu } from '../../../utils';
+import {
+    runIrreversibleEvents,
+    runGroupedEvents,
+    modifyContextMenu,
+    replaceDropdownIconsForSafari,
+} from '../../../utils';
 
 Blockly.Blocks.lists_create_with = {
     protected_statements: ['STACK'],
@@ -61,10 +66,10 @@ Blockly.Blocks.lists_create_with = {
         });
     },
     onchange(event) {
+        replaceDropdownIconsForSafari(this, 'VARIABLE');
         if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
-
         if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
             // Only allow "text_statement" type blocks
             const blocks_in_stack = this.getBlocksInStatement('STACK');

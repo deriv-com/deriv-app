@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { getContractTypeOptions } from '../../../shared';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.purchase = {
     init() {
@@ -40,6 +40,7 @@ Blockly.Blocks.purchase = {
         if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
+        replaceDropdownIconsForSafari(this, 'PURCHASE_LIST');
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.populatePurchaseList(event);

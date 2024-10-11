@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../../../utils';
 import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.notify = {
@@ -52,6 +52,10 @@ Blockly.Blocks.notify = {
                 'This block displays a message. You can specify the color of the message and choose from 6 different sound options.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'NOTIFICATION_TYPE');
+        replaceDropdownIconsForSafari(this, 'NOTIFICATION_SOUND');
     },
     getRequiredValueInputs() {
         return {

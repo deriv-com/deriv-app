@@ -63,7 +63,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     </li>
                     <li>
                         <Localize
-                            i18n_default_text='Make sure to copy the Deriv {{currency}} Wallet address to your crypto wallet.'
+                            i18n_default_text='Make sure to copy the Deriv {{currency}} account address above and paste it into your crypto wallet.'
                             values={{ currency }}
                         />
                     </li>

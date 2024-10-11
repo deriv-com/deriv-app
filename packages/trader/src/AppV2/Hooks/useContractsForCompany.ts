@@ -149,6 +149,7 @@ const useContractsForCompany = () => {
                         contract_types[type].barrier_count === 0
                             ? 'euro_atm'
                             : (contract.barrier_category as TConfig['barrier_category']);
+                    config.default_stake = contract.default_stake;
 
                     available_contract_types[type].config = config;
                 });

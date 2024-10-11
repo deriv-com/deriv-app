@@ -14,44 +14,44 @@ describe('Digit', () => {
     };
     const percentage_testid = 'dt_digit_stats_percentage';
 
-    it('should not render digit if digit is passed as undefined despite the type restriction', () => {
+    it('does not render digit if digit is passed as undefined despite the type restriction', () => {
         const { container } = render(<Digit {...mock_props} digit={undefined as unknown as number} />);
 
         expect(container).toBeEmptyDOMElement();
     });
-    it('should render skeleton loader if digit_stats is empty', () => {
+    it('renders skeleton loader if digit_stats is empty', () => {
         render(<Digit {...mock_props} digit_stats={[]} />);
 
         expect(screen.getByTestId('square-skeleton')).toBeInTheDocument();
     });
-    it('should render an enabled digit button with stats if digit and digit_stats are defined', () => {
+    it('renders an enabled digit button with stats if digit and digit_stats are defined', () => {
         render(<Digit {...mock_props} />);
 
         expect(screen.getByRole('button', { name: '5' })).toBeEnabled();
         expect(screen.getByText('8.6%')).toBeInTheDocument();
     });
-    it('should render digit button without stats is digit_stats for the digit is not available', () => {
+    it('renders digit button without stats is digit_stats for the digit is not available', () => {
         render(<Digit {...mock_props} digit_stats={[]} />);
 
         expect(screen.getByRole('button', { name: '5' })).toBeEnabled();
         expect(screen.queryByText(/%/)).not.toBeInTheDocument();
     });
-    it('should render a disabled digit button if is_disabled={true}', () => {
+    it('renders a disabled digit button if is_disabled={true}', () => {
         render(<Digit {...mock_props} is_disabled />);
 
         expect(screen.getByRole('button', { name: '5' })).toBeDisabled();
     });
-    it('should render a digit button with correct classname if is_active={true}', () => {
+    it('renders a digit button with correct classname if is_active={true}', () => {
         render(<Digit {...mock_props} is_active />);
 
         expect(screen.getByRole('button', { name: '5' })).toHaveClass('active');
     });
-    it('should render percentage with correct classname if is_min={true}', () => {
+    it('renders percentage with correct classname if is_min={true}', () => {
         render(<Digit {...mock_props} is_min />);
 
         expect(screen.getByTestId(percentage_testid)).toHaveClass('percentage--min');
     });
-    it('should render percentage with correct classname if is_max={true}', () => {
+    it('renders percentage with correct classname if is_max={true}', () => {
         render(<Digit {...mock_props} is_max />);
 
         expect(screen.getByTestId(percentage_testid)).toHaveClass('percentage--max');

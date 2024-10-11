@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Popover, Icon, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
@@ -14,7 +13,6 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const active_account = accounts?.[loginid ?? ''];
     const token = active_account ? active_account.token : null;
-    // const language = localStorage.getItem('i18n_language')?.toLowerCase() || 'en';
 
     const liveChat = useLiveChat(has_cookie_account, loginid);
     const freshChat = useFreshChat(token);
@@ -25,9 +23,6 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     });
 
     const chat = enable_freshworks_live_chat ? freshChat : liveChat;
-    // useEffect(() => {
-    //     //chat is ready
-    // }, [chat.isReady]);
 
     if (!chat.isReady) return null;
 

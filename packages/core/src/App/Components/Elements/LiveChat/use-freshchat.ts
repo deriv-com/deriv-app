@@ -9,19 +9,8 @@ const useFreshChat = (token: string | null) => {
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined') {
-                // window.fcWidget.on('widget:loaded', () => {
-                //     // eslint-disable-next-line no-console
-                //     console.log('fc widget loaded');
-                //     window.fcWidget?.user.setLocale(language.toLowerCase());
-                //     setIsReady(true);
-                //     clearInterval(intervalId);
-                // });
                 if (window.fcWidget?.isInitialized() == true && !isReady) {
-                    // eslint-disable-next-line no-console
-                    console.log('fc widget loaded');
-                    window.fcWidget?.user.setLocale(language.toLowerCase());
-                    // eslint-disable-next-line no-console
-                    console.log('fc lang set to', language.toLowerCase());
+                    // window.fcWidget?.user.setLocale(language.toLowerCase());
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
@@ -37,7 +26,7 @@ const useFreshChat = (token: string | null) => {
 
                 const intervalId = setInterval(() => checkFcWidget(intervalId), 500);
 
-                return () => clearInterval(intervalId); // Cleanup interval on unmount or script change
+                return () => clearInterval(intervalId);
             }
         };
 

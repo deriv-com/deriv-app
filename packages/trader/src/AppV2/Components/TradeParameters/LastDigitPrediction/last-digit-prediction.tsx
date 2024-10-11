@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { ActionSheet, CaptionText, TextField } from '@deriv-com/quill-ui';
-import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import LastDigitSelector from './last-digit-selector';
@@ -71,7 +70,7 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                 </ActionSheet.Root>
             </>
         );
-    if (!digit_stats.length) return <Skeleton height={182} />;
+
     return (
         <div className='last-digit-prediction'>
             <CaptionText size='sm' className='last-digit-prediction__title'>

@@ -19,6 +19,11 @@ describe('Digit', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
+    it('should render skeleton loader if digit_stats is empty', () => {
+        render(<Digit {...mock_props} digit_stats={[]} />);
+
+        expect(screen.getByTestId('square-skeleton')).toBeInTheDocument();
+    });
     it('should render an enabled digit button with stats if digit and digit_stats are defined', () => {
         render(<Digit {...mock_props} />);
 

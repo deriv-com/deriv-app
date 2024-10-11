@@ -134,18 +134,18 @@ describe('getChartHeight', () => {
 });
 
 describe('checkIsServiceModalError', () => {
-    it('should return false if services_error is empty object', () => {
+    it('returns false if services_error is empty object', () => {
         expect(checkIsServiceModalError({ services_error: {} })).toBe(false);
     });
-    it('should return true if services_error has a proper code', () => {
+    it('returns true if services_error has appropriate code', () => {
         expect(checkIsServiceModalError({ services_error: { code: 'InsufficientBalance' } })).toBe(true);
         expect(checkIsServiceModalError({ services_error: { code: 'InvalidContractProposal' } })).toBe(true);
         expect(checkIsServiceModalError({ services_error: { code: 'PleaseAuthenticate' } })).toBe(true);
     });
-    it('should return true if services_error code is AuthorizationRequired and type is buy', () => {
+    it('returns true if services_error code is AuthorizationRequired and type is buy', () => {
         expect(checkIsServiceModalError({ services_error: { code: 'AuthorizationRequired', type: 'buy' } })).toBe(true);
     });
-    it('should return true if is_mf_verification_pending_modal_visible is true', () => {
+    it('returns true if is_mf_verification_pending_modal_visible is true', () => {
         expect(checkIsServiceModalError({ services_error: {}, is_mf_verification_pending_modal_visible: true })).toBe(
             true
         );

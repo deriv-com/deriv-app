@@ -330,6 +330,24 @@ $MIN_HEIGHT_FLOATING: calc(
                 max-width: unset;
             }
 
+            &--phone-verification-livechat-link {
+                color: var(--text-general);
+            }
+
+            &--phone-number-input {
+                .dc-input__container {
+                    .dc-input__field {
+                        @include rtl {
+                            text-align: right;
+
+                            &[value] {
+                                direction: ltr;
+                            }
+                        }
+                    }
+                }
+            }
+
             &--2-cols {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -342,6 +360,21 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-rows: 1fr 1fr;
                 max-width: 40rem;
                 margin-bottom: 1rem;
+            }
+
+            &--phone {
+                &_container {
+                    display: flex;
+                }
+
+                &_input {
+                    width: 100%;
+
+                    .dc-input__container {
+                        border-start-end-radius: 0;
+                        border-end-end-radius: 0;
+                    }
+                }
             }
 
             .datepicker {

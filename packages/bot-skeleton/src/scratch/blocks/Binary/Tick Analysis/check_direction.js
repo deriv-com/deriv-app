@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.check_direction = {
     init() {
@@ -32,6 +32,9 @@ Blockly.Blocks.check_direction = {
                 'This block is used to determine if the market price moves in the selected direction or not. It gives you a value of “True” or “False”.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CHECK_DIRECTION');
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../../constants/config';
-import { modifyContextMenu } from '../../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../../utils';
 
 Blockly.Blocks.read_ohlc_obj = {
     init() {
@@ -37,6 +37,9 @@ Blockly.Blocks.read_ohlc_obj = {
             display_name: localize('Read candle value (2)'),
             description: localize('This block gives you the selected candle value.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OHLCFIELD_LIST');
     },
     getRequiredValueInputs() {
         return {

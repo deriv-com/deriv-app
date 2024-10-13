@@ -63,7 +63,7 @@ Blockly.Blocks.math_change = {
         modifyContextMenu(menu);
     },
     onchange() {
-        replaceDropdownIconsForSafari(this, 'CONSTANT');
+        replaceDropdownIconsForSafari(this, 'VAR');
     },
 };
 

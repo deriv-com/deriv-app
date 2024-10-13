@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../../constants/config';
-import { modifyContextMenu } from '../../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../../utils';
 
 Blockly.Blocks.balance = {
     init() {
@@ -42,6 +42,9 @@ Blockly.Blocks.balance = {
                 'This block gives you the balance of your account either as a number or a string of text.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'BALANCE_TYPE');
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.get_ohlc = {
     init() {
@@ -38,6 +38,9 @@ Blockly.Blocks.get_ohlc = {
             display_name: localize('Get candle'),
             description: localize('This block gives you a specific candle from within the selected time interval.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CANDLEINTERVAL_LIST');
     },
     getRequiredValueInputs() {
         return {

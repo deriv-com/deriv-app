@@ -11,7 +11,7 @@ const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
         <Text size='xs' line_height='s'>
             <Localize
                 i18n_default_text='Multipliers let you trade with leverage and limit your risk to your stake. Learn more about <0>multipliers trading</0>.'
-                components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
+                components={[<StaticUrl key={0} className='options' href='trade/multipliers/' />]}
             />
         </Text>
     ) : (
@@ -19,7 +19,7 @@ const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
             <Text size='xs' line_height='s'>
                 <Localize
                     i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. Learn more about <0>options trading</0>.'
-                    components={[<StaticUrl key={0} className='options' href='/trade/options' />]}
+                    components={[<StaticUrl key={0} className='options' href='trade/options' />]}
                 />
             </Text>
         </div>

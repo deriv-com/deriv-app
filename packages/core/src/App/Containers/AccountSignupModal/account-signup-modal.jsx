@@ -56,6 +56,8 @@ const AccountSignup = ({
 
     // didMount lifecycle hook
     React.useEffect(() => {
+        // eslint-disable-next-line no-console
+        console.log('outside page load event');
         const pageLoadEvent = {
             page: 'onboarding',
             event: {
@@ -68,6 +70,9 @@ const AccountSignup = ({
                 },
             },
         };
+
+        // eslint-disable-next-line no-console
+        console.log('Tracking page load event:', pageLoadEvent); // Log the page load event
         cacheTrackEvents.pageLoadEvent(pageLoadEvent);
 
         WS.wait('website_status', 'residence_list').then(() => {

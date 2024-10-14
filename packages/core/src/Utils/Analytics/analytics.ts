@@ -32,7 +32,8 @@ const cacheTrackEvents = {
             for (let i = 0; i < string.length; i++) {
                 // eslint-disable-next-line no-bitwise
                 hash ^= string.charCodeAt(i);
-                hash = Math.floor((hash * 0x01000193) / Math.pow(2, 32));
+                // eslint-disable-next-line no-bitwise
+                hash = (hash * 0x01000193) >>> 0;
             }
             return hash;
         };
@@ -173,6 +174,10 @@ const cacheTrackEvents = {
         items: Array<{ pages?: string[]; excludedPages?: string[]; event: Event; callback?: () => Event }>
     ) => {
         const pathname = window.location.pathname.slice(1);
+
+        if (!Array.isArray(items)) {
+            return cacheTrackEvents;
+        }
 
         items.forEach(({ pages = [], excludedPages = [], event, callback = null }) => {
             let dispatch = false;

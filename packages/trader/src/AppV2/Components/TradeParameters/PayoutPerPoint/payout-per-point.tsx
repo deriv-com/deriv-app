@@ -95,6 +95,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 readOnly
                 variant='fill'
                 value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}

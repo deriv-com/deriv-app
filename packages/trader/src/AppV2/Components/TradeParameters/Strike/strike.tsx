@@ -102,6 +102,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 readOnly
                 variant='fill'
                 value={barrier_1}

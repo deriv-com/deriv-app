@@ -156,6 +156,7 @@ const DayInput = ({
                     removeFocus(e);
                     setOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 leftIcon={<LabelPairedCalendarSmRegularIcon width={24} height={24} />}
             />
 
@@ -170,6 +171,7 @@ const DayInput = ({
                     removeFocus(e);
                     setOpenTimePicker(true);
                 }}
+                onMouseDown={removeFocus}
                 leftIcon={<LabelPairedClockThreeSmRegularIcon width={24} height={24} />}
             />
 

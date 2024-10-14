@@ -51,6 +51,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 readOnly
                 variant='fill'
                 value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}

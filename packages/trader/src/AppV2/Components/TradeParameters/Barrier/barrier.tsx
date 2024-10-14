@@ -54,6 +54,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>

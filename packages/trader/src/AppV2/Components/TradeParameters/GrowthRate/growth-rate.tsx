@@ -103,6 +103,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 readOnly
                 value={`${getGrowthRatePercentage(growth_rate)}%`}
                 variant='fill'

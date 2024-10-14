@@ -84,6 +84,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
                 readOnly
                 value={getRiskManagementText()}
                 variant='fill'

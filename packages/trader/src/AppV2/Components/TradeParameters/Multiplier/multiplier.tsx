@@ -72,6 +72,7 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onMouseDown={removeFocus}
             />
             <ActionSheet.Root
                 expandable={false}

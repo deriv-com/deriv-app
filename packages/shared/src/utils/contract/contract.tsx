@@ -150,6 +150,8 @@ export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => 
 
 export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
+export const isRiseFallContract = (contract_type = '') => /RISE_FALL/i.test(contract_type);
+
 export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract_type);
 
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
@@ -171,6 +173,8 @@ export const isTicksContract = (contract_type = '') => /TICK/i.test(contract_typ
 export const isResetContract = (contract_type = '') => /RESET/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
+
+export const isUpDownContract = (contract_type = '') => /rise_fall|high_low/i.test(contract_type);
 
 export const getAccuBarriersDefaultTimeout = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;

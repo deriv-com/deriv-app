@@ -44,6 +44,8 @@ export const isNavigationFromDerivGO = () => window.sessionStorage.getItem('conf
 
 export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.platform') === 'dp2p';
 
+export const isNavigationFromP2PV2 = () => window.sessionStorage.getItem('config.platform') === 'p2p-v2';
+
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;
@@ -97,6 +99,7 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
         return { name: platform_name.DXtrade, route: routes.dxtrade };
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
+    if (isNavigationFromP2PV2()) return { name: 'P2P', ref: 'p2p_v2' };
     if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
         return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
@@ -161,4 +164,14 @@ export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistor
     }
 
     return false;
+};
+
+export const isDtraderV2Enabled = (is_mobile: boolean) => {
+    const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+
+    return (
+        is_dtrader_v2 &&
+        is_mobile &&
+        (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
+    );
 };

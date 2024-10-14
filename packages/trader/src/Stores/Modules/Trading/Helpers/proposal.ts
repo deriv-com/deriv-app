@@ -39,6 +39,9 @@ type TObjExpiry = {
 type TValidationParams =
     | {
           validation_params?: {
+              payout?: {
+                  max: string;
+              };
               max_payout?: string;
               max_ticks?: number;
               stake?: {
@@ -164,7 +167,7 @@ const setProposalAccumulator = (store: TTradeStore, obj_accumulator: TObjAccum) 
     }
 };
 
-const createProposalRequestForContract = (store: TTradeStore, type_of_contract: string) => {
+export const createProposalRequestForContract = (store: TTradeStore, type_of_contract: string) => {
     const obj_accumulator: TObjAccum = {};
     const obj_expiry: TObjExpiry = {};
     const obj_multiplier: TObjMultiplier = {};

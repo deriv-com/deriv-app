@@ -7,9 +7,10 @@ import OnboardingVideo from './onboarding-video';
 
 type TOnboardingGuideProps = {
     type?: 'trade_page' | 'positions_page';
+    callback?: () => void;
 };
 
-const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
+const OnboardingGuide = ({ type = 'trade_page', callback }: TOnboardingGuideProps) => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [should_run_guide, setShouldRunGuide] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
@@ -26,6 +27,7 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     const onFinishGuide = React.useCallback(() => {
         setShouldRunGuide(false);
         setGuideDtraderV2({ ...guide_dtrader_v2, [type]: true });
+        callback?.();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setGuideDtraderV2]);
 
@@ -42,7 +44,7 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     };
 
     const modal_content = {
-        image: <div className='video-placeholder' />,
+        image: <OnboardingVideo type={type} />,
         title: <Localize i18n_default_text='View your positions' />,
         content: (
             <Localize i18n_default_text='You can view your open and closed positions here. Tap an item for more details.' />
@@ -51,7 +53,6 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
         primaryButtonCallback: onGuideSkip,
         ...(is_trade_page_guide
             ? {
-                  image: <OnboardingVideo />,
                   title: <Localize i18n_default_text='Welcome to the new Deriv Trader' />,
                   content: (
                       <Localize i18n_default_text='Enjoy a smoother, more intuitive trading experience. Here’s a quick tour to get you started.' />
@@ -72,7 +73,6 @@ const OnboardingGuide = ({ type = 'trade_page' }: TOnboardingGuideProps) => {
     return (
         <React.Fragment>
             <Modal
-                handleBarIndex={2}
                 isOpened={is_modal_open}
                 isNonExpandable
                 isMobile

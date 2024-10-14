@@ -1,51 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import { ActionSheet, CaptionText, Text } from '@deriv-com/quill-ui';
+import React, { useState } from 'react';
+import { ActionSheet } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import DurationEndTimePicker from './datepicker';
 import { observer } from '@deriv/stores';
 import DurationChips from './chips';
 import DurationWheelPicker from './wheelpicker';
+import DayInput from './day';
 
 const DurationActionSheetContainer = observer(
-    ({ selected_hour, setSelectedHour }: { selected_hour: number[]; setSelectedHour: (arg: number[]) => void }) => {
-        const { duration, duration_unit, duration_units_list, onChangeMultiple, expiry_time } = useTraderStore();
-        const [unit, setUnit] = useState(expiry_time ? 'et' : duration_unit);
+    ({
+        selected_hour,
+        setSelectedHour,
+        unit,
+        end_date,
+        setEndDate,
+        setUnit,
+        end_time,
+        setEndTime,
+        expiry_time_string,
+        setExpiryTimeString,
+    }: {
+        selected_hour: number[];
+        setSelectedHour: (arg: number[]) => void;
+        unit: string;
+        end_date: Date;
+        setEndDate: (arg: Date) => void;
+        setUnit: (arg: string) => void;
+        end_time: string;
+        setEndTime: (arg: string) => void;
+        expiry_time_string: string;
+        setExpiryTimeString: (arg: string) => void;
+    }) => {
+        const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
-        const [expiry_date_data, setExpiryDate] = useState<Date>(new Date());
-        const [end_time, setEndTime] = useState<string>('');
-        const [toggle_date_picker, setToggleDatePicker] = useState<boolean>(false);
-        const [current_gmt_time, setCurrentGmtTime] = useState<string>('');
-        const [is_wheelpicker_loading, setIsWheelPickerLoading] = useState<boolean>(false);
-        const updateCurrentGmtTime = () => {
-            const now = new Date();
-            const gmt_time = now.toLocaleTimeString('en-GB', { timeZone: 'GMT', hour12: false });
-            setCurrentGmtTime(gmt_time);
-        };
-
-        useEffect(() => {
-            updateCurrentGmtTime();
-            const interval = setInterval(updateCurrentGmtTime, 60000);
-            return () => clearInterval(interval);
-        }, []);
+        const [temp_expiry_time, setTempExpiryTime] = React.useState(expiry_time_string);
 
         const onAction = () => {
+            setExpiryTimeString(temp_expiry_time);
             if (unit === 'h') {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
-                setSelectedHour([minutes]);
+                const hour = Math.floor(duration / 60);
+                const min = duration % 60;
+                setSelectedHour([hour, min]);
+                setEndTime('');
                 onChangeMultiple({
                     duration_unit: 'm',
                     duration: Number(minutes),
                     expiry_time: null,
                     expiry_type: 'duration',
                 });
-            } else if (unit === 'et') {
+            } else if (unit === 'd') {
+                const difference_in_time = end_date.getTime() - new Date().getTime();
+                const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
                 setSelectedHour([]);
-                onChangeMultiple({
-                    expiry_time: end_time,
-                    expiry_type: 'endtime',
-                });
+                if (end_time) {
+                    onChangeMultiple({
+                        expiry_time: end_time,
+                        expiry_type: 'endtime',
+                    });
+                } else {
+                    setEndTime('');
+                    onChangeMultiple({
+                        duration_unit: 'd',
+                        duration: Number(difference_in_days),
+                        expiry_time: null,
+                        expiry_type: 'duration',
+                    });
+                }
             } else {
+                setEndTime('');
                 setSelectedHour([]);
                 onChangeMultiple({
                     duration_unit: unit,
@@ -58,37 +81,14 @@ const DurationActionSheetContainer = observer(
 
         const onChangeUnit = React.useCallback(
             (value: string) => {
-                setIsWheelPickerLoading(true);
                 setUnit(value);
+                setSelectedTime([]);
                 if (value !== 'h') {
                     setSelectedHour([]);
                 }
-                const timeoutId = setTimeout(() => {
-                    setIsWheelPickerLoading(false);
-                }, 500);
-
-                return () => clearTimeout(timeoutId);
             },
             [setUnit, setSelectedHour]
         );
-
-        const handleSelectExpiryDate = (date: Date) => {
-            setExpiryDate(date);
-            const current_date = new Date();
-            const time_difference = +date - +current_date;
-            const day_difference = Math.ceil(time_difference / (1000 * 60 * 60 * 24));
-            setSelectedTime([day_difference]);
-            setToggleDatePicker(!toggle_date_picker);
-        };
-
-        useEffect(() => {
-            if (duration_unit === 'm' && duration > 59) {
-                const hour = Math.floor(duration / 60);
-                const minutes = duration % 60;
-                setSelectedHour([hour, minutes]);
-                setUnit('h');
-            }
-        }, [duration, duration_unit, setSelectedHour]);
 
         const setWheelPickerValue = (index: number, value: string | number) => {
             const num_value = Number(value);
@@ -96,40 +96,33 @@ const DurationActionSheetContainer = observer(
                 const arr = selected_hour;
                 arr[index] = num_value;
                 setSelectedHour(arr);
-            } else if (unit == 'd') {
-                if (selected_time[0] !== num_value) {
-                    const updated_date = new Date();
-                    updated_date.setDate(updated_date.getDate() + num_value);
-                    setSelectedTime([num_value]);
-                    setExpiryDate(updated_date);
-                }
             } else {
                 setSelectedTime([num_value]);
             }
         };
+
         return (
             <div className='duration-container'>
                 <ActionSheet.Header title={<Localize i18n_default_text='Duration' />} />
                 <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
-                <DurationWheelPicker
-                    unit={unit}
-                    setEndTime={setEndTime}
-                    setWheelPickerValue={setWheelPickerValue}
-                    selected_hour={selected_hour}
-                    is_wheelpicker_loading={is_wheelpicker_loading}
-                    selected_time={selected_time}
-                    toggle_date_picker={toggle_date_picker}
-                />
-                {unit == 'd' && (
-                    <DurationEndTimePicker setExpiryDate={handleSelectExpiryDate} expiry_date={expiry_date_data} />
+                {unit !== 'd' && (
+                    <DurationWheelPicker
+                        unit={unit}
+                        setWheelPickerValue={setWheelPickerValue}
+                        selected_hour={selected_hour}
+                        selected_time={selected_time}
+                    />
                 )}
-                {unit == 'et' && (
-                    <div className='duration-container__endtime'>
-                        <CaptionText color='quill-typography__color--subtle'>
-                            <Localize i18n_default_text='Current time' />
-                        </CaptionText>
-                        <Text size='sm'>{`${current_gmt_time} GMT`}</Text>
-                    </div>
+
+                {unit === 'd' && (
+                    <DayInput
+                        setEndTime={setEndTime}
+                        setEndDate={setEndDate}
+                        end_date={end_date}
+                        end_time={end_time}
+                        setTempExpiryTime={setTempExpiryTime}
+                        temp_expiry_time={temp_expiry_time}
+                    />
                 )}
                 <ActionSheet.Footer
                     alignment='vertical'

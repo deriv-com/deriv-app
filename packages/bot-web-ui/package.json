@@ -71,7 +71,7 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.35.0",
+        "@deriv-com/ui": "1.36.2",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",
@@ -89,7 +89,7 @@
         "crc-32": "^1.2.0",
         "dompurify": "^3.1.0",
         "formik": "^2.1.4",
-        "gh-pages": "^2.1.1",
+        "gh-pages": "^6.1.1",
         "immutable": "^3.8.2",
         "lodash.debounce": "^4.0.8",
         "lz-string": "^1.4.4",

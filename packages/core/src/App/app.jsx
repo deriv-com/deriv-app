@@ -26,7 +26,6 @@ import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
-import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
@@ -46,6 +45,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
     const { preferred_language } = root_store.client;
+    const { is_dark_mode_on } = root_store.ui;
+    const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
+    const is_dtrader_v2 =
+        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
     const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
@@ -65,9 +68,6 @@ const AppWithoutTranslation = ({ root_store }) => {
 
             await delay(3000);
             window.LiveChatWidget.init();
-
-            await delay(2000);
-            initHotjar(root_store.client);
         };
 
         initializeTranslations();
@@ -109,7 +109,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [root_store.client.email]);
 
     const getLoader = () =>
-        isDTraderV2() ? (
+        is_dtrader_v2 ? (
             <Loading.DTraderV2
                 initial_app_loading
                 is_contract_details={location.pathname.startsWith('/contract/')}
@@ -119,6 +119,20 @@ const AppWithoutTranslation = ({ root_store }) => {
         ) : (
             <Loading />
         );
+
+    React.useEffect(() => {
+        const html = document?.querySelector('html');
+
+        if (!html || !is_dtrader_v2) return;
+        if (is_dark_mode) {
+            html.classList?.remove('light');
+            html.classList?.add('dark');
+        } else {
+            html.classList?.remove('dark');
+            html.classList?.add('light');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

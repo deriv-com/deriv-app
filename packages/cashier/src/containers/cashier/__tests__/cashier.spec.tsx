@@ -101,11 +101,23 @@ describe('<Cashier />', () => {
                 toggleCashier: jest.fn(),
             },
             client: {
+                active_accounts: [],
+                currency: 'USD',
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: false,
-                active_accounts: [],
-                is_crypto: jest.fn(),
+                website_status: {
+                    currencies_config: {
+                        USD: {
+                            //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                            platform: { cashier: ['doughflow'], ramp: [] },
+                        },
+                        BTC: {
+                            //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                            platform: { cashier: ['crypto'], ramp: ['ramp'] },
+                        },
+                    },
+                },
             },
             notifications: {
                 showAccountSwitchToRealNotification: jest.fn(),
@@ -167,10 +179,10 @@ describe('<Cashier />', () => {
     });
 
     it('renders the component if logged in and account setting is loaded', () => {
+        mockRootStore.client.currency = 'BTC';
         mockRootStore.client.is_account_setting_loaded = true;
         mockRootStore.client.is_logged_in = true;
         mockRootStore.client.is_logging_in = false;
-        mockRootStore.client.is_crypto = jest.fn(() => true);
         mockRootStore.modules.cashier.general_store.is_cashier_onboarding = true;
 
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);

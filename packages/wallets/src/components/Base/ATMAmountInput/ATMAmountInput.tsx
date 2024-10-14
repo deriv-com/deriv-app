@@ -41,6 +41,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
         value: formattedValue,
     } = useInputATMFormatter(inputRef, value, {
         fractionDigits,
+        locale: 'en-US',
         maxDigits,
     });
 

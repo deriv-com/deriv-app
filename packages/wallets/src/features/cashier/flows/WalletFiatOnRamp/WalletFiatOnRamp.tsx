@@ -1,20 +1,18 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { FiatOnRampModule } from '../../modules';
 
 const WalletFiatOnRamp = () => {
-    const { data } = useActiveWalletAccount();
+    const { data: activeWallet } = useActiveWalletAccount();
     const history = useHistory();
-    const isCrypto = useMemo(() => {
-        return data?.currency_config ? data.currency_config.is_crypto : true;
-    }, [data?.currency_config]);
+    const isOnrampAvailable = activeWallet?.currency_config && activeWallet.currency_config.platform.ramp.length > 0;
 
     useEffect(() => {
-        if (!isCrypto) {
+        if (!isOnrampAvailable) {
             history.push('/wallet/deposit');
         }
-    }, [history, isCrypto]);
+    }, [history, isOnrampAvailable]);
 
     return <FiatOnRampModule />;
 };

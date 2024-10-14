@@ -249,8 +249,9 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
+            //@ts-expect-error we only need partial values
             website_status: {
-                dx_trade_status: {
+                dxtrade_status: {
                     all: 0,
                     demo: 0,
                     real: 0,
@@ -778,6 +779,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),
                 setPayoutPerPoint: jest.fn(),
+                setDefaultStake: jest.fn(),
                 stake_boundary: {},
                 start_date: 0,
                 stop_loss: 0,

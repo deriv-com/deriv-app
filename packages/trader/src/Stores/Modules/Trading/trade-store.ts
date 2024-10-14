@@ -1,46 +1,47 @@
 import * as Symbol from './Actions/symbol';
 import {
-    WS,
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES,
     ChartBarrierStore,
     cloneObject,
+    CONTRACT_TYPES,
     convertDurationLimit,
     extractInfoFromShortcode,
     findFirstOpenMarket,
+    formatMoney,
     getBarrierPipSize,
+    getCardLabelsV2,
+    getContractPath,
+    getContractSubtype,
+    getCurrencyDisplayCode,
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
-    getContractSubtype,
     getTradeNotificationMessage,
-    isBarrierSupported,
+    getTradeURLParams,
+    hasBarrier,
     isAccumulatorContract,
+    isBarrierSupported,
     isCryptocurrency,
+    isDtraderV2Enabled,
     isEmptyObject,
+    isHighLow,
     isMarketClosed,
     isMultiplierContract,
+    isTouchContract,
     isTurbosContract,
-    isVanillaFxContract,
+    isUpDownContract,
     isVanillaContract,
+    isVanillaFxContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
+    routes,
     setLimitOrderBarriers,
+    setTradeURLParams,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
-    getCurrencyDisplayCode,
-    BARRIER_COLORS,
-    BARRIER_LINE_STYLES,
     TRADE_TYPES,
-    hasBarrier,
-    isHighLow,
-    CONTRACT_TYPES,
-    setTradeURLParams,
-    getTradeURLParams,
-    isTouchContract,
-    getCardLabelsV2,
-    formatMoney,
-    getContractPath,
-    routes,
-    isDtraderV2Enabled,
+    WS,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -242,6 +243,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list: Array<TTextValueStrings> = [];
     currency = '';
+    default_stake: number | undefined;
     stake_boundary: Partial<TStakeBoundary> = {};
 
     // Duration
@@ -417,6 +419,7 @@ export default class TradeStore extends BaseStore {
             contract_types_list: observable,
             contract_types_list_v2: observable,
             currency: observable,
+            default_stake: observable,
             digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
@@ -467,6 +470,7 @@ export default class TradeStore extends BaseStore {
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             setHoveredBarrier: action.bound,
+            setDefaultStake: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
             setDigitStats: action.bound,
@@ -967,6 +971,10 @@ export default class TradeStore extends BaseStore {
         this.hovered_barrier = hovered_value;
     }
 
+    setDefaultStake(default_stake?: number) {
+        this.default_stake = default_stake;
+    }
+
     setPreviousSymbol(symbol: string) {
         if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
     }
@@ -1280,27 +1288,32 @@ export default class TradeStore extends BaseStore {
         // when accumulator is selected, we need to change chart type to mountain and granularity to 0
         // and we need to restore previous chart type and granularity when accumulator is unselected
         const {
-            prev_chart_type,
-            prev_granularity,
             chart_type,
-            granularity,
-            savePreviousChartMode,
+            saved_chart_type,
+            saved_granularity,
+            setChartTypeAndGranularity,
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
-        if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
-            savePreviousChartMode(chart_type, granularity);
-            updateGranularity(0);
-            updateChartType('line');
-        } else if (
-            (obj_new_values.contract_type || obj_new_values.symbol) &&
-            prev_chart_type &&
-            prev_granularity &&
-            (prev_chart_type !== chart_type || prev_granularity !== granularity)
-        ) {
-            updateGranularity(prev_granularity);
-            updateChartType(prev_chart_type);
-            savePreviousChartMode('', null);
+        const has_line_chart =
+            isAccumulatorContract(obj_new_values.contract_type) ||
+            isDigitTradeType(obj_new_values.contract_type) ||
+            isUpDownContract(obj_new_values.contract_type);
+        if (obj_new_values.contract_type) {
+            if (!has_line_chart && (saved_chart_type || !Number.isNaN(saved_granularity))) {
+                if (saved_chart_type) {
+                    updateChartType(saved_chart_type);
+                }
+                if (!Number.isNaN(saved_granularity)) {
+                    updateGranularity(saved_granularity);
+                }
+            } else if (has_line_chart) {
+                setChartTypeAndGranularity('line', 0);
+                setTradeURLParams({ chartType: 'line', granularity: 0 });
+            } else {
+                setChartTypeAndGranularity('candles', 60);
+                setTradeURLParams({ chartType: 'candles', granularity: 60 });
+            }
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx
@@ -1325,6 +1338,11 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
+                if (this.is_dtrader_v2_enabled)
+                    this.setV2ParamsInitialValues({
+                        value: obj_new_values.amount ?? '',
+                        name: 'stake',
+                    });
             }
             this.currency = obj_new_values.currency ?? '';
         }
@@ -1338,6 +1356,31 @@ export default class TradeStore extends BaseStore {
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
+
+        // Set stake to default one (from contracts_for) on symbol or contract type switch.
+        // On contract type we also additionally reset take profit
+        if (this.default_stake && this.is_dtrader_v2_enabled) {
+            const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
+            const has_contract_type_changed =
+                obj_new_values.contract_type &&
+                obj_old_values?.contract_type &&
+                obj_new_values.contract_type !== obj_old_values.contract_type;
+
+            if (has_symbol_changed || has_contract_type_changed) {
+                const is_crypto = isCryptocurrency(this.currency ?? '');
+                const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
+                this.setV2ParamsInitialValues({
+                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    name: 'stake',
+                });
+                obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
+            }
+            if (has_contract_type_changed) {
+                obj_new_values.has_take_profit = false;
+                obj_new_values.take_profit = '';
+            }
+        }
+
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
@@ -1802,17 +1845,14 @@ export default class TradeStore extends BaseStore {
 
     setChartModeFromURL() {
         const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
-        const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
-        if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
-            updateGranularity(Number(granularityParam));
+        const { chart_type, granularity, saveChartType, saveGranularity } = this.root_store.contract_trade;
+        if (
+            (!isNaN(Number(granularityParam)) && granularityParam !== granularity) ||
+            (chartTypeParam && chartTypeParam !== chart_type)
+        ) {
+            chartTypeParam && saveChartType(chartTypeParam);
+            granularityParam && saveGranularity(Number(granularityParam));
         }
-        if (chartTypeParam && chartTypeParam !== chart_type) {
-            updateChartType(chartTypeParam);
-        }
-        setTradeURLParams({
-            chartType: chartTypeParam ?? chart_type,
-            granularity: granularityParam ?? Number(granularity),
-        });
     }
 
     setChartStatus(status: boolean, isFromChart?: boolean) {
@@ -1965,14 +2005,6 @@ export default class TradeStore extends BaseStore {
             option.isClosed !== this.is_market_closed
         ) {
             this.prepareTradeStore(false);
-        }
-        if (state === STATE_TYPES.SET_CHART_MODE) {
-            if (!isNaN(Number(option?.granularity))) {
-                this.root_store.contract_trade.updateGranularity(Number(option?.granularity));
-            }
-            if (option?.chart_type_name) {
-                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
-            }
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {

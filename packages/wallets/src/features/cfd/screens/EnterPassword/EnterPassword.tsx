@@ -4,10 +4,10 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
 import { TModifiedMT5Accounts } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
+import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import './EnterPassword.scss';
 
 // Note: this component requires a proper refactor to remove props for keys available under the `account` prop
@@ -52,6 +52,8 @@ const EnterPassword: React.FC<TProps> = ({
     const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
 
+    const isMT5 = platform === CFD_PLATFORMS.MT5;
+    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
@@ -120,7 +122,7 @@ const EnterPassword: React.FC<TProps> = ({
                         <Localize i18n_default_text='Forgot password?' />
                     </Button>
                     <Button
-                        disabled={isLoading || !validPassword(password) || !isTncChecked}
+                        disabled={!password || isLoading || disableButton || !isTncChecked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

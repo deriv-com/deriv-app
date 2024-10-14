@@ -1,13 +1,10 @@
-name: Deriv App Release to UAT Environment
+name: Deriv App Release to UAT2 Environment
 on:
-  pull_request:
-    branches:
-    - uat
   workflow_dispatch:
 
 jobs:
   build_test_and_publish:
-    name: Build, Test and Publish to Cloudflare UAT
+    name: Build, Test and Publish to Cloudflare UAT2
     runs-on: Runner_16cores_Deriv-app
     environment: Staging
     steps:
@@ -45,12 +42,12 @@ jobs:
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        release_type: uat
+        release_type: uat2
     - name: Run tests
       run: npm test
-    - name: Publish to Cloudflare Pages UAT
+    - name: Publish to Cloudflare Pages UAT2
       uses: "./.github/actions/publish_to_pages_uat"
       with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        BRANCH_NAME: uat
+        BRANCH_NAME: uat2

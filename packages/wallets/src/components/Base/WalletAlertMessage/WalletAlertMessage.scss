@@ -24,6 +24,12 @@
             display: flex;
             position: relative;
             margin-top: 0.8rem;
+
+            &--info {
+                rect {
+                    fill: var(--status-light-information, #377cfc);
+                }
+            }
         }
     }
 

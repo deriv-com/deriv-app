@@ -123,6 +123,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     value={phone_number}
                     status={error_message ? 'error' : 'neutral'}
                     message={error_message}
+                    className='phone-verification__card--inputfield__phone-number-input'
                     onChange={handleOnChangePhoneNumber}
                     addonLabel='+'
                 />

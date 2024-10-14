@@ -334,6 +334,20 @@ $MIN_HEIGHT_FLOATING: calc(
                 color: var(--text-general);
             }
 
+            &--phone-number-input {
+                .dc-input__container {
+                    .dc-input__field {
+                        @include rtl {
+                            text-align: right;
+
+                            &[value] {
+                                direction: ltr;
+                            }
+                        }
+                    }
+                }
+            }
+
             &--2-cols {
                 display: grid;
                 grid-template-columns: 1fr 1fr;

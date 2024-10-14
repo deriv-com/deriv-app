@@ -16,6 +16,12 @@ function mockWebSocketFactory(): WebSocketMock {
     const handlers: Handlers = {};
 
     return jest.fn().mockImplementation(() => ({
+        readyState: 1,
+        CONNECTING: 0,
+        OPEN: 1,
+        CLOSING: 2,
+        CLOSED: 3,
+
         send: jest.fn(),
         close: jest.fn(() => {
             const closeHandlers = handlers.close;

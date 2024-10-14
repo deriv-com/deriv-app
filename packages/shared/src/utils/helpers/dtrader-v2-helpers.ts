@@ -18,8 +18,10 @@ export const getPositionsV2TabIndexFromURL = () => {
     return 0;
 };
 
+export const isDTraderV2Width = () => window.innerWidth < 600;
+
 export const isDTraderV2 = () =>
-    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && window.innerWidth < 600;
+    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && isDTraderV2Width();
 
 export const getTradeNotificationMessage = (shortcode: string) => {
     const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);

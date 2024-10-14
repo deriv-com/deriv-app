@@ -19,6 +19,14 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 4;
     const totalPages = Math.ceil(history.length / itemsPerPage);
+
+    const config_with_pages = history.reduce((result, _item, index) => {
+        if (!(index % 4)) {
+            result.push(history.slice(index, index + itemsPerPage));
+        }
+        return result;
+    }, [] as TContractStore['contract_update_history'][]);
+
     const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     const has_tp = currentItems.some(item => item.order_type === 'take_profit' || item.display_name === 'Take profit');
     const has_sl = currentItems.some(item => item.order_type === 'stop_loss' || item.display_name === 'Stop loss');
@@ -30,6 +38,7 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     };
 
     const handlePageChange = (pagination: TPagination) => {
+        // console.log('pagination.currentPage - 1', pagination.currentPage - 1);
         setCurrentPage(pagination.currentPage - 1);
     };
 

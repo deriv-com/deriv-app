@@ -1,10 +1,13 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const is_release =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
+
+const cssConfig = () => ({ filename: 'wallets/css/[name].css', chunkFilename: 'wallets/css/[name].[contenthash].css' });
 
 const svg_loaders = [
     {
@@ -89,7 +92,9 @@ module.exports = function (env) {
                 {
                     test: /\.(sc|sa|c)ss$/,
                     use: [
-                        'style-loader',
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                        },
                         {
                             loader: 'css-loader',
                             options: {
@@ -162,7 +167,7 @@ module.exports = function (env) {
                     components: {
                         name: 'components',
                         test: module => {
-                            return module.resource && module.resource.includes('src/components');
+                            return module.resource && module.resource.includes('src/components/Base');
                         },
                     },
                     default: {
@@ -206,6 +211,7 @@ module.exports = function (env) {
                 'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
                 'process.env.WALLETS_TRANSLATION_PATH': JSON.stringify('deriv-app-wallets/staging'),
             }),
+            new MiniCssExtractPlugin(cssConfig()),
         ],
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],

@@ -68,7 +68,6 @@ const AccountSignup = ({
                 },
             },
         };
-
         cacheTrackEvents.pageLoadEvent(pageLoadEvent);
 
         WS.wait('website_status', 'residence_list').then(() => {

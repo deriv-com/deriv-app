@@ -26,6 +26,28 @@ const cacheTrackEvents = {
     interval: null as NodeJS.Timeout | null,
     responses: [] as ResponseData[],
     isTrackingResponses: false,
+    hash: (inputString: string, desiredLength = 32): string => {
+        const fnv1aHash = (string: string): number => {
+            let hash = 0x811c9dc5;
+            for (let i = 0; i < string.length; i++) {
+                // eslint-disable-next-line no-bitwise
+                hash ^= string.charCodeAt(i);
+                hash = Math.floor((hash * 0x01000193) / Math.pow(2, 32));
+            }
+            return hash;
+        };
+
+        const base64Encode = (string: string): string => btoa(string);
+
+        const hash = fnv1aHash(inputString).toString(16);
+        let combined = base64Encode(hash);
+
+        while (combined.length < desiredLength) {
+            combined += base64Encode(fnv1aHash(combined).toString(16));
+        }
+
+        return combined.substring(0, desiredLength);
+    },
     getCookies: (name: string): any => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -89,6 +111,16 @@ const cacheTrackEvents = {
 
         if (clientInfo) {
             const { email = null } = clientInfo;
+
+            if (email) {
+                event.properties.email_hash = cacheTrackEvents.hash(email);
+            }
+        }
+
+        if (event?.properties?.email) {
+            const email = event.properties.email;
+            delete event.properties.email;
+            event.properties.email_hash = cacheTrackEvents.hash(email);
         }
 
         return event;
@@ -161,7 +193,7 @@ const cacheTrackEvents = {
                 cacheTrackEvents.loadEvent([
                     {
                         event: eventData,
-                        element: '',
+                        element: '', // Assuming an empty string since it's not used
                     },
                 ]);
             }

@@ -19,13 +19,7 @@ const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
             <Text size='xs' line_height='s'>
                 <Localize
                     i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. Learn more about <0>options trading</0>.'
-                    components={[
-                        <StaticUrl
-                            key={0}
-                            className='options'
-                            href='trade-types/options/digital-options/up-and-down/'
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='options' href='/trade/options' />]}
                 />
             </Text>
         </div>

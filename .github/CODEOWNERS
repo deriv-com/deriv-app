@@ -53,6 +53,10 @@
 #  vinu-deriv
 #  wojciech-deriv
 #  yashim-deriv
+#  farabi-deriv
+#  maryia-matskevich-deriv
+#  shahzaib-deriv
+#  rupato-deriv
 
 ######################################################################################################
 #
@@ -119,7 +123,7 @@
 /packages/core/**/*                                             @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
 /packages/shared/**/*                                           @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
 /packages/components/**/*                                       @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
-/packages/translations/**/*                                     @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
+/packages/translations/**/*                                     @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv @heorhi-deriv @jim-deriv @vinu-deriv @nada-deriv @hirad-deriv @farabi-deriv @likhith-deriv @maryia-matskevich-deriv @shahzaib-deriv @rupato-deriv
 /packages/utils/**/*                                            @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
 /packages/hooks/**/*                                            @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 
 /packages/stores/**/*                                           @ali-hosseini-deriv @amina-deriv @balakrishna-deriv @farrah-deriv @habib-deriv @matin-deriv @nijil-deriv @sandeep-deriv @wojciech-deriv @yashim-deriv 

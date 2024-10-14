@@ -1189,6 +1189,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
         localStorage.setItem('active_user_id', this.user_id);
+        localStorage.setItem(storage_key, JSON.stringify(this.accounts));
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 

@@ -208,6 +208,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
+                onTouchCancel={removeFocus as unknown as (e: React.TouchEvent<HTMLInputElement>) => void}
+                onTouchEnd={removeFocus as unknown as (e: React.TouchEvent<HTMLInputElement>) => void}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}

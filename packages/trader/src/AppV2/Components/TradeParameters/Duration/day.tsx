@@ -16,6 +16,7 @@ import {
 } from 'AppV2/Utils/trade-params-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 const timeToMinutes = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
@@ -151,7 +152,8 @@ const DayInput = ({
                 textAlignment='center'
                 value={formatted_date}
                 disabled={duration_units_list.filter(item => item.value === 'd').length === 0}
-                onClick={() => {
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
                     setOpen(true);
                 }}
                 leftIcon={<LabelPairedCalendarSmRegularIcon width={24} height={24} />}
@@ -164,7 +166,8 @@ const DayInput = ({
                 name='time'
                 value={`${(formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
                 disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
-                onClick={() => {
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
                     setOpenTimePicker(true);
                 }}
                 leftIcon={<LabelPairedClockThreeSmRegularIcon width={24} height={24} />}

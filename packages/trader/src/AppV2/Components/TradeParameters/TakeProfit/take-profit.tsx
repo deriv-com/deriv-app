@@ -9,6 +9,7 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitAndStopLossInput from '../RiskManagement/take-profit-and-stop-loss-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TTakeProfitProps = {
     is_minimized?: boolean;
@@ -46,7 +47,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                 label={
                     <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
                 }
-                onClick={() => setIsOpen(true)}
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
+                    setIsOpen(true);
+                }}
                 readOnly
                 variant='fill'
                 value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}

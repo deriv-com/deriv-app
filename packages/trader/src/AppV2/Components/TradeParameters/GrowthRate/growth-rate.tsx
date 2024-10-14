@@ -11,6 +11,7 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import GrowthRatePicker from './growth-rate-picker';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TGrowthRateProps = {
     is_minimized?: boolean;
@@ -98,7 +99,10 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 label={
                     <Localize i18n_default_text='Growth rate' key={`growth-rate${is_minimized ? '-minimized' : ''}`} />
                 }
-                onClick={() => setIsOpen(true)}
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
+                    setIsOpen(true);
+                }}
                 readOnly
                 value={`${getGrowthRatePercentage(growth_rate)}%`}
                 variant='fill'

@@ -8,6 +8,7 @@ import Carousel from 'AppV2/Components/Carousel';
 import BarrierDescription from './barrier-description';
 import BarrierInput from './barrier-input';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TDurationProps = {
     is_minimized?: boolean;
@@ -49,7 +50,10 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                 readOnly
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
                 value={v2_params_initial_values.barrier_1 || barrier_1}
-                onClick={() => setIsOpen(true)}
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
+                    setIsOpen(true);
+                }}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>

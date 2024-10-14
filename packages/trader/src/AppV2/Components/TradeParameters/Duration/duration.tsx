@@ -10,6 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TDurationProps = {
     is_minimized?: boolean;
@@ -170,7 +171,10 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 noStatusIcon
                 disabled={isMarketClosed(activeSymbols, symbol)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                onClick={() => setOpen(true)}
+                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                    removeFocus(e);
+                    setOpen(true);
+                }}
                 status={has_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root

@@ -6,6 +6,7 @@ import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import LastDigitSelector from './last-digit-selector';
+import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TLastDigitSelectorProps = {
     is_minimized?: boolean;
@@ -47,7 +48,10 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                     }
                     value={last_digit}
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
-                    onClick={() => setIsOpen(true)}
+                    onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+                        removeFocus(e);
+                        setIsOpen(true);
+                    }}
                 />
                 <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                     <ActionSheet.Portal shouldCloseOnDrag>

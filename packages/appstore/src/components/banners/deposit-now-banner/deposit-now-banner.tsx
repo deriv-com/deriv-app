@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
@@ -22,6 +22,9 @@ const DepositNowBanner = observer(() => {
     const is_crypto_account = currency_config?.is_crypto;
     const { is_eu_user } = traders_hub;
 
+    const [buttonText, setButtonText] = useState('Deposit now');
+    const [bannerText, setBannerText] = useState('Make your first deposit to start trading');
+
     const handleButtonClick = () => {
         Analytics.trackEvent('ce_tradershub_banner', {
             action: 'click_cta',
@@ -31,12 +34,29 @@ const DepositNowBanner = observer(() => {
         history.push(`${routes.cashier_deposit}${is_crypto_account ? '#deposit' : ''}`);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
+        // Track banner open event
         Analytics.trackEvent('ce_tradershub_banner', {
             action: 'open',
             banner_name: 'first_deposit',
             banner_type: 'with_cta',
         });
+
+        const handleCleverTapEvent = event => {
+            const data = event.detail.kv;
+            if (data.topic === 'Deposit Promotion') {
+                // Check for a relevant campaign
+                setButtonText(data.button_text || 'Deposit now'); // Dynamically update button text
+                setBannerText(data.banner_text || 'Make your first deposit to start trading'); // Update banner text
+            }
+        };
+
+        document.addEventListener('CT_web_native_display', handleCleverTapEvent);
+
+        // Cleanup the event listener when component unmounts
+        return () => {
+            document.removeEventListener('CT_web_native_display', handleCleverTapEvent);
+        };
     }, []);
 
     return (
@@ -44,10 +64,10 @@ const DepositNowBanner = observer(() => {
             <div className='deposit-now-banner__content'>
                 <div className='deposit-now-banner__description'>
                     <Text size={!isDesktop ? 'xs' : 'm'} color='prominent'>
-                        <Localize i18n_default_text='Make your first deposit to start trading' />
+                        {bannerText}
                     </Text>
                     <Button className='deposit-now-banner__button' large primary onClick={handleButtonClick}>
-                        <Localize i18n_default_text='Deposit now' />
+                        {buttonText}
                     </Button>
                 </div>
                 <Icon

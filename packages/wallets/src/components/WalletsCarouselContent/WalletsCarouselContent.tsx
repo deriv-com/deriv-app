@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import type { EmblaCarouselType, EmblaEventType } from 'embla-carousel';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';

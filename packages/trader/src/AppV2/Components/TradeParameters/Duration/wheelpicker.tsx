@@ -1,11 +1,10 @@
-/* eslint-disable no-lonely-if */
 import { WheelPickerContainer } from '@deriv-com/quill-ui';
 import { observer } from '@deriv/stores';
 import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Localize } from '@deriv/translations';
+import HourPicker from './hourpicker';
 
 const DurationWheelPicker = observer(
     ({
@@ -35,27 +34,24 @@ const DurationWheelPicker = observer(
                         duration_units_list.length == 1 && unit !== 'd',
                 })}
             >
-                <WheelPickerContainer
-                    data={
-                        selected_hour.length > 0 && selected_hour[0] == 24
-                            ? [
-                                  options[0],
-                                  [
-                                      {
-                                          value: 0,
-                                          label: <Localize i18n_default_text='0 min' />,
-                                      },
-                                  ],
-                              ]
-                            : options
-                    }
-                    defaultValue={[String(selected_time)]}
-                    containerHeight={handleContainerHeight()}
-                    inputValues={unit == 'h' ? selected_hour : selected_time}
-                    setInputValues={(index, val) => {
-                        setWheelPickerValue(index, val);
-                    }}
-                />
+                {unit !== 'h' ? (
+                    <WheelPickerContainer
+                        data={options}
+                        defaultValue={[String(selected_time)]}
+                        containerHeight={handleContainerHeight()}
+                        inputValues={selected_time}
+                        setInputValues={(index, val) => {
+                            setWheelPickerValue(index, val);
+                        }}
+                    />
+                ) : (
+                    <HourPicker
+                        setWheelPickerValue={setWheelPickerValue}
+                        selected_hour={selected_hour}
+                        selected_time={selected_time}
+                        duration_min_max={duration_min_max}
+                    />
+                )}
             </div>
         );
     }

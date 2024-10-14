@@ -42,6 +42,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
+    const input_ref = React.useRef<HTMLInputElement>(null);
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -205,10 +206,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
                 noStatusIcon
                 onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
+                    removeFocus(e, input_ref);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}

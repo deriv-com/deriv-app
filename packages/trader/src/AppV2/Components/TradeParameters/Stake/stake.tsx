@@ -207,11 +207,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 noStatusIcon
                 onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
                     removeFocus(e, input_ref);
-                    setIsOpen(true);
                 }}
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
+                ref={input_ref}
             />
             <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

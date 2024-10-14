@@ -1,5 +1,8 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { TRADE_TYPES } from '@deriv/shared';
-import { isTradeParamVisible, getChartHeight } from '../layout-utils';
+import { isTradeParamVisible, getChartHeight, removeFocus } from '../layout-utils';
 
 describe('isTradeParamVisible', () => {
     it('should return correct value for expiration component key', () => {
@@ -130,5 +133,19 @@ describe('getChartHeight', () => {
                 contract_type: TRADE_TYPES.HIGH_LOW,
             })
         ).toEqual(chart_height_with_additional_info);
+    });
+});
+
+describe('removeFocus', () => {
+    it('removes focus from the element', () => {
+        const MockComponent = () => (
+            <input type='text' onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => removeFocus(e)} />
+        );
+        render(<MockComponent />);
+
+        const input = screen.getByRole('textbox');
+        userEvent.click(input);
+
+        expect(input).not.toHaveFocus();
     });
 });

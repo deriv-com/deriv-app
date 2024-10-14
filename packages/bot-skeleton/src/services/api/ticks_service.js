@@ -1,8 +1,15 @@
 import { Map } from 'immutable';
-import { historyToTicks, getLast } from 'binary-utils';
 import { doUntilDone, getUUID } from '../tradeEngine/utils/helpers';
 import { observer as globalObserver } from '../../utils/observer';
 import { api_base } from './api-base';
+
+const historyToTicks = history =>
+    history.times.map((t, idx) => ({
+        epoch: +t,
+        quote: +history.prices[idx],
+    }));
+
+const getLast = arr => arr && (arr.length === 0 ? undefined : arr[arr.length - 1]);
 
 const parseTick = tick => ({
     epoch: +tick.epoch,

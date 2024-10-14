@@ -4,12 +4,12 @@
     "description": "deriv shared",
     "author": "Deriv",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/binary-com/deriv-app#readme",
+    "homepage": "https://github.com/deriv-com/deriv-app#readme",
     "main": "src/index.ts",
     "private": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/binary-com/deriv-app.git"
+        "url": "git+https://github.com/deriv-com/deriv-app.git"
     },
     "engines": {
         "node": "18.x"
@@ -27,7 +27,7 @@
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
     },
     "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
+        "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

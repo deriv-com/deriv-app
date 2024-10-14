@@ -100,7 +100,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
             },
             message: (
                 <Localize
-                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
+                    i18n_default_text="You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallets. Verify your account to upgrade the limit."
                     values={{ sourceAccountName: fiatAccount.accountName }}
                 />
             ),

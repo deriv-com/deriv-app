@@ -162,7 +162,7 @@ module.exports = function (env) {
                     components: {
                         name: 'components',
                         test: module => {
-                            return module.resource && module.resource.includes('src/components/Base');
+                            return module.resource && module.resource.includes('src/components');
                         },
                     },
                     default: {

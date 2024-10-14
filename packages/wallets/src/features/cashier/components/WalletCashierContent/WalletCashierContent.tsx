@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { WalletDeposit } from '../../flows/WalletDeposit';
-import { WalletFiatOnRamp } from '../../flows/WalletFiatOnRamp';
-import { WalletResetBalance } from '../../flows/WalletResetBalance';
-import { WalletTransactions } from '../../flows/WalletTransactions';
-import { WalletTransfer } from '../../flows/WalletTransfer';
-import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
-import { CashierLocked, DepositLocked, WithdrawalLocked } from '../../modules';
+import { Loader } from '@deriv-com/ui';
+import { CashierLocked } from '../../modules';
+import {
+    LazyDepositLocked,
+    LazyWalletDeposit,
+    LazyWalletFiatOnRamp,
+    LazyWalletResetBalance,
+    LazyWalletTransactions,
+    LazyWalletTransfer,
+    LazyWalletWithdrawal,
+    LazyWithdrawalLocked,
+} from './WalletCashierLazyRoutes';
 
 const WalletCashierContent = () => {
     const history = useHistory();
@@ -28,36 +33,54 @@ const WalletCashierContent = () => {
     if (isDeposit)
         return (
             <CashierLocked module='deposit'>
-                <DepositLocked>
-                    <WalletDeposit />
-                </DepositLocked>
+                <React.Suspense fallback={<Loader />}>
+                    <LazyDepositLocked>
+                        <LazyWalletDeposit />
+                    </LazyDepositLocked>
+                </React.Suspense>
             </CashierLocked>
         );
 
     if (isFiatOnRamp)
         return (
             <CashierLocked module='deposit'>
-                <WalletFiatOnRamp />
+                <React.Suspense fallback={<Loader />}>
+                    <LazyWalletFiatOnRamp />
+                </React.Suspense>
             </CashierLocked>
         );
 
-    if (isResetBalance) return <WalletResetBalance />;
+    if (isResetBalance)
+        return (
+            <React.Suspense fallback={<Loader />}>
+                <LazyWalletResetBalance />
+            </React.Suspense>
+        );
 
     if (isTransfer)
         return (
             <CashierLocked>
-                <WalletTransfer />
+                <React.Suspense fallback={<Loader />}>
+                    <LazyWalletTransfer />
+                </React.Suspense>
             </CashierLocked>
         );
 
-    if (isTransactions) return <WalletTransactions />;
+    if (isTransactions)
+        return (
+            <React.Suspense fallback={<Loader />}>
+                <LazyWalletTransactions />
+            </React.Suspense>
+        );
 
     if (isWithdraw) {
         return (
             <CashierLocked module='withdrawal'>
-                <WithdrawalLocked>
-                    <WalletWithdrawal />
-                </WithdrawalLocked>
+                <React.Suspense fallback={<Loader />}>
+                    <LazyWithdrawalLocked>
+                        <LazyWalletWithdrawal />
+                    </LazyWithdrawalLocked>
+                </React.Suspense>
             </CashierLocked>
         );
     }

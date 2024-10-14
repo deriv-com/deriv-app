@@ -4,34 +4,19 @@ import { Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import WalletCashierContent from '../WalletCashierContent';
 
-jest.mock('../../../flows/WalletDeposit', () => ({
-    WalletDeposit: jest.fn(() => <div>WalletDeposit</div>),
-}));
-
-jest.mock('../../../flows/WalletFiatOnRamp', () => ({
-    WalletFiatOnRamp: jest.fn(() => <div>WalletFiatOnRamp</div>),
-}));
-
-jest.mock('../../../flows/WalletResetBalance', () => ({
-    WalletResetBalance: jest.fn(() => <div>WalletResetBalance</div>),
-}));
-
-jest.mock('../../../flows/WalletTransactions', () => ({
-    WalletTransactions: jest.fn(() => <div>WalletTransactions</div>),
-}));
-
-jest.mock('../../../flows/WalletTransfer', () => ({
-    WalletTransfer: jest.fn(() => <div>WalletTransfer</div>),
-}));
-
-jest.mock('../../../flows/WalletWithdrawal', () => ({
-    WalletWithdrawal: jest.fn(() => <div>WalletWithdrawal</div>),
+jest.mock('../WalletCashierLazyRoutes', () => ({
+    LazyDepositLocked: jest.fn(({ children }) => <div>{children}</div>),
+    LazyWalletDeposit: jest.fn(() => <div>LazyWalletDeposit</div>),
+    LazyWalletFiatOnRamp: jest.fn(() => <div>LazyWalletFiatOnRamp</div>),
+    LazyWalletResetBalance: jest.fn(() => <div>LazyWalletResetBalance</div>),
+    LazyWalletTransactions: jest.fn(() => <div>LazyWalletTransactions</div>),
+    LazyWalletTransfer: jest.fn(() => <div>LazyWalletTransfer</div>),
+    LazyWalletWithdrawal: jest.fn(() => <div>LazyWalletWithdrawal</div>),
+    LazyWithdrawalLocked: jest.fn(({ children }) => <div>{children}</div>),
 }));
 
 jest.mock('../../../modules', () => ({
     CashierLocked: jest.fn(({ children }) => <div>{children}</div>),
-    DepositLocked: jest.fn(({ children }) => <div>{children}</div>),
-    WithdrawalLocked: jest.fn(({ children }) => <div>{children}</div>),
 }));
 
 describe('WalletCashierContent', () => {
@@ -58,31 +43,31 @@ describe('WalletCashierContent', () => {
 
     it('renders WalletDeposit when route is /wallet/deposit', () => {
         renderComponent('/wallet/deposit');
-        expect(screen.getByText('WalletDeposit')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletDeposit')).toBeInTheDocument();
     });
 
     it('renders WalletFiatOnRamp when route is /wallet/on-ramp', () => {
         renderComponent('/wallet/on-ramp');
-        expect(screen.getByText('WalletFiatOnRamp')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletFiatOnRamp')).toBeInTheDocument();
     });
 
     it('renders WalletResetBalance when route is /wallet/reset-balance', () => {
         renderComponent('/wallet/reset-balance');
-        expect(screen.getByText('WalletResetBalance')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletResetBalance')).toBeInTheDocument();
     });
 
     it('renders WalletTransfer when route is /wallet/account-transfer', () => {
         renderComponent('/wallet/account-transfer');
-        expect(screen.getByText('WalletTransfer')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletTransfer')).toBeInTheDocument();
     });
 
     it('renders WalletTransactions when route is /wallet/transactions', () => {
         renderComponent('/wallet/transactions');
-        expect(screen.getByText('WalletTransactions')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletTransactions')).toBeInTheDocument();
     });
 
     it('renders WalletWithdrawal when route is /wallet/withdrawal', () => {
         renderComponent('/wallet/withdrawal');
-        expect(screen.getByText('WalletWithdrawal')).toBeInTheDocument();
+        expect(screen.getByText('LazyWalletWithdrawal')).toBeInTheDocument();
     });
 });

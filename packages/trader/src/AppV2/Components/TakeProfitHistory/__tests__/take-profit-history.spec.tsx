@@ -24,9 +24,9 @@ describe('TakeProfitHistory component', () => {
         (formatMoney as jest.Mock).mockImplementation((currency, amount) => `${amount}`);
     });
 
-    it('renders without crashing', () => {
+    it('does not render without if history was not passed', () => {
         const { container } = render(<TakeProfitHistory />);
-        expect(container).not.toBeEmptyDOMElement();
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('renders correct History title for both TP and Sl', () => {

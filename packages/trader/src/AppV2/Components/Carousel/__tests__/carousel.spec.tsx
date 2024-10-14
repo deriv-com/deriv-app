@@ -1,8 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Carousel from '../carousel';
+import { useSwipeable } from 'react-swipeable';
 
+jest.mock('react-swipeable', () => ({
+    useSwipeable: jest.fn(() => ({
+        onMouseDown: jest.fn(),
+    })),
+}));
 const data_test_id = 'dt_page';
 const mock_pages = [
     {
@@ -32,6 +38,21 @@ describe('Carousel', () => {
     it('should render all passed pages', () => {
         render(<Carousel {...mock_props} />);
         expect(screen.getAllByTestId(data_test_id)).toHaveLength(mock_pages.length);
+    });
+
+    it('renders without passed header component', () => {
+        render(<Carousel {...mock_props} header={undefined} />);
+        expect(screen.getAllByTestId(data_test_id)).toHaveLength(mock_pages.length);
+    });
+
+    it('calls useSwipeable returned function if is_swipeable === true', () => {
+        const onMouseDown = jest.fn();
+        (useSwipeable as jest.Mock).mockReturnValueOnce({ onMouseDown });
+        render(<Carousel {...mock_props} is_swipeable={true} />);
+
+        // there is no mouseDown event in userEvent, hence using fireEvent
+        fireEvent.mouseDown(screen.getByTestId('dt_carousel'));
+        expect(onMouseDown).toBeCalled();
     });
 
     it('should set index to 1 if user clicks on "Next"', async () => {
@@ -85,14 +106,14 @@ describe('Carousel', () => {
         expect(setCurrentIndex).toHaveBeenCalledWith(0);
     });
 
-    it('should wrap around to the first page when clicking next on the last page', async () => {
+    it('should wrap around to the first page when clicking next on the last page', () => {
         render(<Carousel {...mock_props} />);
         userEvent.click(screen.getByText('Next'));
         userEvent.click(screen.getByText('Next'));
         expect(screen.getByText('Current Index: 0')).toBeInTheDocument();
     });
 
-    it('should wrap around to the last page when clicking previous on the first page', async () => {
+    it('should wrap around to the last page when clicking previous on the first page', () => {
         render(<Carousel {...mock_props} />);
         userEvent.click(screen.getByText('Previous'));
         expect(screen.getByText('Current Index: 1')).toBeInTheDocument();

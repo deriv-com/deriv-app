@@ -516,6 +516,7 @@ const PersonalDetailsForm = observer(() => {
                                                             !stripped_phone_number ||
                                                             is_email_otp_timer_loading
                                                         }
+                                                        // @ts-expect-error This needs to fixed in VerifyButton component
                                                         values={values}
                                                         residence_list={residence_list}
                                                         states_list={states_list}

@@ -277,6 +277,7 @@ const DayInput = ({
                     <ActionSheet.Footer
                         alignment='vertical'
                         shouldCloseOnPrimaryButtonClick={false}
+                        isPrimaryButtonDisabled={is_disabled}
                         primaryAction={{
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {

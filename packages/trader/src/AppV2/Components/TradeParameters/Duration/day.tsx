@@ -239,6 +239,7 @@ const DayInput = ({
                 onClose={() => {
                     setOpen(false);
                     setOpenTimePicker(false);
+                    setIsDisabled(false);
                 }}
                 position='left'
                 expandable={false}

@@ -39,7 +39,9 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
                 label={
                     <Text size={isDesktop ? 'xs' : 'sm'}>
                         <Localize
-                            components={[<WalletLink key={0} staticUrl={selectedCompany.tncUrl} variant='bold' />]}
+                            components={[
+                                <WalletLink key={0} language='en' staticUrl={selectedCompany.tncUrl} variant='bold' />,
+                            ]}
                             i18n_default_text='I confirm and accept {{company}}’s <0>terms and conditions</0>'
                             values={{
                                 company: selectedCompany.name,

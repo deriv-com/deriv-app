@@ -8,14 +8,15 @@ type TVariant = 'bold' | 'normal';
 interface LinkProps {
     children?: React.ReactNode;
     href?: React.AnchorHTMLAttributes<HTMLAnchorElement>['href'];
+    language?: string;
     staticUrl?: React.AnchorHTMLAttributes<HTMLAnchorElement>['href'];
     variant?: TVariant;
 }
 
-const WalletLink: React.FC<LinkProps> = ({ children, href, staticUrl, variant = 'normal' }) => {
+const WalletLink: React.FC<LinkProps> = ({ children, href, language, staticUrl, variant = 'normal' }) => {
     const getHref = () => {
         setUrlLanguage(getInitialLanguage());
-        return getStaticUrl(staticUrl);
+        return getStaticUrl(staticUrl, language);
     };
 
     return (

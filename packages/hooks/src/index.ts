@@ -98,6 +98,7 @@ export { default as usePhoneNumberVerificationSetTimer } from './usePhoneNumberV
 export { default as usePhoneNumberVerificationSessionTimer } from './usePhoneNumberVerificationSessionTimer';
 export { default as useIsPhoneNumberVerified } from './useIsPhoneNumberVerified';
 export { default as usePhoneVerificationAnalytics } from './usePhoneVerificationAnalytics';
+export { default as useGetPhoneNumberList } from './useGetPhoneNumberList';
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
 export { default as useOauth2 } from './useOauth2';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

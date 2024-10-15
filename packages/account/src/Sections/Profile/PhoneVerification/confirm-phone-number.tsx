@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent, Fragment } from 'react';
 import {
+    useGetPhoneNumberList,
     usePhoneNumberVerificationSetTimer,
     usePhoneVerificationAnalytics,
     useRequestPhoneNumberOTP,
@@ -33,6 +34,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         is_disabled_request_button,
         setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
+    const { formatted_countries_list, short_code_selected, selected_phone_code, selected_country_list } =
+        useGetPhoneNumberList();
     const { data: account_settings, invalidate } = useSettings();
     const [selectedCountryCode, setSelectedCountryCode] = useState<TCountryCodes>();
     const { ui } = useStore();
@@ -40,19 +43,6 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { next_phone_otp_request_timer, is_phone_otp_timer_loading } = usePhoneNumberVerificationSetTimer(true);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
-
-    const country_codes = [
-        { name: 'United States', short_code: 'US', phone_code: '1', carriers: ['whatsapp'] },
-        { name: 'Malaysia', short_code: 'MY', phone_code: '60', carriers: ['sms', 'whatsapp'] },
-        { name: 'United Kingdom', short_code: 'GB', phone_code: '44', carriers: ['sms', 'whatsapp'] },
-        { name: 'Australia', short_code: 'AU', phone_code: '61', carriers: ['sms', 'whatsapp'] },
-        { name: 'Canada', short_code: 'CA', phone_code: '1', carriers: ['sms', 'whatsapp'] },
-        { name: 'Singapore', short_code: 'SG', phone_code: '65', carriers: ['sms', 'whatsapp'] },
-        { name: 'Indonesia', short_code: 'ID', phone_code: '62', carriers: ['sms', 'whatsapp'] },
-        { name: 'Vietnam', short_code: 'VN', phone_code: '84', carriers: ['sms', 'whatsapp'] },
-        { name: 'Thailand', short_code: 'TH', phone_code: '66', carriers: ['sms', 'whatsapp'] },
-        { name: 'Philippines', short_code: 'PH', phone_code: '63', carriers: ['sms', 'whatsapp'] },
-    ];
 
     useEffect(() => {
         if (show_confirm_phone_number) {
@@ -87,7 +77,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
         validatePhoneNumber(
-            `+${selectedCountryCode?.phone_code}${e.target.value}`,
+            `${selectedCountryCode?.phone_code ?? selected_phone_code}${e.target.value}`,
             setErrorMessage,
             setIsDisabledRequestButton
         );
@@ -100,7 +90,9 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const handleSubmit = async (phone_verification_type: string) => {
         setIsButtonLoading(true);
         setPhoneVerificationType(phone_verification_type);
-        const { error } = await setUsersPhoneNumber({ phone: `+${selectedCountryCode?.phone_code}${phone_number}` });
+        const { error } = await setUsersPhoneNumber({
+            phone: `${selectedCountryCode?.phone_code ?? selected_phone_code}${phone_number}`,
+        });
 
         if (!error) {
             trackPhoneVerificationEvents({
@@ -140,10 +132,15 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         return resendPhoneOtpTimer;
     };
 
-    //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-    const isCarrierSupportedForSms = selectedCountryCode?.carriers.includes('sms');
-    //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-    const isCarrierSupportedForWhatsApp = selectedCountryCode?.carriers.includes('whatsapp');
+    const isCarrierSupportedForSms = selectedCountryCode
+        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+          selectedCountryCode?.carriers.includes('sms')
+        : selected_country_list?.carriers.includes('sms');
+
+    const isCarrierSupportedForWhatsApp = selectedCountryCode
+        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+          selectedCountryCode?.carriers.includes('whatsapp')
+        : selected_country_list?.carriers.includes('whatsapp');
 
     return (
         <Fragment>
@@ -156,9 +153,9 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 })}
             >
                 <InputPhoneNumber
-                    countryCodes={country_codes}
+                    countryCodes={formatted_countries_list}
                     codeLabel={localize('Code')}
-                    shortCode={selectedCountryCode?.short_code}
+                    shortCode={selectedCountryCode?.short_code || short_code_selected}
                     onCodeChange={handleOnChangeCountryCode}
                     value={phone_number}
                     label={localize('Phone Number')}

@@ -25,7 +25,7 @@ const CFDPasswordModalTnc = ({ checked, onChange, platform, product }: TCFDPassw
 
     return (
         <div className='wallets-cfd-modal-tnc'>
-            <InlineMessage iconPosition='top' variant='info'>
+            <InlineMessage className='wallets-cfd-modal-tnc__message' iconPosition='top' variant='info'>
                 <Text align='start' data-testid='dt_wallets_tnc_inline_message' size={isDesktop ? '2xs' : 'xs'}>
                     <Localize
                         i18n_default_text='You are adding your {{platformTitle}} {{productTitle}} account under {{company}}, regulated by the British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114).'

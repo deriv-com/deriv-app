@@ -14,6 +14,7 @@ export const rudderStackSendAnnouncementClickEvent = ({ announcement_name }: TEv
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.ANNOUNCEMENT_CLICK,
         form_name,
+        subform_name: 'announcements',
         subform_source: 'dashboard',
         announcement_name,
     });
@@ -26,6 +27,7 @@ export const rudderStackSendAnnouncementActionEvent = ({
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.ANNOUNCEMENT_ACTION,
         form_name,
+        subform_name: 'announcements',
         subform_source: 'dashboard',
         announcement_name,
         announcement_action,

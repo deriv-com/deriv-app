@@ -47,7 +47,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
-        rudderStackSendAnnouncementClickEvent({ announcement_name: announce_id });
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
 
         let data: Record<string, boolean> | null = null;
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
@@ -109,7 +109,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnCancel = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.id,
+            announcement_name: selected_announcement?.announcement.main_title,
             announcement_action: selected_announcement?.announcement.cancel_button_text,
         });
         if (selected_announcement?.switch_tab_on_cancel) {
@@ -124,7 +124,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnConfirm = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.id,
+            announcement_name: selected_announcement?.announcement.main_title,
             announcement_action: selected_announcement?.announcement.confirm_button_text,
         });
         if (selected_announcement?.switch_tab_on_confirm) {
@@ -155,6 +155,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                     if (!is_open_announce_list) {
                         rudderStackSendOpenEvent({
                             subform_name: 'announcements',
+                            subform_source: 'dashboard',
                         });
                     }
                 }}

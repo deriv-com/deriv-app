@@ -49,7 +49,7 @@ const AnnouncementDialog = ({
                 setIsAnnounceDialogOpen(false);
                 rudderStackSendCloseEvent({
                     subform_name: 'announcements',
-                    announcement_name: id,
+                    announcement_name: main_title,
                 });
             }}
             className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}

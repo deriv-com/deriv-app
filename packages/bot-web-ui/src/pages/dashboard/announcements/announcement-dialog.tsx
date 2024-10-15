@@ -1,6 +1,7 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { LabelPairedCheckCaptionFillIcon } from '@deriv/quill-icons';
+import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
 import { IconAnnounceModal } from './announcement-components';
 import { TAnnounce, TContentItem } from './config';
 import './announcement-dialog.scss';
@@ -44,7 +45,13 @@ const AnnouncementDialog = ({
             onCancel={handleOnCancel}
             is_mobile_full_width
             has_close_icon
-            onClose={() => setIsAnnounceDialogOpen(false)}
+            onClose={() => {
+                setIsAnnounceDialogOpen(false);
+                rudderStackSendCloseEvent({
+                    subform_name: 'announcements',
+                    announcement_name: id,
+                });
+            }}
             className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}
         >
             <div className={`${base_classname}__body-text`}>

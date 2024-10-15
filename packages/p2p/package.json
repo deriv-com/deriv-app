@@ -18,7 +18,7 @@
         "analyze:build": "webpack-bundle-analyzer --no-open -m static -r treemap.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "test:eslint": "eslint \"./src/**/*.?(js|ts|jsx|tsx)\"",
         "build": "rimraf lib && NODE_OPTIONS='-r ts-node/register' webpack --progress",
-        "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress; deriv-publisher postpublish",
+        "build:publish": "deriv-publisher prepublish && npm exec --workspace=@deriv/shared --workspace=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
@@ -27,7 +27,7 @@
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
-        "publish_package": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress && npm publish; deriv-publisher postpublish"
+        "publish_package": "deriv-publisher prepublish && npm exec --workspace=@deriv/shared --workspace=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress && npm publish; deriv-publisher postpublish"
     },
     "author": "",
     "license": "ISC",

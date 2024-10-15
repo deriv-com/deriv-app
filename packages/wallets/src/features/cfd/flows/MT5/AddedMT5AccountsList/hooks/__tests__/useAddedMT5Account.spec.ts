@@ -87,18 +87,6 @@ describe('useAddedMT5Account', () => {
         expect(result.current.kycStatus).toEqual('needs_verification');
     });
 
-    it('showClientVerificationModal is `true` when account has kyc status and platform status is `active`', () => {
-        (useTradingPlatformStatus as jest.Mock).mockReturnValue({
-            getPlatformStatus: jest.fn(() => 'active'),
-        });
-
-        const { result } = renderHook(() =>
-            useAddedMT5Account({ ...mockAccount, status: 'needs_verification' } as TModifiedMT5Accounts)
-        );
-
-        expect(result.current.showClientVerificationModal).toEqual(true);
-    });
-
     it('showMT5TradeModal is `true` when platform status is `active`', () => {
         (useTradingPlatformStatus as jest.Mock).mockReturnValue({
             getPlatformStatus: jest.fn(() => 'active'),

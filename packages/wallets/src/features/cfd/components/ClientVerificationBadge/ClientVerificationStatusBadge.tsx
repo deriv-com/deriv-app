@@ -40,11 +40,10 @@ const getBadgeVariations = (localize: TTranslations['localize']) => {
 
 type TClientVerificationBadgeProps = {
     onClick?: VoidFunction;
-    underlined?: boolean;
     variant: keyof ReturnType<typeof getBadgeVariations>;
 };
 
-const ClientVerificationStatusBadge: React.FC<TClientVerificationBadgeProps> = ({ onClick, underlined, variant }) => {
+const ClientVerificationStatusBadge: React.FC<TClientVerificationBadgeProps> = ({ onClick, variant }) => {
     const { localize } = useTranslations();
     const { isDesktop } = useDevice();
     const { color, content, icon } = getBadgeVariations(localize)[variant];
@@ -54,11 +53,16 @@ const ClientVerificationStatusBadge: React.FC<TClientVerificationBadgeProps> = (
             className='wallets-client-verification-badge'
             color={color as TBadgeColor}
             leftIcon={icon}
-            onClick={onClick}
+            onClick={e => {
+                if (onClick) {
+                    e.stopPropagation();
+                    onClick();
+                }
+            }}
         >
             <Text
                 className={classNames('wallets-client-verification-badge__content', {
-                    'wallets-client-verification-badge__content--underlined': !!onClick || underlined,
+                    'wallets-client-verification-badge__content--underlined': !!onClick,
                 })}
                 size={isDesktop ? 'xs' : 'sm'}
                 weight='bold'

@@ -23,8 +23,17 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../../../components', () => ({
     ...jest.requireActual('../../../../components'),
     ClientVerificationStatusBadge: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>ClientVerificationStatusBadge</div>;
+        mockPropsFn(props.variant);
+        return (
+            <div
+                onClick={e => {
+                    e.stopPropagation();
+                    props.onClick();
+                }}
+            >
+                ClientVerificationStatusBadge
+            </div>
+        );
     }),
     PlatformStatusBadge: jest.fn(props => {
         mockPropsFn(props);
@@ -101,7 +110,7 @@ describe('AddedMT5AccountsList', () => {
         expect(screen.getByText('12345678')).toBeInTheDocument();
     });
 
-    it('displays ClientVerificationStatusBadge with correct props', () => {
+    it('displays correct variant of ClientVerificationStatusBadge and renders modal with ClientVerificationModal when clicked on it', async () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
             kycStatus: 'mockKycStatus',
@@ -110,10 +119,15 @@ describe('AddedMT5AccountsList', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        expect(screen.getByText('ClientVerificationStatusBadge')).toBeInTheDocument();
-        expect(mockPropsFn).toBeCalledWith({
-            underlined: true,
-            variant: 'mockKycStatus',
+        const badge = screen.getByText('ClientVerificationStatusBadge');
+
+        expect(badge).toBeInTheDocument();
+        expect(mockPropsFn).toBeCalledWith('mockKycStatus');
+
+        userEvent.click(badge);
+
+        await waitFor(() => {
+            expect(screen.getByText('ClientVerificationModal')).toBeInTheDocument();
         });
     });
 
@@ -129,25 +143,6 @@ describe('AddedMT5AccountsList', () => {
                 marketType: mockAccount.market_type,
                 mt5Account: mockAccount,
                 platform: PlatformDetails.mt5.platform,
-            });
-        });
-    });
-
-    it('shows ClientVerificationModal when verification has failed', async () => {
-        (useAddedMT5Account as jest.Mock).mockReturnValue({
-            ...mockUseAddedMT5AccountData,
-            showClientVerificationModal: true,
-        });
-
-        // @ts-expect-error - since this is a mock, we only need partial properties of the account
-        render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
-
-        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
-
-        await waitFor(() => {
-            expect(screen.getByText('ClientVerificationModal')).toBeInTheDocument();
-            expect(mockPropsFn).toBeCalledWith({
-                account: mockAccount,
             });
         });
     });

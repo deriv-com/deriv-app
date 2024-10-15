@@ -22,14 +22,8 @@ type TProps = {
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const isRtl = useIsRtl();
-    const {
-        accountDetails,
-        isServerMaintenance,
-        kycStatus,
-        showClientVerificationModal,
-        showMT5TradeModal,
-        showPlatformStatus,
-    } = useAddedMT5Account(account as TModifiedMT5Accounts);
+    const { accountDetails, isServerMaintenance, kycStatus, showMT5TradeModal, showPlatformStatus } =
+        useAddedMT5Account(account as TModifiedMT5Accounts);
 
     const { show } = useModal();
 
@@ -38,12 +32,6 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
             onClick={() => {
                 if (showPlatformStatus) {
                     return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
-                        defaultRootId: 'wallets_modal_root',
-                    });
-                }
-
-                if (showClientVerificationModal) {
-                    return show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />, {
                         defaultRootId: 'wallets_modal_root',
                     });
                 }
@@ -73,7 +61,16 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <Text align='start' as='p' size='xs'>
                     {account.display_login}
                 </Text>
-                {kycStatus && <ClientVerificationStatusBadge underlined variant={kycStatus} />}
+                {kycStatus && (
+                    <ClientVerificationStatusBadge
+                        onClick={() =>
+                            show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />, {
+                                defaultRootId: 'wallets_modal_root',
+                            })
+                        }
+                        variant={kycStatus}
+                    />
+                )}
             </TradingAccountCard.Content>
             <TradingAccountCard.Button
                 className={classNames('wallets-added-mt5__icon', {

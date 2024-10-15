@@ -40,14 +40,12 @@ const useAddedMT5Account = (account: TModifiedMT5Accounts) => {
         account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
-    const showClientVerificationModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE && !!kycStatus;
     const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE;
 
     return {
         accountDetails,
         isServerMaintenance,
         kycStatus,
-        showClientVerificationModal,
         showMT5TradeModal,
         showPlatformStatus,
     };

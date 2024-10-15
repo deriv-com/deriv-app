@@ -92,7 +92,7 @@
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
-        "translate": "f () { npm run translate --workspace=@deriv/translations ;}; f",
+        "translate": "f () { npm exec --workspace=@deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
         "prepare": "husky install"
     },

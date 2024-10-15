@@ -1,10 +1,9 @@
-import { Button, Text } from '@deriv/components';
+import { Button, Text, Icon } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
 import FormFooter from '../../../Components/form-footer';
-import { DerivLightOrdersDefaultIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
 import './navigate-to-personal-details.scss';
 
@@ -34,7 +33,8 @@ const NavigateToPersonalDetails = observer(() => {
     return (
         <div className='navigate-to-personal-details'>
             <div className='navigate-to-personal-details__body'>
-                <DerivLightOrdersDefaultIcon {...icon_size} />
+                {/* [TODO] This will be replaced by icon from Quiull icons */}
+                <Icon icon='IcLightOrdersDefault' {...icon_size} />
                 <Text
                     as='p'
                     size={isDesktop ? 'sm' : 's'}

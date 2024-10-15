@@ -7,6 +7,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
 import { useSnackbar } from '@deriv-com/quill-ui';
 import moment from 'moment';
+import { toMoment } from '@deriv/shared';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),

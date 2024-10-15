@@ -32,14 +32,14 @@ const QuickSelectionPanel = ({
     <>
         <div className='qs__selected-options'>
             <div className='qs__selected-options__item'>
-                <Text size='xs'>{localize('Trade type')}</Text>
-                <Text size='xs' weight='bold'>
+                <Text size='xs' line_height='s'>{localize('Trade type')}</Text>
+                <Text size='xs' weight='bold' line_height='s'>
                     {selected_trade_type}
                 </Text>
             </div>
             <div className='qs__selected-options__item'>
-                <Text size='xs'>{localize('Strategy')}</Text>
-                <Text size='xs' weight='bold'>
+                <Text size='xs' line_height='s'>{localize('Strategy')}</Text>
+                <Text size='xs' weight='bold' line_height='s'>
                     {selected_startegy_label}
                 </Text>
             </div>
@@ -181,11 +181,11 @@ const FormWrapper = observer(
                             </ThemedScrollbars>
                             {!is_selected_strategy_step && (
                                 <div className='qs__body__content__footer'>
-                                    <Button transparent disabled={is_selected_strategy_step} onClick={onBack}>
+                                    <Button transparent classNameSpan='qs__body__content__footer--back' disabled={is_selected_strategy_step} onClick={onBack}>
                                         {localize('Back')}
                                     </Button>
                                     <Button secondary disabled={!isValid} onClick={onEdit}>
-                                        {localize('Edit')}
+                                        {localize('Load')}
                                     </Button>
                                     <Button
                                         data-testid='qs-run-button'

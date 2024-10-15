@@ -9,10 +9,15 @@
         height: 3.2rem;
         width: 3.2rem;
         padding: 0.7rem;
-        border: 1px solid var(--general-section-1);
+        border: 1px solid var(--general-section-6);
         border-radius: 2rem;
         background-color: unset;
         cursor: pointer;
+        svg {
+            g {
+                fill: var(--icon-black-plus);
+            }
+        }
     }
 
     &__panel {
@@ -27,6 +32,9 @@
                 width: 36rem;
                 background-color: var(--general-section-1);
                 border-radius: 1rem;
+                .input__align--left{
+                    background-color: var(--general-section-6);
+                }
             }
 
             &__wrapper__variant--outline {
@@ -88,6 +96,9 @@
             }
 
             &__footer {
+                &--back {
+                    color: var(--brand-red-coral);
+                }
                 .dc-btn--transparent {
                     @include desktop-screen {
                         left: 2.4rem;
@@ -116,7 +127,7 @@
         gap: 1.6rem;
         width: 90%;
         margin: 1.6rem auto;
-        padding: 0.8rem var(--group-outer-padding) 1.6rem;
+        padding: 0.8rem var(--group-outer-padding);
         background-color: var(--general-section-1);
         border-radius: 0.8rem;
 

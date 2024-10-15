@@ -42,6 +42,7 @@ const DayInput = ({
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const [trigger_date, setTriggerDate] = useState(false);
     const [is_disabled, setIsDisabled] = useState(false);
+    const [temp_end_date, setTempEndDate] = useState(end_date);
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
@@ -180,7 +181,7 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [end_date]);
+    }, [temp_end_date]);
 
     let is_24_hours_contract = false;
 
@@ -193,7 +194,8 @@ const DayInput = ({
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        setEndDate(date);
+        // setEndDate(date);
+        setTempEndDate(date);
         setTriggerDate(true);
     };
     return (
@@ -240,6 +242,7 @@ const DayInput = ({
                     setOpen(false);
                     setOpenTimePicker(false);
                     setIsDisabled(false);
+                    setTempEndDate(end_date);
                 }}
                 position='left'
                 expandable={false}
@@ -262,7 +265,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={end_date}
+                            end_date={temp_end_date}
                             setEndDate={handleDate}
                         />
                     )}
@@ -281,6 +284,7 @@ const DayInput = ({
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
                                 if (!is_disabled) {
+                                    setEndDate(temp_end_date);
                                     setOpen(false);
                                     setOpenTimePicker(false);
                                     if (formatted_date !== formatted_current_date) {

@@ -176,12 +176,6 @@ module.exports = function (env) {
                         priority: -10,
                         test: /[\\/]node_modules[\\/]/,
                     },
-                    hooks: {
-                        name: 'hooks',
-                        test: module => {
-                            return module.resource && module.resource.includes('src/hooks');
-                        },
-                    },
                     shared: {
                         chunks: 'all',
                         name: 'shared',

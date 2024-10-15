@@ -18,6 +18,7 @@ export enum ACTION {
     GOOGLE_DRIVE_CONNECT = 'google_drive_connect',
     GOOGLE_DRIVE_DISCONNECT = 'google_drive_disconnect',
     SWITCH_LOAD_STRATEGY_TAB = 'switch_load_strategy_tab',
+    ANNOUNCEMENT_CLICK = 'announcement_click',
 }
 
 export type TFormStrategy = {

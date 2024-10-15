@@ -7,6 +7,8 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Notifications as Announcement } from '@deriv-com/ui';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
+import { rudderStackSendAnnouncementClickEvent } from '../../../analytics/rudderstack-dashboard';
 import { guide_content } from '../../tutorials/constants';
 import { performButtonAction } from './utils/accumulator-helper-functions';
 import { MessageAnnounce, TitleAnnounce } from './announcement-components';
@@ -42,6 +44,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announce_id });
 
         let data: Record<string, boolean> | null = null;
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
@@ -136,7 +139,14 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={() => setIsOpenAnnounceList(prevState => !prevState)}
+                onClick={() => {
+                    setIsOpenAnnounceList(prevState => !prevState);
+                    if (!is_open_announce_list) {
+                        rudderStackSendOpenEvent({
+                            subform_name: 'announcements',
+                        });
+                    }
+                }}
                 data-testid='btn-announcements'
             >
                 <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />

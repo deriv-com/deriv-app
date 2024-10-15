@@ -6,6 +6,7 @@ import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
 import { useSnackbar } from '@deriv-com/quill-ui';
+import moment from 'moment';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -35,7 +36,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     toMoment: jest.fn(() => ({
         clone: jest.fn(),
-        isSame: jest.fn(),
+        isSame: jest.fn(() => true),
     })),
 }));
 
@@ -63,6 +64,9 @@ describe('Duration', () => {
                     start_time: null,
                     symbol: 'EURUSD',
                 },
+            },
+            common: {
+                server_time: moment('2024-10-10T11:23:10.895Z'),
             },
         });
     });

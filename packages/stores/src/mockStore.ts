@@ -160,7 +160,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_social_signup: false,
             is_single_currency: false,
             is_switching: false,
-            is_tnc_needed: false,
             is_high_risk: false,
             is_trading_experience_incomplete: false,
             is_unwelcome: false,
@@ -250,8 +249,9 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
+            //@ts-expect-error we only need partial values
             website_status: {
-                dx_trade_status: {
+                dxtrade_status: {
                     all: 0,
                     demo: 0,
                     real: 0,
@@ -507,6 +507,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setShouldShowSameDOBPhoneModal: jest.fn(),
             setHashedValue: jest.fn(),
             url_hashed_values: '',
+            is_tnc_update_modal_open: false,
+            toggleTncUpdateModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),
@@ -773,12 +775,12 @@ const mock = (): TStores & { is_mock: boolean } => {
                 payout_choices: [],
                 requestProposal: jest.fn(),
                 resetPreviousSymbol: jest.fn(),
-                sendTradeParamsAnalytics: jest.fn(),
                 setHoveredBarrier: jest.fn(),
                 setIsTradeParamsExpanded: jest.fn(),
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),
                 setPayoutPerPoint: jest.fn(),
+                setDefaultStake: jest.fn(),
                 stake_boundary: {},
                 start_date: 0,
                 stop_loss: 0,

@@ -1,31 +1,41 @@
 import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
 import { useCashierFiatAddress } from '@deriv/api-v2';
+import { TSocketError } from '@deriv/api-v2/types';
 import { Loader } from '@deriv-com/ui';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';
 import './WithdrawalFiat.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    setResendEmail: React.Dispatch<React.SetStateAction<boolean>>;
+    setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
     verificationCode?: string;
 }
 
-const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
-    const { data: iframeUrl, error, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
+const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setResendEmail, setVerificationCode, verificationCode }) => {
+    const { data: iframeUrl, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
     const [isIframeLoading, setIsIframeLoading] = useState(true);
-    const withdrawalFiatError = error?.error;
+    const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
 
     useEffect(() => {
         if (verificationCode) {
             mutateAsync('withdraw', {
                 verification_code: verificationCode,
+            }).catch((response: TSocketError<'cashier'> | null) => {
+                if (isServerError(response?.error)) setError(response?.error);
             });
         }
     }, [mutateAsync, verificationCode]);
 
+    const resetError = () => {
+        setVerificationCode('');
+        setError(undefined);
+    };
+
     if (isWithdrawalFiatLoading) return <Loader />;
 
-    if (isServerError(withdrawalFiatError)) {
-        return <WithdrawalErrorScreen error={withdrawalFiatError} />;
+    if (error) {
+        return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;
     }
 
     return (

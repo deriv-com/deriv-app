@@ -16,12 +16,7 @@ import { useDevice } from '@deriv-com/ui';
 const FormTitle = () => {
     const { isDesktop } = useDevice();
     return (
-        <Text
-            as='p'
-            line_height='xxl'
-            align={isDesktop ? 'center' : 'left'}
-            className='additional-kyc-info-modal__form--header'
-        >
+        <Text as='p' align={isDesktop ? 'center' : 'left'} className='additional-kyc-info-modal__form--header'>
             <Localize i18n_default_text='Please take a moment to update your information now.' />
         </Text>
     );

@@ -68,7 +68,7 @@ export const AdditionalKycInfoModal = observer(() => {
                         toggleModal={toggleModal}
                         className='additional-kyc-info'
                         width='90.4rem'
-                        height={error ? '54.4rem' : '49.6rem'}
+                        height={error ? '54.4rem' : 'auto'}
                     >
                         <Modal.Body className='additional-kyc-info-modal__form'>
                             <AdditionalKycInfoFormWithHintBox setError={setError} error={error} />

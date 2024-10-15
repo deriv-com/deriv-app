@@ -11,7 +11,7 @@ jest.mock('../../AppCardBadge', () => ({
     AppCardBadge: () => <div>AppCardBadge</div>,
 }));
 
-describe('AppCard', () => {
+describe('AppCardd', () => {
     let mockProps: React.ComponentProps<typeof AppCard>;
 
     beforeEach(() => {

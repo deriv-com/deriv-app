@@ -71,7 +71,7 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.35.0",
+        "@deriv-com/ui": "1.36.2",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",

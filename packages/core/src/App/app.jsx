@@ -18,9 +18,11 @@ import {
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
+    isDTraderV2Width,
 } from '@deriv/shared';
 import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
@@ -47,9 +49,20 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { preferred_language } = root_store.client;
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
-    const is_dtrader_v2 =
-        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
     const language = preferred_language ?? getInitialLanguage();
+
+    const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled',
+    });
+    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
+
+    React.useEffect(() => {
+        setDTraderV2Enabled(
+            (isDTraderV2() || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
+                (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
@@ -109,7 +122,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [root_store.client.email]);
 
     const getLoader = () =>
-        is_dtrader_v2 ? (
+        dtrader_v2_enabled ? (
             <Loading.DTraderV2
                 initial_app_loading
                 is_contract_details={location.pathname.startsWith('/contract/')}
@@ -123,7 +136,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         const html = document?.querySelector('html');
 
-        if (!html || !is_dtrader_v2) return;
+        if (!html || !dtrader_v2_enabled) return;
         if (is_dark_mode) {
             html.classList?.remove('light');
             html.classList?.add('dark');

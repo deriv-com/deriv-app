@@ -1,3 +1,4 @@
+import { Analytics } from '@deriv-com/analytics';
 import { getPlatformSettings } from '../brand';
 import { routes } from '../routes';
 
@@ -167,7 +168,13 @@ export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistor
 };
 
 export const isDtraderV2Enabled = (is_mobile: boolean) => {
-    const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+    const dtrader_v2_enabled_growthbook = Analytics?.getInstances?.().ab?.GrowthBook.getFeatureValue(
+        'dtrader_v2_enabled',
+        false
+    );
+    const is_dtrader_v2 =
+        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 ||
+        dtrader_v2_enabled_growthbook;
 
     return (
         is_dtrader_v2 &&

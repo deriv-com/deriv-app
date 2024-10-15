@@ -45,6 +45,12 @@ const HOISTED_PACKAGES = {
     '@deriv/components': path.resolve(__dirname, '../../../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../../../node_modules/@deriv/translations'),
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
+    '@deriv/trader': path.resolve(__dirname, '../../../node_modules/@deriv/trader'),
+    '@deriv/p2p': path.resolve(__dirname, '../../../node_modules/@deriv/p2p'),
+    '@deriv/cashier': path.resolve(__dirname, '../../../node_modules/@deriv/cashier'),
+    '@deriv/bot-web-ui': path.resolve(__dirname, '../../../node_modules/@deriv/bot-web-ui'),
+    '@deriv/reports': path.resolve(__dirname, '../../../node_modules/@deriv/reports'),
+    '@deriv/cfd': path.resolve(__dirname, '../../../node_modules/@deriv/cfd'),
 };
 
 const ALIASES = {

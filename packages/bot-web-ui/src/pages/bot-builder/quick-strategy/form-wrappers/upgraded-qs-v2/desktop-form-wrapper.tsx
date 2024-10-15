@@ -1,19 +1,19 @@
+import React from 'react';
+import { useFormikContext } from 'formik';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useFormikContext } from 'formik';
-import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsEditStrategyEvent } from '../../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../../config';
-import '../../quick-strategy.scss';
 import { TFormData, TFormValues } from '../../types';
 import StrategyTabContent from '../strategy-tab-content';
 import useQsSubmitHandler from '../useQsSubmitHandler';
 import QSStepper from './qs-stepper';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
+import '../../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
     children: React.ReactNode;
@@ -32,13 +32,17 @@ const QuickSelectionPanel = ({
     <>
         <div className='qs__selected-options'>
             <div className='qs__selected-options__item'>
-                <Text size='xs' line_height='s'>{localize('Trade type')}</Text>
+                <Text size='xs' line_height='s'>
+                    {localize('Trade type')}
+                </Text>
                 <Text size='xs' weight='bold' line_height='s'>
                     {selected_trade_type}
                 </Text>
             </div>
             <div className='qs__selected-options__item'>
-                <Text size='xs' line_height='s'>{localize('Strategy')}</Text>
+                <Text size='xs' line_height='s'>
+                    {localize('Strategy')}
+                </Text>
                 <Text size='xs' weight='bold' line_height='s'>
                     {selected_startegy_label}
                 </Text>
@@ -181,7 +185,12 @@ const FormWrapper = observer(
                             </ThemedScrollbars>
                             {!is_selected_strategy_step && (
                                 <div className='qs__body__content__footer'>
-                                    <Button transparent classNameSpan='qs__body__content__footer--back' disabled={is_selected_strategy_step} onClick={onBack}>
+                                    <Button
+                                        transparent
+                                        classNameSpan='qs__body__content__footer--back'
+                                        disabled={is_selected_strategy_step}
+                                        onClick={onBack}
+                                    >
                                         {localize('Back')}
                                     </Button>
                                     <Button secondary disabled={!isValid} onClick={onEdit}>

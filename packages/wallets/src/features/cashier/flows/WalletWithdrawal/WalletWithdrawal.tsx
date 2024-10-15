@@ -59,7 +59,11 @@ const WalletWithdrawal = () => {
                 verificationCode={verificationCode}
             />
         ) : (
-            <WithdrawalFiatModule verificationCode={verificationCode} />
+            <WithdrawalFiatModule
+                setResendEmail={setResendEmail}
+                setVerificationCode={setVerificationCode}
+                verificationCode={verificationCode}
+            />
         );
     }
 

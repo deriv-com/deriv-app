@@ -1,5 +1,5 @@
 import { Chip, Text } from '@deriv-com/quill-ui';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import React from 'react';
 
 const DurationChips = ({
@@ -11,20 +11,39 @@ const DurationChips = ({
     onChangeUnit: (arg: string) => void;
     unit: string;
 }) => {
-    const list = duration_units_list.concat({ value: 'et', text: localize('End Time') });
+    const show_end_time = duration_units_list.length > 1;
+
+    if (!show_end_time) {
+        return <></>;
+    }
 
     return (
         <div className='duration-container__chips'>
-            {list.map((item, index) => (
+            {duration_units_list.map(
+                (item, index) =>
+                    item.value !== 'd' && (
+                        <Chip.Selectable
+                            key={`${item.text}-${index}`}
+                            selected={unit == item.value}
+                            className='duration-container__chips__chip'
+                            onClick={() => onChangeUnit(item.value)}
+                        >
+                            <Text size='sm'>{item.text}</Text>
+                        </Chip.Selectable>
+                    )
+            )}
+            {show_end_time && (
                 <Chip.Selectable
-                    key={`${item.text}-${index}`}
-                    selected={unit == item.value}
+                    key='end-time'
+                    selected={unit === 'd'}
                     className='duration-container__chips__chip'
-                    onClick={() => onChangeUnit(item.value)}
+                    onClick={() => onChangeUnit('d')}
                 >
-                    <Text size='sm'>{item.text}</Text>
+                    <Text size='sm'>
+                        <Localize i18n_default_text='End Time' />
+                    </Text>
                 </Chip.Selectable>
-            ))}
+            )}
         </div>
     );
 };

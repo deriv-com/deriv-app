@@ -76,8 +76,6 @@ const DayInput = ({
 
     if (['high_low'].includes(contract_type)) {
         new_values.contract_type = 'PUT';
-        // new_values.barrier_1 = Number(Math.round(tick_data?.quote));
-        // new_values.barrier = Number(Math.round(tick_data?.quote));
     }
 
     const proposal_req = getProposalRequestObject({
@@ -118,6 +116,8 @@ const DayInput = ({
                     style: { marginBottom: '48px' },
                 });
                 setIsDisabled(true);
+            } else {
+                setIsDisabled(false);
             }
 
             if (response?.proposal?.date_expiry) {
@@ -127,13 +127,11 @@ const DayInput = ({
                         .split('T')[1]
                         .substring(0, 8)
                 );
-                setIsDisabled(false);
             }
 
             invalidateDTraderCache(['proposal', JSON.stringify(day)]);
             setTriggerDate(false);
         }
-        // req_id
     }, [response, setTempExpiryTime]);
 
     const moment_expiry_date = toMoment(expiry_date);
@@ -194,7 +192,6 @@ const DayInput = ({
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        // setEndDate(date);
         setTempEndDate(date);
         setTriggerDate(true);
     };

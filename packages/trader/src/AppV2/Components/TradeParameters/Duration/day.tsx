@@ -1,4 +1,4 @@
-import { ActionSheet, Text, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import {
     getDatePickerStartDate,
     getProposalRequestObject,
 } from 'AppV2/Utils/trade-params-utils';
-import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { invalidateDTraderCache, useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
 
 const timeToMinutes = (time: string) => {
@@ -40,6 +40,8 @@ const DayInput = ({
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
+    const [trigger_date, setTriggerDate] = useState(false);
+    const [is_disabled, setIsDisabled] = useState(false);
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
@@ -53,32 +55,84 @@ const DayInput = ({
         duration_min_max,
         trade_types,
         contract_type,
+        duration,
+        tick_data,
+        symbol,
+        barrier_1,
     } = useTraderStore();
     const trade_store = useTraderStore();
+    const { addSnackbar } = useSnackbar();
 
     const new_values = {
         duration_unit: 'd',
-        duration: day || '',
-        expiry_time: null,
+        duration: day || duration,
         expiry_type: 'duration',
         contract_type,
+        basis: 'stake',
+        amount: '5',
+        symbol,
     };
+
+    if (['high_low'].includes(contract_type)) {
+        new_values.contract_type = 'PUT';
+        // new_values.barrier_1 = Number(Math.round(tick_data?.quote));
+        // new_values.barrier = Number(Math.round(tick_data?.quote));
+    }
+
     const proposal_req = getProposalRequestObject({
         new_values,
         trade_store,
-        trade_type: Object.keys(trade_types)[0],
+        trade_type: contract_type === 'high_low' ? 'PUT' : Object.keys(trade_types)[0],
     });
 
-    const { data: response } = useDtraderQuery<ProposalResponse>(['proposal', JSON.stringify(day)], proposal_req, {
-        enabled: day !== null,
-    });
+    const { data: response } = useDtraderQuery<ProposalResponse>(
+        ['proposal', JSON.stringify(day)],
+        (() => {
+            const request_payload = {
+                ...proposal_req,
+                ...{ symbol },
+            };
+
+            if (barrier_1) {
+                return {
+                    ...request_payload,
+                    barrier: Number(tick_data?.quote),
+                };
+            }
+
+            return request_payload;
+        })(),
+        {
+            enabled: trigger_date,
+        }
+    );
 
     useEffect(() => {
-        if (response?.proposal?.date_expiry) {
-            setTempExpiryTime(
-                new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[1].substring(0, 8)
-            );
+        if (response) {
+            if (response?.error?.message && response?.error?.details?.field === 'duration') {
+                addSnackbar({
+                    message: <Localize i18n_default_text={response?.error?.message} />,
+                    status: 'fail',
+                    hasCloseButton: true,
+                    style: { marginBottom: '48px' },
+                });
+                setIsDisabled(true);
+            }
+
+            if (response?.proposal?.date_expiry) {
+                setTempExpiryTime(
+                    new Date((response?.proposal?.date_expiry as number) * 1000)
+                        .toISOString()
+                        .split('T')[1]
+                        .substring(0, 8)
+                );
+                setIsDisabled(false);
+            }
+
+            invalidateDTraderCache(['proposal', JSON.stringify(day)]);
+            setTriggerDate(false);
         }
+        // req_id
     }, [response, setTempExpiryTime]);
 
     const moment_expiry_date = toMoment(expiry_date);
@@ -140,6 +194,7 @@ const DayInput = ({
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
         setEndDate(date);
+        setTriggerDate(true);
     };
     return (
         <div className='duration-container__days-input'>
@@ -224,13 +279,15 @@ const DayInput = ({
                         primaryAction={{
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
-                                setOpen(false);
-                                setOpenTimePicker(false);
-                                if (formatted_date !== formatted_current_date) {
-                                    setEndTime('');
-                                }
-                                if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
-                                    setEndTime(adjusted_start_time);
+                                if (!is_disabled) {
+                                    setOpen(false);
+                                    setOpenTimePicker(false);
+                                    if (formatted_date !== formatted_current_date) {
+                                        setEndTime('');
+                                    }
+                                    if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
+                                        setEndTime(adjusted_start_time);
+                                    }
                                 }
                             },
                         }}

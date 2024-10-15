@@ -1,12 +1,6 @@
 import React, { lazy } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import {
-    WalletListHeader,
-    WalletsAddMoreCarousel,
-    WalletsCardLoader,
-    WalletsResponsiveLoader,
-    WalletTourGuide,
-} from '../../components';
+import { WalletListHeader, WalletsAddMoreCarousel, WalletsCardLoader, WalletsResponsiveLoader } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
@@ -30,7 +24,6 @@ const WalletsListingRoute: React.FC = () => {
             )}
             <WalletsAddMoreCarousel />
             <ResetMT5PasswordHandler />
-            <WalletTourGuide />
         </div>
     );
 };

@@ -17,10 +17,22 @@ const Wallets = React.lazy(() =>
 );
 
 const RootComponent = observer(props => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_wallets_onboarding_tour_guide_visible, setIsWalletsOnboardingTourGuideVisible } = ui;
     const { has_wallet } = client;
 
-    return has_wallet ? <Wallets /> : <AppStore {...props} />;
+    const onWalletsOnboardingTourGuideCloseHandler = () => {
+        setIsWalletsOnboardingTourGuideVisible(false);
+    };
+
+    return has_wallet ? (
+        <Wallets
+            isWalletsOnboardingTourGuideVisible={is_wallets_onboarding_tour_guide_visible}
+            onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
+        />
+    ) : (
+        <AppStore {...props} />
+    );
 });
 
 export default RootComponent;

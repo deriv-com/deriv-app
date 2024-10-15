@@ -22,10 +22,6 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
         // defaultValue: true,
     });
 
-    console.log({
-        enable_freshworks_live_chat,
-    });
-
     const chat = enable_freshworks_live_chat ? freshChat : liveChat;
 
     if (!chat.isReady) return null;

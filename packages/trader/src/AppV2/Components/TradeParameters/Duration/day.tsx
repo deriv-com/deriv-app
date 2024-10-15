@@ -74,10 +74,6 @@ const DayInput = ({
         symbol,
     };
 
-    if (['high_low'].includes(contract_type)) {
-        new_values.contract_type = 'PUT';
-    }
-
     const proposal_req = getProposalRequestObject({
         new_values,
         trade_store,
@@ -95,10 +91,9 @@ const DayInput = ({
             if (barrier_1) {
                 return {
                     ...request_payload,
-                    barrier: Number(tick_data?.quote),
+                    barrier: Number(Math.round(tick_data?.quote as number)),
                 };
             }
-
             return request_payload;
         })(),
         {
@@ -184,9 +179,14 @@ const DayInput = ({
     let is_24_hours_contract = false;
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
-    is_24_hours_contract =
-        (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
-        has_intraday_duration_unit;
+    const parsedFormattedDate = new Date(Date.parse(`${formatted_date} 00:00:00`));
+
+    const isSameDate =
+        parsedFormattedDate.getFullYear() === server_time.year() &&
+        parsedFormattedDate.getMonth() === server_time.month() &&
+        parsedFormattedDate.getDate() === server_time.date();
+
+    is_24_hours_contract = (!!start_date || isSameDate) && has_intraday_duration_unit;
 
     const handleDate = (date: Date) => {
         const difference_in_time = date.getTime() - new Date().getTime();
@@ -216,8 +216,8 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
-                disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
+                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
+                disabled={!is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
                 }}
@@ -284,7 +284,13 @@ const DayInput = ({
                                     setEndDate(temp_end_date);
                                     setOpen(false);
                                     setOpenTimePicker(false);
-                                    if (formatted_date !== formatted_current_date) {
+                                    const end_date_temp = temp_end_date.toLocaleDateString('en-GB', {
+                                        day: 'numeric',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    });
+
+                                    if (end_date_temp !== formatted_current_date) {
                                         setEndTime('');
                                     }
                                     if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {

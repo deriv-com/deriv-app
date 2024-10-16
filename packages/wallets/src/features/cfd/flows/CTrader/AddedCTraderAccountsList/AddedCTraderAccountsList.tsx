@@ -39,10 +39,6 @@ const AddedCTraderAccountsList: React.FC = () => {
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
                     <TradingAccountCard.Content>
-                        <LabelPairedChevronRightCaptionRegularIcon
-                            data-testid='dt_wallets_trading_account_chevron_icon'
-                            width={16}
-                        />
                         <Text align='start' size='sm'>
                             {PlatformDetails.ctrader.title}
                         </Text>

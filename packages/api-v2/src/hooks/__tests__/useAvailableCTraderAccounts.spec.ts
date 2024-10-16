@@ -11,7 +11,7 @@ describe('useAvailableCTraderAccounts', () => {
         jest.clearAllMocks();
     });
 
-    it('should return modified accounts when data is available', () => {
+    it('returns modified accounts when data is available', () => {
         const mockData = {
             trading_platform_available_accounts: [
                 { market_type: 'gaming', someOtherField: 'value1' },
@@ -33,7 +33,7 @@ describe('useAvailableCTraderAccounts', () => {
         ]);
     });
 
-    it('should return empty array when no accounts are available', () => {
+    it('returns empty array when no accounts are available', () => {
         mockUseQuery.mockReturnValue({
             data: null,
             isLoading: false,
@@ -45,7 +45,7 @@ describe('useAvailableCTraderAccounts', () => {
         expect(result.current.data).toBe(undefined);
     });
 
-    it('should pass through other fields from useAuthorizedQuery', () => {
+    it('passes through other fields from useAuthorizedQuery', () => {
         mockUseQuery.mockReturnValue({
             data: null,
             isLoading: true,
@@ -58,7 +58,7 @@ describe('useAvailableCTraderAccounts', () => {
         expect(result.current.isError).toBe(false);
     });
 
-    it('should handle account types not in the mapper', () => {
+    it('handles account types not in the mapper', () => {
         const mockData = {
             trading_platform_available_accounts: [{ market_type: 'unknown', someOtherField: 'value' }],
         };

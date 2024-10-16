@@ -20,7 +20,10 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const [is_open, setIsOpen] = React.useState(false);
 
-    const onActionSheetClose = () => setIsOpen(false);
+    const onActionSheetClose = () => {
+        setIsOpen(false);
+        removeFocus();
+    };
 
     const action_sheet_content = [
         {
@@ -51,7 +54,6 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 readOnly
                 variant='fill'
                 value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}

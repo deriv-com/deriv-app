@@ -44,6 +44,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
     };
     const onActionSheetClose = () => {
         setIsOpen(false);
+        removeFocus();
     };
 
     const action_sheet_content = [
@@ -103,7 +104,6 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 readOnly
                 value={`${getGrowthRatePercentage(growth_rate)}%`}
                 variant='fill'

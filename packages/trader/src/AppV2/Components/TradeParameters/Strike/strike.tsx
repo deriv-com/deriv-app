@@ -102,12 +102,19 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 readOnly
                 variant='fill'
                 value={barrier_1}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={() => {
+                    setIsOpen(false);
+                    removeFocus();
+                }}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}

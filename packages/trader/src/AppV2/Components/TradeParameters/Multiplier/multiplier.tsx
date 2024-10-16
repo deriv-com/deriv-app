@@ -72,7 +72,6 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
             />
             <ActionSheet.Root
                 expandable={false}
@@ -80,6 +79,7 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                 position='left'
                 onClose={() => {
                     setIsOpen(false);
+                    removeFocus();
                 }}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>

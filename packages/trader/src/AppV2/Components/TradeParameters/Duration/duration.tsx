@@ -175,13 +175,13 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                     removeFocus(e);
                     setOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 status={has_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}
                 onClose={() => {
                     setOpen(false);
+                    removeFocus();
                 }}
                 position='left'
                 expandable={false}

@@ -30,7 +30,10 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         stop_loss,
     } = useTraderStore();
 
-    const closeActionSheet = () => setIsOpen(false);
+    const closeActionSheet = () => {
+        setIsOpen(false);
+        removeFocus();
+    };
     const getRiskManagementText = () => {
         if (has_cancellation) return `DC: ${addUnit({ value: cancellation_duration, unit: localize('minutes') })}`;
         if (has_take_profit && has_stop_loss)
@@ -84,7 +87,6 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                     removeFocus(e);
                     setIsOpen(true);
                 }}
-                onMouseDown={removeFocus}
                 readOnly
                 value={getRiskManagementText()}
                 variant='fill'

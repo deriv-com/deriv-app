@@ -32,6 +32,7 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
     const onActionSheetClose = () => {
         setIsOpen(false);
         setSelectedDigit(last_digit);
+        removeFocus();
     };
 
     if (is_minimized)
@@ -52,7 +53,6 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                         removeFocus(e);
                         setIsOpen(true);
                     }}
-                    onMouseDown={removeFocus}
                 />
                 <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                     <ActionSheet.Portal shouldCloseOnDrag>

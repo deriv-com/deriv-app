@@ -12,7 +12,7 @@ type TCashierLockedProps = {
 const TransferLocked: React.FC<TCashierLockedProps> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: accountStatus, isLoading: accountStatusLoading } = useAccountStatus();
+    const { data: accountStatus, isLoading: isAccountStatusLoading } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval;
@@ -23,7 +23,7 @@ const TransferLocked: React.FC<TCashierLockedProps> = ({ children }) => {
         (financialInformationNotComplete || tradingExperienceNotComplete) &&
         askFinancialRiskApproval;
 
-    if (accountStatusLoading) {
+    if (isAccountStatusLoading) {
         return <Loader />;
     }
 

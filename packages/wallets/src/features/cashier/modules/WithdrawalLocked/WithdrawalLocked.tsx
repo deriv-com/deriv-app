@@ -20,7 +20,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: poaStatus } = usePOA();
     const { data: cashierValidation } = useCashierValidation();
     const { data: accountLimits } = useAccountLimits();
-    const { data: accountStatus, isLoading: accountStatusLoading } = useAccountStatus();
+    const { data: accountStatus, isLoading: isAccountStatusLoading } = useAccountStatus();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
     const isCryptoProvider = activeWallet?.currency_config?.platform.cashier.includes('crypto');
     const { data: cryptoConfig } = useCryptoConfig({
@@ -53,7 +53,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         typeof minimumWithdrawal !== 'undefined' &&
         +remainder < minimumWithdrawal
     );
-    const isLoading = isCurrencyConfigLoading || accountStatusLoading;
+    const isLoading = isCurrencyConfigLoading || isAccountStatusLoading;
 
     if (isLoading) {
         return <Loader />;

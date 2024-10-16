@@ -22,10 +22,10 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: accountStatus, isLoading: accountStatusLoading } = useAccountStatus();
+    const { data: accountStatus, isLoading: isAccountStatusLoading } = useAccountStatus();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
 
-    const isLoading = accountStatusLoading || isEuRegionLoading;
+    const isLoading = isAccountStatusLoading || isEuRegionLoading;
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;

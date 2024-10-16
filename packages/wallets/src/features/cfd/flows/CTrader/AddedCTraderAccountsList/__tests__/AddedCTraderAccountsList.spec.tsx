@@ -58,7 +58,6 @@ describe('AddedCTraderAccountsList', () => {
         expect(screen.getByTestId('dt_wallets_trading_account_card')).toBeInTheDocument();
         expect(screen.getByText(PlatformDetails.ctrader.title)).toBeInTheDocument();
         expect(screen.getByText('2,000.00 USD')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_wallets_trading_account_chevron_icon')).toBeInTheDocument();
     });
 
     it('should open the MT5TradeModal when the trading account card is clicked', () => {

@@ -214,7 +214,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 status={stake_error && !is_open ? 'error' : undefined}
                 ref={input_ref}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={() => {
+                    onClose(false);
+                    removeFocus();
+                }}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>

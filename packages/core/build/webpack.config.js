@@ -85,10 +85,5 @@ module.exports = function (env) {
         stats: {
             colors: true,
         },
-        externals: [
-            {
-                '@deriv/trader': '@deriv/trader',
-            },
-        ],
     };
 };

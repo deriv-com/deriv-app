@@ -9,7 +9,6 @@ import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
-import reactNodeToString from '../../utils/react-node-to-string';
 import { WalletTextField } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletStatusBadge } from '../WalletStatusBadge';
@@ -119,7 +118,7 @@ const WalletListCardDropdown = () => {
                                     onClick={e => {
                                         e.stopPropagation();
                                         if (wallet.isDisabled) return;
-                                        handleItemClick(wallet.loginid, reactNodeToString(wallet.text));
+                                        handleItemClick(wallet.loginid, wallet.text);
                                     }}
                                 >
                                     <div

@@ -26,6 +26,14 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     if (!chat.isReady) return null;
 
+    // Quick fix for making sure livechat won't popup if feature flag is late to enable.
+    // We will add a refactor after this
+    setInterval(() => {
+        if (enable_freshworks_live_chat) {
+            window.LiveChatWidget?.call('destroy');
+        }
+    }, 10);
+
     const liveChatClickHandler = () => {
         enable_freshworks_live_chat ? freshChat.widget.open() : liveChat.widget?.call('maximize');
     };

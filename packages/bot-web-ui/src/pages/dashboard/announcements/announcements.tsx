@@ -127,6 +127,14 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             announcement_name: selected_announcement?.announcement.main_title,
             announcement_action: selected_announcement?.announcement.confirm_button_text,
         });
+        if (selected_announcement?.announcement.confirm_button_text === 'Import strategy') {
+            rudderStackSendOpenEvent({
+                subpage_name: 'bot_builder',
+                subform_source: 'announcements',
+                subform_name: 'load_strategy',
+                load_strategy_tab: 'recent',
+            });
+        }
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
         }

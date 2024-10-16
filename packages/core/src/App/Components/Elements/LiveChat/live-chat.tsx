@@ -19,7 +19,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
-        defaultValue: true,
+        // defaultValue: true,
     });
 
     const chat = enable_freshworks_live_chat ? freshChat : liveChat;

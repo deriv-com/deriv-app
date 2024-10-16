@@ -8,12 +8,10 @@ import {
     isAccumulatorContractOpen,
     isCallPut,
     isDesktop,
-    isDigitContract,
     isEnded,
     isHighLow,
     isMultiplierContract,
     isTurbosContract,
-    isUpDownContract,
     isVanillaContract,
     LocalStore,
     setTradeURLParams,
@@ -33,10 +31,10 @@ export default class ContractTradeStore extends BaseStore {
     error_message = '';
 
     // Chart specific observables
-    saved_granularity = +LocalStore.get('contract_trade.granularity');
-    saved_chart_type = LocalStore.get('contract_trade.chart_style');
-    chart_type = '';
-    granularity = null;
+    granularity = +LocalStore.get('contract_trade.granularity') || 0;
+    chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
+    prev_chart_type = '';
+    prev_granularity = null;
 
     // Accumulator barriers data:
     accu_barriers_timeout_id = null;
@@ -47,36 +45,34 @@ export default class ContractTradeStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            accountSwitchListener: action.bound,
             accu_barriers_timeout_id: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
-            addContract: action.bound,
-            chart_type: observable,
             clearAccumulatorBarriersData: action.bound,
-            clearError: action.bound,
             contracts: observable.shallow,
-            error_message: observable,
-            filtered_contracts: computed,
-            getContractById: action.bound,
-            granularity: observable,
             has_crossed_accu_barriers: computed,
             has_error: observable,
-            last_contract: computed,
-            markers_array: computed,
-            onUnmount: override,
-            prev_contract: computed,
-            removeContract: action.bound,
-            saveChartType: action.bound,
-            saved_chart_type: observable,
-            saved_granularity: observable,
-            saveGranularity: action.bound,
-            setChartTypeAndGranularity: action.bound,
-            setNewAccumulatorBarriersData: action.bound,
+            error_message: observable,
+            granularity: observable,
+            chart_type: observable,
             updateAccumulatorBarriersData: action.bound,
             updateChartType: action.bound,
             updateGranularity: action.bound,
+            markers_array: computed,
+            filtered_contracts: computed,
+            addContract: action.bound,
+            removeContract: action.bound,
+            accountSwitchListener: action.bound,
+            onUnmount: override,
+            prev_chart_type: observable,
+            prev_granularity: observable,
             updateProposal: action.bound,
+            last_contract: computed,
+            clearError: action.bound,
+            getContractById: action.bound,
+            prev_contract: computed,
+            savePreviousChartMode: action.bound,
+            setNewAccumulatorBarriersData: action.bound,
         });
 
         this.root_store = root_store;
@@ -135,22 +131,6 @@ export default class ContractTradeStore extends BaseStore {
                 ...new_barriers_data,
             };
         }
-    }
-
-    setChartTypeAndGranularity(type, granularity) {
-        this.chart_type = type;
-        this.granularity = granularity;
-        if (this.granularity === 0) {
-            this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
-        }
-    }
-
-    saveChartType(chart_type) {
-        this.saved_chart_type = chart_type;
-    }
-
-    saveGranularity(granularity) {
-        this.saved_granularity = granularity;
     }
 
     updateAccumulatorBarriersData({
@@ -222,19 +202,12 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-        const { contract_type } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
-        const is_ticks_contract =
-            isDigitContract(contract_type) || isAccumulatorContract(contract_type) || isUpDownContract(contract_type);
         LocalStore.set('contract_trade.chart_style', type);
         this.chart_type = type;
         setTradeURLParams({ chartType: this.chart_type });
-        !is_ticks_contract && this.saveChartType(this.chart_type);
     }
 
     updateGranularity(granularity) {
-        const { contract_type } = JSON.parse(sessionStorage.getItem('trade_store')) || {};
-        const is_ticks_contract =
-            isDigitContract(contract_type) || isAccumulatorContract(contract_type) || isUpDownContract(contract_type);
         const tick_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
 
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
@@ -247,7 +220,11 @@ export default class ContractTradeStore extends BaseStore {
             this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
         }
         setTradeURLParams({ granularity: this.granularity });
-        !is_ticks_contract && this.saveGranularity(this.granularity);
+    }
+
+    savePreviousChartMode(chart_type, granularity) {
+        this.prev_chart_type = chart_type;
+        this.prev_granularity = granularity;
     }
 
     applicable_contracts = () => {

@@ -64,7 +64,7 @@ export default class ContractReplayStore extends BaseStore {
     };
 
     subscribeProposalOpenContract = () => {
-        WS.wait('authorize').then(() => {
+        WS?.wait('authorize')?.then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
         });
     };

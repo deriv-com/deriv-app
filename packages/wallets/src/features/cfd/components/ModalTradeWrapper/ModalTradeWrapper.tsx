@@ -69,7 +69,13 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                     if (AppsLinkMapper) {
                                         const AppIcon = AppToIconMapper[app as keyof typeof AppToIconMapper];
                                         const appLink = AppsLinkMapper;
-                                        return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                        return (
+                                            <AppIcon
+                                                data-testid={`dt_modal_trade_wrapper_${app}_icon`}
+                                                key={app}
+                                                onClick={() => window.open(appLink)}
+                                            />
+                                        );
                                     }
                                     return null;
                                 })}

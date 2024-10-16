@@ -72,7 +72,7 @@
     },
     "dependencies": {
         "@deriv-com/quill-ui": "1.16.23",
-        "@deriv-com/ui": "1.36.2",
+        "@deriv-com/ui": "1.36.4",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",

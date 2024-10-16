@@ -3,10 +3,11 @@ import {
     useAccountLimits,
     useAccountStatus,
     useActiveWalletAccount,
-    useAuthentication,
     useCashierValidation,
     useCryptoConfig,
     useCurrencyConfig,
+    usePOA,
+    usePOI,
 } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WithdrawalLocked from '../WithdrawalLocked';
@@ -15,10 +16,11 @@ jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
-    useAuthentication: jest.fn(),
     useCashierValidation: jest.fn(),
     useCryptoConfig: jest.fn(),
     useCurrencyConfig: jest.fn(),
+    usePOA: jest.fn(),
+    usePOI: jest.fn(),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -34,13 +36,11 @@ jest.mock('../WithdrawalLockedContent', () => ({
 
 const mockActiveWalletData = {
     currency: 'USD',
-    currency_config: { is_crypto: false, platform: { cashier: ['dougflow'] } },
+    currency_config: { fractional_digits: 2, is_crypto: false, platform: { cashier: ['dougflow'] } },
 };
 const mockCryptoConfigData = { minimum_withdrawal: 10 };
-const mockAuthenticationData = {
-    is_poa_needed: false,
-    is_poi_needed: false,
-};
+const mockPOAData = { is_verified: true, poa_needs_verification: false };
+const mockPOIData = { is_verified: false, poi_needs_verification: false };
 const mockCashierValidationData = {
     ask_authenticate: false,
     ask_financial_risk_approval: false,
@@ -55,13 +55,14 @@ describe('WithdrawalLocked', () => {
         jest.clearAllMocks();
     });
 
-    it('should render loader when currency config is loading', () => {
+    it('renders loader when currency config is loading', () => {
         const mockStatusData = { is_withdrawal_locked: false };
         const mockAccountLimitsData = { remainder: 20 };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
@@ -77,15 +78,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
-    it('should render loader when no account status data', () => {
-        const mockAccountLimitsData = { remainder: 20 };
-
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
-        (useAccountLimits as jest.Mock).mockReturnValue({ data: mockAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
-        (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
+    it('renders loader when no account status data', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
+        (useAccountLimits as jest.Mock).mockReturnValue({ data: null });
+        (usePOA as jest.Mock).mockReturnValue({ data: null });
+        (usePOI as jest.Mock).mockReturnValue({ data: null });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: null });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: null });
-        (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
+        (useCryptoConfig as jest.Mock).mockReturnValue({ data: null });
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
 
         render(
@@ -98,13 +98,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
-    it('should render locked screen for withdrawal locked when in a locked state', () => {
+    it('renders locked screen for withdrawal locked when in a locked state', () => {
         const mockLockedStatusData = { is_withdrawal_locked: true };
         const mockAccountLimitsData = { remainder: 20 };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockLockedStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
@@ -121,13 +122,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Withdrawals from your USD Wallet are temporarily locked.')).toBeInTheDocument();
     });
 
-    it('should render locked screen for fiat withdrawal limit reached when in a locked state', () => {
+    it('renders locked screen for fiat withdrawal limit reached when in a locked state', () => {
         const mockStatusData = { is_withdrawal_locked: false };
         const mockLockedAccountLimitsData = { remainder: 0 };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockLockedAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
@@ -144,7 +146,7 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Withdrawals from your USD Wallet are temporarily locked.')).toBeInTheDocument();
     });
 
-    it('should render locked screen for crypto withdrawal limit reached when in a locked state', () => {
+    it('renders locked screen for crypto withdrawal limit reached when in a locked state', () => {
         const mockCryptoWalletData = {
             currency: 'BTC',
             currency_config: { is_crypto: true, platform: { cashier: ['crypto'] } },
@@ -154,7 +156,8 @@ describe('WithdrawalLocked', () => {
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockCryptoWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockLockedAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
@@ -171,13 +174,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Withdrawals from your BTC Wallet are temporarily locked.')).toBeInTheDocument();
     });
 
-    it('should render children when not in a locked state', () => {
+    it('renders children when not in a locked state', () => {
         const mockStatusData = { is_withdrawal_locked: false };
         const mockAccountLimitsData = { remainder: 20 };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });
@@ -192,13 +196,14 @@ describe('WithdrawalLocked', () => {
         expect(screen.getByText('Test Child Component')).toBeInTheDocument();
     });
 
-    it('should render children when remainder is undefined', () => {
+    it('renders children when remainder is undefined', () => {
         const mockStatusData = { is_withdrawal_locked: false };
         const mockAccountLimitsData = { remainder: undefined };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValue({ data: mockAccountLimitsData });
-        (useAuthentication as jest.Mock).mockReturnValue({ data: mockAuthenticationData });
+        (usePOA as jest.Mock).mockReturnValue({ data: mockPOAData });
+        (usePOI as jest.Mock).mockReturnValue({ data: mockPOIData });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: mockStatusData });
         (useCryptoConfig as jest.Mock).mockReturnValue({ data: mockCryptoConfigData });

@@ -1,5 +1,12 @@
 import React from 'react';
-import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
+import {
+    useAccountStatus,
+    useActiveWalletAccount,
+    useCashierValidation,
+    useIsEuRegion,
+    usePOA,
+    usePOI,
+} from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
 import { ActionScreen, Loader } from '@deriv-com/ui';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
@@ -7,21 +14,24 @@ import './CashierLocked.scss';
 
 type TCashierLockedProps = {
     children?: React.ReactNode;
-    module?: 'deposit' | 'withdrawal';
+    module?: 'deposit' | 'transfer' | 'withdrawal';
 };
 
 const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: authentication } = useAuthentication();
+    const { data: poiStatus } = usePOI();
+    const { data: poaStatus } = usePOA();
     const { data: cashierValidation } = useCashierValidation();
     const { data: accountStatus } = useAccountStatus();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
     const isCrypto = activeWallet?.is_crypto;
 
-    const poaNeedsVerification = authentication?.is_poa_needed;
-    const poiNeedsVerification = authentication?.is_poa_needed;
+    const poaNeedsVerification = poaStatus?.poa_needs_verification;
+    const poiNeedsVerification = poiStatus?.poi_needs_verification;
+    const isPendingVerification = poiStatus?.is_pending || poaStatus?.is_pending;
 
     const askAuthenticate = cashierValidation?.ask_authenticate;
     const askCurrency = cashierValidation?.ask_currency;
@@ -60,6 +70,9 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         disabledStatus,
         documentsExpired,
         financialAssessmentRequired,
+        isEuRegion,
+        isPendingVerification,
+        module,
         noResidence,
         poaNeedsVerification,
         poiNeedsVerification,
@@ -73,8 +86,8 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         return (
             <div className='wallets-cashier-locked'>
                 <ActionScreen
-                    description={systemMaintenanceContent?.description}
-                    title={systemMaintenanceContent?.title}
+                    description={systemMaintenanceContent.description}
+                    title={systemMaintenanceContent.title}
                 />
             </div>
         );

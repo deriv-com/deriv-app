@@ -3,10 +3,11 @@ import {
     useAccountLimits,
     useAccountStatus,
     useActiveWalletAccount,
-    useAuthentication,
     useCashierValidation,
     useCryptoConfig,
     useCurrencyConfig,
+    usePOA,
+    usePOI,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
 import { ActionScreen, Loader } from '@deriv-com/ui';
@@ -15,7 +16,8 @@ import './WithdrawalLocked.scss';
 
 const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: authentication } = useAuthentication();
+    const { data: poiStatus } = usePOI();
+    const { data: poaStatus } = usePOA();
     const { data: cashierValidation } = useCashierValidation();
     const { data: accountLimits } = useAccountLimits();
     const { data: accountStatus } = useAccountStatus();
@@ -27,10 +29,9 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const currency = activeWallet?.currency || 'USD';
 
-    const poaNeedsVerification = authentication?.is_poa_needed;
-    const poiNeedsVerification = authentication?.is_poa_needed;
-    const poaStatus = authentication?.poa_status || 'none';
-    const poiStatus = authentication?.poi_status || 'none';
+    const poaNeedsVerification = poaStatus?.poa_needs_verification;
+    const poiNeedsVerification = poiStatus?.poi_needs_verification;
+    const isVerified = poiStatus?.is_verified || poaStatus?.is_verified;
 
     const askAuthenticate = cashierValidation?.ask_authenticate;
     const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval;
@@ -64,10 +65,9 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <ActionScreen
                     description={getWithdrawalLimitReachedDesc({
                         askFinancialRiskApproval,
+                        isVerified,
                         poaNeedsVerification,
-                        poaStatus,
                         poiNeedsVerification,
-                        poiStatus,
                     })}
                     title={
                         <Localize

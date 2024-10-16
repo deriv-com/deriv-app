@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from '../CashierLockedContent';
 
 window.LC_API = {
@@ -7,46 +8,22 @@ window.LC_API = {
 };
 
 describe('CashierLockedContent', () => {
-    it('should render title and description as null when not system maintenance', () => {
-        const result = getSystemMaintenanceContent({
-            currency: 'USD',
-            isCashierLocked: false,
-            isCrypto: false,
-            isDepositLocked: false,
-            isWithdrawalLocked: false,
-        });
+    it('renders title and description as null when not system maintenance', () => {
+        const result = getSystemMaintenanceContent({});
 
         expect(result).toBeFalsy();
     });
 
-    it('should render description as null when cashier is not locked', () => {
-        const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
-            currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
-        });
+    it('renders description as null when cashier is not locked', () => {
+        const result = getCashierLockedDesc({});
 
         expect(result).toBeFalsy();
     });
 
-    it('should render correct message when system maintenance and cashier is locked', () => {
+    it('renders correct message when system maintenance and cashier is locked', () => {
         const result = getSystemMaintenanceContent({
             currency: 'USD',
             isCashierLocked: true,
-            isCrypto: false,
-            isDepositLocked: false,
-            isWithdrawalLocked: false,
         });
 
         if (result) render(result.description);
@@ -62,13 +39,11 @@ describe('CashierLockedContent', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render correct message when system maintenance and deposit is locked for crypto account', () => {
+    it('renders correct message when system maintenance and deposit is locked for crypto account', () => {
         const result = getSystemMaintenanceContent({
             currency: 'BTC',
-            isCashierLocked: false,
             isCrypto: true,
             isDepositLocked: true,
-            isWithdrawalLocked: false,
         });
 
         if (result) render(result.description);
@@ -82,12 +57,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByText('BTC Wallet deposits are temporarily unavailable.')).toBeInTheDocument();
     });
 
-    it('should render correct message when system maintenance and withdrawal is locked for crypto account', () => {
+    it('renders correct message when system maintenance and withdrawal is locked for crypto account', () => {
         const result = getSystemMaintenanceContent({
             currency: 'BTC',
-            isCashierLocked: false,
             isCrypto: true,
-            isDepositLocked: false,
             isWithdrawalLocked: true,
         });
 
@@ -102,22 +75,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable.')).toBeInTheDocument();
     });
 
-    it('should render correct message when noResidence status received', () => {
+    it('renders correct message when noResidence status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
             noResidence: true,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -125,22 +86,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'Personal details section' })).toBeInTheDocument();
     });
 
-    it('should render correct message when documentsExpired status received', () => {
+    it('renders correct message when documentsExpired status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
             documentsExpired: true,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -150,74 +99,38 @@ describe('CashierLockedContent', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render correct message when cashierLockedStatus status received', () => {
+    it('renders correct message when cashierLockedStatus status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
             cashierLockedStatus: true,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        fireEvent.click(link);
+        userEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 
-    it('should render correct message when disabledStatus status received', () => {
+    it('renders correct message when disabledStatus status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
             disabledStatus: true,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        fireEvent.click(link);
+        userEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 
-    it('should render correct message when askCurrency status received', () => {
+    it('renders correct message when askCurrency status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
             askCurrency: true,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -226,21 +139,52 @@ describe('CashierLockedContent', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render correct message when askAuthenticate status received and POI needs verification', () => {
+    it('renders correct message when askAuthenticate status received for MF transfer module', () => {
         const result = getCashierLockedDesc({
             askAuthenticate: true,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
+            currency: 'EUR',
+            isEuRegion: true,
+            module: 'transfer',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText('You can make a funds transfer once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when askAuthenticate status received for MF withdrawal module', () => {
+        const result = getCashierLockedDesc({
+            askAuthenticate: true,
+            currency: 'EUR',
+            isEuRegion: true,
+            module: 'withdrawal',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText('You can make a withdrawal once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when askAuthenticate status received for MF deposit module', () => {
+        const result = getCashierLockedDesc({
+            askAuthenticate: true,
+            currency: 'EUR',
+            isEuRegion: true,
+            module: 'deposit',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText('You can make a new deposit once the verification of your account is complete.')
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when askAuthenticate status received and POI needs verification', () => {
+        const result = getCashierLockedDesc({
+            askAuthenticate: true,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
             poiNeedsVerification: true,
         });
 
@@ -249,20 +193,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
     });
 
-    it('should render correct message when askAuthenticate status received and POI/POA needs verification', () => {
+    it('renders correct message when askAuthenticate status received and both POI/POA needs verification', () => {
         const result = getCashierLockedDesc({
             askAuthenticate: true,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
             poaNeedsVerification: true,
             poiNeedsVerification: true,
         });
@@ -273,22 +207,52 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
     });
 
-    it('should render correct message when askFinancialRiskApproval status received', () => {
+    it('renders correct message when isPendingVerification status received for MF transfer module', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
+            currency: 'EUR',
+            isEuRegion: true,
+            isPendingVerification: true,
+            module: 'transfer',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText(/You cannot make a fund transfer as your documents are still under review./)
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when isPendingVerification status received for MF withdrawal module', () => {
+        const result = getCashierLockedDesc({
+            currency: 'EUR',
+            isEuRegion: true,
+            isPendingVerification: true,
+            module: 'withdrawal',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText(/You cannot make a withdrawal as your documents are still under review./)
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when isPendingVerification status received for MF deposit module', () => {
+        const result = getCashierLockedDesc({
+            currency: 'EUR',
+            isEuRegion: true,
+            isPendingVerification: true,
+            module: 'deposit',
+        });
+
+        if (result) render(result);
+        expect(
+            screen.getByText(/You cannot make further deposits as your documents are still under review./)
+        ).toBeInTheDocument();
+    });
+
+    it('renders correct message when askFinancialRiskApproval status received', () => {
+        const result = getCashierLockedDesc({
             askFinancialRiskApproval: true,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -296,22 +260,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'Appropriateness Test' })).toBeInTheDocument();
     });
 
-    it('should render correct message when financialAssessmentRequired status received', () => {
+    it('renders correct message when financialAssessmentRequired status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
             financialAssessmentRequired: true,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -319,22 +271,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'financial assessment' })).toBeInTheDocument();
     });
 
-    it('should render correct message when askTinInformation status received', () => {
+    it('renders correct message when askTinInformation status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            askSelfExclusionMaxTurnoverSet: false,
             askTinInformation: true,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -342,22 +282,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'Personal details' })).toBeInTheDocument();
     });
 
-    it('should render correct message when askSelfExclusionMaxTurnoverSet status received', () => {
+    it('renders correct message when askSelfExclusionMaxTurnoverSet status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
             askSelfExclusionMaxTurnoverSet: true,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);
@@ -369,22 +297,10 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'Self-exclusion' })).toBeInTheDocument();
     });
 
-    it('should render correct message when askFixDetails status received', () => {
+    it('renders correct message when askFixDetails status received', () => {
         const result = getCashierLockedDesc({
-            askAuthenticate: false,
-            askCurrency: false,
-            askFinancialRiskApproval: false,
             askFixDetails: true,
-            askSelfExclusionMaxTurnoverSet: false,
-            askTinInformation: false,
-            cashierLockedStatus: false,
             currency: 'USD',
-            disabledStatus: false,
-            documentsExpired: false,
-            financialAssessmentRequired: false,
-            noResidence: false,
-            poaNeedsVerification: false,
-            poiNeedsVerification: false,
         });
 
         if (result) render(result);

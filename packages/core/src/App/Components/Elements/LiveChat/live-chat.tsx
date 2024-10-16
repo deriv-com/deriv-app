@@ -1,14 +1,40 @@
 import { Popover, Icon, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
-import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
+import { observer, useStore } from '@deriv/stores';
 
-const LiveChat = ({ showPopover }: { showPopover?: boolean }) => {
+const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
+    const { client } = useStore();
+    const { loginid, accounts } = client;
     const { isDesktop } = useDevice();
-    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
-    const liveChatClickHandler = () => window.LiveChatWidget.call('maximize');
 
-    if (!is_livechat_available) return null;
+    const active_account = accounts?.[loginid ?? ''];
+    const token = active_account ? active_account.token : null;
+
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+    const freshChat = useFreshChat(token);
+
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
+
+    const chat = enable_freshworks_live_chat ? freshChat : null;
+
+    if ((enable_freshworks_live_chat && !chat?.isReady) || !is_livechat_available) return null;
+
+    // Quick fix for making sure livechat won't popup if feature flag is late to enable.
+    // We will add a refactor after this
+    setInterval(() => {
+        if (enable_freshworks_live_chat) {
+            window.LiveChatWidget?.call('minimize');
+        }
+    }, 10);
+
+    const liveChatClickHandler = () => {
+        enable_freshworks_live_chat ? freshChat.widget.open() : window.LiveChatWidget?.call('maximize');
+    };
 
     if (isDesktop)
         return (
@@ -41,6 +67,6 @@ const LiveChat = ({ showPopover }: { showPopover?: boolean }) => {
             </Text>
         </div>
     );
-};
+});
 
 export default LiveChat;

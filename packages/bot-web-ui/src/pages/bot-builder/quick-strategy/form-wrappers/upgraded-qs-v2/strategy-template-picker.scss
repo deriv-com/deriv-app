@@ -1,5 +1,5 @@
 .strategy-template-picker {
-    margin: 1.6rem 3.2rem;
+    margin: 1.6rem;
     max-width: 40rem;
 
     &__icon {
@@ -32,7 +32,7 @@
                 width: 36rem;
                 background-color: var(--general-section-1);
                 border-radius: 1rem;
-                .input__align--left{
+                .input__align--left {
                     background-color: var(--general-section-6);
                 }
             }

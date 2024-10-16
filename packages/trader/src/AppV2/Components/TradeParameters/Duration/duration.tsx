@@ -53,7 +53,9 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const { server_time } = common;
 
     useEffect(() => {
-        setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
+        if (expiry_epoch) {
+            setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
+        }
     }, [expiry_epoch]);
 
     useEffect(() => {

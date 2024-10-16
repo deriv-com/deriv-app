@@ -195,7 +195,7 @@ const ProofOfIdentityContainer = observer(
                             is_from_external={!!is_from_external}
                             needs_poa={needs_poa}
                             redirect_button={redirect_button}
-                            service={identity_last_attempt.service}
+                            service={identity_last_attempt?.service}
                         />
                     );
                 case identity_status_codes.expired:

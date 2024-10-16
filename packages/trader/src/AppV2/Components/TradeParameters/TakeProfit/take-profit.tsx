@@ -19,9 +19,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const [is_open, setIsOpen] = React.useState(false);
 
-    const onActionSheetClose = () => {
-        setIsOpen(false);
-    };
+    const onActionSheetClose = () => setIsOpen(false);
 
     const action_sheet_content = [
         {

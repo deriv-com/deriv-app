@@ -29,9 +29,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         stop_loss,
     } = useTraderStore();
 
-    const closeActionSheet = () => {
-        setIsOpen(false);
-    };
+    const closeActionSheet = () => setIsOpen(false);
     const getRiskManagementText = () => {
         if (has_cancellation) return `DC: ${addUnit({ value: cancellation_duration, unit: localize('minutes') })}`;
         if (has_take_profit && has_stop_loss)

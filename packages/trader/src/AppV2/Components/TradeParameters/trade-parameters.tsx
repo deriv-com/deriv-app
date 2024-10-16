@@ -34,13 +34,12 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     React.useEffect(() => {
         const checkFocus = (e: React.FocusEvent) => {
             const should_remove_focus = e?.target?.hasAttribute('data-focus');
+            // We need to remove focus from specific inputs tags to avoid scrolling issues
             if (should_remove_focus) removeFocus();
         };
         document.addEventListener('focusin', checkFocus as () => void);
 
-        return () => {
-            document.removeEventListener('focusin', checkFocus as () => void);
-        };
+        return () => document.removeEventListener('focusin', checkFocus as () => void);
     });
 
     return (

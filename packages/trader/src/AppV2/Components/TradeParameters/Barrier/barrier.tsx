@@ -49,20 +49,11 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                 readOnly
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
                 value={v2_params_initial_values.barrier_1 || barrier_1}
-                onClick={() => {
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 data-focus={true}
             />
-            <ActionSheet.Root
-                isOpen={is_open}
-                onClose={() => {
-                    onClose(false);
-                }}
-                position='left'
-                expandable={false}
-            >
+            <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         header={CarouselHeader}

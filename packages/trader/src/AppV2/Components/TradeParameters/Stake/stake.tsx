@@ -189,12 +189,12 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     }, [details, is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
 
     React.useEffect(() => {
-        if (!is_focused) {
-            setShouldShowError(!!stake_error);
-        } else if (!amount) {
-            setShouldShowError(false);
+        if (is_focused) {
+            if (!amount) {
+                setShouldShowError(false);
+            }
         }
-    }, [is_focused]);
+    }, [is_focused, amount]);
 
     const getInputMessage = () =>
         (should_show_error && stake_error) ||

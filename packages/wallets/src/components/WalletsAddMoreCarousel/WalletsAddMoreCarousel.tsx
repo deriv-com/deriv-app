@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import type { EmblaCarouselType } from 'embla-carousel';
 import { useHover } from 'usehooks-ts';
 import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
@@ -20,7 +21,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
     const showLoader = isInitializing || isLoading;
 
     const [walletsAddMoreEmblaRef, walletsAddMoreEmblaAPI] = useEmblaCarousel({
-        align: 0,
+        align: 'start',
         containScroll: 'trimSnaps',
         direction: isRtl ? 'rtl' : 'ltr',
     });

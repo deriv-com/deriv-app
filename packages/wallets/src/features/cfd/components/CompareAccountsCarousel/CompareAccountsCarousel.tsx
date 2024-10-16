@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
 import CFDCompareAccountsCarouselButton from './CompareAccountsCarouselButton';
 import './CompareAccountsCarousel.scss';
 
@@ -10,7 +11,7 @@ type TCompareAccountsCarousel = {
 
 const CompareAccountsCarousel = ({ children, isRtl = false }: TCompareAccountsCarousel) => {
     const options: EmblaOptionsType = {
-        align: 0,
+        align: 'start',
         containScroll: 'trimSnaps',
         direction: isRtl ? 'rtl' : 'ltr',
     };

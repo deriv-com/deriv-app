@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
 import DurationChips from './chips';
-import DurationWheelPicker from './wheelpicker';
+import DurationWheelPicker from './duration-wheel-picker';
 import DayInput from './day';
 import { DURATION_UNIT } from 'AppV2/Utils/trade-params-utils';
 

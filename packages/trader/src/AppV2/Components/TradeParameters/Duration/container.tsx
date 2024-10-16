@@ -6,6 +6,7 @@ import { observer } from '@deriv/stores';
 import DurationChips from './chips';
 import DurationWheelPicker from './wheelpicker';
 import DayInput from './day';
+import { DURATION_UNIT } from 'AppV2/Utils/trade-params-utils';
 
 const DurationActionSheetContainer = observer(
     ({
@@ -37,19 +38,19 @@ const DurationActionSheetContainer = observer(
 
         const onAction = () => {
             setExpiryTimeString(expiry_time_input);
-            if (unit === 'h') {
+            if (unit === DURATION_UNIT.HOURS) {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
                 const hour = Math.floor(duration / 60);
                 const min = duration % 60;
                 setSelectedHour([hour, min]);
                 setEndTime('');
                 onChangeMultiple({
-                    duration_unit: 'm',
+                    duration_unit: DURATION_UNIT.MINUTES,
                     duration: Number(minutes),
                     expiry_time: null,
                     expiry_type: 'duration',
                 });
-            } else if (unit === 'd') {
+            } else if (unit === DURATION_UNIT.DAYS) {
                 const difference_in_time = end_date.getTime() - new Date().getTime();
                 const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
                 setSelectedHour([]);
@@ -61,7 +62,7 @@ const DurationActionSheetContainer = observer(
                 } else {
                     setEndTime('');
                     onChangeMultiple({
-                        duration_unit: 'd',
+                        duration_unit: DURATION_UNIT.DAYS,
                         duration: Number(difference_in_days),
                         expiry_time: null,
                         expiry_type: 'duration',
@@ -83,7 +84,7 @@ const DurationActionSheetContainer = observer(
             (value: string) => {
                 setUnit(value);
                 setSelectedTime([]);
-                if (value !== 'h') {
+                if (value !== DURATION_UNIT.HOURS) {
                     setSelectedHour([]);
                 }
             },
@@ -92,7 +93,7 @@ const DurationActionSheetContainer = observer(
 
         const setWheelPickerValue = (index: number, value: string | number) => {
             const num_value = Number(value);
-            if (unit === 'h') {
+            if (unit === DURATION_UNIT.HOURS) {
                 const arr = selected_hour;
                 arr[index] = num_value;
                 setSelectedHour(arr);
@@ -105,7 +106,7 @@ const DurationActionSheetContainer = observer(
             <div className='duration-container'>
                 <ActionSheet.Header title={<Localize i18n_default_text='Duration' />} />
                 <DurationChips duration_units_list={duration_units_list} onChangeUnit={onChangeUnit} unit={unit} />
-                {unit !== 'd' && (
+                {unit !== DURATION_UNIT.DAYS && (
                     <DurationWheelPicker
                         unit={unit}
                         setWheelPickerValue={setWheelPickerValue}
@@ -114,7 +115,7 @@ const DurationActionSheetContainer = observer(
                     />
                 )}
 
-                {unit === 'd' && (
+                {unit === DURATION_UNIT.DAYS && (
                     <DayInput
                         setEndTime={setEndTime}
                         setEndDate={setEndDate}

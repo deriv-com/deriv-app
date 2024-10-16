@@ -1,6 +1,6 @@
 import { WheelPickerContainer } from '@deriv-com/quill-ui';
 import { observer } from '@deriv/stores';
-import { getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
+import { DURATION_UNIT, getOptionPerUnit } from 'AppV2/Utils/trade-params-utils';
 import clsx from 'clsx';
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -22,7 +22,7 @@ const DurationWheelPicker = observer(
         const options = React.useMemo(() => getOptionPerUnit(unit, duration_min_max), [unit, duration_min_max]);
 
         const handleContainerHeight = () => {
-            if (unit === 'd') {
+            if (unit === DURATION_UNIT.DAYS) {
                 return '228px';
             }
             return duration_units_list.length === 1 ? '230px' : '268px';
@@ -34,7 +34,7 @@ const DurationWheelPicker = observer(
                         duration_units_list.length == 1 && unit !== 'd',
                 })}
             >
-                {unit !== 'h' ? (
+                {unit !== DURATION_UNIT.HOURS ? (
                     <WheelPickerContainer
                         data={options}
                         defaultValue={[String(selected_time)]}

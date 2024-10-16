@@ -13,6 +13,14 @@ import React from 'react';
 import { createProposalRequestForContract } from 'Stores/Modules/Trading/Helpers/proposal';
 import { TTradeStore } from 'Types';
 
+export const DURATION_UNIT = {
+    DAYS: 'd',
+    TICKS: 't',
+    MINUTES: 'm',
+    HOURS: 'h',
+    SECONDS: 's',
+};
+
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
         duration: true,

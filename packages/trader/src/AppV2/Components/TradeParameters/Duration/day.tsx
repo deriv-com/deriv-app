@@ -27,22 +27,22 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
-    temp_expiry_time,
-    setTempExpiryTime,
+    expiry_time_input,
+    setExpiryTimeInput,
 }: {
     setEndTime: (arg: string) => void;
     setEndDate: (arg: Date) => void;
     end_date: Date;
     end_time: string;
-    temp_expiry_time: string;
-    setTempExpiryTime: (arg: string) => void;
+    expiry_time_input: string;
+    setExpiryTimeInput: (arg: string) => void;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const [trigger_date, setTriggerDate] = useState(false);
     const [is_disabled, setIsDisabled] = useState(false);
-    const [temp_end_date, setTempEndDate] = useState(end_date);
+    const [end_date_input, setEndDateInput] = useState(end_date);
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
@@ -77,7 +77,7 @@ const DayInput = ({
     const proposal_req = getProposalRequestObject({
         new_values,
         trade_store,
-        trade_type: contract_type === 'high_low' ? 'PUT' : Object.keys(trade_types)[0],
+        trade_type: Object.keys(trade_types)[0],
     });
 
     const { data: response } = useDtraderQuery<ProposalResponse>(
@@ -91,7 +91,7 @@ const DayInput = ({
             if (barrier_1) {
                 return {
                     ...request_payload,
-                    barrier: Number(Math.round(tick_data?.quote as number)),
+                    barrier: Math.round(tick_data?.quote as number),
                 };
             }
             return request_payload;
@@ -116,7 +116,7 @@ const DayInput = ({
             }
 
             if (response?.proposal?.date_expiry) {
-                setTempExpiryTime(
+                setExpiryTimeInput(
                     new Date((response?.proposal?.date_expiry as number) * 1000)
                         .toISOString()
                         .split('T')[1]
@@ -127,7 +127,7 @@ const DayInput = ({
             invalidateDTraderCache(['proposal', JSON.stringify(day)]);
             setTriggerDate(false);
         }
-    }, [response, setTempExpiryTime]);
+    }, [response, setExpiryTimeInput]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -174,7 +174,7 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [temp_end_date]);
+    }, [end_date_input]);
 
     let is_24_hours_contract = false;
 
@@ -192,9 +192,15 @@ const DayInput = ({
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        setTempEndDate(date);
+        setEndDateInput(date);
+        if (difference_in_days == 0) {
+            setEndTime(adjusted_start_time);
+        } else {
+            setEndTime('');
+        }
         setTriggerDate(true);
     };
+
     return (
         <div className='duration-container__days-input'>
             <TextField
@@ -216,7 +222,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(is_24_hours_contract ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
+                value={`${(is_24_hours_contract ? end_time : expiry_time_input) || '23:59:59'} GMT`}
                 disabled={!is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
@@ -230,7 +236,7 @@ const DayInput = ({
                 </Text>
                 <Text size='sm'>{`
                 ${formatted_date} ${
-                    (formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'
+                    (formatted_date === formatted_current_date ? end_time : expiry_time_input) || '23:59:59'
                 } GMT`}</Text>
             </div>
             <ActionSheet.Root
@@ -239,7 +245,7 @@ const DayInput = ({
                     setOpen(false);
                     setOpenTimePicker(false);
                     setIsDisabled(false);
-                    setTempEndDate(end_date);
+                    setEndDateInput(end_date);
                 }}
                 position='left'
                 expandable={false}
@@ -262,7 +268,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={temp_end_date}
+                            end_date={end_date_input}
                             setEndDate={handleDate}
                         />
                     )}
@@ -282,16 +288,16 @@ const DayInput = ({
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
                                 if (!is_disabled) {
-                                    setEndDate(temp_end_date);
+                                    setEndDate(end_date_input);
                                     setOpen(false);
                                     setOpenTimePicker(false);
-                                    const end_date_temp = temp_end_date.toLocaleDateString('en-GB', {
+                                    const end_date = end_date_input.toLocaleDateString('en-GB', {
                                         day: 'numeric',
                                         month: 'short',
                                         year: 'numeric',
                                     });
 
-                                    if (end_date_temp !== formatted_current_date) {
+                                    if (end_date !== formatted_current_date) {
                                         setEndTime('');
                                     }
                                     if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {

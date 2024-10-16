@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from '../WithdrawalLockedContent';
 
 window.LC_API = {
@@ -111,7 +112,7 @@ describe('WithdrawalLockedContent', () => {
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        fireEvent.click(link);
+        userEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 
@@ -124,7 +125,7 @@ describe('WithdrawalLockedContent', () => {
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        fireEvent.click(link);
+        userEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 });

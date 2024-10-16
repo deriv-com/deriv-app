@@ -169,7 +169,6 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('1 min')).toBeInTheDocument();
         userEvent.click(screen.getByText('hours'));
         expect(screen.getByText('1 h')).toBeInTheDocument();
-        userEvent.click(screen.getByText('End Time'));
     });
 
     it('should call onChangeMultiple with correct data with seconds', () => {

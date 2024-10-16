@@ -54,7 +54,7 @@ const HourPicker = ({
         }
 
         const new_minutes = Array.from({ length: max_minutes - min_minutes + 1 }, (_, i) => ({
-            label: `${i + min_minutes} ${localize('mins')}`,
+            label: `${i + min_minutes} ${localize('min')}`,
             value: i + min_minutes,
         }));
         setMinutes(new_minutes);

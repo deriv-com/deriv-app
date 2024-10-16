@@ -31,7 +31,7 @@ const DurationWheelPicker = observer(
             <div
                 className={clsx('duration-container__wheel-picker-container', {
                     'duration-container__wheel-picker-container__single':
-                        duration_units_list.length == 1 && unit !== 'd',
+                        duration_units_list.length == 1 && unit !== DURATION_UNIT.DAYS,
                 })}
             >
                 {unit !== DURATION_UNIT.HOURS ? (

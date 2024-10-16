@@ -353,13 +353,13 @@ const getModules = () => {
             path: routes.old_traders_hub,
             component: RedirectToNewTradersHub,
             is_authenticated: false,
-            getTitle: () => localize("Trader's Hub"),
+            getTitle: () => localize('Trade CFDs and options on Trader’s Hub'),
         },
         {
             path: routes.traders_hub,
             component: RootComponent,
             is_authenticated: false,
-            getTitle: () => localize("Trader's Hub"),
+            getTitle: () => localize('Trade CFDs and options on Trader’s Hub'),
         },
     ];
 

@@ -82,20 +82,11 @@ const DayInput = ({
 
     const { data: response } = useDtraderQuery<ProposalResponse>(
         ['proposal', JSON.stringify(day)],
-        (() => {
-            const request_payload = {
-                ...proposal_req,
-                ...{ symbol },
-            };
-
-            if (barrier_1) {
-                return {
-                    ...request_payload,
-                    barrier: Math.round(tick_data?.quote as number),
-                };
-            }
-            return request_payload;
-        })(),
+        {
+            ...proposal_req,
+            symbol,
+            ...(barrier_1 ? { barrier: Math.round(tick_data?.quote as number) } : {}),
+        },
         {
             enabled: trigger_date,
         }

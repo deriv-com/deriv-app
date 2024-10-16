@@ -1,4 +1,5 @@
 import { WheelPickerContainer } from '@deriv-com/quill-ui';
+import { localize } from '@deriv/translations';
 import React, { useState, useEffect } from 'react';
 
 type TimeOption = {
@@ -28,7 +29,7 @@ const HourPicker = ({
         const max_hours = Math.floor(max_seconds / 3600);
 
         const new_hours = Array.from({ length: max_hours - min_hours + 1 }, (_, i) => ({
-            label: `${i + min_hours} h`,
+            label: `${i + min_hours} ${localize('h')}`,
             value: i + min_hours,
         }));
         setHours(new_hours);
@@ -53,7 +54,7 @@ const HourPicker = ({
         }
 
         const new_minutes = Array.from({ length: max_minutes - min_minutes + 1 }, (_, i) => ({
-            label: `${i + min_minutes} min`,
+            label: `${i + min_minutes} ${localize('mins')}`,
             value: i + min_minutes,
         }));
         setMinutes(new_minutes);
@@ -68,14 +69,14 @@ const HourPicker = ({
 
     const getDefaultValue = (options: TimeOption[], selected_value: number) => {
         const option = options.find(opt => opt.value === selected_value);
-        return option ? option.label : options[0]?.label || '1 h';
+        return option ? option.label : options[0]?.label || `1 ${localize('h')}`;
     };
 
     return (
         <WheelPickerContainer
             data={[hours, minutes]}
             defaultValue={[getDefaultValue(hours, selected_hour[0]), getDefaultValue(minutes, selected_time[1])]}
-            containerHeight={'268px'}
+            containerHeight='268px'
             inputValues={[selected_hour[0] || hours[0]?.value, selected_time[1] || minutes[0]?.value]}
             setInputValues={handle_value_change}
         />

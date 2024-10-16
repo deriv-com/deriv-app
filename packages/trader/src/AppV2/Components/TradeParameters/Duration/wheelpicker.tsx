@@ -40,9 +40,7 @@ const DurationWheelPicker = observer(
                         defaultValue={[String(selected_time)]}
                         containerHeight={handleContainerHeight()}
                         inputValues={selected_time}
-                        setInputValues={(index, val) => {
-                            setWheelPickerValue(index, val);
-                        }}
+                        setInputValues={setWheelPickerValue}
                     />
                 ) : (
                     <HourPicker

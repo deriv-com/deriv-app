@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
+import Trader from '@deriv/trader';
 
 const CFDCompareAccounts = React.lazy(() =>
     import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
@@ -14,7 +15,7 @@ const CFDCompareAccounts = React.lazy(() =>
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const Trader = React.lazy(() => import(/* webpackChunkName: "trader" */ '@deriv/trader'));
+// const Trader = React.lazy(() => import(/* webpackChunkName: "trader" */ '@deriv/trader'));
 
 const Reports = React.lazy(() => {
     // eslint-disable-next-line import/no-unresolved

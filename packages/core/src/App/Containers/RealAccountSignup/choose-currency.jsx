@@ -35,7 +35,7 @@ const ChooseCurrency = observer(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
     }, [setShouldShowAllAvailableCurrencies]);
 
-    const getReorderedCryptoCurrencies = React.useMemo(() => {
+    const memoized_reordered_crypto_currencies = React.useMemo(() => {
         const hasAllCryptos = () => {
             return (
                 legal_allowed_currencies?.filter(
@@ -49,33 +49,60 @@ const ChooseCurrency = observer(() => {
             openRealAccountSignup(deposit_target === routes.cashier_pa ? 'add_currency' : 'add_crypto');
             setShouldShowCancel(true);
         };
-
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
             legal_allowed_currencies,
             all_payment_agent_list,
             account_list
         );
 
-        const reorderCryptoCurrencies = should_show_all_available_currencies
-            ? reorderCurrencies(
-                  allowed_currencies_payment_agent_availability?.filter(currency =>
-                      account_list.some(x => x.title === currency.value)
-                  ),
-                  CRYPTO_CURRENCY_TYPE
-              )
-            : reorderCurrencies(
-                  allowed_currencies_payment_agent_availability?.filter(
-                      currency =>
-                          currency.type === CRYPTO_CURRENCY_TYPE &&
-                          !available_crypto_currencies.some(x => x.value === currency.value)
-                  ),
-                  CRYPTO_CURRENCY_TYPE
-              );
+        const allowed_currencies_onramp_availability =
+            CurrencyProvider.currenciesOnRampAvailability(legal_allowed_currencies);
 
-        const show_add_button = deposit_target === routes.cashier_pa ? !has_fiat || !hasAllCryptos() : !hasAllCryptos();
+        const getReorderCryptoCurrencies = () => {
+            let currencies_to_filter;
 
-        if (show_add_button) {
-            reorderCryptoCurrencies.push({
+            if (deposit_target === routes.cashier_onramp) {
+                currencies_to_filter = allowed_currencies_onramp_availability;
+            } else if (should_show_all_available_currencies) {
+                currencies_to_filter = allowed_currencies_payment_agent_availability;
+            } else {
+                currencies_to_filter = allowed_currencies_payment_agent_availability?.filter(
+                    currency =>
+                        currency.type === CRYPTO_CURRENCY_TYPE &&
+                        !available_crypto_currencies.some(x => x.value === currency.value)
+                );
+            }
+
+            const filtered_currencies = currencies_to_filter?.filter(currency =>
+                account_list.some(x => x.title === currency.value)
+            );
+
+            return reorderCurrencies(filtered_currencies, CRYPTO_CURRENCY_TYPE);
+        };
+
+        const shouldShowAddButton = () => {
+            switch (deposit_target) {
+                case routes.cashier_pa:
+                    return !has_fiat || !hasAllCryptos();
+                case routes.cashier_onramp: {
+                    const can_add_onramp_supported_crypto_account =
+                        legal_allowed_currencies.filter(
+                            currency =>
+                                currency.type === CRYPTO_CURRENCY_TYPE &&
+                                currency.platform.ramp.length > 0 &&
+                                !account_list.some(x => x.title === currency.value)
+                        ).length > 0;
+                    return can_add_onramp_supported_crypto_account;
+                }
+                default:
+                    return !hasAllCryptos();
+            }
+        };
+
+        const reordered_crypto_currencies = getReorderCryptoCurrencies();
+
+        if (shouldShowAddButton()) {
+            reordered_crypto_currencies.push({
                 value: 'plus',
                 name: deposit_target === routes.cashier_pa ? localize('Add a new') : localize('Add new'),
                 second_line_label:
@@ -86,7 +113,7 @@ const ChooseCurrency = observer(() => {
             });
         }
 
-        return reorderCryptoCurrencies;
+        return reordered_crypto_currencies;
     }, [
         account_list,
         all_payment_agent_list,
@@ -140,9 +167,9 @@ const ChooseCurrency = observer(() => {
                             <CurrencyRadioButtonGroup
                                 id='crypto_currency'
                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                item_count={getReorderedCryptoCurrencies.length}
+                                item_count={memoized_reordered_crypto_currencies.length}
                             >
-                                {getReorderedCryptoCurrencies.map(currency => (
+                                {memoized_reordered_crypto_currencies.map(currency => (
                                     <Field
                                         key={currency.value}
                                         component={CurrencyRadioButton}

@@ -57,7 +57,6 @@ export const useSmileId = () => {
             //     AO: ['DRIVERS_LICENSE'],
             // },
 
-
             onSuccess: () => {
                 alert('SmileIdentityWebIntegration: onSuccess');
             },

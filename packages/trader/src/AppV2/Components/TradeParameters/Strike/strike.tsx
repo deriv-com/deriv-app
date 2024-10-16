@@ -11,7 +11,6 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import StrikeWheel from './strike-wheel';
-import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TStrikeProps = {
     is_minimized?: boolean;
@@ -98,23 +97,13 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
             <TextField
                 className={classname}
                 label={<Localize i18n_default_text='Strike price' key={`strike${is_minimized ? '-minimized' : ''}`} />}
-                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
                 readOnly
                 variant='fill'
                 value={barrier_1}
+                data-focus={true}
             />
-            <ActionSheet.Root
-                isOpen={is_open}
-                onClose={() => {
-                    setIsOpen(false);
-                    removeFocus();
-                }}
-                position='left'
-                expandable={false}
-            >
+            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}

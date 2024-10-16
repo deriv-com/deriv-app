@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { isTradeParamVisible } from 'AppV2/Utils/layout-utils';
+import { isTradeParamVisible, removeFocus } from 'AppV2/Utils/layout-utils';
 import AllowEquals from './AllowEquals';
 import Duration from './Duration';
 import Stake from './Stake';
@@ -30,6 +30,18 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) =>
         isTradeParamVisible({ component_key, contract_type, has_cancellation, symbol });
+
+    React.useEffect(() => {
+        const checkFocus = (e: React.FocusEvent) => {
+            const should_remove_focus = e?.target?.hasAttribute('data-focus');
+            if (should_remove_focus) removeFocus();
+        };
+        document.addEventListener('focusin', checkFocus as () => void);
+
+        return () => {
+            document.removeEventListener('focusin', checkFocus as () => void);
+        };
+    });
 
     return (
         <div

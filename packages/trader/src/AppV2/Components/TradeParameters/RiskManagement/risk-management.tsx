@@ -11,7 +11,6 @@ import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
-import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TRiskManagementProps = {
     is_minimized?: boolean;
@@ -32,7 +31,6 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
 
     const closeActionSheet = () => {
         setIsOpen(false);
-        removeFocus();
     };
     const getRiskManagementText = () => {
         if (has_cancellation) return `DC: ${addUnit({ value: cancellation_duration, unit: localize('minutes') })}`;
@@ -83,13 +81,11 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                         key={`risk-management${is_minimized ? '-minimized' : ''}`}
                     />
                 }
-                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
                 readOnly
                 value={getRiskManagementText()}
                 variant='fill'
+                data-focus={true}
             />
             <ActionSheet.Root isOpen={is_open} onClose={closeActionSheet} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

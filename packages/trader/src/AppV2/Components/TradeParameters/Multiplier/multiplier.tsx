@@ -9,7 +9,6 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import MultiplierWheelPicker from './multiplier-wheel-picker';
-import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TMultiplierProps = {
     is_minimized?: boolean;
@@ -68,20 +67,10 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                 }
                 value={`x${multiplier}`}
                 className={classname}
-                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
+                data-focus={true}
             />
-            <ActionSheet.Root
-                expandable={false}
-                isOpen={isOpen}
-                position='left'
-                onClose={() => {
-                    setIsOpen(false);
-                    removeFocus();
-                }}
-            >
+            <ActionSheet.Root expandable={false} isOpen={isOpen} position='left' onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

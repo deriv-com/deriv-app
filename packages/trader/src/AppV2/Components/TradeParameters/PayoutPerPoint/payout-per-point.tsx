@@ -11,7 +11,6 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import PayoutPerPointWheel from './payout-per-point-wheel';
-import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TPayoutPerPointProps = {
     is_minimized?: boolean;
@@ -91,23 +90,13 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                         key={`payout-per-point${is_minimized ? '-minimized' : ''}`}
                     />
                 }
-                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
                 readOnly
                 variant='fill'
                 value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}
+                data-focus={true}
             />
-            <ActionSheet.Root
-                isOpen={is_open}
-                onClose={() => {
-                    setIsOpen(false);
-                    removeFocus();
-                }}
-                position='left'
-                expandable={false}
-            >
+            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

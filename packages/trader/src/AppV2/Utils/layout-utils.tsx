@@ -51,11 +51,4 @@ export const getChartHeight = ({
     return height;
 };
 
-export const removeFocus = (
-    e?: React.MouseEvent<HTMLInputElement, MouseEvent>,
-    ref?: React.RefObject<HTMLInputElement>
-) => {
-    (e?.target as HTMLElement)?.blur();
-    ref?.current?.blur();
-    (document?.activeElement as HTMLElement)?.blur();
-};
+export const removeFocus = () => (document?.activeElement as HTMLElement)?.blur();

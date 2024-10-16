@@ -138,9 +138,7 @@ describe('getChartHeight', () => {
 
 describe('removeFocus', () => {
     it('removes focus from the element', () => {
-        const MockComponent = () => (
-            <input type='text' onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => removeFocus(e)} />
-        );
+        const MockComponent = () => <input type='text' data-focus={true} onClick={removeFocus} />;
         render(<MockComponent />);
 
         const input = screen.getByRole('textbox');

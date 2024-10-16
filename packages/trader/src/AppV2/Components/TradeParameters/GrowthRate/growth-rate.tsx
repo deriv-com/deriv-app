@@ -11,7 +11,6 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import GrowthRatePicker from './growth-rate-picker';
-import { removeFocus } from 'AppV2/Utils/layout-utils';
 
 type TGrowthRateProps = {
     is_minimized?: boolean;
@@ -44,7 +43,6 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
     };
     const onActionSheetClose = () => {
         setIsOpen(false);
-        removeFocus();
     };
 
     const action_sheet_content = [
@@ -100,13 +98,11 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 label={
                     <Localize i18n_default_text='Growth rate' key={`growth-rate${is_minimized ? '-minimized' : ''}`} />
                 }
-                onClick={(e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-                    removeFocus(e);
-                    setIsOpen(true);
-                }}
+                onClick={() => setIsOpen(true)}
                 readOnly
                 value={`${getGrowthRatePercentage(growth_rate)}%`}
                 variant='fill'
+                data-focus={true}
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

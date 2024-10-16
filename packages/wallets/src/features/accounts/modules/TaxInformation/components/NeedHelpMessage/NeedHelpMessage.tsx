@@ -3,12 +3,12 @@ import { Localize } from '@deriv-com/translations';
 import { InlineMessage, Text } from '@deriv-com/ui';
 
 const NeedHelpMessage = () => {
-    const onClickLiveChat = () => window.LC_API.open_chat_window();
+    const onClickLiveChat = () => window.LiveChatWidget.call('maximize');
 
     return (
         <div className='wallets-tax-information__message'>
             <InlineMessage variant='info'>
-                <Text size='xs'>
+                <Text align='start' size='xs'>
                     <Localize
                         components={[
                             <button

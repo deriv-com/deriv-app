@@ -7,27 +7,18 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
-import useLiveChat from '../../Components/Elements/LiveChat/use-livechat';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
 
-    const {
-        currency,
-        has_wallet,
-        is_logged_in,
-        is_logging_in,
-        setNewEmail,
-        setVerificationCode,
-        verification_code,
-        loginid,
-        has_cookie_account,
-    } = client;
+    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
+        client;
 
     const {
         openRealAccountSignup,
         setResetTradingPasswordModalOpen,
+        setRedirectFromEmail,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
         toggleResetEmailModal,
@@ -53,10 +44,8 @@ const Redirect = observer(() => {
         window.location.reload();
     }
 
-    const liveChat = useLiveChat(has_cookie_account, loginid);
-
     const openLivechat = () => {
-        liveChat.widget?.call('maximize');
+        window.LiveChatWidget.call('maximize');
     };
 
     const url_query_string = window.location.search;
@@ -176,6 +165,16 @@ const Redirect = observer(() => {
             }
 
             setResetTradingPasswordModalOpen(true);
+            break;
+        }
+        case 'phone_number_verification': {
+            const phone_number_verification_code = `${action_param}_code`;
+            if (!is_logging_in && !is_logged_in) {
+                sessionStorage.setItem(phone_number_verification_code, code_param);
+            }
+            setRedirectFromEmail(true);
+            history.push(routes.phone_verification);
+            redirected_to_route = true;
             break;
         }
         case 'payment_deposit': {

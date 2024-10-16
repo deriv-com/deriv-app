@@ -30,7 +30,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration?: boolean };
+    config?: { hide_duration?: boolean; default_stake?: number };
 };
 
 type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
@@ -321,6 +321,7 @@ export const getCardLabelsV2 = () =>
         HIGH_BARRIER: localize('High Barrier'),
         LOW_BARRIER: localize('Low Barrier'),
         BUY_PRICE: localize('Buy price'),
+        BUY: localize('Buy'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
         CLOSED: localize('Closed'),

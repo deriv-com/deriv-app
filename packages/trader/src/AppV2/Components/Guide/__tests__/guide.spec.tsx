@@ -11,8 +11,72 @@ import Guide from '../guide';
 
 const trade_types = 'Trade types';
 
+const mock_contract_data = {
+    contracts_for_company: [
+        {
+            value: 'accumulator',
+            text: 'Accumulators',
+            barrier_category: 'american',
+        },
+        {
+            value: 'vanillalongcall',
+            text: 'Vanillas',
+            barrier_category: 'euro_atm',
+        },
+        {
+            value: 'turboslong',
+            text: 'Turbos',
+            barrier_category: 'american',
+        },
+        {
+            value: 'multiplier',
+            text: 'Multipliers',
+            barrier_category: 'american',
+        },
+        {
+            value: 'rise_fall',
+            text: 'Rise/Fall',
+            barrier_category: 'euro_atm',
+        },
+        {
+            value: 'high_low',
+            text: 'Higher/Lower',
+            barrier_category: 'euro_atm',
+        },
+        {
+            value: 'touch',
+            text: 'Touch/No Touch',
+            barrier_category: 'american',
+        },
+        {
+            value: 'match_diff',
+            text: 'Matches/Differs',
+            barrier_category: 'non_financial',
+        },
+        {
+            value: 'even_odd',
+            text: 'Even/Odd',
+            barrier_category: 'non_financial',
+        },
+        {
+            value: 'over_under',
+            text: 'Over/Under',
+            barrier_category: 'non_financial',
+        },
+    ],
+};
+
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
+}));
+
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        contracts_for_company: mock_contract_data,
+        is_fetching_ref: { current: false },
+        trade_types: mock_contract_data.contracts_for_company,
+    })),
 }));
 
 Loadable.preloadAll();
@@ -73,24 +137,6 @@ describe('Guide', () => {
 
         AVAILABLE_CONTRACTS.forEach(({ id }) =>
             id === CONTRACT_LIST.RISE_FALL
-                ? expect(screen.getByText(id)).toBeInTheDocument()
-                : expect(screen.queryByText(id)).not.toBeInTheDocument()
-        );
-    });
-
-    it('should render component with correct title description for Vanillas if show_guide_for_selected_contract === true and is_vanilla === true', () => {
-        default_mock_store.modules.trade.is_vanilla = true;
-        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA;
-
-        renderGuide({ show_guide_for_selected_contract: true });
-
-        userEvent.click(screen.getByRole('button'));
-
-        expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
-        expect(screen.getByText(CONTRACT_LIST.VANILLAS)).toBeInTheDocument();
-
-        AVAILABLE_CONTRACTS.forEach(({ id }) =>
-            id === CONTRACT_LIST.VANILLAS
                 ? expect(screen.getByText(id)).toBeInTheDocument()
                 : expect(screen.queryByText(id)).not.toBeInTheDocument()
         );

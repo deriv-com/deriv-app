@@ -119,6 +119,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -162,6 +163,7 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -242,6 +244,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -255,6 +258,7 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
+            available_onramp_currencies: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -274,7 +278,6 @@ export default class ClientStore extends BaseStore {
             is_identity_verification_needed: computed,
             is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
-            is_tnc_needed: computed,
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
@@ -362,8 +365,8 @@ export default class ClientStore extends BaseStore {
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
-            cleanUp: action.bound,
             setIsClientStoreInitialized: action.bound,
+            cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
             storeClientAccounts: action.bound,
@@ -413,6 +416,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -609,6 +613,15 @@ export default class ClientStore extends BaseStore {
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
 
+    get available_onramp_currencies() {
+        return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
+            if (values.platform.ramp.length > 0) {
+                currencies.push(currency);
+            }
+            return currencies;
+        }, []);
+    }
+
     get has_fiat() {
         return Object.values(this.accounts).some(
             item =>
@@ -722,14 +735,6 @@ export default class ClientStore extends BaseStore {
     get real_account_creation_unlock_date() {
         const { cooling_off_expiration_date } = this.account_settings;
         return cooling_off_expiration_date;
-    }
-
-    get is_tnc_needed() {
-        if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings || {};
-        const { terms_conditions_version } = this.website_status || {};
-
-        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
 
     get is_social_signup() {
@@ -1825,7 +1830,7 @@ export default class ClientStore extends BaseStore {
     }
 
     broadcastAccountChangeAfterAuthorize() {
-        return BinarySocket.wait('authorize').then(() => {
+        return BinarySocket?.wait('authorize')?.then(() => {
             this.broadcastAccountChange();
         });
     }
@@ -1876,7 +1881,7 @@ export default class ClientStore extends BaseStore {
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
-            await BinarySocket.wait('authorize');
+            await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
@@ -2252,10 +2257,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2750,6 +2757,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPasskeySupported(is_passkey_supported = false) {
         this.is_passkey_supported = is_passkey_supported;
+    }
+
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

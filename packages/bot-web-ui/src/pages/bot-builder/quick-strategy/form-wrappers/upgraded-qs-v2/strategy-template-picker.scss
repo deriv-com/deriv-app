@@ -1,6 +1,10 @@
 .strategy-template-picker {
+    width: calc(100% - 3rem);
     margin: 1.6rem;
-    max-width: 40rem;
+
+    @include desktop-screen {
+        max-width: 45rem;
+    }
 
     &__icon {
         display: flex;
@@ -13,6 +17,7 @@
         border-radius: 2rem;
         background-color: unset;
         cursor: pointer;
+
         svg {
             g {
                 fill: var(--icon-black-plus);
@@ -29,9 +34,9 @@
 
         .quill-input {
             &__container {
-                width: 36rem;
                 background-color: var(--general-section-1);
                 border-radius: 1rem;
+
                 .input__align--left {
                     background-color: var(--general-section-6);
                 }
@@ -92,6 +97,7 @@
                     position: fixed;
                     z-index: 1;
                     margin: 0;
+                    left: 0;
                 }
             }
 
@@ -99,10 +105,17 @@
                 &--back {
                     color: var(--brand-red-coral);
                 }
+
                 .dc-btn--transparent {
                     @include desktop-screen {
                         left: 2.4rem;
                         position: absolute;
+                    }
+
+                    @include desktop-screen {
+                        @include rtl {
+                            right: 2.4rem;
+                        }
                     }
                 }
             }
@@ -121,15 +134,30 @@
         }
     }
 
+    &__form {
+        &__container {
+            &--template {
+                @include tablet-screen {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+        }
+    }
+
     &__selected-options {
         display: flex;
         flex-direction: column;
         gap: 1.6rem;
-        width: 90%;
-        margin: 1.6rem auto;
+        margin: 1.6rem;
         padding: 0.8rem var(--group-outer-padding);
         background-color: var(--general-section-1);
         border-radius: 0.8rem;
+
+        @include desktop-screen {
+            margin: 1.6rem 2.4rem;
+        }
 
         &__item {
             display: flex;
@@ -143,6 +171,14 @@
         &__header-title {
             text-align: left;
             margin-left: 1.6rem;
+        }
+    }
+}
+
+.dc-page-overlay {
+    &__header-close {
+        @include rtl {
+            right: 2.4rem;
         }
     }
 }

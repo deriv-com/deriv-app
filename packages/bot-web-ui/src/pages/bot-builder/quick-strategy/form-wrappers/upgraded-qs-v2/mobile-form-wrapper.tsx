@@ -1,19 +1,19 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsRunStrategyEvent } from '../../../../../analytics/rudderstack-quick-strategy';
+import { STRATEGIES } from '../../config';
 import { TFormValues } from '../../types';
 import StrategyTabContent from '../strategy-tab-content';
 import useQsSubmitHandler from '../useQsSubmitHandler';
-import '../../quick-strategy.scss';
 import QSStepper from './qs-stepper';
 import StrategyTemplatePicker from './strategy-template-picker';
-import { STRATEGIES } from '../../config';
-import classNames from 'classnames';
 import { QsSteps } from './trade-constants';
+import '../../quick-strategy.scss';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -64,7 +64,9 @@ const MobileFormWrapper = observer(
                 <div className='qs__body'>
                     <div className='qs__body__content'>
                         <ThemedScrollbars
-                            className='qs__form__container qs__form__container--no-footer'
+                            className={classNames('qs__form__container qs__form__container--no-footer', {
+                                'qs__form__container--template': is_selected_strategy_step,
+                            })}
                             autohide={false}
                         >
                             <QSStepper
@@ -100,12 +102,7 @@ const MobileFormWrapper = observer(
                             )}
                         </ThemedScrollbars>
                         {is_verified_or_completed_step && (
-                            <div
-                                className={classNames(
-                                    'qs__body__content__footer'
-                                    // { 'qs__body__content__footer--mobile-fixed': current_step === QsSteps.StrategyVerified } // if we need fixed position
-                                )}
-                            >
+                            <div className='qs__body__content__footer'>
                                 <Button secondary disabled={is_selected_strategy_step} onClick={onBack}>
                                     {localize('Back')}
                                 </Button>

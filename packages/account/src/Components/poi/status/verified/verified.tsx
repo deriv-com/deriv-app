@@ -4,9 +4,13 @@ import { localize } from '@deriv/translations';
 import { TPOIStatus } from 'Types';
 import IconMessageContent from '../../../icon-message-content';
 import PoaButton from '../../../poa/poa-button';
+import { service_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
-export const Verified = ({ needs_poa, redirect_button, is_from_external }: TPOIStatus) => {
-    const message = localize('Your proof of identity is verified');
+export const Verified = ({ needs_poa, redirect_button, is_from_external, service }: TPOIStatus) => {
+    const message =
+        service === service_code.idv
+            ? localize('ID verification passed')
+            : localize('Your proof of identity is verified');
 
     if (!needs_poa) {
         return (

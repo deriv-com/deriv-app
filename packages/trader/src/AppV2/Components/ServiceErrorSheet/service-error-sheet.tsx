@@ -25,7 +25,7 @@ const ServiceErrorSheet = observer(() => {
     const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
     const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
     const should_show_error_modal =
-        !isEmptyObject(services_error) &&
+        (!isEmptyObject(services_error) || is_mf_verification_pending_modal_visible) &&
         checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
 
     const onClose = () => {
@@ -109,11 +109,10 @@ const ServiceErrorSheet = observer(() => {
     }, [should_show_error_modal]);
 
     useEffect(() => {
-        if (!is_open && code) {
-            resetServicesError();
-        }
+        if (!is_open && code) resetServicesError();
+        if (!is_open) setIsMFVericationPendingModal(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resetServicesError, is_open]);
+    }, [is_open]);
 
     if (!should_show_error_modal) return null;
 

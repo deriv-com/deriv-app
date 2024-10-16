@@ -13,7 +13,9 @@ import {
     isAccumulatorContract,
     isOpen,
     isValidToSell,
+    MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
+import { useMFAccountStatus } from '@deriv/hooks';
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
@@ -30,7 +32,7 @@ const PurchaseButton = observer(() => {
         portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
         common: { services_error },
-        ui: { is_mf_verification_pending_modal_visible },
+        ui: { is_mf_verification_pending_modal_visible, setIsMFVericationPendingModal },
     } = useStore();
     const {
         contract_type,
@@ -60,6 +62,7 @@ const PurchaseButton = observer(() => {
                 ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
             )
     );
+    const mf_account_status = useMFAccountStatus();
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -172,8 +175,12 @@ const PurchaseButton = observer(() => {
                                     isOpaque
                                     disabled={is_disabled && !is_loading}
                                     onClick={() => {
-                                        setLoadingButtonIndex(index);
-                                        onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
+                                        if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
+                                            setIsMFVericationPendingModal(true);
+                                        } else {
+                                            setLoadingButtonIndex(index);
+                                            onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
+                                        }
                                     }}
                                 >
                                     {!is_loading && (

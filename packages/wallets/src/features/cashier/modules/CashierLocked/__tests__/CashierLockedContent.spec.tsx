@@ -2,9 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from '../CashierLockedContent';
 
-window.LC_API = {
-    on_chat_ended: jest.fn(),
-    open_chat_window: jest.fn(),
+window.LiveChatWidget = {
+    call: jest.fn(),
+    get: jest.fn(),
+    init: jest.fn(),
+    on: jest.fn(),
 };
 
 describe('CashierLockedContent', () => {
@@ -110,7 +112,7 @@ describe('CashierLockedContent', () => {
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
         userEvent.click(link);
-        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
     it('renders correct message when disabledStatus status received', () => {
@@ -124,7 +126,7 @@ describe('CashierLockedContent', () => {
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
         userEvent.click(link);
-        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
     it('renders correct message when askCurrency status received', () => {

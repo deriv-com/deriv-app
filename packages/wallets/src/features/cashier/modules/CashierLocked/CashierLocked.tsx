@@ -22,8 +22,10 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: accountStatus } = useAccountStatus();
-    const { data: isEuRegion } = useIsEuRegion();
+    const { data: accountStatus, isLoading: accountStatusLoading } = useAccountStatus();
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+
+    const isLoading = accountStatusLoading || isEuRegionLoading;
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
@@ -78,7 +80,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         poiNeedsVerification,
     });
 
-    if (!accountStatus) {
+    if (isLoading) {
         return <Loader />;
     }
 

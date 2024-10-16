@@ -42,11 +42,29 @@ describe('CashierLocked', () => {
         jest.clearAllMocks();
     });
 
-    it('renders loader when no account status data', () => {
+    it('renders loader when account status is loading', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
         (usePOA as jest.Mock).mockReturnValue({ data: null });
         (usePOI as jest.Mock).mockReturnValue({ data: null });
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: false });
+        (useCashierValidation as jest.Mock).mockReturnValue({ data: null });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: null, isLoading: true });
+
+        render(
+            <CashierLocked>
+                <div>Test Child Component</div>
+            </CashierLocked>
+        );
+
+        expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
+    it('renders loader when is eu region is loading', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
+        (usePOA as jest.Mock).mockReturnValue({ data: null });
+        (usePOI as jest.Mock).mockReturnValue({ data: null });
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: null, isLoading: true });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: null });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: null });
 

@@ -22,10 +22,10 @@ describe('TransferLocked', () => {
         jest.clearAllMocks();
     });
 
-    it('renders loader when no account status data', () => {
+    it('renders loader when account status is loading', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
         (useCashierValidation as jest.Mock).mockReturnValue({ data: null });
-        (useAccountStatus as jest.Mock).mockReturnValue({ data: null });
+        (useAccountStatus as jest.Mock).mockReturnValue({ data: null, isLoading: true });
 
         render(
             <TransferLocked>

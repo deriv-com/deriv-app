@@ -18,7 +18,7 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: poaStatus } = usePOA();
     const { data: settings } = useSettings();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: accountStatus } = useAccountStatus();
+    const { data: accountStatus, isLoading: accountStatusLoading } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const excludedUntil = activeWallet?.excluded_until;
@@ -41,7 +41,7 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const financialInformationNotComplete = accountStatus?.is_financial_information_not_complete;
     const tradingExperienceNotComplete = accountStatus?.is_trading_experience_not_complete;
 
-    if (!accountStatus) {
+    if (accountStatusLoading) {
         return <Loader />;
     }
 

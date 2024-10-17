@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { lazy, useMemo, useState } from 'react';
 import { APIProvider } from '@deriv/api-v2';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -10,7 +10,14 @@ import { TLanguageType } from './types';
 import './styles/fonts.scss';
 import './index.scss';
 
-const App: React.FC = () => {
+type TProps = {
+    isWalletsOnboardingTourGuideVisible: boolean;
+    onWalletsOnboardingTourGuideCloseHandler: VoidFunction;
+};
+
+const LazyWalletTourGuide = lazy(() => import('./components/WalletTourGuide/WalletTourGuide'));
+
+const App: React.FC<TProps> = ({ isWalletsOnboardingTourGuideVisible, onWalletsOnboardingTourGuideCloseHandler }) => {
     const [preferredLanguage, setPreferredLanguage] = useState<TLanguageType | null>(null);
     const language = useLanguage(preferredLanguage);
 
@@ -33,6 +40,13 @@ const App: React.FC = () => {
                             <AppContent setPreferredLanguage={setPreferredLanguage} />
                         </ModalProvider>
                     </React.Suspense>
+                    {isWalletsOnboardingTourGuideVisible && (
+                        <React.Suspense fallback={<Loader />}>
+                            <LazyWalletTourGuide
+                                onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
+                            />
+                        </React.Suspense>
+                    )}
                 </TranslationProvider>
             </WalletsAuthProvider>
         </APIProvider>

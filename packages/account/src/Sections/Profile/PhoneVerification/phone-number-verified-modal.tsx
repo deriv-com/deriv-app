@@ -15,8 +15,7 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
     const history = useHistory();
     const previous_route = localStorage.getItem('routes_from_notification_to_pnv');
     const should_route_back_to_previous =
-        !!previous_route &&
-        (previous_route !== routes.personal_details || previous_route !== routes.phone_verification);
+        previous_route !== routes.personal_details && previous_route !== routes.phone_verification && !!previous_route;
 
     const handleDoneButton = () => {
         localStorage.removeItem('routes_from_notification_to_pnv');
@@ -31,7 +30,7 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
             account_settings: { phone },
         },
     } = useStore();
-    const { setIsPhoneVerificationCompleted } = ui;
+    const { setIsPhoneVerificationCompleted, setShouldShowPhoneNumberOTP } = ui;
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
 
     useEffect(() => {
@@ -40,6 +39,7 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
                 action: 'open',
                 subform_name: 'verification_successful',
             });
+            setShouldShowPhoneNumberOTP(false);
             setIsPhoneVerificationCompleted(true);
         }
     }, [should_show_phone_number_verified_modal, trackPhoneVerificationEvents]);

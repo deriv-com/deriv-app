@@ -365,8 +365,8 @@ export default class ClientStore extends BaseStore {
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
-            cleanUp: action.bound,
             setIsClientStoreInitialized: action.bound,
+            cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
             storeClientAccounts: action.bound,
@@ -1804,7 +1804,9 @@ export default class ClientStore extends BaseStore {
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
+                url: window.location.href,
             };
+
             if (this.user_id) analytics_config.user_id = this.user_id;
             Analytics.setAttributes(analytics_config);
         }, 4);
@@ -1831,7 +1833,7 @@ export default class ClientStore extends BaseStore {
     }
 
     broadcastAccountChangeAfterAuthorize() {
-        return BinarySocket.wait('authorize').then(() => {
+        return BinarySocket?.wait('authorize')?.then(() => {
             this.broadcastAccountChange();
         });
     }
@@ -1882,7 +1884,7 @@ export default class ClientStore extends BaseStore {
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
-            await BinarySocket.wait('authorize');
+            await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());

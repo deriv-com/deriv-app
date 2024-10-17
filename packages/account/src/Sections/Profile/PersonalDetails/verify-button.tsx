@@ -56,6 +56,7 @@ export const VerifyButton = observer(
 
         const redirectToPhoneVerification = (e: React.MouseEvent<HTMLElement>) => {
             e.preventDefault();
+            localStorage.setItem('routes_from_notification_to_pnv', routes.personal_details);
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
             // @ts-expect-error GetSettings types doesn't match updated set_settings payload types

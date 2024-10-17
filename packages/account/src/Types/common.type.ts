@@ -117,6 +117,7 @@ export type TPOIStatus = {
     redirect_button?: React.ReactElement;
     is_from_external?: boolean;
     is_manual_upload?: boolean;
+    service?: string;
 };
 
 export type TConfirmPersonalDetailsForm = Pick<

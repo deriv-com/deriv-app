@@ -78,6 +78,10 @@
 
     &__links {
         margin: 0 0.8rem;
+
+        .quill-typography {
+            color: var(--text-general);
+        }
     }
 
     &__title {

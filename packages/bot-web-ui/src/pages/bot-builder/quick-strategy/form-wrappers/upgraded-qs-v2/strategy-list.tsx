@@ -33,7 +33,6 @@ const StrategyBlock = ({ title, items, onSelectStrategy }: TStrategyBlock) => {
             {items.map((item, index) => (
                 <div className='strategy-template-picker__links' key={index}>
                     <Link
-                        color='var(--text-prominent)'
                         hasChevron
                         size='sm'
                         onClick={() => onSelectStrategy(item.name, title)}
@@ -55,10 +54,6 @@ const StrategyList = ({ selector_chip_value, search_value, is_searching, onSelec
         return (is_searching && is_parent_match_value) || !is_searching;
     };
 
-    const is_display_name_match = STRATEGY_TRADE_ASSOCIATIONS.some(item =>
-        item.display_name.toLowerCase().includes(search_value.toLowerCase())
-    );
-
     STRATEGY_TRADE_ASSOCIATIONS.filter(
         item =>
             item.parent.some(parent => filterVisibleParents(parent)) ||
@@ -66,15 +61,11 @@ const StrategyList = ({ selector_chip_value, search_value, is_searching, onSelec
     ).forEach(item => {
         const tmp_item = { ...item };
         if (is_searching && search_value !== '') {
-            if (is_display_name_match) {
+            if (item.display_name.toLowerCase().includes(search_value.toLowerCase())) {
                 tmp_item.parent = [...item.parent];
             } else {
                 const matched_parents = tmp_item.parent.filter(parent =>
-                    TRADE_TYPES.some(
-                        type =>
-                            parent.toLowerCase().includes(type.toLowerCase()) &&
-                            type.toLowerCase().includes(search_value.toLowerCase())
-                    )
+                    parent.toLowerCase().includes(search_value.toLowerCase())
                 );
                 tmp_item.parent = matched_parents.length > 0 ? matched_parents : item.parent;
             }

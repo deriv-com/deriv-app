@@ -211,7 +211,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             ) : (
                                 <div className='wallets-mt5-trade-screen__details-description__balance-total'>
                                     <Text as='p' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
-                                        Total balance:
+                                        <Localize i18n_default_text='Total balance:' />
                                     </Text>
                                     <Text weight='bold'>{cTraderDisplayBalance}</Text>
                                 </div>
@@ -275,38 +275,31 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         >
                             <ol className='wallets-mt5-trade-screen__notes'>
                                 <li className='wallets-mt5-trade-screen__notes__item'>
-                                    Use your Deriv account email and password to log in to cTrader.
+                                    <Localize i18n_default_text='Use your Deriv account email and password to log in to cTrader.' />
                                 </li>
                                 <li className='wallets-mt5-trade-screen__notes__item'>
-                                    Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv
-                                    cTrader accounts into a strategy account, please take note of the following:
+                                    <Localize i18n_default_text='Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv cTrader accounts into a strategy account, please take note of the following:' />
                                     <ul className='wallets-mt5-trade-screen__notes__inner-list'>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            When setting up a strategy, you have the option to impose fees.
+                                            <Localize i18n_default_text='When setting up a strategy, you have the option to impose fees.' />
                                         </li>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            For strategies where you impose fees, you must assign one of your existing
-                                            accounts to process these fees. The same ‘Account For Fees’ can support
-                                            multiple fee-based strategies.
+                                            <Localize i18n_default_text='For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.' />
                                         </li>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            Free strategies do not require an ‘Account For Fees’.
+                                            <Localize i18n_default_text='Free strategies do not require an ‘Account For Fees’.' />
                                         </li>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            An account designated as a strategy provider is irreversible unless it
-                                            remains inactive for 30 days.
+                                            <Localize i18n_default_text='An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.' />
                                         </li>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            An account cannot simultaneously be a strategy provider and serve as an
-                                            ‘Account For Fees’.
+                                            <Localize i18n_default_text='An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.' />
                                         </li>
                                         <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
-                                            To ensure you can always create and manage strategies with fees,{' '}
-                                            <strong>
-                                                keep at least one account free from being a strategy provider
-                                            </strong>
-                                            . This way, you’ll always have an account ready for collecting fees,
-                                            allowing you to have up to four strategies where you may impose fees.
+                                            <Localize
+                                                components={[<strong key={0} />]}
+                                                i18n_default_text='To ensure you can always create and manage strategies with fees, <0>keep at least one account free from being a strategy provider</0>. This way, you’ll always have an account ready for collecting fees, allowing you to have up to four strategies where you may impose fees.'
+                                            />
                                         </li>
                                     </ul>
                                 </li>

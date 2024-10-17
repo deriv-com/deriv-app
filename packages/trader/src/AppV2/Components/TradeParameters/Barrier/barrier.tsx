@@ -27,7 +27,9 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';
-    const has_error = validation_errors.barrier_1.length > 0 || proposal_info?.[trade_type_tab]?.has_error;
+    const has_error =
+        validation_errors.barrier_1.length > 0 ||
+        (proposal_info?.[trade_type_tab]?.has_error && proposal_info?.[trade_type_tab]?.error_field === 'barrier');
     const { addSnackbar } = useSnackbar();
     const [barrier_error_shown, setBarrierErrorShown] = React.useState(false);
 

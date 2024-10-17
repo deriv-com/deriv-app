@@ -32,11 +32,7 @@ const StrategyBlock = ({ title, items, onSelectStrategy }: TStrategyBlock) => {
             </div>
             {items.map((item, index) => (
                 <div className='strategy-template-picker__links' key={index}>
-                    <Link
-                        hasChevron
-                        size='sm'
-                        onClick={() => onSelectStrategy(item.name, title)}
-                    >
+                    <Link hasChevron size='sm' onClick={() => onSelectStrategy(item.name, title)}>
                         {item.display_name}
                     </Link>
                 </div>

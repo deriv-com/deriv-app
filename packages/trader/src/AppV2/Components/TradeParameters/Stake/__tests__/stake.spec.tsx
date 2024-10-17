@@ -11,6 +11,25 @@ const stake_param_label = 'Stake';
 const input_placeholder = 'Amount';
 const save_button_label = 'Save';
 
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        available_contract_types: {
+            vanillalongcall: {
+                title: 'Call/Put',
+                trade_types: ['VANILLALONGCALL'],
+                basis: ['stake'],
+                components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
+                barrier_count: 1,
+                config: {
+                    barrier_category: 'euro_non_atm',
+                    default_stake: 10,
+                },
+            },
+        },
+    })),
+}));
+
 describe('Stake', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
@@ -222,8 +241,8 @@ describe('Stake', () => {
         const error_text_rise = 'Minimum stake of 0.35 and maximum payout of 50000.00. Current payout is 50631.97.';
         const error_text_fall = 'Minimum stake of 0.35 and maximum payout of 50000.00. Current payout is 50513.21.';
         default_mock_store.modules.trade.proposal_info = {
-            CALL: { id: '', has_error: true, message: error_text_rise },
-            PUT: { id: '', has_error: true, message: error_text_fall },
+            CALL: { id: '', has_error: true, message: error_text_rise, error_field: 'amount' },
+            PUT: { id: '', has_error: true, message: error_text_fall, error_field: 'amount' },
         };
         default_mock_store.modules.trade.validation_errors.amount = [error_text_fall];
         default_mock_store.modules.trade.amount = '26500';
@@ -254,5 +273,12 @@ describe('Stake', () => {
         userEvent.click(screen.getByText(stake_param_label));
 
         expect(screen.queryByText(error_text_rise)).not.toBeInTheDocument();
+    });
+
+    it('should set default stake if available_contract_types object contains it ', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
+        render(<MockedStake />);
+
+        expect(default_mock_store.modules.trade.setDefaultStake).toHaveBeenCalledWith(10);
     });
 });

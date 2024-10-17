@@ -185,9 +185,10 @@ export default class UIStore extends BaseStore {
     is_mt5_migration_modal_enabled = false;
     isUrlUnavailableModalVisible = false;
     sub_section_index = 0;
+    field_ref_to_focus = null;
 
-    is_additional_kyc_info_modal_open = false;
-    is_kyc_information_submitted_modal_open = false;
+    // tnc update
+    is_tnc_update_modal_open = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -217,8 +218,6 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
-            is_additional_kyc_info_modal_open: observable,
-            is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -299,6 +298,7 @@ export default class UIStore extends BaseStore {
             is_verification_submitted: observable,
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
+            is_tnc_update_modal_open: observable,
             isUrlUnavailableModalVisible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -437,13 +437,14 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUpdateEmailModal: action.bound,
             toggleAccountSuccessModal: action.bound,
-            toggleAdditionalKycInfoModal: action.bound,
-            toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
             setShouldShowDepositNowOrLaterModal: action.bound,
             setShouldShowCryptoTransactionProcessingModal: action.bound,
             setShouldShowSameDOBPhoneModal: action.bound,
+            field_ref_to_focus: observable,
+            setFieldRefToFocus: action.bound,
+            toggleTncUpdateModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -460,6 +461,10 @@ export default class UIStore extends BaseStore {
             document.body.classList.add('theme--light');
         }
     };
+
+    setFieldRefToFocus(field_ref) {
+        this.field_ref_to_focus = field_ref;
+    }
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
         this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
@@ -658,6 +663,7 @@ export default class UIStore extends BaseStore {
     }
 
     toggleLanguageSettingsModal() {
+        window.fcWidget?.close();
         this.is_language_settings_modal_on = !this.is_language_settings_modal_on;
     }
 
@@ -995,14 +1001,6 @@ export default class UIStore extends BaseStore {
         this.is_trading_disabled_by_residence_modal_visible = value;
     }
 
-    toggleAdditionalKycInfoModal() {
-        this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
-    }
-
-    toggleKycInformationSubmittedModal() {
-        this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
-    }
-
     setMT5MigrationModalEnabled(value) {
         this.is_mt5_migration_modal_enabled = value;
     }
@@ -1025,5 +1023,9 @@ export default class UIStore extends BaseStore {
 
     setShouldShowSameDOBPhoneModal(value) {
         this.should_show_same_dob_phone_modal = value;
+    }
+
+    toggleTncUpdateModal(value) {
+        this.is_tnc_update_modal_open = value;
     }
 }

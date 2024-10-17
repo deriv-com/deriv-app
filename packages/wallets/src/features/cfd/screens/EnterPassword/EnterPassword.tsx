@@ -96,7 +96,7 @@ const EnterPassword: React.FC<TProps> = ({
                     shouldDisablePasswordMeter
                 />
                 {passwordError && (
-                    <Text align='start' size={isDesktop ? 'sm' : 'md'}>
+                    <Text align='start' className='wallets-enter-password__hint' size={isDesktop ? 'sm' : 'md'}>
                         {passwordErrorHints}
                     </Text>
                 )}

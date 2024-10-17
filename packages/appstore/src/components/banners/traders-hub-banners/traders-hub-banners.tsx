@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
-import { useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
+import { useContentFlag, useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
 import BookBanner from 'Components/banners/book-banner';
 import WalletsBanner from 'Components/banners/wallets-banner';
 
@@ -33,6 +33,7 @@ const TradersHubBanners = observer(() => {
     const { is_landing_company_loaded, has_any_real_account, is_eu } = client;
     const { is_real } = traders_hub;
     const { hasDeposited, hasTransferred, isLoaded } = useStoreHasAccountDeposited();
+    const { is_low_risk_cr_eu, is_low_risk_cr_non_eu } = useContentFlag();
 
     const [ff_real_account_creation_banner] = useGrowthbookGetFeatureValue({
         featureFlag: 'traders-hub-real-account-banner',
@@ -48,7 +49,12 @@ const TradersHubBanners = observer(() => {
     const should_show_real_account_creation_banner =
         ff_real_account_creation_banner && !has_any_real_account && !is_eu && is_landing_company_loaded;
     const should_show_deposit_now_banner =
-        ff_deposit_now_banner && is_real && isLoaded && !hasDeposited && !hasTransferred;
+        ff_deposit_now_banner &&
+        is_real &&
+        !(is_low_risk_cr_eu || is_low_risk_cr_non_eu) &&
+        isLoaded &&
+        !hasDeposited &&
+        !hasTransferred;
 
     return (
         <React.Fragment>

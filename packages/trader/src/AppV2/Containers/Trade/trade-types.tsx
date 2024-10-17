@@ -143,7 +143,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
             if (category.id === 'other') {
                 return {
                     ...category,
-                    // items: [...category.items, item].sort((a, b) => a.title.localeCompare(b.title)),
                     items: sortCategoriesInTradeTypeOrder(trade_types, [...category.items, item]),
                 };
             }

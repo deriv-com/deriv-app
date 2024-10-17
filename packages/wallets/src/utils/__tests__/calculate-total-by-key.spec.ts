@@ -6,7 +6,7 @@ describe('calculateTotalByKey', () => {
         numericField?: number | string | null;
     };
 
-    it('should return the correct total for numeric values', () => {
+    it('returns the correct total for numeric values', () => {
         const items: TestObject[] = [
             { numericField: 100 },
             { numericField: 200.5 },
@@ -16,7 +16,7 @@ describe('calculateTotalByKey', () => {
         expect(calculateTotalByKey(items, 'numericField')).toBe(350.5);
     });
 
-    it('should return the correct total for string values', () => {
+    it('returns the correct total for string values', () => {
         const items: TestObject[] = [
             { numericField: '100' },
             { numericField: '200.50' },
@@ -26,7 +26,7 @@ describe('calculateTotalByKey', () => {
         expect(calculateTotalByKey(items, 'numericField')).toBe(350.5);
     });
 
-    it('should return the correct total for mixed numeric and string values', () => {
+    it('returns the correct total for mixed numeric and string values', () => {
         const items: TestObject[] = [
             { numericField: 100 },
             { numericField: '200.50' },
@@ -36,22 +36,22 @@ describe('calculateTotalByKey', () => {
         expect(calculateTotalByKey(items, 'numericField')).toBe(350.5);
     });
 
-    it('should return 0.00 for all null or undefined values', () => {
+    it('returns 0.00 for all null or undefined values', () => {
         const items: TestObject[] = [{ numericField: null }, { numericField: undefined }, { numericField: null }];
         expect(calculateTotalByKey(items, 'numericField')).toBe(0);
     });
 
-    it('should return 0.00 for empty array', () => {
+    it('returns 0.00 for empty array', () => {
         const items: TestObject[] = [];
         expect(calculateTotalByKey(items, 'numericField')).toBe(0);
     });
 
-    it('should ignore non-numeric string values', () => {
+    it('ignores non-numeric string values', () => {
         const items: TestObject[] = [{ numericField: 'abc' }, { numericField: '200.50' }, { numericField: 'def' }];
         expect(calculateTotalByKey(items, 'numericField')).toBe(200.5);
     });
 
-    it('should handle different keys correctly', () => {
+    it('handles different keys correctly', () => {
         const items: TestObject[] = [
             { anotherField: '50.25', numericField: 100 },
             { anotherField: 100, numericField: '200.50' },
@@ -61,7 +61,7 @@ describe('calculateTotalByKey', () => {
         expect(calculateTotalByKey(items, 'anotherField')).toBe(301);
     });
 
-    it('should handle objects with missing keys', () => {
+    it('handles objects with missing keys', () => {
         const items: TestObject[] = [{ anotherField: '50.25' }, { numericField: '200.50' }, { anotherField: '150.75' }];
         expect(calculateTotalByKey(items, 'numericField')).toBe(200.5);
         expect(calculateTotalByKey(items, 'anotherField')).toBe(201);

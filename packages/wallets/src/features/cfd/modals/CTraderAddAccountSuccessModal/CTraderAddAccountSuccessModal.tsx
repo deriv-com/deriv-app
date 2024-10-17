@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Localize } from '@deriv-com/translations';
 import { ActionScreen, Button } from '@deriv-com/ui';
 import { ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
@@ -19,18 +20,20 @@ const CTraderAddAccountSuccessModal = () => {
                 <ActionScreen
                     actionButtons={
                         <WalletButtonGroup>
-                            <Button onClick={() => hide()} size='lg' variant='outlined'>
-                                Maybe later
+                            <Button onClick={hide} size='lg' variant='outlined'>
+                                <Localize i18n_default_text='Maybe later' />
                             </Button>
                             <Button onClick={onClickTransferNow} size='lg' variant='contained'>
-                                Transfer now
+                                <Localize i18n_default_text='Transfer now' />
                             </Button>
                         </WalletButtonGroup>
                     }
-                    description='Congratulations, you have successfully created your real Deriv cTrader account. To start trading,transfer funds from your Deriv account into this account.'
+                    description={
+                        <Localize i18n_default_text='Congratulations, you have successfully created your real Deriv cTrader account. To start trading,transfer funds from your Deriv account into this account.' />
+                    }
                     descriptionSize='sm'
                     icon={<SuccessIcon />}
-                    title='Success!'
+                    title={<Localize i18n_default_text='Success!' />}
                 />
             </div>
         </ModalWrapper>

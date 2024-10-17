@@ -29,7 +29,10 @@ export const getIDVFormValidationSchema = () => {
             .test({
                 name: 'testAdditionalDocumentNumber',
                 test: (value, context) => {
-                    if (context.parent.document_type.id === IDV_NOT_APPLICABLE_OPTION.id) {
+                    if (
+                        context.parent.document_type.id === IDV_NOT_APPLICABLE_OPTION.id ||
+                        !context.parent.document_type?.additional
+                    ) {
                         return true;
                     }
                     return validateAdditionalDocumentNumber(value as string, context);

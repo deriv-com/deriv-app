@@ -1,6 +1,7 @@
 .player {
     &__wrapper {
         position: relative;
+        background-color: var(--general-main-1);
     }
 
     &__overlay {

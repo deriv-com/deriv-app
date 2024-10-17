@@ -8,12 +8,22 @@ type TCarousel = {
     current_index?: number;
     header?: typeof CarouselHeader;
     is_swipeable?: boolean;
+    is_infinite_loop?: boolean;
     pages: { id: number; component: JSX.Element }[];
     title?: React.ReactNode;
     setCurrentIndex?: (arg: number) => void;
 };
 
-const Carousel = ({ classname, current_index, header, is_swipeable, pages, setCurrentIndex, title }: TCarousel) => {
+const Carousel = ({
+    classname,
+    current_index,
+    header,
+    is_swipeable,
+    is_infinite_loop,
+    pages,
+    setCurrentIndex,
+    title,
+}: TCarousel) => {
     const [internalIndex, setInternalIndex] = React.useState(0);
 
     const HeaderComponent = header;
@@ -22,11 +32,13 @@ const Carousel = ({ classname, current_index, header, is_swipeable, pages, setCu
     const index = isControlled ? current_index : internalIndex;
 
     const handleNextClick = () => {
+        if (!is_infinite_loop && index + 1 >= pages.length) return;
         const newIndex = (index + 1) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
     };
 
     const handlePrevClick = () => {
+        if (!is_infinite_loop && index - 1 < 0) return;
         const newIndex = (index - 1 + pages.length) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
     };

@@ -23,6 +23,9 @@ type TCashierLockedDescProps = {
     disabledStatus?: boolean;
     documentsExpired?: boolean;
     financialAssessmentRequired?: boolean;
+    isEuRegion?: boolean;
+    isPendingVerification?: boolean;
+    module?: 'deposit' | 'transfer' | 'withdrawal';
     noResidence?: boolean;
     poaNeedsVerification?: boolean;
     poiNeedsVerification?: boolean;
@@ -107,6 +110,9 @@ const getCashierLockedDesc = ({
     disabledStatus,
     documentsExpired,
     financialAssessmentRequired,
+    isEuRegion,
+    isPendingVerification,
+    module,
     noResidence,
     poaNeedsVerification,
     poiNeedsVerification,
@@ -153,6 +159,26 @@ const getCashierLockedDesc = ({
                 <Localize i18n_default_text='Please set your account currency to enable deposits and withdrawals.' />
             </Text>
         );
+    } else if (isEuRegion && askAuthenticate) {
+        if (module === 'transfer') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a funds transfer once the verification of your account is complete.' />
+                </Text>
+            );
+        } else if (module === 'withdrawal') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a withdrawal once the verification of your account is complete.' />
+                </Text>
+            );
+        } else {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a new deposit once the verification of your account is complete.' />
+                </Text>
+            );
+        }
     } else if (askAuthenticate && poiNeedsVerification) {
         if (poaNeedsVerification) {
             description = (
@@ -167,7 +193,7 @@ const getCashierLockedDesc = ({
                     />
                 </Text>
             );
-        } else if (!poaNeedsVerification) {
+        } else {
             description = (
                 <Text align='center'>
                     <Localize
@@ -175,6 +201,26 @@ const getCashierLockedDesc = ({
                         i18n_default_text='Please submit your <0>proof of identity</0> to authenticate your account and access your {{currency} Wallet.'
                         values={{ currency }}
                     />
+                </Text>
+            );
+        }
+    } else if (isEuRegion && isPendingVerification) {
+        if (module === 'transfer') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You cannot make a fund transfer as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
+                </Text>
+            );
+        } else if (module === 'withdrawal') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You cannot make a withdrawal as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
+                </Text>
+            );
+        } else {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You cannot make further deposits as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
                 </Text>
             );
         }

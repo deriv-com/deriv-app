@@ -61,14 +61,17 @@ export const getTradeURLParams = ({ active_symbols = [], contract_types_list = {
         }>((acc, [key, value]) => ({ ...acc, [key]: value }), {});
         const validInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
         const validChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
-        const chartTypeParam = Number(validInterval?.value) === 0 ? 'candles' : validChartType?.value;
+        const chartTypeParam = Number(validInterval?.value) === 0 ? 'line' : validChartType?.value;
         const isSymbolValid = active_symbols.some(item => item.symbol === symbol);
         const contractList = Object.keys(contract_types_list).reduce<string[]>((acc, key) => {
             const categories: TTradeTypesCategories['Ups & Downs']['categories'] =
                 contract_types_list[key]?.categories || [];
             return [...acc, ...categories.map(contract => (contract as TTextValueStrings).value)];
         }, []);
-        const isTradeTypeValid = contractList.includes(trade_type ?? '');
+
+        const isTradeTypeValid =
+            (contractList.length === 0 && trade_type !== '') ||
+            (contractList.length > 0 && contractList.includes(trade_type ?? ''));
 
         if (validInterval) result.granularity = Number(validInterval.value);
         if (validChartType) result.chartType = chartTypeParam;

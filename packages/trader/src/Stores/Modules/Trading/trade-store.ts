@@ -1,47 +1,46 @@
 import * as Symbol from './Actions/symbol';
 import {
-    BARRIER_COLORS,
-    BARRIER_LINE_STYLES,
+    WS,
     ChartBarrierStore,
     cloneObject,
-    CONTRACT_TYPES,
     convertDurationLimit,
     extractInfoFromShortcode,
     findFirstOpenMarket,
-    formatMoney,
     getBarrierPipSize,
-    getCardLabelsV2,
-    getContractPath,
-    getContractSubtype,
-    getCurrencyDisplayCode,
     getMinPayout,
     getPlatformSettings,
     getPropertyValue,
+    getContractSubtype,
     getTradeNotificationMessage,
-    getTradeURLParams,
-    hasBarrier,
-    isAccumulatorContract,
     isBarrierSupported,
+    isAccumulatorContract,
     isCryptocurrency,
-    isDtraderV2Enabled,
     isEmptyObject,
-    isHighLow,
     isMarketClosed,
     isMultiplierContract,
-    isTouchContract,
     isTurbosContract,
-    isUpDownContract,
-    isVanillaContract,
     isVanillaFxContract,
+    isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
-    routes,
     setLimitOrderBarriers,
-    setTradeURLParams,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
+    getCurrencyDisplayCode,
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES,
     TRADE_TYPES,
-    WS,
+    hasBarrier,
+    isHighLow,
+    CONTRACT_TYPES,
+    setTradeURLParams,
+    getTradeURLParams,
+    isTouchContract,
+    getCardLabelsV2,
+    formatMoney,
+    getContractPath,
+    routes,
+    isDtraderV2Enabled,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1288,32 +1287,27 @@ export default class TradeStore extends BaseStore {
         // when accumulator is selected, we need to change chart type to mountain and granularity to 0
         // and we need to restore previous chart type and granularity when accumulator is unselected
         const {
+            prev_chart_type,
+            prev_granularity,
             chart_type,
-            saved_chart_type,
-            saved_granularity,
-            setChartTypeAndGranularity,
+            granularity,
+            savePreviousChartMode,
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
-        const has_line_chart =
-            isAccumulatorContract(obj_new_values.contract_type) ||
-            isDigitTradeType(obj_new_values.contract_type) ||
-            isUpDownContract(obj_new_values.contract_type);
-        if (obj_new_values.contract_type) {
-            if (!has_line_chart && (saved_chart_type || !Number.isNaN(saved_granularity))) {
-                if (saved_chart_type) {
-                    updateChartType(saved_chart_type);
-                }
-                if (!Number.isNaN(saved_granularity)) {
-                    updateGranularity(saved_granularity);
-                }
-            } else if (has_line_chart) {
-                setChartTypeAndGranularity('line', 0);
-                setTradeURLParams({ chartType: 'line', granularity: 0 });
-            } else {
-                setChartTypeAndGranularity('candles', 60);
-                setTradeURLParams({ chartType: 'candles', granularity: 60 });
-            }
+        if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
+            savePreviousChartMode(chart_type, granularity);
+            updateGranularity(0);
+            updateChartType('line');
+        } else if (
+            (obj_new_values.contract_type || obj_new_values.symbol) &&
+            prev_chart_type &&
+            prev_granularity &&
+            (prev_chart_type !== chart_type || prev_granularity !== granularity)
+        ) {
+            updateGranularity(prev_granularity);
+            updateChartType(prev_chart_type);
+            savePreviousChartMode('', null);
         }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx
@@ -1844,15 +1838,23 @@ export default class TradeStore extends BaseStore {
     }
 
     setChartModeFromURL() {
-        const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
-        const { chart_type, granularity, saveChartType, saveGranularity } = this.root_store.contract_trade;
-        if (
-            (!isNaN(Number(granularityParam)) && granularityParam !== granularity) ||
-            (chartTypeParam && chartTypeParam !== chart_type)
-        ) {
-            chartTypeParam && saveChartType(chartTypeParam);
-            granularityParam && saveGranularity(Number(granularityParam));
+        const { chartType: chartTypeParam, granularity: granularityParam, contractType } = getTradeURLParams();
+        const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
+
+        if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
+            updateGranularity(Number(granularityParam));
         }
+        if (chartTypeParam && chartTypeParam !== chart_type) {
+            updateChartType(chartTypeParam);
+        }
+
+        this.contract_type = contractType ?? '';
+
+        setTradeURLParams({
+            chartType: chartTypeParam ?? chart_type,
+            granularity: granularityParam ?? Number(granularity),
+            contractType: contractType ?? '',
+        });
     }
 
     setChartStatus(status: boolean, isFromChart?: boolean) {
@@ -2005,6 +2007,14 @@ export default class TradeStore extends BaseStore {
             option.isClosed !== this.is_market_closed
         ) {
             this.prepareTradeStore(false);
+        }
+        if (state === STATE_TYPES.SET_CHART_MODE) {
+            if (!isNaN(Number(option?.granularity))) {
+                this.root_store.contract_trade.updateGranularity(Number(option?.granularity));
+            }
+            if (option?.chart_type_name) {
+                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
+            }
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {

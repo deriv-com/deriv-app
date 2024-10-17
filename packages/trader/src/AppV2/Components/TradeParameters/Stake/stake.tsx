@@ -184,17 +184,20 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
-    const onClose = (is_saved = false) => {
-        if (is_open) {
-            if (!is_saved) {
-                onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
+    const onClose = React.useCallback(
+        (is_saved = false) => {
+            if (is_open) {
+                if (!is_saved) {
+                    onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
+                }
+                if (v2_params_initial_values.stake !== amount) {
+                    setV2ParamsInitialValues({ value: amount, name: 'stake' });
+                }
+                setIsOpen(false);
             }
-            if (v2_params_initial_values.stake !== amount) {
-                setV2ParamsInitialValues({ value: amount, name: 'stake' });
-            }
-            setIsOpen(false);
-        }
-    };
+        },
+        [v2_params_initial_values, is_open]
+    );
 
     return (
         <>
@@ -208,7 +211,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>

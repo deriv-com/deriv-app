@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.text_getSubstring = {
     init() {
@@ -72,6 +72,10 @@ Blockly.Blocks.text_getSubstring = {
             display_name: localize('Get substring'),
             description: localize('Returns a specific portion of a given string of text.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'WHERE1');
+        replaceDropdownIconsForSafari(this, 'WHERE2');
     },
     mutationToDom() {
         const container = document.createElement('mutation');

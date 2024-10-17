@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, modifyContextMenu } from '../../../utils';
+import { runIrreversibleEvents, modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
 /* eslint-disable */
@@ -54,6 +54,9 @@ Blockly.Blocks.trade_definition_market = {
         ) {
             return;
         }
+        replaceDropdownIconsForSafari(this, 'MARKET_LIST');
+        replaceDropdownIconsForSafari(this, 'SUBMARKET_LIST');
+        replaceDropdownIconsForSafari(this, 'SYMBOL_LIST');
 
         this.enforceLimitations();
 

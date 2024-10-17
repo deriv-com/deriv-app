@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.text_indexOf = {
     init() {
@@ -50,6 +50,9 @@ Blockly.Blocks.text_indexOf = {
                 'Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'END');
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.math_constant = {
     init() {
@@ -39,6 +39,9 @@ Blockly.Blocks.math_constant = {
             display_name: localize('Mathematical constants'),
             description: localize('This block gives you the selected constant values.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CONSTANT');
     },
 };
 

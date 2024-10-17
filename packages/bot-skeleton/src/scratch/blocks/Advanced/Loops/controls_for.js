@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.controls_for = {
     init() {
@@ -64,6 +64,9 @@ Blockly.Blocks.controls_for = {
                 'This block uses the variable “i” to control the iterations. With each iteration, the value of “i” is determined by the items in a given list.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'VAR');
     },
     getRequiredValueInputs() {
         return {

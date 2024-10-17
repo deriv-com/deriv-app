@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.logic_boolean = {
     init() {
@@ -33,6 +33,9 @@ Blockly.Blocks.logic_boolean = {
             display_name: localize('True-False'),
             description: localize('This is a single block that returns a boolean value, either true or false.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'BOOL');
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

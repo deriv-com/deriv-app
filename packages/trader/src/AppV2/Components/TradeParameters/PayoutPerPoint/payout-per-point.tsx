@@ -65,6 +65,8 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
+    const onClose = React.useCallback(() => setIsOpen(false), []);
+
     React.useEffect(() => {
         const initial_payout_per_point = v2_params_initial_values?.payout_per_point;
         if (initial_payout_per_point && payout_per_point !== initial_payout_per_point) {
@@ -95,7 +97,13 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                 variant='fill'
                 value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

@@ -16,16 +16,30 @@ import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useOauth2 } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat, useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import initHotjar from '../Utils/Hotjar';
 import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
-    const { is_client_store_initialized, has_wallet, setIsPasskeySupported, setIsPhoneNumberVerificationEnabled } =
-        store.client;
-    const { current_language } = store.common;
+    const {
+        has_wallet,
+        is_logged_in,
+        loginid,
+        is_client_store_initialized,
+        landing_company_shortcode,
+        currency,
+        residence,
+        email,
+        setIsPasskeySupported,
+        account_settings,
+        setIsPhoneNumberVerificationEnabled,
+    } = store.client;
+    const { first_name, last_name } = account_settings;
+    const { current_language, changeSelectedLanguage } = store.common;
+    const { is_dark_mode_on, setDarkMode } = store.ui;
+
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
@@ -43,6 +57,20 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
     const is_wallets_unsupported_language = WALLETS_UNSUPPORTED_LANGUAGES.includes(current_language);
+
+    const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
+        is_client_store_initialized,
+        is_logged_in,
+        loginid,
+        landing_company_shortcode,
+        currency,
+        residence,
+        email,
+        first_name,
+        last_name,
+    };
+
+    useLiveChat(livechat_client_information);
 
     React.useEffect(() => {
         switchLanguage(current_language);
@@ -80,17 +108,24 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     // intentionally switch the user with wallets to light mode and EN language
     React.useLayoutEffect(() => {
         if (has_wallet) {
-            if (store.ui.is_dark_mode_on) {
-                store.ui.setDarkMode(false);
+            if (is_dark_mode_on) {
+                setDarkMode(false);
             }
             if (is_wallets_unsupported_language) {
-                store.common.changeSelectedLanguage('EN');
+                changeSelectedLanguage('EN');
             }
         }
-    }, [has_wallet, store.common, store.ui, is_wallets_unsupported_language]);
+    }, [
+        has_wallet,
+        current_language,
+        changeSelectedLanguage,
+        is_dark_mode_on,
+        setDarkMode,
+        is_wallets_unsupported_language,
+    ]);
 
     return (
-        <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
+        <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>

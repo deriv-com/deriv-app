@@ -1,8 +1,14 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useAccountLimits, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api-v2';
+import {
+    useAccountLimits,
+    useGetExchangeRate,
+    useTradingPlatformStatus,
+    useTransferBetweenAccounts,
+} from '@deriv/api-v2';
 import type { THooks } from '../../../../../types';
+import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../cfd/constants';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
-import type { TInitialTransferFormValues } from '../types';
+import type { TAccount, TInitialTransferFormValues } from '../types';
 
 type TReceipt = {
     feeAmount?: string;
@@ -19,6 +25,7 @@ export type TTransferContext = {
     activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
     activeWalletExchangeRates?: THooks.ExchangeRate;
     error: ReturnType<typeof useTransferBetweenAccounts>['error'];
+    hasPlatformStatus: (account: TAccount) => boolean;
     isLoading: boolean;
     receipt?: TReceipt;
     refetchAccountLimits: ReturnType<typeof useAccountLimits>['refetch'];
@@ -47,9 +54,29 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
         accounts,
         activeWallet,
         isLoading: isModifiedAccountsLoading,
-    } = useExtendedTransferAccountProperties(data?.accounts ?? transferAccounts);
+    } = useExtendedTransferAccountProperties(
+        data?.accounts?.map(account => {
+            if (account.account_type === 'mt5') {
+                return {
+                    ...account,
+                    status: 'unavailable',
+                };
+            }
+            return account;
+        }) ?? transferAccounts
+    );
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
+    const { getPlatformStatus } = useTradingPlatformStatus();
+
+    const hasPlatformStatus = (account: TInitialTransferFormValues['fromAccount']) => {
+        const platformStatus = getPlatformStatus(account?.account_type ?? '');
+        return (
+            account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+            account?.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
+            platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE
+        );
+    };
 
     const { data: accountLimits, refetch: refetchAccountLimits } = useAccountLimits();
 
@@ -124,6 +151,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 activeWallet,
                 activeWalletExchangeRates,
                 error,
+                hasPlatformStatus,
                 isLoading,
                 receipt,
                 refetchAccountLimits,

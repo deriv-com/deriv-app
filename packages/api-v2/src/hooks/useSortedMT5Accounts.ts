@@ -73,7 +73,7 @@ const useSortedMT5Accounts = (regulation?: string) => {
     }, [activeAccount?.is_virtual, all_available_mt5_accounts, isEU, mt5_accounts]);
 
     const sorted_data = useMemo(() => {
-        const sorting_order = ['standard', 'financial', 'swap_free', 'zero_spread'];
+        const sorting_order = ['standard', 'financial', 'stp', 'swap_free', 'zero_spread'];
 
         if (!modified_data) return;
 

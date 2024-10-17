@@ -43,6 +43,8 @@ export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
 export { default as useIsRtl } from './useIsRtl';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
+export { default as useLiveChat } from './useLiveChat';
+export { default as useIsLiveChatWidgetAvailable } from './useIsLiveChatWidgetAvailable';
 export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';
 export { default as useLocalStorageData } from './useLocalStorageData';
 export { default as useMFAccountStatus } from './useMFAccountStatus';
@@ -90,6 +92,7 @@ export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclar
 export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
+export { default as useTinValidations } from './useTinValidations';
 export { default as usePhoneNumberVerificationSetTimer } from './usePhoneNumberVerificationSetTimer';
 export { default as usePhoneNumberVerificationSessionTimer } from './usePhoneNumberVerificationSessionTimer';
 export { default as useIsPhoneNumberVerified } from './useIsPhoneNumberVerified';

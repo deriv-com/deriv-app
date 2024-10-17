@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Icon, NewsTicker, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { TOnRampProvider } from '../../../types';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+import { TOnRampProvider } from '../../../types';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TOnRampProviderCardProps = {
@@ -11,13 +12,14 @@ type TOnRampProviderCardProps = {
 
 const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => {
     const { ui } = useStore();
-    const { is_dark_mode_on, is_mobile } = ui;
+    const { is_dark_mode_on } = ui;
+    const { isMobile } = useDevice();
     const { onramp } = useCashierStore();
     const { setSelectedProvider } = onramp;
 
     const payment_icons = provider.getPaymentIcons();
     const gtm_identifier = provider.name.toLowerCase().replace(' ', '-');
-    const logo_size = is_mobile ? 56 : 128;
+    const logo_size = isMobile ? 56 : 128;
 
     return (
         <div className='on-ramp__provider'>
@@ -60,7 +62,7 @@ const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => 
                 onClick={() => setSelectedProvider(provider)}
                 text={localize('Select')}
                 primary
-                small={is_mobile}
+                small={isMobile}
             />
         </div>
     );

@@ -38,7 +38,27 @@ const QSInput: React.FC<TQSInput> = observer(
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
-        const max_value = 999999999999;
+        const max_value = Number.MAX_SAFE_INTEGER;
+        const input_ref = React.useRef<HTMLInputElement>(null);
+
+        React.useEffect(() => {
+            const handleWheel = (event: WheelEvent) => {
+                if (document.activeElement === input_ref.current) {
+                    event.preventDefault();
+                }
+            };
+
+            const el_input = input_ref.current;
+            if (el_input) {
+                el_input.addEventListener('wheel', handleWheel, { passive: false });
+            }
+
+            return () => {
+                if (el_input) {
+                    el_input.removeEventListener('wheel', handleWheel);
+                }
+            };
+        }, []);
 
         const handleButtonInputChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -140,6 +160,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         bottom_label={is_exclusive_field ? currency : ''}
                                         max_characters={2}
                                         maxLength={2}
+                                        ref={input_ref}
                                     />
                                 </Popover>
                             </div>

@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useTranslations } from '@deriv-com/translations';
-import { Text, Tooltip } from '@deriv-com/ui';
+import { Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { useModal } from '../../../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletActionModal } from '../../../../../../components/WalletActionModal';
 import './TransactionsPendingRowField.scss';
 
@@ -20,7 +19,7 @@ type TProps = {
 };
 
 const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, value, valueTextProps }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const { show } = useModal();
 
@@ -47,22 +46,18 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
 
     return (
         <div className={classNames('wallets-transactions-pending-row-field', className)} key={name}>
-            <Text color='primary' size='xs'>
+            <Text align='start' color='primary' size='xs'>
                 {name}
             </Text>
             {hint ? (
                 <Tooltip
                     as='div'
-                    hideTooltip={isMobile}
+                    hideTooltip={!isDesktop}
                     tooltipContent={hint.text}
                     tooltipPosition={hint.tooltipAlignment}
                 >
-                    <Text {...{ color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
-                        {isMobile ? (
-                            <button className='wallets-transactions-pending-row-field__button' onClick={onValueClick}>
-                                {value}
-                            </button>
-                        ) : (
+                    <Text {...{ align: 'start', color: 'red', size: 'xs', weight: 'bold', ...valueTextProps }}>
+                        {isDesktop ? (
                             <a
                                 className='wallets-transactions-pending-row-field__link'
                                 href={hint.link}
@@ -71,11 +66,15 @@ const TransactionsPendingRowField: React.FC<TProps> = ({ className, hint, name, 
                             >
                                 {value}
                             </a>
+                        ) : (
+                            <button className='wallets-transactions-pending-row-field__button' onClick={onValueClick}>
+                                {value}
+                            </button>
                         )}
                     </Text>
                 </Tooltip>
             ) : (
-                <Text color='red' size='xs' weight='bold' {...valueTextProps}>
+                <Text align='start' color='red' size='xs' weight='bold' {...valueTextProps}>
                     {value}
                 </Text>
             )}

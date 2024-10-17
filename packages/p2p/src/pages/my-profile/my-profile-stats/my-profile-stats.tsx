@@ -1,6 +1,7 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { Icon, MobileFullPageModal, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -9,6 +10,7 @@ import MyProfileStatsTable from './my-profile-stats-table';
 import MyProfilePrivacy from './my-profile-privacy';
 
 const MyProfileStats = () => {
+    const { isDesktop } = useDevice();
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
     const tabs = [
@@ -30,6 +32,25 @@ const MyProfileStats = () => {
         },
     ];
 
+    if (isDesktop) {
+        return (
+            <React.Fragment>
+                <MobileFullPageModal
+                    height_offset='80px'
+                    is_flex
+                    is_modal_open={should_show_stats_and_ratings}
+                    onClickClose={() => {
+                        // do nothing
+                    }}
+                    page_header_text={localize('Stats')}
+                    pageHeaderReturnFn={() => setShouldShowStatsAndRatings(false)}
+                >
+                    <MyProfileStatsTable />
+                </MobileFullPageModal>
+                <MyProfileStatsTable />
+            </React.Fragment>
+        );
+    }
     return (
         <React.Fragment>
             <MobileFullPageModal
@@ -44,29 +65,22 @@ const MyProfileStats = () => {
             >
                 <MyProfileStatsTable />
             </MobileFullPageModal>
-            <DesktopWrapper>
-                <MyProfileStatsTable />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <SeparatorContainerLine className='my-profile-stats__separator' />
-                <MyProfilePrivacy />
-                <SeparatorContainerLine className='my-profile-stats__separator' />
-                {tabs.map((tab, key) => {
-                    return (
-                        <React.Fragment key={key}>
-                            <div className='my-profile-stats__navigation' onClick={tab.onClick}>
-                                <Text color='prominent' size='xxs'>
-                                    <Localize i18n_default_text={tab.default_text} />
-                                </Text>
-                                <Icon icon='IcChevronRight' />
-                            </div>
-                            {key !== tabs.length - 1 && (
-                                <SeparatorContainerLine className='my-profile-stats__separator' />
-                            )}
-                        </React.Fragment>
-                    );
-                })}
-            </MobileWrapper>
+            <SeparatorContainerLine className='my-profile-stats__separator' />
+            <MyProfilePrivacy />
+            <SeparatorContainerLine className='my-profile-stats__separator' />
+            {tabs.map((tab, key) => {
+                return (
+                    <React.Fragment key={key}>
+                        <div className='my-profile-stats__navigation' onClick={tab.onClick}>
+                            <Text color='prominent' size='xxs'>
+                                <Localize i18n_default_text={tab.default_text} />
+                            </Text>
+                            <Icon icon='IcChevronRight' />
+                        </div>
+                        {key !== tabs.length - 1 && <SeparatorContainerLine className='my-profile-stats__separator' />}
+                    </React.Fragment>
+                );
+            })}
         </React.Fragment>
     );
 };

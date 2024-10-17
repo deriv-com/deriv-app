@@ -25,6 +25,7 @@ import type {
     usePOI,
     useSettings,
     useSortedMT5Accounts,
+    useTradingPlatformStatus,
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
@@ -45,6 +46,7 @@ export namespace THooks {
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
+    export type TradingPlatformStatus = NonNullable<ReturnType<typeof useTradingPlatformStatus>['data']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
@@ -108,4 +110,10 @@ export type TIconTypes = Record<string, IconTypes>;
 
 export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_currency_type'], IconTypes>;
 
+export type TProductForMarketDetails = NonNullable<
+    Exclude<THooks.AvailableMT5Accounts['product'], 'financial' | 'standard'>
+>;
+
 export type TTranslations = ReturnType<typeof useTranslations>;
+
+export type TLanguageType = 'AR' | 'EN';

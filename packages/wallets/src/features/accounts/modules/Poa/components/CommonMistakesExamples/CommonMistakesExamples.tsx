@@ -1,10 +1,10 @@
 import React from 'react';
-import { WalletText } from '../../../../../../components/Base';
+import { Text } from '@deriv-com/ui';
 import StatusLoss from '../../../../../../public/images/status-loss.svg';
 import './CommonMistakesExamples.scss';
 
 type TCommonMistakeExamplePartialsProps = {
-    description: React.ReactNode;
+    description: string;
     image: React.ReactElement;
 };
 
@@ -13,7 +13,9 @@ const CommonMistakesExamples = ({ description, image }: TCommonMistakeExamplePar
         {image}
         <div className='wallets-common-mistakes__content-description'>
             <StatusLoss />
-            <WalletText size='xs'>{description}</WalletText>
+            <Text align='start' size='xs'>
+                {description}
+            </Text>
         </div>
     </div>
 );

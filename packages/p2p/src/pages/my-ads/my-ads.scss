@@ -15,7 +15,7 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         .page-return {
             border-bottom: 2px solid var(--general-section-1);
             margin: 0;
@@ -27,6 +27,10 @@
         }
     }
 
+    @include tablet-screen {
+        max-width: 60rem;
+    }
+
     &__header {
         display: flex;
         align-items: center;
@@ -34,7 +38,7 @@
         justify-content: space-between;
         min-height: 50px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             border-bottom: 1px solid var(--general-section-1);
             justify-content: flex-end;
             margin: unset;
@@ -59,6 +63,11 @@
     &__create {
         margin: 1.6rem;
         width: 90vw;
+
+        @include tablet-screen {
+            margin: 1.6rem 0;
+            width: 100%;
+        }
 
         &-container {
             border-top: 2px solid var(--general-section-1);
@@ -96,7 +105,7 @@
         margin-top: 1.6rem;
         width: fit-content;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 1rem 2rem;
 
             .dc-hint-box {
@@ -118,7 +127,7 @@
 }
 
 .dc-modal__container_switch-ads {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         min-width: 328px !important;
     }
 }

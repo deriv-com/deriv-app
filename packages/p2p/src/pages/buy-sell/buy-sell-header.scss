@@ -2,23 +2,27 @@
     display: flex;
     flex-direction: column;
 
-    @include tablet-up {
+    @include desktop-screen {
         .p2p-toggle-container {
             margin: 2.4rem 0;
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
+        position: absolute;
         background-color: var(--general-main-1);
         border-bottom: 1px solid var(--general-section-1);
         display: flex;
         flex: none;
         justify-content: center;
-        position: fixed;
         transition: transform 0.3s linear, opacity 0.3s ease;
         transform-origin: top;
         width: 100%;
         z-index: 1;
+
+        & .toggle-container {
+            align-self: start;
+        }
     }
 
     &__container {
@@ -26,7 +30,7 @@
         flex-direction: row;
         justify-content: space-between;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex-direction: column;
         }
     }
@@ -35,7 +39,7 @@
         height: 3.6rem;
         width: 16.8rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             transition: transform 0.3s linear, opacity 0.3s ease;
             transform-origin: top;
         }
@@ -45,13 +49,13 @@
         display: flex;
         flex-direction: row;
 
-        @include desktop {
+        @include desktop-screen {
             .dc-checkbox__box {
                 margin-inline-start: unset;
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 0.9rem 0.8rem;
         }
 
@@ -66,12 +70,16 @@
         flex-direction: row;
         align-items: center;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: grid;
             grid-template-columns: auto 40px 40px;
             column-gap: 1rem;
             border-top: 1px solid var(--general-section-1);
             padding: 1.6rem;
+
+            @include tablet-screen {
+                padding: 0rem 1.6rem;
+            }
         }
 
         &--filter {
@@ -102,7 +110,7 @@
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 justify-self: center;
                 margin-inline-start: 0;
                 margin-top: 0;
@@ -110,8 +118,20 @@
         }
 
         &--selector {
-            @include mobile {
+            @include mobile-screen {
                 grid-template-columns: auto 1fr 40px 40px;
+            }
+            @include tablet-screen {
+                grid-template-columns: auto 0.45fr 40px 40px;
+
+                & .search-box {
+                    width: 100%;
+                }
+
+                & .currency-dropdown {
+                    display: flex;
+                    justify-content: flex-end;
+                }
             }
         }
     }

@@ -1,8 +1,9 @@
 import React from 'react';
 import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
-import { formatMoney, moduleLoader } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { Badge } from '@deriv-com/quill-ui';
 import NotificationsIconDTraderV2 from './notifications-icon-dtrader-v2';
+import AccountInfoDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/account-info-dtrader-v2';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
@@ -27,17 +28,6 @@ export type TAccountInfoDTraderV2 = Omit<
     is_disabled?: boolean;
     toggleDialog: (value?: boolean | undefined) => void;
 };
-const AccountInfoDTraderV2 = React.lazy(
-    () =>
-        moduleLoader(
-            () =>
-                import(
-                    /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/dtrader-v2/account-info-dtrader-v2'
-                )
-        ) as Promise<{
-            default: React.ComponentType<TAccountInfoDTraderV2>;
-        }>
-);
 
 const AccountActionsDTraderV2 = ({
     acc_switcher_disabled_message,

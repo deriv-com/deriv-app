@@ -1,11 +1,14 @@
 import React from 'react';
 import { useHover } from 'usehooks-ts';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import useDevice from '../../../../../../../hooks/useDevice';
 import DepositCryptoAddress from '../DepositCryptoAddress';
 
-jest.mock('../../../../../../../hooks/useDevice');
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 jest.mock('usehooks-ts', () => ({
     useCopyToClipboard: jest.fn(() => [true, jest.fn()]),

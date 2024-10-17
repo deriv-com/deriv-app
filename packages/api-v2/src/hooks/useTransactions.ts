@@ -10,11 +10,7 @@ type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['actio
 
 /** A custom hook to get the summary of account transactions */
 const useTransactions = () => {
-    const {
-        data: { preferred_language },
-        isFetching,
-        isSuccess,
-    } = useAuthorize();
+    const { isFetching, isSuccess } = useAuthorize();
 
     const { data: account } = useActiveAccount();
     const display_code = account?.currency_config?.display_code || 'USD';
@@ -32,6 +28,7 @@ const useTransactions = () => {
         },
         payload: {
             action_type: filter,
+            description: 1,
         },
     });
 
@@ -51,17 +48,11 @@ const useTransactions = () => {
         return data?.statement?.transactions?.map(transaction => ({
             ...transaction,
             /** The transaction amount in currency format. */
-            display_amount: displayMoney(transaction?.amount || 0, display_code, {
-                fractional_digits,
-                preferred_language,
-            }),
+            display_amount: displayMoney(transaction?.amount || 0, display_code, { fractional_digits }),
             /** The balance of account after the transaction in currency format. */
-            display_balance_after: displayMoney(transaction?.balance_after || 0, display_code, {
-                fractional_digits,
-                preferred_language,
-            }),
+            display_balance_after: displayMoney(transaction?.balance_after || 0, display_code, { fractional_digits }),
         }));
-    }, [data?.statement?.transactions, display_code, fractional_digits, preferred_language]);
+    }, [data?.statement?.transactions, display_code, fractional_digits]);
 
     return {
         /** List of account transactions */

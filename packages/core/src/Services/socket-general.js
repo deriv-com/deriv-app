@@ -148,7 +148,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const setBalanceActiveAccount = flow(function* (obj_balance) {
-        yield BinarySocket.wait('website_status');
+        yield BinarySocket?.wait('website_status');
         client_store.setBalanceActiveAccount(obj_balance);
     });
 
@@ -224,6 +224,7 @@ const BinarySocketGeneral = (() => {
                         'portfolio',
                         'proposal_open_contract',
                         'change_email',
+                        'phone_number_challenge',
                     ].includes(msg_type)
                 ) {
                     return;
@@ -271,7 +272,8 @@ const BinarySocketGeneral = (() => {
 
     const subscribeBalances = () => {
         WS.subscribeBalanceAll(ResponseHandlers.balanceOtherAccounts);
-        WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
+        if (client_store.currency)
+            WS.subscribeBalanceActiveAccount(ResponseHandlers.balanceActiveAccount, client_store.loginid);
     };
 
     const authorizeAccount = response => {

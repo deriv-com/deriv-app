@@ -8,7 +8,7 @@ import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletCard.scss';
 
 type TProps = {
-    balance: string;
+    balance: JSX.Element | string;
     currency: string;
     iconSize?: ComponentProps<typeof WalletCurrencyIcon>['size'];
     isCarouselContent?: boolean;
@@ -67,7 +67,7 @@ const WalletCard: React.FC<TProps> = ({
                             ) : (
                                 <Text
                                     color={isDemo ? 'white' : 'general'}
-                                    size={isCarouselContent ? 'xl' : 'sm'}
+                                    size={isCarouselContent ? 'lg' : 'sm'}
                                     weight='bold'
                                 >
                                     {balance}

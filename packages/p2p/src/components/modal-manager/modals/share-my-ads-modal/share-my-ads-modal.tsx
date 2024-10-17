@@ -1,15 +1,6 @@
 import React from 'react';
 import html2canvas from 'html2canvas';
-import {
-    Button,
-    Clipboard,
-    DesktopWrapper,
-    Icon,
-    MobileWrapper,
-    Modal,
-    Text,
-    useCopyToClipboard,
-} from '@deriv/components';
+import { Button, Clipboard, Icon, Modal, Text, useCopyToClipboard } from '@deriv/components';
 import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
@@ -20,8 +11,10 @@ import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
 import ShareMyAdsCard from './share-my-ads-card';
 import ShareMyAdsSocials from './share-my-ads-socials';
+import { useDevice } from '@deriv-com/ui';
 
 const ShareMyAdsModal = ({ advert }: TAdvert) => {
+    const { isDesktop, isMobile } = useDevice();
     const [is_copied, copyToClipboard, setIsCopied] = useCopyToClipboard();
     const { account_currency, advertiser_details, id, local_currency, rate_display, rate_type, type } = advert;
     const { id: advertiser_id } = advertiser_details;
@@ -84,47 +77,25 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_copied]);
 
-    return (
-        <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
-            <Modal.Body className='share-my-ads-modal__body'>
-                <React.Fragment>
-                    <DesktopWrapper>
+    if (isDesktop) {
+        return (
+            <Modal is_open={is_modal_open} title={localize('Share this ad')} toggleModal={hideModal} width='71rem'>
+                <Modal.Body className='share-my-ads-modal__body'>
+                    <React.Fragment>
                         <Text>
                             <Localize i18n_default_text='Promote your ad by sharing the QR code and link.' />
                         </Text>
-                    </DesktopWrapper>
-                    <div className='share-my-ads-modal__container'>
-                        <div className='share-my-ads-modal__container__card'>
-                            <ShareMyAdsCard advert={advert} advert_url={advert_url} div_ref={div_ref} />
-                            <Button
-                                className='share-my-ads-modal__container__card__download-button'
-                                secondary
-                                onClick={handleGenerateImage}
-                            >
-                                <Localize i18n_default_text='Download this QR code' />
-                            </Button>
-                            <MobileWrapper>
-                                <Button.Group className='share-my-ads-modal__container__card__button-group'>
-                                    <Button icon={<Icon icon='IcShare' />} secondary onClick={handleShareLink}>
-                                        <Localize i18n_default_text='Share link' />
-                                    </Button>
-                                    <Button
-                                        icon={
-                                            is_copied ? (
-                                                <Icon icon='IcCheckmarkCircle' custom_color='var(--status-success)' />
-                                            ) : (
-                                                <Icon icon='IcShareLink' data_testid='dt_copy_link_icon' />
-                                            )
-                                        }
-                                        secondary
-                                        onClick={onCopy}
-                                    >
-                                        <Localize i18n_default_text='Copy link' />
-                                    </Button>
-                                </Button.Group>
-                            </MobileWrapper>
-                        </div>
-                        <DesktopWrapper>
+                        <div className='share-my-ads-modal__container'>
+                            <div className='share-my-ads-modal__container__card'>
+                                <ShareMyAdsCard advert={advert} advert_url={advert_url} div_ref={div_ref} />
+                                <Button
+                                    className='share-my-ads-modal__container__card__download-button'
+                                    secondary
+                                    onClick={handleGenerateImage}
+                                >
+                                    <Localize i18n_default_text='Download this QR code' />
+                                </Button>
+                            </div>
                             <div className='share-my-ads-modal__share'>
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share via' />
@@ -150,9 +121,51 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                     </div>
                                 </div>
                             </div>
-                        </DesktopWrapper>
+                        </div>
+                    </React.Fragment>
+                </Modal.Body>
+            </Modal>
+        );
+    }
+
+    return (
+        <Modal
+            is_open={is_modal_open}
+            title={localize('Share this ad')}
+            toggleModal={hideModal}
+            width={isMobile ? '71rem' : '44rem'}
+        >
+            <Modal.Body className='share-my-ads-modal__body'>
+                <div className='share-my-ads-modal__container'>
+                    <div className='share-my-ads-modal__container__card'>
+                        <ShareMyAdsCard advert={advert} advert_url={advert_url} div_ref={div_ref} />
+                        <Button
+                            className='share-my-ads-modal__container__card__download-button'
+                            secondary
+                            onClick={handleGenerateImage}
+                        >
+                            <Localize i18n_default_text='Download this QR code' />
+                        </Button>
+                        <Button.Group className='share-my-ads-modal__container__card__button-group'>
+                            <Button icon={<Icon icon='IcShare' />} secondary onClick={handleShareLink}>
+                                <Localize i18n_default_text='Share link' />
+                            </Button>
+                            <Button
+                                icon={
+                                    is_copied ? (
+                                        <Icon icon='IcCheckmarkCircle' custom_color='var(--status-success)' />
+                                    ) : (
+                                        <Icon icon='IcShareLink' data_testid='dt_copy_link_icon' />
+                                    )
+                                }
+                                secondary
+                                onClick={onCopy}
+                            >
+                                <Localize i18n_default_text='Copy link' />
+                            </Button>
+                        </Button.Group>
                     </div>
-                </React.Fragment>
+                </div>
             </Modal.Body>
         </Modal>
     );

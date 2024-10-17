@@ -5,6 +5,10 @@
         padding: 1rem 1.6rem 0;
         width: 100vw;
 
+        @include tablet-screen {
+            width: 100%;
+        }
+
         &--form {
             padding: 1rem 0 0;
         }

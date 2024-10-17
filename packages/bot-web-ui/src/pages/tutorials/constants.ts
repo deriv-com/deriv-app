@@ -50,6 +50,14 @@ export const guide_content: TGuideContent[] = [
         src: getImageLocation('how_to_use_martingale.jpg'),
         search_id: `${VIDEOS}-2`,
     },
+    {
+        id: 4,
+        type: 'DBotVideo',
+        content: localize('Introducing Accumulator Options on Deriv Bot: Available for automated trading'),
+        url: 'https://www.youtube.com/embed/uMBBmdNaadU',
+        src: getImageLocation('introducing_accumulators_on_deriv_bot.png'),
+        search_id: `${VIDEOS}-3`,
+    },
 ];
 
 export const faq_content: TFaqContent[] = [
@@ -99,7 +107,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    'For more info, <a href="https://blog.deriv.com/posts/how-to-build-a-basic-trading-bot-with-dbot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on the basics of building a trading bot.'
+                    'For more info, <a href="https://deriv.com/blog/posts/build-a-basic-trading-bot-with-deriv-bot" rel="noopener noreferrer" target="_blank">check out this blog post</a> on the basics of building a trading bot.'
                 ),
             },
         ],
@@ -438,7 +446,7 @@ export const faq_content: TFaqContent[] = [
             {
                 type: 'text',
                 content: localize(
-                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" rel="noopener noreferrer" target="_blank">Watch this video</a> to learn how to build a trading bot on Deriv Bot. Also, <a href="https://blog.deriv.com/posts/how-to-build-a-basic-trading-bot-with-dbot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on building a trading bot.'
+                    '<a href="https://www.youtube.com/watch?v=QdI5zCkO4Gk&t=203s" rel="noopener noreferrer" target="_blank">Watch this video</a> to learn how to build a trading bot on Deriv Bot. Also, <a href="https://deriv.com/blog/posts/build-a-basic-trading-bot-with-deriv-bot/" rel="noopener noreferrer" target="_blank">check out this blog post</a> on building a trading bot.'
                 ),
             },
         ],

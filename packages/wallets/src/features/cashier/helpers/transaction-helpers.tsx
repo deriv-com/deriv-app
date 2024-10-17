@@ -14,7 +14,7 @@ type TWithdrawalStatus = Exclude<TStatus, TDepositStatus>;
 
 // Since BE sends the `status_code` for both `deposit` and `withdrawal` in the same field,
 // Here we modify the BE type to make `status_code` type more specific to the `transaction_type` field.
-type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
+export type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type'> &
     (
         | { statusCode: TDepositStatus; transactionType: 'deposit' }
         | { statusCode: TWithdrawalStatus; transactionType: 'withdrawal' }
@@ -61,7 +61,7 @@ export const getStatusDescription = (
             return <Localize i18n_default_text="You've cancelled your withdrawal request." />;
         case 'LOCKED':
             return (
-                <Localize i18n_default_text="We're reviewing your withdrawal request. You may still cancel this transaction if you wish.\nOnce we start processing, you won't be able to cancel." />
+                <Localize i18n_default_text="We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel." />
             );
         case 'PERFORMING_BLOCKCHAIN_TXN':
             return <Localize i18n_default_text="We're sending your request to the blockchain." />;

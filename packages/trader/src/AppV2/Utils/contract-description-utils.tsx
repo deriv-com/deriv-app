@@ -177,7 +177,7 @@ export const getContractDescription = (
                     key={text.props.i18n_default_text}
                     size='sm'
                     className={`description__${type}`}
-                    color='quill-typography__color--prominent'
+                    color='quill-typography__color--default'
                 >
                     {text}
                 </Text>
@@ -196,6 +196,7 @@ export const DESCRIPTION_VIDEO_IDS: TDtraderVideoUrl = {
     [CONTRACT_LIST.RISE_FALL]: DESCRIPTION_VIDEO_ID.rise_fall,
     [CONTRACT_LIST.TOUCH_NO_TOUCH]: DESCRIPTION_VIDEO_ID.touch,
     [CONTRACT_LIST.VANILLAS]: DESCRIPTION_VIDEO_ID.vanilla,
+    [CONTRACT_LIST.TURBOS]: DESCRIPTION_VIDEO_ID.turbos,
 };
 
 export const getDescriptionVideoIds = (contract_type = '', is_dark_theme = false) =>

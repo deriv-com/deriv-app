@@ -1,12 +1,11 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv/hooks';
+import { useCryptoEstimations } from '@deriv/api';
+import { useCurrentAccountDetails } from '@deriv/hooks';
+import { mockStore } from '@deriv/stores';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
-import userEvent from '@testing-library/user-event';
-import { useCryptoEstimations } from '@deriv/api';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -19,6 +18,11 @@ jest.mock('@deriv/hooks', () => ({
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useCryptoEstimations: jest.fn(),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 describe('<WithdrawalCryptoForm />', () => {
@@ -183,19 +187,5 @@ describe('<WithdrawalCryptoForm />', () => {
             fireEvent.click(withdraw_button);
         });
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
-    });
-
-    it('crypto_estimation_fee should be displayed when checkbox is checked', async () => {
-        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
-        const { rerender } = renderWithdrawalCryptoForm();
-        const checkbox = screen.getByLabelText('Priority withdrawal');
-
-        await act(async () => {
-            await userEvent.click(checkbox);
-        });
-        rerender(mockWithdrawalCryptoForm());
-
-        expect(screen.getByText('Amount received:')).toBeInTheDocument();
-        expect(screen.getByText('0.00230000 BTC')).toBeInTheDocument();
     });
 });

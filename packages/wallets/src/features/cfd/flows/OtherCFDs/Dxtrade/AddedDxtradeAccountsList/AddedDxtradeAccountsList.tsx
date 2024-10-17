@@ -1,37 +1,47 @@
 import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api-v2';
-import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedChevronLeftCaptionRegularIcon,
+    LabelPairedChevronRightCaptionRegularIcon,
+} from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
-import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { PlatformDetails } from '../../../../constants';
 import { MT5TradeModal } from '../../../../modals';
-import './AddedDxtradeAccountsList.scss';
 
 const AddedDxtradeAccountsList: React.FC = () => {
     const { data } = useDxtradeAccountsList();
     const { show } = useModal();
+    const isRtl = useIsRtl();
 
     return (
         <React.Fragment>
-            {data?.map(account => (
+            {data?.map((account, index) => (
                 <TradingAccountCard
-                    key={account?.account_id}
-                    leading={<div className='wallets-added-dxtrade__icon'>{PlatformDetails.dxtrade.icon}</div>}
+                    key={`added-dxtrade-${account?.login}-${index}`}
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}
-                    trailing={
-                        <div className='wallets-added-dxtrade__icon'>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                        </div>
-                    }
                 >
-                    <div className='wallets-added-dxtrade__details'>
-                        <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
-                        <WalletText size='sm' weight='bold'>
+                    <TradingAccountCard.Icon>{PlatformDetails.dxtrade.icon}</TradingAccountCard.Icon>
+                    <TradingAccountCard.Content>
+                        <Text align='start' size='sm'>
+                            {PlatformDetails.dxtrade.title}
+                        </Text>
+                        <Text align='start' size='sm' weight='bold'>
                             {account?.display_balance}
-                        </WalletText>
-                        <WalletText size='xs'>{account?.login}</WalletText>
-                    </div>
+                        </Text>
+                        <Text align='start' size='xs'>
+                            {account?.login}
+                        </Text>
+                    </TradingAccountCard.Content>
+                    <TradingAccountCard.Button>
+                        {isRtl ? (
+                            <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                        ) : (
+                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                        )}
+                    </TradingAccountCard.Button>
                 </TradingAccountCard>
             ))}
         </React.Fragment>

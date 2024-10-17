@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import './market-rate-change-error-modal.scss';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
-import './market-rate-change-error-modal.scss';
+import { useDevice } from '@deriv-com/ui';
 
 type TMarketRateChangeErrorModal = {
     submitForm: () => void;
@@ -19,9 +19,7 @@ type TMarketRateChangeErrorModal = {
 const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErrorModal) => {
     const { is_modal_open, hideModal } = useModalManagerContext();
     const { buy_sell_store } = useStores();
-    const {
-        ui: { is_desktop, is_mobile },
-    } = useStore();
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         buy_sell_store.form_props.setIsMarketRateErrorModalOpen(true);
@@ -65,7 +63,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                         onClick={() => {
                             hideModal();
                             buy_sell_store.form_props.setIsMarketRateErrorModalOpen(false);
-                            if (is_desktop) {
+                            if (isDesktop) {
                                 buy_sell_store.setTempContactInfo(null);
                                 buy_sell_store.setTempPaymentInfo(null);
                                 buy_sell_store.payment_method_ids = [];
@@ -78,7 +76,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                     <Button
                         className='market-rate-change-error-modal__continue'
                         onClick={() => {
-                            if (is_mobile) hideModal();
+                            if (!isDesktop) hideModal();
                             submitForm();
                         }}
                         text={localize('Continue with order')}

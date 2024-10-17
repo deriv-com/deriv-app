@@ -1,0 +1,200 @@
+@mixin accumulator-slide-to-next {
+    animation: slide-to-next 0.24s ease-in-out forwards;
+    @keyframes slide-to-next {
+        from {
+            transform: translateX(-30px);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+}
+
+@mixin accumulator-underline-animation($color: var(--core-color-solid-green-600)) {
+    animation: underline-animation 640ms ease-in-out forwards;
+    background-color: $color;
+
+    @keyframes underline-animation {
+        0% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+        37.5% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        62.5% {
+            transform: scaleX(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scaleX(0);
+            opacity: 0;
+        }
+    }
+}
+
+.accumulators-stats {
+    background: var(--semantic-color-slate-solid-surface-frame-low);
+    padding: var(--core-spacing-400);
+    margin-top: calc(var(--core-spacing-600) * -1);
+    border-bottom-left-radius: var(--core-borderRadius-400);
+    border-bottom-right-radius: var(--core-borderRadius-400);
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        &__heading {
+            margin: var(--core-spacing-300) var(--core-spacing-400);
+            background: transparent;
+            border: none;
+            border-bottom: var(--core-spacing-75) dashed var(--component-textIcon-normal-default);
+            padding: var(--core-spacing-50);
+        }
+        &__divider {
+            border-right: var(--core-spacing-75) solid var(--semantic-color-monochrome-surface-normal-low);
+            margin: var(--core-spacing-50) var(--core-spacing-400);
+        }
+        .slide-right {
+            @include accumulator-slide-to-next;
+        }
+
+        &__stats {
+            margin: var(--core-spacing-300) var(--core-spacing-50);
+            display: flex;
+            width: calc(100% - 48px - 9px - 40px);
+            gap: var(--core-spacing-400);
+            position: relative;
+            overflow-x: auto;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            scrollbar-width: none;
+            &__moving {
+                display: flex;
+                align-items: center;
+                gap: var(--core-spacing-400);
+            }
+
+            &__stat {
+                position: relative;
+                padding: var(--core-spacing-50) var(--core-spacing-400);
+                margin-top: var(--core-spacing-200);
+                p {
+                    position: relative;
+                    display: inline-block;
+                    overflow: hidden;
+                    margin: 0;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: var(--core-spacing-75);
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        background-color: var(--core-color-solid-green-600);
+                        opacity: 0;
+                    }
+                }
+                .animate-error:after {
+                    @include accumulator-underline-animation(var(--core-color-solid-red-600));
+                }
+                .animate-success:after {
+                    @include accumulator-underline-animation;
+                }
+            }
+        }
+        &__expand {
+            background: transparent;
+            border: none;
+            padding-top: var(--core-spacing-200);
+            width: var(--core-spacing-1600);
+            text-align: center;
+        }
+    }
+}
+
+.accumulator-stats-sheet-wrapper {
+    .stats-sheet {
+        max-height: 100dvh;
+        overflow-y: auto;
+        padding: var(--core-spacing-800);
+        text-align: center;
+        .slide-right {
+            @include accumulator-slide-to-next;
+        }
+
+        &__title {
+            margin-bottom: var(--core-spacing-1200);
+        }
+        &__caption {
+            margin-bottom: var(--core-spacing-1200);
+        }
+        &__moving {
+            display: flex;
+            align-items: center;
+            gap: var(--core-spacing-400);
+        }
+        &__stats {
+            display: flex;
+            padding: var(--core-spacing-600) var(--core-spacing-75);
+            border-bottom: var(--core-spacing-75) solid var(--semantic-color-monochrome-border-normal-mid);
+            justify-content: space-between;
+            &__moving {
+                display: flex;
+                align-items: center;
+            }
+            &__stat {
+                width: var(--core-spacing-3600);
+                text-align: center;
+                position: relative;
+                p {
+                    display: inline-block;
+                    width: auto;
+                    position: relative;
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: var(--core-spacing-75);
+                        transform: scaleX(0);
+                        transform-origin: left;
+                        opacity: 0;
+                        background-color: var(--core-color-solid-green-600);
+                    }
+                }
+                .animate-error:after {
+                    @include accumulator-underline-animation(var(--core-color-solid-red-600));
+                }
+                .animate-success:after {
+                    @include accumulator-underline-animation;
+                }
+            }
+            &__number {
+                width: var(--core-spacing-3600);
+                text-align: center;
+                p {
+                    display: inline-block;
+                    width: auto;
+                }
+            }
+        }
+    }
+
+    .stats-description {
+        text-align: start;
+
+        &__content {
+            margin: var(--core-spacing-1200);
+            &__title {
+                margin-bottom: var(--core-spacing-1200);
+            }
+            &__description {
+                margin-bottom: var(--core-spacing-400);
+            }
+        }
+    }
+}

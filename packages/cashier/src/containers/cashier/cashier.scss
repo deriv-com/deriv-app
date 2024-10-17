@@ -7,14 +7,6 @@
     }
     &__content {
         width: 100%;
-
-        &-header {
-            margin-bottom: 3.2rem;
-            @include mobile {
-                padding-top: 1.6rem;
-                margin-bottom: 0;
-            }
-        }
     }
     &__wrapper {
         text-align: center;
@@ -28,15 +20,8 @@
             width: 100%;
             height: 100%;
             line-height: 1.43;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: inherit;
-            }
-
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: auto;
-                height: auto;
-                margin: 0 1.6rem;
             }
 
             .inline-icon .color1-fill {
@@ -46,24 +31,22 @@
         &--align-left {
             text-align: left;
         }
-        &-padding {
-            padding: 1.6rem;
-        }
         &--align-center {
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        &--is-mobile {
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
+        &--responsive {
+            @include mobile-screen {
                 width: 100vw;
             }
 
-            @include mobile {
-                width: 100vw;
-                margin-top: 4rem;
+            @include tablet-screen {
+                width: 60rem;
+            }
+
+            @include mobile-or-tablet-screen {
                 .dc-collapsible {
                     position: relative;
                     background-color: var(--general-section-1);
@@ -73,9 +56,6 @@
                     z-index: 1;
                 }
                 .cashier__wrapper {
-                    width: calc(100% - 3.2rem);
-                    margin: 0 1.6rem;
-
                     &-error {
                         display: flex;
                         align-items: center;
@@ -92,7 +72,7 @@
         .withdraw__input {
             width: fit-content;
             min-width: 36rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
                 min-width: auto;
                 margin-bottom: 1.3rem !important;
@@ -103,7 +83,7 @@
         font-size: 1rem;
     }
     &__header {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             font-size: 1.4rem;
         }
     }
@@ -116,7 +96,7 @@
             margin: 3.9rem 0 2.4rem 2.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &-submit {
                 margin: 1.6rem 0;
                 flex-flow: column;
@@ -132,7 +112,7 @@
     &__input {
         display: inline-block !important;
         margin-bottom: 0 !important;
-        @include mobile {
+        @include mobile-screen {
             margin-bottom: 3.2rem !important;
         }
     }
@@ -151,7 +131,7 @@
             min-height: 4rem;
             min-width: 28.3rem;
             height: auto;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-height: auto;
                 min-width: calc(100% - 4rem);
                 display: flex;
@@ -174,8 +154,8 @@
         }
         &-items {
             svg {
-                width: 2.4rem;
-                height: 2.4rem;
+                width: 11px;
+                height: 11px;
             }
         }
         &-label {
@@ -219,7 +199,7 @@
         max-width: 70%;
         margin-left: auto;
         margin-right: auto;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-width: 100%;
             min-width: unset;
             margin: 0;
@@ -253,89 +233,31 @@
         &-button {
             margin: 3.2rem auto;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
 
-            &-button {
-                width: calc(100% - 3.2rem);
-            }
             &-icon {
                 margin-top: 3.2rem;
             }
         }
+        @include mobile-screen {
+            &-button {
+                width: calc(100% - 3.2rem);
+            }
+        }
     }
     &__page-wrapper {
-        @include mobile {
-            /* postcss-bem-linter: ignore */
-            & .dc-page-overlay__header {
-                position: fixed;
-                top: 4rem;
-                width: 100%;
-                height: 4rem;
-            }
-
-            .dc-page-overlay__header.dc-page-app__header {
-                top: 0rem;
-            }
-        }
-
         &-button {
-            min-width: 27.8rem;
+            min-width: 25.6rem;
             padding: 0.6rem 0.8rem;
-        }
-    }
-    &-locked {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        max-width: 67.2rem;
-        margin: 4rem auto 0;
-
-        /* stylelint-disable-next-line plugin/selector-bem-pattern */
-        .dc-checklist {
-            width: 100%;
-            max-width: 50rem;
-        }
-        /* stylelint-disable-next-line plugin/selector-bem-pattern */
-        .dc-checklist__item-text {
-            max-width: 32rem;
-        }
-        &__icon {
-            width: 12.8rem;
-            height: 12.8rem;
-            margin-bottom: 2.4rem;
-        }
-        &__title {
-            margin-bottom: 0.8rem;
-            @include mobile {
-                margin-left: 1.2rem;
-                margin-right: 1.2rem;
-            }
-        }
-        &__desc {
-            margin-bottom: 3.2rem;
-            @include mobile {
-                padding: 0 1rem;
-            }
-        }
-
-        &-padding {
-            padding: 0 2.4rem 2.4rem;
-            max-width: 61.8rem;
-
-            @include mobile {
-                padding: 1.6rem;
-            }
         }
     }
 
     .dc-vertical-tab__tab--floating {
-        min-width: 27.8rem;
+        min-width: 25.6rem;
     }
 
     .dc-vertical-tab__content-side-note {

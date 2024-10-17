@@ -86,11 +86,12 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         should_show_appropriateness_warning_modal,
         should_show_risk_warning_modal,
         setShouldShowOneTimeDepositModal,
+        toggleAccountSuccessModal,
         real_account_signup: state_value,
         is_trading_assessment_for_new_user_enabled,
     } = ui;
     const { show_eu_related_content } = traders_hub;
-    const deposit_target = modules.cashier.general_store.deposit_target;
+    const { deposit_target, setDepositTarget } = modules.cashier.general_store;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
     const [current_action, setCurrentAction] = React.useState(null);
@@ -327,7 +328,11 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const closeModalthenOpenDepositModal = () => {
         closeRealAccountSignup();
-        setShouldShowOneTimeDepositModal(true);
+        if (!client.is_mf_account) {
+            setShouldShowOneTimeDepositModal(true);
+        } else {
+            toggleAccountSuccessModal();
+        }
     };
 
     const showStatusDialog = curr => {
@@ -464,6 +469,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             localStorage.removeItem('real_account_signup_wizard');
         }
 
+        if (deposit_target === routes.cashier_onramp) setDepositTarget('');
+
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
 
@@ -537,6 +544,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             WS.authorized.getAccountStatus().then(status => {
                 const { get_account_status } = status;
                 setShouldShowAppropriatenessWarningModal(false);
+
                 if (
                     real_account_signup_target === 'maltainvest' &&
                     !get_account_status?.status?.includes('cashier_locked')

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import './side-note-faq.scss';
 
 type TSideNoteFAQProps = {
@@ -9,11 +10,11 @@ type TSideNoteFAQProps = {
 };
 
 const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
-    const { client, ui } = useStore();
-    const { is_desktop } = ui;
+    const { client } = useStore();
+    const { isMobile } = useDevice();
     const { is_eu } = client;
 
-    const onClickHandler = () => window.LC_API?.open_chat_window?.();
+    const onClickHandler = () => window.LiveChatWidget.call('maximize');
 
     const deposit_faq_list = useMemo(() => {
         return [
@@ -130,7 +131,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     return (
         <SideNote
             description={
-                <Text size={is_desktop ? 'xs' : 'xxs'} weight='bold'>
+                <Text size={!isMobile ? 'xs' : 'xxs'} weight='bold'>
                     <Localize i18n_default_text='FAQ' />
                 </Text>
             }

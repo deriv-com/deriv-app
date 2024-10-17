@@ -26,7 +26,7 @@ const modifyBlocklyWorkSpaceContextMenu = () => {
     });
 };
 
-export const loadBlockly = async isDarkMode => {
+export const loadBlockly = async () => {
     const BlocklyModule = await import('blockly');
     window.Blockly = BlocklyModule.default;
     window.Blockly.Colours = {};
@@ -41,7 +41,7 @@ export const loadBlockly = async isDarkMode => {
         componentStyles: {},
     });
     modifyBlocklyWorkSpaceContextMenu();
-    setColors(isDarkMode);
+    setColors();
     await import('./hooks');
     await import('./blocks');
 };

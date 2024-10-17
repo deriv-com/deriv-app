@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
+import { convertStrategyToIsDbot } from '../utils';
 
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
@@ -512,11 +513,7 @@ export default class BlockConversion {
 
         const converted_xml = Blockly.Xml.workspaceToDom(this.workspace);
 
-        if (strategy_node.hasAttribute('collection') && strategy_node.getAttribute('collection') === 'true') {
-            converted_xml.setAttribute('collection', 'true');
-        }
-
-        converted_xml.setAttribute('is_dbot', 'true');
+        convertStrategyToIsDbot(converted_xml);
 
         this.workspace = null;
 

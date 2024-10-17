@@ -1,9 +1,8 @@
 import React, { FC, PropsWithChildren } from 'react';
 import QRCode from 'qrcode.react';
-import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
-import useDevice from '../../../../hooks/useDevice';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
 import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
@@ -48,6 +47,7 @@ type TModalTradeWrapper = {
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
     const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
     const appOrder = ['ios', 'android', 'huawei'];
     const { link, title } = PlatformDetails[platform];
 
@@ -69,7 +69,13 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                     if (AppsLinkMapper) {
                                         const AppIcon = AppToIconMapper[app as keyof typeof AppToIconMapper];
                                         const appLink = AppsLinkMapper;
-                                        return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                        return (
+                                            <AppIcon
+                                                data-testid={`dt_modal_trade_wrapper_${app}_icon`}
+                                                key={app}
+                                                onClick={() => window.open(appLink)}
+                                            />
+                                        );
                                     }
                                     return null;
                                 })}
@@ -79,7 +85,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 <QRCode size={80} value={link} />
                                 <Text align='center' size='xs'>
                                     <Localize
-                                        i18n_default_text=' Scan the QR code to download {{title}}'
+                                        i18n_default_text='Scan the QR code to download {{title}}'
                                         values={{ title }}
                                     />
                                 </Text>
@@ -90,7 +96,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
             }}
             shouldFixedFooter={isDesktop}
             shouldHideFooter={!isDesktop}
-            title='Trade'
+            title={localize('Trade')}
         >
             {children}
         </ModalStepWrapper>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, FormProgress, Icon, MobileWrapper, Text, Wizard } from '@deriv/components';
+import { FormProgress, Icon, Text, Wizard } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from 'Components/i18next';
 import AdConditionsSection from 'Pages/my-ads/ad-conditions-section';
 import AdPaymentDetailsSection from 'Pages/my-ads/ad-payment-details-section';
@@ -26,51 +27,53 @@ const AdWizard = ({
     rate_type,
     steps,
 }: TAdWizardNav) => {
+    const { isDesktop } = useDevice();
     const [current_step, setCurrentStep] = React.useState(0);
     const [is_form_dirty, setIsFormDirty] = React.useState(false);
+
+    const getWizardContent = () => {
+        if (isDesktop) {
+            return <FormProgress steps={steps} current_step={current_step} />;
+        }
+
+        return (
+            <div>
+                <AdProgressBar current_step={current_step} steps={steps} />
+                <div>
+                    <Text size='xs' weight='bold'>
+                        <Localize
+                            i18n_default_text='{{title}}'
+                            values={{
+                                title: steps[current_step].header.title,
+                            }}
+                        />
+                    </Text>
+                    {steps[current_step + 1] ? (
+                        <Text as='div' color='less-prominent' size='xs'>
+                            <Localize
+                                i18n_default_text='Next: {{title}}'
+                                values={{
+                                    title: steps[current_step + 1].header.title,
+                                }}
+                            />
+                        </Text>
+                    ) : (
+                        <Text as='div' color='less-prominent' size='xs'>
+                            <Localize i18n_default_text='Last step' />
+                        </Text>
+                    )}
+                </div>
+                <Icon icon='IcCross' onClick={onClose} />
+            </div>
+        );
+    };
 
     return (
         <Wizard
             className='ad-wizard'
             initial_step={0}
             onStepChange={step => setCurrentStep(step.active_step - 1)}
-            nav={
-                <>
-                    <DesktopWrapper>
-                        <FormProgress steps={steps} current_step={current_step} />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <div>
-                            <AdProgressBar current_step={current_step} steps={steps} />
-                            <div>
-                                <Text size='xs' weight='bold'>
-                                    <Localize
-                                        i18n_default_text='{{title}}'
-                                        values={{
-                                            title: steps[current_step].header.title,
-                                        }}
-                                    />
-                                </Text>
-                                {steps[current_step + 1] ? (
-                                    <Text as='div' color='less-prominent' size='xs'>
-                                        <Localize
-                                            i18n_default_text='Next: {{title}}'
-                                            values={{
-                                                title: steps[current_step + 1].header.title,
-                                            }}
-                                        />
-                                    </Text>
-                                ) : (
-                                    <Text as='div' color='less-prominent' size='xs'>
-                                        <Localize i18n_default_text='Last step' />
-                                    </Text>
-                                )}
-                            </div>
-                            <Icon icon='IcCross' onClick={onClose} />
-                        </div>
-                    </MobileWrapper>
-                </>
-            }
+            nav={<>{getWizardContent()}</>}
         >
             <AdTypeSection
                 action={action}

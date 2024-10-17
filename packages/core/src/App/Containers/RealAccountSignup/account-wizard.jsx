@@ -95,6 +95,7 @@ const AccountWizard = observer(props => {
         real_account_signup_form_step,
         setRealAccountSignupFormStep,
     } = client;
+    const { closeRealAccountSignup, setShouldShowSameDOBPhoneModal } = ui;
 
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
@@ -298,10 +299,8 @@ const AccountWizard = observer(props => {
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm;
-        delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
-        delete clone?.crs_confirmation;
 
         if (is_residence_self_declaration_required && clone?.resident_self_declaration)
             clone.resident_self_declaration = 1;
@@ -314,6 +313,9 @@ const AccountWizard = observer(props => {
             delete clone.tax_identification_number;
         }
 
+        if (clone?.tnc_acceptance) {
+            clone.tnc_acceptance = 1;
+        }
         clone = processInputData(clone);
         modifiedProps.setRealAccountFormData(clone);
         if (payload) {
@@ -328,7 +330,7 @@ const AccountWizard = observer(props => {
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
         // This is to sync clearing of value on change of Employment status personal details and occupation in financial assessment
         if (is_eu_user && index === 1) {
-            state_items[4].form_value = { ...state_items[4].form_value, occupation: value.occupation };
+            state_items[5].form_value = { ...state_items[5].form_value, occupation: value.occupation };
             setStateItems(state_items);
         }
         saveFormData(index, value);
@@ -405,8 +407,18 @@ const AccountWizard = observer(props => {
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),
                 });
+
+                const status = await WS.wait('get_account_status');
+                const { get_account_status } = status;
+
                 modifiedProps.setIsRiskWarningVisible(false);
-                if (modifiedProps.real_account_signup_target === 'maltainvest') {
+
+                // check for duplicate DOB (day of birthday) and phone number
+                const is_duplicate_dob_phone = get_account_status?.status?.includes('duplicate_dob_phone');
+                if (is_duplicate_dob_phone) {
+                    closeRealAccountSignup();
+                    setShouldShowSameDOBPhoneModal(true);
+                } else if (modifiedProps.real_account_signup_target === 'maltainvest') {
                     modifiedProps.onOpenDepositModal();
                 } else if (modifiedProps.real_account_signup_target === 'samoa') {
                     modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
@@ -416,6 +428,7 @@ const AccountWizard = observer(props => {
                     }
                     modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
+
                 const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**
                  * If IDV details are present, then submit IDV details

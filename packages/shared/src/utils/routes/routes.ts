@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
+import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     reset_password: '/',
@@ -14,11 +14,8 @@ export const routes = {
     dxtrade: '/derivx',
     bot: '/bot',
     trade: '/dtrader',
-    markets: '/dtrader/markets',
     trader_positions: '/dtrader/positions',
-    trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
 
     // account
     account: '/account',
@@ -32,6 +29,7 @@ export const routes = {
     proof_of_income: '/account/proof-of-income',
     passwords: '/account/passwords',
     passkeys: '/account/passkeys',
+    phone_verification: '/account/personal-details/phone-verification',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
     account_closed: '/account-closed',
@@ -84,7 +82,7 @@ export const routes = {
     old_traders_hub: '/appstore/traders-hub',
     traders_hub: '/',
     onboarding: '/onboarding',
-    compare_cfds: '/cfd-compare-acccounts',
+    compare_cfds: '/cfd-compare-accounts',
 
     // Wallets
     wallets: '/wallet',
@@ -95,9 +93,6 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
-
-    // Cashier V2
-    cashier_v2: '/cashier-v2',
 };
 
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
@@ -108,6 +103,9 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.bot,
     routes.account,
     routes.endpoint,
+    routes.wallets,
+    routes.wallets_compare_accounts,
+    routes.cashier,
     /** because contract route has dynamic id */
     '/contract',
 ];

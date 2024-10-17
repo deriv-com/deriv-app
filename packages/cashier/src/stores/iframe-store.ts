@@ -38,14 +38,18 @@ export default class IframeStore {
 
     async checkIframeLoaded(): Promise<void> {
         const { modules, ui } = this.root_store;
+        const { is_mobile } = ui;
 
         this.removeOnIframeLoaded();
+
+        const trusted_origins = ['https://cashier.deriv.com', 'https://doughflow-test.4x.my'];
+
         this.onIframeLoaded = (e: MessageEvent) => {
-            if (/cashier|doughflow/.test(e.origin)) {
+            if (trusted_origins.includes(e.origin)) {
                 modules.cashier.general_store.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                if (ui.is_mobile) {
+                if (is_mobile) {
                     this.setContainerHeight(window.innerHeight - 100);
                 } else {
                     this.setContainerHeight(window.innerHeight - 190);

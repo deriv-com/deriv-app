@@ -1,7 +1,7 @@
-import { localize } from '@deriv-com/translations';
-import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../helpers/urls';
+import { useTranslations } from '@deriv-com/translations';
+import { getStaticUrl, getUrlSmartTrader } from '../helpers/urls';
 
-export const getOptionsAndMultipliersContent = () => [
+export const getOptionsAndMultipliersContent = (localize: ReturnType<typeof useTranslations>['localize']) => [
     {
         description: localize('The options and multipliers trading platform.'),
         key: 'trader',
@@ -20,13 +20,6 @@ export const getOptionsAndMultipliersContent = () => [
         key: 'smarttrader',
         redirect: getUrlSmartTrader(),
         title: 'SmartTrader',
-    },
-    {
-        description: localize('The legacy bot trading platform.'),
-        isExternal: true,
-        key: 'binarybot',
-        redirect: getUrlBinaryBot(),
-        title: 'Binary Bot',
     },
     {
         description: localize('The mobile app for trading multipliers and accumulators.'),

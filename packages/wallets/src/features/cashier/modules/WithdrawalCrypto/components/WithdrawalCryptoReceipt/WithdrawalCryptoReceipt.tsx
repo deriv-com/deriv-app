@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { LegacyArrowDown2pxIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
-import { WalletCard } from '../../../../../../components';
+import { WalletCard, WalletMoney } from '../../../../../../components';
 import { TWithdrawalReceipt } from '../../types';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';
@@ -15,12 +15,16 @@ type TProps = {
 
 const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
     const history = useHistory();
-    const { address, amount, amountReceived, currency, transactionFee } = withdrawalReceipt;
+    const { address, amount = 0, amountReceived, currency, transactionFee } = withdrawalReceipt;
 
     return (
         <div className='wallets-withdrawal-crypto-receipt'>
             <div className='wallets-withdrawal-crypto-receipt__accounts-info'>
-                <WalletCard balance={`-${amount} ${currency}`} currency={currency ?? ''} iconSize='md' />
+                <WalletCard
+                    balance={<WalletMoney amount={-amount} currency={currency} hasSign />}
+                    currency={currency ?? ''}
+                    iconSize='md'
+                />
                 <LegacyArrowDown2pxIcon iconSize='xs' />
                 <WithdrawalCryptoDestinationAddress address={address} />
             </div>
@@ -29,24 +33,21 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                     <Text align='center' as='p' size='sm'>
                         <Localize i18n_default_text='Amount received' />
                     </Text>
-                    <Text align='center' size='xl' weight='bold'>
-                        {transactionFee ? amountReceived : amount} {currency}
+                    <Text align='center' data-testid='dt_amount_received' size='xl' weight='bold'>
+                        <WalletMoney amount={transactionFee ? amountReceived : amount} currency={currency} />
                     </Text>
                     {transactionFee && (
                         <Text align='center' as='p' size='sm'>
                             <Localize
-                                i18n_default_text='(Transaction fee: {{transactionFee}} {{currency}})'
-                                values={{ currency, transactionFee }}
+                                components={[<WalletMoney amount={transactionFee} currency={currency} key={0} />]}
+                                i18n_default_text='(Transaction fee: <0/>)'
                             />
                         </Text>
                     )}
                 </div>
 
                 <Text align='center' as='p'>
-                    <Localize
-                        i18n_default_text="Your withdrawal is currently in review. It will be processed within 24 hours. We'll send you
-                    an email once your transaction has been processed."
-                    />
+                    <Localize i18n_default_text="Your withdrawal is currently in review. It will be processed within 24 hours. We'll send you an email once your transaction has been processed." />
                 </Text>
             </div>
             <div className='wallets-withdrawal-crypto-receipt__actions'>

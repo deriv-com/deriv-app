@@ -12,7 +12,6 @@ import {
     getPropertyValue,
     isCryptocurrency,
     isEmptyObject,
-    routes,
     validNumber,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -130,7 +129,7 @@ export default class AccountTransferStore {
         const { client, common, modules } = this.root_store;
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
-        const { is_from_derivgo } = common;
+        const { is_from_derivgo, is_from_outside_cashier } = common;
 
         setLoading(true);
         setOnRemount(this.onMountAccountTransfer);
@@ -167,7 +166,7 @@ export default class AccountTransferStore {
                 return;
             }
 
-            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
+            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo, is_from_outside_cashier);
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
@@ -264,7 +263,8 @@ export default class AccountTransferStore {
     // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
     async sortAccountsTransfer(
         response_accounts?: Partial<TransferBetweenAccountsResponse> | null,
-        is_from_derivgo?: boolean
+        is_from_derivgo?: boolean,
+        is_from_outside_cashier?: boolean
     ) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
@@ -355,8 +355,6 @@ export default class AccountTransferStore {
         }
         const arr_accounts: TTransferAccount | TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
-
-        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {

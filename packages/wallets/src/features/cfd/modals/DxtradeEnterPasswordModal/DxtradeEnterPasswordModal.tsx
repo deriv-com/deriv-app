@@ -7,10 +7,10 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
-import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CreatePasswordModal } from '../CreatePasswordModal';
@@ -21,7 +21,7 @@ import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
     const history = useHistory();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
     const {
@@ -42,9 +42,9 @@ const DxtradeEnterPasswordModal = () => {
     } = useSendPasswordResetEmail();
     const { hide, show } = useModal();
     const { localize } = useTranslations();
+
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
-
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
     const onSubmit = useCallback(async () => {
@@ -75,12 +75,12 @@ const DxtradeEnterPasswordModal = () => {
         if (!isResetPasswordSuccessful) return;
         if (!isDxtradePasswordNotSet) {
             show(
-                <ModalWrapper isFullscreen={isMobile}>
+                <ModalWrapper isFullscreen={!isDesktop}>
                     <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }
-    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
+    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isDesktop, isResetPasswordSuccessful, show]);
 
     if (status === 'error' && error?.error?.code === 'PasswordReset') {
         return (
@@ -141,6 +141,7 @@ const DxtradeEnterPasswordModal = () => {
             <SuccessModal
                 description={successDescription}
                 displayBalance={dxtradeBalance ?? ''}
+                isDemo={activeWallet?.is_virtual}
                 marketType='all'
                 onPrimaryClick={() => {
                     hide();

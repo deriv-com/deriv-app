@@ -2,12 +2,14 @@ import React from 'react';
 import {
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
-    AccountsDmt5StandardIcon,
     AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
+    AccountsDmt5ZrsIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { useTranslations } from '@deriv-com/translations';
+import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 
 export const ACCOUNT_ICONS = {
     [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
@@ -15,12 +17,15 @@ export const ACCOUNT_ICONS = {
     [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
     [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
+    [PRODUCT.ZEROSPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
     default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;
 
 export const MARKET_TYPE_SHORTCODE = {
     ALL_DXTRADE: 'all_',
     ALL_SVG: 'all_svg',
+    ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
+    ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
     FINANCIAL_BVI: 'financial_bvi',
     FINANCIAL_LABUAN: 'financial_labuan',
     FINANCIAL_MALTAINVEST: 'financial_maltainvest',
@@ -40,12 +45,12 @@ export const JURISDICTION = {
     VANUATU: 'vanuatu',
 } as const;
 
-export const platformLabel = {
+export const platformLabel = (localize: ReturnType<typeof useTranslations>['localize']) => ({
     CTrader: 'Deriv cTrader',
     DerivX: 'Deriv X',
-    MT5: 'MT5 Platform',
-    OtherCFDs: 'Other CFDs Platform',
-} as const;
+    MT5: localize('MT5 Platform'),
+    OtherCFDs: localize('Other CFDs Platform'),
+});
 
 export const headerColor = {
     CTrader: 'orange',

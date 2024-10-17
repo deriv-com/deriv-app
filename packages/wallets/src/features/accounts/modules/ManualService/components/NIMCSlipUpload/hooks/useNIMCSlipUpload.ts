@@ -42,13 +42,13 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
     };
 
     const uploadFront = useCallback(
-        (values: FormikValues) => {
+        (values: FormikValues | TNIMCSlipUploadValues) => {
             return uploadNIMC({
-                document_id: values.identityCardNumber,
+                document_id: values.nimcNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
-                document_type: 'national_identity_card',
-                expiration_date: values.identityCardExpiryDate,
-                file: values.identityCardFront,
+                document_type: 'nimc_slip',
+                file: values.nimcCardFront,
+                lifetime_valid: 1,
                 page_type: 'front',
             });
         },
@@ -56,13 +56,13 @@ const useNIMCSlipUpload = (documentIssuingCountryCode: THooks.AccountSettings['c
     );
 
     const uploadBack = useCallback(
-        (values: FormikValues) => {
+        (values: FormikValues | TNIMCSlipUploadValues) => {
             return uploadNIMC({
-                document_id: values.identityCardNumber,
+                document_id: values.nimcNumber,
                 document_issuing_country: documentIssuingCountryCode ?? undefined,
-                document_type: 'national_identity_card',
-                expiration_date: values.identityCardExpiryDate,
-                file: values.identityCardBack,
+                document_type: 'nimc_slip',
+                file: values.nimcCardBack,
+                lifetime_valid: 1,
                 page_type: 'back',
             });
         },

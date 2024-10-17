@@ -1,0 +1,14 @@
+.same-dob-phone-modal {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        padding: 2.4rem;
+
+        @include mobile-or-tablet-screen {
+            padding: 1.6rem;
+        }
+    }
+}

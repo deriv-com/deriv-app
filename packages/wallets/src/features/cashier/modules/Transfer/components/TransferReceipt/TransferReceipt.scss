@@ -14,20 +14,24 @@
             padding: 1.6rem;
             width: 20rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 16rem;
                 padding: 0.8rem;
             }
         }
 
-        @include mobile {
+        @include mobile-screen {
             flex-direction: column;
         }
     }
 
     &__arrow-icon {
-        @include mobile {
+        @include mobile-screen {
             rotate: 90deg;
+
+            @include rtl {
+                rotate: -90deg;
+            }
         }
     }
 
@@ -46,5 +50,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    &__amount-conversion {
+        display: inline-flex;
     }
 }

@@ -1,52 +1,70 @@
-import React from 'react';
 import { Popover, Icon, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
+import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
+import { observer, useStore } from '@deriv/stores';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
-    const { client, ui } = useStore();
-    const { has_cookie_account, loginid } = client;
-    const { is_mobile } = ui;
-    const liveChat = useLiveChat(has_cookie_account, loginid);
+    const { client } = useStore();
+    const { loginid, accounts } = client;
+    const { isDesktop } = useDevice();
 
-    if (!liveChat.isReady) return null;
+    const active_account = accounts?.[loginid ?? ''];
+    const token = active_account ? active_account.token : null;
 
-    const liveChatClickHandler = () => liveChat.widget?.call('maximize');
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+    const freshChat = useFreshChat(token);
 
-    if (is_mobile)
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
+
+    const chat = enable_freshworks_live_chat ? freshChat : null;
+
+    if ((enable_freshworks_live_chat && !chat?.isReady) || !is_livechat_available) return null;
+
+    // Quick fix for making sure livechat won't popup if feature flag is late to enable.
+    // We will add a refactor after this
+    setInterval(() => {
+        if (enable_freshworks_live_chat) {
+            window.LiveChatWidget?.call('destroy');
+        }
+    }, 10);
+
+    const liveChatClickHandler = () => {
+        enable_freshworks_live_chat ? freshChat.widget.open() : window.LiveChatWidget?.call('maximize');
+    };
+
+    if (isDesktop)
         return (
-            <div
-                className='livechat gtm-deriv-livechat'
-                onKeyDown={liveChatClickHandler}
-                onClick={liveChatClickHandler}
-            >
-                <div className='livechat__icon-wrapper'>
-                    <Icon icon='IcLiveChat' className='livechat__icon' />
-                </div>
-                <Text size='xs'>
-                    <Localize i18n_default_text='Live chat' />
-                </Text>
+            <div onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler}>
+                {showPopover ? (
+                    <Popover
+                        className='footer__link'
+                        classNameBubble='help-centre__tooltip'
+                        alignment='top'
+                        message={<Localize i18n_default_text='Live chat' />}
+                        zIndex='9999'
+                    >
+                        <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
+                    </Popover>
+                ) : (
+                    <div className='footer__link'>
+                        <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
+                    </div>
+                )}
             </div>
         );
 
     return (
-        <div onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler}>
-            {showPopover ? (
-                <Popover
-                    className='footer__link'
-                    classNameBubble='help-centre__tooltip'
-                    alignment='top'
-                    message={<Localize i18n_default_text='Live chat' />}
-                    zIndex='9999'
-                >
-                    <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
-                </Popover>
-            ) : (
-                <div className='footer__link'>
-                    <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
-                </div>
-            )}
+        <div className='livechat gtm-deriv-livechat' onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler}>
+            <div className='livechat__icon-wrapper'>
+                <Icon icon='IcLiveChat' className='livechat__icon' />
+            </div>
+            <Text size='xs'>
+                <Localize i18n_default_text='Live chat' />
+            </Text>
         </div>
     );
 });

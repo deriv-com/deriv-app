@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';

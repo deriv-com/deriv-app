@@ -2,14 +2,16 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { Observer } from 'mobx-react-lite';
-import { Button, DesktopWrapper, Input, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { Button, Input, Loading, MobileFullPageModal, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
 import SectionError from 'Components/section-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 
 const MyProfileForm = () => {
+    const { isDesktop } = useDevice();
     const { general_store, my_profile_store } = useStores();
 
     const content = (
@@ -94,25 +96,22 @@ const MyProfileForm = () => {
         return <Loading is_fullscreen={false} />;
     }
 
+    if (isDesktop) {
+        return <div className='my-profile-form'>{content}</div>;
+    }
+
     return (
-        <>
-            <DesktopWrapper>
-                <div className='my-profile-form'>{content}</div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    className='my-profile-form'
-                    is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}
-                    onClickClose={() => {
-                        // do nothing
-                    }}
-                    pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                    page_header_text={localize('Ad details')}
-                >
-                    {content}
-                </MobileFullPageModal>
-            </MobileWrapper>
-        </>
+        <MobileFullPageModal
+            className='my-profile-form'
+            is_modal_open={my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE}
+            onClickClose={() => {
+                // do nothing
+            }}
+            pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+            page_header_text={localize('Ad details')}
+        >
+            {content}
+        </MobileFullPageModal>
     );
 };
 

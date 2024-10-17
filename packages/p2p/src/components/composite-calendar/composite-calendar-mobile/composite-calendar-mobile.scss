@@ -1,4 +1,14 @@
 .composite-calendar-mobile {
+    @include tablet-screen {
+        width: 60rem;
+        margin: auto;
+        &__header {
+            width: 60rem;
+            transform: translate(-50%) !important;
+            left: 50%;
+        }
+    }
+
     &__actions {
         display: flex;
         padding: 1.6rem;
@@ -10,6 +20,11 @@
         }
         &-today {
             width: 100%;
+        }
+
+        @include tablet-screen {
+            margin: auto;
+            width: 60rem;
         }
     }
     &__radio-group {

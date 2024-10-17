@@ -1,8 +1,0 @@
-.search-container {
-    display: flex;
-    gap: 1.6rem;
-
-    @include mobile-cashier-v2 {
-        flex-direction: column;
-    }
-}

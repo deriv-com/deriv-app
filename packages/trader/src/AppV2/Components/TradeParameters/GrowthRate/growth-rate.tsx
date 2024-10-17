@@ -9,6 +9,7 @@ import { CONTRACT_TYPES, getGrowthRatePercentage, isEmptyObject } from '@deriv/s
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import GrowthRatePicker from './growth-rate-picker';
 
 type TGrowthRateProps = {
@@ -25,11 +26,13 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         maximum_ticks,
         onChange,
         proposal_info,
+        setV2ParamsInitialValues,
         tick_size_barrier_percentage,
+        v2_params_initial_values,
     } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
-    const is_small_screen = window.innerHeight <= 640;
+    const is_small_screen = isSmallScreen();
     const info = proposal_info?.[CONTRACT_TYPES.ACCUMULATOR] || {};
     const is_proposal_data_available =
         is_trade_enabled && !isEmptyObject(proposal_info) && !!info.id && is_purchase_enabled;
@@ -51,6 +54,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                     maximum_ticks={maximum_ticks}
                     growth_rate={growth_rate}
                     setGrowthRate={handleGrowthRateChange}
+                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                     should_show_details={is_proposal_data_available}
                     tick_size_barrier_percentage={tick_size_barrier_percentage}
                 />
@@ -74,6 +78,12 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         },
     ];
 
+    React.useEffect(() => {
+        const initial_growth_rate = v2_params_initial_values?.growth_rate;
+        if (initial_growth_rate && growth_rate !== initial_growth_rate) handleGrowthRateChange(initial_growth_rate);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     if (!growth_rate)
         return (
             <div className={classname}>
@@ -94,7 +104,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
                 variant='fill'
             />
             <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('growth-rate__carousel', is_small_screen && 'growth-rate__carousel--small')}
                         header={CarouselHeader}

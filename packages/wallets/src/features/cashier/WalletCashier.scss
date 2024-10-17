@@ -3,28 +3,39 @@
     flex-direction: column;
     height: calc(100vh - (4.8rem + 3.6rem));
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: calc(var(--wallets-vh, 1vh) * 100 - 4rem);
     }
 }
 
 .wallets-cashier-content {
+    width: 100%;
+    max-width: 128rem;
     display: flex;
     position: relative;
     justify-content: center;
     gap: 2.4rem;
     flex: 1;
     padding: 4.8rem 1.6rem 0;
+    margin: 0 auto;
     background-color: #ffffff;
     overflow: scroll;
     //prevent content bouncing on scroll on iPhone devices
     overscroll-behavior: none;
 
-    @include mobile {
+    @include tablet-screen {
+        width: 60rem;
+        margin-inline: auto;
+        overflow: visible;
+    }
+
+    @include mobile-or-tablet-screen {
         padding: 2.4rem 1.6rem;
     }
 
     &::-webkit-scrollbar {
         display: none;
     }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

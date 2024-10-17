@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Checkbox, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ErrorDialog from 'Components/error-dialog';
 import { TError } from '../../types';
 import './transfer-confirm.scss';
@@ -43,7 +43,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
         {Array.isArray(value) ? (
             <div className='transfer-confirm__row-value'>
                 {value.map(v => (
-                    <Text as='div' key={v} size='xs' weight='bold' align='right'>
+                    <Text as='div' key={v} size='xs' weight='bold' align='end'>
                         {v}
                     </Text>
                 ))}
@@ -52,7 +52,7 @@ const Row = ({ item_key, label, value }: TRowProps) => (
             <Text
                 size='xs'
                 weight='bold'
-                align='right'
+                align='end'
                 className={classNames({
                     description: item_key === 'description',
                 })}
@@ -77,6 +77,8 @@ const TransferConfirm = ({
     onClickBack,
     onClickConfirm,
 }: TTransferConfirmProps) => {
+    const { isMobile } = useDevice();
+
     const [is_transfer_consent_checked, setIsTransferConsentChecked] = React.useState(false);
 
     const warning_messages = [
@@ -109,7 +111,7 @@ const TransferConfirm = ({
                 weight='bold'
                 align='center'
                 className='transfer-confirm__warning-icon__description'
-                size={isMobile() ? 'xs' : 's'}
+                size={!isMobile ? 's' : 'xs'}
             >
                 {is_payment_agent_withdraw
                     ? localize('Funds transfer information')

@@ -302,8 +302,13 @@ export default class WithdrawStore {
 
         const remainder = client.account_limits?.remainder;
         this.setMaxWithdrawAmount(Number(remainder));
+
+        const fractional_digit = Math.pow(10, -getDecimalPlaces(client.currency));
         const min_withdrawal = getMinWithdrawal(client.currency);
-        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
+        const is_limit_reached = !!(
+            typeof remainder !== 'undefined' &&
+            remainder < (client.currency === 'XRP' ? fractional_digit : min_withdrawal)
+        );
         this.set10kLimitation(is_limit_reached);
     }
 
@@ -340,7 +345,10 @@ export default class WithdrawStore {
         const { crypto_fiat_converter } = modules.cashier;
         const { converter_from_amount, setConverterFromError } = crypto_fiat_converter;
 
-        const min_withdraw_amount = Number(this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal);
+        const min_withdraw_amount =
+            currency === 'XRP'
+                ? Math.pow(10, -getDecimalPlaces(client.currency))
+                : Number(this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal);
         const max_withdraw_amount =
             Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);
 

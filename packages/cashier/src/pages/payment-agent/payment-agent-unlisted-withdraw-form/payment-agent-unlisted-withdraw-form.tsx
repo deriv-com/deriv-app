@@ -5,9 +5,7 @@ import { Button, Icon, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import ErrorDialog from 'Components/error-dialog';
-import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TPaymentAgent } from '../../../types';
 import './payment-agent-unlisted-withdraw-form.scss';
@@ -86,9 +84,6 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
                     <Localize i18n_default_text='Back to list' />
                 </Text>
             </div>
-            <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
-                <PaymentAgentDisclaimer />
-            </SideNote>
             <Formik
                 initialValues={{
                     account_number: '',

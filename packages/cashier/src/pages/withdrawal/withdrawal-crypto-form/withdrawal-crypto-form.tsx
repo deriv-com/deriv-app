@@ -1,12 +1,10 @@
 import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
-
 import { Button, InlineMessage, Input, Loading, Text } from '@deriv/components';
 import { useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -34,13 +32,7 @@ const Header = ({ currency }: THeaderProps) => {
 
     return (
         <>
-            <Text
-                as='h2'
-                color='prominent'
-                weight='bold'
-                align='center'
-                className='cashier__header cashier__content-header'
-            >
+            <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                 <Localize
                     i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
                     values={{
@@ -194,7 +186,9 @@ const WithdrawalCryptoForm = observer(() => {
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
-                            {Boolean(is_priority_crypto_withdrawal_enabled) && <WithdrawalCryptoPriority />}
+                            {Boolean(isGBLoaded && is_priority_crypto_withdrawal_enabled) && (
+                                <WithdrawalCryptoPriority />
+                            )}
                             <div className='withdrawal-crypto-form__submit'>
                                 <Button
                                     className='cashier__form-submit-button'

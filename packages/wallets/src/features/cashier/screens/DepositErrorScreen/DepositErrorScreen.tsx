@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 
@@ -20,6 +20,7 @@ type TErrorCodeHandlers = Record<string, TErrorContent>;
 
 const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
     const { data } = useActiveWalletAccount();
+    const { localize } = useTranslations();
     const currency = data?.currency;
 
     const defaultContent: TErrorContent = {
@@ -33,16 +34,14 @@ const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
         [CryptoDepositErrorCodes.CryptoConnectionError]: {
             ...defaultContent,
             buttonText: undefined,
-            title: <Localize i18n_default_text='Maintenance in progess' />,
+            title: <Localize i18n_default_text='Maintenance in progress' />,
         },
         [CryptoDepositErrorCodes.SuspendedCurrency]: {
             ...defaultContent,
             buttonText: undefined,
-            message: (
-                <Localize
-                    i18n_default_text='Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
-                    values={{ currency }}
-                />
+            message: localize(
+                'Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.',
+                { currency }
             ),
             title: (
                 <Localize
@@ -54,11 +53,9 @@ const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
         [CryptoDepositErrorCodes.SuspendedDeposit]: {
             ...defaultContent,
             buttonText: undefined,
-            message: (
-                <Localize
-                    i18n_default_text='Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.'
-                    values={{ currency }}
-                />
+            message: localize(
+                'Due to system maintenance, deposits with your {{currency}} Wallet are unavailable at the moment. Please try again later.',
+                { currency }
             ),
             title: (
                 <Localize

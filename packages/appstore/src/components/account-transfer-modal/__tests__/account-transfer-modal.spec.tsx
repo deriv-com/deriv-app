@@ -2,6 +2,7 @@ import React from 'react';
 import AccountTransferModal from '../account-transfer-modal';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { MemoryRouter } from 'react-router-dom';
 
 jest.mock('@deriv/cashier/src/pages/account-transfer', () => jest.fn(() => <div>AccountTransfer</div>));
 
@@ -24,6 +25,7 @@ describe('AccountTransferModal', () => {
                     account_transfer: {
                         is_transfer_confirm: false,
                         should_switch_account: false,
+                        error: '',
                     },
                     general_store: { setActiveTab: jest.fn() },
                 },
@@ -50,6 +52,7 @@ describe('AccountTransferModal', () => {
                     account_transfer: {
                         is_transfer_confirm: false,
                         should_switch_account: false,
+                        error: '',
                     },
                     general_store: { setActiveTab: jest.fn() },
                 },
@@ -77,6 +80,7 @@ describe('AccountTransferModal', () => {
                     account_transfer: {
                         is_transfer_confirm: false,
                         should_switch_account: true,
+                        error: '',
                     },
                     general_store: { setActiveTab: jest.fn() },
                 },
@@ -98,5 +102,39 @@ describe('AccountTransferModal', () => {
         expect(screen.getByText('Transfer funds to your accounts')).toHaveClass(
             'dc-modal-header__title--account-transfer-modal'
         );
+    });
+
+    it('should open error dialog when financial assessment error is present', async () => {
+        const mock = mockStore({
+            modules: {
+                cashier: {
+                    account_transfer: {
+                        is_transfer_confirm: false,
+                        should_switch_account: true,
+                        error: {
+                            code: 'FinancialAssessmentRequired',
+                            message: 'Please complete your financial assessment.',
+                        },
+                    },
+                    general_store: { setActiveTab: jest.fn() },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>
+                <MemoryRouter>{children}</MemoryRouter>
+            </StoreProvider>
+        );
+
+        render(
+            <AccountTransferModal is_modal_open={true} toggleModal={mock.traders_hub.toggleAccountTransferModal} />,
+            {
+                wrapper,
+            }
+        );
+
+        expect(screen.getByText('Cashier Error')).toBeInTheDocument();
+        expect(screen.getByText(/financial assessment/i)).toBeInTheDocument();
     });
 });

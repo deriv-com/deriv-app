@@ -1,6 +1,5 @@
-import React from 'react';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-com/translations';
 
 const getPasskeysDescriptions = () =>
     [

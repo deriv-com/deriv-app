@@ -50,7 +50,6 @@ describe('MyAdsStore', () => {
                     has_close_icon: false,
                     error_message: 'this is the error message',
                     error_modal_title: "Something's not right",
-                    width: '40rem',
                 },
             })
         );

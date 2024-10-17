@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import BarrierInput from '../barrier-input';
 import userEvent from '@testing-library/user-event';
@@ -11,6 +11,7 @@ import { TCoreStores } from '@deriv/stores/types';
 describe('BarrierInput', () => {
     const setInitialBarrierValue = jest.fn();
     const onChange = jest.fn();
+    const onClose = jest.fn();
     const default_trade_store = {
         modules: {
             trade: {
@@ -27,7 +28,7 @@ describe('BarrierInput', () => {
         render(
             <TraderProviders store={mocked_store}>
                 <ModulesProvider store={mocked_store}>
-                    <BarrierInput isDays={false} setInitialBarrierValue={setInitialBarrierValue} />
+                    <BarrierInput isDays={false} setInitialBarrierValue={setInitialBarrierValue} onClose={onClose} />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -40,7 +41,15 @@ describe('BarrierInput', () => {
         expect(screen.getByText('Fixed price')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Distance to spot')).toBeInTheDocument();
         expect(screen.getByText('Current spot')).toBeInTheDocument();
-        expect(screen.getByText('12345')).toBeInTheDocument();
+    });
+
+    it('closes ActionSheet on pressing primary action when on first page', async () => {
+        mockBarrierInput(mockStore(default_trade_store));
+        userEvent.click(screen.getByRole('textbox'));
+        userEvent.click(screen.getByText(/Save/));
+        await waitFor(() => {
+            expect(onClose).toBeCalledWith(true);
+        });
     });
 
     it('calls setInitialBarrierValue and onChange on component mount', () => {

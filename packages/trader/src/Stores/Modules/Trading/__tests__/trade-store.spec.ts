@@ -1,6 +1,4 @@
 import moment from 'moment';
-import { waitFor } from '@testing-library/react';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import { mockStore } from '@deriv/stores';
 import TradeStore from '../trade-store';
 import { configure } from 'mobx';
@@ -258,60 +256,6 @@ beforeAll(async () => {
 });
 
 describe('TradeStore', () => {
-    describe('sendTradeParamsAnalytics', () => {
-        const action = 'change_parameter_value';
-        const passThrough = {
-            action,
-            parameter_field_type: 'dropdown',
-            parameter_type: 'duration_type',
-        } as Partial<TEvents['ce_contracts_set_up_form']>;
-        const payload = { ...passThrough, durationUnit: 'm' };
-
-        it('should send form_name, trade type & provided payload with ce_contracts_set_up_form event', async () => {
-            const spyTrackEvent = jest.spyOn(Analytics, 'trackEvent');
-            const spyDebouncedFunction = jest.spyOn(mockedTradeStore, 'debouncedSendTradeParamsAnalytics');
-
-            mockedTradeStore.sendTradeParamsAnalytics(payload);
-            await waitFor(() => {
-                expect(spyTrackEvent).toHaveBeenCalledWith('ce_contracts_set_up_form', {
-                    ...passThrough,
-                    form_name: 'default',
-                    trade_type_name: 'Rise/Fall',
-                    duration_type: 'minutes',
-                });
-                expect(spyDebouncedFunction).not.toHaveBeenCalled();
-            });
-        });
-        it('should send analytics using debouncedSendTradeParamsAnalytics function when isDebounced is true', async () => {
-            const spyTrackEvent = jest.spyOn(Analytics, 'trackEvent');
-            const spyDebouncedFunction = jest.spyOn(mockedTradeStore, 'debouncedSendTradeParamsAnalytics');
-
-            mockedTradeStore.sendTradeParamsAnalytics(payload, true);
-            await waitFor(() => {
-                expect(spyTrackEvent).toHaveBeenCalledWith('ce_contracts_set_up_form', {
-                    ...passThrough,
-                    form_name: 'default',
-                    trade_type_name: 'Rise/Fall',
-                    duration_type: 'minutes',
-                });
-                expect(spyDebouncedFunction).toHaveBeenCalled();
-            });
-        });
-        it('should not send "change_parameter_value" analytics when isDebounced is true, & payload has no duration_type or parameter_value', async () => {
-            jest.clearAllMocks();
-            const spyTrackEvent = jest.spyOn(Analytics, 'trackEvent');
-            const payloadWithEmptyValue = {
-                action,
-                input_type: 'manual',
-                parameter_field_type: 'number',
-                parameter_type: 'stake_value',
-                parameter_value: '',
-            } as Partial<TEvents['ce_contracts_set_up_form']>;
-
-            mockedTradeStore.sendTradeParamsAnalytics(payloadWithEmptyValue, true);
-            await waitFor(() => expect(spyTrackEvent).not.toHaveBeenCalled());
-        });
-    });
     describe('setDigitStats', () => {
         const digit_stats = [120, 86, 105, 94, 85, 86, 124, 107, 90, 103];
         it('should set digit_stats', () => {
@@ -368,6 +312,36 @@ describe('TradeStore', () => {
             mockedTradeStore.setTradeTypeTab();
 
             expect(mockedTradeStore.trade_type_tab).toEqual('');
+        });
+    });
+    describe('setV2ParamsInitialValues', () => {
+        beforeEach(() => {
+            mockedTradeStore.clearV2ParamsInitialValues();
+        });
+        it('should set growth rate into a v2_params_initial_values', () => {
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
+
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'growth_rate', value: 0.03 });
+
+            expect(mockedTradeStore.v2_params_initial_values.growth_rate).toEqual(0.03);
+        });
+        it('should set strike into a v2_params_initial_values', () => {
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
+
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'strike', value: '+1.30' });
+
+            expect(mockedTradeStore.v2_params_initial_values.strike).toEqual('+1.30');
+        });
+        it('should clear all values when clearV2ParamsInitialValues is called', () => {
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'strike', value: '+1.00' });
+            mockedTradeStore.setV2ParamsInitialValues({ name: 'growth_rate', value: 0.05 });
+
+            expect(mockedTradeStore.v2_params_initial_values.strike).toEqual('+1.00');
+            expect(mockedTradeStore.v2_params_initial_values.growth_rate).toEqual(0.05);
+
+            mockedTradeStore.clearV2ParamsInitialValues();
+
+            expect(mockedTradeStore.v2_params_initial_values).toEqual({});
         });
     });
 });

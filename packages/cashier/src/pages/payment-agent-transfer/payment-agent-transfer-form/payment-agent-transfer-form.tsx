@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
+import { Button, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ErrorDialog from '../../../components/error-dialog';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-form.scss';
@@ -58,6 +59,7 @@ const validateTransfer = (
 const PaymentAgentTransferForm = observer(() => {
     const { client } = useStore();
     const { balance, currency } = client;
+    const { isDesktop } = useDevice();
     const { payment_agent_transfer: payment_agent_transfer_store } = useCashierStore();
     const {
         confirm: { amount, description, client_id: transfer_to },
@@ -101,17 +103,11 @@ const PaymentAgentTransferForm = observer(() => {
             className='cashier__wrapper payment-agent-transfer-form__container'
             data-testid='dt_payment_agent_transfer_form_container'
         >
-            <DesktopWrapper>
-                <Text
-                    as='h2'
-                    color='prominent'
-                    weight='bold'
-                    align='center'
-                    className='cashier__header cashier__content-header'
-                >
+            {isDesktop && (
+                <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                     <Localize i18n_default_text='Transfer to client' />
                 </Text>
-            </DesktopWrapper>
+            )}
             <Formik
                 initialValues={initial_transfer_form_values}
                 isInitialValid={!Object.keys(validateTransferPassthrough(initial_transfer_form_values)).length}
@@ -119,7 +115,7 @@ const PaymentAgentTransferForm = observer(() => {
                 onSubmit={onTransferPassthrough}
             >
                 {({ errors, isSubmitting, isValid, touched, handleChange }) => (
-                    <Form noValidate>
+                    <Form noValidate className='payment-agent-transfer-form'>
                         <Field name='loginid'>
                             {({ field }: FieldProps) => (
                                 <Input

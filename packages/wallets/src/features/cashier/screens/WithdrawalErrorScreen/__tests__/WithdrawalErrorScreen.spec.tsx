@@ -181,4 +181,35 @@ describe('WithdrawalErrorScreen', () => {
         userEvent.click(ReloadButton);
         expect(resetError).toHaveBeenCalledTimes(1);
     });
+
+    it('should render without crashing when no data received', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: null });
+        const error = {
+            code: 'MyError',
+            message: 'Error message',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(screen.getByText('Error message')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+    });
+
+    it('should render without crashing when optional parameters are not received', () => {
+        const error = {
+            code: 'InvalidToken',
+            message: 'Error message',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={undefined} setResendEmail={undefined} />);
+
+        const resendEmailBtn = screen.getByRole('button', { name: 'Resend email' });
+
+        userEvent.click(resendEmailBtn);
+        expect(screen.getByText('Email verification failed')).toBeInTheDocument();
+        expect(
+            screen.getByText('The verification link you used is invalid or expired. Please request for a new one.')
+        ).toBeInTheDocument();
+    });
 });

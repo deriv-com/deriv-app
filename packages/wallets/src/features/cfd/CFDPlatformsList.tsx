@@ -2,24 +2,47 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletLink } from '../../components/Base';
-import useDevice from '../../hooks/useDevice';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletLink } from '../../components/Base';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
 import './CFDPlatformsList.scss';
 
 const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const history = useHistory();
 
     return (
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
-                {isMobile ? (
+                {isDesktop ? (
+                    <React.Fragment>
+                        <div className='wallets-cfd-list__header-compare-accounts'>
+                            <Text size='xl' weight='bold'>
+                                <Localize i18n_default_text='CFDs' />
+                            </Text>
+                            <Button
+                                color='primary-transparent'
+                                onClick={() => {
+                                    history.push('/compare-accounts');
+                                }}
+                                size='sm'
+                                variant='ghost'
+                            >
+                                <Localize i18n_default_text='Compare accounts' />
+                            </Button>
+                        </div>
+                        <Text align='start' size='md'>
+                            <Localize
+                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
+                            />
+                        </Text>
+                    </React.Fragment>
+                ) : (
                     <div className='wallets-cfd-list__header-description'>
-                        <Text size='sm'>
+                        <Text align='start' size='sm'>
                             <Localize
                                 components={[
                                     <a
@@ -33,7 +56,8 @@ const CFDPlatformsList: React.FC = () => {
                                 i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
                             />
                         </Text>
-                        <WalletButton
+                        <Button
+                            color='primary-transparent'
                             onClick={() => {
                                 history.push('/compare-accounts');
                             }}
@@ -42,30 +66,7 @@ const CFDPlatformsList: React.FC = () => {
                             variant='ghost'
                         >
                             <Localize i18n_default_text='Compare accounts' />
-                        </WalletButton>
-                    </div>
-                ) : (
-                    <div>
-                        <div className='wallets-cfd-list__header-compare-accounts'>
-                            <Text size='xl' weight='bold'>
-                                <Localize i18n_default_text='CFDs' />
-                            </Text>
-                            <WalletButton
-                                onClick={() => {
-                                    history.push('/compare-accounts');
-                                }}
-                                size='sm'
-                                variant='ghost'
-                            >
-                                <Localize i18n_default_text='Compare accounts' />
-                            </WalletButton>
-                        </div>
-                        <Text size='md'>
-                            <Localize
-                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
-                            />
-                        </Text>
+                        </Button>
                     </div>
                 )}
             </section>

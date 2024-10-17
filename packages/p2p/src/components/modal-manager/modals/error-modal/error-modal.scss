@@ -2,14 +2,14 @@
     &__body {
         padding: 0.8rem 2.4rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 1.6rem;
         }
 
         &--has-title {
             padding-top: 2rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 1.6rem;
             }
         }

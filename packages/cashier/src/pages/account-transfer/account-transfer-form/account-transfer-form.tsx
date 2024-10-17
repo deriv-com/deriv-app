@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
-
-import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, InlineMessage, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
 import {
+    CFD_PLATFORMS,
     getCurrencyDisplayCode,
     getCurrencyName,
     getDecimalPlaces,
@@ -12,23 +12,20 @@ import {
     MT5_ACCOUNT_STATUS,
     routes,
     startPerformanceEventTimer,
+    TRADING_PLATFORM_STATUS,
     validNumber,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
+import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
-import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
-import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
+import { TAccount, TAccountsList, TError, TReactChangeEvent, TradingPlatformStatusResponse } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
-
-import AccountTransferNote from './account-transfer-form-side-note';
-
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -36,18 +33,26 @@ type TAccountTransferFormProps = {
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose: () => void;
-    setSideNotes?: (notes: React.ReactNode[]) => void;
+    TradingPlatformStatusData?: TradingPlatformStatusResponse['trading_platform_status'];
 };
 
 const AccountOption = ({
     account,
     idx,
     is_pending_verification,
-    is_selected_from,
     is_verification_failed,
     is_verification_needed,
+    is_account_unavailable,
+    is_server_maintenance,
 }: TAccountsList) => {
-    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
+    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt;
+
+    const has_show_account_status =
+        is_pending_verification ||
+        is_verification_needed ||
+        is_verification_failed ||
+        is_server_maintenance ||
+        is_account_unavailable;
 
     const getAccountStatusText = () => {
         if (is_pending_verification) {
@@ -67,6 +72,16 @@ const AccountOption = ({
                 <Text color='red' size='xs'>
                     <Localize i18n_default_text='Verification failed' />
                 </Text>
+            );
+        } else if (is_server_maintenance) {
+            return <StatusBadge account_status='under_maintenance' icon='IcAlertWarning' text='Server Maintenance' />;
+        } else if (is_account_unavailable) {
+            return (
+                <StatusBadge
+                    account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
+                    icon='IcAlertWarning'
+                    text='Unavailable'
+                />
             );
         }
     };
@@ -89,15 +104,15 @@ const AccountOption = ({
             </div>
 
             <span className='account-transfer-form__balance'>
-                {(is_pending_verification || is_verification_needed || is_verification_failed) && is_selected_from ? (
-                    getAccountStatusText()
-                ) : (
+                {!has_show_account_status ? (
                     <Money
                         amount={account.balance}
                         currency={account.currency}
                         has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                         show_currency
                     />
+                ) : (
+                    getAccountStatusText()
                 )}
             </span>
         </React.Fragment>
@@ -116,17 +131,23 @@ let remaining_transfers: number | undefined;
 let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
-    ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
+    ({
+        error,
+        onClickDeposit,
+        onClickNotes,
+
+        onClose,
+        TradingPlatformStatusData,
+    }: TAccountTransferFormProps) => {
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
         const {
-            ui,
             client,
-            common: { is_from_derivgo },
+            common: { is_from_outside_cashier },
             traders_hub: { closeAccountTransferModal },
         } = useStore();
+        const { isDesktop, isMobile } = useDevice();
+        const { account_limits, authentication_status, getLimits: onMount } = client;
 
-        const { is_mobile } = ui;
-        const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
         const { handleSubscription } = useExchangeRate();
@@ -134,7 +155,6 @@ const AccountTransferForm = observer(
         const {
             account_transfer_amount,
             accounts_list,
-            minimum_fee,
             onChangeTransferFrom,
             onChangeTransferTo,
             requestTransferBetweenAccounts,
@@ -143,13 +163,12 @@ const AccountTransferForm = observer(
             setAccountTransferAmount,
             error: { setErrorMessage },
             setTransferPercentageSelectorResult,
-            transfer_fee,
             transfer_limit,
             validateTransferFromAmount,
             validateTransferToAmount,
             is_transfer_confirm,
         } = account_transfer;
-        const { is_crypto, percentage, should_percentage_reset } = general_store;
+        const { percentage, should_percentage_reset } = general_store;
         const {
             converter_from_amount,
             converter_from_error,
@@ -168,8 +187,6 @@ const AccountTransferForm = observer(
         const [to_accounts, setToAccounts] = React.useState({});
         const [transfer_to_hint, setTransferToHint] = React.useState<JSX.Element>();
 
-        const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
-
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const ctrader_remaining_transfers = daily_transfers?.ctrader;
@@ -185,8 +202,13 @@ const AccountTransferForm = observer(
         const is_mf_status_verification_failed = mf_account_status === 'failed';
         const is_mf_status_pending_or_needs_verification =
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
-
-        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
+        const is_unavailable_status_present = [selected_from.status, selected_to.status].includes(
+            MT5_ACCOUNT_STATUS.UNAVAILABLE
+        );
+        const is_maintenance_status_present = [selected_from.status, selected_to.status].includes(
+            MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE
+        );
+        const platform_name_dxtrade = getPlatformSettings(CFD_PLATFORMS.DXTRADE).name;
 
         const history = useHistory();
 
@@ -198,7 +220,7 @@ const AccountTransferForm = observer(
                     <Localize
                         i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
                         components={[
-                            <Text color='var(--status-info)' key={0} size={is_mobile ? 'xxxs' : 'xxs'} />,
+                            <Text color='var(--status-info)' key={0} size={!isMobile ? 'xxs' : 'xxxs'} />,
                             <Link
                                 className='account-transfer-form__link'
                                 key={1}
@@ -211,7 +233,7 @@ const AccountTransferForm = observer(
 
             if (is_mf_status_pending)
                 return (
-                    <Text color='var(--status-info)' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text color='var(--status-info)' size={!isMobile ? 'xxs' : 'xxxs'}>
                         <Localize i18n_default_text='Unavailable as your documents are still under review' />
                     </Text>
                 );
@@ -273,19 +295,36 @@ const AccountTransferForm = observer(
             mt_accounts_to = [];
             ctrader_accounts_to = [];
             dxtrade_accounts_to = [];
-
             accounts_list.forEach((account, idx) => {
                 const is_selected_from = account.value === selected_from.value;
+                let platform = '';
+                if (account.is_mt) {
+                    platform = CFD_PLATFORMS.MT5;
+                } else if (account.is_ctrader) {
+                    platform = CFD_PLATFORMS.CTRADER;
+                } else {
+                    platform = CFD_PLATFORMS.DXTRADE;
+                }
+
+                const is_server_maintenance =
+                    TradingPlatformStatusData?.find(status => status?.platform === platform)?.status ===
+                        TRADING_PLATFORM_STATUS.MAINTENANCE || account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+
+                const is_account_unavailable = account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE;
+
                 const text = (
                     <AccountOption
                         idx={idx}
                         account={account}
                         is_pending_verification={is_mf_status_pending}
                         is_selected_from={is_selected_from}
+                        is_account_unavailable={is_account_unavailable}
                         is_verification_failed={is_mf_status_verification_failed}
                         is_verification_needed={is_mf_status_need_verification}
+                        is_server_maintenance={is_server_maintenance}
                     />
                 );
+
                 const value = account.value;
 
                 const is_cfd_account = account.is_mt || account.is_ctrader || account.is_dxtrade;
@@ -353,58 +392,6 @@ const AccountTransferForm = observer(
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
-            if (Object.keys(from_accounts).length) {
-                const side_notes = [];
-                side_notes.push(
-                    <AccountTransferNote
-                        allowed_transfers_count={{
-                            internal: internal_remaining_transfers?.allowed,
-                            mt5: mt5_remaining_transfers?.allowed,
-                            ctrader: ctrader_remaining_transfers?.allowed,
-                            dxtrade: dxtrade_remaining_transfers?.allowed,
-                        }}
-                        transfer_fee={transfer_fee}
-                        currency={selected_from.currency || ''}
-                        minimum_fee={minimum_fee}
-                        key={0}
-                        is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                        is_dxtrade_transfer={is_dxtrade_transfer}
-                        is_mt_transfer={is_mt_transfer}
-                        is_ctrader_transfer={is_ctrader_transfer}
-                        is_from_derivgo={is_from_derivgo}
-                    />
-                );
-                setSideNotes?.([
-                    <SideNote title={<Localize i18n_default_text='Notes' />} key={0}>
-                        {side_notes}
-                    </SideNote>,
-                ]);
-            }
-
-            return () => {
-                setSideNotes?.([]);
-            };
-        }, [
-            transfer_fee,
-            selected_from,
-            selected_to,
-            minimum_fee,
-            from_accounts,
-            is_dxtrade_allowed,
-            setSideNotes,
-            is_crypto,
-            internal_remaining_transfers?.allowed,
-            mt5_remaining_transfers?.allowed,
-            dxtrade_remaining_transfers?.allowed,
-            is_dxtrade_transfer,
-            is_mt_transfer,
-            is_from_derivgo,
-            ctrader_remaining_transfers?.allowed,
-            is_ctrader_transfer,
-        ]);
-
-        React.useEffect(() => {
             const getRemainingTransfers = () => {
                 if (is_mt_transfer) {
                     return mt5_remaining_transfers?.available;
@@ -422,6 +409,17 @@ const AccountTransferForm = observer(
             let hint_text;
             if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
+            } else if (is_unavailable_status_present) {
+                hint_text = (
+                    <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
+                );
+            } else if (is_maintenance_status_present) {
+                hint_text = (
+                    <Localize
+                        i18n_default_text={`We’re currently performing server maintenance. Service may be affected.`}
+                        components={[<strong key={0} />]}
+                    />
+                );
             } else {
                 const transfer_text = remaining_transfers > 1 ? 'transfers' : 'transfer';
                 hint_text = (
@@ -491,7 +489,7 @@ const AccountTransferForm = observer(
                         color='prominent'
                         weight='bold'
                         align='center'
-                        className='cashier__header cashier__content-header'
+                        className='cashier__header account-transfer-form__header'
                     >
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>
@@ -575,7 +573,7 @@ const AccountTransferForm = observer(
                                                 label={localize('To')}
                                                 list={to_accounts}
                                                 list_height='404'
-                                                initial_height_offset={is_mobile ? 160 : 180}
+                                                initial_height_offset={isDesktop ? 180 : 160}
                                                 name='transfer_to'
                                                 value={selected_to.value}
                                                 onChange={(e: TReactChangeEvent) => {
@@ -747,7 +745,9 @@ const AccountTransferForm = observer(
                                                         !!converter_to_error ||
                                                         !!errors.amount ||
                                                         shouldShowTransferButton(values.amount) ||
-                                                        is_mt5_restricted
+                                                        is_mt5_restricted ||
+                                                        is_unavailable_status_present ||
+                                                        is_maintenance_status_present
                                                     }
                                                     primary
                                                     large
@@ -756,30 +756,7 @@ const AccountTransferForm = observer(
                                                 </Button>
                                             </div>
                                         </div>
-                                        {!is_from_outside_cashier && (
-                                            <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                                <AccountTransferNote
-                                                    allowed_transfers_count={{
-                                                        internal: internal_remaining_transfers?.allowed,
-                                                        mt5: mt5_remaining_transfers?.allowed,
-                                                        ctrader: ctrader_remaining_transfers?.allowed,
-                                                        dxtrade: dxtrade_remaining_transfers?.allowed,
-                                                    }}
-                                                    transfer_fee={transfer_fee}
-                                                    currency={selected_from.currency || ''}
-                                                    minimum_fee={minimum_fee}
-                                                    is_crypto_to_crypto_transfer={
-                                                        selected_from.is_crypto && selected_to.is_crypto
-                                                    }
-                                                    is_dxtrade_allowed={is_dxtrade_allowed}
-                                                    is_dxtrade_transfer={is_dxtrade_transfer}
-                                                    is_ctrader_transfer={is_ctrader_transfer}
-                                                    is_mt_transfer={is_mt_transfer}
-                                                    is_from_derivgo={is_from_derivgo}
-                                                />
-                                            </SideNote>
-                                        )}
-                                        <ErrorDialog error={error} />
+                                        {!is_from_outside_cashier && <ErrorDialog error={error} />}
                                     </Form>
                                 </>
                             )}

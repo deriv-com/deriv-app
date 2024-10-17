@@ -21,5 +21,6 @@ describe('processTradeParams', () => {
         await processTradeParams(trade_store, new_state);
         expect(trade_store.updateStore).toHaveBeenCalled();
         expect(trade_store.is_trade_enabled).toBe(true);
+        expect(trade_store.is_trade_enabled_v2).toBe(true);
     });
 });

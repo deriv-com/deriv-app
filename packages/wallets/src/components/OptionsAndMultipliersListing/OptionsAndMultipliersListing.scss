@@ -3,7 +3,7 @@
     height: 100%;
     padding-top: 2.4rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding-top: unset;
         margin-bottom: 0.8rem;
         border-top: unset;
@@ -24,7 +24,7 @@
             width: 100%;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,7 +46,7 @@
         grid-template-columns: repeat(3, 1fr);
         user-select: none;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-template-rows: repeat(5, 1fr);
             grid-template-columns: auto;
             gap: 0;
@@ -60,6 +60,7 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
         }
     }
 

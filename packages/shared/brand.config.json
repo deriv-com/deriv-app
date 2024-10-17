@@ -35,10 +35,6 @@
             "name": "SmartTrader",
             "icon": "IcRebrandingSmarttrader"
         },
-        "bbot": {
-            "name": "Binary Bot",
-            "icon": "IcRebrandingBinaryBot"
-        },
         "go": {
             "name": "Deriv GO",
             "icon": "IcRebrandingDerivGo"
@@ -58,11 +54,6 @@
         "smarttrader": {
             "name": "SmartTrader",
             "icon": "SmartTrader",
-            "availability": "Non-EU"
-        },
-        "bbot": {
-            "name": "Binary Bot",
-            "icon": "BinaryBot",
             "availability": "Non-EU"
         },
         "go": {

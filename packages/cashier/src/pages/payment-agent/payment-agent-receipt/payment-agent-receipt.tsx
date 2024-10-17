@@ -2,12 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import PaymentAgentDetail from '../payment-agent-detail';
-import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
-import SideNote from 'Components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-receipt.scss';
 import { BrowserHistory } from 'history';
@@ -51,6 +50,7 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
     const { payment_agent: payment_agent_store } = useCashierStore();
     const { currency } = client;
     const { is_from_derivgo } = common;
+    const { isDesktop, isMobile } = useDevice();
     const { receipt, resetPaymentAgent } = payment_agent_store;
 
     React.useEffect(() => {
@@ -59,15 +59,12 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            <SideNote className='payment-agent-list__side-note' is_mobile>
-                <PaymentAgentDisclaimer />
-            </SideNote>
             <Text
                 as='h1'
                 align='center'
                 color='prominent'
                 line_height='m'
-                size={isMobile() ? 'xsm' : 'sm'}
+                size={!isMobile ? 'sm' : 'xsm'}
                 weight='bold'
                 className={classNames('payment-agent-receipt__header', {
                     'payment-agent-receipt__header-listed': receipt.payment_agent_name,
@@ -94,7 +91,7 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
             >
                 <Localize
                     i18n_default_text='{{ text }}. <0></0>You can view the summary of this transaction in your email.'
-                    components={!isMobile() ? [<br key={0} />] : []}
+                    components={isDesktop ? [] : [<br key={0} />]}
                     values={{
                         text: receipt.payment_agent_name
                             ? localize('To receive your funds, contact the payment agent with the details below')

@@ -4,8 +4,8 @@ import useActiveSymbols from '../useActiveSymbols';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../trader-providers';
 import { waitFor } from '@testing-library/react';
-import { usePrevious } from '@deriv/components';
 import { CONTRACT_TYPES, TRADE_TYPES, WS } from '@deriv/shared';
+import { invalidateDTraderCache } from '../useDtraderQuery';
 
 const not_logged_in_active_symbols = [
     { symbol: 'EURUSD', display_name: 'EUR/USD', exchange_is_open: 1 },
@@ -22,9 +22,16 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
         authorized: {
-            activeSymbols: jest.fn(() => Promise.resolve({ active_symbols: logged_in_active_symbols, error: null })),
+            send: jest.fn(() => {
+                return Promise.resolve({
+                    active_symbols: mocked_store.client.is_logged_in
+                        ? logged_in_active_symbols
+                        : not_logged_in_active_symbols,
+                    error: null,
+                });
+            }),
         },
-        activeSymbols: jest.fn(() => Promise.resolve({ active_symbols: not_logged_in_active_symbols, error: null })),
+        send: jest.fn(() => Promise.resolve({ active_symbols: not_logged_in_active_symbols, error: null })),
     },
     pickDefaultSymbol: jest.fn(() => Promise.resolve('EURUSD')),
 }));
@@ -33,8 +40,17 @@ jest.mock('@deriv/components', () => ({
     usePrevious: jest.fn(),
 }));
 
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    ...jest.requireActual('AppV2/Hooks/useContractsForCompany'),
+    __esModule: true,
+    default: jest.fn(() => ({
+        available_contract_types: [{ contract_type: 'accumulator' }, { contract_type: 'rise_fall' }],
+        is_fetching_ref: { current: false },
+    })),
+}));
+
+let mocked_store: ReturnType<typeof mockStore>;
 describe('useActiveSymbols', () => {
-    let mocked_store: ReturnType<typeof mockStore>;
     const wrapper = ({ children }: { children: JSX.Element }) => {
         return <TraderProviders store={mocked_store}>{children}</TraderProviders>;
     };
@@ -53,6 +69,7 @@ describe('useActiveSymbols', () => {
                     is_vanilla: false,
                     contract_type: TRADE_TYPES.RISE_FALL,
                     onChange: jest.fn(),
+                    processContractsForV2: jest.fn(),
                     setActiveSymbolsV2: jest.fn(),
                     symbol: '',
                 },
@@ -61,9 +78,16 @@ describe('useActiveSymbols', () => {
         mocked_store.client.is_logged_in = false;
         jest.clearAllMocks();
     });
+
+    afterEach(() => {
+        invalidateDTraderCache([
+            'active_symbols',
+            mocked_store.client.loginid ?? '',
+            mocked_store.modules.trade.contract_type,
+        ]);
+    });
+
     it('should fetch active symbols when not logged in', async () => {
-        // Need the opposite return value (true) of usePrevious(is_logged_in) for fetchActiveSymbols to trigger:
-        (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         const { result } = renderHook(() => useActiveSymbols(), {
             wrapper,
         });
@@ -72,7 +96,6 @@ describe('useActiveSymbols', () => {
         });
     });
     it('should fetch active symbols when logged in', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.client.is_logged_in = true;
         mocked_store.modules.trade.active_symbols = logged_in_active_symbols;
         mocked_store.modules.trade.has_symbols_for_v2 = true;
@@ -83,35 +106,7 @@ describe('useActiveSymbols', () => {
             expect(result.current.activeSymbols).toEqual(logged_in_active_symbols);
         });
     });
-    it('should set correct default_symbol and call correct onChange when store symbol is not set', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
-        const { result } = renderHook(() => useActiveSymbols(), {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.default_symbol).toEqual('EURUSD');
-            expect(mocked_store.modules.trade.onChange).toHaveBeenCalledWith({
-                target: { name: 'symbol', value: 'EURUSD' },
-            });
-        });
-    });
-    it('should set correct default_symbol and call correct onChange when store symbol is set', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(true).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
-        mocked_store.modules.trade.symbol = 'test';
-        const { result } = renderHook(() => useActiveSymbols(), {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            expect(result.current.default_symbol).toEqual('test');
-            expect(mocked_store.modules.trade.onChange).toHaveBeenCalledWith({
-                target: { name: 'symbol', value: 'test' },
-            });
-        });
-    });
     it('should set active symbols from store when is_logged_in and contract_type are unchanged', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.RISE_FALL);
         mocked_store.modules.trade.active_symbols = [{ symbol: 'fromStore' }];
         mocked_store.modules.trade.has_symbols_for_v2 = true;
         const { result } = renderHook(() => useActiveSymbols(), {
@@ -123,9 +118,8 @@ describe('useActiveSymbols', () => {
         });
     });
     it('should call active_symbols API for Vanillas if previous contract is not Vanillas', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.TURBOS.LONG);
         mocked_store.modules.trade.is_vanilla = true;
-        const active_symbols_call_spy = jest.spyOn(WS, 'activeSymbols');
+        const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
         renderHook(() => useActiveSymbols(), { wrapper });
 
         await waitFor(() => {
@@ -136,19 +130,20 @@ describe('useActiveSymbols', () => {
         });
     });
     it('should not call active_symbols API for Vanillas if previous contract is Vanillas', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.VANILLA.CALL);
+        mocked_store.modules.trade.contract_type = 'vanillascall';
         mocked_store.modules.trade.is_vanilla = true;
-        const active_symbols_call_spy = jest.spyOn(WS, 'activeSymbols');
+        const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
         renderHook(() => useActiveSymbols(), { wrapper });
 
+        mocked_store.modules.trade.contract_type = 'vanillasput';
+
         await waitFor(() => {
-            expect(active_symbols_call_spy).not.toBeCalled();
+            expect(active_symbols_call_spy).toBeCalledTimes(1);
         });
     });
     it('should call active_symbols API for Turbos if previous contract is not Turbos', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.VANILLA.CALL);
         mocked_store.modules.trade.is_turbos = true;
-        const active_symbols_call_spy = jest.spyOn(WS, 'activeSymbols');
+        const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
         renderHook(() => useActiveSymbols(), { wrapper });
 
         await waitFor(() => {
@@ -159,13 +154,28 @@ describe('useActiveSymbols', () => {
         });
     });
     it('should not call active_symbols API for Turbos if previous contract is Turbos', async () => {
-        (usePrevious as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(TRADE_TYPES.TURBOS.LONG);
+        mocked_store.modules.trade.contract_type = 'turboslong';
         mocked_store.modules.trade.is_turbos = true;
-        const active_symbols_call_spy = jest.spyOn(WS, 'activeSymbols');
+        const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
         renderHook(() => useActiveSymbols(), { wrapper });
 
+        mocked_store.modules.trade.contract_type = 'turbosshort';
+
         await waitFor(() => {
-            expect(active_symbols_call_spy).not.toBeCalled();
+            expect(active_symbols_call_spy).toBeCalledTimes(1);
+        });
+    });
+
+    it('should call active_symbols API for Turbos if contract is changed', async () => {
+        mocked_store.modules.trade.contract_type = 'contract_type1';
+        mocked_store.modules.trade.is_turbos = true;
+        const active_symbols_call_spy = jest.spyOn(WS.authorized, 'send');
+        renderHook(() => useActiveSymbols(), { wrapper });
+
+        mocked_store.modules.trade.contract_type = 'contract_type2';
+
+        await waitFor(() => {
+            expect(active_symbols_call_spy).toBeCalledTimes(2);
         });
     });
 });

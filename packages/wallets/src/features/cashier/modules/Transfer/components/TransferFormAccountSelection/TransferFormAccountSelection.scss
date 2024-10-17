@@ -8,9 +8,9 @@
     /* Shadows/xxxl */
     box-shadow: 0rem 3.2rem 6.4rem 0rem rgba(14, 14, 14, 0.14);
     max-height: 52.8rem;
-    z-index: 9999;
+    z-index: 10;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         position: absolute;
         inset: 0;
         width: 100%;
@@ -29,7 +29,7 @@
         width: 100%;
         overflow-y: auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 1.6rem 1.6rem;
             gap: 1.6rem;
             overflow-y: unset;
@@ -44,7 +44,7 @@
         padding: 1.6rem 0.8rem;
         gap: 0.8rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
             gap: 0.4rem;
         }
@@ -61,7 +61,7 @@
         border-radius: 0.4rem;
         padding: 0.8rem 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0.8rem;
         }
 
@@ -77,14 +77,15 @@
     &__header {
         display: flex;
         height: 5.6rem;
-        padding: 1.6rem 1.6rem 1.6rem 2.4rem;
+        padding: 1.6rem;
+        padding-inline-start: 2.4rem;
         justify-content: space-between;
         align-items: center;
         gap: 1.6rem;
         align-self: stretch;
         border-bottom: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: sticky;
             top: -2.4rem;
             left: 0;
@@ -98,8 +99,8 @@
     }
 
     &__label {
-        @include mobile {
-            padding-left: 0.8rem;
+        @include mobile-or-tablet-screen {
+            padding-inline-start: 0.8rem;
         }
     }
 
@@ -108,9 +109,9 @@
         cursor: pointer;
         padding: 0.8rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
-            padding-right: 0.8rem;
+            padding-inline-end: 0.8rem;
         }
     }
 
@@ -118,7 +119,7 @@
         display: flex;
         padding-inline: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding-inline: 0.8rem;
         }
     }
@@ -127,12 +128,12 @@
         flex-grow: 1;
         border-bottom: 1px solid var(--general-section-1, #f2f3f4);
         margin-block: 0.9rem;
-        margin-left: 1rem;
+        margin-inline-start: 1rem;
     }
 
     &__transfer-to-hint {
         padding: 0 0.8rem 1.6rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 1.6rem 0.8rem;
         }
     }

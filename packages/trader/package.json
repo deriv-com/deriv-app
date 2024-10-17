@@ -23,7 +23,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/binary-com/deriv-app.git"
+        "url": "https://github.com/deriv-com/deriv-app.git"
     },
     "keywords": [
         "deriv"
@@ -31,9 +31,9 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
+        "url": "https://github.com/deriv-com/deriv-app/issues"
     },
-    "homepage": "https://github.com/binary-com/deriv-app",
+    "homepage": "https://github.com/deriv-com/deriv-app",
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
@@ -43,6 +43,7 @@
         "@testing-library/user-event": "^13.5.0",
         "@types/lodash.debounce": "^4.0.7",
         "@types/react": "^18.0.7",
+        "@types/react-beautiful-dnd": "^13.1.8",
         "@types/react-dom": "^18.0.0",
         "babel-loader": "^8.1.0",
         "circular-dependency-plugin": "^5.2.2",
@@ -87,19 +88,20 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv-com/analytics": "1.11.0",
-        "@deriv-com/quill-tokens": "^2.0.4",
-        "@deriv-com/quill-ui": "1.13.42",
-        "@deriv-com/utils": "^0.0.25",
-        "@deriv-com/ui": "1.29.10",
+        "@deriv-com/analytics": "1.14.0",
+        "@deriv-com/quill-tokens": "2.0.4",
+        "@deriv-com/quill-ui": "1.16.20",
+        "@deriv-com/utils": "^0.0.36",
+        "@deriv-com/ui": "1.36.4",
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.3.0",
+        "@deriv/deriv-charts": "^2.5.1",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/utils": "^1.0.0",
         "@deriv/quill-icons": "1.23.3",
         "@lottiefiles/dotlottie-react": "0.7.2",
         "@types/react-loadable": "^5.5.6",
@@ -117,8 +119,10 @@
         "null-loader": "^4.0.1",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
+        "react-beautiful-dnd": "^13.1.1",
         "react-content-loader": "^6.2.0",
         "react-dom": "^17.0.2",
+        "react-joyride": "^2.5.3",
         "react-loadable": "^5.5.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",

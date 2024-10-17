@@ -16,18 +16,17 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    MobileWrapper: jest.fn(({ children }) => children),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
 describe('<PaymentMethodsEmpty/>', () => {
     it('should render PaymentMethodsEmpty component', () => {
         render(<PaymentMethodsEmpty />);
 
-        expect(screen.getAllByText('You haven’t added any payment methods yet')).toHaveLength(2);
-        expect(screen.getAllByText('Hit the button below to add payment methods.')).toHaveLength(2);
-        expect(screen.getAllByRole('button', { name: 'Add payment methods' })).toHaveLength(2);
+        expect(screen.getByText('You haven’t added any payment methods yet')).toBeInTheDocument();
+        expect(screen.getByText('Hit the button below to add payment methods.')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Add payment methods' })).toBeInTheDocument();
     });
 
     it('should call setActiveTab when clicking on return icon', () => {

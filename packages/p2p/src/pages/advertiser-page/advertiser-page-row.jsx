@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
@@ -19,8 +19,8 @@ const AdvertiserPageRow = ({ row: advert }) => {
     } = advertiser_page_store;
     const {
         client: { currency },
-        ui: { is_desktop },
     } = useStore();
+    const { isDesktop } = useDevice();
     const {
         effective_rate,
         eligibility_status,
@@ -64,7 +64,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 key: 'NicknameModal',
                 props: {
                     onConfirm: showBuySellForm,
-                    should_hide_close_btn: is_desktop,
+                    should_hide_close_btn: isDesktop,
                 },
             });
         }
@@ -78,39 +78,22 @@ const AdvertiserPageRow = ({ row: advert }) => {
         };
     }, []);
 
-    if (isMobile()) {
+    if (isDesktop) {
         return (
             <Table.Row className='advertiser-page-adverts__table-row'>
-                <Table.Cell className='advertiser-page__cell'>
-                    <Text size='xxs'>
-                        <Localize
-                            i18n_default_text='Rate (1 {{currency}})'
-                            values={{
-                                currency,
-                            }}
-                        />
-                    </Text>
-                    <Text as='div' color='profit-success' weight='bold'>
+                <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>
+                <Table.Cell>
+                    <Text color='profit-success' size='xs' weight='bold'>
                         {display_effective_rate} {local_currency}
                     </Text>
-                    <div className='advertiser-page__cell-limit'>
-                        <Text size='xxs'>
-                            <Localize
-                                i18n_default_text='Limits {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
-                                values={{
-                                    min_order_amount_limit_display,
-                                    max_order_amount_limit_display,
-                                    currency,
-                                }}
-                            />
-                        </Text>
-                    </div>
+                </Table.Cell>
+                <Table.Cell>
                     <div className='advertiser-page__payment-methods-list'>
                         {payment_method_names
                             ? payment_method_names.map((payment_method, key) => {
                                   return (
                                       <div className='advertiser-page__payment-method' key={key}>
-                                          <Text line_height='l' size='xxxs'>
+                                          <Text size='xs' line_height='l'>
                                               {payment_method}
                                           </Text>
                                       </div>
@@ -138,19 +121,36 @@ const AdvertiserPageRow = ({ row: advert }) => {
 
     return (
         <Table.Row className='advertiser-page-adverts__table-row'>
-            <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>
-            <Table.Cell>
-                <Text color='profit-success' size='xs' weight='bold'>
+            <Table.Cell className='advertiser-page__cell'>
+                <Text size='xxs'>
+                    <Localize
+                        i18n_default_text='Rate (1 {{currency}})'
+                        values={{
+                            currency,
+                        }}
+                    />
+                </Text>
+                <Text as='div' color='profit-success' weight='bold'>
                     {display_effective_rate} {local_currency}
                 </Text>
-            </Table.Cell>
-            <Table.Cell>
+                <div className='advertiser-page__cell-limit'>
+                    <Text size='xxs'>
+                        <Localize
+                            i18n_default_text='Limits {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
+                            values={{
+                                min_order_amount_limit_display,
+                                max_order_amount_limit_display,
+                                currency,
+                            }}
+                        />
+                    </Text>
+                </div>
                 <div className='advertiser-page__payment-methods-list'>
                     {payment_method_names
                         ? payment_method_names.map((payment_method, key) => {
                               return (
                                   <div className='advertiser-page__payment-method' key={key}>
-                                      <Text size='xs' line_height='l'>
+                                      <Text line_height='l' size='xxxs'>
                                           {payment_method}
                                       </Text>
                                   </div>

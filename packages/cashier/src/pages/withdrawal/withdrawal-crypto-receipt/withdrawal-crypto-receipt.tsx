@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
 import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { TModifiedTransaction } from '@deriv/hooks/src/useCryptoTransactions';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from 'Stores/useCashierStores';
 import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';
@@ -124,9 +125,9 @@ const WalletInformation = ({ account, blockchain_address, is_mobile }: TWalletIn
 };
 
 const WithdrawalCryptoReceipt = observer(() => {
-    const { client, ui } = useStore();
+    const { client } = useStore();
     const { currency, is_switching } = client;
-    const { is_desktop, is_mobile } = ui;
+    const { isMobile } = useDevice();
     const { account_transfer, general_store, transaction_history, withdraw } = useCashierStore();
     const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
@@ -147,24 +148,18 @@ const WithdrawalCryptoReceipt = observer(() => {
     }, [is_switching, tab_index]);
 
     return (
-        <div className='cashier__wrapper'>
-            <Text
-                as='h2'
-                color='prominent'
-                weight='bold'
-                align='center'
-                className='cashier__header cashier__content-header'
-            >
+        <div className='withdrawal-crypto-receipt__wrapper'>
+            <Text as='h2' color='prominent' weight='bold' align='center' className='cashier__header'>
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>
             <div className='withdrawal-crypto-receipt__detail'>
-                {is_desktop && <Status last_transaction={last_transaction} />}
+                {<Status last_transaction={last_transaction} />}
                 <Text
                     as='p'
                     color='profit-success'
                     weight='bold'
                     align='center'
-                    size={is_mobile ? 'm' : 'l'}
+                    size={isMobile ? 'm' : 'l'}
                     className='withdrawal-crypto-receipt__crypto'
                 >
                     <Localize
@@ -175,17 +170,16 @@ const WithdrawalCryptoReceipt = observer(() => {
                         }}
                     />
                 </Text>
-                {is_mobile && <Status last_transaction={last_transaction} />}
-                <AccountInformation account={account} is_mobile={is_mobile} />
+                <AccountInformation account={account} is_mobile={isMobile} />
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
-                <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={is_mobile} />
+                <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={isMobile} />
             </div>
             {!!crypto_estimations_fee && (
                 <div className='withdrawal-crypto-receipt__transfer-fee-info'>
-                    <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text as='p' align='center' size={isMobile ? 'xxxs' : 'xxs'}>
                         <Localize i18n_default_text='Amount received' />
                     </Text>
-                    <Text as='p' align='center' size={is_mobile ? 'xsm' : 'm'} weight='bold'>
+                    <Text as='p' align='center' size={isMobile ? 'xsm' : 'm'} weight='bold'>
                         <Localize
                             i18n_default_text='{{transaction_amount}} {{currency_symbol}}'
                             values={{
@@ -196,7 +190,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                             }}
                         />
                     </Text>
-                    <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text as='p' align='center' size={isMobile ? 'xxxs' : 'xxs'}>
                         <Localize
                             i18n_default_text='(Transaction fee: {{transaction_fee}} {{currency_symbol}})'
                             values={{

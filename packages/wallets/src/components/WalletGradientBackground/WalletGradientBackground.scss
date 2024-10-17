@@ -803,6 +803,56 @@
             }
         }
     }
+
+    &--XRP {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            295.23% 141.42% at 0% 100%,
+                            rgba(108, 106, 151, 0.28) 0%,
+                            rgba(50, 48, 99, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            295.23% 141.42% at 0% 100%,
+                            rgba(108, 106, 151, 0.28) 0%,
+                            rgba(50, 48, 99, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            295.23% 141.42% at 0% 100%,
+                            rgba(108, 106, 151, 0.28) 0%,
+                            rgba(50, 48, 99, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            295.23% 141.42% at 0% 100%,
+                            rgba(108, 106, 151, 0.28) 0%,
+                            rgba(50, 48, 99, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+            }
+        }
+    }
+
     &--demo {
         &-desktop {
             &-card {

@@ -10,7 +10,7 @@ const getTermsOfUseConfig = (account_settings: TTermsOfConfigSettings) => ({
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
-    agreed_tnc: {
+    tnc_acceptance: {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
@@ -20,7 +20,7 @@ const getTermsOfUseConfig = (account_settings: TTermsOfConfigSettings) => ({
     },
     fatca_declaration: {
         supported_in: ['svg', 'maltainvest'],
-        default_value: String(account_settings?.fatca_declaration ?? ''),
+        default_value: String(account_settings?.fatca_declaration ?? '0'),
     },
 });
 

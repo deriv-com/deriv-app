@@ -163,7 +163,7 @@ const VerticalTab = ({
                         is_routed={is_routed}
                         header_title={header_title}
                     />
-                    {is_floating && tab_headers_note && list[curr_tab_index]?.has_side_note && (
+                    {is_floating && tab_headers_note && (
                         <div className='dc-vertical-tab__tab-bottom-note'>{tab_headers_note}</div>
                     )}
                     {extra_content}

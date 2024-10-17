@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import {
-    Button,
-    DesktopWrapper,
-    Div100vhContainer,
-    FadeWrapper,
-    MobileWrapper,
-    PageOverlay,
-    VerticalTab,
-    Loading,
-} from '@deriv/components';
+import { Div100vhContainer, FadeWrapper, PageOverlay, VerticalTab, Loading } from '@deriv/components';
 import {
     useAuthorize,
     useOnrampVisible,
@@ -21,13 +12,14 @@ import {
     useP2PNotificationCount,
     useP2PSettings,
 } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
-import ErrorDialog from '../../components/error-dialog';
-import { TRoute } from '../../types';
+import { getSelectedRoute, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useCashierStore } from '../../stores/useCashierStores';
 import type { TCoreStores } from '@deriv/stores/types';
+import { useDevice } from '@deriv-com/ui';
+import ErrorDialog from '../../components/error-dialog';
+import { TRoute } from '../../types';
+import { useCashierStore } from '../../stores/useCashierStores';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -44,7 +36,6 @@ type TCashierProps = RouteComponentProps & {
 type TCashierOptions = {
     count?: number;
     default?: boolean;
-    has_side_note: boolean;
     icon: string;
     label: string;
     path?: string;
@@ -53,6 +44,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
+    const { isDesktop, isMobile } = useDevice();
     const { withdraw, general_store } = useCashierStore();
     const { error } = withdraw;
     const {
@@ -69,9 +61,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isLoading: is_payment_agent_transfer_checking,
         isSuccess: is_payment_agent_transfer_visible_is_success,
     } = usePaymentAgentTransferVisible();
-    const { is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
-    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
+    const { current_language, is_from_derivgo } = common;
+    const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
+    const { account_settings, currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } =
+        client;
     const {
         data: paymentAgentList,
         isLoading: is_payment_agent_list_loading,
@@ -108,16 +101,12 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
-                    has_side_note:
-                        route.path !== routes.cashier_deposit &&
-                        route.path !== routes.cashier_withdrawal &&
-                        route.path !== routes.cashier_p2p,
                 });
             }
         });
 
         return options;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         is_account_transfer_visible,
         is_onramp_visible,
@@ -125,6 +114,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
         p2p_notification_count,
+        account_settings.preferred_language,
+        current_language,
         routes_config,
     ]);
 
@@ -135,11 +126,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     const is_default_route = !!selected_route.default;
 
-    const getHeaderTitle = useMemo(() => {
-        if (!is_mobile || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
+    const getHeaderTitle = () => {
+        if (isDesktop || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
         return selected_route.getTitle?.();
-    }, [is_cashier_onboarding, is_default_route, is_loading, selected_route, is_mobile]);
+    };
 
     const updateActiveTab = useCallback(
         (path?: string) => {
@@ -249,7 +240,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_p2p_loading = is_p2p_enabled_loading && !is_p2p_enabled_success;
     const is_payment_agent_loading = is_payment_agent_list_loading && !is_payment_agent_list_success;
     const is_cashier_loading =
-        ((!is_logged_in || is_mobile) && is_logging_in) ||
+        ((!is_logged_in || isMobile) && is_logging_in) ||
         !is_account_setting_loaded ||
         is_payment_agent_transfer_checking ||
         is_p2p_loading ||
@@ -273,8 +264,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
             <ErrorDialog error={error} />
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
-                    <DesktopWrapper>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+                    {isDesktop ? (
                         <VerticalTab
                             current_path={location.pathname}
                             initial_vertical_tab_index={initial_tab_index}
@@ -284,19 +275,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                             is_full_width
                             is_routed
                             list={getMenuOptions}
-                            tab_headers_note={
-                                <Button
-                                    id='cashier_learn_more'
-                                    className='cashier__page-wrapper-button'
-                                    text={localize('Learn more about payment methods')}
-                                    onClick={() => window.open(getStaticUrl('/payment-methods'))}
-                                    secondary
-                                />
-                            }
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
+                    ) : (
+                        <Div100vhContainer className='cashier__wrapper--responsive' height_offset='80px'>
                             {selected_route?.component && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
@@ -305,7 +286,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                                 />
                             )}
                         </Div100vhContainer>
-                    </MobileWrapper>
+                    )}
                 </PageOverlay>
             </div>
         </FadeWrapper>

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
 import { api_error_codes } from 'Constants/api-error-codes';
@@ -29,6 +29,7 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
+    const { isDesktop, isTablet } = useDevice();
     const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
@@ -65,7 +66,7 @@ const BuySellTable = ({ onScroll }) => {
 
     // Need to cater for the extra element added to the list for mobile i.e. the "WATCH_THIS_SPACE".
     // Otherwise, the "No ads for this currency" message won't be displayed for mobile, when there are no ads for the selected currency.
-    const rendered_adverts_count = isDesktop() ? rendered_adverts.length : rendered_adverts.length - 1;
+    const rendered_adverts_count = isDesktop ? rendered_adverts.length : rendered_adverts.length - 1;
 
     if (rendered_adverts_count > 0) {
         return (
@@ -77,7 +78,7 @@ const BuySellTable = ({ onScroll }) => {
                         is_open={buy_sell_store.is_sort_dropdown_open}
                         height='10rem'
                         toggleModal={() => buy_sell_store.setIsSortDropdownOpen(false)}
-                        width='80vw'
+                        width={isTablet ? '44rem' : '80vw'}
                     >
                         <RadioGroup
                             name='reason'
@@ -97,7 +98,7 @@ const BuySellTable = ({ onScroll }) => {
                             })}
                         </RadioGroup>
                     </Modal>
-                    {isDesktop() && (
+                    {isDesktop && (
                         <Table.Header>
                             <Table.Row className='buy-sell-table__header'>
                                 <Table.Head>

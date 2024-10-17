@@ -25,17 +25,22 @@ const getWalletDescriptionMapper = () => ({
     USD: localize('Deposit and withdraw US dollars using credit or debit cards, e-wallets, or bank wires.'),
     USDC: localize('Deposit and withdraw USD Coin, hosted on the Ethereum blockchain.'),
     UST: localize('Deposit and withdraw Tether Omni, hosted on the Bitcoin blockchain.'),
+    XRP: localize(
+        'Deposit and withdraw XRP, the cryptocurrency with fast and affordable transactions, hosted on the XRP Ledger blockchain.'
+    ),
 });
 
 const WalletsAddMoreCardContent: React.FC<TProps> = ({ currency }) => {
     const walletDescriptionMapper = getWalletDescriptionMapper();
     return (
         <div className='wallets-add-more__content'>
-            <Text size='md' weight='bold'>
+            <Text align='start' size='md' weight='bold'>
                 {currency} Wallet
             </Text>
 
-            <Text size='sm'>{walletDescriptionMapper[currency as keyof typeof walletDescriptionMapper]}</Text>
+            <Text align='start' size='sm'>
+                {walletDescriptionMapper[currency as keyof typeof walletDescriptionMapper]}
+            </Text>
         </div>
     );
 };

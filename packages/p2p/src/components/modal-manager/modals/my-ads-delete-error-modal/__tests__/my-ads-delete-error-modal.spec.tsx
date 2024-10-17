@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
 import MyAdsDeleteErrorModal from '../my-ads-delete-error-modal';
 
 const mock_modal_manager = {
@@ -48,12 +47,5 @@ describe('<MyAdsDeleteErrorModal />', () => {
         expect(ok_button).toBeInTheDocument();
         ok_button.click();
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();
-    });
-
-    it('should render MyAdsDeleteErrorModal component in mobile view', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
-        render(<MyAdsDeleteErrorModal />);
-        expect(screen.getByText('Do you want to delete this ad?')).toBeInTheDocument();
-        expect(screen.getByText('Error: Cannot delete ad.')).toBeInTheDocument();
     });
 });

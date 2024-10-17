@@ -10,7 +10,7 @@ const DesktopWalletsList = () => {
     const { data: activeWallet, isInitializing } = useActiveWalletAccount();
 
     return (
-        <div className='wallets-desktop-wallets-list'>
+        <div className='wallets-desktop-wallets-list' data-testid='dt_desktop-wallets-list'>
             {isInitializing && <WalletsCardLoader />}
             {!isInitializing && (
                 <WalletsContainer

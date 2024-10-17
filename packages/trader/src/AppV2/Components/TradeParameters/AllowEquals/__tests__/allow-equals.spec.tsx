@@ -26,7 +26,7 @@ describe('AllowEquals', () => {
         return (
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <AllowEquals is_minimized />
+                    <AllowEquals />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -46,37 +46,35 @@ describe('AllowEquals', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render component with correct input value if is_equal is 0', () => {
+    it('should render component with correct ToggleSwitch state value if is_equal is 0', () => {
         render(mockAllowEquals());
 
         expect(screen.getByText(title)).toBeInTheDocument();
-        expect(screen.getByRole('textbox')).toHaveValue('-');
+        expect(screen.getByRole('button')).toHaveAttribute('aria-pressed', 'false');
     });
 
-    it('should render component with correct input value if is_equal is 1', () => {
+    it('should render component with correct ToggleSwitch state value if is_equal is 1', () => {
         default_mock_store.modules.trade.is_equal = 1;
         render(mockAllowEquals());
 
         expect(screen.getByText(title)).toBeInTheDocument();
-        expect(screen.getByRole('textbox')).toHaveValue('Enabled');
+        expect(screen.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
     });
 
-    it('should show ActionSheet if user clicks on input', () => {
+    it('should call onChange function if user clicks on ToggleSwitch', () => {
         render(mockAllowEquals());
 
-        userEvent.click(screen.getByRole('textbox'));
-
-        expect(screen.getByRole('dialog')).toHaveAttribute('data-state', 'open');
-    });
-
-    it('should call onChange function if user opens ActionSheet and clicks on ToggleSwitch', () => {
-        render(mockAllowEquals());
-
-        userEvent.click(screen.getByRole('textbox'));
-
-        const toggle_switch_button = screen.getByRole('button');
-        userEvent.click(toggle_switch_button);
+        userEvent.click(screen.getByRole('button'));
 
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
+    });
+
+    it('should render ActionSheet with definition if user clicks on "Allow equal" term', () => {
+        render(mockAllowEquals());
+
+        userEvent.click(screen.getByText(title));
+
+        expect(screen.getByText('Win payout if exit spot is also equal to entry spot.')).toBeInTheDocument();
+        expect(screen.getByText('Got it')).toBeInTheDocument();
     });
 });

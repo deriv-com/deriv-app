@@ -13,8 +13,16 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            border-bottom: var(--core-color-solid-slate-75);
-            margin: var(--core-spacing-400) 0;
+            border-bottom: var(--core-borderWidth-75) solid var(--semantic-color-monochrome-border-normal-mid);
+            padding: var(--core-spacing-400) 0;
+
+            &:first-child {
+                padding-top: 0;
+            }
+            &:last-child {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
         }
 
         &-cell {

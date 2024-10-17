@@ -33,6 +33,7 @@ const zoom_icons = ['zoom-in', 'zoom-out'];
 
 window.Blockly = {
     derivWorkspace: { asyncClear: () => ({}) },
+    inject: jest.fn(),
 };
 
 describe('LoadModal', () => {

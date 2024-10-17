@@ -48,4 +48,39 @@ describe('PositionsStore', () => {
             expect(mockedPositionsStore.customTimeRangeFilter).toEqual('');
         });
     });
+    describe('setDateFrom', () => {
+        it('should set dateFrom', () => {
+            mockedPositionsStore.setDateFrom(123424262);
+            expect(mockedPositionsStore.dateFrom).toEqual(123424262);
+            mockedPositionsStore.setDateFrom(null);
+            expect(mockedPositionsStore.dateFrom).toEqual(null);
+        });
+    });
+    describe('setDateTo', () => {
+        it('should set dateTo', () => {
+            mockedPositionsStore.setDateTo(12346779);
+            expect(mockedPositionsStore.dateTo).toEqual(12346779);
+            mockedPositionsStore.setDateTo(null);
+            expect(mockedPositionsStore.dateTo).toEqual(null);
+        });
+    });
+    describe('onUnmount', () => {
+        it('should reset all filters, when onUnmount is called', () => {
+            mockedPositionsStore.setDateTo(12346779);
+            mockedPositionsStore.setDateFrom(123424262);
+            mockedPositionsStore.setCustomTimeRangeFilter('25 May 2024');
+            mockedPositionsStore.setTimeFilter('All time');
+            mockedPositionsStore.setOpenContractTypeFilter(['Rise/Fall']);
+            mockedPositionsStore.setClosedContractTypeFilter(['Accumulators']);
+
+            mockedPositionsStore.onUnmount();
+
+            expect(mockedPositionsStore.dateTo).toEqual(null);
+            expect(mockedPositionsStore.dateFrom).toEqual(null);
+            expect(mockedPositionsStore.customTimeRangeFilter).toEqual('');
+            expect(mockedPositionsStore.timeFilter).toEqual('');
+            expect(mockedPositionsStore.openContractTypeFilter).toEqual([]);
+            expect(mockedPositionsStore.closedContractTypeFilter).toEqual([]);
+        });
+    });
 });

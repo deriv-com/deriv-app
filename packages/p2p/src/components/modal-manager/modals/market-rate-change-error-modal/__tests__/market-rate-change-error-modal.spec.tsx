@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import MarketRateChangeErrorModal from '../market-rate-change-error-modal';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {
@@ -33,15 +33,6 @@ jest.mock('Stores', () => ({
 
 const el_modal = document.createElement('div');
 
-let mock_ui_store = {
-    is_desktop: true,
-    is_mobile: false,
-};
-
-const wrapper = ({ children }: { children: JSX.Element }) => (
-    <StoreProvider store={mockStore({ ui: mock_ui_store })}>{children}</StoreProvider>
-);
-
 const mock_props = {
     submitForm: jest.fn(),
     values: {
@@ -51,6 +42,11 @@ const mock_props = {
         received_amount: 100,
     },
 };
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 describe('<MarketRateChangeErrorModal />', () => {
     beforeAll(() => {
@@ -63,7 +59,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should render MarketRateChangeErrorModal', () => {
-        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
         expect(screen.getByText('Attention: Rate fluctuation')).toBeInTheDocument();
         expect(screen.queryByText(/You are creating an order to buy/)).toBeInTheDocument();
@@ -83,7 +79,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call hideModal and setIsMarketRateErrorModalOpen when clicking Cancel', () => {
-        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         cancel_button.click();
@@ -94,7 +90,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call submitForm and not hideModal on desktop, when clicking on Continue with order button', () => {
-        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
         const continue_button = screen.getByRole('button', { name: 'Continue with order' });
         continue_button.click();
@@ -104,12 +100,8 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call submitForm and hideModal on mobile, when clicking on Continue with order button', () => {
-        mock_ui_store = {
-            is_desktop: false,
-            is_mobile: true,
-        };
-
-        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
         const continue_button = screen.getByRole('button', { name: 'Continue with order' });
         continue_button.click();

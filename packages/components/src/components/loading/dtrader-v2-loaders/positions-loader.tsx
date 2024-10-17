@@ -17,9 +17,7 @@ const PositionsLoader = ({ initial_app_loading, is_closed_tab }: TPositionsLoade
                 </div>
             )}
             <div className='skeleton-box__filters'>
-                {[...new Array(is_closed_tab ? 2 : 1)].map((_, idx) => {
-                    return <Skeleton key={idx} width={144} height={32} />;
-                })}
+                <Skeleton width={144} height={32} />
             </div>
             <div className='skeleton-box__total-pnl-or-date'>
                 {[...new Array(is_closed_tab ? 1 : 2)].map((_, idx) => {

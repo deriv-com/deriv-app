@@ -3,7 +3,7 @@
         width: 100%;
         flex: 1;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: absolute;
             height: calc(100% - 6rem);
             top: 6rem;

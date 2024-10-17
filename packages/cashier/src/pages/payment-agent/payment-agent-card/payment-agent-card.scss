@@ -6,7 +6,7 @@
     border-radius: $BORDER_RADIUS * 2;
     margin-bottom: 1.6rem;
 
-    @include mobile {
+    @include mobile-screen {
         width: auto;
     }
 
@@ -37,23 +37,6 @@
         &-further-information {
             margin: 0.8rem 0;
             word-break: break-word;
-        }
-    }
-    &__deposit-details-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 1rem;
-        row-gap: 0.8rem;
-        margin-top: 3.2rem;
-        & > .payment-agent-detail:nth-child(-n + 2) {
-            margin-bottom: 2.4rem;
-            @include mobile {
-                margin-bottom: 0;
-            }
-        }
-        @include mobile {
-            grid-template-columns: 1fr;
-            margin-top: 2.4rem;
         }
     }
 }

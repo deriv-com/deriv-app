@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslations } from '@deriv-com/translations';
-import { WalletText } from '../../../../../components/Base';
+import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../../types';
 import { getMarketTypeDetails } from '../../../constants';
 
@@ -18,7 +18,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
             footnoteText = localize(
                 'Add your Deriv MT5 {{marketTitle}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).',
                 {
-                    marketTitle: getMarketTypeDetails()[marketType].title,
+                    marketTitle: getMarketTypeDetails(localize)[marketType].title,
                 }
             );
             break;
@@ -26,7 +26,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
             footnoteText = localize(
                 'Add your Deriv MT5 {{marketTitle}} account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).',
                 {
-                    marketTitle: getMarketTypeDetails()[marketType].title,
+                    marketTitle: getMarketTypeDetails(localize)[marketType].title,
                 }
             );
             break;
@@ -34,7 +34,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
             footnoteText = localize(
                 'Add your Deriv MT5 {{marketTitle}} STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (License no. MB/18/0024).',
                 {
-                    marketTitle: getMarketTypeDetails()[marketType].title,
+                    marketTitle: getMarketTypeDetails(localize)[marketType].title,
                 }
             );
             break;
@@ -42,7 +42,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
             footnoteText = localize(
                 'Add your Deriv MT5 {{marketTitle}} account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.',
                 {
-                    marketTitle: getMarketTypeDetails()[marketType].title,
+                    marketTitle: getMarketTypeDetails(localize)[marketType].title,
                 }
             );
             break;
@@ -56,9 +56,9 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
     }
 
     return (
-        <WalletText align='center' size='sm' weight='bold'>
+        <Text align='center' size='sm' weight='bold'>
             {footnoteText}
-        </WalletText>
+        </Text>
     );
 };
 

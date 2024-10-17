@@ -20,6 +20,11 @@ let mock_last_transaction = {
     transaction_fee: '',
 };
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
+}));
+
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
@@ -63,10 +68,6 @@ describe('<WithdrawalCryptoReceipt />', () => {
                         crypto_estimations_fee: 0.001,
                     },
                 },
-            },
-            ui: {
-                is_desktop: true,
-                is_mobile: false,
             },
         });
     });

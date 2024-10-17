@@ -2,11 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
 import { TSocketError } from '@deriv/api-v2/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Text } from '@deriv-com/ui';
-import { WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletTextField } from '../../../../components';
+import { Button, Text, useDevice } from '@deriv-com/ui';
+import { WalletButtonGroup, WalletPasswordFieldLazy, WalletTextField } from '../../../../components';
 import PasswordViewerIcon from '../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { getPasswordRequirements } from '../../../../constants/password';
-import useDevice from '../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { PlatformDetails } from '../../constants';
 import { TPlatformPasswordChange } from '../../modals/MT5PasswordModal/MT5PasswordModal';
@@ -31,10 +30,11 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
     sendEmailVerification,
 }) => {
     const { title } = PlatformDetails.mt5;
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
 
+    const walletButtonSizes = isDesktop ? 'md' : 'lg';
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
     const formikRef = useRef<FormikProps<TFormInitialValues> | null>(null);
 
@@ -114,7 +114,7 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                     />
                                 </div>
                                 <ul className='wallets-mt5-reset__requirements'>
-                                    {getPasswordRequirements().map(requirement => (
+                                    {getPasswordRequirements(localize).map(requirement => (
                                         <li key={requirement}>
                                             <Text size='sm'>{requirement}</Text>
                                         </li>
@@ -123,22 +123,26 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                             </div>
                         </div>
                         <div className='wallets-mt5-reset__footer'>
-                            <WalletButtonGroup isFlex isFullWidth={isMobile}>
-                                <WalletButton
+                            <WalletButtonGroup isFlex isFullWidth={!isDesktop}>
+                                <Button
+                                    borderWidth='sm'
+                                    color='black'
                                     onClick={sendEmailVerification}
-                                    size={isMobile ? 'lg' : 'md'}
+                                    size={walletButtonSizes}
+                                    textSize='sm'
                                     variant='outlined'
                                 >
                                     <Localize i18n_default_text='Forgot password?' />
-                                </WalletButton>
-                                <WalletButton
+                                </Button>
+                                <Button
                                     disabled={!!errors.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={isLoading}
-                                    size={isMobile ? 'lg' : 'md'}
+                                    size={walletButtonSizes}
+                                    textSize='sm'
                                     type='submit'
                                 >
                                     <Localize i18n_default_text='Change my password' />
-                                </WalletButton>
+                                </Button>
                             </WalletButtonGroup>
                         </div>
                     </Form>

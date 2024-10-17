@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Popover, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { getTextSize } from 'Utils/responsive';
@@ -11,6 +11,7 @@ type TRecommendedByProps = {
 };
 
 const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedByProps) => {
+    const { isDesktop, isMobile } = useDevice();
     const { showModal } = useModalManagerContext();
 
     const getRecommendedMessage = (): string => {
@@ -34,17 +35,17 @@ const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedB
                 className='recommended-by__container'
                 message={getRecommendedMessage()}
                 onClick={
-                    isMobile()
-                        ? () =>
+                    isDesktop
+                        ? () => {
+                              // do nothing
+                          }
+                        : () =>
                               showModal({
                                   key: 'RecommendedModal',
                                   props: {
                                       message: getRecommendedMessage(),
                                   },
                               })
-                        : () => {
-                              // do nothing
-                          }
                 }
             >
                 <Icon
@@ -53,7 +54,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedB
                     icon='IcThumbsUp'
                     size={14}
                 />
-                <Text color='less-prominent' line_height='s' size={getTextSize('xxxs', 'xs')}>
+                <Text color='less-prominent' line_height='s' size={getTextSize('xxxs', 'xs', isMobile)}>
                     {`${recommended_average ?? 0}%`}
                 </Text>
             </Popover>

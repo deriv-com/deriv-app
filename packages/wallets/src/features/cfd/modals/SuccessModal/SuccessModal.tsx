@@ -1,12 +1,12 @@
 import React, { ComponentProps, FC } from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
-import { Localize, useTranslations } from '@deriv-com/translations';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components';
-import useDevice from '../../../../hooks/useDevice';
+import { Localize } from '@deriv-com/translations';
+import { Button, useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
 type TProps = Omit<ComponentProps<typeof CFDSuccess>, 'title'> & {
+    isDemo?: boolean;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
 };
@@ -14,77 +14,78 @@ type TProps = Omit<ComponentProps<typeof CFDSuccess>, 'title'> & {
 const SuccessModal: FC<TProps> = ({
     description,
     displayBalance = '',
+    isDemo,
     marketType = 'all',
     onPrimaryClick,
     onSecondaryClick,
     platform = 'dxtrade',
 }) => {
-    const { isMobile } = useDevice();
-    const { localize } = useTranslations();
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { isDesktop } = useDevice();
 
-    const accountType = activeWallet?.is_virtual ? localize('demo') : 'real';
+    const buttonSize = isDesktop ? 'md' : 'lg';
 
-    const renderButton = () => {
-        return accountType === 'demo' ? (
-            <div className='wallets-success-btn'>
-                <WalletButton isFullWidth onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'}>
-                    <Localize i18n_default_text='OK' />
-                </WalletButton>
-            </div>
-        ) : (
-            <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={onSecondaryClick} size={isMobile ? 'lg' : 'md'} variant='outlined'>
-                    <Localize i18n_default_text='Maybe later' />
-                </WalletButton>
-                <WalletButton onClick={onPrimaryClick} size={isMobile ? 'lg' : 'md'}>
-                    <Localize i18n_default_text='Transfer funds' />
-                </WalletButton>
-            </WalletButtonGroup>
-        );
-    };
+    const renderButton = isDemo ? (
+        <div className='wallets-success-btn'>
+            <Button isFullWidth onClick={onSecondaryClick} size={buttonSize} textSize='sm'>
+                <Localize i18n_default_text='OK' />
+            </Button>
+        </div>
+    ) : (
+        <WalletButtonGroup isFlex isFullWidth>
+            <Button
+                borderWidth='sm'
+                color='black'
+                onClick={onSecondaryClick}
+                size={buttonSize}
+                textSize='sm'
+                variant='outlined'
+            >
+                <Localize i18n_default_text='Maybe later' />
+            </Button>
+            <Button onClick={onPrimaryClick} size={buttonSize} textSize='sm'>
+                <Localize i18n_default_text='Transfer funds' />
+            </Button>
+        </WalletButtonGroup>
+    );
 
-    if (isMobile) {
+    const title = isDemo ? (
+        <Localize
+            i18n_default_text='Your {{platformTitle}} demo account is ready'
+            values={{ platformTitle: PlatformDetails[platform].title }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text='Your {{platformTitle}} account is ready'
+            values={{ platformTitle: PlatformDetails[platform].title }}
+        />
+    );
+
+    if (isDesktop) {
         return (
-            <ModalStepWrapper renderFooter={renderButton} title={' '}>
+            <ModalWrapper hideCloseButton>
                 <CFDSuccess
+                    actionButtons={renderButton}
                     description={description}
                     displayBalance={displayBalance}
                     marketType={marketType}
                     platform={platform}
-                    title={
-                        <Localize
-                            i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'
-                            values={{
-                                demoTitle: accountType === localize('demo') ? ` ${accountType}` : '',
-                                platformTitle: PlatformDetails[platform].title,
-                            }}
-                        />
-                    }
+                    title={title}
                 />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 
     return (
-        <ModalWrapper hideCloseButton>
+        <ModalStepWrapper renderFooter={() => renderButton} title={' '}>
             <CFDSuccess
+                actionButtons={renderButton}
                 description={description}
                 displayBalance={displayBalance}
                 marketType={marketType}
                 platform={platform}
-                renderButton={renderButton}
-                title={
-                    <Localize
-                        i18n_default_text='Your {{platformTitle}}{{demoTitle}} account is ready'
-                        values={{
-                            demoTitle: accountType === localize('demo') ? ` ${accountType}` : '',
-                            platformTitle: PlatformDetails[platform].title,
-                        }}
-                    />
-                }
+                title={title}
             />
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

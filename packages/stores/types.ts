@@ -112,8 +112,6 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 type TIconTypes =
     | 'Derived'
     | 'Financial'
-    | 'BinaryBot'
-    | 'BinaryBotBlue'
     | 'DBot'
     | 'Demo'
     | 'DerivGo'
@@ -352,6 +350,7 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+    only_toast_message?: boolean;
 };
 
 type TNotification =
@@ -400,7 +399,7 @@ type RealAccountSignupSettings = {
     success_message: string;
 };
 
-type TClientStore = {
+export type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
     accounts: { [k: string]: TActiveAccount };
@@ -418,6 +417,7 @@ type TClientStore = {
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
+    available_onramp_currencies: Array<string>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;
@@ -450,6 +450,7 @@ type TClientStore = {
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
+    is_duplicate_dob_phone: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
@@ -468,6 +469,7 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
     is_p2p_enabled: boolean;
@@ -476,7 +478,6 @@ type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_switching: boolean;
-    is_tnc_needed: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -506,6 +507,7 @@ type TClientStore = {
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
+    setIsClientStoreInitialized: () => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
@@ -519,6 +521,7 @@ type TClientStore = {
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
+        phone_number_verification: string;
         request_email: string;
         reset_password: string;
         signup: string;
@@ -526,7 +529,7 @@ type TClientStore = {
         trading_platform_dxtrade_password_reset: string;
         trading_platform_mt5_password_reset: string;
     };
-    website_status: { mt5_status: TMt5StatusServer; dx_trade_status: TDXTraderStatusServerType };
+    website_status: WebsiteStatus;
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
@@ -542,6 +545,15 @@ type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tin_skipped?: 0 | 1;
+        tnc_status?: Record<string, number>;
+        phone_number_verification?: {
+            verified?: 0 | 1;
+            next_attempt?: number;
+            next_email_attempt?: number;
+            next_verify_attempt?: number;
+            session_timestamp?: number;
+        };
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
@@ -605,11 +617,23 @@ type TClientStore = {
     resetWalletMigration: () => void;
     is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
+    passkeys_list: Array<{
+        id: number;
+        name: string;
+        last_used: number;
+        created_at?: number;
+        stored_on?: string;
+        passkey_id: string;
+        icon?: string;
+    }>;
     setIsPasskeySupported: (value: boolean) => void;
+    is_phone_number_verification_enabled: boolean;
+    setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
     fetchShouldShowPasskeyNotification: () => void;
+    fetchPasskeysList: () => void;
     exchange_rates: Record<string, Record<string, number>>;
     getExchangeRate: (base_currency: string, target_currency: string) => number;
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
@@ -648,6 +672,7 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_from_outside_cashier: boolean;
     is_network_online: boolean;
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
@@ -662,7 +687,8 @@ type TCommonStore = {
     setAppstorePlatform: (value?: string) => void;
     setError?: (has_error: boolean, error: TCommonStoreError) => void;
     setSelectedContractType: (contract_type: string) => void;
-    setServicesError: (error: TCommonStoreServicesError) => void;
+    setServicesError: (error: TCommonStoreServicesError, hide_toast: boolean) => void;
+    resetServicesError: () => void;
     showError: (error: TCommonStoreError) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
@@ -689,6 +715,9 @@ type TUiStore = {
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
     is_history_tab_active: boolean;
+    is_forced_to_exit_pnv: boolean;
+    is_phone_verification_completed: boolean;
+    is_redirected_from_email: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
@@ -696,7 +725,6 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
-    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -744,6 +772,9 @@ type TUiStore = {
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
+    setIsForcedToExitPnv: (value: boolean) => void;
+    setIsPhoneVerificationCompleted: (value: boolean) => void;
+    setRedirectFromEmail: (value: boolean) => void;
     setHasOnlyForwardingContracts: (has_only_forward_starting_contracts?: boolean) => void;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
@@ -756,6 +787,8 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
+    should_show_phone_number_otp: boolean;
+    setShouldShowPhoneNumberOTP: (value: boolean) => void;
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,
@@ -822,8 +855,6 @@ type TUiStore = {
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
-    toggleAdditionalKycInfoModal: () => void;
-    toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;
@@ -832,6 +863,14 @@ type TUiStore = {
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
     is_trading_disabled_by_residence_modal_visible: boolean;
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
+    should_show_same_dob_phone_modal: boolean;
+    setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    field_ref_to_focus: string | null; // field_ref_to_focus accepts a field identifier which will be focused
+    setFieldRefToFocus: (value: string | null) => void;
+    setHashedValue: (value: string) => void;
+    url_hashed_values: string;
+    is_tnc_update_modal_open: boolean;
+    toggleTncUpdateModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

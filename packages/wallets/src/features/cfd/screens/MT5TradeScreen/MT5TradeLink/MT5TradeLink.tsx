@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { useCtraderServiceToken } from '@deriv/api-v2';
-import { Localize } from '@deriv-com/translations';
-import { Divider, Text } from '@deriv-com/ui';
-import { WalletButton } from '../../../../../components/Base';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { Button, Divider, Text } from '@deriv-com/ui';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
-import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { CFD_PLATFORMS, getAppToContentMapper, PlatformDetails } from '../../../constants';
 import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
@@ -17,7 +16,8 @@ type TMT5TradeLinkProps = {
 
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
-    const { icon, link, text, title } = getAppToContentMapper()[app];
+    const { localize } = useTranslations();
+    const { icon, link, text, title } = getAppToContentMapper(localize)[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({
@@ -77,21 +77,22 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     )}
                 </div>
                 {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
-                    <WalletButton onClick={() => window.open(link)} size='sm' variant='outlined'>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        onClick={() => window.open(link)}
+                        size='sm'
+                        variant='outlined'
+                    >
                         {text}
-                    </WalletButton>
+                    </Button>
                 )}
                 {platform !== CFD_PLATFORMS.MT5 && app !== CFD_PLATFORMS.CTRADER && (
-                    <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                        {
-                            PlatformToLabelIconMapper[
-                                (platform as keyof typeof PlatformToLabelIconMapper) ?? CFD_PLATFORMS.DXTRADE
-                            ]
-                        }
-                        <Text color='white' size='xs' weight='bold'>
+                    <Button borderWidth='sm' color='black' onClick={onClickWebTerminal} size='sm' variant='outlined'>
+                        <Text color='black' size='xs' weight='bold'>
                             <Localize i18n_default_text='Web terminal' />
                         </Text>
-                    </button>
+                    </Button>
                 )}
             </div>
         </React.Fragment>

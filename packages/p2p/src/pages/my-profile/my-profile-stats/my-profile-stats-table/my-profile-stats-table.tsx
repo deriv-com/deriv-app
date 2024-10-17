@@ -1,18 +1,16 @@
 import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { getTextSize } from 'Utils/responsive';
-
-const TextItalic = (
-    <Text key={0} className='my-profile-stats-table--italic' color='less-prominent' size={getTextSize('xxxs', 'xs')} />
-);
 
 const MyProfileStatsTable = () => {
     const {
         client: { currency },
     } = useStore();
+    const { isMobile } = useDevice();
 
     const { general_store } = useStores();
 
@@ -35,6 +33,11 @@ const MyProfileStatsTable = () => {
 
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '1';
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '1';
+    const textSize = getTextSize('xxxs', 'xs', isMobile);
+
+    const TextItalic = (
+        <Text key={0} className='my-profile-stats-table--italic' color='less-prominent' size={textSize} />
+    );
 
     const stats_strings = [
         {
@@ -83,14 +86,14 @@ const MyProfileStatsTable = () => {
                             color={show_lifetime_turnover_value ? 'loss-danger' : 'less-prominent'}
                             key={0}
                             onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
-                            size={getTextSize('xxxs', 'xs')}
+                            size={textSize}
                         />,
                         <Text
                             className='my-profile-stats-table--pointer'
                             color={show_lifetime_turnover_value ? 'less-prominent' : 'loss-danger'}
                             key={0}
                             onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
-                            size={getTextSize('xxxs', 'xs')}
+                            size={textSize}
                         />,
                     ]}
                 />
@@ -115,14 +118,14 @@ const MyProfileStatsTable = () => {
                             className='my-profile-stats-table--pointer'
                             color={show_lifetime_order_value ? 'loss-danger' : 'less-prominent'}
                             onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
-                            size={getTextSize('xxxs', 'xs')}
+                            size={textSize}
                         />,
                         <Text
                             key={0}
                             className='my-profile-stats-table--pointer'
                             color={show_lifetime_order_value ? 'less-prominent' : 'loss-danger'}
                             onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
-                            size={getTextSize('xxxs', 'xs')}
+                            size={textSize}
                         />,
                     ]}
                 />
@@ -141,7 +144,7 @@ const MyProfileStatsTable = () => {
         <div className='my-profile-stats-table'>
             {stats_strings.map((stat_string, key) => (
                 <div className='my-profile-stats-table__cell' key={key}>
-                    <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
+                    <Text as='p' color='less-prominent' size={textSize}>
                         {stat_string.text_1}
                     </Text>
                     <Text as='p' color='prominent' size='xs' weight='bold'>

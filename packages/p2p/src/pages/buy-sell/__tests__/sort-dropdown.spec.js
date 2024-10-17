@@ -1,8 +1,8 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import { isDesktop } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SortDropdown from '../sort-dropdown.jsx';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -36,6 +36,10 @@ jest.mock('@sendbird/chat/message', () => ({
     SendbirdChat: jest.fn().mockReturnValue({}),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: false }),
+}));
 describe('<SortDropdown/>', () => {
     it('should render the mobile view containing icon', () => {
         render(<SortDropdown />);
@@ -52,7 +56,7 @@ describe('<SortDropdown/>', () => {
     });
 
     it('should render dropdown in desktop view', () => {
-        isDesktop.mockReturnValue(true);
+        useDevice.mockReturnValue({ isDesktop: true });
         render(<SortDropdown />);
 
         expect(screen.getByTestId('dt_dropdown_display')).toBeInTheDocument();

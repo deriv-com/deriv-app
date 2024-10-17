@@ -7,6 +7,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import MultiplierWheelPicker from './multiplier-wheel-picker';
 
 type TMultiplierProps = {
@@ -17,7 +18,7 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
     const { multiplier, multiplier_range_list, commission, onChange, currency } = useTraderStore();
 
     const [isOpen, setIsOpen] = useState(false);
-    const is_small_screen_device = window.innerHeight <= 640;
+    const is_small_screen_device = isSmallScreen();
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
     const handleMultiplierChange = (multiplier: number) => {
@@ -39,7 +40,13 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
         },
         {
             id: 2,
-            component: <TradeParamDefinition description={<Localize i18n_default_text='Content goes here' />} />,
+            component: (
+                <TradeParamDefinition
+                    description={
+                        <Localize i18n_default_text='Multipliers amplify your potential profit if the market moves in your favour, with losses limited to your initial capital.' />
+                    }
+                />
+            ),
         },
     ];
 
@@ -63,14 +70,14 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                 onClick={() => setIsOpen(true)}
             />
             <ActionSheet.Root
-                expandable
+                expandable={false}
                 isOpen={isOpen}
                 position='left'
                 onClose={() => {
                     setIsOpen(false);
                 }}
             >
-                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen={is_small_screen_device}>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(
                             'multiplier__carousel',

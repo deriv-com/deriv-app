@@ -244,6 +244,10 @@ type KycAuthStatus = {
          * Current POA status.
          */
         status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+        /**
+         * Supported documents per document_type.
+         */
+        supported_documents?: string[];
     };
     /**
      * POI authentication status details.
@@ -2300,6 +2304,89 @@ type PasskeysRenameResponse = {
     [k: string]: unknown;
 };
 
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberChallengeRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_challenge: 1;
+    /**
+     * The carrier sending the email code.
+     */
+    email_code: string;
+    /**
+     * The carrier sending the OTP.
+     */
+    carrier?: 'whatsapp' | 'sms';
+    /**
+     * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+     */
+    loginid?: string;
+    /**
+     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+     */
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberChallengeResponse = {
+    phone_number_challenge?: number;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_challenge';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberVerifyRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_verify: 1;
+    /**
+     * The carrier sending the OTP.
+     */
+    otp: string;
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberVerifyResponse = {
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_verify';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
 type ChangeEmailRequest = {
     change_email: 'verify' | 'update';
     new_email: string;
@@ -2320,6 +2407,96 @@ type ChangeEmailResponse = {
     req_id?: number;
 };
 
+/**
+ * Get the validations for Tax Identification Numbers (TIN)
+ */
+export interface TINValidationRequest {
+    /**
+     * Must be `1`
+     */
+    tin_validations: 1;
+    /**
+     * The tax residence selected by the client.
+     */
+    tax_residence: string;
+    /**
+     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+     */
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+}
+
+/**
+ * A message with validations for Tax Identification Numbers (TIN)
+ */
+export type TINValidationResponse = {
+    tin_validations?: TinValidations;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'tin_validations';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+/**
+ * Validations for Tax Identification Numbers (TIN)
+ */
+export type TinValidations = {
+    /**
+     * List of employment statuses that bypass TIN requirements for the selected country
+     */
+    tin_employment_status_bypass?: string[];
+    /**
+     * Whether the TIN is mandatory for the selected country
+     */
+    is_tin_mandatory?: boolean;
+    /**
+     * Country tax identifier formats.
+     */
+    tin_format?: string[];
+    /**
+     * Invalid regex patterns for tin validation
+     */
+    invalid_patterns?: string[];
+};
+/**
+ * Get list of platform and their server status
+ */
+type TradingPlatformStatusRequest = {
+    /**
+     * Must be 1
+     */
+    trading_platform_status: 1;
+};
+/**
+ * response containing platform and their server status.
+ */
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        /**
+         * types of cfd platforms
+         */
+        platform: 'mt5' | 'ctrader' | 'dxtrade';
+        /**
+         * possible server statuses
+         */
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2673,6 +2850,14 @@ type TSocketEndpoints = {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
     };
+    phone_number_challenge: {
+        request: PhoneNumberChallengeRequest;
+        response: PhoneNumberChallengeResponse;
+    };
+    phone_number_verify: {
+        request: PhoneNumberVerifyRequest;
+        response: PhoneNumberVerifyResponse;
+    };
     ping: {
         request: PingRequest;
         response: PingResponse;
@@ -2753,6 +2938,10 @@ type TSocketEndpoints = {
         request: ServerTimeRequest;
         response: ServerTimeResponse;
     };
+    tin_validations: {
+        request: TINValidationRequest;
+        response: TINValidationResponse;
+    };
     tnc_approval: {
         request: TermsAndConditionsApprovalRequest;
         response: TermsAndConditionsApprovalResponse;
@@ -2772,6 +2961,10 @@ type TSocketEndpoints = {
     trading_platform_password_reset: {
         request: TradingPlatformPasswordResetRequest;
         response: TradingPlatformPasswordResetResponse;
+    };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
     };
     trading_servers: {
         request: ServerListRequest;

@@ -3,8 +3,15 @@
     width: 100%;
     margin: 0 auto;
 
-    @include mobile {
-        width: 100%;
+    @include tablet-screen {
+        max-width: unset;
+    }
+
+    &__header {
+        padding: 0 0 3.2rem;
+        @include mobile-or-tablet-screen {
+            padding: 0 0 1.6rem;
+        }
     }
 
     &__hint {
@@ -45,14 +52,14 @@
     &__inline-warning-message {
         margin-bottom: 3rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-block: 1.5rem;
             width: 100%;
         }
     }
 
     &__drop-down-wrapper {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-top: 1.6rem;
 
             .dc-dropdown__display {
@@ -72,13 +79,11 @@
         line-height: 1.43;
         text-align: left;
         margin-bottom: 3.6rem;
+        max-width: 40rem;
 
-        @include desktop {
-            max-width: 40rem;
-        }
-
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
+            max-width: unset;
             min-width: auto;
         }
 
@@ -105,11 +110,11 @@
     }
 
     &__notes {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 1.6rem 0;
         }
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: 0.8rem;
         }
 
@@ -137,14 +142,8 @@
         .cashier__form-submit {
             margin-block: 2.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-block: 1.6rem;
-            }
-        }
-
-        .cashier__content-header {
-            @include mobile {
-                padding-top: 2.4rem;
             }
         }
 
@@ -152,6 +151,7 @@
             min-width: 36rem;
             height: 6.5rem;
             margin-bottom: 0;
+            text-align: left;
 
             .dc-input__hint {
                 margin: 0.5rem 0 -1.9rem 1.3rem;
@@ -165,7 +165,7 @@
                 width: fit-content;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
                 min-width: auto;
 
@@ -199,10 +199,13 @@
     &__icon {
         display: flex;
         justify-content: center;
+        align-self: center;
     }
 
     &__balance {
         margin-left: auto;
+        display: flex;
+        align-items: center;
     }
 
     &__form-submit {
@@ -251,7 +254,7 @@
             display: flex;
             height: 100%;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: initial;
             }
         }
@@ -263,12 +266,12 @@
         font-size: var(--text-size-xxs);
         font-weight: bold;
 
-        @include mobile {
+        @include mobile-screen {
             font-size: var(--text-size-xxxs);
         }
     }
 
-    @include desktop {
+    @include desktop-screen {
         &__form-submit {
             min-width: 36rem;
             width: fit-content;
@@ -282,7 +285,7 @@
         transition: none;
 
         .dc-modal {
-            @include mobile() {
+            @include mobile-or-tablet-screen {
                 &-header__close {
                     margin: 2.4rem 1.6rem 0;
                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ErrorStore from '../../stores/error-store';
 import './error.scss';
 
@@ -18,34 +18,44 @@ type TErrorFields = {
     [k: string]: string;
 };
 
-const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }: TErrorComponentProps) => (
-    <div className='cashier__wrapper cashier__wrapper-error'>
-        <Icon icon='IcCashierError' className='error__icon' />
-        {header && (
-            <Text as='h2' color='loss-danger' weight='bold' align='center' className='error__header'>
-                {header}
-            </Text>
-        )}
-        {message && (
-            <Text as='p' align='center' size={isMobile() ? 'xxs' : 'xs'} line_height='s' className='cashier__paragraph'>
-                {message}
-            </Text>
-        )}
-        {button_link && (
-            <ButtonLink className='error__button' to={button_link} onClick={onClickButton} size='large'>
-                <span className='dc-btn__text'>{button_text}</span>
-            </ButtonLink>
-        )}
-        {!button_link && button_text && (
-            <Button className='error__button' onClick={onClickButton} text={button_text} primary large />
-        )}
-        {footer && (
-            <Text as='h2' size='xxs'>
-                {footer}
-            </Text>
-        )}
-    </div>
-);
+const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }: TErrorComponentProps) => {
+    const { isMobile } = useDevice();
+
+    return (
+        <div className='cashier__wrapper cashier__wrapper-error'>
+            <Icon icon='IcCashierError' className='error__icon' />
+            {header && (
+                <Text as='h2' color='loss-danger' weight='bold' align='center' className='error__header'>
+                    {header}
+                </Text>
+            )}
+            {message && (
+                <Text
+                    as='p'
+                    align='center'
+                    size={!isMobile ? 'xs' : 'xxs'}
+                    line_height='s'
+                    className='cashier__paragraph'
+                >
+                    {message}
+                </Text>
+            )}
+            {button_link && (
+                <ButtonLink className='error__button' to={button_link} onClick={onClickButton} size='large'>
+                    <span className='dc-btn__text'>{button_text}</span>
+                </ButtonLink>
+            )}
+            {!button_link && button_text && (
+                <Button className='error__button' onClick={onClickButton} text={button_text} primary large />
+            )}
+            {footer && (
+                <Text as='h2' size='xxs'>
+                    {footer}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 /** @deprecated Use `ErrorState` instead */
 const Error = ({

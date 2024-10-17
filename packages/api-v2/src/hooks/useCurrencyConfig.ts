@@ -1,6 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import useWebsiteStatus from './useWebsiteStatus';
 
+type TPlatform = {
+    cashier: readonly ('doughflow' | 'crypto')[];
+    ramp: string[] | [];
+};
+
 /** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint. */
 const useCurrencyConfig = () => {
     const { data: website_status_data, ...rest } = useWebsiteStatus();
@@ -62,6 +67,10 @@ const useCurrencyConfig = () => {
                 code: currency,
                 /** Currency display code */
                 display_code: currency === 'UST' ? 'USDT' : currency,
+                /** Platforms with providers */
+                //TODO: Remove `as TPlatform` after updating `@deriv/api-types` library
+                //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                platform: currency_config?.platform as TPlatform,
             };
         });
     }, [website_status_data?.website_status?.currencies_config]);

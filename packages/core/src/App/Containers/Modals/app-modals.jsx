@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration, useIsTNCNeeded } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -19,6 +19,10 @@ import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
 import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
+
+const SameDOBPhoneModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "same-dob-phone-modal" */ './same-dob-phone-modal'))
+);
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -67,14 +71,8 @@ const OneTimeDepositModal = React.lazy(() =>
     import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
 );
 
-const AdditionalKycInfoModal = React.lazy(() =>
-    import(
-        /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
-    )
-);
-
-const InformationSubmittedModal = React.lazy(() =>
-    import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
+const TncStatusUpdateModal = React.lazy(() =>
+    import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
 );
 
 const AppModals = observer(() => {
@@ -101,14 +99,15 @@ const AppModals = observer(() => {
         is_ready_to_deposit_modal_visible,
         is_need_real_account_for_cashier_modal_visible,
         should_show_risk_accept_modal,
-        is_additional_kyc_info_modal_open,
-        is_kyc_information_submitted_modal_open,
         is_verification_modal_visible,
         is_verification_submitted,
         isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
         should_show_crypto_transaction_processing_modal,
+        should_show_same_dob_phone_modal,
+        is_tnc_update_modal_open,
+        toggleTncUpdateModal,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -119,6 +118,14 @@ const AppModals = observer(() => {
     const { is_migrated } = useWalletMigration();
 
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
+
+    const is_tnc_needed = useIsTNCNeeded();
+
+    React.useEffect(() => {
+        if (is_tnc_needed) {
+            toggleTncUpdateModal(true);
+        }
+    }, [is_tnc_needed, toggleTncUpdateModal]);
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
@@ -225,12 +232,13 @@ const AppModals = observer(() => {
         if (should_show_account_success_modal) {
             ComponentToLoad = <ReadyToVerifyModal />;
         }
-        if (is_additional_kyc_info_modal_open) {
-            ComponentToLoad = <AdditionalKycInfoModal />;
+
+        if (should_show_same_dob_phone_modal) {
+            ComponentToLoad = <SameDOBPhoneModal />;
         }
 
-        if (is_kyc_information_submitted_modal_open) {
-            ComponentToLoad = <InformationSubmittedModal />;
+        if (is_tnc_update_modal_open) {
+            ComponentToLoad = <TncStatusUpdateModal />;
         }
     }
 

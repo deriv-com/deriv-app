@@ -18,6 +18,13 @@ jest.mock(
     () => jest.fn(() => <div>CryptoWallet</div>)
 );
 
+window.LiveChatWidget = {
+    call: jest.fn(),
+    get: jest.fn(),
+    init: jest.fn(),
+    on: jest.fn(),
+};
+
 describe('<OneTimeDepositModalContent />', () => {
     const mockDefault = mockStore({});
 
@@ -60,7 +67,7 @@ describe('<OneTimeDepositModalContent />', () => {
     });
 
     it('should render one time deposit modal content with crypto wallet', () => {
-        render(<OneTimeDepositModalContent is_crypto_account />, {
+        render(<OneTimeDepositModalContent is_crypto_provider />, {
             wrapper: wrapper(),
         });
 

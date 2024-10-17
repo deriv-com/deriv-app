@@ -1,10 +1,9 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
-import { formatDate, formatTime, TContractStore } from '@deriv/shared';
-import { FormatUtils } from '@deriv-com/utils';
+import { formatDate, formatMoney, formatTime, TContractStore } from '@deriv/shared';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 type TContractHistory = {
     currency?: string;
@@ -20,15 +19,22 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 4;
     const totalPages = Math.ceil(history.length / itemsPerPage);
+    const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    const has_tp = currentItems.some(item => item.order_type === 'take_profit' || item.display_name === 'Take profit');
+    const has_sl = currentItems.some(item => item.order_type === 'stop_loss' || item.display_name === 'Stop loss');
+
+    const getHistoryTitle = () => {
+        if (has_tp && has_sl) return <Localize i18n_default_text='TP & SL history' />;
+        if (has_tp) return <Localize i18n_default_text='TP history' />;
+        if (has_sl) return <Localize i18n_default_text='SL history' />;
+    };
 
     const handlePageChange = (pagination: TPagination) => {
         setCurrentPage(pagination.currentPage - 1);
     };
 
-    const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
-
     return (
-        <CardWrapper title={<Localize i18n_default_text='TP & SL history' />} className='take-profit-history'>
+        <CardWrapper title={getHistoryTitle()} className='take-profit-history'>
             <div
                 className={clsx('take-profit-history__table', {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,
@@ -50,7 +56,11 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
                             <Text size='sm' color='quill-typography__color--subtle'>
                                 {item.display_name}
                             </Text>
-                            <Text size='sm'>{`${FormatUtils.formatMoney(Number(item.order_amount))} ${currency}`}</Text>
+                            <Text size='sm'>
+                                {Math.abs(Number(item.order_amount)) === 0
+                                    ? localize('Cancelled')
+                                    : `${formatMoney(String(currency), String(item.order_amount), true)} ${currency}`}
+                            </Text>
                         </div>
                     </div>
                 ))}

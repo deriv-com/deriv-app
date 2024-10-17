@@ -1,9 +1,0 @@
-.tabs-container {
-    width: 100%;
-    max-width: 26rem;
-    margin-bottom: 2.4rem;
-
-    @include mobile-cashier-v2 {
-        margin: 0 auto 1.6rem;
-    }
-}

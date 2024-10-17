@@ -1,9 +1,20 @@
 import React from 'react';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
+import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
-import useDevice from '../../../../../../../hooks/useDevice';
 import TransactionsPendingRow from '../TransactionsPendingRow';
+
+const mockCurrencyConfig = {
+    BTC: {
+        display_code: 'BTC',
+        fractional_digits: 8,
+    },
+    USD: {
+        display_code: 'USD',
+        fractional_digits: 2,
+    },
+};
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
@@ -12,14 +23,8 @@ jest.mock('@deriv/api-v2', () => ({
         },
     })),
     useCancelCryptoTransaction: jest.fn(() => ({ mutate: jest.fn() })),
-}));
-
-jest.mock('moment', () => ({
-    unix: jest.fn(() => ({
-        format: jest.fn(),
-        utc: jest.fn(() => ({
-            format: jest.fn(),
-        })),
+    useCurrencyConfig: jest.fn(() => ({
+        getConfig: (currency: 'BTC' | 'USD') => mockCurrencyConfig[currency],
     })),
 }));
 
@@ -30,12 +35,15 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({})),
+}));
 
 const mockWithdrawal = {
     address_hash: '',
     address_url: '',
-    amount: 0.0002,
+    amount: 0.02,
     description: '',
     formatted_amount: '',
     id: '0123',
@@ -67,11 +75,16 @@ describe('TransactionsPendingRow', () => {
         $modalContainer.id = 'wallets_modal_root';
         document.body.appendChild($root);
         document.body.appendChild($modalContainer);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
     });
 
     afterEach(() => {
         document.body.removeChild($root);
         document.body.removeChild($modalContainer);
+    });
+
+    afterAll(() => {
+        jest.clearAllMocks();
     });
 
     it('should render component with correct contents for withdrawal on desktop', () => {
@@ -85,7 +98,7 @@ describe('TransactionsPendingRow', () => {
         expect(screen.getByText('Transaction hash')).toBeInTheDocument();
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
-        expect(screen.getByText('-')).toBeInTheDocument();
+        expect(screen.getByText('-0.02')).toBeInTheDocument();
     });
 
     it('should render component with correct contents for deposit on desktop', () => {
@@ -99,7 +112,7 @@ describe('TransactionsPendingRow', () => {
         expect(screen.getByText('Transaction hash')).toBeInTheDocument();
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
-        expect(screen.getByText('+')).toBeInTheDocument();
+        expect(screen.getByText('+0.02')).toBeInTheDocument();
     });
 
     it('should render component with correct contents for withdrawal for mobile/responsive', () => {
@@ -114,7 +127,7 @@ describe('TransactionsPendingRow', () => {
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
         expect(screen.getByText('Cancel transaction')).toBeInTheDocument();
-        expect(screen.getByText('-')).toBeInTheDocument();
+        expect(screen.getByText('-0.02')).toBeInTheDocument();
     });
 
     it('should render component with correct contents for deposit on mobile/responsive', () => {
@@ -129,7 +142,7 @@ describe('TransactionsPendingRow', () => {
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getAllByText('Pending')[0]).toBeInTheDocument();
         expect(screen.getByText('Cancel transaction')).toBeInTheDocument();
-        expect(screen.getByText('+')).toBeInTheDocument();
+        expect(screen.getByText('+0.02')).toBeInTheDocument();
     });
 
     it('should show modal on click of cancel button in mobile', () => {

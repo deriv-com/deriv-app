@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
+import classNames from 'classnames';
 import { Button, Loading, SideNote, Text } from '@deriv/components';
 import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';
 import './transactions-crypto-transaction-status-side-note.scss';
 
 const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isMobile } = useDevice();
     const { transaction_history } = useCashierStore();
     const { setIsTransactionsCryptoVisible } = transaction_history;
     const { last_transaction, has_transactions, isLoading, error, subscribe } = useCryptoTransactions();
@@ -112,7 +112,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
     const ErrorState = useCallback(
         () => (
             <>
-                <Text size={is_mobile ? 'xxs' : 'xs'}>
+                <Text size={isMobile ? 'xxs' : 'xs'}>
                     {localize('Unfortunately, we cannot retrieve the information at this time. ')}
                 </Text>
                 <div className='transactions-crypto-transaction-status-side-note__divider' />
@@ -125,17 +125,17 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                 />
             </>
         ),
-        [is_mobile, subscribe]
+        [isMobile, subscribe]
     );
 
     const NoTransactionState = useCallback(
         () => (
             <>
-                <Text size={is_mobile ? 'xxs' : 'xs'}>{localize('No recent transactions.')}</Text>
+                <Text size={isMobile ? 'xxs' : 'xs'}>{localize('No recent transactions.')}</Text>
                 <div className='transactions-crypto-transaction-status-side-note__divider' />
             </>
         ),
-        [is_mobile]
+        [isMobile]
     );
 
     return (

@@ -1,18 +1,30 @@
 .wallets-withdrawal-crypto {
     position: relative;
     width: 100%;
-    display: flex;
+    display: grid;
     justify-content: center;
     gap: 2.4rem;
 
-    @include mobile {
+    @include desktop-screen {
+        grid-template-columns: 1fr 58.8rem 1fr;
+    }
+
+    @include mobile-or-tablet-screen {
         height: fit-content;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
-    &__content {
+    &__placeholder {
+        display: block;
+
+        @include mobile-or-tablet-screen {
+            display: none;
+        }
+    }
+
+    &__main-content {
         width: 100%;
         max-width: 58.8rem;
         display: flex;
@@ -20,7 +32,7 @@
         align-items: center;
         gap: 2.4rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             gap: 1.6rem;
         }
 
@@ -30,21 +42,21 @@
         }
     }
 
-    &__side-pane {
+    &__right-content {
         height: fit-content;
         display: flex;
         flex: 1 1 0;
         justify-content: flex-end;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
 
         .wallets-transaction-status {
             margin-top: -2.4rem;
-            margin-right: 2.4rem;
+            margin-inline-end: 2.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0;
             }
         }

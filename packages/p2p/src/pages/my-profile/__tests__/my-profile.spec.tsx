@@ -36,6 +36,7 @@ describe('<MyProfile />', () => {
                     buy_orders_amount: 1,
                     buy_orders_count: 1,
                     buy_time_avg: 80,
+                    p2p_poa_required: false,
                     partner_count: 1,
                 },
                 is_advertiser: true,
@@ -83,5 +84,22 @@ describe('<MyProfile />', () => {
         render(<MyProfile />);
 
         expect(screen.getByText('Verification')).toBeInTheDocument();
+    });
+
+    it('should call showModal if is_poi_poa_verified is true and is_advertiser is false and is_p2p_user is false', () => {
+        mock_store.general_store.is_p2p_user = false;
+        mock_store.general_store.is_advertiser = false;
+        mock_store.general_store.is_loading = false;
+        mock_store.general_store.is_p2p_user = false;
+        mock_store.general_store.poi_status = 'verified';
+
+        render(<MyProfile />);
+
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
+            key: 'NicknameModal',
+            props: {
+                onCancel: expect.any(Function),
+            },
+        });
     });
 });

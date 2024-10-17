@@ -15,6 +15,7 @@ const defaultProps = {
     displayActionType: 'Deposit',
     isDemo: false,
     mt5Group: 'mocked mt5 group',
+    transactionID: 9900,
 };
 
 describe('TransactionsCompletedRowAccountDetails', () => {
@@ -23,6 +24,8 @@ describe('TransactionsCompletedRowAccountDetails', () => {
 
         expect(screen.getByText('Deposit')).toBeInTheDocument();
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
+        expect(screen.getByText('Ref. ID')).toBeInTheDocument();
+        expect(screen.getByText('9900')).toBeInTheDocument();
     });
 
     it('renders WalletCurrencyCard when action type is not transfer or is inter wallet', () => {

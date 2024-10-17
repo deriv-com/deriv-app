@@ -11,9 +11,11 @@ const country_list = [
     { text: 'ag', value: 'Antigua and Barbuda' },
 ];
 
-const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
+let mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     hideModal: jest.fn(),
     is_modal_open: true,
+    showModal: jest.fn(),
+    useSavedState: jest.fn(() => [[], jest.fn()]),
 };
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
@@ -41,6 +43,11 @@ describe('<PreferredCountriesModal />', () => {
         document.body.removeChild(el_modal);
     });
     it('should render the component', () => {
+        mock_modal_manager = {
+            ...mock_modal_manager,
+            useSavedState: jest.fn(() => [mock_props.eligible_countries, jest.fn()]),
+        };
+
         render(<PreferredCountriesModal {...mock_props} />, { wrapper });
         expect(screen.getByText('Preferred countries')).toBeInTheDocument();
 
@@ -54,6 +61,10 @@ describe('<PreferredCountriesModal />', () => {
     });
 
     it('should uncheck all selected countries when clear button is clicked', () => {
+        mock_modal_manager = {
+            ...mock_modal_manager,
+            useSavedState: jest.fn(() => [[], jest.fn()]),
+        };
         render(<PreferredCountriesModal {...mock_props} />, { wrapper });
         const clear_button = screen.getByRole('button', { name: 'Clear' });
         userEvent.click(clear_button);
@@ -68,6 +79,11 @@ describe('<PreferredCountriesModal />', () => {
     });
 
     it('should call onApply and hideModal when apply button is clicked after checking country', () => {
+        mock_modal_manager = {
+            ...mock_modal_manager,
+            useSavedState: jest.fn(() => [['Andorra', 'Afghanistan', 'Antigua and Barbuda'], jest.fn()]),
+        };
+
         render(<PreferredCountriesModal {...mock_props} />, {
             wrapper,
         });
@@ -83,6 +99,11 @@ describe('<PreferredCountriesModal />', () => {
     });
 
     it('should call hideModal when the x icon is clicked', () => {
+        mock_modal_manager = {
+            ...mock_modal_manager,
+            useSavedState: jest.fn(() => [mock_props.eligible_countries, jest.fn()]),
+        };
+
         render(<PreferredCountriesModal {...mock_props} />, {
             wrapper,
         });

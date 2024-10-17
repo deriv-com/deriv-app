@@ -5,6 +5,7 @@ import { routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import AccountTransfer from '@deriv/cashier/src/pages/account-transfer';
+import ErrorDialog from '@deriv/cashier/src/components/error-dialog';
 import './account-transfer-modal.scss';
 
 type TAccountTransferModal = {
@@ -16,7 +17,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
     const {
         modules: {
             cashier: {
-                account_transfer: { is_transfer_confirm, should_switch_account, setShouldSwitchAccount },
+                account_transfer: { is_transfer_confirm, should_switch_account, setShouldSwitchAccount, error },
                 general_store: { setActiveTab },
             },
         },
@@ -37,7 +38,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_modal_open]);
+    }, [is_modal_open, error.code]);
 
     const modal_title = !is_transfer_confirm && <Localize i18n_default_text={'Transfer funds to your accounts'} />;
 
@@ -50,6 +51,10 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
         toggleModal();
         history.push(routes.cashier_acc_transfer);
     };
+
+    if (error.code?.length) {
+        return <ErrorDialog error={error} />;
+    }
 
     return (
         <Modal

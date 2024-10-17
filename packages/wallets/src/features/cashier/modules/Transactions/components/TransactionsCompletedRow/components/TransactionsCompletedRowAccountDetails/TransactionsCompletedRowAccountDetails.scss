@@ -5,12 +5,14 @@
 
     &__currency-card {
         border-radius: 0.4rem;
+        max-height: 4rem;
     }
 
     &__type-and-wallet-name {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: flex-start;
     }
 
     &__wallet-name {
@@ -18,5 +20,18 @@
         flex-direction: row;
         gap: 0.4rem;
         align-items: center;
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        min-width: 10.4rem;
+    }
+    &__transaction-id {
+        @include mobile-or-tablet-screen {
+            margin-top: 0.4rem;
+        }
     }
 }

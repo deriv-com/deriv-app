@@ -4,10 +4,6 @@
     flex-direction: column;
     max-width: 65rem;
 
-    @include mobile {
-        padding: 1.6rem;
-    }
-
     &__icon {
         margin-bottom: 2.4rem;
     }

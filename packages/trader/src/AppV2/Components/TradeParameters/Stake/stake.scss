@@ -1,0 +1,27 @@
+.stake-content {
+    height: 23.6rem;
+    padding: 0 var(--component-actionSheet-spacing-padding-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        gap: var(--core-spacing-400);
+
+        &-row {
+            display: flex;
+            justify-content: space-between;
+
+            p:first-child {
+                color: var(--component-textIcon-normal-subtle);
+            }
+            &.error {
+                p:last-child {
+                    color: var(--component-textIcon-statusNormal-danger);
+                }
+            }
+        }
+    }
+}

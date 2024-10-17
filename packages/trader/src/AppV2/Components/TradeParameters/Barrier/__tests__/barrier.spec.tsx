@@ -44,38 +44,6 @@ describe('Barrier Component', () => {
         expect(screen.getByText('Barrier Input')).toBeInTheDocument();
     });
 
-    it('displays BarrierDescription on the second carousel page', async () => {
-        mockBarriers();
-        userEvent.click(screen.getByRole('textbox'));
-        await userEvent.click(screen.getByTestId('info-icon'));
-        expect(screen.getByText('Above spot:')).toBeInTheDocument();
-    });
-
-    it('closes ActionSheet on pressing primary action when on first page', async () => {
-        mockBarriers();
-        userEvent.click(screen.getByRole('textbox'));
-        expect(screen.getByText('Barrier Input')).toBeInTheDocument();
-        userEvent.click(screen.getByText(/Save/));
-        await waitFor(() => expect(screen.queryByText('Barrier Input')).not.toBeInTheDocument());
-    });
-
-    it('shows got it button on going to the description page', async () => {
-        mockBarriers();
-        userEvent.click(screen.getByRole('textbox'));
-        await userEvent.click(screen.getByTestId('info-icon'));
-        expect(screen.queryByText('Save')).not.toBeInTheDocument();
-        expect(screen.queryByText('Got it')).toBeInTheDocument();
-    });
-
-    it('should come back to main page on clicking got it button', async () => {
-        mockBarriers();
-        userEvent.click(screen.getByRole('textbox'));
-        await userEvent.click(screen.getByTestId('info-icon'));
-        expect(screen.queryByText('Got it')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('Got it'));
-        expect(screen.queryByText('Save')).toBeInTheDocument();
-    });
-
     it('detects clicking outside the ActionSheet and closes it', async () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));

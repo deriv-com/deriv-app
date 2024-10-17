@@ -1,9 +1,0 @@
-.iframe {
-    height: 100%;
-    max-width: 58.8rem;
-    border: none;
-
-    @include mobile-cashier-v2 {
-        width: 100%;
-    }
-}

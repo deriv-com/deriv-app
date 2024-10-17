@@ -2,14 +2,15 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import Error from 'Components/error';
-import NoBalance from 'Components/no-balance';
-import { Virtual } from 'Components/cashier-container';
-import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
-import PaymentAgentTransferForm from './payment-agent-transfer-form';
-import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PaymentAgentTransferForm from './payment-agent-transfer-form';
+import PageContainer from '../../components/page-container';
+import CashierLocked from '../../components/cashier-locked';
+import Error from '../../components/error';
+import NoBalance from '../../components/no-balance';
+import Virtual from '../../components/cashier-container/virtual';
+import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
+import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
@@ -38,33 +39,61 @@ const PaymentAgentTransfer = observer(() => {
     }, [onUnMount]);
 
     if (is_virtual) {
-        return <Virtual />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Virtual />
+            </PageContainer>
+        );
     }
     if (is_loading) {
-        return <Loading className='cashier__loader' />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Loading className='cashier__loader' is_fullscreen={false} />
+            </PageContainer>
+        );
     }
     if (is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
-        return <Error error={error} />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Error error={error} />
+            </PageContainer>
+        );
     }
     if (!Number(balance)) {
-        return <NoBalance />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <NoBalance />
+            </PageContainer>
+        );
     }
     if (is_try_transfer_successful) {
-        return <PaymentAgentTransferConfirm />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <PaymentAgentTransferConfirm />
+            </PageContainer>
+        );
     }
     if (is_transfer_successful) {
-        return <PaymentAgentTransferReceipt />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <PaymentAgentTransferReceipt />
+            </PageContainer>
+        );
     }
-    return <PaymentAgentTransferForm error={error} />;
+    return (
+        <PageContainer hide_breadcrumb right={<React.Fragment />}>
+            <PaymentAgentTransferForm error={error} />
+        </PageContainer>
+    );
 });
 
 export default PaymentAgentTransfer;

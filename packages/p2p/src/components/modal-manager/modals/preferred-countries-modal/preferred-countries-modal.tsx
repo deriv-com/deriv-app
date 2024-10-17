@@ -1,5 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, Text } from '@deriv/components';
+import { MobileFullPageModal, Modal, Text } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PreferredCountriesModalBody from './preferred-countries-modal-body';
@@ -12,9 +13,10 @@ type TPreferredCountriesModal = {
 };
 
 const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: TPreferredCountriesModal) => {
+    const { isDesktop } = useDevice();
     const [search_value, setSearchValue] = React.useState('');
-    const [selected_countries, setSelectedCountries] = React.useState(eligible_countries);
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open, showModal, useSavedState } = useModalManagerContext();
+    const [selected_countries, setSelectedCountries] = useSavedState('selected_countries', eligible_countries);
 
     const onApplySelectedCountries = () => {
         onApply?.(selected_countries);
@@ -22,62 +24,28 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
     };
 
     const onClear = () => setSelectedCountries([]);
+    const onLeave = () => {
+        if (selected_countries === eligible_countries) {
+            hideModal();
+        } else {
+            showModal({
+                key: 'LeavePageModal',
+                props: {},
+            });
+        }
+    };
 
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    className='preferred-countries-modal'
-                    height='65rem'
-                    is_open={is_modal_open}
-                    small
-                    title={localize('Preferred countries')}
-                    toggleModal={() => hideModal()}
-                >
-                    <Modal.Body className='preferred-countries-modal__body'>
-                        <PreferredCountriesModalBody
-                            country_list={country_list}
-                            eligible_countries={eligible_countries}
-                            search_value={search_value}
-                            setSearchValue={setSearchValue}
-                            selected_countries={selected_countries}
-                            setSelectedCountries={setSelectedCountries}
-                        />
-                    </Modal.Body>
-                    {!search_value && (
-                        <Modal.Footer className='preferred-countries-modal__footer' has_separator>
-                            <PreferredCountriesModalFooter
-                                eligible_countries={eligible_countries}
-                                onClear={onClear}
-                                onApply={onApplySelectedCountries}
-                                selected_countries={selected_countries}
-                            />
-                        </Modal.Footer>
-                    )}
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='preferred-countries-modal__body'
-                    height_offset='80px'
-                    is_flex
-                    is_modal_open={is_modal_open}
-                    page_footer_className='preferred-countries-modal__footer'
-                    pageHeaderReturnFn={hideModal}
-                    renderPageHeaderElement={
-                        <Text as='p' color='prominent' weight='bold'>
-                            <Localize i18n_default_text='Preferred countries' />
-                        </Text>
-                    }
-                    renderPageFooterChildren={() => (
-                        <PreferredCountriesModalFooter
-                            eligible_countries={eligible_countries}
-                            onClear={onClear}
-                            onApply={onApplySelectedCountries}
-                            selected_countries={selected_countries}
-                        />
-                    )}
-                >
+    if (isDesktop) {
+        return (
+            <Modal
+                className='preferred-countries-modal'
+                height='65rem'
+                is_open={is_modal_open}
+                small
+                title={localize('Preferred countries')}
+                toggleModal={onLeave}
+            >
+                <Modal.Body className='preferred-countries-modal__body'>
                     <PreferredCountriesModalBody
                         country_list={country_list}
                         eligible_countries={eligible_countries}
@@ -86,9 +54,52 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                         selected_countries={selected_countries}
                         setSelectedCountries={setSelectedCountries}
                     />
-                </MobileFullPageModal>
-            </MobileWrapper>
-        </React.Fragment>
+                </Modal.Body>
+                {!search_value && (
+                    <Modal.Footer className='preferred-countries-modal__footer' has_separator>
+                        <PreferredCountriesModalFooter
+                            eligible_countries={eligible_countries}
+                            onClear={onClear}
+                            onApply={onApplySelectedCountries}
+                            selected_countries={selected_countries}
+                        />
+                    </Modal.Footer>
+                )}
+            </Modal>
+        );
+    }
+
+    return (
+        <MobileFullPageModal
+            body_className='preferred-countries-modal__body'
+            height_offset='80px'
+            is_flex
+            is_modal_open={is_modal_open}
+            page_footer_className='preferred-countries-modal__footer'
+            pageHeaderReturnFn={onLeave}
+            renderPageHeaderElement={
+                <Text as='p' color='prominent' weight='bold'>
+                    <Localize i18n_default_text='Preferred countries' />
+                </Text>
+            }
+            renderPageFooterChildren={() => (
+                <PreferredCountriesModalFooter
+                    eligible_countries={eligible_countries}
+                    onClear={onClear}
+                    onApply={onApplySelectedCountries}
+                    selected_countries={selected_countries}
+                />
+            )}
+        >
+            <PreferredCountriesModalBody
+                country_list={country_list}
+                eligible_countries={eligible_countries}
+                search_value={search_value}
+                setSearchValue={setSearchValue}
+                selected_countries={selected_countries}
+                setSelectedCountries={setSelectedCountries}
+            />
+        </MobileFullPageModal>
     );
 };
 export default PreferredCountriesModal;

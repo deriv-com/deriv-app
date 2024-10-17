@@ -10,7 +10,7 @@
         display: flex;
         justify-content: center;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -23,10 +23,14 @@
         flex: 1;
         flex-direction: column;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-flow: column;
             width: 100vw;
+
+            @include tablet-screen {
+                width: 100%;
+            }
         }
 
         &-body {
@@ -40,11 +44,15 @@
         padding: 1.6rem;
         grid-template-columns: 3fr 2fr 2.5fr 1fr;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-template-columns: 2fr 1fr;
             min-height: 105px;
             padding: 1.6rem;
             width: 100vw;
+
+            @include tablet-screen {
+                width: 100%;
+            }
         }
     }
 
@@ -52,8 +60,14 @@
         width: 228px;
     }
 
+    .dc-tabs__list--full-width {
+        @include tablet-screen {
+            width: 100%;
+        }
+    }
+
     .dc-tabs__item {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 50%;
         }
     }
@@ -61,19 +75,19 @@
     &__list {
         height: calc(100% - 200px);
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: calc(100% - 236px);
         }
     }
 
     &__scrollbar {
-        @include tablet-up {
+        @include desktop-screen {
             height: calc(100vh - 527px);
         }
 
         position: absolute;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             bottom: 0;
             max-height: calc(100vh - 440px) !important;
             position: fixed;

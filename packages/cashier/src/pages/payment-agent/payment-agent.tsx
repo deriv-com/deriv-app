@@ -2,16 +2,16 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import CashierLocked from 'Components/cashier-locked';
-import { Virtual } from 'Components/cashier-container';
-import PaymentAgentList from './payment-agent-list';
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
+import PaymentAgentList from './payment-agent-list';
+import PageContainer from '../../components/page-container';
+import CashierLocked from '../../components/cashier-locked';
+import Virtual from '../../components/cashier-container/virtual';
+import PaymentAgentSideNote from './payment-agent-side-note';
 
-type TPaymentAgent = {
-    setSideNotes?: (notes: React.ReactNode[]) => void;
-};
-
-const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
+const PaymentAgent = observer(() => {
+    const { isDesktop } = useDevice();
     const { client } = useStore();
     const {
         is_switching,
@@ -38,22 +38,34 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     }, []);
 
     if (is_switching) {
-        return <Loading />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Loading className='cashier__loader' is_fullscreen={false} />
+            </PageContainer>
+        );
     }
 
     if (is_virtual) {
-        return <Virtual />;
+        return (
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
+                <Virtual />
+            </PageContainer>
+        );
     }
 
     if (is_cashier_locked) {
         return (
-            <div className='cashier-locked-padding'>
+            <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />
-            </div>
+            </PageContainer>
         );
     }
 
-    return <PaymentAgentList setSideNotes={setSideNotes} />;
+    return (
+        <PageContainer hide_breadcrumb right={isDesktop ? <PaymentAgentSideNote /> : <React.Fragment />}>
+            <PaymentAgentList />
+        </PageContainer>
+    );
 });
 
 export default PaymentAgent;

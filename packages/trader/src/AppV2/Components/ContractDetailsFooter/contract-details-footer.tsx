@@ -1,8 +1,8 @@
-import { Button, TButtonColor, TButtonVariant } from '@deriv-com/quill-ui';
+import React from 'react';
+import { Button, TButtonColor } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import React from 'react';
 import { observer } from 'mobx-react';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';
 import { FormatUtils } from '@deriv-com/utils';
@@ -12,7 +12,6 @@ type ContractInfoProps = {
 };
 
 type ButtonProps = {
-    variant: TButtonVariant;
     color: TButtonColor;
     size: TRegularSizesWithExtraLarge;
     fullWidth: boolean;
@@ -36,12 +35,14 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_multiplier = isMultiplierContract(contract_type);
 
     const cardLabels = getCardLabelsV2();
-    const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
+    const formatted_bid_price = FormatUtils.formatMoney(bid_price || 0, {
+        currency: currency as 'USD', // currency types mismatched between utils and shared
+    });
+    const bidDetails = !is_valid_to_cancel ? `${formatted_bid_price} ${currency}` : '';
     const label = `${cardLabels.CLOSE} ${bidDetails}`;
 
     const buttonProps: ButtonProps = {
-        variant: 'secondary',
-        color: 'black',
+        color: 'black-white',
         size: 'lg',
         fullWidth: true,
     };
@@ -50,46 +51,54 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
         <div className='contract-details-footer--container'>
             {is_multiplier ? (
                 <>
-                    <Button
-                        label={label}
-                        isLoading={is_sell_requested}
-                        disabled={Number(profit) < 0 && is_valid_to_cancel}
-                        onClick={() => onClickSell(contract_id)}
-                        {...buttonProps}
-                    />
-                    {is_valid_to_cancel && (
+                    <span className='contract-details-footer-button__wrapper'>
                         <Button
-                            onClick={() => onClickCancel(contract_id)}
-                            label={
-                                <>
-                                    {cardLabels.CANCEL}{' '}
-                                    <RemainingTime
-                                        as='span'
-                                        end_time={cancellation_date_expiry}
-                                        format='mm:ss'
-                                        className='color'
-                                        getCardLabels={getCardLabelsV2}
-                                        start_time={server_time}
-                                    />
-                                </>
-                            }
-                            disabled={Number(profit) >= 0}
+                            label={label}
+                            isLoading={is_sell_requested}
+                            disabled={Number(profit) < 0 && is_valid_to_cancel}
+                            onClick={() => onClickSell(contract_id)}
                             {...buttonProps}
                         />
+                    </span>
+                    {is_valid_to_cancel && (
+                        <span className='contract-details-footer-button__wrapper'>
+                            <Button
+                                onClick={() => onClickCancel(contract_id)}
+                                label={
+                                    <>
+                                        {cardLabels.CANCEL}{' '}
+                                        <RemainingTime
+                                            as='span'
+                                            end_time={cancellation_date_expiry}
+                                            format='mm:ss'
+                                            getCardLabels={getCardLabelsV2}
+                                            start_time={server_time}
+                                        />
+                                    </>
+                                }
+                                disabled={Number(profit) >= 0}
+                                variant='secondary'
+                                {...buttonProps}
+                            />
+                        </span>
                     )}
                 </>
             ) : (
-                <Button
-                    label={
-                        is_valid_to_sell
-                            ? `${cardLabels.CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
-                            : cardLabels.RESALE_NOT_OFFERED
-                    }
-                    isLoading={is_sell_requested && is_valid_to_sell}
-                    onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
-                    disabled={!is_valid_to_sell}
-                    {...buttonProps}
-                />
+                <span className='contract-details-footer-button__wrapper'>
+                    <Button
+                        label={
+                            is_valid_to_sell
+                                ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
+                                : cardLabels.RESALE_NOT_OFFERED
+                        }
+                        isLoading={is_sell_requested && is_valid_to_sell}
+                        isOpaque
+                        onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
+                        disabled={!is_valid_to_sell}
+                        variant='primary'
+                        {...buttonProps}
+                    />
+                </span>
             )}
         </div>
     );

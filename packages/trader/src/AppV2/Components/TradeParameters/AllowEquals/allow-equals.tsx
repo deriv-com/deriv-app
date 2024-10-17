@@ -1,16 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import clsx from 'clsx';
-import { ActionSheet, CaptionText, ToggleSwitch, Text, TextField } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { ActionSheet, ToggleSwitch, Text, Heading } from '@deriv-com/quill-ui';
+import { Localize } from '@deriv/translations';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 import { hasCallPutEqual, hasDurationForCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-type TAllowEqualsProps = {
-    is_minimized?: boolean;
-};
-
-const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
+const AllowEquals = observer(() => {
     const { contract_types_list, contract_start_type, duration_unit, expiry_type, is_equal, onChange } =
         useTraderStore();
 
@@ -29,37 +25,40 @@ const AllowEquals = observer(({ is_minimized }: TAllowEqualsProps) => {
         setIsOpen(false);
     };
 
+    const openDescription = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(() => setIsOpen(true), e);
+    };
+
+    const closeDescription = () => setIsOpen(false);
+
     if (!has_allow_equals) return null;
 
     return (
         <React.Fragment>
-            <TextField
-                variant='fill'
-                readOnly
-                label={
-                    <Localize
-                        i18n_default_text='Allow equals'
-                        key={`allow-equals${is_minimized ? '-minimized' : ''}`}
-                    />
-                }
-                value={is_equal ? localize('Enabled') : '-'}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                onClick={() => setIsOpen(true)}
-            />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <div className='allow-equals__wrapper'>
+                <Text size='sm' className='allow-equals__title' onClick={openDescription} onKeyDown={openDescription}>
+                    <Localize i18n_default_text='Allow equals' />
+                </Text>
+                <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} />
+            </div>
+            <ActionSheet.Root isOpen={is_open} onClose={closeDescription} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Header title={<Localize i18n_default_text='Allow equals' />} />
-                    <ActionSheet.Content className='allow-equals__wrapper'>
-                        <div className='allow-equals__content'>
-                            <Text>
-                                <Localize i18n_default_text='Allow equals' />
-                            </Text>
-                            <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} />
-                        </div>
-                        <CaptionText color='quill-typography__color--subtle'>
+                    <ActionSheet.Content className='allow-equals__definition__wrapper'>
+                        <Heading.H4 className='allow-equals__definition__title'>
+                            <Localize i18n_default_text='Allow equals' />
+                        </Heading.H4>
+                        <Text as='div'>
                             <Localize i18n_default_text='Win payout if exit spot is also equal to entry spot.' />
-                        </CaptionText>
+                        </Text>
                     </ActionSheet.Content>
+                    <ActionSheet.Footer
+                        alignment='vertical'
+                        primaryAction={{
+                            content: <Localize i18n_default_text='Got it' />,
+                            onAction: closeDescription,
+                        }}
+                        className='allow-equals__button'
+                    />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </React.Fragment>

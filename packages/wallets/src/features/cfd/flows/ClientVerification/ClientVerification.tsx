@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useInvalidateQuery, usePOA, usePOI, useSettings } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Loader } from '@deriv-com/ui';
@@ -12,7 +12,7 @@ type TClientVerificationProps = {
     onCompletion?: VoidFunction;
     selectedJurisdiction?: string;
 };
-type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
+type TStatusCodes = Exclude<THooks.POA['status'], undefined>;
 
 const isSubmissionRequired: Record<TStatusCodes, boolean> = {
     expired: true,
@@ -39,7 +39,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     const [isPoiJustCompleted, setIsPoiJustCompleted] = useState(false);
     const [isTaxInformationJustCompleted, setIsTaxInformationJustCompleted] = useState(false);
 
-    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading;
+    const isLoading = isAccountSettingsLoading || isPoaDataLoading || isPoiDataLoading || !selectedJurisdiction;
 
     const isPoaRequired = useMemo(
         () =>
@@ -55,21 +55,12 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
         [poaData?.status, poaData?.verified_jurisdiction, selectedJurisdiction]
     );
 
-    const isPoiRequired = useMemo(
-        () =>
-            poiData?.current.status && isSubmissionRequired[poiData?.current.status] && poiData?.previous?.status
-                ? // @ts-expect-error broken api-types for attempts/latest key in get_account_settings
-                  isSubmissionRequired[poiData.previous.status]
-                : true,
-        [poiData]
-    );
-
     const isTaxInformationRequired = useMemo(
         () => !accountSettings.has_submitted_personal_details,
         [accountSettings.has_submitted_personal_details]
     );
 
-    const shouldSubmitPoi = isPoiRequired && !isPoiJustCompleted;
+    const shouldSubmitPoi = poiData?.is_poi_required && !isPoiJustCompleted;
 
     const shouldSubmitPoa = isPoaRequired && !isPoaJustCompleted;
 
@@ -79,15 +70,39 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     const hasResubmittedDocuments =
         !shouldSubmitPoi && !shouldSubmitPoa && !shouldSubmitTaxInformation && hasVerificationFailed;
 
-    const onPoaCompletion = () => {
+    const onPoaCompletion = useCallback(() => {
         setIsPoaJustCompleted(true);
-    };
-    const onPoiCompletion = () => {
+    }, []);
+
+    const onPoiCompletion = useCallback(() => {
         setIsPoiJustCompleted(true);
-    };
-    const onTaxInformationCompletion = () => {
+    }, []);
+
+    const onTaxInformationCompletion = useCallback(() => {
         setIsTaxInformationJustCompleted(true);
-    };
+    }, []);
+
+    useEffect(() => {
+        if (
+            !(
+                isLoading ||
+                shouldSubmitPoi ||
+                shouldSubmitPoa ||
+                shouldSubmitTaxInformation ||
+                hasResubmittedDocuments
+            ) &&
+            onCompletion
+        ) {
+            onCompletion();
+        }
+    }, [
+        isLoading,
+        shouldSubmitPoi,
+        shouldSubmitPoa,
+        shouldSubmitTaxInformation,
+        hasResubmittedDocuments,
+        onCompletion,
+    ]);
 
     if (isLoading) return <Loader />;
 
@@ -100,7 +115,7 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
     }
 
     if (shouldSubmitTaxInformation) {
-        return <TaxInformation onCompletion={onTaxInformationCompletion} />;
+        return <TaxInformation onCompletion={onTaxInformationCompletion} selectedJurisdiction={selectedJurisdiction} />;
     }
 
     if (hasResubmittedDocuments) {
@@ -119,9 +134,6 @@ const ClientVerification: React.FC<TClientVerificationProps> = ({
                 }}
             />
         );
-    } else if (onCompletion) {
-        // proceed to MT5 account creation
-        onCompletion();
     }
 
     return null;

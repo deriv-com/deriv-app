@@ -246,6 +246,10 @@ type KycAuthStatus = {
          * Current POA status.
          */
         status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+        /**
+         * Supported documents per document_type.
+         */
+        supported_documents?: string[];
     };
     /**
      * POI authentication status details.
@@ -1627,7 +1631,7 @@ type TPrivateSocketEndpoints = {
                       /**
                        * This needs to be removed after updating api-types version
                        */
-                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
                       /**
                        * Legal requirements for the Landing Company
                        */
@@ -2238,13 +2242,44 @@ type TWhiteLabelLinks = {
 
 type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
     white_label_links: TWhiteLabelLinks['white_label_links'];
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
 };
 
 type MT5AccountListResponse = {
     mt5_login_list?: TExtendedMT5AccounListType[];
 };
 
+type TExtendTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
+    /**
+     * Product Type
+     */
+    product?: 'zero_spread' | 'swap_free' | 'standard' | 'financial';
+};
+
+type TExtendTransferBetweenAccountsResponse = TransferBetweenAccountsResponse & {
+    accounts?: TExtendTransferAccount[];
+};
+
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };
+
+type TradingPlatformStatusRequest = {
+    trading_platform_status: 1;
+};
+
+type TradingPlatformStatusResponse = {
+    trading_platform_status: {
+        platform: Exclude<
+            NonNullable<
+                TSocketEndpoints['trading_platform_accounts']['response']['trading_platform_accounts']
+            >[0]['platform'],
+            undefined
+        >;
+        status: 'active' | 'maintenance' | 'unavailable';
+    }[];
+};
 
 interface IExtendedAccountListResponse extends AccountListResponse {
     account_list?: TAccountList[];
@@ -2687,6 +2722,10 @@ type TSocketEndpoints = {
         request: TradingPlatformPasswordResetRequest;
         response: TradingPlatformPasswordResetResponse;
     };
+    trading_platform_status: {
+        request: TradingPlatformStatusRequest;
+        response: TradingPlatformStatusResponse;
+    };
     trading_servers: {
         request: ServerListRequest;
         response: ServerListResponse;
@@ -2701,7 +2740,7 @@ type TSocketEndpoints = {
     };
     transfer_between_accounts: {
         request: TransferBetweenAccountsRequest;
-        response: TransferBetweenAccountsResponse;
+        response: TExtendTransferBetweenAccountsResponse;
     };
     unsubscribe_email: {
         request: UnsubscribeEmailRequest;

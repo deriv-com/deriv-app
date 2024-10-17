@@ -1,12 +1,11 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-
-import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv/components';
+import { Icon, Input } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
+import { useDevice } from '@deriv-com/ui';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../types';
 
@@ -62,7 +61,7 @@ const CryptoFiatConverter = observer(
     }: TCryptoFiatConverterProps) => {
         const { crypto_fiat_converter } = useCashierStore();
         const { exchange_rates } = useExchangeRate();
-
+        const { isDesktop } = useDevice();
         const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount } =
             crypto_fiat_converter;
 
@@ -107,10 +106,7 @@ const CryptoFiatConverter = observer(
                         />
                     )}
                 </Field>
-                <MobileWrapper>
-                    {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
-                </MobileWrapper>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <div className='crypto-fiat-converter__arrow-container'>
                         {arrow_icon_direction === 'right' ? (
                             <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
@@ -118,7 +114,11 @@ const CryptoFiatConverter = observer(
                             <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
                         )}
                     </div>
-                </DesktopWrapper>
+                ) : arrow_icon_direction === 'right' ? (
+                    <Icon icon='IcArrowDownBold' />
+                ) : (
+                    <Icon icon='IcArrowUpBold' />
+                )}
                 <Field name='converter_to_amount' validate={validateToAmount}>
                     {({ field }: FieldProps<string>) => (
                         <InputGroup className='input-group'>

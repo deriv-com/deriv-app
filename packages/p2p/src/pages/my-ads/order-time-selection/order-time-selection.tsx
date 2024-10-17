@@ -1,9 +1,9 @@
 import React from 'react';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useStore } from '@deriv/stores';
 import { useP2PSettings } from '@deriv/hooks';
 import { formatTime } from 'Utils/orders';
 
@@ -27,10 +27,9 @@ const OrderTimeSelection = ({
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();
     const { order_completion_time } = values;
     const { showModal } = useModalManagerContext();
+    const { isDesktop } = useDevice();
     const { p2p_settings } = useP2PSettings();
     const { order_expiry_options } = p2p_settings ?? {};
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const order_time_info_message = localize('Orders will expire if they aren’t completed within this time.');
 
     const getOrderExpiryOptions = (
@@ -67,7 +66,7 @@ const OrderTimeSelection = ({
                             data_testid='dt_order_time_selection_info_icon'
                             icon='IcInfoOutline'
                             onClick={() =>
-                                is_mobile &&
+                                !isDesktop &&
                                 showModal({ key: 'OrderTimeTooltipModal', props: { order_time_info_message } })
                             }
                         />

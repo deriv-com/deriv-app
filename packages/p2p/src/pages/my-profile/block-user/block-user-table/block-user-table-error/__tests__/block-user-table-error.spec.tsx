@@ -16,10 +16,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
 describe('<BlockUserTableError />', () => {
@@ -27,7 +25,7 @@ describe('<BlockUserTableError />', () => {
         render(<BlockUserTableError error_message='test error' />);
 
         expect(screen.getByText('Blocked advertisers')).toBeInTheDocument();
-        expect(screen.getAllByText('test error')).toHaveLength(2);
+        expect(screen.getByText('test error')).toBeInTheDocument();
     });
 
     it('should call setActiveTab when clicking return icon', () => {

@@ -7,6 +7,7 @@ import { useP2PCompletedOrdersNotification, useP2PSettings, useGrowthbookGetFeat
 import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
@@ -18,6 +19,7 @@ import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
+    const is_production = process.env.NODE_ENV === 'production';
     const [is_p2p_standalone_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,
@@ -26,7 +28,7 @@ const App = () => {
     const { balance, currency, is_logging_in, loginid } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const { setP2POrderProps, setP2PRedirectTo } = notifications;
 
     const history = useHistory();
@@ -40,11 +42,20 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
-
     useP2PCompletedOrdersNotification();
+
+    // TODO: This will redirect the internal users to the standalone application temporarily. Remove this once the standalone application is ready.
+    React.useEffect(() => {
+        if (isGBLoaded) {
+            if (is_p2p_standalone_enabled) {
+                window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+            }
+        }
+    }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
 
     React.useEffect(() => {
         init();
+        general_store.setListItemLimit(isDesktop ? 10 : 50);
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
@@ -167,7 +178,7 @@ const App = () => {
 
         setActionParam(url_params.get('action'));
 
-        if (is_mobile) {
+        if (!isDesktop) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {
             if (url_params.has('code')) {
@@ -210,7 +221,7 @@ const App = () => {
         input_order_id => {
             const current_query_params = new URLSearchParams(location.search);
 
-            if (is_mobile) {
+            if (!isDesktop) {
                 current_query_params.delete('action');
                 current_query_params.delete('code');
             }
@@ -287,15 +298,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    // TODO: This will redirect the internal users to the standalone application temporarily. Remove this once the standalone application is ready.
-    React.useEffect(() => {
-        if (isGBLoaded) {
-            if (is_p2p_standalone_enabled) {
-                window.location.href = URLConstants.derivP2pProduction;
-            }
-        }
-    }, [isGBLoaded, is_p2p_standalone_enabled]);
-    if (is_logging_in || general_store.is_loading) {
+    if (is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
         return <Loading className='p2p__loading' />;
     }
 

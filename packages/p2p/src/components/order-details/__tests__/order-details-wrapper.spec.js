@@ -1,17 +1,12 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
 import OrderDetailsWrapper from '../order-details-wrapper.jsx';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(),
-}));
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
 }));
 
 const mockUseStores = () => {
@@ -25,7 +20,7 @@ beforeAll(() => mockUseStores());
 
 describe('<OrderDetailsWrapper />', () => {
     it('Should render component on mobile version', async () => {
-        isMobile.mockReturnValue(true);
+        useDevice.mockReturnValueOnce({ isDesktop: false });
         const mobile_props = {
             className: 'order-details',
             body_className: 'order-details__body',
@@ -44,7 +39,7 @@ describe('<OrderDetailsWrapper />', () => {
     });
 
     it('Should render component on desktop version', async () => {
-        isMobile.mockReturnValue(false);
+        useDevice.mockReturnValueOnce({ isDesktop: true });
         const desktop_props = {
             onClick: jest.fn(),
             page_title: 'desktop test',
@@ -59,7 +54,7 @@ describe('<OrderDetailsWrapper />', () => {
     });
 
     it('when complain svg icon is clicked', () => {
-        isMobile.mockReturnValue(true);
+        useDevice.mockReturnValueOnce({ isDesktop: false });
         const setShouldShowChatModalFn = jest.fn();
         jest.spyOn(React, 'useState').mockImplementation(init => [init, setShouldShowChatModalFn]);
 

@@ -22,9 +22,12 @@ export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
         light: 'f528c662c377601908a741ae2aedaec6',
         dark: '4c05445e1bd28f3f9f95b0ab566c4f9b',
     },
+    turbos: {
+        light: '63f8b8f93e83e98481f20aa971ef7723',
+        dark: 'ce0158579fcee186de1ddeb97646f892',
+    },
     match_diff: {
         light: '8693a02397d284ffcf0608e4fda702d9',
-
         dark: '2e56ad7ea67bf3f9a869de6336df1796',
     },
     multiplier: {
@@ -48,6 +51,12 @@ export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
         light: '9b8b6ae67d3a720e4aee2665889d17fb',
         dark: '8f04e9d768b8e08a1d87830c95c6b9c8',
     },
+};
+
+// The ids here won't have dark and light theme
+export const UNIFIED_MODE_VIDEO_ID = {
+    accumulator_stats: 'cfd0bd25af245c1c987106a247cbb81a',
+    trade_type_selection: '1cdaad4ac6590837175563971e6bfb8e',
 };
 
 export const getDescriptionVideoId = (contract_type = '', is_dark_theme = false) =>

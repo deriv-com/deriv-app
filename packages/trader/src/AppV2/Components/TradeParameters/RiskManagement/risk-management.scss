@@ -1,0 +1,130 @@
+$HANDLEBAR_HEIGHT: var(--core-size-1000);
+$HEADER_TITLE_HEIGHT: var(--core-size-3200);
+$SEGMENTED_CONTROL: var(--core-size-2000);
+$FOOTER_BUTTON_HEIGHT: var(--core-size-4000);
+
+.deal-cancellation {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT);
+        gap: var(--core-spacing-400);
+    }
+
+    &__toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--core-spacing-400) 0;
+        margin-block-start: var(--core-spacing-400);
+    }
+
+    &__wheel-picker {
+        flex-grow: 1;
+        min-height: 0;
+    }
+}
+
+.take-profit {
+    &__wrapper {
+        position: relative;
+        height: calc(400px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $FOOTER_BUTTON_HEIGHT);
+        padding-block: 0;
+    }
+
+    &__accu-information {
+        position: absolute;
+        bottom: 0;
+        inset-inline-start: var(--component-actionSheet-spacing-padding-md);
+    }
+
+    &__warning {
+        margin-block-start: var(--core-spacing-800);
+    }
+
+    &__content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-block: var(--core-spacing-400);
+    }
+
+    &__overlay {
+        all: unset;
+        height: var(--core-size-2800);
+        width: calc(100vw - var(--core-spacing-1600));
+        position: absolute;
+        top: var(--core-spacing-2200);
+        left: var(--core-spacing-800);
+    }
+}
+
+.risk-management {
+    &__carousel {
+        & > .carousel__item {
+            height: 100%;
+        }
+        .trade-param-definition {
+            height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+        }
+        &--small {
+            .risk-management__picker {
+                height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+            }
+            .risk-management__tp-sl__wrapper {
+                height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+            }
+            .trade-param-definition {
+                height: calc(90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+                max-height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+            }
+            .deal-cancellation {
+                &__container {
+                    height: calc(
+                        90dvh - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT
+                    );
+                    max-height: calc(
+                        480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL - $FOOTER_BUTTON_HEIGHT
+                    );
+                }
+            }
+        }
+    }
+
+    &__picker {
+        height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT);
+        padding-block: 0;
+    }
+
+    &__save-button {
+        margin: var(--core-spacing-800) 0;
+    }
+
+    &__description {
+        height: unset;
+
+        &__definition {
+            margin-block-end: var(--core-spacing-800);
+        }
+    }
+
+    &__tp-sl {
+        padding: 0;
+        flex-grow: 0;
+        min-height: 140px;
+        height: 140px;
+
+        &__wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(480px - $HANDLEBAR_HEIGHT - $HEADER_TITLE_HEIGHT - $SEGMENTED_CONTROL);
+        }
+
+        .take-profit__overlay {
+            inset-inline-start: 0;
+        }
+    }
+}

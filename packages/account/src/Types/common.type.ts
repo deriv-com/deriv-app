@@ -12,8 +12,16 @@ import {
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
     ApiToken,
+    GetSettings,
 } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
+import {
+    AUTH_STATUS_CODES,
+    CFD_PLATFORMS,
+    MT5_ACCOUNT_STATUS,
+    Platforms,
+    TRADING_PLATFORM_STATUS,
+} from '@deriv/shared';
+import { TinValidations } from '@deriv/api/types';
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
 
@@ -109,6 +117,7 @@ export type TPOIStatus = {
     redirect_button?: React.ReactElement;
     is_from_external?: boolean;
     is_manual_upload?: boolean;
+    service?: string;
 };
 
 export type TConfirmPersonalDetailsForm = Pick<
@@ -275,7 +284,9 @@ export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 
-export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+export type TMT5AccountStatus =
+    | typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS]
+    | typeof TRADING_PLATFORM_STATUS[keyof typeof TRADING_PLATFORM_STATUS];
 
 export type TFilesDescription = {
     descriptions: { id: string; value: JSX.Element }[];
@@ -316,3 +327,63 @@ export type TListItem = {
      */
     value?: string;
 };
+
+export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
+    date_of_birth?: string;
+    tax_identification_confirm?: boolean;
+    tin_skipped?: 0 | 1;
+};
+
+export type TEmployeeDetailsTinValidationConfig = {
+    tin_config: TinValidations;
+    is_mf?: boolean;
+    is_real?: boolean;
+    is_tin_auto_set?: boolean;
+};
+
+type ReqRule = ['req', React.ReactNode];
+
+type LengthRule = ['length', React.ReactNode, { min: number; max: number }];
+
+type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
+
+type CustomValidator = (
+    value: string,
+    /**
+     * The options passed to the validation function
+     */
+    options: Record<string, unknown>,
+    /**
+     * The values of all fields in the form
+     */
+    values: Record<string, unknown>
+) => React.ReactNode;
+
+type CustomRule = [CustomValidator, React.ReactNode];
+
+type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
+
+export type TGetField = {
+    label: React.ReactNode;
+    /**
+     * The type of the input field (e.g. 'text', 'password', 'select', etc.)
+     */
+    type?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
+    /**
+     * The list of items for the dropdown or select
+     */
+    list_items?: TListItem[];
+    /**
+     * The validation rules for the input field (e.g. 'req', 'length', 'regular', etc.)
+     */
+    rules?: Array<Rule>;
+};
+
+export type TPOAFormState = Record<
+    'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form',
+    boolean
+>;

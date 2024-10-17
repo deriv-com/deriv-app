@@ -3,6 +3,7 @@ import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingSideNotes from '../cashier-onboarding-side-notes';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -18,10 +19,15 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isMobile: false })),
+}));
+
 describe('CashierOnboardingSideNotes', () => {
     test('should render CashierOnboardingSideNoteFiat on mobile if is_crypto is false', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
         const mock = mockStore({
-            ui: { is_mobile: true },
             client: { currency: 'USD' },
         });
 
@@ -34,8 +40,8 @@ describe('CashierOnboardingSideNotes', () => {
     });
 
     test('should render CashierOnboardingSideNoteCrypto on mobile on mobile if is_crypto is true', async () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
         const mock = mockStore({
-            ui: { is_mobile: true },
             client: { currency: 'BTC' },
             modules: {
                 cashier: {

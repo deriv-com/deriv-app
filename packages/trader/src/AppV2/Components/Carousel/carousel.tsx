@@ -1,17 +1,29 @@
 import React from 'react';
 import CarouselHeader from './carousel-header';
+import { useSwipeable } from 'react-swipeable';
 import clsx from 'clsx';
 
 type TCarousel = {
     classname?: string;
-    header: typeof CarouselHeader;
+    current_index?: number;
+    header?: typeof CarouselHeader;
+    is_swipeable?: boolean;
+    is_infinite_loop?: boolean;
     pages: { id: number; component: JSX.Element }[];
     title?: React.ReactNode;
-    current_index?: number;
     setCurrentIndex?: (arg: number) => void;
 };
 
-const Carousel = ({ classname, header, pages, current_index, setCurrentIndex, title }: TCarousel) => {
+const Carousel = ({
+    classname,
+    current_index,
+    header,
+    is_swipeable,
+    is_infinite_loop,
+    pages,
+    setCurrentIndex,
+    title,
+}: TCarousel) => {
     const [internalIndex, setInternalIndex] = React.useState(0);
 
     const HeaderComponent = header;
@@ -20,24 +32,37 @@ const Carousel = ({ classname, header, pages, current_index, setCurrentIndex, ti
     const index = isControlled ? current_index : internalIndex;
 
     const handleNextClick = () => {
+        if (!is_infinite_loop && index + 1 >= pages.length) return;
         const newIndex = (index + 1) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
     };
 
     const handlePrevClick = () => {
+        if (!is_infinite_loop && index - 1 < 0) return;
         const newIndex = (index - 1 + pages.length) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
     };
 
+    const swipe_handlers = useSwipeable({
+        onSwipedLeft: handleNextClick,
+        onSwipedRight: handlePrevClick,
+    });
+
     return (
         <React.Fragment>
-            <HeaderComponent
-                current_index={index}
-                onNextClick={handleNextClick}
-                onPrevClick={handlePrevClick}
-                title={title}
-            />
-            <ul className={clsx('carousel', classname)} data-testid='dt_carousel'>
+            {HeaderComponent && (
+                <HeaderComponent
+                    current_index={index}
+                    onNextClick={handleNextClick}
+                    onPrevClick={handlePrevClick}
+                    title={title}
+                />
+            )}
+            <ul
+                className={clsx('carousel', classname)}
+                data-testid='dt_carousel'
+                {...(is_swipeable ? swipe_handlers : {})}
+            >
                 {pages.map(({ component, id }) => (
                     <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>
                         {component}

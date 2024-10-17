@@ -28,7 +28,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // We will add a refactor after this
     setInterval(() => {
         if (enable_freshworks_live_chat) {
-            window.LiveChatWidget?.call('minimize');
+            window.LiveChatWidget?.call('destroy');
         }
     }, 10);
 

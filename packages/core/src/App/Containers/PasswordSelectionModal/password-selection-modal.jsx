@@ -29,18 +29,20 @@ const PasswordSelectionModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
-            cacheTrackEvents.pageLoadEvent({
-                page: 'onboarding',
-                event: {
-                    name: 'ce_open_form',
-                    properties: {
-                        action: 'password_screen',
-                        form_source: window.location.hostname,
-                        form_name: 'default_diel_deriv',
-                        url: window.location.href,
+            cacheTrackEvents.pageLoadEvent([
+                {
+                    page: 'onboarding',
+                    event: {
+                        name: 'ce_virtual_signup_form',
+                        properties: {
+                            action: 'password_screen_opened',
+                            form_name: is_mobile
+                                ? 'virtual_signup_web_mobile_default'
+                                : 'virtual_signup_web_desktop_default',
+                        },
                     },
                 },
-            });
+            ]);
 
             // Analytics.trackEvent('ce_virtual_signup_form', {
             //     action: 'password_screen_opened',

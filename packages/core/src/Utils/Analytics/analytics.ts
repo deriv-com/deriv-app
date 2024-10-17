@@ -1,27 +1,28 @@
 import { Analytics } from '@deriv-com/analytics';
 
+interface Payload {
+    type: string;
+    anonymousId: string;
+}
+
 type ResponseData = {
     url: string;
     method: string;
     status: number;
     headers: string;
     data: string;
-    payload: any;
+    payload: Payload;
 };
-
 type Event = {
     name: string;
-    properties: Record<string, any>;
+    properties: Record<string, string>;
     cache?: boolean;
 };
-
 type Item = {
-    element: Element | string;
     event: Event;
     cache?: boolean;
     callback?: (e: Event) => Event;
 };
-
 const cacheTrackEvents = {
     interval: null as NodeJS.Timeout | null,
     responses: [] as ResponseData[],
@@ -37,25 +38,20 @@ const cacheTrackEvents = {
             }
             return hash;
         };
-
         const base64Encode = (string: string): string => btoa(string);
-
         const hash = fnv1aHash(inputString).toString(16);
         let combined = base64Encode(hash);
-
         while (combined.length < desiredLength) {
             combined += base64Encode(fnv1aHash(combined).toString(16));
         }
-
         return combined.substring(0, desiredLength);
     },
-    getCookies: (name: string): any => {
+    getCookies: (name: string): string | null => {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) {
             const part = parts.pop();
             const cookieValue = part ? decodeURIComponent(part.split(';').shift()!) : null;
-
             try {
                 return cookieValue ? JSON.parse(cookieValue) : null;
             } catch (e) {
@@ -76,22 +72,19 @@ const cacheTrackEvents = {
             }
         });
     },
-
     isReady: (): boolean => {
         if (typeof Analytics === 'undefined' || Analytics === null) {
             return false;
         }
-
-        const instances = (window as any).Analytics.Analytics.getInstances();
+        const instances = Analytics?.getInstances();
         return !!instances?.tracking;
     },
-    parseCookies: (cookieName: string): any => {
+    parseCookies: (cookieName: string): Event[] | null => {
         const cookies = document.cookie.split('; ').reduce((acc: Record<string, string>, cookie) => {
             const [key, value] = cookie.split('=');
             acc[decodeURIComponent(key)] = decodeURIComponent(value);
             return acc;
         }, {});
-
         return JSON.parse(cookies[cookieName] || 'null');
     },
     isPageViewSent: (): boolean =>
@@ -99,38 +92,32 @@ const cacheTrackEvents = {
     set: (event: Event) => {
         cacheTrackEvents.push('cached_analytics_events', event);
     },
-    push: (cookieName: string, data: any) => {
-        let storedCookies: any[] = [];
+    push: (cookieName: string, data: Event) => {
+        let storedCookies: Event[] = [];
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-
         document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.deriv.com`;
     },
     processEvent: (event: Event): Event => {
         const clientInfo = cacheTrackEvents.getCookies('client_information');
-
         if (clientInfo) {
-            const { email = null } = clientInfo;
-
+            const { email = null } = JSON.parse(clientInfo);
             if (email) {
                 event.properties.email_hash = cacheTrackEvents.hash(email);
             }
         }
-
         if (event?.properties?.email) {
             const email = event.properties.email;
             delete event.properties.email;
             event.properties.email_hash = cacheTrackEvents.hash(email);
         }
-
         return event;
     },
     track: (originalEvent: Event, cache: boolean) => {
-        const event = cacheTrackEvents.processEvent(originalEvent);
-
+        const event: any = cacheTrackEvents.processEvent(originalEvent);
         if (cacheTrackEvents.isReady() && !cache) {
-            (window as any).Analytics.Analytics.trackEvent(event.name, event.properties);
+            Analytics?.trackEvent(event.name, event.properties);
         } else {
             cacheTrackEvents.set(event);
         }
@@ -139,18 +126,11 @@ const cacheTrackEvents = {
         if (!cacheTrackEvents.isTrackingResponses) {
             cacheTrackEvents.trackPageUnload();
         }
-
         let pageViewInterval: NodeJS.Timeout | null = null;
-
         pageViewInterval = setInterval(() => {
-            if (
-                (window as any).Analytics !== 'undefined' &&
-                (window as any).Analytics.Analytics?.pageView === 'function' &&
-                cacheTrackEvents.isReady()
-            ) {
-                (window as any).Analytics.pageView(window.location.href);
+            if (Analytics !== undefined && typeof Analytics?.pageView === 'function' && cacheTrackEvents.isReady()) {
+                Analytics?.pageView(window.location.href);
             }
-
             if (cacheTrackEvents.isPageViewSent()) {
                 clearInterval(pageViewInterval!);
             }
@@ -167,18 +147,15 @@ const cacheTrackEvents = {
                 false
             );
         });
-
         return cacheTrackEvents;
     },
     pageLoadEvent: (
         items: Array<{ pages?: string[]; excludedPages?: string[]; event: Event; callback?: () => Event }>
     ) => {
         const pathname = window.location.pathname.slice(1);
-
         if (!Array.isArray(items)) {
             return cacheTrackEvents;
         }
-
         items.forEach(({ pages = [], excludedPages = [], event, callback = null }) => {
             let dispatch = false;
             if (pages.length) {
@@ -192,20 +169,16 @@ const cacheTrackEvents = {
             } else {
                 dispatch = true;
             }
-
             if (dispatch) {
                 const eventData = callback ? callback() : event;
                 cacheTrackEvents.loadEvent([
                     {
                         event: eventData,
-                        element: '', // Assuming an empty string since it's not used
                     },
                 ]);
             }
         });
-
         return cacheTrackEvents;
     },
 };
-
 export default cacheTrackEvents;

@@ -11,6 +11,7 @@ type THistory = TContractStore['contract_update_history'];
 type TContractHistory = {
     currency?: string;
     history?: [] | THistory;
+    is_multiplier?: boolean;
 };
 
 type TPagination = {
@@ -18,22 +19,17 @@ type TPagination = {
     totalPageCount: number;
 };
 
-const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
+const TakeProfitHistory = ({ history = [], currency, is_multiplier }: TContractHistory) => {
     const [current_page, setCurrentPage] = useState(0);
     const items_per_page = 4;
     const total_pages = Math.ceil(history.length / items_per_page);
-    const has_tp = history.some(item => item.order_type === 'take_profit' || item.display_name === 'Take profit');
-    const has_sl = history.some(item => item.order_type === 'stop_loss' || item.display_name === 'Stop loss');
 
     const handlePageChange = React.useCallback((pagination: TPagination) => {
         setCurrentPage(pagination.currentPage - 1);
     }, []);
 
-    const getHistoryTitle = () => {
-        if (has_tp && has_sl) return <Localize i18n_default_text='TP & SL history' />;
-        if (has_tp) return <Localize i18n_default_text='TP history' />;
-        if (has_sl) return <Localize i18n_default_text='SL history' />;
-    };
+    const getHistoryTitle = () =>
+        is_multiplier ? <Localize i18n_default_text='TP & SL history' /> : <Localize i18n_default_text='TP history' />;
 
     if (!history.length) return null;
 

@@ -89,6 +89,7 @@ const TakeProfitHistory = ({ history = [], currency, is_multiplier }: TContractH
             </div>
             {total_pages > 1 && (
                 <Pagination
+                    initialPage={current_page + 1}
                     contentLength={history.length}
                     contentPerPage={items_per_page}
                     hideChevron

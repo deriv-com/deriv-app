@@ -465,6 +465,7 @@ import './common/ic-jeton-dark.svg';
 import './common/ic-jeton-light.svg';
 import './common/ic-language.svg';
 import './common/ic-less-than-eight.svg';
+import './common/ic-light-orders-default.svg';
 import './common/ic-linux-logo.svg';
 import './common/ic-linux.svg';
 import './common/ic-live-chat.svg';

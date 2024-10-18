@@ -20,6 +20,7 @@ import './app.scss';
 
 const App = () => {
     const is_production = window.location.origin === URLConstants.derivAppProduction;
+
     const [is_p2p_standalone_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,
@@ -48,7 +49,13 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                const current_url = window.location.href;
+                const split_url = current_url.split('/redirect/p2p')[1] || '';
+                const target_url = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                const redirection_url = target_url + split_url;
+                // window.location.href = targetUrl + splitUrl;
+                /* eslint-disable no-console */
+                console.log('targetUrl', redirection_url);
             }
         }
     }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
@@ -178,6 +185,8 @@ const App = () => {
 
         setActionParam(url_params.get('action'));
 
+        //https://localhost:8443/redirect/p2p?action=p2p_order_confirm&order_id=134&code=nUTUKsG4&lang=EN
+        //http://localhost:5173/redirect/p2p?action=p2p_order_confirm&order_id=134&code=rPTLI09i&lang=EN
         if (!isDesktop) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {

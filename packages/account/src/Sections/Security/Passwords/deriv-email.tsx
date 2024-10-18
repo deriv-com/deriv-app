@@ -1,12 +1,13 @@
 import { Fragment, useState } from 'react';
-import { Button, Text, Input } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';
 import UnlinkAccountModal from '../../../Components/unlink-account-modal';
+import { Divider } from '@deriv-com/ui';
+import EmailPasswordTitle from './email-password-title';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 
@@ -44,24 +45,16 @@ const DerivEmail = observer(() => {
 
     return (
         <Fragment>
-            <FormSubHeader title={localize('Email address')} />
             <div className='account__email-wrapper'>
-                <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
-                    <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
+                <EmailPasswordTitle icon='email' title={localize('Email address')} />
+                <Text as='p' color='prominent' size='xs'>
+                    <Localize
+                        i18n_default_text='This is the email address associated with your Deriv account. <0>{{ email }}</0>'
+                        components={[<Text key={0} as='span' weight='bold' size='xs' />]}
+                        values={{ email }}
+                    />
                 </Text>
-                <div className='email-platform__content'>
-                    <fieldset className='email-platform__content__fieldset'>
-                        <Input
-                            className='email-input'
-                            data-lpignore='true'
-                            type='text'
-                            name='email'
-                            id='email'
-                            label={localize('Email address*')}
-                            value={email}
-                            disabled={true}
-                        />
-                    </fieldset>
+                <div className='account__email-wrapper__button-container'>
                     {!is_from_derivgo && (
                         <Button
                             className='email-change_button'
@@ -72,7 +65,7 @@ const DerivEmail = observer(() => {
                             is_loading={false}
                             text={localize('Change email')}
                             large
-                            primary
+                            secondary
                         />
                     )}
                 </div>
@@ -90,6 +83,7 @@ const DerivEmail = observer(() => {
                     has_live_chat={true}
                     is_modal_when_mobile={true}
                 />
+                <Divider className='account__divider' />
             </div>
         </Fragment>
     );

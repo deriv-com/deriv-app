@@ -19,6 +19,11 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
     const isGBLoaded = useIsGrowthbookIsLoaded();
     const isMounted = useIsMounted();
 
+    // Required for debugging Growthbook, this will be removed after Freshchat launch
+    if (typeof window !== 'undefined') {
+        window.Analytics = Analytics;
+    }
+
     useEffect(() => {
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {

@@ -75,7 +75,7 @@ const CompareAccountsDescription = ({
             {!isDemo && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size={isTablet ? 'md' : 'xl'} weight='bold'>
+                        <Text align='center' as='h1' size={isTablet ? 'md' : 'sm'} weight='bold'>
                             {jurisdictionData.counterparty_company}
                         </Text>
                         <Text align='center' as='p' size='2xs'>

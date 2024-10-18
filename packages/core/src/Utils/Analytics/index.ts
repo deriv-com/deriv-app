@@ -41,6 +41,7 @@ export const AnalyticsInitializer = async () => {
                         utm_campaign: ppc_campaign_cookies?.utm_campaign,
                         utm_content: ppc_campaign_cookies?.utm_content,
                         domain: window.location.hostname,
+                        url: window.location.href,
                     },
                 },
             };

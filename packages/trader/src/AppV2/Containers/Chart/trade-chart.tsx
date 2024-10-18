@@ -9,18 +9,15 @@ import AccumulatorsChartElements from 'Modules/SmartChart/Components/Markers/acc
 import ToolbarWidgets from 'Modules/SmartChart/Components/toolbar-widgets';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import useDefaultSymbol from 'AppV2/Hooks/useDefaultSymbol';
-import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 
 type TBottomWidgetsParams = {
     digits: number[];
     tick: TickSpotData | null;
 };
-type TBottomWidgetsMobile = TBottomWidgetsParams & {
-    setDigitStats: (digits: number[]) => void;
-    setTickData: (tick: TickSpotData | null) => void;
-};
 
-const BottomWidgetsMobile = ({ digits, tick, setTickData, setDigitStats }: TBottomWidgetsMobile) => {
+const BottomWidgetsMobile = observer(({ digits, tick }: TBottomWidgetsParams) => {
+    const { setDigitStats, setTickData } = useTraderStore();
+
     // Using bottom widgets in V2 to get tick data for all trade types and to get digit stats for Digit trade types
     React.useEffect(() => {
         setTickData(tick);
@@ -29,12 +26,14 @@ const BottomWidgetsMobile = ({ digits, tick, setTickData, setDigitStats }: TBott
 
     React.useEffect(() => {
         setDigitStats(digits);
+        // For digits array, which is coming from SmartChart, reference is not always changing.
+        // As it is the same, this useEffect was not triggered on every array update.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [digits]);
+    }, [digits.join('-')]);
 
     // render no bottom widgets on chart
     return null;
-};
+});
 
 const TradeChart = observer(() => {
     const { ui, common, contract_trade, portfolio } = useStore();
@@ -65,8 +64,6 @@ const TradeChart = observer(() => {
         has_barrier,
         main_barrier_flattened: main_barrier,
         setChartStatus,
-        setDigitStats,
-        setTickData,
         show_digits_stats,
         onChange,
         prev_contract_type,
@@ -75,7 +72,6 @@ const TradeChart = observer(() => {
         wsSendRequest,
         wsSubscribe,
     } = useTraderStore();
-    const is_digit_trade_type = isDigitTradeType(contract_type);
     const is_accumulator = isAccumulatorContract(contract_type);
     const settings = {
         countdown: is_chart_countdown_visible,
@@ -88,19 +84,6 @@ const TradeChart = observer(() => {
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
-
-    const bottomWidgets = React.useCallback(({ digits, tick }: TBottomWidgetsParams) => {
-        return (
-            <BottomWidgetsMobile digits={digits} tick={tick} setTickData={setTickData} setDigitStats={setDigitStats} />
-        );
-    }, []);
-
-    const chartKey = React.useMemo(() => {
-        if (is_digit_trade_type) {
-            return symbol;
-        }
-        return null;
-    }, [symbol, is_digit_trade_type]);
 
     React.useEffect(() => {
         if ((is_accumulator || show_digits_stats) && ref.current?.hasPredictionIndicators()) {
@@ -133,11 +116,10 @@ const TradeChart = observer(() => {
     if (!symbol || !active_symbols.length) return null;
     return (
         <SmartChart
-            key={chartKey}
             ref={ref}
             barriers={barriers}
             contracts_array={markers_array}
-            bottomWidgets={bottomWidgets}
+            bottomWidgets={BottomWidgetsMobile}
             crosshair={isMobile ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats

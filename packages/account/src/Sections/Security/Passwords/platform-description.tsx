@@ -1,40 +1,18 @@
 import { Localize } from '@deriv-com/translations';
+import { getBrandWebsiteName, getPlatformSettings } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
-type TPlatformDescription = {
-    brand_website_name: string;
-    platform_values: {
-        platform_name_trader: string;
-        platform_name_dbot: string;
-        platform_name_smarttrader: string;
-        platform_name_go: string;
-        platform_name_ctrader: string;
-    };
-    is_eu_user: boolean;
-    financial_restricted_countries: boolean;
-};
-
-/**
- * Renders description for the platforms.
- * @name PlatformDescription
- * @param brand_website_name -  Name of the website
- * @param platform_values - Object containing platform names
- * @param is_eu_user - Boolean value to check if user is from EU
- * @param financial_restricted_countries - Boolean value to check if user is from a restricted country
- * @returns Returns a react node
- */
-const PlatformDescription = ({
-    brand_website_name,
-    platform_values,
-    is_eu_user,
-    financial_restricted_countries,
-}: TPlatformDescription) => {
+const PlatformDescription = observer(() => {
     const {
-        platform_name_trader,
-        platform_name_dbot,
-        platform_name_smarttrader,
-        platform_name_go,
-        platform_name_ctrader,
-    } = platform_values;
+        traders_hub: { is_eu_user, financial_restricted_countries },
+    } = useStore();
+    const brand_website_name = getBrandWebsiteName();
+    const platform_name_dbot = getPlatformSettings('dbot').name;
+    const platform_name_go = getPlatformSettings('go').name;
+    const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
+    const platform_name_trader = getPlatformSettings('trader').name;
+    const platform_name_ctrader = getPlatformSettings('ctrader').name;
+
     if (is_eu_user) {
         return (
             <Localize
@@ -79,6 +57,6 @@ const PlatformDescription = ({
             }}
         />
     );
-};
+});
 
 export default PlatformDescription;

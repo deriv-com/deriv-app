@@ -8,9 +8,9 @@ type TEmailPasswordTitleProps = {
 
 const EmailPasswordTitle = ({ icon, title }: TEmailPasswordTitleProps) => {
     const displayIcon = {
-        email: <LegacyEmailIcon iconSize='sm' />,
+        deriv_email: <LegacyEmailIcon iconSize='sm' />,
         deriv_password: <BrandDerivLogoCoralIcon height={24} width={24} />,
-        deriv_mt5_password: <BrandDerivLogoCoralIcon height={24} width={24} />,
+        deriv_mt5_password: <BrandDerivLogoCoralIcon iconSize='sm' />,
         deriv_x_password: <AccountsDerivXIcon iconSize='sm' />,
     };
 

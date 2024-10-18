@@ -16,7 +16,7 @@ import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 import 'Sass/app/modules/account-signup.scss';
-import { trackEventWithCache } from 'Utils/Analytics/analytics.ts';
+import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 
 const AccountSignup = ({
     enableApp,
@@ -54,22 +54,42 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
+    const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
+
     // didMount lifecycle hook
     React.useEffect(() => {
-        trackEventWithCache({
-            name: 'ce_virtual_signup_form',
-            properties: {
-                action: 'signup_confirmed',
-                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        // eslint-disable-next-line no-console
+        cacheTrackEvents.pageLoadEvent([
+            {
+                page: 'onboarding',
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action: 'signup_confirmed',
+                        form_name: is_mobile
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                        loggedIn,
+                    },
+                },
             },
-        });
-        trackEventWithCache({
-            name: 'ce_virtual_signup_form',
-            properties: {
-                action: 'country_selection_screen_opened',
-                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        ]);
+
+        cacheTrackEvents.pageLoadEvent([
+            {
+                page: 'onboarding',
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action: 'country_selection_screen_opened',
+                        form_name: is_mobile
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                        loggedIn,
+                    },
+                },
             },
-        });
+        ]);
 
         WS.wait('website_status', 'residence_list').then(() => {
             if (clients_country && residence_list) {

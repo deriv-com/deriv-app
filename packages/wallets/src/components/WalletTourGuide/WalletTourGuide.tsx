@@ -19,7 +19,7 @@ import {
 } from './WalletTourGuideSettings';
 import { desktopStepTourGuide, mobileStepTourGuide } from './WalletTourGuideSteps';
 
-const WalletTourGuide = () => {
+const WalletTourGuide = ({ headerRef }: { headerRef: React.RefObject<HTMLDivElement> }) => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const [run, setRun] = useState(false);
     const { isDesktop } = useDevice();
@@ -57,6 +57,11 @@ const WalletTourGuide = () => {
         const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
         if (finishedStatuses.includes(status)) {
             setRun(false);
+            if (headerRef.current) {
+                headerRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                });
+            }
         }
     };
 

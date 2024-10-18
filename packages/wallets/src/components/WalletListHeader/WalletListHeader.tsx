@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import './WalletListHeader.scss';
 
-const WalletListHeader: React.FC = () => {
+const WalletListHeader = forwardRef<HTMLDivElement>((_, ref) => {
     const { isDesktop } = useDevice();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -30,10 +30,10 @@ const WalletListHeader: React.FC = () => {
         setIsChecked(!isDemo);
     }, [isDemo]);
 
-    if (!isDesktop) return null;
+    if (!isDesktop) return <div ref={ref} />;
 
     return (
-        <div className='wallets-list-header'>
+        <div className='wallets-list-header' ref={ref}>
             <Text size='xl' weight='bold'>
                 <Localize i18n_default_text="Trader's Hub" />
             </Text>
@@ -66,6 +66,7 @@ const WalletListHeader: React.FC = () => {
             )}
         </div>
     );
-};
+});
 
+WalletListHeader.displayName = 'WalletListHeader';
 export default WalletListHeader;

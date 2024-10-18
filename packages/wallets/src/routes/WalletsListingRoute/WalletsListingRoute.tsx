@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, useRef } from 'react';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
@@ -15,10 +15,11 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 
 const WalletsListingRoute: React.FC = () => {
     const { isDesktop } = useDevice();
+    const headerRef = useRef<HTMLDivElement>(null);
 
     return (
         <div className='wallets-listing-route'>
-            <WalletListHeader />
+            <WalletListHeader ref={headerRef} />
             {isDesktop ? (
                 <React.Suspense fallback={<WalletsCardLoader />}>
                     <LazyDesktopWalletsList />
@@ -30,7 +31,7 @@ const WalletsListingRoute: React.FC = () => {
             )}
             <WalletsAddMoreCarousel />
             <ResetMT5PasswordHandler />
-            <WalletTourGuide />
+            <WalletTourGuide headerRef={headerRef} />
         </div>
     );
 };

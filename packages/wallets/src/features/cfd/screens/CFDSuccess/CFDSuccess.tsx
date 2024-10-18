@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { WalletMarketCurrencyIcon, WalletSuccess } from '../../../../components';
@@ -36,13 +36,14 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const { data } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
     const isDemo = data?.is_virtual;
 
     const isDxtradeOrCtrader =
         marketType === MARKET_TYPE.ALL &&
         (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
-    let marketTypeTitle = localize('Options');
+    let marketTypeTitle = isEuRegion ? localize('Multipliers') : localize('Options');
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);

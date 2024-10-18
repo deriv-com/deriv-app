@@ -1,0 +1,28 @@
+@import '../SkeletonLoader.scss';
+
+.wallets-tabs-loader {
+    &__wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.6rem;
+        padding: 0 1.6rem 1.6rem;
+        & > div {
+            width: 100%;
+            border-radius: 6px;
+        }
+    }
+
+    &__tabs {
+        height: 5rem;
+    }
+
+    &__description {
+        height: 7.6rem;
+    }
+
+    &__list {
+        height: 8rem;
+    }
+}

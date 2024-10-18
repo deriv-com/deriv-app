@@ -2,7 +2,7 @@ import React from 'react';
 import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
-    AccountsDmt5FinancialIcon,
+    AccountsDmt5CfdsIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
@@ -18,12 +18,14 @@ import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 const zeroSpreadDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
+    availability: 'Non-EU',
     description: localize('Zero spread CFDs on financial and derived instruments'),
     icon: <AccountsDmt5ZrsIcon height={48} width={48} />,
     title: 'Zero Spread',
 });
 
 const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
+    availability: 'Non-EU',
     description: localize('Swap-free CFDs on selected financial and derived instruments'),
     icon: <AccountsDmt5SwfIcon height={48} width={48} />,
     title: 'Swap-Free',
@@ -31,30 +33,42 @@ const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize'
 
 export const getMarketTypeDetails = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product']
-) =>
-    ({
+    product?: THooks.AvailableMT5Accounts['product'],
+    isEuRegion?: boolean
+) => {
+    return {
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
-            description: localize('CFDs on financial instruments'),
-            icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
-            title: 'Financial',
+            availability: 'All',
+            description: isEuRegion
+                ? localize('Your all-in-one access to financial and derived instruments.')
+                : localize('CFDs on financial instruments'),
+            icon: isEuRegion ? (
+                <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
+            ) : (
+                <AccountsDmt5ZrsIcon height={48} width={48} />
+            ),
+            title: isEuRegion ? 'CFDs' : 'Financial',
         },
         synthetic: {
+            availability: 'Non-EU',
             description: localize('CFDs on derived and financial instruments'),
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const);
+    } as const;
+};
 
 export const PlatformDetails = {
     ctrader: {
+        availability: 'Non-EU',
         icon: <AccountsDerivCtraderIcon height={48} width={48} />,
         link: 'https://onelink.to/5jgj8z',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
     dxtrade: {
+        availability: 'Non-EU',
         icon: <AccountsDerivXIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'dxtrade' as TPlatforms.OtherAccounts,

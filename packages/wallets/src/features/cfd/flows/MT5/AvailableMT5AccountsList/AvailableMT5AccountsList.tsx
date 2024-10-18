@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
@@ -28,7 +28,8 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();
     const isRtl = useIsRtl();
     const { setModalState, show } = useModal();
-    const { description, title } = getMarketTypeDetails(localize, account.product)[
+    const { data: isEuRegion } = useIsEuRegion();
+    const { availability, description, icon, title } = getMarketTypeDetails(localize, account.product, isEuRegion)[
         account.market_type || MARKET_TYPE.ALL
     ];
     const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
@@ -99,11 +100,11 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [showMt5PasswordModal]);
 
+    if (isEuRegion && availability === 'Non-EU') return null;
+
     return (
         <TradingAccountCard onClick={onButtonClick}>
-            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
-                {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-            </TradingAccountCard.Icon>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>{icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Content className='wallets-available-mt5__details'>
                 <div className='wallets-available-mt5__title'>
                     <Text align='start' size='sm'>

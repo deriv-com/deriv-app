@@ -50,7 +50,9 @@ const App = () => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
                 const current_url = window.location.href;
+                /* eslint-disable no-console */
                 const split_url = current_url.split('/p2p')[1] || '';
+                console.log('split_url', split_url);
                 const target_url = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
                 const redirection_url = target_url + split_url;
                 // window.location.href = targetUrl + splitUrl;

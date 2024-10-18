@@ -24,8 +24,11 @@ module.exports = function () {
             minimize: true,
         },
         devServer: {
-            publicPath: '/dist/',
+            static: {
+                publicPath: '/dist/',
+            },
         },
+
         module: {
             rules: [
                 {

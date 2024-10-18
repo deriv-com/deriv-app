@@ -28,6 +28,7 @@ const PasswordSelectionModal = observer(
         const { ui } = useStore();
         const { is_mobile } = ui;
 
+        const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
         React.useEffect(() => {
             cacheTrackEvents.pageLoadEvent([
                 {
@@ -39,17 +40,11 @@ const PasswordSelectionModal = observer(
                             form_name: is_mobile
                                 ? 'virtual_signup_web_mobile_default'
                                 : 'virtual_signup_web_desktop_default',
+                            loggedIn,
                         },
                     },
                 },
             ]);
-
-            // Analytics.trackEvent('ce_virtual_signup_form', {
-            //     action: 'password_screen_opened',
-            //     form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-            // });
-
-            //eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         return (

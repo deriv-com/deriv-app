@@ -54,6 +54,8 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
+    const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
+
     // didMount lifecycle hook
     React.useEffect(() => {
         // eslint-disable-next-line no-console
@@ -67,6 +69,7 @@ const AccountSignup = ({
                         form_name: is_mobile
                             ? 'virtual_signup_web_mobile_default'
                             : 'virtual_signup_web_desktop_default',
+                        loggedIn,
                     },
                 },
             },
@@ -82,6 +85,7 @@ const AccountSignup = ({
                         form_name: is_mobile
                             ? 'virtual_signup_web_mobile_default'
                             : 'virtual_signup_web_desktop_default',
+                        loggedIn,
                     },
                 },
             },

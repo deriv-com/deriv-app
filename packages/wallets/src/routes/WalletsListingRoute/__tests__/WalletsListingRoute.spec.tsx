@@ -40,11 +40,10 @@ describe('WalletsListingRoute', () => {
         jest.clearAllMocks();
     });
 
-    it('renders DesktopWalletsList, WalletsAddMoreCarousel and WalletTourGuide correctly on desktop', async () => {
+    it('renders DesktopWalletsList and WalletsAddMoreCarousel correctly on desktop', async () => {
         render(<WalletsListingRoute />, { wrapper });
         expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.queryByText('WalletsCarousel')).not.toBeInTheDocument();
-        expect(screen.getByText('WalletTourGuide')).toBeInTheDocument();
         expect(await screen.findByText('DesktopWalletsList')).toBeInTheDocument();
     });
 
@@ -55,6 +54,5 @@ describe('WalletsListingRoute', () => {
         expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.queryByText('DesktopWalletsList')).not.toBeInTheDocument();
         expect(await screen.findByText('WalletsCarousel')).toBeInTheDocument();
-        expect(screen.queryByText('WalletTourGuide')).toBeInTheDocument();
     });
 });

@@ -4,15 +4,26 @@ import { Loading } from '@deriv/components';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
-import { getPositionsV2TabIndexFromURL, isDTraderV2, routes } from '@deriv/shared';
+import { getPositionsV2TabIndexFromURL, isDTraderV2, isDTraderV2Width, routes } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { Analytics } from '@deriv-com/analytics';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();
     const { promptFn, prompt_when } = ui;
     const { pushDataLayer } = gtm;
     const location = useLocation();
-    const is_dtrader_v2 =
-        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
+    const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled',
+    });
+    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
+    React.useEffect(() => {
+        setDTraderV2Enabled(
+            (isDTraderV2() || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
+                (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
 
     React.useEffect(() => {
         pushDataLayer({ event: 'page_load' });
@@ -20,7 +31,7 @@ const BinaryRoutes = observer(props => {
     }, [location]);
 
     const getLoader = () => {
-        if (is_dtrader_v2)
+        if (dtrader_v2_enabled)
             return (
                 <Loading.DTraderV2
                     initial_app_loading

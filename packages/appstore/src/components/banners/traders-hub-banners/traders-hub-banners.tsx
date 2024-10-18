@@ -30,10 +30,9 @@ const DepositNowBanner = makeLazyLoader(
 
 const TradersHubBanners = observer(() => {
     const { client, traders_hub } = useStore();
-    const { is_landing_company_loaded, has_any_real_account, is_eu } = client;
+    const { is_landing_company_loaded, has_any_real_account, is_eu, has_maltainvest_account, is_low_risk } = client;
     const { is_real } = traders_hub;
     const { hasDeposited, hasTransferred, isLoaded } = useStoreHasAccountDeposited();
-    const { is_low_risk_cr_eu, is_low_risk_cr_non_eu } = useContentFlag();
 
     const [ff_real_account_creation_banner] = useGrowthbookGetFeatureValue({
         featureFlag: 'traders-hub-real-account-banner',
@@ -51,7 +50,7 @@ const TradersHubBanners = observer(() => {
     const should_show_deposit_now_banner =
         ff_deposit_now_banner &&
         is_real &&
-        !(is_low_risk_cr_eu || is_low_risk_cr_non_eu) &&
+        !(is_low_risk && has_maltainvest_account) &&
         isLoaded &&
         !hasDeposited &&
         !hasTransferred;

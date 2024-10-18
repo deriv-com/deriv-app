@@ -20,8 +20,8 @@
     "author": "Binary.com",
     "license": "MIT",
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/preset-react": "^7.16.7",
+        "@babel/eslint-parser": "^7.25.1",
+        "@babel/preset-react": "^7.24.7",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
         "deep-diff": "^1.0.2",

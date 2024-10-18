@@ -20,6 +20,7 @@ import './app.scss';
 
 const App = () => {
     const is_production = window.location.origin === URLConstants.derivAppProduction;
+
     const [is_p2p_standalone_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,
@@ -48,7 +49,11 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                const current_url = window.location.href;
+                const split_url = current_url.split('/p2p')[1] || '';
+                const target_url = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                const redirection_url = target_url + split_url;
+                window.location.href = redirection_url;
             }
         }
     }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
@@ -289,6 +294,8 @@ const App = () => {
 
     React.useEffect(() => {
         if (action_param && code_param) {
+            /* eslint-disable no-console */
+            console.log('action_param', action_param, 'code_param', code_param);
             // We need an extra state since we delete the code from the query params.
             // Do not remove.
             order_store.setVerificationCode(code_param);

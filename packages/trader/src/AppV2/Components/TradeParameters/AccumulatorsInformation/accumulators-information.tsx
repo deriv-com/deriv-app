@@ -19,7 +19,7 @@ const AccumulatorsInformation = observer(({ is_disabled }: { is_disabled?: boole
                 <Localize i18n_default_text='Max. payout' />
             </Text>
             {maximum_payout ? (
-                <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
+                <Text size='sm' bold className={clsx(is_disabled && 'trade-params__text--disabled')}>
                     <Money amount={maximum_payout} show_currency currency={currency} />
                 </Text>
             ) : (

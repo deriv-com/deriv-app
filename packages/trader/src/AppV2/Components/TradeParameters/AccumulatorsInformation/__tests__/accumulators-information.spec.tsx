@@ -5,32 +5,36 @@ import AccumulatorsInformation from '../accumulators-information';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
 
-describe('AccumulatorsInformation', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+const payout_text = 'Max. payout';
+const payout_value = '4,000.00 USD';
 
-    beforeEach(
-        () =>
-            (default_mock_store = mockStore({
-                modules: {
-                    trade: {
-                        ...mockStore({}),
-                        currency: 'USD',
-                        maximum_payout: 4000,
-                    },
+describe('AccumulatorsInformation', () => {
+    let default_mock_store: ReturnType<typeof mockStore>,
+        default_mock_prop: React.ComponentProps<typeof AccumulatorsInformation>;
+
+    beforeEach(() => {
+        default_mock_store = mockStore({
+            modules: {
+                trade: {
+                    ...mockStore({}),
+                    currency: 'USD',
+                    maximum_payout: 4000,
                 },
-            }))
-    );
+            },
+        });
+        default_mock_prop = { is_disabled: false };
+    });
 
     const mockAccumulatorsInformation = () =>
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <AccumulatorsInformation />
+                    <AccumulatorsInformation {...default_mock_prop} />
                 </ModulesProvider>
             </TraderProviders>
         );
 
-    it('should not render if there is an API error ', () => {
+    it('does not render if there is an API error ', () => {
         default_mock_store.modules.trade.proposal_info = {
             ACCU: {
                 has_error: true,
@@ -41,19 +45,27 @@ describe('AccumulatorsInformation', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render loader if maximum_payout is falsy but there is no API error', () => {
+    it('renders loader if maximum_payout is falsy but there is no API error', () => {
         default_mock_store.modules.trade.maximum_payout = 0;
         mockAccumulatorsInformation();
 
-        expect(screen.getByText('Max. payout')).toBeInTheDocument();
+        expect(screen.getByText(payout_text)).toBeInTheDocument();
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
-        expect(screen.queryByText('4,000.00 USD')).not.toBeInTheDocument();
+        expect(screen.queryByText(payout_value)).not.toBeInTheDocument();
     });
 
-    it('should render description that is provided', () => {
+    it('renders description that is provided', () => {
         mockAccumulatorsInformation();
 
-        expect(screen.getByText('Max. payout')).toBeInTheDocument();
-        expect(screen.getByText('4,000.00 USD')).toBeInTheDocument();
+        expect(screen.getByText(payout_text)).toBeInTheDocument();
+        expect(screen.getByText(payout_value)).toBeInTheDocument();
+        expect(screen.getByText(payout_text)).not.toHaveClass('trade-params__text--disabled');
+    });
+
+    it('applies specific className if is_disabled === true', () => {
+        default_mock_prop.is_disabled = true;
+        mockAccumulatorsInformation();
+
+        expect(screen.getByText(payout_text)).toHaveClass('trade-params__text--disabled');
     });
 });

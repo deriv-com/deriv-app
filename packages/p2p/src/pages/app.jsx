@@ -183,8 +183,6 @@ const App = () => {
 
         setActionParam(url_params.get('action'));
 
-        //https://localhost:8443/redirect/p2p?action=p2p_order_confirm&order_id=134&code=nUTUKsG4&lang=EN
-        //http://localhost:5173/redirect/p2p?action=p2p_order_confirm&order_id=134&code=rPTLI09i&lang=EN
         if (!isDesktop) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {

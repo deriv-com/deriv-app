@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
@@ -15,6 +15,7 @@ const DerivAppsTradingAccount = () => {
     const history = useHistory();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const { data: isEuRegion } = useIsEuRegion();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const balance = balanceData?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance;
 
@@ -26,7 +27,11 @@ const DerivAppsTradingAccount = () => {
             <TradingAccountCard.Content>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
                     <Text align='start' size='sm'>
-                        <Localize i18n_default_text='Options' />
+                        {isEuRegion ? (
+                            <Localize i18n_default_text='Multipliers' />
+                        ) : (
+                            <Localize i18n_default_text='Options' />
+                        )}
                     </Text>
                     {activeWallet?.is_virtual && <WalletListCardBadge />}
                 </div>

@@ -11,7 +11,7 @@ const LoginButton = ({ className }) => (
         has_effect
         text={localize('Log in')}
         onClick={() => {
-            window.LiveChatWidget.call('hide');
+            window.LiveChatWidget?.call('hide');
             redirectToLogin(false, getLanguage());
         }}
         tertiary

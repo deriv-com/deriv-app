@@ -19,6 +19,8 @@ import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
+import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
+import { isMarketClosed } from '@deriv/shared';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -27,17 +29,11 @@ const Trade = observer(() => {
         client: { is_logged_in },
         ui: { is_dark_mode_on },
     } = useStore();
-    const {
-        active_symbols,
-        contract_type,
-        has_cancellation,
-        symbol,
-        is_accumulator,
-        is_market_closed,
-        onMount,
-        onChange,
-        onUnmount,
-    } = useTraderStore();
+    const { active_symbols, contract_type, has_cancellation, symbol, is_accumulator, onMount, onChange, onUnmount } =
+        useTraderStore();
+
+    const { activeSymbols } = useActiveSymbols();
+    const is_market_closed = isMarketClosed(activeSymbols, symbol);
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,

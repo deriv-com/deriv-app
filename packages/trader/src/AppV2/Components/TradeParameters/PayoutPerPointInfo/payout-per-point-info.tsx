@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Text } from '@deriv-com/quill-ui';
@@ -15,11 +16,11 @@ const PayoutPerPointInfo = observer(({ is_disabled }: { is_disabled?: boolean })
 
     return (
         <div className='payout-per-point-info__container'>
-            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Payout per point' />
             </Text>
             {payout_per_point ? (
-                <Text size='sm' bold color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+                <Text size='sm' bold className={clsx(is_disabled && 'trade-params__text--disabled')}>
                     {payout_per_point} {currency}
                 </Text>
             ) : (

@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { Money, Skeleton } from '@deriv/components';
@@ -17,10 +18,10 @@ const MultipliersDealCancellationInfo = observer(({ is_disabled }: { is_disabled
 
     return (
         <div className='multipliers-info__row'>
-            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Deal cancellation fee' />
             </Text>
-            <Text size='sm' bold as='div' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' bold as='div' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 {deal_cancellation_fee_value ? (
                     <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
                 ) : (

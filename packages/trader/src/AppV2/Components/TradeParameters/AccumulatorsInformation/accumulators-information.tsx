@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { Money, Skeleton } from '@deriv/components';
@@ -14,11 +15,11 @@ const AccumulatorsInformation = observer(({ is_disabled }: { is_disabled?: boole
 
     return (
         <div className='accumulators-info__wrapper'>
-            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Max. payout' />
             </Text>
             {maximum_payout ? (
-                <Text size='sm' bold color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+                <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                     <Money amount={maximum_payout} show_currency currency={currency} />
                 </Text>
             ) : (

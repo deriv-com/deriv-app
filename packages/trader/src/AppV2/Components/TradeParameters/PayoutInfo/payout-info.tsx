@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Text } from '@deriv-com/quill-ui';
@@ -14,11 +15,11 @@ const PayoutInfo = observer(({ is_disabled }: { is_disabled?: boolean }) => {
 
     return (
         <div className='payout-info__container'>
-            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Payout' />
             </Text>
             {payout ? (
-                <Text size='sm' bold color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+                <Text size='sm' bold className={clsx(is_disabled && 'trade-params__text--disabled')}>
                     <Money amount={payout} show_currency currency={currency} />
                 </Text>
             ) : (

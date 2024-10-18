@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from '@deriv/stores';
 import { Skeleton } from '@deriv/components';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -13,11 +14,11 @@ const BarrierInfo = observer(({ is_disabled }: { is_disabled?: boolean }) => {
     if (has_error) return null;
     return (
         <div className='barrier-info__container'>
-            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Barrier' />
             </Text>
             {barrier_1 ? (
-                <Text size='sm' bold color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+                <Text size='sm' bold className={clsx(is_disabled && 'trade-params__text--disabled')}>
                     {barrier_1}
                 </Text>
             ) : (

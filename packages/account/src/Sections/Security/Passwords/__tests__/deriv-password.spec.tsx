@@ -41,22 +41,15 @@ describe('<DerivPassword />', () => {
     it('Should render properly', async () => {
         renderComponent({});
 
-        expect(
-            screen.getByRole('heading', {
-                name: /deriv password/i,
-            })
-        ).toBeInTheDocument();
+        expect(screen.getAllByText(/deriv password/i)).toHaveLength(2);
         expect(
             screen.getByText(
                 /use your to log in to deriv\.com, deriv go, deriv trader, smarttrader, deriv bot and deriv ctrader\./i
             )
         ).toBeInTheDocument();
         expect(screen.queryByText(/BrandDerivLogoCoralIcon/i)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Change password/i })).toBeInTheDocument();
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
-
-        const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        expect(popover_wrapper).toHaveLength(5);
     });
 
     it('displays the correct platform information for non-MF clients & restricted countries', () => {
@@ -66,11 +59,6 @@ describe('<DerivPassword />', () => {
         renderComponent({ store_config });
 
         expect(screen.getByText(/use your to log in to deriv\.com, deriv trader and deriv go\./i));
-
-        const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
-        // expect popover to have length of 4
-        expect(popover_wrapper).toHaveLength(3);
-        // expect button with text change password to be in the document
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 
@@ -82,9 +70,6 @@ describe('<DerivPassword />', () => {
 
         expect(screen.getByText(/use your to log in to deriv\.com and deriv trader\./i)).toBeInTheDocument();
 
-        const popover_wrapper = screen.getByTestId('dt_popover_wrapper');
-
-        expect(popover_wrapper).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 

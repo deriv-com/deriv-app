@@ -5,7 +5,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { Money, Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const PayoutInfo = observer(() => {
+const PayoutInfo = observer(({ is_disabled }: { is_disabled?: boolean }) => {
     const { currency, proposal_info, trade_type_tab } = useTraderStore();
     const { value: payout } = proposal_info[trade_type_tab]?.obj_contract_basis || {};
     const has_error = proposal_info[trade_type_tab]?.has_error;
@@ -14,11 +14,11 @@ const PayoutInfo = observer(() => {
 
     return (
         <div className='payout-info__container'>
-            <Text size='sm'>
+            <Text size='sm' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
                 <Localize i18n_default_text='Payout' />
             </Text>
             {payout ? (
-                <Text size='sm' bold>
+                <Text size='sm' bold color={is_disabled ? 'quill-typography__color--disabled' : ''}>
                     <Money amount={payout} show_currency currency={currency} />
                 </Text>
             ) : (

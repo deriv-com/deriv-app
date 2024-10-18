@@ -9,12 +9,9 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import MultiplierWheelPicker from './multiplier-wheel-picker';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TMultiplierProps = {
-    is_minimized?: boolean;
-};
-
-const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
+const Multiplier = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
     const { multiplier, multiplier_range_list, commission, onChange, currency } = useTraderStore();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -60,13 +57,14 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
     return (
         <React.Fragment>
             <TextField
+                className={classname}
+                disabled={is_disabled}
                 variant='fill'
                 readOnly
                 label={
                     <Localize i18n_default_text='Multiplier' key={`multiplier${is_minimized ? '-minimized' : ''}`} />
                 }
                 value={`x${multiplier}`}
-                className={classname}
                 onClick={() => setIsOpen(true)}
             />
             <ActionSheet.Root

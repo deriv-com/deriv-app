@@ -11,11 +11,13 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { activeSymbols } = useActiveSymbols();
-    const { symbol: storeSymbol, tick_data } = useTraderStore();
-    const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
+    const { symbol: storeSymbol, tick_data, is_market_closed } = useTraderStore();
 
+    const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
+    const current_spot_replacement = is_market_closed ? '-' : <Skeleton.Square height={18} width={64} rounded />;
+
     // For closed markets exchange_is_open === 0
     if (typeof currentSymbol?.exchange_is_open === 'undefined')
         return <Skeleton.Square height={42} width={240} rounded />;
@@ -42,7 +44,7 @@ const MarketSelector = observer(() => {
                         {current_spot ? (
                             <CaptionText className='market-selector-info__price'>{current_spot}</CaptionText>
                         ) : (
-                            <Skeleton.Square height={18} width={64} rounded />
+                            current_spot_replacement
                         )}
                     </div>
                 </div>

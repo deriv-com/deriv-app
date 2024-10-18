@@ -5,6 +5,7 @@ import { TPOIStatus } from 'Types';
 import IconMessageContent from '../../../icon-message-content';
 import PoaButton from '../../../poa/poa-button';
 import { service_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
+import ContinueTradingButton from '../../../poa/continue-trading-button';
 
 export const Verified = ({ needs_poa, redirect_button, is_from_external, service }: TPOIStatus) => {
     const message =
@@ -19,7 +20,7 @@ export const Verified = ({ needs_poa, redirect_button, is_from_external, service
                 icon={<Icon icon='IcPoaVerified' size={128} data_testid='dt_IcPoaVerified' />}
                 className='account-management-dashboard'
             >
-                {!is_from_external && redirect_button}
+                {!is_from_external && (redirect_button || <ContinueTradingButton />)}
             </IconMessageContent>
         );
     }

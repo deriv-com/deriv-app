@@ -27,10 +27,10 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
     const onSaveButtonClick = () => {
         if (last_digit !== selected_digit) handleLastDigitChange(selected_digit);
     };
-    const onActionSheetClose = () => {
+    const onActionSheetClose = React.useCallback(() => {
         setIsOpen(false);
         setSelectedDigit(last_digit);
-    };
+    }, [last_digit]);
 
     if (is_minimized)
         return (
@@ -48,7 +48,13 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}
                 />
-                <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
+                <ActionSheet.Root
+                    isOpen={is_open}
+                    onClose={onActionSheetClose}
+                    position='left'
+                    expandable={false}
+                    shouldBlurOnClose={is_open}
+                >
                     <ActionSheet.Portal shouldCloseOnDrag>
                         <ActionSheet.Header title={<Localize i18n_default_text='Last digit prediction' />} />
                         <ActionSheet.Content>

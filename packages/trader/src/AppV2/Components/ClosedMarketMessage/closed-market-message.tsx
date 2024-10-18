@@ -101,7 +101,7 @@ const ClosedMarketMessage = observer(() => {
         };
     }, [time_left, when_market_opens, prepareTradeStore]);
 
-    if (!(when_market_opens && Object.keys(time_left).length)) return null;
+    if (!(when_market_opens && Object.keys(time_left).length) || !isMarketClosed(activeSymbols, symbol)) return null;
 
     const { opening_time, days_offset } = when_market_opens;
 

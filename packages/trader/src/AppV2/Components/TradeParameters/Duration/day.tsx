@@ -1,4 +1,4 @@
-import { ActionSheet, Text, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import {
     getDatePickerStartDate,
     getProposalRequestObject,
 } from 'AppV2/Utils/trade-params-utils';
-import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { invalidateDTraderCache, useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
 
 const timeToMinutes = (time: string) => {
@@ -27,19 +27,22 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
-    temp_expiry_time,
-    setTempExpiryTime,
+    expiry_time_input,
+    setExpiryTimeInput,
 }: {
     setEndTime: (arg: string) => void;
     setEndDate: (arg: Date) => void;
     end_date: Date;
     end_time: string;
-    temp_expiry_time: string;
-    setTempExpiryTime: (arg: string) => void;
+    expiry_time_input: string;
+    setExpiryTimeInput: (arg: string) => void;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
+    const [trigger_date, setTriggerDate] = useState(false);
+    const [is_disabled, setIsDisabled] = useState(false);
+    const [end_date_input, setEndDateInput] = useState(end_date);
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
@@ -53,33 +56,69 @@ const DayInput = ({
         duration_min_max,
         trade_types,
         contract_type,
+        duration,
+        tick_data,
+        symbol,
+        barrier_1,
     } = useTraderStore();
     const trade_store = useTraderStore();
+    const { addSnackbar } = useSnackbar();
 
     const new_values = {
         duration_unit: 'd',
-        duration: day || '',
-        expiry_time: null,
+        duration: day || duration,
         expiry_type: 'duration',
         contract_type,
+        basis: 'stake',
+        amount: '5',
+        symbol,
     };
+
     const proposal_req = getProposalRequestObject({
         new_values,
         trade_store,
         trade_type: Object.keys(trade_types)[0],
     });
 
-    const { data: response } = useDtraderQuery<ProposalResponse>(['proposal', JSON.stringify(day)], proposal_req, {
-        enabled: day !== null,
-    });
+    const { data: response } = useDtraderQuery<ProposalResponse>(
+        ['proposal', JSON.stringify(day)],
+        {
+            ...proposal_req,
+            symbol,
+            ...(barrier_1 ? { barrier: Math.round(tick_data?.quote as number) } : {}),
+        },
+        {
+            enabled: trigger_date,
+        }
+    );
 
     useEffect(() => {
-        if (response?.proposal?.date_expiry) {
-            setTempExpiryTime(
-                new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[1].substring(0, 8)
-            );
+        if (response) {
+            if (response?.error?.message && response?.error?.details?.field === 'duration') {
+                addSnackbar({
+                    message: <Localize i18n_default_text={response?.error?.message} />,
+                    status: 'fail',
+                    hasCloseButton: true,
+                    style: { marginBottom: '48px' },
+                });
+                setIsDisabled(true);
+            } else {
+                setIsDisabled(false);
+            }
+
+            if (response?.proposal?.date_expiry) {
+                setExpiryTimeInput(
+                    new Date((response?.proposal?.date_expiry as number) * 1000)
+                        .toISOString()
+                        .split('T')[1]
+                        .substring(0, 8)
+                );
+            }
+
+            invalidateDTraderCache(['proposal', JSON.stringify(day)]);
+            setTriggerDate(false);
         }
-    }, [response, setTempExpiryTime]);
+    }, [response, setExpiryTimeInput]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -126,21 +165,33 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [end_date]);
+    }, [end_date_input]);
 
     let is_24_hours_contract = false;
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
-    is_24_hours_contract =
-        (!!start_date || toMoment(expiry_date || server_time).isSame(toMoment(server_time), 'day')) &&
-        has_intraday_duration_unit;
+    const parsedFormattedDate = new Date(Date.parse(`${formatted_date} 00:00:00`));
+
+    const isSameDate =
+        parsedFormattedDate.getFullYear() === server_time.year() &&
+        parsedFormattedDate.getMonth() === server_time.month() &&
+        parsedFormattedDate.getDate() === server_time.date();
+
+    is_24_hours_contract = (!!start_date || isSameDate) && has_intraday_duration_unit;
 
     const handleDate = (date: Date) => {
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        setEndDate(date);
+        setEndDateInput(date);
+        if (difference_in_days == 0) {
+            setEndTime(adjusted_start_time);
+        } else {
+            setEndTime('');
+        }
+        setTriggerDate(true);
     };
+
     return (
         <div className='duration-container__days-input'>
             <TextField
@@ -162,8 +213,8 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'} GMT`}
-                disabled={formatted_date !== formatted_current_date || !is_24_hours_contract}
+                value={`${(is_24_hours_contract ? end_time : expiry_time_input) || '23:59:59'} GMT`}
+                disabled={!is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);
                 }}
@@ -176,7 +227,7 @@ const DayInput = ({
                 </Text>
                 <Text size='sm'>{`
                 ${formatted_date} ${
-                    (formatted_date === formatted_current_date ? end_time : temp_expiry_time) || '23:59:59'
+                    (formatted_date === formatted_current_date ? end_time : expiry_time_input) || '23:59:59'
                 } GMT`}</Text>
             </div>
             <ActionSheet.Root
@@ -184,6 +235,8 @@ const DayInput = ({
                 onClose={() => {
                     setOpen(false);
                     setOpenTimePicker(false);
+                    setIsDisabled(false);
+                    setEndDateInput(end_date);
                 }}
                 position='left'
                 expandable={false}
@@ -206,7 +259,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={end_date}
+                            end_date={end_date_input}
                             setEndDate={handleDate}
                         />
                     )}
@@ -221,16 +274,26 @@ const DayInput = ({
                     <ActionSheet.Footer
                         alignment='vertical'
                         shouldCloseOnPrimaryButtonClick={false}
+                        isPrimaryButtonDisabled={is_disabled}
                         primaryAction={{
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
-                                setOpen(false);
-                                setOpenTimePicker(false);
-                                if (formatted_date !== formatted_current_date) {
-                                    setEndTime('');
-                                }
-                                if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
-                                    setEndTime(adjusted_start_time);
+                                if (!is_disabled) {
+                                    setEndDate(end_date_input);
+                                    setOpen(false);
+                                    setOpenTimePicker(false);
+                                    const end_date = end_date_input.toLocaleDateString('en-GB', {
+                                        day: 'numeric',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    });
+
+                                    if (end_date !== formatted_current_date) {
+                                        setEndTime('');
+                                    }
+                                    if (timeToMinutes(adjusted_start_time) > timeToMinutes(end_time)) {
+                                        setEndTime(adjusted_start_time);
+                                    }
                                 }
                             },
                         }}

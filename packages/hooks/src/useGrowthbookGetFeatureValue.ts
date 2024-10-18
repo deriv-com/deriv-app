@@ -19,6 +19,10 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
     const isGBLoaded = useIsGrowthbookIsLoaded();
     const isMounted = useIsMounted();
 
+    if (typeof window !== 'undefined') {
+        window.Analytics = Analytics;
+    }
+
     useEffect(() => {
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {

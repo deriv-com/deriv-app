@@ -22,6 +22,14 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const chat = enable_freshworks_live_chat ? freshChat : null;
 
+    // eslint-disable-next-line no-console
+    console.log({
+        is_livechat_available,
+        freshChat,
+        enable_freshworks_live_chat,
+        chat,
+    });
+
     if ((enable_freshworks_live_chat && !chat?.isReady) || !is_livechat_available) return null;
 
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.

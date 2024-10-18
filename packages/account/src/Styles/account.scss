@@ -549,6 +549,17 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
+        .email-password-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .account__divider {
+            margin: 2.4rem 0;
+        }
+
         .passwords-platform {
             &__content {
                 display: flex;
@@ -589,6 +600,7 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: flex-end;
 
             &-btn {
+                margin-top: 2.4rem;
                 min-width: 14.9rem;
                 @include tablet-screen {
                     margin: 0;
@@ -623,6 +635,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &__email {
         &-wrapper {
+            &__button-container {
+                margin-top: 2.4rem;
+            }
+
             .email-platform {
                 &__content {
                     margin-top: 3.6rem;

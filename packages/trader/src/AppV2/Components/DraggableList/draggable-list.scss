@@ -52,5 +52,11 @@
             padding: var(--core-spacing-500) 0;
             overflow: auto;
         }
+
+        &__item {
+            &:last-child {
+                margin-bottom: var(--core-spacing-400);
+            }
+        }
     }
 }

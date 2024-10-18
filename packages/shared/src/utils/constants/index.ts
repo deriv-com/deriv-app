@@ -10,3 +10,4 @@ export * from './mt5-login-list-status';
 export * from './auth-status-codes';
 export * from './phone-number-verification';
 export * from './translation-flag';
+export * from './withdrawal-limits-details';

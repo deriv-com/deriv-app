@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
 const useFreshChat = (token: string | null) => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
+    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
     const language = localStorage.getItem('i18n_language') || 'EN';
 

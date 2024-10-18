@@ -294,6 +294,8 @@ const App = () => {
 
     React.useEffect(() => {
         if (action_param && code_param) {
+            /* eslint-disable no-console */
+            console.log('action_param', action_param, 'code_param', code_param);
             // We need an extra state since we delete the code from the query params.
             // Do not remove.
             order_store.setVerificationCode(code_param);

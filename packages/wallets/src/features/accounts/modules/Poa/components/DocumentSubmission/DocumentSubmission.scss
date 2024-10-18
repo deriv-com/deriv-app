@@ -78,7 +78,6 @@
                 align-items: center;
                 gap: 1.6rem;
                 align-self: stretch;
-                height: 16rem;
                 border-radius: 0.8rem;
                 cursor: pointer;
             }
@@ -106,6 +105,12 @@
                     @include mobile-or-tablet-screen {
                         max-width: 18rem;
                     }
+                }
+            }
+
+            &__size {
+                @include mobile-or-tablet-screen {
+                    text-align: end;
                 }
             }
         }

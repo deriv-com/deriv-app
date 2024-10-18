@@ -5,7 +5,6 @@
     gap: 2.4rem;
     border-radius: 0.8rem;
     background-color: var(--system-light-8-primary-background, #fff);
-    width: 44rem;
 
     @include mobile-or-tablet-screen {
         width: 32rem;
@@ -33,6 +32,7 @@
         display: flex;
         flex-direction: column;
         gap: 2rem;
+        max-width: 44rem;
 
         @include mobile-or-tablet-screen {
             gap: 1rem;

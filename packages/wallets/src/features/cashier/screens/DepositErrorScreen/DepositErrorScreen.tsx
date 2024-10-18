@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Localize, useTranslations } from '@deriv-com/translations';
+import { getInitialLanguage, Localize, useTranslations } from '@deriv-com/translations';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 
@@ -20,8 +20,16 @@ type TErrorCodeHandlers = Record<string, TErrorContent>;
 
 const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
     const { data } = useActiveWalletAccount();
-    const { localize } = useTranslations();
+    const { currentLang, localize } = useTranslations();
+    const i18nLanguage = getInitialLanguage();
     const currency = data?.currency;
+
+    useEffect(() => {
+        // reload when language is switched to show error message for latest WS connection
+        if (currentLang !== i18nLanguage) {
+            window.location.reload();
+        }
+    }, [currentLang, i18nLanguage]);
 
     const defaultContent: TErrorContent = {
         buttonText: <Localize i18n_default_text='Try again' />,

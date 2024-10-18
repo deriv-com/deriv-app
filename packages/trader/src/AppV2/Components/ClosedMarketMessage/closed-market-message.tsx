@@ -37,9 +37,10 @@ const ClosedMarketMessage = observer(() => {
     const [when_market_opens, setWhenMarketOpens] = React.useState<TWhenMarketOpens>({} as TWhenMarketOpens);
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
     const [is_loading, setLoading] = React.useState(true);
+    const is_market_closed = isMarketClosed(activeSymbols, symbol);
 
     React.useEffect(() => {
-        if (isMarketClosed(activeSymbols, symbol)) {
+        if (is_market_closed) {
             setLoading(true);
             const whenMarketOpens = async (
                 days_offset: number,
@@ -81,7 +82,7 @@ const ClosedMarketMessage = observer(() => {
         setTimeLeft({});
         setWhenMarketOpens({} as TWhenMarketOpens);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, activeSymbols]);
+    }, [is_market_closed, symbol]);
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
@@ -101,7 +102,7 @@ const ClosedMarketMessage = observer(() => {
         };
     }, [time_left, when_market_opens, prepareTradeStore]);
 
-    if (!(when_market_opens && Object.keys(time_left).length) || !isMarketClosed(activeSymbols, symbol)) return null;
+    if (!(when_market_opens && Object.keys(time_left).length) || !is_market_closed) return null;
 
     const { opening_time, days_offset } = when_market_opens;
 

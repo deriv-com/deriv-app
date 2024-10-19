@@ -28,6 +28,10 @@ export const whatsappUrl = 'https://wa.me/35699578341';
 
 let defaultLanguage: string;
 
+export const setUrlLanguage = (lang: string) => {
+    defaultLanguage = lang;
+};
+
 /**
  * @deprecated Please use 'URLUtils.normalizePath' from '@deriv-com/utils' instead of this.
  */
@@ -82,9 +86,14 @@ export const isStaging = (domain = window.location.hostname) => {
 /**
  * @deprecated Please use 'URLUtils.getDerivStaticURL' from '@deriv-com/utils' instead of this.
  */
-export const getStaticUrl = (path = '', isDocument = false, isEuUrl = false) => {
+export const getStaticUrl = (
+    path = '',
+    language = defaultLanguage?.toLowerCase(),
+    isDocument = false,
+    isEuUrl = false
+) => {
     const host = isEuUrl ? derivUrls.DERIV_COM_PRODUCTION_EU : derivUrls.DERIV_COM_PRODUCTION;
-    let lang = defaultLanguage?.toLowerCase();
+    let lang = language;
 
     if (lang && lang !== 'en') {
         lang = `/${lang}`;

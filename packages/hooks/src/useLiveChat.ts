@@ -38,7 +38,7 @@ const useLiveChat = (client_information: TLiveChatClientInformation) => {
 
     useEffect(() => {
         if (is_client_store_initialized && cs_chat_livechat) {
-            window.LiveChatWidget.init();
+            window.LiveChatWidget?.init();
         }
     }, [is_client_store_initialized, cs_chat_livechat]);
 

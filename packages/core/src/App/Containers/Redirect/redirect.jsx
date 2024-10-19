@@ -45,7 +45,7 @@ const Redirect = observer(() => {
     }
 
     const openLivechat = () => {
-        window.LiveChatWidget.call('maximize');
+        window.LiveChatWidget?.call('maximize');
     };
 
     const url_query_string = window.location.search;

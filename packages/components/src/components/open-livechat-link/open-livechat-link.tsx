@@ -13,7 +13,7 @@ const OpenLiveChatLink = ({ children, text_size, className }: React.PropsWithChi
     <button
         type='button'
         className={clsx('open-livechat__link', className)}
-        onClick={() => window.LiveChatWidget.call('maximize')}
+        onClick={() => window.LiveChatWidget?.call('maximize')}
     >
         <Text size={text_size || 'xs'} weight='bold' color='brand-red-coral'>
             {children || <Localize i18n_default_text='live chat' />}

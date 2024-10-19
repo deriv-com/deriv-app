@@ -34,7 +34,7 @@ export const getUseRequestPhoneNumberOTPErrorMessage = (
                         <span
                             key={0}
                             className='phone-verification__card--inputfield__livechat'
-                            onClick={() => window.LiveChatWidget.call('maximize')}
+                            onClick={() => window.LiveChatWidget?.call('maximize')}
                         />,
                     ]}
                 />

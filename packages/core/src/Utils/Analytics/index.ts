@@ -4,6 +4,7 @@ import { getLanguage } from '@deriv/translations';
 import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 import FIREBASE_INIT_DATA from '../../../../api/src/remote_config.json';
+import { getCountry } from '@deriv/utils';
 
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
@@ -23,22 +24,6 @@ export const AnalyticsInitializer = async () => {
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
-
-            /*
-                Temp solution to fetch country and handle experiments without causing inconsistencies to the users. 
-            */
-
-            const getCountry = async () => {
-                try {
-                    const response = await fetch('https://www.cloudflare.com/cdn-cgi/trace').catch(() => null);
-                    const text = response ? await response.text().catch(() => '') : '';
-                    const entries = text ? text.split('\n').map(v => v.split('=', 2)) : [];
-                    const data = entries.length ? Object.fromEntries(entries) : {};
-                    return data?.loc?.toLowerCase() ?? '';
-                } catch {
-                    return '';
-                }
-            };
 
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,

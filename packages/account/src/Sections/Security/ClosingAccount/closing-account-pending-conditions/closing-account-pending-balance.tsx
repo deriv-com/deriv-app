@@ -62,6 +62,7 @@ const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TC
                                 platform,
                                 shortcode: is_mt5_platform ? (account.landing_company_short as TShortcode) : undefined,
                                 is_eu: is_eu_user,
+                                product: account.product,
                             }) ?? ''
                         }
                         value={

@@ -63,6 +63,7 @@ const ClosingAccountPendingPositions = observer(
                                         ? (account.landing_company_short as TShortcode)
                                         : undefined,
                                     is_eu: is_eu_user,
+                                    product: account.product,
                                 }) ?? ''
                             }
                             value={

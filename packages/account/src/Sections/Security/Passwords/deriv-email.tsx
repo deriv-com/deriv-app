@@ -6,7 +6,6 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import SentEmailModal from '../../../Components/sent-email-modal';
 import UnlinkAccountModal from '../../../Components/unlink-account-modal';
-import { Divider } from '@deriv-com/ui';
 import EmailPasswordSection from './email-password-section';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
@@ -74,7 +73,6 @@ const DerivEmail = observer(() => {
                     has_live_chat={true}
                     is_modal_when_mobile={true}
                 />
-                <Divider className='account__divider' />
             </div>
         </Fragment>
     );

@@ -5,6 +5,7 @@ import { Text } from '@deriv/components';
 import { useMutation } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 import { CFD_PLATFORMS } from '@deriv/shared';
+import { Divider } from '@deriv-com/ui';
 import EmailPasswordSection from './email-password-section';
 
 const DerivXPassword = observer(() => {
@@ -33,6 +34,7 @@ const DerivXPassword = observer(() => {
     return (
         <Fragment>
             <div className='account__passwords-wrapper'>
+                <Divider className='account__divider' />
                 <EmailPasswordSection
                     title={localize('Deriv X password')}
                     title_icon='deriv_x_password'

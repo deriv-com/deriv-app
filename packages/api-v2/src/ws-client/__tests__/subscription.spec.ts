@@ -1,14 +1,19 @@
 import BackendSubscription from '../subscription';
-import request from '../request';
+import { send } from '../request';
 import mockWebSocketFactory, { WebSocketMock } from '../mock-websocket-factory';
-// Mock the request function
-jest.mock('../request', () =>
-    jest
-        .fn()
-        .mockImplementation(() =>
-            Promise.resolve({ result: 'data received from send', subscription: { id: 'SUBSCRIPTION_ID' } })
-        )
-);
+
+jest.mock('../request', () => {
+    return {
+        __esModule: true, // This property makes it work with ES6 imports
+        default: jest.fn().mockImplementation(() => {
+            return Promise.resolve({ result: 'data received from send', subscription: { id: 'SUBSCRIPTION_ID' } });
+        }),
+        send: jest.fn().mockImplementation(() => {
+            // Mock implementation for send method to avoid empty function lint error
+            return Promise.resolve();
+        }),
+    };
+});
 
 const ENDPOINT = 'balance';
 
@@ -180,10 +185,10 @@ describe('Subscription', () => {
         );
         await subscribePromise;
 
-        // // Execute unsubscribe
+        // Execute unsubscribe
         await backendSubscription.unsubscribe();
 
-        expect(request).toHaveBeenCalledWith(mockWs, 'forget', { forget: 'SUBSCRIPTION_ID' });
+        expect(send).toHaveBeenCalledWith(mockWs, 'forget', { forget: 'SUBSCRIPTION_ID' });
     });
 
     test('when websocket closes, removes websocket message and close listeners', async () => {

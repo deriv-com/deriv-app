@@ -823,7 +823,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to unlock it.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1077,7 +1077,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1273,7 +1273,7 @@ export default class NotificationStore extends BaseStore {
                     ),
                     action: {
                         onClick: () => {
-                            window.LC_API.open_chat_window();
+                            window.LiveChatWidget?.call('maximize');
                         },
                         text: localize('Go to live chat'),
                     },
@@ -1386,7 +1386,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1398,7 +1398,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1573,7 +1573,7 @@ export default class NotificationStore extends BaseStore {
                 ),
                 action: {
                     onClick: async () => {
-                        window.LC_API.open_chat_window();
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to LiveChat'),
                 },
@@ -1589,9 +1589,10 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Update now'),
                     onClick: () => {
                         if (this.is_notifications_visible) this.toggleNotificationsModal();
-                        ui.toggleAdditionalKycInfoModal();
+                        ui.setFieldRefToFocus('account-opening-reason');
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
+                    route: routes.personal_details,
                 },
                 type: 'warning',
             },
@@ -1740,7 +1741,7 @@ export default class NotificationStore extends BaseStore {
             : {
                   text: localize('Contact live chat'),
                   onClick: () => {
-                      window.LC_API.open_chat_window();
+                      window.LiveChatWidget?.call('maximize');
                   },
               };
 

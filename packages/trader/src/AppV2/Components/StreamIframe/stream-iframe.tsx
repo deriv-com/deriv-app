@@ -1,4 +1,7 @@
 import React from 'react';
+import clsx from 'clsx';
+import { Skeleton } from '@deriv-com/quill-ui';
+import { ASPECT_RATIO } from 'AppV2/Utils/layout-utils';
 
 type TStreamIframeProps = Pick<React.ComponentProps<'iframe'>, 'height' | 'width' | 'onLoad'> & {
     autoplay?: boolean;
@@ -24,6 +27,8 @@ const StreamIframe = ({
     title,
     ...props
 }: TStreamIframeProps) => {
+    const [is_loading, setIsLoading] = React.useState(true);
+
     const params = [
         `letterboxColor=${encodeURIComponent(letterbox_color)}`,
         `muted=${muted}`,
@@ -34,7 +39,8 @@ const StreamIframe = ({
     ].join('&');
 
     return (
-        <div className='stream__wrapper'>
+        <div className={clsx('stream__wrapper', is_loading && 'stream__wrapper--is-loading')}>
+            {is_loading && <Skeleton.Square height={`calc(100vw * ${ASPECT_RATIO})`} />}
             <iframe
                 allowFullScreen={false}
                 className='stream__iframe'
@@ -43,6 +49,7 @@ const StreamIframe = ({
                 src={`https://iframe.cloudflarestream.com/${src}?${params}`}
                 data-testid={test_id}
                 title={title}
+                onLoad={() => setIsLoading(false)}
                 {...props}
             />
         </div>

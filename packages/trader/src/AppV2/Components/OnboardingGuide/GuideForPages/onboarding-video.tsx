@@ -3,11 +3,11 @@ import clsx from 'clsx';
 import { Skeleton } from '@deriv-com/quill-ui';
 import { getUrlBase } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { ASPECT_RATIO } from 'AppV2/Utils/layout-utils';
 
 type TOnboardingVideoProps = {
     type: 'trade_page' | 'positions_page';
 };
-const ASPECT_RATIO = 0.5625;
 
 const OnboardingVideo = ({ type }: TOnboardingVideoProps) => {
     const [is_loading, setIsLoading] = React.useState(true);

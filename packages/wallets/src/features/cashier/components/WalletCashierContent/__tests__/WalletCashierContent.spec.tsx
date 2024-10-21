@@ -31,6 +31,7 @@ jest.mock('../../../flows/WalletWithdrawal', () => ({
 jest.mock('../../../modules', () => ({
     CashierLocked: jest.fn(({ children }) => <div>{children}</div>),
     DepositLocked: jest.fn(({ children }) => <div>{children}</div>),
+    TransferLocked: jest.fn(({ children }) => <div>{children}</div>),
     WithdrawalLocked: jest.fn(({ children }) => <div>{children}</div>),
 }));
 

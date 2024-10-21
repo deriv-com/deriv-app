@@ -535,15 +535,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: column;
 
-        &-wrapper {
-            margin: 0.8rem 0;
-
-            @include mobile-or-tablet-screen {
-                flex-wrap: wrap;
-                margin-bottom: 2.4rem;
-            }
-        }
-
         .email-password-title-wrapper {
             display: flex;
             align-items: center;

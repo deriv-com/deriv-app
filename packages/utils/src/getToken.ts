@@ -5,9 +5,8 @@ import getAccountsFromLocalStorage from './getAccountsFromLocalStorage';
  */
 const getToken = (loginid: string) => {
     const accounts = getAccountsFromLocalStorage() ?? {};
-
     // If there is no active loginid or no accounts list, return undefined.
-    if (!loginid) return;
+    if (!loginid || accounts[loginid]?.is_disabled) return;
 
     return accounts[loginid]?.token;
 };

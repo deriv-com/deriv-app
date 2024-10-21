@@ -165,19 +165,15 @@ describe('useSortedMT5Accounts', () => {
         expect(result.current.data).toEqual([
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'vanuatu',
                 product: 'standard',
-                shortcode: 'vanuatu',
             },
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'vanuatu',
                 product: 'financial',
-                shortcode: 'vanuatu',
             },
             {
                 is_added: false,
@@ -187,11 +183,9 @@ describe('useSortedMT5Accounts', () => {
             },
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'bvi',
                 product: 'zero_spread',
-                shortcode: 'bvi',
             },
         ]);
     });
@@ -212,11 +206,9 @@ describe('useSortedMT5Accounts', () => {
         expect(result.current.data).toEqual([
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'maltainvest',
                 product: 'financial',
-                shortcode: 'maltainvest',
             },
         ]);
     });
@@ -277,35 +269,27 @@ describe('useSortedMT5Accounts', () => {
         expect(result.current.data).toEqual([
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'vanuatu',
                 product: 'standard',
-                shortcode: 'vanuatu',
             },
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'vanuatu',
                 product: 'financial',
-                shortcode: 'vanuatu',
             },
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'svg',
                 product: 'swap_free',
-                shortcode: 'svg',
             },
             {
                 is_added: true,
-                is_default_jurisdiction: 'true',
                 is_virtual: false,
                 landing_company_short: 'bvi',
                 product: 'zero_spread',
-                shortcode: 'bvi',
             },
         ]);
     });

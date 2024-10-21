@@ -3,11 +3,11 @@ import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { ClientVerificationStatusBadge } from '../../../../components';
 import { getMarketTypeDetails, MARKET_TYPE, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../constants';
-import { TModifiedMT5Accounts } from '../../../../types';
+import { TAddedMT5Account } from '../../../../types';
 
 type TBadgeVariations = Partial<React.ComponentProps<typeof ClientVerificationStatusBadge>['variant']> | undefined;
 
-const getClientKycStatus = (status: TModifiedMT5Accounts['status']): TBadgeVariations => {
+const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariations => {
     switch (status) {
         case MT5_ACCOUNT_STATUS.POA_FAILED:
         case MT5_ACCOUNT_STATUS.PROOF_FAILED:
@@ -20,7 +20,7 @@ const getClientKycStatus = (status: TModifiedMT5Accounts['status']): TBadgeVaria
     }
 };
 
-const useAddedMT5Account = (account: TModifiedMT5Accounts) => {
+const useAddedMT5Account = (account: TAddedMT5Account) => {
     const { localize } = useTranslations();
     const accountDetails = useMemo(
         () => getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL],

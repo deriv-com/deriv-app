@@ -4,12 +4,12 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
 import { getMarketTypeDetails, MARKET_TYPE } from '../../constants';
-import { TModifiedMT5Accounts } from '../../types';
+import { TModifiedMT5Account } from '../../types';
 import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
 
 type TClientVerificationModal = {
-    account: TModifiedMT5Accounts;
+    account: TModifiedMT5Account;
 };
 
 const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }) => {

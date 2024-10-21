@@ -4,15 +4,15 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
-import { TModifiedMT5Accounts } from '../../types';
-import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
+import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
+import { TAvailableMT5Account } from '../../types';
+import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './EnterPassword.scss';
 
 // Note: this component requires a proper refactor to remove props for keys available under the `account` prop
 type TProps = {
-    account?: TModifiedMT5Accounts;
+    account?: TAvailableMT5Account;
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
     isTncChecked?: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { TModifiedMT5Accounts } from 'src/features/cfd/types';
+import { TModifiedMT5Account } from 'src/features/cfd/types';
 import { useTranslations } from '@deriv-com/translations';
 import { ClientVerificationStatusBadge } from '../../../../components';
 import { getClientVerification } from '../../../../utils';
@@ -8,10 +8,10 @@ import { DocumentTile } from './components';
 import './DocumentsList.scss';
 
 type TDocumentsListProps = {
-    account: TModifiedMT5Accounts;
+    account: TModifiedMT5Account;
 };
 
-type TStatusBadgeProps = Record<TModifiedMT5Accounts['client_kyc_status']['poa_status' | 'poi_status'], JSX.Element>;
+type TStatusBadgeProps = Record<TModifiedMT5Account['client_kyc_status']['poa_status' | 'poi_status'], JSX.Element>;
 
 const statusBadge: TStatusBadgeProps = {
     expired: <ClientVerificationStatusBadge variant='failed' />,

@@ -2,11 +2,11 @@ import React from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../../constants';
-import { TModifiedMT5Accounts } from '../../../types';
+import { TAvailableMT5Account } from '../../../types';
 import './MT5LicenceMessage.scss';
 
 type TMT5LicenseMessageProps = {
-    account: TModifiedMT5Accounts;
+    account: TAvailableMT5Account;
 };
 
 const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {

@@ -6,12 +6,12 @@ import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
-import { TModifiedMT5Accounts } from '../../types';
+import { TAvailableMT5Account } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
-    account: TModifiedMT5Accounts;
+    account: TAvailableMT5Account;
     isLoading?: boolean;
     isTncChecked: boolean;
     isVirtual?: boolean;

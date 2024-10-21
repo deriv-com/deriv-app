@@ -28,48 +28,27 @@ const useSortedMT5Accounts = (regulation?: string) => {
                     : account.landing_company_short !== 'maltainvest')
         );
 
-        const combined_accounts = filtered_available_accounts?.map(available_account => {
-            const created_account = filtered_mt5_accounts?.find(account => {
-                return (
-                    available_account.product === account.product &&
-                    available_account.shortcode === account.landing_company_short
-                );
-            });
-
-            return {
-                ...available_account,
-                ...created_account,
-                /** Determine if the account is added or not */
-                is_added: Boolean(created_account),
-            };
+        const available_accounts = filtered_available_accounts.filter(available => {
+            return (
+                !filtered_mt5_accounts.find(
+                    added => added.product === available.product && added.landing_company_short === available.shortcode
+                ) &&
+                // @ts-expect-error type for is_default_jurisdiction is unavailable in mt5_login_list and trading_platform_available_accounts
+                available.is_default_jurisdiction === 'true' &&
+                /* 
+                    TODO: remove this check to filter out the creation of `stp` accounts in phase 2 of default jurisdiction 
+                    when this product type is separated from `financial` type.
+                */
+                // @ts-expect-error type `stp` is unavailable in the type for trading_platform_available_accounts
+                available.product !== 'stp'
+            );
         });
 
-        return Array.from(
-            // filter out only one account per product type
-            combined_accounts
-                .reduce(
-                    (
-                        acc: Map<typeof combined_accounts[number]['product'], typeof combined_accounts[number]>,
-                        cur: typeof combined_accounts[number]
-                    ) => {
-                        const existingItem = acc.get(cur.product);
-
-                        // Note: 'stp' product type account is not available for creation but we still support existing 'stp' accounts
-                        // @ts-expect-error type for is_default_jurisdiction is unavailable in mt5_login_list and trading_platform_available_accounts
-                        if (!existingItem && cur.is_default_jurisdiction === 'true' && cur.product !== 'stp') {
-                            // No existing item for this product, add it directly
-                            acc.set(cur.product, cur);
-                        } else if (cur.is_added) {
-                            // If `is_added` is true, replace the older entry (prioritization)
-                            acc.set(cur.product, cur);
-                        }
-
-                        return acc;
-                    },
-                    new Map<typeof combined_accounts[number]['product'], typeof combined_accounts[number]>()
-                )
-                .values()
-        );
+        const combined_accounts = [
+            ...available_accounts.map(account => ({ ...account, is_added: false })),
+            ...filtered_mt5_accounts.map(account => ({ ...account, is_added: true })),
+        ];
+        return combined_accounts;
     }, [activeAccount?.is_virtual, all_available_mt5_accounts, isEU, mt5_accounts]);
 
     const sorted_data = useMemo(() => {

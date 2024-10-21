@@ -8,22 +8,21 @@ import { Text } from '@deriv-com/ui';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useIsRtl from '../../../../../hooks/useIsRtl';
-import { THooks } from '../../../../../types';
 import { ClientVerificationStatusBadge, PlatformStatusBadge } from '../../../components';
 import { MARKET_TYPE, PlatformDetails } from '../../../constants';
 import { ClientVerificationModal, MT5TradeModal, TradingPlatformStatusModal } from '../../../modals';
-import { TModifiedMT5Accounts } from '../../../types';
+import { TAddedMT5Account } from '../../../types';
 import { useAddedMT5Account } from './hooks';
 import './AddedMT5AccountsList.scss';
 
 type TProps = {
-    account: THooks.SortedMT5Accounts;
+    account: TAddedMT5Account;
 };
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const isRtl = useIsRtl();
     const { accountDetails, isServerMaintenance, kycStatus, showMT5TradeModal, showPlatformStatus } =
-        useAddedMT5Account(account as TModifiedMT5Accounts);
+        useAddedMT5Account(account);
 
     const { show } = useModal();
 
@@ -64,7 +63,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 {kycStatus && (
                     <ClientVerificationStatusBadge
                         onClick={() =>
-                            show(<ClientVerificationModal account={account as TModifiedMT5Accounts} />, {
+                            show(<ClientVerificationModal account={account} />, {
                                 defaultRootId: 'wallets_modal_root',
                             })
                         }

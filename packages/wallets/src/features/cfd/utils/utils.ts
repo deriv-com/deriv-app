@@ -1,10 +1,8 @@
-import { TModifiedMT5Accounts } from '../types';
+import { TAddedMT5Account, TAvailableMT5Account } from '../types';
 
 const requiredDocumentStatuses = ['expired', 'none', 'rejected', 'suspected'];
 
-export const getClientVerification = (account: TModifiedMT5Accounts) => {
-    const hasOverallStatus = 'status' in account;
-    const overallStatus = account.status;
+export const getClientVerification = (account: TAddedMT5Account | TAvailableMT5Account) => {
     const hasClientKycStatus = 'client_kyc_status' in account;
     const documentStatuses = account.client_kyc_status;
 
@@ -18,7 +16,6 @@ export const getClientVerification = (account: TModifiedMT5Accounts) => {
 
     return {
         hasClientKycStatus,
-        hasOverallStatus,
         hasPoaStatus,
         hasPoiStatus,
         hasTinStatus,
@@ -26,7 +23,6 @@ export const getClientVerification = (account: TModifiedMT5Accounts) => {
         isPoiRequired,
         isTinRequired,
         isVerificationRequired: isPoiRequired || isPoaRequired || isTinRequired,
-        overallStatus,
         statuses: documentStatuses,
     };
 };

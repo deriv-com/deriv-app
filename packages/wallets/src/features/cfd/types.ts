@@ -3,11 +3,10 @@
     TODO: Remove these types once API types for client_kyc_status is available for mt5_login_list and trading_platform_available_accounts from BE
 */
 import { THooks } from '../../types';
-import { JURISDICTION } from './constants';
 
 type TStatuses = 'expired' | 'none' | 'pending' | 'rejected' | 'suspected' | 'verified';
 
-export type TModifiedMT5Accounts = THooks.SortedMT5Accounts & {
+export type TModifiedMT5Account = THooks.SortedMT5Accounts & {
     client_kyc_status: {
         poa_status: TStatuses;
         poi_status: TStatuses;
@@ -15,5 +14,11 @@ export type TModifiedMT5Accounts = THooks.SortedMT5Accounts & {
     };
     licence_number: string;
     regulatory_authority: string;
-    shortcode: typeof JURISDICTION[keyof typeof JURISDICTION];
 };
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+type ObjectWithKeyInUnion<T, K extends keyof any> = T extends any ? (K extends keyof T ? T : never) : never;
+
+export type TAvailableMT5Account = ObjectWithKeyInUnion<TModifiedMT5Account, 'shortcode'>;
+export type TAddedMT5Account = ObjectWithKeyInUnion<TModifiedMT5Account, 'landing_company_short'>;

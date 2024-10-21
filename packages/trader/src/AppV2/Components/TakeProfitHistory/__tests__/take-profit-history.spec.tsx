@@ -24,24 +24,19 @@ describe('TakeProfitHistory component', () => {
         (formatMoney as jest.Mock).mockImplementation((currency, amount) => `${amount}`);
     });
 
-    it('renders without crashing', () => {
+    it('does not render without if history was not passed', () => {
         const { container } = render(<TakeProfitHistory />);
-        expect(container).not.toBeEmptyDOMElement();
+        expect(container).toBeEmptyDOMElement();
     });
 
-    it('renders correct History title for both TP and Sl', () => {
-        render(<TakeProfitHistory history={mockHistory.slice(0, 4)} />);
+    it('renders correct History title for both TP and Sl if is_multiplier === true', () => {
+        render(<TakeProfitHistory history={mockHistory.slice(0, 4)} is_multiplier={true} />);
         expect(screen.getByText('TP & SL history')).toBeInTheDocument();
     });
 
-    it('renders correct History title for TP', () => {
+    it('renders correct History title for TP if is_multiplier !== true ', () => {
         render(<TakeProfitHistory history={mockHistory.slice(0, 3)} />);
         expect(screen.getByText('TP history')).toBeInTheDocument();
-    });
-
-    it('renders correct History title for SL', () => {
-        render(<TakeProfitHistory history={[mockHistory[3]]} />);
-        expect(screen.getByText('SL history')).toBeInTheDocument();
     });
 
     it('renders the correct number of history items', () => {

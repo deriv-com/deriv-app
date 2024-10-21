@@ -304,7 +304,8 @@ const PersonalDetailsForm = observer(() => {
         is_virtual,
         is_svg,
         tin_validation_config,
-        is_tin_auto_set
+        is_tin_auto_set,
+        account_settings?.immutable_fields
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {

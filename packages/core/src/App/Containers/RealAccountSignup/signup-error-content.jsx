@@ -53,7 +53,7 @@ const Message = ({ code, message, details }) => {
                             <span
                                 className='chat-inline'
                                 key={0}
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -105,7 +105,10 @@ const ErrorCTA = ({ code, onConfirm }) => {
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
             return (
-                <TryAgain text={localize('Go to live chat')} onConfirm={() => window.LiveChatWidget.call('maximize')} />
+                <TryAgain
+                    text={localize('Go to live chat')}
+                    onConfirm={() => window.LiveChatWidget?.call('maximize')}
+                />
             );
         case 'InputValidationFailed':
         case 'PoBoxInAddress':

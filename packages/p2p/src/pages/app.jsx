@@ -19,7 +19,7 @@ import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
-    const is_production = process.env.NODE_ENV === 'production';
+    const is_production = window.location.origin === URLConstants.derivAppProduction;
     const [is_p2p_standalone_enabled, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'p2p_standalone_enabled',
         defaultValue: false,

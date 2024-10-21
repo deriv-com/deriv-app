@@ -34,6 +34,7 @@ declare global {
         FreshChat: {
             initialize: (config: FreshChatConfig) => void;
         };
+        Analytics: any;
     }
     interface FreshChatConfig {
         token: string | null;

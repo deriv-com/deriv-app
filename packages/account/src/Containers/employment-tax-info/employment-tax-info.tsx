@@ -62,6 +62,9 @@ const EmploymentTaxInfo = observer(
             tin_config: tin_validation_config,
             is_mf: is_eu,
             is_real: !client.is_virtual,
+            is_duplicate_account:
+                client.account_settings.immutable_fields?.includes('tax_identification_number') ||
+                client.account_settings.immutable_fields?.includes('tax_residence'),
         });
 
         const handleCancel = (values: FormikValues) => {

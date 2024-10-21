@@ -34,7 +34,7 @@ describe('LastDigitPrediction', () => {
         );
     };
 
-    it('should render 10 enabled buttons for each digit if digit_stats are available', () => {
+    it('renders 10 enabled buttons for each digit if digit_stats are available', () => {
         default_mock_store.modules.trade.digit_stats = digit_stats;
         render(mockLastDigitPrediction());
 
@@ -44,20 +44,25 @@ describe('LastDigitPrediction', () => {
             expect(button).toBeEnabled();
         });
     });
-    it('should render component with correct last digit value when minimized', () => {
+    it('renders component with correct last digit value when minimized', () => {
         render(mockLastDigitPrediction({ is_minimized: true }));
 
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue(default_mock_store.modules.trade.last_digit.toString());
     });
-    it('should show ActionSheet if user clicks on the minimized Last digit prediction param', () => {
+    it('disables component if is_disabled  === true', () => {
+        render(mockLastDigitPrediction({ is_minimized: true, is_disabled: true }));
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
+    });
+    it('shows ActionSheet if user clicks on the minimized Last digit prediction param', () => {
         render(mockLastDigitPrediction({ is_minimized: true }));
 
         userEvent.click(screen.getByRole('textbox'));
 
         expect(screen.getByRole('dialog')).toHaveAttribute('data-state', 'open');
     });
-    it('should call onChange function if user opens ActionSheet, selects another digit and clicks on "Save" button', () => {
+    it('calls onChange function if user opens ActionSheet, selects another digit and clicks on "Save" button', () => {
         render(mockLastDigitPrediction({ is_minimized: true }));
 
         userEvent.click(screen.getByRole('textbox'));

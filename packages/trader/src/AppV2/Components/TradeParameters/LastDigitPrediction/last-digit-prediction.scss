@@ -44,6 +44,9 @@
                 p {
                     color: var(--component-textIcon-inverse-prominent);
                 }
+                &:disabled {
+                    background-color: var(--component-chip-bg-selectedDisabled);
+                }
             }
             .percentage {
                 color: var(--component-textIcon-normal-subtle);
@@ -58,6 +61,27 @@
         }
         &:is(.action-sheet--content *) {
             margin: var(--core-spacing-1600) 0;
+        }
+    }
+
+    &--disabled {
+        .last-digit-prediction {
+            &__title {
+                color: var(--component-textIcon-normal-disabled);
+            }
+
+            &__selector {
+                .digit .percentage {
+                    color: var(--component-textIcon-normal-disabled);
+
+                    &--max {
+                        color: var(--semantic-color-green-solid-textIcon-normal-lowest);
+                    }
+                    &--min {
+                        color: var(--semantic-color-red-solid-textIcon-normal-lowest);
+                    }
+                }
+            }
         }
     }
 }

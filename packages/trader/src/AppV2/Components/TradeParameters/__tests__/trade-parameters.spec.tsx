@@ -49,10 +49,12 @@ jest.mock('../LastDigitPrediction', () =>
 );
 
 describe('TradeParameters', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>,
+        default_mock_prop: React.ComponentProps<typeof TradeParameters>;
 
     beforeEach(() => {
         default_mock_store = mockStore({});
+        default_mock_prop = { is_minimized: false, is_disabled: false };
     });
 
     const mockTradeParameters = () => {
@@ -60,14 +62,14 @@ describe('TradeParameters', () => {
             <TraderProviders store={default_mock_store}>
                 <ReportsStoreProvider>
                     <ModulesProvider store={default_mock_store}>
-                        <TradeParameters />
+                        <TradeParameters {...default_mock_prop} />
                     </ModulesProvider>
                 </ReportsStoreProvider>
             </TraderProviders>
         );
     };
 
-    it('should render correct trade params for Accumulators', () => {
+    it('renders correct trade params for Accumulators', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.ACCUMULATOR;
         render(mockTradeParameters());
 
@@ -78,7 +80,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
-    it('should render correct trade params for Vanillas', () => {
+    it('renders correct trade params for Vanillas', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         render(mockTradeParameters());
 
@@ -89,7 +91,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
-    it('should render correct trade params for Turbos', () => {
+    it('renders correct trade params for Turbos', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
         render(mockTradeParameters());
 
@@ -101,7 +103,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
-    it('should render correct trade params for Multipliers if has_cancellation === false', () => {
+    it('renders correct trade params for Multipliers if has_cancellation === false', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         render(mockTradeParameters());
 
@@ -112,7 +114,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
-    it('should render correct trade params for Multipliers if has_cancellation === true', () => {
+    it('renders correct trade params for Multipliers if has_cancellation === true', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         default_mock_store.modules.trade.has_cancellation = true;
         render(mockTradeParameters());
@@ -124,7 +126,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(4);
     });
 
-    it('should render correct trade params for Rise/Fall', () => {
+    it('renders correct trade params for Rise/Fall', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL;
         render(mockTradeParameters());
 
@@ -134,7 +136,18 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
-    it('should render correct trade params for Higher/Lower', () => {
+    it('renders correct trade params for Rise/Fall if is_minimized and is_disabled  === true', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL;
+        default_mock_prop = { is_minimized: true, is_disabled: true };
+        render(mockTradeParameters());
+
+        expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.STAKE)).toBeInTheDocument();
+        expect(screen.getByText(TRADE_PARAMS.ALLOW_EQUALS)).toBeInTheDocument();
+        expect(screen.getAllByTestId(data_test)).toHaveLength(3);
+    });
+
+    it('renders correct trade params for Higher/Lower', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.HIGH_LOW;
         render(mockTradeParameters());
 
@@ -146,7 +159,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
-    it('should render correct trade params for Touch/No Touch', () => {
+    it('renders correct trade params for Touch/No Touch', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.TOUCH;
         render(mockTradeParameters());
 
@@ -158,7 +171,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(5);
     });
 
-    it('should render correct trade params for Matches/Differs', () => {
+    it('renders correct trade params for Matches/Differs', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.MATCH_DIFF;
         render(mockTradeParameters());
 
@@ -168,7 +181,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
-    it('should render correct trade params for Even/Odd', () => {
+    it('renders correct trade params for Even/Odd', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
         render(mockTradeParameters());
 
@@ -177,7 +190,7 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(2);
     });
 
-    it('should render correct trade params for Over/Under', () => {
+    it('renders correct trade params for Over/Under', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.OVER_UNDER;
         render(mockTradeParameters());
 

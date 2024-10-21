@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, ToggleSwitch, Text, Heading } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
@@ -6,7 +7,7 @@ import { clickAndKeyEventHandler } from '@deriv/shared';
 import { hasCallPutEqual, hasDurationForCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const AllowEquals = observer(() => {
+const AllowEquals = observer(({ is_disabled }: { is_disabled?: boolean }) => {
     const { contract_types_list, contract_start_type, duration_unit, expiry_type, is_equal, onChange } =
         useTraderStore();
 
@@ -26,6 +27,7 @@ const AllowEquals = observer(() => {
     };
 
     const openDescription = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        if (is_disabled) return;
         clickAndKeyEventHandler(() => setIsOpen(true), e);
     };
 
@@ -36,10 +38,15 @@ const AllowEquals = observer(() => {
     return (
         <React.Fragment>
             <div className='allow-equals__wrapper'>
-                <Text size='sm' className='allow-equals__title' onClick={openDescription} onKeyDown={openDescription}>
+                <Text
+                    size='sm'
+                    className={clsx('allow-equals__title', is_disabled && 'allow-equals__title--disabled')}
+                    onClick={openDescription}
+                    onKeyDown={openDescription}
+                >
                     <Localize i18n_default_text='Allow equals' />
                 </Text>
-                <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} />
+                <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} disabled={is_disabled} />
             </div>
             <ActionSheet.Root isOpen={is_open} onClose={closeDescription} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

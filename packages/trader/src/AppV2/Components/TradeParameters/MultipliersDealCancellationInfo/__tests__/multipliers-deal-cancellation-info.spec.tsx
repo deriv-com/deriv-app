@@ -6,20 +6,21 @@ import TraderProviders from '../../../../../trader-providers';
 import MultipliersDealCancellationInfo from '../multipliers-deal-cancellation-info';
 
 describe('MultipliersDealCancellationInfo', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>,
+        default_mock_prop: React.ComponentProps<typeof MultipliersDealCancellationInfo>;
 
-    beforeEach(
-        () =>
-            (default_mock_store = mockStore({
-                modules: {
-                    trade: {
-                        currency: 'USD',
-                        has_cancellation: true,
-                        proposal_info: { MULTUP: { cancellation: { ask_price: 4 } } },
-                    },
+    beforeEach(() => {
+        default_mock_store = mockStore({
+            modules: {
+                trade: {
+                    currency: 'USD',
+                    has_cancellation: true,
+                    proposal_info: { MULTUP: { cancellation: { ask_price: 4 } } },
                 },
-            }))
-    );
+            },
+        });
+        default_mock_prop = { is_disabled: false };
+    });
 
     afterEach(() => jest.clearAllMocks());
 
@@ -27,12 +28,12 @@ describe('MultipliersDealCancellationInfo', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <MultipliersDealCancellationInfo />
+                    <MultipliersDealCancellationInfo {...default_mock_prop} />
                 </ModulesProvider>
             </TraderProviders>
         );
 
-    it('should not render if there is an API error ', () => {
+    it('does not render if there is an API error ', () => {
         default_mock_store.modules.trade.proposal_info = {
             MULTUP: {
                 has_error: true,
@@ -43,17 +44,26 @@ describe('MultipliersDealCancellationInfo', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render skeleton, if proposal_info is empty', () => {
+    it('renders skeleton, if proposal_info is empty', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockMultipliersDealCancellationInfo();
 
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
     });
 
-    it('should render component', () => {
+    it('renders component with title and value', () => {
         mockMultipliersDealCancellationInfo();
 
-        expect(screen.getByText('Deal cancellation fee')).toBeInTheDocument();
+        const title = screen.getByText('Deal cancellation fee');
+        expect(title).toBeInTheDocument();
+        expect(title).not.toHaveClass('trade-params__text--disabled');
         expect(screen.getByText(/4.00 USD/)).toBeInTheDocument();
+    });
+
+    it('applies specific className if is_disabled === true', () => {
+        default_mock_prop.is_disabled = true;
+        mockMultipliersDealCancellationInfo();
+
+        expect(screen.getByText('Deal cancellation fee')).toHaveClass('trade-params__text--disabled');
     });
 });

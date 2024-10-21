@@ -33,25 +33,25 @@ jest.mock('lodash.debounce', () =>
 );
 
 describe('Strike', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Strike>;
 
-    beforeEach(
-        () =>
-            (default_mock_store = mockStore({
-                modules: {
-                    trade: {
-                        ...mockStore({}),
-                        barrier_1: '+1.80',
-                        barrier_choices: ['+1.80', '+1.00', '+0.00', '-1.00', '-1.80'],
-                        contract_type: TRADE_TYPES.VANILLA.CALL,
-                        currency: 'USD',
-                        proposal_info: {
-                            [CONTRACT_TYPES.VANILLA.CALL]: { obj_contract_basis: { value: '14.245555' } },
-                        },
+    beforeEach(() => {
+        default_mock_store = mockStore({
+            modules: {
+                trade: {
+                    ...mockStore({}),
+                    barrier_1: '+1.80',
+                    barrier_choices: ['+1.80', '+1.00', '+0.00', '-1.00', '-1.80'],
+                    contract_type: TRADE_TYPES.VANILLA.CALL,
+                    currency: 'USD',
+                    proposal_info: {
+                        [CONTRACT_TYPES.VANILLA.CALL]: { obj_contract_basis: { value: '14.245555' } },
                     },
                 },
-            }))
-    );
+            },
+        });
+        default_mock_prop = { is_minimized: true, is_disabled: false };
+    });
 
     afterEach(() => jest.clearAllMocks());
 
@@ -59,11 +59,11 @@ describe('Strike', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <Strike is_minimized />
+                    <Strike {...default_mock_prop} />
                 </ModulesProvider>
             </TraderProviders>
         );
-    it('should render Skeleton loader if strike (barrier_1) is falsy', () => {
+    it('renders Skeleton loader if strike (barrier_1) is falsy', () => {
         default_mock_store.modules.trade.barrier_1 = '';
         mockStrike();
 
@@ -71,14 +71,14 @@ describe('Strike', () => {
         expect(screen.queryByText(strike_trade_param_label)).not.toBeInTheDocument();
     });
 
-    it('should render trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
+    it('renders trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
         mockStrike();
 
         expect(screen.getByText(strike_trade_param_label)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue('+1.80');
     });
 
-    it('should open ActionSheet with WheelPicker component, Payout per point information, "Save" button and text content with definition if user clicks on trade param', () => {
+    it('opens ActionSheet with WheelPicker component, Payout per point information, "Save" button and text content with definition if user clicks on trade param', () => {
         mockStrike();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('Strike', () => {
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
-    it('should not render Payout per point information if proposal_info is empty object', () => {
+    it('does not render Payout per point information if proposal_info is empty object', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockStrike();
 
@@ -102,7 +102,7 @@ describe('Strike', () => {
         expect(screen.queryByText(/14.245555/)).not.toBeInTheDocument();
     });
 
-    it('should apply specific className if innerHeight is <= 640px', () => {
+    it('applies specific className if innerHeight is <= 640px', () => {
         const original_height = window.innerHeight;
         window.innerHeight = 640;
         mockStrike();
@@ -113,7 +113,7 @@ describe('Strike', () => {
         window.innerHeight = original_height;
     });
 
-    it('should call onChange function if user changes selected value', async () => {
+    it('calls onChange function if user changes selected value', async () => {
         jest.useFakeTimers();
         mockStrike();
 
@@ -128,5 +128,12 @@ describe('Strike', () => {
 
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
         jest.useRealTimers();
+    });
+
+    it('disables trade param if is_disabled === true', () => {
+        default_mock_prop.is_disabled = true;
+        mockStrike();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 });

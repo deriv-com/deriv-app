@@ -96,7 +96,7 @@ const Trade = observer(() => {
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
                         <TradeParametersContainer>
-                            <TradeParameters />
+                            <TradeParameters is_disabled={is_market_closed} />
                         </TradeParametersContainer>
                         <div className='trade__chart-tooltip'>
                             <section
@@ -113,7 +113,7 @@ const Trade = observer(() => {
                     </div>
                     <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
-                            <TradeParameters is_minimized />
+                            <TradeParameters is_minimized is_disabled={is_market_closed} />
                         </TradeParametersContainer>
                         {!is_market_closed && <PurchaseButton />}
                     </div>

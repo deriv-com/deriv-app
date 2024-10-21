@@ -40,7 +40,9 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('Duration', () => {
-    let default_trade_store: TCoreStores, mockOnChangeMultiple: jest.Mock;
+    let default_trade_store: TCoreStores,
+        mockOnChangeMultiple: jest.Mock,
+        default_props: React.ComponentProps<typeof Duration>;
 
     beforeEach(() => {
         mockOnChangeMultiple = jest.fn();
@@ -65,6 +67,7 @@ describe('Duration', () => {
                 },
             },
         });
+        default_props = { is_minimized: false, is_disabled: false };
     });
 
     const mockAddSnackbar = jest.fn();
@@ -75,7 +78,7 @@ describe('Duration', () => {
     const mockDuration = () => {
         render(
             <TraderProviders store={default_trade_store}>
-                <Duration />
+                <Duration {...default_props} />
             </TraderProviders>
         );
     };
@@ -115,16 +118,16 @@ describe('Duration', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('should display a validation error message if there is a duration error', async () => {
+    it('should display a validation error message if there is a duration error', () => {
         default_trade_store.modules.trade.validation_errors.duration = [
             { message: 'Invalid duration', error_field: 'duration' },
         ];
         mockDuration();
-        await expect(mockAddSnackbar).toHaveBeenCalled();
+        expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
     it('should display the market closed message when the market is closed', () => {
-        default_trade_store.modules.trade.symbol = 'GBPUSD';
+        default_props.is_disabled = true;
         mockDuration();
         expect(screen.getByText(/duration/i)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeDisabled();

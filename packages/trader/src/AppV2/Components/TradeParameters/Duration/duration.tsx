@@ -2,20 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { getUnitMap, isMarketClosed } from '@deriv/shared';
+import { getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TDurationProps = {
-    is_minimized?: boolean;
-};
-
-const Duration = observer(({ is_minimized }: TDurationProps) => {
+const Duration = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
     const {
         duration,
         duration_unit,
@@ -47,7 +43,6 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         (proposal_info[contract_type_object[0]]?.has_error &&
             proposal_info[contract_type_object[0]]?.error_field === 'duration') ||
         validation_errors.duration.length > 0;
-    const { activeSymbols } = useActiveSymbols();
     const isInitialMount = useRef(true);
     const { common } = useStore();
     const { server_time } = common;
@@ -168,7 +163,7 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '-minimized' : ''}`} />}
                 value={getInputValues()}
                 noStatusIcon
-                disabled={isMarketClosed(activeSymbols, symbol)}
+                disabled={is_disabled}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setOpen(true)}
                 status={has_error ? 'error' : 'neutral'}

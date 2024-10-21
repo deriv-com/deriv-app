@@ -11,12 +11,9 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import PayoutPerPointWheel from './payout-per-point-wheel';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TPayoutPerPointProps = {
-    is_minimized?: boolean;
-};
-
-const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
+const PayoutPerPoint = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         barrier_1,
@@ -83,6 +80,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     return (
         <React.Fragment>
             <TextField
+                disabled={is_disabled}
                 className={classname}
                 label={
                     <Localize

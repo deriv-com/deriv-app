@@ -88,9 +88,7 @@ const OptionsAndMultipliersListing = () => {
     const title = isEuRegion ? <Localize i18n_default_text='Multipliers' /> : <Localize i18n_default_text='Options' />;
     const subtitle = isEuRegion ? (
         <Localize
-            components={[
-                <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' variant='dark' />,
-            ]}
+            components={[<WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />]}
             i18n_default_text='Leverage your trading; risk only what you put in. <0>Learn more</0>'
         />
     ) : (

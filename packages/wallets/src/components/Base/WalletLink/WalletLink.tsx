@@ -2,7 +2,7 @@ import React from 'react';
 import { getStaticUrl } from '../../../helpers/urls';
 import './WalletLink.scss';
 
-type TVariant = 'bold' | 'dark' | 'normal';
+type TVariant = 'bold' | 'normal';
 
 interface LinkProps {
     children?: React.ReactNode;

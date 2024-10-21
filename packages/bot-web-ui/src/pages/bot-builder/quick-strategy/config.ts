@@ -41,8 +41,8 @@ const SYMBOL: TConfigItem = {
 
 const LABEL_TRADETYPE: TConfigItem = {
     type: 'label',
-    label: localize('Trade type'),
-    description: localize('Your bot will use this trade type for every run'),
+    label: localize('Contract type'),
+    description: localize('Your bot will use this contract type for every run'),
 };
 
 const TRADETYPE: TConfigItem = {

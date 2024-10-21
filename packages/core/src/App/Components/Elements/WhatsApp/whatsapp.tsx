@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
-import { whatsapp_url } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
+import { URLConstants } from '@deriv-com/utils';
+import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 
-const WhatsApp = ({ showPopover }: { showPopover?: boolean }) => {
-    const liveChat = useLiveChat();
+const WhatsApp = ({ showPopover, onClick }: { showPopover?: boolean; onClick?: () => void }) => {
+    const { isDesktop } = useDevice();
 
-    if (!liveChat.isReady) return null;
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
+
+    if (!is_livechat_available && !enable_freshworks_live_chat) return null;
+
+    if (!isDesktop)
+        return (
+            <Fragment>
+                <Icon icon='IcWhatsApp' className='drawer-icon' />
+                <a
+                    className='header__menu-mobile-whatsapp-link'
+                    href={URLConstants.whatsApp}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    onClick={onClick}
+                >
+                    {localize('WhatsApp')}
+                </a>
+            </Fragment>
+        );
 
     return (
         <a
-            href={whatsapp_url}
+            href={URLConstants.whatsApp}
             aria-label={localize('WhatsApp')}
             className='footer__link'
             target='_blank'

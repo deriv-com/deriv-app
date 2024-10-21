@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider, useActiveLinkedToTradingAccount, useIsEuRegion } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useActiveLinkedToTradingAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../ModalProvider';
 import OptionsAndMultipliersListing from '../OptionsAndMultipliersListing';
@@ -45,9 +45,6 @@ describe('OptionsAndMultipliersListing', () => {
     });
 
     it('should change TradingAccountCard if loginid is undefined', () => {
-        (useIsEuRegion as jest.Mock).mockReturnValue({
-            data: false,
-        });
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: undefined },
         });

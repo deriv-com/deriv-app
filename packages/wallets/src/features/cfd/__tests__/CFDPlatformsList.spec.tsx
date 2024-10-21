@@ -1,8 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../AuthProvider';
 import CFDPlatformsList from '../CFDPlatformsList';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -39,12 +40,18 @@ jest.mock('../components', () => ({
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>;
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <APIProvider>
+        <WalletsAuthProvider>{children}</WalletsAuthProvider>
+    </APIProvider>
+);
+
 describe('CFDPlatformsList', () => {
     describe('Mobile/Tablet view', () => {
         it('renders proper content', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             expect(
                 screen.getByText('Trade bigger positions with less capital on a wide range of global markets.')
@@ -56,7 +63,7 @@ describe('CFDPlatformsList', () => {
         it('opens proper link when the user is clicking on `Learn more` text', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
 
@@ -66,7 +73,7 @@ describe('CFDPlatformsList', () => {
         it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
             userEvent.click(compareAccountsBtn);
@@ -77,7 +84,7 @@ describe('CFDPlatformsList', () => {
 
     describe('Desktop view', () => {
         it('renders proper content', () => {
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             expect(screen.getByText('CFDs')).toBeInTheDocument();
             expect(
@@ -88,7 +95,7 @@ describe('CFDPlatformsList', () => {
         });
 
         it('opens proper link when the user is clicking on `Learn more` text', () => {
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
 
@@ -96,7 +103,7 @@ describe('CFDPlatformsList', () => {
         });
 
         it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
-            render(<CFDPlatformsList />);
+            render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
             userEvent.click(compareAccountsBtn);
@@ -106,7 +113,7 @@ describe('CFDPlatformsList', () => {
     });
 
     it('renders proper content for fiat accounts', () => {
-        render(<CFDPlatformsList />);
+        render(<CFDPlatformsList />, { wrapper });
 
         expect(screen.getByText('CFDPlatformsListAccounts')).toBeInTheDocument();
     });
@@ -120,7 +127,7 @@ describe('CFDPlatformsList', () => {
                 },
             },
         });
-        render(<CFDPlatformsList />);
+        render(<CFDPlatformsList />, { wrapper });
 
         expect(screen.getByText('CFDPlatformsListEmptyState')).toBeInTheDocument();
     });

@@ -1,6 +1,7 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletLink } from '../../components/Base';
@@ -12,6 +13,7 @@ const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const history = useHistory();
+    const { data: isEuRegion } = useIsEuRegion();
 
     return (
         <div className='wallets-cfd-list'>
@@ -35,7 +37,13 @@ const CFDPlatformsList: React.FC = () => {
                         </div>
                         <Text align='start' size='md'>
                             <Localize
-                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                components={[
+                                    <WalletLink
+                                        key={0}
+                                        staticUrl='/trade-types/cfds/'
+                                        variant={isEuRegion ? 'dark' : 'normal'}
+                                    />,
+                                ]}
                                 i18n_default_text='Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>'
                             />
                         </Text>
@@ -46,7 +54,9 @@ const CFDPlatformsList: React.FC = () => {
                             <Localize
                                 components={[
                                     <a
-                                        className='wallets-cfd-list__header-description__link'
+                                        className={classNames('wallets-cfd-list__header-description__link', {
+                                            'wallets-cfd-list__header-description__link--dark': isEuRegion,
+                                        })}
                                         href='https://deriv.com/trade-types/cfds/'
                                         key={0}
                                         rel='noopener noreferrer'

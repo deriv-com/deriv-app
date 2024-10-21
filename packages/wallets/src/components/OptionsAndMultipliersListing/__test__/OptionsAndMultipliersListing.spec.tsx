@@ -15,7 +15,9 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveLinkedToTradingAccount: jest.fn(),
-    useIsEuRegion: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
 }));
 
 jest.mock('../../DerivAppsSection', () => ({

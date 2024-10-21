@@ -32,7 +32,8 @@ import {
     getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { URLConstants, getCountry } from '@deriv-com/utils';
+import { URLConstants } from '@deriv-com/utils';
+import { getCountry } from '@deriv/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 

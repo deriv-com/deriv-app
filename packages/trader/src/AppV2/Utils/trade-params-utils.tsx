@@ -325,6 +325,7 @@ export const getOptionPerUnit = (
 
 export const getSmallestDuration = (
     obj: { [x: string]: { min: number; max: number } | { min: number } },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     durationUnits: any[]
 ) => {
     const keysPriority = ['tick', 'intraday', 'daily'];

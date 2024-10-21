@@ -23,6 +23,7 @@ export const rudderStackSendCloseEvent = ({
     quick_strategy_tab,
     selected_strategy,
     load_strategy_tab,
+    announcement_name,
 }: TEvents['ce_bot_form'] & TFormStrategy) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.CLOSE,
@@ -31,6 +32,7 @@ export const rudderStackSendCloseEvent = ({
         quick_strategy_tab,
         strategy_name: getRsStrategyType(selected_strategy),
         load_strategy_tab,
+        announcement_name,
     });
 };
 

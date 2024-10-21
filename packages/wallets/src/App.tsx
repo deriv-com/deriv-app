@@ -12,12 +12,17 @@ import './index.scss';
 
 type TProps = {
     isWalletsOnboardingTourGuideVisible: boolean;
+    logout: () => Promise<void>;
     onWalletsOnboardingTourGuideCloseHandler: VoidFunction;
 };
 
 const LazyWalletTourGuide = lazy(() => import('./components/WalletTourGuide/WalletTourGuide'));
 
-const App: React.FC<TProps> = ({ isWalletsOnboardingTourGuideVisible, onWalletsOnboardingTourGuideCloseHandler }) => {
+const App: React.FC<TProps> = ({
+    isWalletsOnboardingTourGuideVisible,
+    logout,
+    onWalletsOnboardingTourGuideCloseHandler,
+}) => {
     const [preferredLanguage, setPreferredLanguage] = useState<TLanguageType | null>(null);
     const language = useLanguage(preferredLanguage);
 
@@ -33,7 +38,7 @@ const App: React.FC<TProps> = ({ isWalletsOnboardingTourGuideVisible, onWalletsO
 
     return (
         <APIProvider standalone>
-            <WalletsAuthProvider>
+            <WalletsAuthProvider logout={logout}>
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
                     <React.Suspense fallback={<Loader />}>
                         <ModalProvider>

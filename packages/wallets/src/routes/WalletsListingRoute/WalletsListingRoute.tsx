@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+import { useWalletAccountsList } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { WalletListHeader, WalletsAddMoreCarousel, WalletsCardLoader, WalletsResponsiveLoader } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
@@ -9,6 +10,8 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 
 const WalletsListingRoute: React.FC = () => {
     const { isDesktop } = useDevice();
+    const { data: wallets } = useWalletAccountsList();
+    const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
 
     return (
         <div className='wallets-listing-route'>
@@ -22,7 +25,7 @@ const WalletsListingRoute: React.FC = () => {
                     <LazyWalletsCarousel />
                 </React.Suspense>
             )}
-            <WalletsAddMoreCarousel />
+            {hasAnyActiveRealWallets && <WalletsAddMoreCarousel />}
             <ResetMT5PasswordHandler />
         </div>
     );

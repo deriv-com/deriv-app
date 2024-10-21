@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 
 type TClosingAccountGeneralErrorContentProps = {
@@ -10,7 +10,9 @@ type TClosingAccountGeneralErrorContentProps = {
 const ClosingAccountGeneralErrorContent = ({ message, onClick }: TClosingAccountGeneralErrorContentProps) => (
     <Fragment>
         <div className='closing-account-error__container closing-account-error__container-message'>
-            <div className='closing-account-error__details closing-account-error__details-message'>{message}</div>
+            <div className='closing-account-error__details closing-account-error__details-message'>
+                <Text size='xs'>{message}</Text>
+            </div>
         </div>
         <div>
             <Button className='closing-account-error__button' primary onClick={onClick}>

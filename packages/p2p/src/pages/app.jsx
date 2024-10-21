@@ -56,6 +56,8 @@ const App = () => {
                     const search_params = new URLSearchParams(split_url.split('?')[1]);
                     const order_id = search_params.get('order');
                     window.location.href = `${target_url}/redirect/p2p?action=${action_param}&order_id=${order_id}&code=${code_param}&lang=${lang}`;
+                } else {
+                    window.location.href = target_url;
                 }
             }
         }
@@ -297,8 +299,6 @@ const App = () => {
 
     React.useEffect(() => {
         if (action_param && code_param) {
-            /* eslint-disable no-console */
-            console.log('action_param', action_param, 'code_param', code_param);
             // We need an extra state since we delete the code from the query params.
             // Do not remove.
             order_store.setVerificationCode(code_param);

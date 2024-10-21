@@ -33,11 +33,10 @@ describe('DerivEmail', () => {
             </APIProvider>
         );
 
-    it('should render email address in disabled form', () => {
+    it('should render message properly', () => {
         renderComponent({});
 
-        const el_input_field = screen.getByRole('textbox', { name: /Email address\*/i });
-        expect(el_input_field).toBeDisabled();
+        expect(screen.getByText(/This is the email address associated with your Deriv account./i)).toBeInTheDocument();
     });
 
     it('should display button when it is not redirected from deriv-go', () => {

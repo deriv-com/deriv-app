@@ -1,12 +1,12 @@
 import { Fragment, useState } from 'react';
-import { Button, Text, Input } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';
 import UnlinkAccountModal from '../../../Components/unlink-account-modal';
+import EmailPasswordSection from './email-password-section';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 
@@ -44,38 +44,21 @@ const DerivEmail = observer(() => {
 
     return (
         <Fragment>
-            <FormSubHeader title={localize('Email address')} />
-            <div className='account__email-wrapper'>
-                <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
-                    <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
-                </Text>
-                <div className='email-platform__content'>
-                    <fieldset className='email-platform__content__fieldset'>
-                        <Input
-                            className='email-input'
-                            data-lpignore='true'
-                            type='text'
-                            name='email'
-                            id='email'
-                            label={localize('Email address*')}
-                            value={email}
-                            disabled={true}
+            <div className='account__passwords-wrapper'>
+                <EmailPasswordSection
+                    title={localize('Email address')}
+                    title_icon='deriv_email'
+                    description={
+                        <Localize
+                            i18n_default_text='This is the email address associated with your Deriv account. <0>{{ email }}</0>'
+                            components={[<Text key={0} as='span' weight='bold' size='xs' />]}
+                            values={{ email }}
                         />
-                    </fieldset>
-                    {!is_from_derivgo && (
-                        <Button
-                            className='email-change_button'
-                            type='button'
-                            onClick={onClickChangeEmail}
-                            has_effect
-                            is_disabled={false}
-                            is_loading={false}
-                            text={localize('Change email')}
-                            large
-                            primary
-                        />
-                    )}
-                </div>
+                    }
+                    should_display_button={!is_from_derivgo}
+                    onClick={onClickChangeEmail}
+                    button_text={localize('Change email')}
+                />
                 <UnlinkAccountModal
                     is_open={is_unlink_account_modal_open}
                     onClose={() => setIsUnlinkAccountModalOpen(false)}

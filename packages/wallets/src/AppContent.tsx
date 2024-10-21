@@ -8,13 +8,15 @@ import { TLanguageType } from './types';
 import './AppContent.scss';
 
 type AppContentProps = {
+    isWalletsOnboardingTourGuideVisible: boolean;
     setPreferredLanguage: (language: TLanguageType | null) => void;
 };
 
-const AppContent: React.FC<AppContentProps> = ({ setPreferredLanguage }) => {
+const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVisible, setPreferredLanguage }) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
     const previousDerivAccountListLenghtRef = useRef(0);
+    const appRef = useRef<HTMLDivElement>(null);
     const {
         data: { preferred_language: preferredLanguage },
     } = useSettings();
@@ -51,8 +53,18 @@ const AppContent: React.FC<AppContentProps> = ({ setPreferredLanguage }) => {
         });
     }, []);
 
+    // Scroll to top when the onboarding tour guide is not visible
+    useEffect(() => {
+        if (!isWalletsOnboardingTourGuideVisible) {
+            appRef.current?.scrollTo({
+                behavior: 'smooth',
+                top: 0,
+            });
+        }
+    }, [isWalletsOnboardingTourGuideVisible]);
+
     return (
-        <div className='wallets-app'>
+        <div className='wallets-app' ref={appRef}>
             <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
         </div>

@@ -17,8 +17,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
     const { localize } = useTranslations();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
 
-    const optionsAndMultipliersTabTitle =
-        isEuRegionLoading && isEuRegion ? localize('Multipliers') : localize('Options');
+    const optionsAndMultipliersTabTitle = isEuRegion ? localize('Multipliers') : localize('Options');
 
     const tabs = [localize('CFDs'), optionsAndMultipliersTabTitle];
 

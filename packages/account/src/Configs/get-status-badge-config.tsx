@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
     mt5_account_status: TMT5AccountStatus,
-    openFailedVerificationModal?: (selected_account_type: string) => void,
-    selected_account_type?: string,
+    openFailedVerificationModal?: (selected_account_type: any) => void,
+    selected_account_type?: any,
     setIsVerificationModalVisible?: (value: boolean) => void,
     user_account_status?: { poi_status: TAuthStatusCodes; poa_status: TAuthStatusCodes }
 ) => {
@@ -36,7 +36,14 @@ const getStatusBadgeConfig = (
                                 key={1}
                                 className='link-verification-failed'
                                 onClick={() => {
-                                    openFailedVerificationModal?.(selected_account_type ?? '');
+                                    if (selected_account_type) {
+                                        selected_account_type.client_kyc_status = {
+                                            poi_status: user_account_status?.poi_status,
+                                            poa_status: user_account_status?.poa_status,
+                                        };
+                                        selected_account_type;
+                                        openFailedVerificationModal?.(selected_account_type ?? '');
+                                    }
                                 }}
                             />,
                         ]}

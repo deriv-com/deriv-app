@@ -169,6 +169,7 @@ export default class ClientStore extends BaseStore {
 
     subscriptions = {};
     exchange_rates = {};
+    client_kyc_status = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -433,6 +434,8 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            setClientKYCStatus: action.bound,
+            client_kyc_status: observable,
         });
 
         reaction(
@@ -2933,5 +2936,9 @@ export default class ClientStore extends BaseStore {
 
     get is_account_to_be_closed_by_residence() {
         return this.account_time_of_closure && this.residence && this.residence === 'sn';
+    }
+
+    setClientKYCStatus(client_kyc_status) {
+        this.client_kyc_status = client_kyc_status;
     }
 }

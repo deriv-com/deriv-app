@@ -646,6 +646,12 @@ export type TClientStore = {
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
     statement: Statement;
+    setClientKYCStatus: (status: { poa_status: string; poi_status: string; valid_tin: 0 | 1 }) => void;
+    client_kyc_status: {
+        poa_status: string;
+        poi_status: string;
+        valid_tin: 0 | 1;
+    };
 };
 
 type TCommonStoreError = {

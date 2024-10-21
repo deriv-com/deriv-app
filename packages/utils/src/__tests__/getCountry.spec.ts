@@ -1,36 +1,35 @@
 import getCountry from '../getCountry';
 
 describe('getCountry', () => {
-    let fetchSpy: jest.SpyInstance;
-
     beforeEach(() => {
-        fetchSpy = jest.spyOn(global, 'fetch');
+        global.fetch = jest.fn() as jest.Mock;
     });
 
     afterEach(() => {
-        fetchSpy.mockRestore();
+        jest.resetAllMocks();
     });
 
     it('should return the country code in lowercase when available', async () => {
-        fetchSpy.mockResolvedValue({
+        // Mock fetch response
+        (global.fetch as jest.Mock).mockResolvedValue({
             text: async () => 'loc=US\nother=info\n',
-        } as Response);
+        });
 
         const country = await getCountry();
         expect(country).toBe('us');
     });
 
     it('should return an empty string if the loc field is not present', async () => {
-        fetchSpy.mockResolvedValue({
+        (global.fetch as jest.Mock).mockResolvedValue({
             text: async () => 'other=info\n',
-        } as Response);
+        });
 
         const country = await getCountry();
         expect(country).toBe('');
     });
 
     it('should return an empty string if the fetch fails', async () => {
-        fetchSpy.mockRejectedValue(new Error('Fetch failed'));
+        (global.fetch as jest.Mock).mockRejectedValue(new Error('Fetch failed'));
 
         const country = await getCountry();
         expect(country).toBe('');

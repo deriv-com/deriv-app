@@ -12,16 +12,16 @@ jest.mock('../../RiskManagement/take-profit-and-stop-loss-input', () =>
 jest.mock('AppV2/Components/TradeParamDefinition', () => jest.fn(() => <div>TradeParamDefinition</div>));
 
 describe('TakeProfit', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof TakeProfit>;
 
-    beforeEach(
-        () =>
-            (default_mock_store = mockStore({
-                modules: {
-                    trade: { ...mockStore({}).modules.trade, currency: 'USD', has_take_profit: true, take_profit: '5' },
-                },
-            }))
-    );
+    beforeEach(() => {
+        default_mock_store = mockStore({
+            modules: {
+                trade: { ...mockStore({}).modules.trade, currency: 'USD', has_take_profit: true, take_profit: '5' },
+            },
+        });
+        default_mock_prop = { is_minimized: true, is_disabled: false };
+    });
 
     afterEach(() => jest.clearAllMocks());
 
@@ -29,24 +29,31 @@ describe('TakeProfit', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <TakeProfit is_minimized />
+                    <TakeProfit {...default_mock_prop} />
                 </ModulesProvider>
             </TraderProviders>
         );
 
-    it('should render TP trade parameter with correct take profit from trade store', () => {
+    it('renders TP trade parameter with correct take profit from trade store', () => {
         mockTakeProfit();
 
         expect(screen.getByRole('textbox')).toHaveValue('5 USD');
         expect(screen.getByText('Take profit')).toBeInTheDocument();
     });
 
-    it('should render TakeProfitAndStopLossInput and TradeParamDefinition when user clicks on TP input', () => {
+    it('renders TakeProfitAndStopLossInput and TradeParamDefinition when user clicks on TP input', () => {
         mockTakeProfit();
 
         userEvent.click(screen.getByText('Take profit'));
 
         expect(screen.getByText('TakeProfitAndStopLossInput')).toBeInTheDocument();
         expect(screen.getByText('TradeParamDefinition')).toBeInTheDocument();
+    });
+
+    it('disables trade param if is_disabled === true', () => {
+        default_mock_prop.is_disabled = true;
+        mockTakeProfit();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 });

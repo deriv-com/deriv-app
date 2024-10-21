@@ -27,10 +27,10 @@ describe('<MultipliersExpirationInfo />', () => {
         },
     };
 
-    const MockedMultipliersExpirationInfo = (mocked_store: TCoreStores) => {
+    const MockedMultipliersExpirationInfo = (mock_props?: React.ComponentProps<typeof MultipliersExpirationInfo>) => {
         return (
-            <TraderProviders store={mocked_store}>
-                <MultipliersExpirationInfo />
+            <TraderProviders store={mockStore(mock_store)}>
+                <MultipliersExpirationInfo {...mock_props} />
             </TraderProviders>
         );
     };
@@ -39,9 +39,15 @@ describe('<MultipliersExpirationInfo />', () => {
         (formatDuration as jest.Mock).mockReturnValue({ days: 1, timestamp: '14:00' });
         (getDateFromNow as jest.Mock).mockReturnValue('13 Jul 2021');
         (getDiffDuration as jest.Mock).mockReturnValue(14400);
-        render(MockedMultipliersExpirationInfo(mockStore(mock_store)));
+        render(MockedMultipliersExpirationInfo());
 
         expect(screen.getByText('Expires on')).toBeInTheDocument();
         expect(screen.getByText('13 Jul 2021 at 14:00')).toBeInTheDocument();
+    });
+
+    it('applies specific className if is_disabled === true', () => {
+        render(MockedMultipliersExpirationInfo({ is_disabled: true }));
+
+        expect(screen.getByText('Expires on')).toHaveClass('trade-params__text--disabled');
     });
 });

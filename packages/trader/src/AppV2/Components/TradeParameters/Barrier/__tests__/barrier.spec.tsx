@@ -12,7 +12,7 @@ jest.mock('@deriv/quill-icons', () => ({
 }));
 
 describe('Barrier Component', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
+    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Barrier>;
 
     beforeEach(() => {
         default_mock_store = mockStore({
@@ -24,11 +24,12 @@ describe('Barrier Component', () => {
                 },
             },
         });
+        default_mock_prop = { is_minimized: true, is_disabled: false };
     });
     const mockBarriers = () => {
         render(
             <TraderProviders store={default_mock_store}>
-                <Barrier is_minimized />
+                <Barrier {...default_mock_prop} />
             </TraderProviders>
         );
     };
@@ -42,6 +43,12 @@ describe('Barrier Component', () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));
         expect(screen.getByText('Barrier Input')).toBeInTheDocument();
+    });
+
+    it('disables trade param if is_disabled === true', () => {
+        default_mock_prop.is_disabled = true;
+        mockBarriers();
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 
     it('detects clicking outside the ActionSheet and closes it', async () => {

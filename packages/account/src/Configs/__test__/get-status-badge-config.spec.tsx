@@ -10,7 +10,7 @@ describe('getStatusBadgeConfig', () => {
     let account_status: TMT5AccountStatus;
     const openFailedVerificationModal = jest.fn();
     const setIsVerificationModalVisible = jest.fn();
-    const selected_account_type = 'test type';
+    const selected_account_type = {};
 
     const renderCheck = (
         account_status: Parameters<typeof getStatusBadgeConfig>[0],

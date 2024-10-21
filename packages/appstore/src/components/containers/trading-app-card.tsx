@@ -28,6 +28,7 @@ import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
 
 const TradingAppCard = ({
+    client_kyc_status,
     availability,
     name,
     icon,
@@ -94,7 +95,10 @@ const TradingAppCard = ({
         openFailedVerificationModal,
         selected_mt5_jurisdiction,
         setIsVerificationModalVisible,
-        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
+        {
+            poi_status: client_kyc_status?.poi_status ?? authentication?.identity?.status,
+            poa_status: client_kyc_status?.poa_status ?? authentication?.document?.status,
+        }
     );
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {

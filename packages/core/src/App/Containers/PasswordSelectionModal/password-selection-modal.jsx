@@ -43,7 +43,7 @@ const PasswordSelectionModal = observer(
                 },
                 false
             );
-        }, []);
+        }, [is_mobile, loggedIn]);
 
         return (
             <div className='account-signup__password-selection'>

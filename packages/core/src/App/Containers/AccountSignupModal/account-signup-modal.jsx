@@ -59,37 +59,29 @@ const AccountSignup = ({
     // didMount lifecycle hook
     React.useEffect(() => {
         // eslint-disable-next-line no-console
-        cacheTrackEvents.pageLoadEvent([
+        cacheTrackEvents.track(
             {
-                page: 'onboarding',
-                event: {
-                    name: 'ce_virtual_signup_form',
-                    properties: {
-                        action: 'signup_confirmed',
-                        form_name: is_mobile
-                            ? 'virtual_signup_web_mobile_default'
-                            : 'virtual_signup_web_desktop_default',
-                        loggedIn,
-                    },
+                name: 'ce_virtual_signup_form',
+                properties: {
+                    action: 'signup_confirmed',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    loggedIn,
                 },
             },
-        ]);
+            false
+        );
 
-        cacheTrackEvents.pageLoadEvent([
+        cacheTrackEvents.track(
             {
-                page: 'onboarding',
-                event: {
-                    name: 'ce_virtual_signup_form',
-                    properties: {
-                        action: 'country_selection_screen_opened',
-                        form_name: is_mobile
-                            ? 'virtual_signup_web_mobile_default'
-                            : 'virtual_signup_web_desktop_default',
-                        loggedIn,
-                    },
+                name: 'ce_virtual_signup_form',
+                properties: {
+                    action: 'country_selection_screen_opened',
+                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                    loggedIn,
                 },
             },
-        ]);
+            false
+        );
 
         WS.wait('website_status', 'residence_list').then(() => {
             if (clients_country && residence_list) {

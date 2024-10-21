@@ -7,6 +7,9 @@ import { MT5TradeModal, TradingPlatformStatusModal, VerificationFailedModal } fr
 import AddedMT5AccountsList from '../AddedMT5AccountsList';
 
 jest.mock('@deriv/api-v2', () => ({
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
     useJurisdictionStatus: jest.fn(),
     useTradingPlatformStatus: jest.fn(),
 }));

@@ -26,6 +26,13 @@ jest.mock(
     }
 );
 
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
+}));
+
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
         <WalletsAuthProvider>

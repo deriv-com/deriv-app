@@ -8,6 +8,9 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: { currency: 'USD', is_virtual: false },
     })),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
 }));
 
 jest.mock('@deriv-com/ui', () => ({

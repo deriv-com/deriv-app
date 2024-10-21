@@ -21,7 +21,7 @@ const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, clas
 
     const isMaintenance =
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
-        [mt5Account?.status || cashierAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
+        [mt5Account?.status, cashierAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
     const isUnavailable = [mt5Account?.status, cashierAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
 
     const getBadgeText = () => {

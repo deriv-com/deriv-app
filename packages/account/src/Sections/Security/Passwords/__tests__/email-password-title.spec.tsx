@@ -6,6 +6,7 @@ import { AccountsDerivXIcon, BrandDerivLogoCoralIcon, LegacyEmailIcon } from '@d
 jest.mock('@deriv/quill-icons', () => ({
     AccountsDerivXIcon: jest.fn(() => null),
     BrandDerivLogoCoralIcon: jest.fn(() => null),
+    PartnersProductDerivMt5BrandLightLogoHorizontalIcon: jest.fn(() => null),
     LegacyEmailIcon: jest.fn(() => null),
 }));
 

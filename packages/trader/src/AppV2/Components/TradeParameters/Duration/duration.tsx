@@ -53,7 +53,11 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
     const { server_time } = common;
 
     useEffect(() => {
-        setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
+        if (expiry_epoch) {
+            setExpiryTimeString(
+                new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
+            );
+        }
     }, [expiry_epoch]);
 
     useEffect(() => {
@@ -85,16 +89,10 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
                 expiry_type: 'duration',
             });
         }, 10);
+
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
-        const are_dates_equal =
-            new Date(start_date).getDate() === end_date.getDate() &&
-            new Date(start_date).getMonth() === end_date.getMonth() &&
-            new Date(start_date).getFullYear() === end_date.getFullYear();
-
-        if (!are_dates_equal) {
-            setEndDate(new Date(start_date));
-        }
+        setEndDate(new Date(start_date));
 
         return () => clearTimeout(start_duration);
     }, [symbol, contract_type, duration_min_max, duration_units_list]);

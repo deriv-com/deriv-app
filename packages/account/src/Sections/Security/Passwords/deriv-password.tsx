@@ -55,6 +55,7 @@ const DerivPassword = observer(() => {
     return (
         <Fragment>
             <div className='account__passwords-wrapper'>
+                <Divider className='account__divider' />
                 <EmailPasswordSection
                     title={localize('Deriv password')}
                     title_icon='deriv_password'
@@ -70,7 +71,6 @@ const DerivPassword = observer(() => {
                     onClickSendEmail={onClickSendEmail}
                     is_modal_when_mobile={true}
                 />
-                <Divider className='account__divider' />
             </div>
         </Fragment>
     );

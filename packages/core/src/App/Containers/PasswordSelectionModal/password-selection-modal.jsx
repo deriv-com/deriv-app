@@ -30,21 +30,19 @@ const PasswordSelectionModal = observer(
 
         const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
         React.useEffect(() => {
-            cacheTrackEvents.pageLoadEvent([
+            cacheTrackEvents.track(
                 {
-                    page: 'onboarding',
-                    event: {
-                        name: 'ce_virtual_signup_form',
-                        properties: {
-                            action: 'password_screen_opened',
-                            form_name: is_mobile
-                                ? 'virtual_signup_web_mobile_default'
-                                : 'virtual_signup_web_desktop_default',
-                            loggedIn,
-                        },
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action: 'password_screen_opened',
+                        form_name: is_mobile
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                        loggedIn,
                     },
                 },
-            ]);
+                false
+            );
         }, []);
 
         return (

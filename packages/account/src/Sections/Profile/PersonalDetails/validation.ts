@@ -132,7 +132,8 @@ export const getPersonalDetailsValidationSchema = (
     is_virtual?: boolean,
     is_svg?: boolean,
     tin_validation_config?: TinValidations,
-    is_tin_auto_set?: boolean
+    is_tin_auto_set?: boolean,
+    immutable_fields?: string[]
 ) => {
     if (is_virtual) return Yup.object();
 
@@ -151,6 +152,8 @@ export const getPersonalDetailsValidationSchema = (
         is_mf: !is_svg,
         is_real: !is_virtual,
         is_tin_auto_set,
+        is_duplicate_account:
+            immutable_fields?.includes('tax_identification_number') || immutable_fields?.includes('tax_residence'),
     });
 
     return personal_details_schema.concat(address_detail_schema).concat(employment_tin_schema);

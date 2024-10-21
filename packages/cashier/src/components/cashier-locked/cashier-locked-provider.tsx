@@ -130,7 +130,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -147,7 +147,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -378,7 +378,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -395,7 +395,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -471,7 +471,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -488,7 +488,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -505,7 +505,7 @@ const getMessage = ({
                             <span
                                 key={0}
                                 className='link link--orange'
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => window.LiveChatWidget?.call('maximize')}
                             />,
                         ]}
                     />
@@ -531,7 +531,7 @@ const getMessage = ({
                     <span
                         key={0}
                         className='link link--orange'
-                        onClick={() => window.LiveChatWidget.call('maximize')}
+                        onClick={() => window.LiveChatWidget?.call('maximize')}
                     />,
                 ]}
             />

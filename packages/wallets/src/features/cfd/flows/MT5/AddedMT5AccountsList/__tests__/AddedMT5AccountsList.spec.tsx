@@ -57,6 +57,18 @@ jest.mock('../../../../modals', () => ({
     }),
 }));
 
+jest.mock('../../../../../../components', () => ({
+    ...jest.requireActual('../../../../../../components'),
+    WalletDisabledAccountModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>WalletDisabledAccountModal</div>;
+    }),
+    WalletStatusBadge: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>WalletStatusBadge</div>;
+    }),
+}));
+
 const mockAccount = {
     display_balance: 'USD 1000.00',
     display_login: '12345678',
@@ -131,6 +143,25 @@ describe('AddedMT5AccountsList', () => {
         });
     });
 
+    it('shows the disabled badge when the account MT5 account is disabled', () => {
+        (useAddedMT5Account as jest.Mock).mockReturnValue({
+            ...mockUseAddedMT5AccountData,
+            isAccountDisabled: true,
+            isServerMaintenance: true,
+            showPlatformStatus: true,
+        });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the account
+        render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
+
+        expect(screen.getByText('WalletStatusBadge')).toBeInTheDocument();
+        expect(mockPropsFn).toBeCalledWith({
+            badgeSize: 'md',
+            padding: 'tight',
+            status: 'disabled',
+        });
+    });
+
     it('shows MT5TradeModal when list is clicked and status is active', async () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
@@ -164,6 +195,26 @@ describe('AddedMT5AccountsList', () => {
             expect(mockPropsFn).toBeCalledWith({
                 isServerMaintenance: true,
             });
+        });
+    });
+
+    it('shows the WalletDisabledAccountModal when a disabled account MT5 account is clicked', async () => {
+        (useAddedMT5Account as jest.Mock).mockReturnValue({
+            ...mockUseAddedMT5AccountData,
+            isAccountDisabled: true,
+            isServerMaintenance: true,
+            showPlatformStatus: true,
+        });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the account
+        render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
+
+        await waitFor(() => {
+            userEvent.click(screen.getByText('WalletStatusBadge'));
+        });
+
+        await waitFor(() => {
+            expect(screen.getByText('WalletDisabledAccountModal')).toBeInTheDocument();
         });
     });
 });

@@ -22,6 +22,10 @@ const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariation
 
 const useAddedMT5Account = (account: TAddedMT5Account) => {
     const { localize } = useTranslations();
+
+    // @ts-expect-error The enabled property exists, but the api-types are invalid
+    const isAccountDisabled = !account.rights?.enabled;
+
     const accountDetails = useMemo(
         () => getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL],
         [account.market_type, account.product, localize]
@@ -44,6 +48,7 @@ const useAddedMT5Account = (account: TAddedMT5Account) => {
 
     return {
         accountDetails,
+        isAccountDisabled,
         isServerMaintenance,
         kycStatus,
         showMT5TradeModal,

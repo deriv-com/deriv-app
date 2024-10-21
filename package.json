@@ -2,7 +2,17 @@
     "name": "root",
     "private": true,
     "workspaces": [
-        "packages/*"
+        "packages/account",
+        "packages/appstore",
+        "packages/bot-skeleton",
+        "packages/bot-web-ui",
+        "packages/cashier",
+        "packages/cfd",
+        "packages/components",
+        "packages/core",
+        "packages/p2p",
+        "packages/reports",
+        "packages/trader"
     ],
     "engines": {
         "node": "18.x"

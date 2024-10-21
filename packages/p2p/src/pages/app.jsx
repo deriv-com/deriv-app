@@ -49,14 +49,17 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                const current_url = window.location.href;
-                const split_url = current_url.split('/p2p')[1] || '';
                 const target_url = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
-                const redirection_url = target_url + split_url;
-                window.location.href = redirection_url;
+                if (action_param === 'p2p_order_confirm' && code_param) {
+                    const current_url = window.location.href;
+                    const split_url = current_url.split('/p2p')[1] || '';
+                    const search_params = new URLSearchParams(split_url.split('?')[1]);
+                    const order_id = search_params.get('order');
+                    window.location.href = `${target_url}/redirect/p2p?action=${action_param}&order_id=${order_id}&code=${code_param}&lang=${lang}`;
+                }
             }
         }
-    }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
+    }, [isGBLoaded, is_p2p_standalone_enabled, is_production, action_param, code_param, lang]);
 
     React.useEffect(() => {
         init();

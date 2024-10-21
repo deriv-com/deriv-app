@@ -55,6 +55,7 @@ export const getEmploymentAndTaxValidationSchema = ({
     is_mf = false,
     is_real = false,
     is_tin_auto_set = false,
+    is_duplicate_account = false,
 }: TEmployeeDetailsTinValidationConfig) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
@@ -66,7 +67,7 @@ export const getEmploymentAndTaxValidationSchema = ({
         tin_skipped: Yup.number().oneOf([0, 1]).default(0),
         tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
             is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
-                tax_identification_number && tax_residence && !tin_skipped,
+                tax_identification_number && tax_residence && !tin_skipped && !is_duplicate_account,
             then: Yup.bool().required().oneOf([true]),
             otherwise: Yup.bool().notRequired(),
         }),

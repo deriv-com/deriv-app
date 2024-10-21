@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 const useFreshChat = (token: string | null) => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
+    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
     const language = localStorage.getItem('i18n_language') || 'EN';
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
 
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined') {
                 if (window.fcWidget?.isInitialized() == true && !isReady) {
-                    // window.fcWidget?.user.setLocale(language.toLowerCase());
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
@@ -30,7 +33,7 @@ const useFreshChat = (token: string | null) => {
             }
         };
 
-        initFreshChat();
+        enable_freshworks_live_chat && initFreshChat();
     }, [isReady, language, scriptStatus, token]);
 
     return {

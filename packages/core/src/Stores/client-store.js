@@ -33,6 +33,7 @@ import {
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
+import { getCountry } from '@deriv/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
@@ -1790,7 +1791,7 @@ export default class ClientStore extends BaseStore {
         const broker = LocalStore?.get('active_loginid')
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
-        setTimeout(() => {
+        setTimeout(async () => {
             const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
@@ -1799,7 +1800,7 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                country: await getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,

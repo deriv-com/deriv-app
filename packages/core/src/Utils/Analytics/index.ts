@@ -23,6 +23,23 @@ export const AnalyticsInitializer = async () => {
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
+
+            /*
+                Temp solution to fetch country and handle experiments without causing inconsistencies to the users. 
+            */
+
+            const getCountry = async () => {
+                try {
+                    const response = await fetch('https://www.cloudflare.com/cdn-cgi/trace').catch(() => null);
+                    const text = response ? await response.text().catch(() => '') : '';
+                    const entries = text ? text.split('\n').map(v => v.split('=', 2)) : [];
+                    const data = entries.length ? Object.fromEntries(entries) : {};
+                    return data?.loc?.toLowerCase() ?? '';
+                } catch {
+                    return '';
+                }
+            };
+
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
@@ -34,13 +51,13 @@ export const AnalyticsInitializer = async () => {
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                         device_language: navigator?.language || 'en-EN',
                         user_language: getLanguage().toLowerCase(),
-                        country:
-                            Cookies.getJSON('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                        country: await getCountry(),
                         utm_source: ppc_campaign_cookies?.utm_source,
                         utm_medium: ppc_campaign_cookies?.utm_medium,
                         utm_campaign: ppc_campaign_cookies?.utm_campaign,
                         utm_content: ppc_campaign_cookies?.utm_content,
                         domain: window.location.hostname,
+                        url: window.location.href,
                     },
                 },
             };

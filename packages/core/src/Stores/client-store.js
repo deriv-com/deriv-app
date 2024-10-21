@@ -106,7 +106,7 @@ export default class ClientStore extends BaseStore {
     ctrader_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
-    statement = [];
+    statement = {};
     obj_total_balance = {
         amount_real: undefined,
         amount_mt5: undefined,
@@ -365,8 +365,8 @@ export default class ClientStore extends BaseStore {
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
             setInitialized: action.bound,
-            cleanUp: action.bound,
             setIsClientStoreInitialized: action.bound,
+            cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
             storeClientAccounts: action.bound,
@@ -1298,6 +1298,9 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+        if (!form_values.tax_residence) {
+            form_values.tax_residence = this.residence;
+        }
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
@@ -1802,7 +1805,9 @@ export default class ClientStore extends BaseStore {
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
+                url: window.location.href,
             };
+
             if (this.user_id) analytics_config.user_id = this.user_id;
             Analytics.setAttributes(analytics_config);
         }, 4);

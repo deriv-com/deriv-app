@@ -180,23 +180,33 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                 setIsAuthorized(false);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
+                        if (!isMounted) return;
+
                         setIsAuthorized(true);
                         processAuthorizeResponse(res);
                         setIsLoading(false);
                         setIsInitializing(false);
                         setIsSuccess(true);
-                        setLoginid(res?.authorize?.loginid ?? '');
+
+                        // Only set the loginid if the component is still mounted
+                        if (isMounted) {
+                            setLoginid(res?.authorize?.loginid ?? '');
+                        }
                     })
                     .catch(() => {
-                        setIsAuthorized(false);
-                        setIsLoading(false);
-                        setIsInitializing(false);
-                        setIsError(true);
+                        if (isMounted) {
+                            setIsAuthorized(false);
+                            setIsLoading(false);
+                            setIsInitializing(false);
+                            setIsError(true);
+                        }
                     })
                     .finally(() => {
-                        setIsLoading(false);
-                        setIsInitializing(false);
-                        setIsFetching(false);
+                        if (isMounted) {
+                            setIsLoading(false);
+                            setIsInitializing(false);
+                            setIsFetching(false);
+                        }
                     });
             })
             .catch(() => {

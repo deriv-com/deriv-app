@@ -16,8 +16,7 @@ export type TModifiedMT5Account = THooks.SortedMT5Accounts & {
     regulatory_authority: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type ObjectWithKeyInUnion<T, K extends keyof any> = T extends any ? (K extends keyof T ? T : never) : never;
 
 export type TAvailableMT5Account = ObjectWithKeyInUnion<TModifiedMT5Account, 'shortcode'>;

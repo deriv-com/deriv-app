@@ -100,7 +100,7 @@ const ContractDetails = observer(() => {
                 <PayoutInfo contract_info={contract_info} />
                 <EntryExitDetails contract_info={contract_info} />
                 {isTpHistoryVisible && update_history.length > 0 && (
-                    <TakeProfitHistory history={update_history} currency={currency} />
+                    <TakeProfitHistory history={update_history} currency={currency} is_multiplier={isMultiplier} />
                 )}
             </div>
             {shouldShowSell && <ContractDetailsFooter contract_info={contract_info} />}

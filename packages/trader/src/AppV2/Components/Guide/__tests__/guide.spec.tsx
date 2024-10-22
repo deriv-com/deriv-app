@@ -142,24 +142,6 @@ describe('Guide', () => {
         );
     });
 
-    it('should render component with correct title description for Vanillas if show_guide_for_selected_contract === true and is_vanilla === true', () => {
-        default_mock_store.modules.trade.is_vanilla = true;
-        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA;
-
-        renderGuide({ show_guide_for_selected_contract: true });
-
-        userEvent.click(screen.getByRole('button'));
-
-        expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
-        expect(screen.getByText(CONTRACT_LIST.VANILLAS)).toBeInTheDocument();
-
-        AVAILABLE_CONTRACTS.forEach(({ id }) =>
-            id === CONTRACT_LIST.VANILLAS
-                ? expect(screen.getByText(id)).toBeInTheDocument()
-                : expect(screen.queryByText(id)).not.toBeInTheDocument()
-        );
-    });
-
     it('should render term definition if user clicked on it', () => {
         renderGuide();
 

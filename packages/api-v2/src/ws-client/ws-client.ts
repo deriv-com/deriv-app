@@ -62,4 +62,9 @@ export default class WSClient {
     ) {
         return this.subscriptionManager?.subscribe(name, payload, onData);
     }
+
+    async close() {
+        await this.subscriptionManager.close();
+        this.ws?.close();
+    }
 }

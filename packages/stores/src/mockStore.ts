@@ -250,8 +250,9 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
+            //@ts-expect-error we only need partial values
             website_status: {
-                dx_trade_status: {
+                dxtrade_status: {
                     all: 0,
                     demo: 0,
                     real: 0,
@@ -318,6 +319,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTradersHubTracking: jest.fn(),
             account_time_of_closure: undefined,
             is_account_to_be_closed_by_residence: false,
+            statement: {},
         },
         common: {
             error: common_store_error,
@@ -489,10 +491,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleMT5MigrationModal: jest.fn(),
             vanilla_trade_type: 'VANILLALONGCALL',
             is_additional_kyc_info_modal_open: false,
-            toggleAdditionalKycInfoModal: jest.fn(),
-            is_kyc_information_submitted_modal_open: false,
             isUrlUnavailableModalVisible: false,
-            toggleKycInformationSubmittedModal: jest.fn(),
             setAccountSwitcherDisabledMessage: jest.fn(),
             toggleUrlUnavailableModal: jest.fn(),
             is_set_currency_modal_visible: false,
@@ -504,6 +503,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsTradingDisabledByResidenceModal: jest.fn(),
             should_show_same_dob_phone_modal: false,
             setShouldShowSameDOBPhoneModal: jest.fn(),
+            field_ref_to_focus: null,
+            setFieldRefToFocus: jest.fn(),
             setHashedValue: jest.fn(),
             url_hashed_values: '',
             is_tnc_update_modal_open: false,
@@ -784,6 +785,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),
                 setPayoutPerPoint: jest.fn(),
+                setDefaultStake: jest.fn(),
                 stake_boundary: {},
                 start_date: 0,
                 stop_loss: 0,

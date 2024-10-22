@@ -26,15 +26,25 @@ const WalletsAddMoreCarousel: React.FC = () => {
     });
     const hoverRef = useRef<HTMLDivElement>(null);
     const isHover = useHover(hoverRef);
+    const isMounted = useRef(true);
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
 
     const scrollPrev = useCallback(() => walletsAddMoreEmblaAPI?.scrollPrev(), [walletsAddMoreEmblaAPI]);
     const scrollNext = useCallback(() => walletsAddMoreEmblaAPI?.scrollNext(), [walletsAddMoreEmblaAPI]);
 
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
     const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-        setPrevBtnEnabled(emblaApi.canScrollPrev());
-        setNextBtnEnabled(emblaApi.canScrollNext());
+        if (isMounted.current) {
+            setPrevBtnEnabled(emblaApi.canScrollPrev());
+            setNextBtnEnabled(emblaApi.canScrollNext());
+        }
     }, []);
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
-import { redirectToSignUp, mobileOSDetectAsync, isSafari } from '@deriv/shared';
+import { redirectToSignUp, mobileOSDetectAsync, isSafari, getPlatformFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
@@ -19,14 +19,9 @@ const SignupButton = ({ className }) => {
     }, [isGBLoaded, trigger_os_signup]);
 
     const handleOutSystemsRedirection = () => {
-        switch (process.env.NODE_ENV) {
-            case 'production':
-                return 'https://hub.deriv.com/tradershub/signup';
-            case 'staging':
-                return 'https://staging-hub.deriv.com/tradershub/signup';
-            default:
-                return 'https://dev-hub.deriv.com/tradershub/signup';
-        }
+        if (getPlatformFromUrl().is_staging_deriv_app) return 'https://staging-hub.deriv.com/tradershub/signup';
+        if (getPlatformFromUrl().is_deriv_app) return 'https://hub.deriv.com/tradershub/signup';
+        return 'https://dev-hub.deriv.com/tradershub/signup';
     };
 
     const handleSignup = async () => {

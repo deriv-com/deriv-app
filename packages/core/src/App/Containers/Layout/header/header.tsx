@@ -7,7 +7,6 @@ import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
 import DTraderContractDetailsHeader from './dtrader-v2-contract-detail-header';
-import { Analytics } from '@deriv-com/analytics';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -67,15 +66,16 @@ const Header = observer(() => {
     const { is_dtrader_v2_enabled } = useFeatureFlags();
     const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+        defaultValue: false,
     });
-    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
+    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState();
     React.useEffect(() => {
-        setDTraderV2Enabled(
-            (is_dtrader_v2_enabled || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
-                (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
+        if (dtrader_v2_enabled_gb !== undefined)
+            setDTraderV2Enabled(
+                (is_dtrader_v2_enabled || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
+                    (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
+            );
+    }, [dtrader_v2_enabled_gb, is_dtrader_v2_enabled]);
 
     React.useEffect(() => {
         if (has_wallet && is_logged_in) {

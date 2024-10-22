@@ -11,7 +11,6 @@ import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { TCoreStores } from '@deriv/stores/types';
 import { TWebSocket } from 'Types';
-import { Analytics } from '@deriv-com/analytics';
 
 type Apptypes = {
     passthrough: {
@@ -41,20 +40,10 @@ const App = ({ passthrough }: Apptypes) => {
     const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
     });
-    const [dtrader_v2_enabled_gb, setDTraderV2EnabledGb] = React.useState(false);
-
-    React.useEffect(() => {
-        setDTraderV2EnabledGb(Boolean(dtrader_v2_enabled));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
-
-    if (Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()) {
-        return isDTraderV2() || (dtrader_v2_enabled_gb && isDTraderV2Width()) ? (
-            <AppV2Loader passthrough={passthrough} />
-        ) : (
-            <AppLoader passthrough={passthrough} />
-        );
-    }
-    return <Loading />;
+    return (isDTraderV2() || dtrader_v2_enabled) && isDTraderV2Width() ? (
+        <AppV2Loader passthrough={passthrough} />
+    ) : (
+        <AppLoader passthrough={passthrough} />
+    );
 };
 export default App;

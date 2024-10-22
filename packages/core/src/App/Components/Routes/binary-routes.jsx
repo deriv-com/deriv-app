@@ -6,7 +6,6 @@ import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { getPositionsV2TabIndexFromURL, isDTraderV2, isDTraderV2Width, routes } from '@deriv/shared';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { Analytics } from '@deriv-com/analytics';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();
@@ -15,6 +14,7 @@ const BinaryRoutes = observer(props => {
     const location = useLocation();
     const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+        defaultValue: false,
     });
     const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
     React.useEffect(() => {
@@ -23,7 +23,7 @@ const BinaryRoutes = observer(props => {
                 (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
+    }, [dtrader_v2_enabled_gb]);
 
     React.useEffect(() => {
         pushDataLayer({ event: 'page_load' });

@@ -51,6 +51,7 @@ const AppContents = observer(({ children }) => {
 
     const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+        defaultValue: false,
     });
     const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
 
@@ -60,7 +61,7 @@ const AppContents = observer(({ children }) => {
                 (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
+    }, [dtrader_v2_enabled_gb]);
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

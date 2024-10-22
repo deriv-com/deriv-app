@@ -168,10 +168,7 @@ export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistor
 };
 
 export const isDtraderV2Enabled = (is_mobile: boolean) => {
-    const dtrader_v2_enabled_growthbook = Analytics?.getInstances?.().ab?.GrowthBook.getFeatureValue(
-        'dtrader_v2_enabled',
-        false
-    );
+    const dtrader_v2_enabled_growthbook = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
     const is_dtrader_v2 =
         JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 ||
         dtrader_v2_enabled_growthbook;

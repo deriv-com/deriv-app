@@ -53,8 +53,9 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+        defaultValue: false,
     });
-    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
+    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState();
 
     React.useEffect(() => {
         setDTraderV2Enabled(
@@ -62,7 +63,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                 (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled_gb, Analytics?.getInstances?.().ab?.GrowthBook.getFeatures()]);
+    }, [dtrader_v2_enabled_gb]);
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());

@@ -208,7 +208,11 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         if (reconnect) {
             connectionRef.current = initializeConnection(
                 () => {
-                    reconnectTimerId = setTimeout(() => setReconnect(true), 500);
+                    reconnectTimerId = setTimeout(() => {
+                        if (isMounted.current) {
+                            setReconnect(true);
+                        }
+                    }, 500);
                 },
                 () => {
                     if (!connectionRef.current) {

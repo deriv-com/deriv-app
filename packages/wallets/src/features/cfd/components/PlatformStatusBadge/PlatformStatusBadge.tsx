@@ -36,7 +36,7 @@ const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, clas
             className={className}
             color='warning'
             isBold
-            leftIcon={<LegacyWarningIcon iconSize='xs' />}
+            leftIcon={<LegacyWarningIcon fill='#FFAD3A' iconSize='xs' />}
             padding='loose'
             rounded='sm'
             variant='bordered'

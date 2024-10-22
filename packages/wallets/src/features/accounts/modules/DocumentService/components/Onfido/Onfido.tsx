@@ -80,7 +80,7 @@ const Onfido: React.FC<TOnfidoProps> = ({ onClickBack, onCompletion }) => {
                     ) : (
                         <InlineMessage
                             className='wallets-onfido__wrapper-banner'
-                            icon={<LegacyAnnouncementIcon iconSize='xs' />}
+                            icon={<LegacyAnnouncementIcon fill='#4BB4B3' iconSize='xs' />}
                         >
                             <Text size='2xs'>
                                 <Localize i18n_default_text='Your personal details have been saved successfully.' />

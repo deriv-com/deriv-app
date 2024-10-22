@@ -17,10 +17,10 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
     CurrencyXrpIcon,
-    DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    DerivProductDerivGoBrandLightLogoHorizontalIcon,
-    DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    PartnersProductSmarttraderBrandLightLogoIcon,
+    DerivProductBrandLightDerivBotLogoIcon,
+    DerivProductBrandLightDerivGoLogoIcon,
+    DerivProductBrandLightDerivTraderLogoIcon,
+    PartnersProductBrandLightSmarttraderLogoIcon,
     PaymentMethodBitcoinBrandIcon,
     PaymentMethodDerivDemoBrandDarkIcon,
     PaymentMethodEthereumBrandIcon,
@@ -32,10 +32,10 @@ import {
 import { TCurrencyIconTypes, TIconTypes } from '../types';
 
 export const AppIcons: TIconTypes = {
-    bot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    derivgo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
-    smarttrader: PartnersProductSmarttraderBrandLightLogoIcon,
-    trader: DerivProductDerivTraderBrandLightLogoHorizontalIcon,
+    bot: DerivProductBrandLightDerivBotLogoIcon,
+    derivgo: DerivProductBrandLightDerivGoLogoIcon,
+    smarttrader: PartnersProductBrandLightSmarttraderLogoIcon,
+    trader: DerivProductBrandLightDerivTraderLogoIcon,
 };
 
 export const CFDPlatformIcons: TIconTypes = {

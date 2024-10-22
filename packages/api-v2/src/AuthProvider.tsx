@@ -5,6 +5,7 @@ import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken
 import useMutation from './useMutation';
 import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
 import useAPI from './useAPI';
+import { API_ERROR_CODES } from './constants';
 
 // Define the type for the context state
 type AuthContextType = {
@@ -38,7 +39,10 @@ type AuthProviderProps = {
     cookieTimeout?: number;
     loginIDKey?: string;
     selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
+    logout?: () => Promise<void>;
 };
+
+type TAuthorizeError = ReturnType<typeof useMutation<'authorize'>>['error'];
 
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -99,7 +103,7 @@ function waitForLoginAndTokenWithTimeout(
     };
 }
 
-const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount, logout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
@@ -180,22 +184,20 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                 setIsAuthorized(false);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
-                        if (!isMounted) return;
-
-                        setIsAuthorized(true);
-                        processAuthorizeResponse(res);
-                        setIsLoading(false);
-                        setIsInitializing(false);
-                        setIsSuccess(true);
-
-                        // Only set the loginid if the component is still mounted
                         if (isMounted) {
+                            setIsAuthorized(true);
+                            processAuthorizeResponse(res);
+                            setIsLoading(false);
+                            setIsInitializing(false);
+                            setIsSuccess(true);
                             setLoginid(res?.authorize?.loginid ?? '');
                         }
                     })
-                    .catch(() => {
+                    .catch(async (e: TAuthorizeError) => {
                         if (isMounted) {
-                            setIsAuthorized(false);
+                            if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                                await logout?.();
+                            }
                             setIsLoading(false);
                             setIsInitializing(false);
                             setIsError(true);
@@ -235,15 +237,21 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             setIsSwitching(true);
 
             setIsAuthorized(false);
-            const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
-            setIsAuthorized(true);
-            setLoginid(newLoginId);
-            processAuthorizeResponse(authorizeResponse);
-
-            setIsLoading(false);
-            setIsSwitching(false);
+            try {
+                const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+                setIsAuthorized(true);
+                setLoginid(newLoginId);
+                processAuthorizeResponse(authorizeResponse);
+            } catch (e: unknown) {
+                if (typeof e === 'object' && (e as TAuthorizeError)?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                    await logout?.();
+                }
+            } finally {
+                setIsLoading(false);
+                setIsSwitching(false);
+            }
         },
-        [loginid, mutateAsync, processAuthorizeResponse, queryClient]
+        [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {
@@ -264,8 +272,9 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isSwitching,
             isInitializing,
             subscribe,
+            logout,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, subscribe]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, logout, subscribe]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

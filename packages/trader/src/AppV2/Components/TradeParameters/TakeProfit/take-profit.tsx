@@ -19,7 +19,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
 
     const [is_open, setIsOpen] = React.useState(false);
 
-    const onActionSheetClose = () => setIsOpen(false);
+    const onActionSheetClose = React.useCallback(() => setIsOpen(false), []);
 
     const action_sheet_content = [
         {
@@ -51,7 +51,13 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
                 variant='fill'
                 value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onActionSheetClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         header={CarouselHeader}

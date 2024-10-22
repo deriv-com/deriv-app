@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { CaptionText, Text } from '@deriv-com/quill-ui';
+import { CaptionText, Text, Skeleton } from '@deriv-com/quill-ui';
 
 type TDigitsProps = {
     is_active?: boolean;
@@ -28,7 +28,7 @@ const Digit = ({ digit, digit_stats = [], is_active, is_disabled, is_max, is_min
             >
                 <Text size='xl'>{digit}</Text>
             </button>
-            {!!display_percentage && (
+            {display_percentage ? (
                 <CaptionText
                     size='sm'
                     className={clsx('percentage', is_max && 'percentage--max', is_min && 'percentage--min')}
@@ -36,6 +36,8 @@ const Digit = ({ digit, digit_stats = [], is_active, is_disabled, is_max, is_min
                 >
                     {display_percentage}%
                 </CaptionText>
+            ) : (
+                <Skeleton.Square width={36} height={18} rounded />
             )}
         </div>
     );

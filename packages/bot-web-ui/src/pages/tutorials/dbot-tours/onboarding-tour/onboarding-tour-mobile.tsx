@@ -40,7 +40,7 @@ const OnboardingTourMobile = observer(() => {
             }
         };
         checkTokenForTour();
-    }, [active_tab]);
+    }, [active_tab, active_tour]);
 
     React.useEffect(() => {
         DBOT_ONBOARDING_MOBILE.forEach(data => {

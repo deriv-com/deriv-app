@@ -9,11 +9,7 @@ export const useHover = <T extends HTMLElement | SVGSVGElement>(
     const ref = refSetter || default_ref;
 
     const handleHoverBegin = () => setValue(true);
-    const handleHoverFinish = React.useCallback(() => {
-        if (ref.current) {
-            setValue(false);
-        }
-    }, [ref]);
+    const handleHoverFinish = () => setValue(false);
 
     React.useEffect(() => {
         const node = ref.current;
@@ -37,7 +33,7 @@ export const useHover = <T extends HTMLElement | SVGSVGElement>(
             };
         }
         return undefined;
-    }, [handleHoverFinish, ref, should_prevent_bubbling]);
+    }, [ref, should_prevent_bubbling]);
 
     return [ref, value] as const;
 };

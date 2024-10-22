@@ -34,7 +34,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         <>
             <TradingAccountCard
                 className={classNames('wallets-added-mt5__card', {
-                    'wallets-added-mt5__card': isAccountDisabled,
+                    'wallets-added-mt5__card--disabled': isAccountDisabled,
                 })}
                 onClick={() => {
                     if (isAccountDisabled) {
@@ -92,28 +92,29 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         )}
                         {isAccountDisabled && <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />}
                     </TradingAccountCard.Content>
+                    <TradingAccountCard.Button
+                        className={classNames('wallets-added-mt5__icon', {
+                            'wallets-added-mt5__icon--disabled': isAccountDisabled,
+                            'wallets-added-mt5__icon--pending': kycStatus === 'in_review',
+                        })}
+                    >
+                        {showPlatformStatus ? (
+                            <PlatformStatusBadge
+                                badgeSize='md'
+                                className='wallets-added-mt5__icon--badge'
+                                mt5Account={account}
+                            />
+                        ) : (
+                            <div className='wallets-added-mt5__icon'>
+                                {isRtl ? (
+                                    <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                                ) : (
+                                    <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                )}
+                            </div>
+                        )}
+                    </TradingAccountCard.Button>
                 </TradingAccountCard.Section>
-                <TradingAccountCard.Button
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': kycStatus === 'in_review',
-                    })}
-                >
-                    {showPlatformStatus ? (
-                        <PlatformStatusBadge
-                            badgeSize='md'
-                            className='wallets-added-mt5__icon--badge'
-                            mt5Account={account}
-                        />
-                    ) : (
-                        <div className='wallets-available-mt5__icon'>
-                            {isRtl ? (
-                                <LabelPairedChevronLeftCaptionRegularIcon width={16} />
-                            ) : (
-                                <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                            )}
-                        </div>
-                    )}
-                </TradingAccountCard.Button>
             </TradingAccountCard>
             <WalletDisabledAccountModal
                 accountType={localize('CFDs')}

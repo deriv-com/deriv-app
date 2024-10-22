@@ -82,7 +82,7 @@ const ClosedMarketMessage = observer(() => {
         setTimeLeft({});
         setWhenMarketOpens({} as TWhenMarketOpens);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_market_closed, symbol]);
+    }, [activeSymbols, symbol]);
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;

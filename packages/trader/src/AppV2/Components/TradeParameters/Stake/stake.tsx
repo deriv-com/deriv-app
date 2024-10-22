@@ -202,7 +202,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             const input = input_ref.current;
             const button = document.querySelector('#test_button');
             if (input && input.contains(document.activeElement) && button) {
-                button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
+                setTimeout(() => button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }), 100);
             }
         };
 

@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { getAppId, getSocketURL } from '@deriv/shared';
 
 const useFreshChat = (token: string | null) => {
     const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
+    const serverUrl = getSocketURL();
+    const appId = getAppId();
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
     });
@@ -24,6 +27,8 @@ const useFreshChat = (token: string | null) => {
                 window.FreshChat.initialize({
                     token,
                     hideButton: true,
+                    serverUrl,
+                    appId,
                 });
 
                 const intervalId = setInterval(() => checkFcWidget(intervalId), 500);
@@ -33,7 +38,7 @@ const useFreshChat = (token: string | null) => {
         };
 
         enable_freshworks_live_chat && initFreshChat();
-    }, [enable_freshworks_live_chat, isReady, scriptStatus, token]);
+    }, [appId, isReady, scriptStatus, serverUrl, token]);
 
     return {
         isReady,

@@ -5,6 +5,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
 import { TPlatforms } from '../../../../../../types';
 import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
+import { DISABLED_PLATFORM_STATUSES } from '../../../../../cfd/constants';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -65,8 +66,10 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, hasPlatformStatus,
                 {isModal && hasPlatformStatus(account) && (
                     <PlatformStatusBadge
                         badgeSize='sm'
-                        cashierAccount={account}
                         className='wallets-transfer-form-account-card--badge'
+                        status={
+                            (account?.status || account?.platformStatus) as typeof DISABLED_PLATFORM_STATUSES[number]
+                        }
                     />
                 )}
             </div>

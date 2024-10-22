@@ -11,30 +11,38 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useIsRtl from '../../../../../hooks/useIsRtl';
 import { ClientVerificationStatusBadge, PlatformStatusBadge } from '../../../components';
-import { MARKET_TYPE, PlatformDetails } from '../../../constants';
+import { DISABLED_PLATFORM_STATUSES, MARKET_TYPE, PlatformDetails } from '../../../constants';
 import { ClientVerificationModal, MT5TradeModal, TradingPlatformStatusModal } from '../../../modals';
 import { TAddedMT5Account } from '../../../types';
 import { useAddedMT5Account } from './hooks';
 import './AddedMT5AccountsList.scss';
 
-type TProps = {
-    account: TAddedMT5Account;
-};
+type TProps = { account: TAddedMT5Account };
+
+type TDisabledPlatformStatus = typeof DISABLED_PLATFORM_STATUSES[number];
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();
     const isRtl = useIsRtl();
-    const { accountDetails, isAccountDisabled, isServerMaintenance, kycStatus, showMT5TradeModal, showPlatformStatus } =
-        useAddedMT5Account(account);
+    const {
+        accountDetails,
+        hasDisabledPlatformStatus,
+        isAccountDisabled,
+        kycStatus,
+        platformStatus,
+        showMT5TradeModal,
+    } = useAddedMT5Account(account);
 
     const { show } = useModal();
     const [showDisabledAccountModal, setShowDisabledAccountModal] = useState(false);
+
+    const shouldShowBalance = !isAccountDisabled && !(kycStatus || hasDisabledPlatformStatus);
 
     return (
         <>
             <TradingAccountCard
                 className={classNames('wallets-added-mt5__card', {
-                    'wallets-added-mt5__card': isAccountDisabled,
+                    'wallets-added-mt5__card--disabled': isAccountDisabled || hasDisabledPlatformStatus,
                 })}
                 onClick={() => {
                     if (isAccountDisabled) {
@@ -42,8 +50,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         return;
                     }
 
-                    if (showPlatformStatus) {
-                        return show(<TradingPlatformStatusModal isServerMaintenance={isServerMaintenance} />, {
+                    if (hasDisabledPlatformStatus) {
+                        return show(<TradingPlatformStatusModal status={platformStatus as TDisabledPlatformStatus} />, {
                             defaultRootId: 'wallets_modal_root',
                         });
                     }
@@ -66,13 +74,13 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <TradingAccountCard.Section>
                     <TradingAccountCard.Content
                         className={classNames('wallets-added-mt5__details', {
-                            'wallets-added-mt5__details--disabled': isAccountDisabled,
+                            'wallets-added-mt5__details--disabled': isAccountDisabled || hasDisabledPlatformStatus,
                         })}
                     >
                         <div className='wallets-added-mt5__details-title'>
                             <Text size='sm'>{accountDetails.title}</Text>
                         </div>
-                        {!isAccountDisabled && !kycStatus && (
+                        {shouldShowBalance && (
                             <Text align='start' size='sm' weight='bold'>
                                 {account.display_balance}
                             </Text>
@@ -90,21 +98,20 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 variant={kycStatus}
                             />
                         )}
+                        {!isAccountDisabled && platformStatus && (
+                            <PlatformStatusBadge
+                                badgeSize='md'
+                                className='wallets-added-mt5__icon--badge'
+                                status={platformStatus as TDisabledPlatformStatus}
+                            />
+                        )}
                         {isAccountDisabled && <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />}
                     </TradingAccountCard.Content>
-                </TradingAccountCard.Section>
-                <TradingAccountCard.Button
-                    className={classNames('wallets-added-mt5__icon', {
-                        'wallets-added-mt5__icon--pending': kycStatus === 'in_review',
-                    })}
-                >
-                    {showPlatformStatus ? (
-                        <PlatformStatusBadge
-                            badgeSize='md'
-                            className='wallets-added-mt5__icon--badge'
-                            mt5Account={account}
-                        />
-                    ) : (
+                    <TradingAccountCard.Button
+                        className={classNames('wallets-added-mt5__icon', {
+                            'wallets-added-mt5__icon--pending': kycStatus === 'in_review',
+                        })}
+                    >
                         <div className='wallets-available-mt5__icon'>
                             {isRtl ? (
                                 <LabelPairedChevronLeftCaptionRegularIcon width={16} />
@@ -112,8 +119,8 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 <LabelPairedChevronRightCaptionRegularIcon width={16} />
                             )}
                         </div>
-                    )}
-                </TradingAccountCard.Button>
+                    </TradingAccountCard.Button>
+                </TradingAccountCard.Section>
             </TradingAccountCard>
             <WalletDisabledAccountModal
                 accountType={localize('CFDs')}

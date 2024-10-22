@@ -37,22 +37,6 @@ describe('useAddedMT5Account', () => {
         expect(result.current.accountDetails).toEqual('mock-account-details');
     });
 
-    it('isServerMaintenance is `true` when trading platform status is `maintenance`', () => {
-        (useTradingPlatformStatus as jest.Mock).mockReturnValue({
-            getPlatformStatus: jest.fn(() => 'maintenance'),
-        });
-
-        const { result } = renderHook(() => useAddedMT5Account(mockAccount));
-
-        expect(result.current.isServerMaintenance).toEqual(true);
-    });
-
-    it('isServerMaintenance is `true` when account status is `under_maintenance`', () => {
-        const { result } = renderHook(() => useAddedMT5Account({ ...mockAccount, status: 'under_maintenance' }));
-
-        expect(result.current.isServerMaintenance).toEqual(true);
-    });
-
     it('kycStatus is `failed` when status received for account is `proof_failed`', () => {
         const { result } = renderHook(() => useAddedMT5Account({ ...mockAccount, status: 'proof_failed' }));
 
@@ -87,25 +71,25 @@ describe('useAddedMT5Account', () => {
         expect(result.current.showMT5TradeModal).toEqual(true);
     });
 
-    it('showPlatformStatus is `true` when account status is `unavailable`', () => {
+    it('hasDisabledPlatformStatus is `true` when account status is `unavailable`', () => {
         const { result } = renderHook(() => useAddedMT5Account({ ...mockAccount, status: 'unavailable' }));
 
-        expect(result.current.showPlatformStatus).toEqual(true);
+        expect(result.current.hasDisabledPlatformStatus).toEqual(true);
     });
 
-    it('showPlatformStatus is `true` when account status is `under_maintenance`', () => {
+    it('hasDisabledPlatformStatus is `true` when account status is `under_maintenance`', () => {
         const { result } = renderHook(() => useAddedMT5Account({ ...mockAccount, status: 'under_maintenance' }));
 
-        expect(result.current.showPlatformStatus).toEqual(true);
+        expect(result.current.hasDisabledPlatformStatus).toEqual(true);
     });
 
-    it('showPlatformStatus is `true` when trading platform status is `maintenance`', () => {
+    it('hasDisabledPlatformStatus is `true` when trading platform status is `maintenance`', () => {
         (useTradingPlatformStatus as jest.Mock).mockReturnValue({
             getPlatformStatus: jest.fn(() => 'maintenance'),
         });
 
         const { result } = renderHook(() => useAddedMT5Account(mockAccount));
 
-        expect(result.current.showPlatformStatus).toEqual(true);
+        expect(result.current.hasDisabledPlatformStatus).toEqual(true);
     });
 });

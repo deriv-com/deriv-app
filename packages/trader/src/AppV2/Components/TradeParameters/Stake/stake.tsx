@@ -200,8 +200,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         const focusHandler = () => {
             const input = input_ref.current;
-            if (input && input.contains(document.activeElement))
-                window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: 'smooth' });
+            const button = document.querySelector('#test_button');
+            if (input && input.contains(document.activeElement) && button) {
+                button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
+            }
         };
 
         document.addEventListener('focusin', focusHandler);
@@ -274,6 +276,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 }
                             },
                         }}
+                        id='test_button'
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

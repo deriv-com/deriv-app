@@ -39,9 +39,7 @@ const GrowthRate = observer(({ is_minimized }: TTradeParametersProps) => {
     const handleGrowthRateChange = (rate: number) => {
         onChange({ target: { name: 'growth_rate', value: rate } });
     };
-    const onActionSheetClose = () => {
-        setIsOpen(false);
-    };
+    const onActionSheetClose = React.useCallback(() => setIsOpen(false), []);
 
     const action_sheet_content = [
         {
@@ -101,7 +99,13 @@ const GrowthRate = observer(({ is_minimized }: TTradeParametersProps) => {
                 value={`${getGrowthRatePercentage(growth_rate)}%`}
                 variant='fill'
             />
-            <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onActionSheetClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('growth-rate__carousel', is_small_screen && 'growth-rate__carousel--small')}

@@ -35,6 +35,7 @@ const Strike = observer(({ is_minimized }: TTradeParametersProps) => {
 
     const handleStrikeChange = (new_value: number | string) =>
         onChange({ target: { name: 'barrier_1', value: new_value } });
+    const onClose = React.useCallback(() => setIsOpen(false), []);
 
     const action_sheet_content = [
         {
@@ -101,7 +102,13 @@ const Strike = observer(({ is_minimized }: TTradeParametersProps) => {
                 variant='fill'
                 value={barrier_1}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}

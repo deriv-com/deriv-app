@@ -1848,13 +1848,21 @@ export default class TradeStore extends BaseStore {
             updateChartType(chartTypeParam);
         }
 
-        this.contract_type = contractType ?? '';
-
-        setTradeURLParams({
+        const urlParams: {
+            chartType: string;
+            granularity: number;
+            contractType?: string;
+        } = {
             chartType: chartTypeParam ?? chart_type,
             granularity: granularityParam ?? Number(granularity),
-            contractType: contractType ?? '',
-        });
+        };
+
+        if (contractType) {
+            this.contract_type = contractType ?? '';
+            urlParams.contractType = contractType;
+        }
+
+        setTradeURLParams(urlParams);
     }
 
     setChartStatus(status: boolean, isFromChart?: boolean) {

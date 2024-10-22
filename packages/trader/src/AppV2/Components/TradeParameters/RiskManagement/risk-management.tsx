@@ -27,7 +27,7 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
         stop_loss,
     } = useTraderStore();
 
-    const closeActionSheet = () => setIsOpen(false);
+    const closeActionSheet = React.useCallback(() => setIsOpen(false), []);
     const getRiskManagementText = () => {
         if (has_cancellation) return `DC: ${addUnit({ value: cancellation_duration, unit: localize('minutes') })}`;
         if (has_take_profit && has_stop_loss)
@@ -83,7 +83,13 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
                 value={getRiskManagementText()}
                 variant='fill'
             />
-            <ActionSheet.Root isOpen={is_open} onClose={closeActionSheet} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={closeActionSheet}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

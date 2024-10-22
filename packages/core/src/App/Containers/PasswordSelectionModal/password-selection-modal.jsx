@@ -28,22 +28,21 @@ const PasswordSelectionModal = observer(
         const { ui } = useStore();
         const { is_mobile } = ui;
 
-        const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
         React.useEffect(() => {
-            cacheTrackEvents.track(
+            cacheTrackEvents.loadEvent([
                 {
-                    name: 'ce_virtual_signup_form',
-                    properties: {
-                        action: 'password_screen_opened',
-                        form_name: is_mobile
-                            ? 'virtual_signup_web_mobile_default'
-                            : 'virtual_signup_web_desktop_default',
-                        loggedIn,
+                    event: {
+                        name: 'ce_virtual_signup_form',
+                        properties: {
+                            action: 'password_screen_opened',
+                            form_name: is_mobile
+                                ? 'virtual_signup_web_mobile_default'
+                                : 'virtual_signup_web_desktop_default',
+                        },
                     },
                 },
-                false
-            );
-        }, [is_mobile, loggedIn]);
+            ]);
+        }, [is_mobile]);
 
         return (
             <div className='account-signup__password-selection'>

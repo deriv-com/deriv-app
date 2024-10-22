@@ -54,34 +54,38 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
-    const loggedIn = !!cacheTrackEvents.parseCookies('client_information');
-
     // didMount lifecycle hook
     React.useEffect(() => {
         // eslint-disable-next-line no-console
-        cacheTrackEvents.track(
+        cacheTrackEvents.pageLoadEvent([
             {
-                name: 'ce_virtual_signup_form',
-                properties: {
-                    action: 'signup_confirmed',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                    loggedIn,
+                page: 'onboarding',
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action: 'signup_confirmed',
+                        form_name: is_mobile
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                    },
                 },
             },
-            false
-        );
+        ]);
 
-        cacheTrackEvents.track(
+        cacheTrackEvents.pageLoadEvent([
             {
-                name: 'ce_virtual_signup_form',
-                properties: {
-                    action: 'country_selection_screen_opened',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                    loggedIn,
+                page: 'onboarding',
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action: 'country_selection_screen_opened',
+                        form_name: is_mobile
+                            ? 'virtual_signup_web_mobile_default'
+                            : 'virtual_signup_web_desktop_default',
+                    },
                 },
             },
-            false
-        );
+        ]);
 
         WS.wait('website_status', 'residence_list').then(() => {
             if (clients_country && residence_list) {

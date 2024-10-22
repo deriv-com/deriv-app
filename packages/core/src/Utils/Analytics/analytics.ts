@@ -1,4 +1,5 @@
 import { Analytics } from '@deriv-com/analytics';
+import Cookies from 'js-cookie';
 
 interface Payload {
     type: string;
@@ -27,39 +28,6 @@ const cacheTrackEvents = {
     interval: null as NodeJS.Timeout | null,
     responses: [] as ResponseData[],
     isTrackingResponses: false,
-    hash: (inputString: string, desiredLength = 32): string => {
-        const fnv1aHash = (string: string): number => {
-            let hash = 0x811c9dc5;
-            for (let i = 0; i < string.length; i++) {
-                // eslint-disable-next-line no-bitwise
-                hash ^= string.charCodeAt(i);
-                // eslint-disable-next-line no-bitwise
-                hash = (hash * 0x01000193) >>> 0;
-            }
-            return hash;
-        };
-        const base64Encode = (string: string): string => btoa(string);
-        const hash = fnv1aHash(inputString).toString(16);
-        let combined = base64Encode(hash);
-        while (combined.length < desiredLength) {
-            combined += base64Encode(fnv1aHash(combined).toString(16));
-        }
-        return combined.substring(0, desiredLength);
-    },
-    getCookies: (name: string): string | null => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) {
-            const part = parts.pop();
-            const cookieValue = part ? decodeURIComponent(part.split(';').shift()!) : null;
-            try {
-                return cookieValue ? JSON.parse(cookieValue) : null;
-            } catch (e) {
-                return cookieValue;
-            }
-        }
-        return null;
-    },
     trackPageUnload: () => {
         window.addEventListener('beforeunload', event => {
             if (!cacheTrackEvents.isPageViewSent()) {
@@ -80,12 +48,8 @@ const cacheTrackEvents = {
         return !!instances?.tracking;
     },
     parseCookies: (cookieName: string): Event[] | null => {
-        const cookies = document.cookie.split('; ').reduce((acc: Record<string, string>, cookie) => {
-            const [key, value] = cookie.split('=');
-            acc[decodeURIComponent(key)] = decodeURIComponent(value);
-            return acc;
-        }, {});
-        return JSON.parse(cookies[cookieName] || 'null');
+        const cookieValue = Cookies.get(cookieName);
+        return cookieValue ? JSON.parse(cookieValue) : null;
     },
     isPageViewSent: (): boolean =>
         !!cacheTrackEvents.responses.find(e => e.payload?.type === 'page' && e.payload?.anonymousId),
@@ -100,17 +64,16 @@ const cacheTrackEvents = {
         document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.deriv.com`;
     },
     processEvent: (event: Event): Event => {
-        const clientInfo = cacheTrackEvents.getCookies('client_information');
+        const clientInfo = Cookies.get('client_information');
         if (clientInfo) {
             const { email = null } = JSON.parse(clientInfo);
             if (email) {
-                event.properties.email_hash = cacheTrackEvents.hash(email);
+                event.properties.email = email;
             }
         }
         if (event?.properties?.email) {
             const email = event.properties.email;
             delete event.properties.email;
-            event.properties.email_hash = cacheTrackEvents.hash(email);
         }
         return event;
     },

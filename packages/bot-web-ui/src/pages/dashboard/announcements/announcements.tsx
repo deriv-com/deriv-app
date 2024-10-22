@@ -1,17 +1,23 @@
 import React from 'react';
-import { observer } from '@deriv/stores';
-import { Text } from '@deriv/components';
-import { Notifications as Announcement } from '@deriv-com/ui';
-import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { Text } from '@deriv/components';
+import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Notifications as Announcement } from '@deriv-com/ui';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
+import {
+    rudderStackSendAnnouncementActionEvent,
+    rudderStackSendAnnouncementClickEvent,
+} from '../../../analytics/rudderstack-dashboard';
+import { guide_content } from '../../tutorials/constants';
+import { performButtonAction } from './utils/accumulator-helper-functions';
+import { MessageAnnounce, TitleAnnounce } from './announcement-components';
 import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
-import { MessageAnnounce, TitleAnnounce } from './announcement-components';
-import { performButtonAction } from './utils/accumulator-helper-functions';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -22,6 +28,7 @@ type TAnnouncements = {
 const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const {
         load_modal: { toggleLoadModal },
+        dashboard: { showVideoDialog },
     } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
@@ -40,6 +47,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
 
         let data: Record<string, boolean> | null = null;
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
@@ -92,15 +100,33 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [read_announcements_map]);
 
+    const openAccumulatorsVideo = () => {
+        const accumulators_video = guide_content.find(guide_content => guide_content.id === 4);
+        if (accumulators_video) {
+            showVideoDialog({ url: accumulators_video.url, type: 'url' });
+        }
+    };
+
     const handleOnCancel = () => {
+        rudderStackSendAnnouncementActionEvent({
+            announcement_name: selected_announcement?.announcement.main_title,
+            announcement_action: selected_announcement?.announcement.cancel_button_text,
+        });
         if (selected_announcement?.switch_tab_on_cancel) {
             handleTabChange(selected_announcement.switch_tab_on_cancel);
+            if (selected_announcement.announcement.id === 'ACCUMULATOR_ANNOUNCE') {
+                openAccumulatorsVideo();
+            }
         }
         selected_announcement?.onCancel?.();
         setSelectedAnnouncement(null);
     };
 
     const handleOnConfirm = () => {
+        rudderStackSendAnnouncementActionEvent({
+            announcement_name: selected_announcement?.announcement.main_title,
+            announcement_action: selected_announcement?.announcement.confirm_button_text,
+        });
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
         }
@@ -124,7 +150,15 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={() => setIsOpenAnnounceList(prevState => !prevState)}
+                onClick={() => {
+                    setIsOpenAnnounceList(prevState => !prevState);
+                    if (!is_open_announce_list) {
+                        rudderStackSendOpenEvent({
+                            subform_name: 'announcements',
+                            subform_source: 'dashboard',
+                        });
+                    }
+                }}
                 data-testid='btn-announcements'
             >
                 <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />
@@ -157,6 +191,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
                     setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
                     excludedClickOutsideClass={action_button_class_name}
+                    {...(is_mobile && { appElement: document.getElementById('modal_root') })}
                 />
             </div>
             {selected_announcement?.announcement && (

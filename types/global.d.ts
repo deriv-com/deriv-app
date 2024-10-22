@@ -1,15 +1,11 @@
+import { TLiveChatWidget } from './livechat';
+
 declare global {
     interface Window {
         clipboardData: DataTransfer;
-        LiveChatWidget: {
-            init: () => void;
-            on: (key: string, callback: VoidFunction) => void;
-            get: (key: string) => any;
-            call: (key: string, value?: any) => void;
-        };
+        LiveChatWidget: TLiveChatWidget;
         LC_API: {
-            on_chat_ended: VoidFunction;
-            open_chat_window: VoidFunction;
+            close_chat: () => void;
         };
         TrackJS: { console: { log: (arg0: unknown[]) => void }; track: (arg0: object) => void };
         Blockly;
@@ -17,6 +13,33 @@ declare global {
             init: (args: any) => any;
         };
         DD_RUM: object | undefined;
+        fcWidget: {
+            show: VoidFunction;
+            hide: VoidFunction;
+            open: VoidFunction;
+            on: (key: string, callback: VoidFunction) => void;
+            setConfig: (config: Record<string, Record<string, any>>) => void;
+            isLoaded: () => boolean;
+            isInitialized: () => boolean;
+            user: {
+                setLocale(locale: string): void;
+            };
+        };
+        fcWidgetMessengerConfig: {
+            config: Record<string, Record<string, any>>;
+        };
+        fcSettings: {
+            [key: string]: any;
+        };
+        FreshChat: {
+            initialize: (config: FreshChatConfig) => void;
+        };
+        Analytics: any;
+    }
+    interface FreshChatConfig {
+        token: string | null;
+        locale?: string;
+        hideButton?: boolean;
     }
 }
 

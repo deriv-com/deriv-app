@@ -4,6 +4,7 @@ import { getLanguage } from '@deriv/translations';
 import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 import FIREBASE_INIT_DATA from '../../../../api/src/remote_config.json';
+import { getCountry } from '@deriv/utils';
 
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
@@ -23,6 +24,7 @@ export const AnalyticsInitializer = async () => {
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
+
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
@@ -34,13 +36,13 @@ export const AnalyticsInitializer = async () => {
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                         device_language: navigator?.language || 'en-EN',
                         user_language: getLanguage().toLowerCase(),
-                        country:
-                            Cookies.getJSON('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                        country: await getCountry(),
                         utm_source: ppc_campaign_cookies?.utm_source,
                         utm_medium: ppc_campaign_cookies?.utm_medium,
                         utm_campaign: ppc_campaign_cookies?.utm_campaign,
                         utm_content: ppc_campaign_cookies?.utm_content,
                         domain: window.location.hostname,
+                        url: window.location.href,
                     },
                 },
             };

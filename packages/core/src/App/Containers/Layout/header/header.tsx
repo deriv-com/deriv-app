@@ -1,12 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlags, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
-import { isDTraderV2Width, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
-import DTraderContractDetailsHeader from './dtrader-v2-contract-detail-header';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -47,7 +45,6 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
-    const { isMobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -63,20 +60,6 @@ const Header = observer(() => {
         is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
-    const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_enabled',
-        defaultValue: false,
-    });
-    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState();
-    React.useEffect(() => {
-        if (dtrader_v2_enabled_gb !== undefined)
-            setDTraderV2Enabled(
-                (is_dtrader_v2_enabled || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
-                    (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
-            );
-    }, [dtrader_v2_enabled_gb, is_dtrader_v2_enabled]);
-
     React.useEffect(() => {
         if (has_wallet && is_logged_in) {
             const accounts_keys = Object.keys(accounts ?? {});
@@ -94,11 +77,6 @@ const Header = observer(() => {
         switch (true) {
             case pathname === routes.onboarding:
                 result = null;
-                break;
-            case dtrader_v2_enabled &&
-                isMobile &&
-                pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'):
-                result = <DTraderContractDetailsHeader />;
                 break;
             case traders_hub_routes:
                 result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;

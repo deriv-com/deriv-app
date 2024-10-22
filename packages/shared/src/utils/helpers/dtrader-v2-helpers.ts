@@ -25,8 +25,9 @@ export const isDTraderV2 = () => {
     const dtrader_v2_enabled_gb = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
 
     return (
-        (!!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 || dtrader_v2_enabled_gb) &&
-        isDTraderV2Width()
+        Boolean(
+            !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 || dtrader_v2_enabled_gb
+        ) && isDTraderV2Width()
     );
 };
 

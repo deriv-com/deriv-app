@@ -41,6 +41,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
+    const input_ref = React.useRef<HTMLInputElement>(null);
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -196,6 +197,17 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     };
 
+    React.useEffect(() => {
+        const focusHandler = () => {
+            const input = input_ref.current;
+            if (input && input.contains(document.activeElement))
+                window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: 'smooth' });
+        };
+
+        document.addEventListener('focusin', focusHandler);
+        return () => document.removeEventListener('focusin', focusHandler);
+    }, []);
+
     return (
         <>
             <TextField
@@ -232,6 +244,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             unitLeft={getCurrencyDisplayCode(currency)}
                             variant='fill'
                             value={amount}
+                            ref={input_ref}
                         />
                         <StakeDetails
                             commission={commission}

@@ -99,6 +99,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         return () => clearTimeout(start_duration);
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
 
+    const onClose = React.useCallback(() => setOpen(false), []);
+
     const getInputValues = () => {
         const formatted_date = end_date.toLocaleDateString('en-GB', {
             day: 'numeric',
@@ -175,11 +177,10 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             />
             <ActionSheet.Root
                 isOpen={is_open}
-                onClose={() => {
-                    setOpen(false);
-                }}
+                onClose={onClose}
                 position='left'
                 expandable={false}
+                shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <DurationActionSheetContainer

@@ -132,11 +132,15 @@ const EmploymentTaxDetailsContainer = observer(
 
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
+        // [TODO] - This should come from BE
+        const should_disable_employment_status =
+            isFieldDisabled('employment_status') || Boolean(is_virtual && client.account_settings.employment_status);
+
         return (
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
                     required
-                    is_disabled={isFieldDisabled('employment_status')}
+                    is_disabled={should_disable_employment_status}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
                 />
 

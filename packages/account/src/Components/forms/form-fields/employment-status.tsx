@@ -19,7 +19,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploym
     return (
         <Field name='employment_status'>
             {({ field, form: { setFieldValue, setFieldTouched, handleBlur, handleChange }, meta }: FieldProps) => (
-                <div className='account-form__fieldset'>
+                <div className='employment-status-field'>
                     {isDesktop ? (
                         <Dropdown
                             {...field}

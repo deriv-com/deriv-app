@@ -1822,7 +1822,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .dc-modal-header {
         border: none;
-        max-width: 44rem;
         margin-bottom: 0.8rem;
     }
 
@@ -1922,6 +1921,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__details {
+            max-width: 90%;
             margin-left: 2rem;
         }
 
@@ -2262,5 +2262,12 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: flex-start;
         justify-content: center;
         gap: 0.8rem;
+    }
+}
+
+.employment-tin-section {
+    .employment-status-field {
+        margin-bottom: 3.2rem;
+        max-width: 400px;
     }
 }

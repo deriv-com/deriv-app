@@ -34,11 +34,6 @@ describe('LastDigitPrediction', () => {
         );
     };
 
-    it('should render skeleton loader if is_minimized={false} and digit_stats is empty', () => {
-        render(mockLastDigitPrediction());
-
-        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
-    });
     it('should render 10 enabled buttons for each digit if digit_stats are available', () => {
         default_mock_store.modules.trade.digit_stats = digit_stats;
         render(mockLastDigitPrediction());

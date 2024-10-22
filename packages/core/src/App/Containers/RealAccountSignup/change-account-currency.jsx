@@ -32,7 +32,7 @@ const ChangeAccountCurrency = observer(
                         className='link link--orange'
                         onClick={() => {
                             closeRealAccountSignup();
-                            window.LiveChatWidget.call('maximize');
+                            window.LiveChatWidget?.call('maximize');
                         }}
                     />,
                 ]}

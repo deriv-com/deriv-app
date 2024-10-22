@@ -78,6 +78,7 @@ export { default as useRenamePasskey } from './useRenamePasskey';
 export { default as useServiceToken } from './useServiceToken';
 export { default as useSettings } from './useSettings';
 export { default as useStatesList } from './useStatesList';
+export { default as useStoreHasAccountDeposited } from './useStoreHasAccountDeposited';
 export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
 export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
@@ -92,6 +93,7 @@ export { default as useResidenceSelfDeclaration } from './useResidenceSelfDeclar
 export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
+export { default as useTinValidations } from './useTinValidations';
 export { default as usePhoneNumberVerificationSetTimer } from './usePhoneNumberVerificationSetTimer';
 export { default as usePhoneNumberVerificationSessionTimer } from './usePhoneNumberVerificationSessionTimer';
 export { default as useIsPhoneNumberVerified } from './useIsPhoneNumberVerified';

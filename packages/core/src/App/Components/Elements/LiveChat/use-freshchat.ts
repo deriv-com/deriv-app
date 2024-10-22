@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
+import { getAppId, getSocketURL } from '@deriv/shared';
 
 const useFreshChat = (token: string | null) => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
+    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat-temp.js');
     const [isReady, setIsReady] = useState(false);
     const language = localStorage.getItem('i18n_language') || 'EN';
+    const serverUrl = getSocketURL();
+    const appId = getAppId();
 
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined') {
                 if (window.fcWidget?.isInitialized() == true && !isReady) {
-                    // window.fcWidget?.user.setLocale(language.toLowerCase());
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
@@ -22,6 +24,8 @@ const useFreshChat = (token: string | null) => {
                 window.FreshChat.initialize({
                     token,
                     hideButton: true,
+                    serverUrl,
+                    appId,
                 });
 
                 const intervalId = setInterval(() => checkFcWidget(intervalId), 500);
@@ -31,7 +35,7 @@ const useFreshChat = (token: string | null) => {
         };
 
         initFreshChat();
-    }, [isReady, language, scriptStatus, token]);
+    }, [appId, isReady, language, scriptStatus, serverUrl, token]);
 
     return {
         isReady,

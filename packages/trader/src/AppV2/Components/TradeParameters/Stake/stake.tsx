@@ -230,7 +230,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     return (
         <>
             <TextField
-                disabled={is_market_closed}
+                disabled={has_open_accu_contract || is_market_closed}
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
@@ -239,7 +239,6 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
-                disabled={has_open_accu_contract}
             />
             <ActionSheet.Root
                 isOpen={is_open}

@@ -57,9 +57,8 @@ const AccountSignup = ({
     // didMount lifecycle hook
     React.useEffect(() => {
         // eslint-disable-next-line no-console
-        cacheTrackEvents.pageLoadEvent([
+        cacheTrackEvents.loadEvent([
             {
-                page: 'onboarding',
                 event: {
                     name: 'ce_virtual_signup_form',
                     properties: {
@@ -72,9 +71,8 @@ const AccountSignup = ({
             },
         ]);
 
-        cacheTrackEvents.pageLoadEvent([
+        cacheTrackEvents.loadEvent([
             {
-                page: 'onboarding',
                 event: {
                     name: 'ce_virtual_signup_form',
                     properties: {

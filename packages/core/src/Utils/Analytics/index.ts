@@ -29,7 +29,7 @@ export const AnalyticsInitializer = async () => {
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
                 growthbookOptions: {
                     attributes: {
-                        loggedIn: Cookies.get('clients_information'),
+                        loggedIn: !!Cookies.get('clients_information'),
                         account_type: account_type === 'null' ? 'unlogged' : account_type,
                         app_id: String(getAppId()),
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',

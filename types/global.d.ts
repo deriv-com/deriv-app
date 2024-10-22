@@ -40,6 +40,8 @@ declare global {
         token: string | null;
         locale?: string;
         hideButton?: boolean;
+        serverUrl?: string;
+        appId?: string | number;
     }
 }
 

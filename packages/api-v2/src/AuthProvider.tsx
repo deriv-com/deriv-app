@@ -184,31 +184,25 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                 setIsAuthorized(false);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
-                        if (isMounted) {
-                            setIsAuthorized(true);
-                            processAuthorizeResponse(res);
-                            setIsLoading(false);
-                            setIsInitializing(false);
-                            setIsSuccess(true);
-                            setLoginid(res?.authorize?.loginid ?? '');
-                        }
+                        setIsAuthorized(true);
+                        processAuthorizeResponse(res);
+                        setIsLoading(false);
+                        setIsInitializing(false);
+                        setIsSuccess(true);
+                        setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(async (e: TAuthorizeError) => {
-                        if (isMounted) {
-                            if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
-                                await logout?.();
-                            }
-                            setIsLoading(false);
-                            setIsInitializing(false);
-                            setIsError(true);
+                        if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                            await logout?.();
                         }
+                        setIsLoading(false);
+                        setIsInitializing(false);
+                        setIsError(true);
                     })
                     .finally(() => {
-                        if (isMounted) {
-                            setIsLoading(false);
-                            setIsInitializing(false);
-                            setIsFetching(false);
-                        }
+                        setIsLoading(false);
+                        setIsInitializing(false);
+                        setIsFetching(false);
                     });
             })
             .catch(() => {

@@ -47,7 +47,7 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
         if (v2_params_initial_values.barrier_1?.toString() !== barrier_1) {
             setV2ParamsInitialValues({ value: barrier_1, name: 'barrier_1' });
         }
-    }, []);
+    }, [barrier_1]);
 
     React.useEffect(() => {
         const has_error = proposal_info?.[trade_type_tab]?.has_error;

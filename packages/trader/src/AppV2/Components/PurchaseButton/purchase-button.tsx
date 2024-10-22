@@ -3,15 +3,17 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, useNotifications } from '@deriv-com/quill-ui';
+import { Button, useNotifications, useSnackbar } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
     getCardLabelsV2,
     getContractTypeDisplay,
     getIndicativePrice,
+    getStaticUrl,
     hasContractEntered,
     isAccumulatorContract,
     isOpen,
+    isValidToCancel,
     isValidToSell,
     MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
@@ -63,6 +65,7 @@ const PurchaseButton = observer(() => {
             )
     );
     const mf_account_status = useMFAccountStatus();
+    const { addSnackbar } = useSnackbar();
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -175,12 +178,27 @@ const PurchaseButton = observer(() => {
                                     isOpaque
                                     disabled={is_disabled && !is_loading}
                                     onClick={() => {
-                                        if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
-                                            setIsMFVericationPendingModal(true);
-                                        } else {
-                                            setLoadingButtonIndex(index);
-                                            onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
-                                        }
+                                        const bottom_position =
+                                            location.pathname.startsWith('/contract/') &&
+                                            is_multiplier &&
+                                            isValidToCancel(info as unknown as Parameters<typeof isValidToCancel>[0])
+                                                ? '104px'
+                                                : '48px';
+                                        addSnackbar({
+                                            message:
+                                                'Hi Victor! This is a hardcoded snackbar, it appears on purchase button click and disappears in 4s. I hope, you were able to read it during 4 sec, because I failed.',
+                                            status: 'fail',
+                                            hasCloseButton: true,
+                                            hasFixedHeight: false,
+                                            actionText: 'View',
+                                            onActionClick: () => {
+                                                window.open(getStaticUrl('tnc/trading-terms.pdf', true, false));
+                                            },
+                                            style: {
+                                                marginBottom: is_logged_in ? bottom_position : '-8px',
+                                                width: 'calc(100% - var(--core-spacing-800)',
+                                            },
+                                        });
                                     }}
                                 >
                                     {!is_loading && (

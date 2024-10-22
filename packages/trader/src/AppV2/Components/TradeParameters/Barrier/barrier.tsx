@@ -19,15 +19,19 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';
 
-    const onClose = (is_saved = false) => {
-        if (is_open) {
-            if (!is_saved) {
-                onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
+    const onClose = React.useCallback(
+        (is_saved = false) => {
+            if (is_open) {
+                if (!is_saved) {
+                    onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
+                }
+                setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
+                setIsOpen(false);
             }
-            setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
-            setIsOpen(false);
-        }
-    };
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [initialBarrierValue, is_open]
+    );
 
     const barrier_carousel_pages = [
         {
@@ -52,7 +56,13 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
                 onClick={() => setIsOpen(true)}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         header={CarouselHeader}

@@ -35,25 +35,25 @@ jest.mock('lodash.debounce', () =>
 );
 
 describe('<Multiplier />', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Multiplier>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    multiplier_range_list: [
-                        { text: 'x1', value: 1 },
-                        { text: 'x2', value: 2 },
-                    ],
-                    multiplier: 1,
-                    is_purchase_enabled: true,
-                    commission: 0.01,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        multiplier_range_list: [
+                            { text: 'x1', value: 1 },
+                            { text: 'x2', value: 2 },
+                        ],
+                        multiplier: 1,
+                        is_purchase_enabled: true,
+                        commission: 0.01,
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -61,7 +61,7 @@ describe('<Multiplier />', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <Multiplier {...default_mock_prop} />
+                    <Multiplier is_minimized />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -78,8 +78,8 @@ describe('<Multiplier />', () => {
         expect(screen.getByText(multiplier_param_label)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue('x1');
     });
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockMultiplier();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

@@ -6,8 +6,8 @@ import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { formatDuration, getDateFromNow, getDiffDuration } from '@deriv/shared';
 
-const MultipliersExpirationInfo = observer(({ is_disabled }: { is_disabled?: boolean }) => {
-    const { expiration } = useTraderStore();
+const MultipliersExpirationInfo = observer(() => {
+    const { expiration, is_market_closed } = useTraderStore();
     const { common } = useStore();
     const { server_time: start_time } = common;
     const { days, timestamp } = formatDuration(
@@ -18,10 +18,10 @@ const MultipliersExpirationInfo = observer(({ is_disabled }: { is_disabled?: boo
 
     return (
         <div className='multipliers-expiration-info__container'>
-            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
+            <Text size='sm' className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Expires on' />
             </Text>
-            <Text size='sm' bold className={clsx(is_disabled && 'trade-params__text--disabled')}>
+            <Text size='sm' bold className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='{{date}} at {{timestamp}}' values={{ date, timestamp }} />
             </Text>
         </div>

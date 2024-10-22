@@ -18,6 +18,7 @@ describe('<MultipliersExpirationInfo />', () => {
         modules: {
             trade: {
                 expiration: 1626188400,
+                is_market_closed: false,
             },
         },
         common: {
@@ -27,10 +28,10 @@ describe('<MultipliersExpirationInfo />', () => {
         },
     };
 
-    const MockedMultipliersExpirationInfo = (mock_props?: React.ComponentProps<typeof MultipliersExpirationInfo>) => {
+    const MockedMultipliersExpirationInfo = () => {
         return (
             <TraderProviders store={mockStore(mock_store)}>
-                <MultipliersExpirationInfo {...mock_props} />
+                <MultipliersExpirationInfo />
             </TraderProviders>
         );
     };
@@ -45,8 +46,9 @@ describe('<MultipliersExpirationInfo />', () => {
         expect(screen.getByText('13 Jul 2021 at 14:00')).toBeInTheDocument();
     });
 
-    it('applies specific className if is_disabled === true', () => {
-        render(MockedMultipliersExpirationInfo({ is_disabled: true }));
+    it('applies specific className if is_market_closed === true', () => {
+        mock_store.modules.trade.is_market_closed = true;
+        render(MockedMultipliersExpirationInfo());
 
         expect(screen.getByText('Expires on')).toHaveClass('trade-params__text--disabled');
     });

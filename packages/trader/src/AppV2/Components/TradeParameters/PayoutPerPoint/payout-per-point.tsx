@@ -13,11 +13,12 @@ import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import PayoutPerPointWheel from './payout-per-point-wheel';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const PayoutPerPoint = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
+const PayoutPerPoint = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         barrier_1,
         currency,
+        is_market_closed,
         payout_choices,
         payout_per_point,
         setPayoutPerPoint,
@@ -80,7 +81,7 @@ const PayoutPerPoint = observer(({ is_minimized, is_disabled }: TTradeParameters
     return (
         <React.Fragment>
             <TextField
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 className={classname}
                 label={
                     <Localize

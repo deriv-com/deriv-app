@@ -31,55 +31,55 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
 }));
 
 describe('Stake', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Stake>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    amount: 10,
-                    basis: 'stake',
-                    contract_type: TRADE_TYPES.RISE_FALL,
-                    currency: 'USD',
-                    proposal_info: {
-                        [CONTRACT_TYPES.CALL]: {
-                            id: '53e8cb91-8c13-60a3-289f-778e8386367c',
-                            has_error: false,
-                            message:
-                                'Win payout if Volatility 100 (1s) Index is strictly higher than entry spot at 5 minutes after contract start time.',
-                            payout: 19.55,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        amount: 10,
+                        basis: 'stake',
+                        contract_type: TRADE_TYPES.RISE_FALL,
+                        currency: 'USD',
+                        proposal_info: {
+                            [CONTRACT_TYPES.CALL]: {
+                                id: '53e8cb91-8c13-60a3-289f-778e8386367c',
+                                has_error: false,
+                                message:
+                                    'Win payout if Volatility 100 (1s) Index is strictly higher than entry spot at 5 minutes after contract start time.',
+                                payout: 19.55,
+                            },
+                            [CONTRACT_TYPES.PUT]: {
+                                id: '2b5dd806-7505-8af7-1bbb-5e24ac48bbbc',
+                                has_error: false,
+                                message:
+                                    'Win payout if Volatility 100 (1s) Index is strictly lower than entry spot at 5 minutes after contract start time.',
+                                payout: 19.51,
+                            },
                         },
-                        [CONTRACT_TYPES.PUT]: {
-                            id: '2b5dd806-7505-8af7-1bbb-5e24ac48bbbc',
-                            has_error: false,
-                            message:
-                                'Win payout if Volatility 100 (1s) Index is strictly lower than entry spot at 5 minutes after contract start time.',
-                            payout: 19.51,
+                        trade_types: {
+                            [CONTRACT_TYPES.CALL]: 'Higher',
+                            [CONTRACT_TYPES.PUT]: 'Lower',
                         },
-                    },
-                    trade_types: {
-                        [CONTRACT_TYPES.CALL]: 'Higher',
-                        [CONTRACT_TYPES.PUT]: 'Lower',
-                    },
-                    validation_errors: { amount: [] },
-                    validation_params: {
-                        [CONTRACT_TYPES.CALL]: { payout: { max: '50000.00' } },
-                        [CONTRACT_TYPES.PUT]: { payout: { max: '50000.00' } },
-                    },
-                    v2_params_initial_values: {
-                        stake: 10,
+                        validation_errors: { amount: [] },
+                        validation_params: {
+                            [CONTRACT_TYPES.CALL]: { payout: { max: '50000.00' } },
+                            [CONTRACT_TYPES.PUT]: { payout: { max: '50000.00' } },
+                        },
+                        v2_params_initial_values: {
+                            stake: 10,
+                        },
                     },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     const MockedStake = ({ store = default_mock_store }: { store?: ReturnType<typeof mockStore> }) => (
         <TraderProviders store={store}>
             <ModulesProvider store={store}>
-                <Stake {...default_mock_prop} />
+                <Stake is_minimized />
             </ModulesProvider>
         </TraderProviders>
     );
@@ -282,8 +282,8 @@ describe('Stake', () => {
         expect(default_mock_store.modules.trade.setDefaultStake).toHaveBeenCalledWith(10);
     });
 
-    it('disables trade param if is_disabled == true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed == true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         render(<MockedStake />);
 
         expect(screen.getByRole('textbox')).toBeDisabled();

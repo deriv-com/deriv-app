@@ -12,16 +12,16 @@ jest.mock('../../RiskManagement/take-profit-and-stop-loss-input', () =>
 jest.mock('AppV2/Components/TradeParamDefinition', () => jest.fn(() => <div>TradeParamDefinition</div>));
 
 describe('TakeProfit', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof TakeProfit>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: { ...mockStore({}).modules.trade, currency: 'USD', has_take_profit: true, take_profit: '5' },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: { ...mockStore({}).modules.trade, currency: 'USD', has_take_profit: true, take_profit: '5' },
+                },
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -29,7 +29,7 @@ describe('TakeProfit', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <TakeProfit {...default_mock_prop} />
+                    <TakeProfit is_minimized />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -50,8 +50,8 @@ describe('TakeProfit', () => {
         expect(screen.getByText('TradeParamDefinition')).toBeInTheDocument();
     });
 
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockTakeProfit();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

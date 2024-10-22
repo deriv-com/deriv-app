@@ -8,25 +8,25 @@ import { CONTRACT_TYPES } from '@deriv/shared';
 const barrier_label = 'Barrier';
 
 describe('<BarrierInfo />', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof BarrierInfo>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    barrier_1: '1.2345',
-                    contract_type: 'turboslong',
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        barrier_1: '1.2345',
+                        contract_type: 'turboslong',
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_disabled: false };
-    });
+            }))
+    );
 
     const mockedBarrierInfo = () =>
         render(
             <TraderProviders store={default_mock_store}>
-                <BarrierInfo {...default_mock_prop} />
+                <BarrierInfo />
             </TraderProviders>
         );
 
@@ -59,8 +59,8 @@ describe('<BarrierInfo />', () => {
         expect(screen.getByText('1.2345')).toBeInTheDocument();
     });
 
-    it('applies specific className if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockedBarrierInfo();
 
         expect(screen.getByText(barrier_label)).toHaveClass('trade-params__text--disabled');

@@ -10,7 +10,7 @@ import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const Stake = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
+const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         amount,
         basis,
@@ -22,6 +22,7 @@ const Stake = observer(({ is_minimized, is_disabled }: TTradeParametersProps) =>
         is_multiplier,
         is_turbos,
         is_vanilla,
+        is_market_closed,
         onChange,
         proposal_info,
         setV2ParamsInitialValues,
@@ -196,7 +197,7 @@ const Stake = observer(({ is_minimized, is_disabled }: TTradeParametersProps) =>
     return (
         <>
             <TextField
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}

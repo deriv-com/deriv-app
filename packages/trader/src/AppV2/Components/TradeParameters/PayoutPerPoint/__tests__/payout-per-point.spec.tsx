@@ -32,23 +32,22 @@ jest.mock('lodash.debounce', () =>
 );
 
 describe('PayoutPerPoint', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof PayoutPerPoint>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    barrier_1: '+1.80',
-                    payout_choices: ['6', '5', '4', '3', '2', '1'],
-                    currency: 'USD',
-                    payout_per_point: '3',
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        barrier_1: '+1.80',
+                        payout_choices: ['6', '5', '4', '3', '2', '1'],
+                        currency: 'USD',
+                        payout_per_point: '3',
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -56,7 +55,7 @@ describe('PayoutPerPoint', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <PayoutPerPoint {...default_mock_prop} />
+                    <PayoutPerPoint />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -75,8 +74,8 @@ describe('PayoutPerPoint', () => {
         expect(screen.getByRole('textbox')).toHaveValue('3 USD');
     });
 
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockPayoutPerPoint();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

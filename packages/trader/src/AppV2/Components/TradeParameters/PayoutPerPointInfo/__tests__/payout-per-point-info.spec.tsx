@@ -7,33 +7,32 @@ import { mockStore } from '@deriv/stores';
 const label = 'Payout per point';
 
 describe('<PayoutPerPointInfo />', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof PayoutPerPointInfo>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    contract_type: 'vanillalongcall',
-                    currency: 'USD',
-                    proposal_info: {
-                        VANILLALONGCALL: {
-                            obj_contract_basis: {
-                                text: 'payout',
-                                value: 123,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        contract_type: 'vanillalongcall',
+                        currency: 'USD',
+                        proposal_info: {
+                            VANILLALONGCALL: {
+                                obj_contract_basis: {
+                                    text: 'payout',
+                                    value: 123,
+                                },
                             },
                         },
                     },
                 },
-            },
-        });
-        default_mock_prop = { is_disabled: false };
-    });
+            }))
+    );
     const mockedPayoutPerPointInfo = () =>
         render(
             <TraderProviders store={default_mock_store}>
-                <PayoutPerPointInfo {...default_mock_prop} />
+                <PayoutPerPointInfo />
             </TraderProviders>
         );
 
@@ -63,8 +62,8 @@ describe('<PayoutPerPointInfo />', () => {
         expect(screen.getByText(label)).toBeInTheDocument();
         expect(screen.getByText(label)).not.toHaveClass('trade-params__text--disabled');
     });
-    it('applies specific className if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockedPayoutPerPointInfo();
 
         expect(screen.getByText(label)).toHaveClass('trade-params__text--disabled');

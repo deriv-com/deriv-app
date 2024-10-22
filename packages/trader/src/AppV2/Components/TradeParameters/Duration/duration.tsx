@@ -11,13 +11,14 @@ import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-p
 import { useStore } from '@deriv/stores';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const Duration = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
+const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         duration,
         duration_unit,
         expiry_time,
         expiry_type,
         contract_type,
+        is_market_closed,
         trade_types,
         proposal_info,
         trade_type_tab,
@@ -163,7 +164,7 @@ const Duration = observer(({ is_minimized, is_disabled }: TTradeParametersProps)
                 label={<Localize i18n_default_text='Duration' key={`duration${is_minimized ? '-minimized' : ''}`} />}
                 value={getInputValues()}
                 noStatusIcon
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 onClick={() => setOpen(true)}
                 status={has_error ? 'error' : 'neutral'}

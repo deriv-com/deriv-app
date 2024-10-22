@@ -12,24 +12,24 @@ jest.mock('@deriv/quill-icons', () => ({
 }));
 
 describe('Barrier Component', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Barrier>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    onChange: jest.fn(),
-                    validation_errors: { barrier_1: [] },
-                    duration: 10,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        onChange: jest.fn(),
+                        validation_errors: { barrier_1: [] },
+                        duration: 10,
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
     const mockBarriers = () => {
         render(
             <TraderProviders store={default_mock_store}>
-                <Barrier {...default_mock_prop} />
+                <Barrier is_minimized />
             </TraderProviders>
         );
     };
@@ -45,8 +45,8 @@ describe('Barrier Component', () => {
         expect(screen.getByText('Barrier Input')).toBeInTheDocument();
     });
 
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockBarriers();
         expect(screen.getByRole('textbox')).toBeDisabled();
     });

@@ -6,8 +6,8 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const TradeTypeTabs = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
-    const { contract_type, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
+const TradeTypeTabs = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { contract_type, is_market_closed, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
     const tab_list = getTradeTypeTabsList(contract_type);
     let initial_index = 0;
 
@@ -47,7 +47,7 @@ const TradeTypeTabs = observer(({ is_minimized, is_disabled }: TTradeParametersP
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             hasContainerWidth
             onChange={handleTabChange}
-            options={tab_list.map(({ label }) => ({ disabled: is_disabled, label }))}
+            options={tab_list.map(({ label }) => ({ disabled: is_market_closed, label }))}
             selectedItemIndex={tab_index}
         />
     );

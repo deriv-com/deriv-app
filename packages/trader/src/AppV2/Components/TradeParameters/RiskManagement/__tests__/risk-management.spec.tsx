@@ -8,20 +8,19 @@ import RiskManagement from '../risk-management';
 const risk_management = 'Risk Management';
 
 describe('RiskManagement', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof RiskManagement>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}).modules.trade,
-                    currency: 'USD',
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}).modules.trade,
+                        currency: 'USD',
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -29,7 +28,7 @@ describe('RiskManagement', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <RiskManagement {...default_mock_prop} />
+                    <RiskManagement is_minimized />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -83,8 +82,8 @@ describe('RiskManagement', () => {
         expect(screen.getByRole('textbox')).toHaveValue('SL: 2 USD');
     });
 
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockRiskManagement();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

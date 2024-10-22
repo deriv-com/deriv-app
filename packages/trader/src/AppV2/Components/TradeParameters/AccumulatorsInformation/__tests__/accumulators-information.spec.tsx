@@ -9,27 +9,27 @@ const payout_text = 'Max. payout';
 const payout_value = '4,000.00 USD';
 
 describe('AccumulatorsInformation', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof AccumulatorsInformation>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    currency: 'USD',
-                    maximum_payout: 4000,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        currency: 'USD',
+                        maximum_payout: 4000,
+                        is_market_closed: false,
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_disabled: false };
-    });
+            }))
+    );
 
     const mockAccumulatorsInformation = () =>
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <AccumulatorsInformation {...default_mock_prop} />
+                    <AccumulatorsInformation />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -62,8 +62,8 @@ describe('AccumulatorsInformation', () => {
         expect(screen.getByText(payout_text)).not.toHaveClass('trade-params__text--disabled');
     });
 
-    it('applies specific className if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockAccumulatorsInformation();
 
         expect(screen.getByText(payout_text)).toHaveClass('trade-params__text--disabled');

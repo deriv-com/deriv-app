@@ -13,7 +13,7 @@ import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const RiskManagement = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
+const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         cancellation_range_list,
@@ -22,6 +22,7 @@ const RiskManagement = observer(({ is_minimized, is_disabled }: TTradeParameters
         has_cancellation,
         has_take_profit,
         has_stop_loss,
+        is_market_closed,
         take_profit,
         stop_loss,
     } = useTraderStore();
@@ -70,7 +71,7 @@ const RiskManagement = observer(({ is_minimized, is_disabled }: TTradeParameters
         <React.Fragment>
             <TextField
                 className={classname}
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 label={
                     <Localize
                         i18n_default_text='Risk Management'

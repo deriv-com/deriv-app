@@ -22,26 +22,12 @@ import BarrierInfo from './BarrierInfo';
 import PayoutPerPointInfo from './PayoutPerPointInfo';
 import PayoutInfo from './PayoutInfo';
 
-export type TTradeParametersProps = {
-    is_minimized?: boolean;
-    is_disabled?: boolean;
-};
+export type TTradeParametersProps = { is_minimized?: boolean };
 
-const TradeParameters = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
+const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
     const isVisible = (component_key: string) =>
         isTradeParamVisible({ component_key, contract_type, has_cancellation, symbol });
-
-    const renderComponentIfVisible = (
-        component_key: string,
-        Component: React.ComponentType<TTradeParametersProps>,
-        extraCondition = true
-    ) => {
-        return (
-            isVisible(component_key) &&
-            extraCondition && <Component is_minimized={is_minimized} is_disabled={is_disabled} />
-        );
-    };
 
     return (
         <div
@@ -52,11 +38,11 @@ const TradeParameters = observer(({ is_minimized, is_disabled }: TTradeParameter
         >
             {is_minimized && (
                 <React.Fragment>
-                    {isVisible('expiration') && <MultipliersExpirationInfo is_disabled={is_disabled} />}
-                    {isVisible('mult_info_display') && <MultipliersDealCancellationInfo is_disabled={is_disabled} />}
-                    {isVisible('payout_per_point_info') && <PayoutPerPointInfo is_disabled={is_disabled} />}
-                    {isVisible('allow_equals') && <AllowEquals is_disabled={is_disabled} />}
-                    {isVisible('payout') && <PayoutInfo is_disabled={is_disabled} />}
+                    {isVisible('expiration') && <MultipliersExpirationInfo />}
+                    {isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
+                    {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
+                    {isVisible('allow_equals') && <AllowEquals />}
+                    {isVisible('payout') && <PayoutInfo />}
                 </React.Fragment>
             )}
             <div
@@ -65,25 +51,24 @@ const TradeParameters = observer(({ is_minimized, is_disabled }: TTradeParameter
                     is_minimized && 'trade-params__options__wrapper--horizontal'
                 )}
             >
-                {renderComponentIfVisible('trade_type_tabs', TradeTypeTabs)}
-                {renderComponentIfVisible('last_digit', LastDigitPrediction)}
-                {renderComponentIfVisible('duration', Duration)}
-                {renderComponentIfVisible('strike', Strike)}
-                {renderComponentIfVisible('barrier', Barrier)}
-                {renderComponentIfVisible('growth_rate', GrowthRate)}
-                {renderComponentIfVisible('multiplier', Multiplier)}
-                {renderComponentIfVisible('stake', Stake)}
-                {renderComponentIfVisible('payout_per_point', PayoutPerPoint)}
-                {/* Special cases: only renders when not minimized */}
-                {renderComponentIfVisible('allow_equals', AllowEquals, !is_minimized)}
-                {renderComponentIfVisible('take_profit', TakeProfit)}
-                {renderComponentIfVisible('risk_management', RiskManagement)}
-                {renderComponentIfVisible('expiration', MultipliersExpirationInfo, !is_minimized)}
-                {renderComponentIfVisible('accu_info_display', AccumulatorsInformation, !is_minimized)}
-                {renderComponentIfVisible('barrier_info', BarrierInfo, !is_minimized)}
-                {renderComponentIfVisible('payout_per_point_info', PayoutPerPointInfo, !is_minimized)}
-                {renderComponentIfVisible('payout', PayoutInfo, !is_minimized)}
-                {renderComponentIfVisible('mult_info_display', MultipliersDealCancellationInfo, !is_minimized)}
+                {isVisible('trade_type_tabs') && <TradeTypeTabs is_minimized={is_minimized} />}
+                {isVisible('last_digit') && <LastDigitPrediction is_minimized={is_minimized} />}
+                {isVisible('duration') && <Duration is_minimized={is_minimized} />}
+                {isVisible('strike') && <Strike is_minimized={is_minimized} />}
+                {isVisible('barrier') && <Barrier is_minimized={is_minimized} />}
+                {isVisible('growth_rate') && <GrowthRate is_minimized={is_minimized} />}
+                {isVisible('multiplier') && <Multiplier is_minimized={is_minimized} />}
+                {isVisible('stake') && <Stake is_minimized={is_minimized} />}
+                {isVisible('payout_per_point') && <PayoutPerPoint is_minimized={is_minimized} />}
+                {isVisible('allow_equals') && !is_minimized && <AllowEquals />}
+                {isVisible('take_profit') && <TakeProfit is_minimized={is_minimized} />}
+                {isVisible('risk_management') && <RiskManagement is_minimized={is_minimized} />}
+                {isVisible('expiration') && !is_minimized && <MultipliersExpirationInfo />}
+                {isVisible('accu_info_display') && !is_minimized && <AccumulatorsInformation />}
+                {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
+                {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
+                {isVisible('payout') && !is_minimized && <PayoutInfo />}
+                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
         </div>
     );

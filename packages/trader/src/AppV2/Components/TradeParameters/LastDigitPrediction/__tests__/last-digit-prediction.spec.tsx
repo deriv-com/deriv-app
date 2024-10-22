@@ -50,8 +50,9 @@ describe('LastDigitPrediction', () => {
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue(default_mock_store.modules.trade.last_digit.toString());
     });
-    it('disables component if is_disabled  === true', () => {
-        render(mockLastDigitPrediction({ is_minimized: true, is_disabled: true }));
+    it('disables component if is_market_closed  === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        render(mockLastDigitPrediction({ is_minimized: true }));
 
         expect(screen.getByRole('textbox')).toBeDisabled();
     });

@@ -10,8 +10,9 @@ import BarrierInput from './barrier-input';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const Barrier = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
-    const { barrier_1, onChange, duration_unit, setV2ParamsInitialValues, v2_params_initial_values } = useTraderStore();
+const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { barrier_1, onChange, duration_unit, is_market_closed, setV2ParamsInitialValues, v2_params_initial_values } =
+        useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';
@@ -43,7 +44,7 @@ const Barrier = observer(({ is_minimized, is_disabled }: TTradeParametersProps) 
         <>
             <TextField
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}

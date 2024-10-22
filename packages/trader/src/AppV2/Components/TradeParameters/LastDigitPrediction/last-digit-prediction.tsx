@@ -9,8 +9,8 @@ import { TTradeParametersProps } from '../trade-parameters';
 
 const displayed_digits = [...Array(10).keys()]; // digits array [0 - 9]
 
-const LastDigitPrediction = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
-    const { digit_stats = [], last_digit, onChange } = useTraderStore();
+const LastDigitPrediction = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { digit_stats = [], is_market_closed, last_digit, onChange } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
     const [selected_digit, setSelectedDigit] = React.useState(last_digit);
 
@@ -34,7 +34,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_disabled }: TTradeParam
             <>
                 <TextField
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
-                    disabled={is_disabled}
+                    disabled={is_market_closed}
                     variant='fill'
                     readOnly
                     label={
@@ -70,7 +70,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_disabled }: TTradeParam
         );
 
     return (
-        <div className={clsx('last-digit-prediction', is_disabled && 'last-digit-prediction--disabled')}>
+        <div className={clsx('last-digit-prediction', is_market_closed && 'last-digit-prediction--disabled')}>
             <CaptionText size='sm' className='last-digit-prediction__title'>
                 <Localize i18n_default_text='Last digit prediction' />
             </CaptionText>
@@ -79,7 +79,7 @@ const LastDigitPrediction = observer(({ is_minimized, is_disabled }: TTradeParam
                 digit_stats={digit_stats}
                 onDigitSelect={handleLastDigitChange}
                 selected_digit={last_digit}
-                is_disabled={is_disabled}
+                is_disabled={is_market_closed}
             />
         </div>
     );

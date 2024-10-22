@@ -49,20 +49,16 @@ jest.mock('../LastDigitPrediction', () =>
 );
 
 describe('TradeParameters', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof TradeParameters>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({});
-        default_mock_prop = { is_minimized: false, is_disabled: false };
-    });
+    beforeEach(() => (default_mock_store = mockStore({})));
 
     const mockTradeParameters = () => {
         return (
             <TraderProviders store={default_mock_store}>
                 <ReportsStoreProvider>
                     <ModulesProvider store={default_mock_store}>
-                        <TradeParameters {...default_mock_prop} />
+                        <TradeParameters />
                     </ModulesProvider>
                 </ReportsStoreProvider>
             </TraderProviders>
@@ -136,9 +132,9 @@ describe('TradeParameters', () => {
         expect(screen.getAllByTestId(data_test)).toHaveLength(3);
     });
 
-    it('renders correct trade params for Rise/Fall if is_minimized and is_disabled  === true', () => {
+    it('renders correct trade params for Rise/Fall if is_minimized and is_market_closed  === true', () => {
         default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL;
-        default_mock_prop = { is_minimized: true, is_disabled: true };
+        default_mock_store.modules.trade.is_market_closed = true;
         render(mockTradeParameters());
 
         expect(screen.getByText(TRADE_PARAMS.DURATION)).toBeInTheDocument();

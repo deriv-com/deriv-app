@@ -16,18 +16,15 @@ jest.mock('Stores/Modules/Trading/Helpers/allow-equals', () => ({
 const title = 'Allow equals';
 
 describe('AllowEquals', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof AllowEquals>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({});
-        default_mock_prop = { is_disabled: false };
-    });
+    beforeEach(() => (default_mock_store = mockStore({})));
 
     const mockAllowEquals = () => {
         return (
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <AllowEquals {...default_mock_prop} />
+                    <AllowEquals />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -79,8 +76,8 @@ describe('AllowEquals', () => {
         expect(screen.getByText('Got it')).toBeInTheDocument();
     });
 
-    it('renders disabled ToggleSwitch is is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('renders disabled ToggleSwitch is is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         render(mockAllowEquals());
 
         expect(screen.getByRole('button')).toBeDisabled();

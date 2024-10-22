@@ -36,25 +36,25 @@ jest.mock('lodash.debounce', () =>
 );
 
 describe('GrowthRate', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof GrowthRate>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
-                    growth_rate: 0.01,
-                    is_purchase_enabled: true,
-                    proposal_info: {
-                        [CONTRACT_TYPES.ACCUMULATOR]: { id: 12345 },
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
+                        growth_rate: 0.01,
+                        is_purchase_enabled: true,
+                        proposal_info: {
+                            [CONTRACT_TYPES.ACCUMULATOR]: { id: 12345 },
+                        },
+                        tick_size_barrier_percentage: '0.03612%',
                     },
-                    tick_size_barrier_percentage: '0.03612%',
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -62,7 +62,7 @@ describe('GrowthRate', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <GrowthRate {...default_mock_prop} />
+                    <GrowthRate is_minimized />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -87,8 +87,8 @@ describe('GrowthRate', () => {
 
         expect(screen.getByRole('textbox')).toBeDisabled();
     });
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockGrowthRate();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

@@ -7,8 +7,8 @@ import { Text } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { CONTRACT_TYPES } from '@deriv/shared';
 
-const MultipliersDealCancellationInfo = observer(({ is_disabled }: { is_disabled?: boolean }) => {
-    const { currency, proposal_info } = useTraderStore();
+const MultipliersDealCancellationInfo = observer(() => {
+    const { currency, is_market_closed, proposal_info } = useTraderStore();
     const deal_cancellation_fee_value = proposal_info?.[CONTRACT_TYPES.MULTIPLIER.UP]?.cancellation?.ask_price;
     const has_error =
         proposal_info?.[CONTRACT_TYPES.MULTIPLIER.UP]?.has_error ||
@@ -18,10 +18,10 @@ const MultipliersDealCancellationInfo = observer(({ is_disabled }: { is_disabled
 
     return (
         <div className='multipliers-info__row'>
-            <Text size='sm' className={clsx(is_disabled && 'trade-params__text--disabled')}>
+            <Text size='sm' className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Deal cancellation fee' />
             </Text>
-            <Text size='sm' bold as='div' className={clsx(is_disabled && 'trade-params__text--disabled')}>
+            <Text size='sm' bold as='div' className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 {deal_cancellation_fee_value ? (
                     <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
                 ) : (

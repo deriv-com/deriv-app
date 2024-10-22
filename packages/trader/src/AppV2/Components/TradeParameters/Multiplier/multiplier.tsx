@@ -11,8 +11,8 @@ import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import MultiplierWheelPicker from './multiplier-wheel-picker';
 import { TTradeParametersProps } from '../trade-parameters';
 
-const Multiplier = observer(({ is_minimized, is_disabled }: TTradeParametersProps) => {
-    const { multiplier, multiplier_range_list, commission, onChange, currency } = useTraderStore();
+const Multiplier = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { multiplier, multiplier_range_list, commission, is_market_closed, onChange, currency } = useTraderStore();
 
     const [isOpen, setIsOpen] = useState(false);
     const is_small_screen_device = isSmallScreen();
@@ -58,7 +58,7 @@ const Multiplier = observer(({ is_minimized, is_disabled }: TTradeParametersProp
         <React.Fragment>
             <TextField
                 className={classname}
-                disabled={is_disabled}
+                disabled={is_market_closed}
                 variant='fill'
                 readOnly
                 label={

@@ -33,25 +33,25 @@ jest.mock('lodash.debounce', () =>
 );
 
 describe('Strike', () => {
-    let default_mock_store: ReturnType<typeof mockStore>, default_mock_prop: React.ComponentProps<typeof Strike>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    ...mockStore({}),
-                    barrier_1: '+1.80',
-                    barrier_choices: ['+1.80', '+1.00', '+0.00', '-1.00', '-1.80'],
-                    contract_type: TRADE_TYPES.VANILLA.CALL,
-                    currency: 'USD',
-                    proposal_info: {
-                        [CONTRACT_TYPES.VANILLA.CALL]: { obj_contract_basis: { value: '14.245555' } },
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        ...mockStore({}),
+                        barrier_1: '+1.80',
+                        barrier_choices: ['+1.80', '+1.00', '+0.00', '-1.00', '-1.80'],
+                        contract_type: TRADE_TYPES.VANILLA.CALL,
+                        currency: 'USD',
+                        proposal_info: {
+                            [CONTRACT_TYPES.VANILLA.CALL]: { obj_contract_basis: { value: '14.245555' } },
+                        },
                     },
                 },
-            },
-        });
-        default_mock_prop = { is_minimized: true, is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -59,7 +59,7 @@ describe('Strike', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <Strike {...default_mock_prop} />
+                    <Strike is_minimized />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -130,8 +130,8 @@ describe('Strike', () => {
         jest.useRealTimers();
     });
 
-    it('disables trade param if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockStrike();
 
         expect(screen.getByRole('textbox')).toBeDisabled();

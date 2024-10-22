@@ -40,9 +40,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('Duration', () => {
-    let default_trade_store: TCoreStores,
-        mockOnChangeMultiple: jest.Mock,
-        default_props: React.ComponentProps<typeof Duration>;
+    let default_trade_store: TCoreStores, mockOnChangeMultiple: jest.Mock;
 
     beforeEach(() => {
         mockOnChangeMultiple = jest.fn();
@@ -67,7 +65,6 @@ describe('Duration', () => {
                 },
             },
         });
-        default_props = { is_minimized: false, is_disabled: false };
     });
 
     const mockAddSnackbar = jest.fn();
@@ -78,7 +75,7 @@ describe('Duration', () => {
     const mockDuration = () => {
         render(
             <TraderProviders store={default_trade_store}>
-                <Duration {...default_props} />
+                <Duration />
             </TraderProviders>
         );
     };
@@ -127,7 +124,7 @@ describe('Duration', () => {
     });
 
     it('should display the market closed message when the market is closed', () => {
-        default_props.is_disabled = true;
+        default_trade_store.modules.trade.is_market_closed = true;
         mockDuration();
         expect(screen.getByText(/duration/i)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeDisabled();

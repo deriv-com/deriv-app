@@ -6,21 +6,20 @@ import TraderProviders from '../../../../../trader-providers';
 import MultipliersDealCancellationInfo from '../multipliers-deal-cancellation-info';
 
 describe('MultipliersDealCancellationInfo', () => {
-    let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_prop: React.ComponentProps<typeof MultipliersDealCancellationInfo>;
+    let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    currency: 'USD',
-                    has_cancellation: true,
-                    proposal_info: { MULTUP: { cancellation: { ask_price: 4 } } },
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        currency: 'USD',
+                        has_cancellation: true,
+                        proposal_info: { MULTUP: { cancellation: { ask_price: 4 } } },
+                    },
                 },
-            },
-        });
-        default_mock_prop = { is_disabled: false };
-    });
+            }))
+    );
 
     afterEach(() => jest.clearAllMocks());
 
@@ -28,7 +27,7 @@ describe('MultipliersDealCancellationInfo', () => {
         render(
             <TraderProviders store={default_mock_store}>
                 <ModulesProvider store={default_mock_store}>
-                    <MultipliersDealCancellationInfo {...default_mock_prop} />
+                    <MultipliersDealCancellationInfo />
                 </ModulesProvider>
             </TraderProviders>
         );
@@ -60,8 +59,8 @@ describe('MultipliersDealCancellationInfo', () => {
         expect(screen.getByText(/4.00 USD/)).toBeInTheDocument();
     });
 
-    it('applies specific className if is_disabled === true', () => {
-        default_mock_prop.is_disabled = true;
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
         mockMultipliersDealCancellationInfo();
 
         expect(screen.getByText('Deal cancellation fee')).toHaveClass('trade-params__text--disabled');

@@ -49,7 +49,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         validation_errors.duration.length > 0;
     const { activeSymbols } = useActiveSymbols();
     const isInitialMount = useRef(true);
-    const { common } = useStore();
+    const { common, client } = useStore();
+    const { is_logged_in } = client;
     const { server_time } = common;
 
     useEffect(() => {
@@ -99,6 +100,8 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
         return () => clearTimeout(start_duration);
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
 
+    const onClose = React.useCallback(() => setOpen(false), []);
+
     const getInputValues = () => {
         const formatted_date = end_date.toLocaleDateString('en-GB', {
             day: 'numeric',
@@ -125,10 +128,14 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             const error_obj = proposal_info[contract_type_object[0]] || validation_errors?.duration?.[0];
             if (error_obj?.error_field === 'duration') {
                 addSnackbar({
-                    message: <Localize i18n_default_text={error_obj.message} />,
+                    message: error_obj.message,
                     status: 'fail',
                     hasCloseButton: true,
-                    style: { marginBottom: '48px' },
+                    hasFixedHeight: false,
+                    style: {
+                        marginBottom: is_logged_in ? '48px' : '-8px',
+                        width: 'calc(100% - var(--core-spacing-800)',
+                    },
                 });
             }
         }
@@ -175,11 +182,10 @@ const Duration = observer(({ is_minimized }: TDurationProps) => {
             />
             <ActionSheet.Root
                 isOpen={is_open}
-                onClose={() => {
-                    setOpen(false);
-                }}
+                onClose={onClose}
                 position='left'
                 expandable={false}
+                shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <DurationActionSheetContainer

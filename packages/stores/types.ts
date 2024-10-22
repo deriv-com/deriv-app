@@ -24,6 +24,7 @@ import type {
     P2POrderListResponse,
     WebsiteStatus,
     GetSelfExclusion,
+    Statement,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -544,6 +545,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tin_skipped?: 0 | 1;
         tnc_status?: Record<string, number>;
         phone_number_verification?: {
             verified?: 0 | 1;
@@ -643,6 +645,7 @@ export type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
+    statement: Statement;
 };
 
 type TCommonStoreError = {
@@ -658,7 +661,7 @@ type TCommonStoreError = {
     type?: string;
 };
 
-type TCommonStoreServicesError = {
+export type TCommonStoreServicesError = {
     code?: string;
     message?: string;
     type?: string;
@@ -722,7 +725,6 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
-    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -853,8 +855,6 @@ type TUiStore = {
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
-    toggleAdditionalKycInfoModal: () => void;
-    toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;
@@ -865,6 +865,8 @@ type TUiStore = {
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    field_ref_to_focus: string | null; // field_ref_to_focus accepts a field identifier which will be focused
+    setFieldRefToFocus: (value: string | null) => void;
     setHashedValue: (value: string) => void;
     url_hashed_values: string;
     is_tnc_update_modal_open: boolean;
@@ -986,13 +988,11 @@ type TContractTradeStore = {
         epoch_array: [number];
     }>;
     onUnmount: () => void;
+    prev_chart_type: string;
     prev_contract: TContractStore | Record<string, never>;
+    prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
-    saveChartType: (chart_type: string) => void;
-    saved_chart_type: string;
-    saved_granularity: number | null;
-    saveGranularity: (granularity: number | null) => void;
-    setChartTypeAndGranularity: any;
+    savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean

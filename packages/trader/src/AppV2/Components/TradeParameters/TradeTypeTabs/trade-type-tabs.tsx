@@ -12,9 +12,20 @@ type TTradeTypeTabsProps = {
 const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
     const { contract_type, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
     const tab_list = getTradeTypeTabsList(contract_type);
-    const initial_index = tab_list.findIndex(tab =>
-        trade_type_tab ? tab.contract_type === trade_type_tab : tab.value === contract_type
-    );
+    let initial_index = 0;
+
+    // If the trade type tab is VANILLALONGPUT or TURBOSSHORT, keep the first tab
+    if (
+        !(
+            (trade_type_tab === 'VANILLALONGPUT' && contract_type === 'vanillalongcall') ||
+            (trade_type_tab === 'TURBOSSHORT' && contract_type === 'turboslong')
+        )
+    ) {
+        initial_index = tab_list.findIndex(tab =>
+            trade_type_tab ? tab.contract_type === trade_type_tab : tab.value === contract_type
+        );
+    }
+
     const initial_tab_index = initial_index < 0 ? 0 : initial_index;
     const [tab_index, setTabIndex] = React.useState(initial_tab_index);
 

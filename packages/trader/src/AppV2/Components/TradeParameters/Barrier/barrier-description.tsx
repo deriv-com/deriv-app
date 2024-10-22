@@ -8,7 +8,7 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
             {isDays ? (
                 <div className='content-section'>
                     <Text bold>
-                        <Localize i18n_default_text='Fixed price:' />
+                        <Localize i18n_default_text='Fixed barrier:' />
                     </Text>
                     <Text>
                         <Localize i18n_default_text='Barrier set at specific price.' />
@@ -34,7 +34,7 @@ const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
                     </div>
                     <div className='content-section'>
                         <Text bold>
-                            <Localize i18n_default_text='Fixed price:' />
+                            <Localize i18n_default_text='Fixed barrier:' />
                         </Text>
                         <Text>
                             <Localize i18n_default_text='Barrier set at specific price.' />

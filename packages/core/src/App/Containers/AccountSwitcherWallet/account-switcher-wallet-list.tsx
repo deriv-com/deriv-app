@@ -11,13 +11,13 @@ type TAccountSwitcherWalletListProps = {
 export const AccountSwitcherWalletList = ({ wallets, closeAccountsDialog }: TAccountSwitcherWalletListProps) => (
     <div className='account-switcher-wallet-list'>
         {wallets?.map(account => {
-            const show_badge = account?.is_virtual;
+            if (account.is_dtrader_account_disabled) return null;
             return (
                 <AccountSwitcherWalletItem
                     key={account.dtrade_loginid}
                     account={account}
                     closeAccountsDialog={closeAccountsDialog}
-                    show_badge={show_badge}
+                    show_badge={account?.is_virtual}
                 />
             );
         })}

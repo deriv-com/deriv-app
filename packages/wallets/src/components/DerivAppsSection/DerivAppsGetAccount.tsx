@@ -40,7 +40,6 @@ const DerivAppsGetAccount: React.FC = () => {
     const { data: balanceData } = useAllBalanceSubscription();
 
     const { localize } = useTranslations();
-
     const { data: isEuRegion } = useIsEuRegion();
 
     const createTradingAccount = async () => {
@@ -114,30 +113,36 @@ const DerivAppsGetAccount: React.FC = () => {
             <TradingAccountCard.Icon>
                 <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
             </TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <Text align='start' size='sm'>
-                    {isEuRegion ? (
-                        <Localize i18n_default_text='Multipliers' />
-                    ) : (
-                        <Localize i18n_default_text='Options' />
-                    )}
-                </Text>
-                <Text align='start' size='xs'>
-                    <Localize i18n_default_text='One options account for all platforms.' />
-                </Text>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
-                <Button
-                    borderWidth='sm'
-                    color='black'
-                    disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
-                    onClick={createTradingAccount}
-                    rounded='md'
-                    variant='outlined'
-                >
-                    <Localize i18n_default_text='Enable' />
-                </Button>
-            </TradingAccountCard.Button>
+            <TradingAccountCard.Section>
+                <TradingAccountCard.Content>
+                    <Text align='start' size='sm'>
+                        {isEuRegion ? (
+                            <Localize i18n_default_text='Multipliers' />
+                        ) : (
+                            <Localize i18n_default_text='Options' />
+                        )}
+                    </Text>
+                    <Text align='start' size='xs'>
+                        {isEuRegion ? (
+                            <Localize i18n_default_text='Expand your potential gains; risk only what you put in.' />
+                        ) : (
+                            <Localize i18n_default_text='One options account for all platforms.' />
+                        )}
+                    </Text>
+                </TradingAccountCard.Content>
+                <TradingAccountCard.Button>
+                    <Button
+                        borderWidth='sm'
+                        color='black'
+                        disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
+                        onClick={createTradingAccount}
+                        rounded='md'
+                        variant='outlined'
+                    >
+                        <Localize i18n_default_text='Enable' />
+                    </Button>
+                </TradingAccountCard.Button>
+            </TradingAccountCard.Section>
         </TradingAccountCard>
     );
 };

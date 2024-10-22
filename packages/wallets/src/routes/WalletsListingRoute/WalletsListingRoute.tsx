@@ -1,14 +1,14 @@
 import React, { lazy } from 'react';
-import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
     WalletsAddMoreCarousel,
     WalletsCardLoader,
+    WalletsDisclaimerBanner,
     WalletsResponsiveLoader,
     WalletTourGuide,
 } from '../../components';
-import { WalletsDisclaimerBanner } from '../../components/WalletsDisclaimerBanner';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
@@ -17,10 +17,13 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 
 const WalletsListingRoute: React.FC = () => {
     const { isDesktop } = useDevice();
+    const { data: wallets } = useWalletAccountsList();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
-    const { data: wallets, isLoading: isWalletsLoading } = useAllWalletAccounts();
-    const hasAddedWallet = wallets?.some(wallet => wallet.is_added);
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
+    const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
+    const hasAllRealWalletsDisabled = !hasAnyActiveRealWallets && (wallets?.length ?? 0) > 1;
+    const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
 
     return (
         <div className='wallets-listing-route'>
@@ -34,7 +37,10 @@ const WalletsListingRoute: React.FC = () => {
                     <LazyWalletsCarousel />
                 </React.Suspense>
             )}
-            {isWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet) ? null : (
+            {hasAllRealWalletsDisabled ||
+            isAllWalletsLoading ||
+            isEuRegionLoading ||
+            (isEuRegion && hasAddedWallet) ? null : (
                 <WalletsAddMoreCarousel />
             )}
             <ResetMT5PasswordHandler />

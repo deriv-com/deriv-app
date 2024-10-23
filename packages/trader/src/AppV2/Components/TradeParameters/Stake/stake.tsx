@@ -166,13 +166,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         const checkFocus = () => {
             const is_focused = !!(stake_element && stake_element.contains(document.activeElement));
             setIsFocused(is_focused);
-            if (is_focused)
-                setTimeout(() => {
-                    document.querySelector('.quill-action-sheet--portal')?.scrollTo({
-                        top: 80,
-                        behavior: 'smooth',
-                    });
-                }, 500);
         };
         document.addEventListener('focusin', checkFocus);
         document.addEventListener('focusout', checkFocus);
@@ -182,6 +175,23 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             document.removeEventListener('focusout', checkFocus);
         };
     });
+
+    React.useEffect(() => {
+        const resizeHandler = () => {
+            if (is_focused)
+                setTimeout(() => {
+                    document.querySelector('.quill-action-sheet--portal')?.scrollTo({
+                        top: 80,
+                        behavior: 'smooth',
+                    });
+                }, 500);
+        };
+        window.addEventListener('resize', resizeHandler);
+
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
+    }, []);
 
     React.useEffect(() => {
         if (is_open) {

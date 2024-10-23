@@ -1,7 +1,9 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from '../../../poa/poa-button';
+import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPOIStatus } from 'Types';
 
@@ -16,10 +18,12 @@ export const UploadComplete = ({
         ? localize('We’ll review your documents and notify you of its status within 1 - 3 working days.')
         : localize('We’ll review your documents and notify you of its status within 5 minutes.');
 
+    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
+
     if (!needs_poa) {
         return (
             <IconMessageContent message={message} text={description} icon={<Icon icon='IcPoiVerified' size={128} />}>
-                {!is_from_external && redirect_button}
+                {!is_from_external && (redirect_button || (!is_redirected_from_platform && <ContinueTradingButton />))}
             </IconMessageContent>
         );
     }

@@ -136,6 +136,7 @@ const CFDsListing = observer(() => {
             switch (current_acc_status) {
                 case 'proof_failed':
                 case 'poa_failed':
+                case 'poa_outdated':
                     return MT5_ACCOUNT_STATUS.FAILED;
                 case 'verification_pending':
                 case 'poa_pending':

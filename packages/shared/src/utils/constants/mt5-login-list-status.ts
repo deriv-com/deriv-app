@@ -9,6 +9,7 @@ export const MT5_ACCOUNT_STATUS = {
     PENDING: 'pending',
     POA_REQUIRED: 'poa_required',
     POA_PENDING: 'poa_pending',
+    POA_OUTDATED: 'poa_outdated',
     POA_VERIFIED: 'poa_verified',
     UNDER_MAINTENANCE: 'under_maintenance',
     UNAVAILABLE: 'unavailable',

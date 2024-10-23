@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
     mt5_account_status: TMT5AccountStatus,
-    openFailedVerificationModal?: (selected_account_type: any) => void,
-    selected_account_type?: any,
+    openFailedVerificationModal?: (selected_account_type: Record<string, unknown>) => void,
+    selected_account_type?: Record<string, unknown>,
     setIsVerificationModalVisible?: (value: boolean) => void,
     user_account_status?: { poi_status: TAuthStatusCodes; poa_status: TAuthStatusCodes }
 ) => {

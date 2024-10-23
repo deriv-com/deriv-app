@@ -48,6 +48,8 @@ const POISubmission = observer(
                 const { identity } = kyc_auth_status;
                 if (identity.available_services) {
                     setSubmissionService(identity.available_services[0]);
+                } else {
+                    setSubmissionService(service_code.manual);
                 }
                 setSubmissionStatus(submission_status_code.submitting);
             }

@@ -6,7 +6,11 @@ const isKeyboardInput = (elem: HTMLElement) =>
     elem.hasAttribute('contenteditable');
 
 const useIsOnScreenKeyboardOpen = () => {
-    const [isOpen, setOpen] = React.useState(false);
+    const [is_focus, setIsFocus] = React.useState(false);
+    const [is_open, setIsOpen] = React.useState(false);
+
+    const VIEWPORT_VS_CLIENT_HEIGHT_RATIO = 0.75;
+
     React.useEffect(() => {
         const handleFocusIn = (e: FocusEvent) => {
             if (!e.target) {
@@ -14,28 +18,36 @@ const useIsOnScreenKeyboardOpen = () => {
             }
             const target = e.target as HTMLElement;
             if (isKeyboardInput(target)) {
-                setOpen(true);
+                setIsFocus(true);
             }
         };
-        document.addEventListener('focusin', handleFocusIn);
         const handleFocusOut = (e: FocusEvent) => {
             if (!e.target) {
                 return;
             }
             const target = e.target as HTMLElement;
             if (isKeyboardInput(target)) {
-                setOpen(false);
+                setIsFocus(false);
             }
         };
+        const resizeHandler = (e: any) => {
+            if ((e.target.height * e.target.scale) / window.screen.height < VIEWPORT_VS_CLIENT_HEIGHT_RATIO) {
+                setIsOpen(true);
+            } else setIsOpen(false);
+        };
+
+        document.addEventListener('focusin', handleFocusIn);
         document.addEventListener('focusout', handleFocusOut);
+        window?.visualViewport?.addEventListener('resize', resizeHandler);
 
         return () => {
             document.removeEventListener('focusin', handleFocusIn);
             document.removeEventListener('focusout', handleFocusOut);
+            window?.visualViewport?.removeEventListener('resize', resizeHandler);
         };
     }, []);
 
-    return isOpen;
+    return is_focus && is_open;
 };
 
 export default useIsOnScreenKeyboardOpen;

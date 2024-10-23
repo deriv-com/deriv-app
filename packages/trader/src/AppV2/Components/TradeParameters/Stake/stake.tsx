@@ -9,6 +9,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { useDebounce } from '@deriv/components';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -175,17 +176,16 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             document.removeEventListener('focusout', checkFocus);
         };
     });
+    const resizeHandler = useDebounce(() => {
+        if (is_focused) {
+            document.querySelector('.quill-action-sheet--portal')?.scrollTo({
+                top: 80,
+                behavior: 'smooth',
+            });
+        }
+    }, 800);
 
     React.useEffect(() => {
-        const resizeHandler = () => {
-            if (is_focused)
-                setTimeout(() => {
-                    document.querySelector('.quill-action-sheet--portal')?.scrollTo({
-                        top: 80,
-                        behavior: 'smooth',
-                    });
-                }, 500);
-        };
         window.addEventListener('resize', resizeHandler);
 
         return () => {

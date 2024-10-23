@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces, isCryptocurrency } from '@deriv/shared';
@@ -20,6 +21,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         commission,
         contract_type,
         currency,
+        has_open_accu_contract,
         has_stop_loss,
         is_accumulator,
         is_multiplier,
@@ -27,21 +29,25 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_vanilla,
         onChange,
         proposal_info,
-        setV2ParamsInitialValues,
         setDefaultStake,
+        setV2ParamsInitialValues,
         stop_out,
+        symbol,
         trade_type_tab,
         trade_types,
-        symbol,
+        v2_params_initial_values,
         validation_errors,
         validation_params,
-        v2_params_initial_values,
     } = useTraderStore();
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
+    const [is_focused, setIsFocused] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
-    const input_ref = React.useRef<HTMLInputElement>(null);
+    const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -68,8 +74,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         error_field: error_field_2,
     } = proposal_info[contract_types[1]] ?? {};
     const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
-    const proposal_error_message_1 = has_error_1 && error_field_1 === 'amount' ? message_1 : '';
-    const proposal_error_message_2 = has_error_2 && error_field_2 === 'amount' ? message_2 : '';
+    const proposal_error_message_1 =
+        has_error_1 && (error_field_1 === 'amount' || error_field_1 === 'stake') ? message_1 : '';
+    const proposal_error_message_2 =
+        has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
     const proposal_error_message =
         proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
@@ -110,13 +118,16 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     });
 
     React.useEffect(() => {
-        if (stake_error && !is_minimized && !displayed_error.current && !is_open) {
+        if (stake_error && !is_minimized && !is_open) {
             displayed_error.current = true;
             addSnackbar({
                 message: <Localize i18n_default_text='Please adjust your stake.' />,
                 status: 'fail',
                 hasCloseButton: true,
-                style: { marginBottom: '48px' },
+                style: {
+                    marginBottom: is_logged_in ? '48px' : '-8px',
+                    width: 'calc(100% - var(--core-spacing-800)',
+                },
             });
         }
     }, [stake_error]);
@@ -137,16 +148,33 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     React.useEffect(() => {
         if (is_open && v2_params_initial_values.stake !== amount) {
             setV2ParamsInitialValues({ value: amount, name: 'stake' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
+
     React.useEffect(() => {
         if (basis !== 'stake') onChange({ target: { name: 'basis', value: 'stake' } });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [basis]);
+
+    React.useEffect(() => {
+        const stake_element = stake_ref.current;
+        const checkFocus = () => {
+            setIsFocused(!!(stake_element && stake_element.contains(document.activeElement)));
+        };
+        document.addEventListener('focusin', checkFocus);
+        document.addEventListener('focusout', checkFocus);
+
+        return () => {
+            document.removeEventListener('focusin', checkFocus);
+            document.removeEventListener('focusout', checkFocus);
+        };
+    });
+
     React.useEffect(() => {
         if (is_open) {
             if (
@@ -167,6 +195,14 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     }, [details, is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
 
+    React.useEffect(() => {
+        if (is_focused) {
+            if (!amount) {
+                setShouldShowError(false);
+            }
+        }
+    }, [is_focused, amount]);
+
     const getInputMessage = () =>
         (should_show_error && stake_error) ||
         (!!details.min_stake && !!details.max_stake && (
@@ -181,34 +217,37 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         ));
 
     const handleOnChange = (e: { target: { name: string; value: string } }) => {
-        if (stake_error) setShouldShowError(true);
+        setShouldShowError(!!e.target.value);
         onChange({ target: { name: 'amount', value: e.target.value } });
     };
 
-    const onClose = (is_saved = false) => {
-        if (is_open) {
-            if (!is_saved) {
-                onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
+    const onClose = React.useCallback(
+        (is_saved = false) => {
+            if (is_open) {
+                if (!is_saved) {
+                    onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
+                }
+                if (v2_params_initial_values.stake !== amount) {
+                    setV2ParamsInitialValues({ value: amount, name: 'stake' });
+                }
+                setIsOpen(false);
             }
-            if (v2_params_initial_values.stake !== amount) {
-                setV2ParamsInitialValues({ value: amount, name: 'stake' });
-            }
-            setIsOpen(false);
-        }
-    };
+        },
+        [v2_params_initial_values, is_open]
+    );
 
-    React.useEffect(() => {
-        const focusHandler = () => {
-            const input = input_ref.current;
-            const button = document.querySelector('#test_button');
-            if (input && input.contains(document.activeElement) && button) {
-                setTimeout(() => button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }), 100);
-            }
-        };
+    // React.useEffect(() => {
+    //     const focusHandler = () => {
+    //         const input = input_ref.current;
+    //         const button = document.querySelector('#test_button');
+    //         if (input && input.contains(document.activeElement) && button) {
+    //             setTimeout(() => button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }), 100);
+    //         }
+    //     };
 
-        document.addEventListener('focusin', focusHandler);
-        return () => document.removeEventListener('focusin', focusHandler);
-    }, []);
+    //     document.addEventListener('focusin', focusHandler);
+    //     return () => document.removeEventListener('focusin', focusHandler);
+    // }, []);
 
     return (
         <>
@@ -221,32 +260,40 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
+                disabled={has_open_accu_contract}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => onClose(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>
                         <TextFieldWithSteppers
                             allowDecimals
                             allowSign={false}
-                            customType='commaRemoval'
                             className='text-field--custom'
-                            decimals={getDecimalPlaces(currency)}
+                            customType='commaRemoval'
                             data-testid='dt_input_with_steppers'
+                            decimals={getDecimalPlaces(currency)}
+                            inputMode='decimal'
                             message={getInputMessage()}
                             minusDisabled={Number(amount) - 1 <= 0}
                             name='amount'
                             noStatusIcon
                             onChange={handleOnChange}
                             placeholder={localize('Amount')}
+                            ref={stake_ref}
                             regex={/[^0-9.,]/g}
                             status={should_show_error && stake_error ? 'error' : 'neutral'}
                             textAlignment='center'
-                            inputMode='decimal'
                             unitLeft={getCurrencyDisplayCode(currency)}
-                            variant='fill'
                             value={amount}
-                            ref={input_ref}
+                            // ref={input_ref}
+                            variant='fill'
                         />
                         <StakeDetails
                             commission={commission}
@@ -269,7 +316,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         primaryAction={{
                             content: <Localize i18n_default_text='Save' />,
                             onAction: () => {
-                                if (!stake_error && !is_loading_proposal) {
+                                if (!stake_error) {
                                     onClose(true);
                                 } else {
                                     setShouldShowError(true);

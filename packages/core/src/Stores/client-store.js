@@ -1480,10 +1480,6 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnboarding key after page refresh
-        /** will be removed later when header for the wallets is created) */
-        localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');

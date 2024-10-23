@@ -65,6 +65,7 @@ const EmploymentTaxInfo = observer(
             is_duplicate_account:
                 client.account_settings.immutable_fields?.includes('tax_identification_number') ||
                 client.account_settings.immutable_fields?.includes('tax_residence'),
+            has_regulated_mt5: true, // Overide the value to true as we need to make Employment stataus mandatory for Real account creation
         });
 
         const handleCancel = (values: FormikValues) => {

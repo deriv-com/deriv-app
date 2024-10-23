@@ -513,6 +513,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setIsWalletsOnboardingTourGuideVisible: jest.fn(),
         },
         traders_hub: {
+            regulated_mt5_accounts: [],
             getAccount: jest.fn(),
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],

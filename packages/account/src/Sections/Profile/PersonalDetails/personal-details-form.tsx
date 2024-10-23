@@ -69,6 +69,7 @@ const PersonalDetailsForm = observer(() => {
         client,
         ui,
         notifications,
+        traders_hub: { regulated_mt5_accounts },
         common: { is_language_changing },
     } = useStore();
     const { is_phone_number_verified } = useIsPhoneNumberVerified();
@@ -305,7 +306,8 @@ const PersonalDetailsForm = observer(() => {
         is_svg,
         tin_validation_config,
         is_tin_auto_set,
-        account_settings?.immutable_fields
+        account_settings?.immutable_fields,
+        regulated_mt5_accounts?.length > 0
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {

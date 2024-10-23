@@ -340,6 +340,7 @@ export type TEmployeeDetailsTinValidationConfig = {
     is_real?: boolean;
     is_tin_auto_set?: boolean;
     is_duplicate_account?: boolean;
+    has_regulated_mt5?: boolean;
 };
 
 type ReqRule = ['req', React.ReactNode];

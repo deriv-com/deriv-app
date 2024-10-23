@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
@@ -45,8 +45,14 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
 
-    const walletAccountsList = walletAccountsListData?.filter(wallet => !wallet.is_disabled);
-    const disabledWallets = walletAccountsListData?.filter(wallet => wallet.is_disabled) ?? [];
+    const walletAccountsList = useMemo(
+        () => walletAccountsListData?.filter(wallet => !wallet.is_disabled),
+        [walletAccountsListData]
+    );
+    const disabledWallets = useMemo(
+        () => walletAccountsListData?.filter(wallet => wallet.is_disabled) ?? [],
+        [walletAccountsListData]
+    );
 
     // for the embla "on select" callback
     // to avoid unbinding / cleaning etc, just let it use up-to-date list

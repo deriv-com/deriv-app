@@ -30,9 +30,7 @@ const useSortedMT5Accounts = (regulation?: string) => {
 
         const available_accounts = filtered_available_accounts.filter(available => {
             return (
-                !filtered_mt5_accounts.find(
-                    added => added.product === available.product && added.landing_company_short === available.shortcode
-                ) &&
+                !filtered_mt5_accounts.find(added => added.product === available.product) &&
                 // @ts-expect-error type for is_default_jurisdiction is unavailable in mt5_login_list and trading_platform_available_accounts
                 available.is_default_jurisdiction === 'true' &&
                 /* 

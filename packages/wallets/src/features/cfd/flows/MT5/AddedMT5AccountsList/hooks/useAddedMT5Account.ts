@@ -13,8 +13,10 @@ const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariation
         case MT5_ACCOUNT_STATUS.PROOF_FAILED:
             return 'failed';
         case MT5_ACCOUNT_STATUS.VERIFICATION_PENDING:
+        case MT5_ACCOUNT_STATUS.POA_PENDING:
             return 'in_review';
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.POA_REQUIRED:
             return 'needs_verification';
         default:
     }

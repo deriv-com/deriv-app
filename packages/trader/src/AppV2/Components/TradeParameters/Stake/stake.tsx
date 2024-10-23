@@ -9,6 +9,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import useIsOnScreenKeyboardOpen from './keybord-hook';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -48,6 +49,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
+    const isOpen = useIsOnScreenKeyboardOpen();
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -133,6 +135,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     }, [stake_error]);
 
     React.useEffect(() => {
+        if (isOpen) {
+            const button = document.querySelector('#test_button');
+            button?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        }
+    }, [isOpen]);
+
+    React.useEffect(() => {
         displayed_error.current = false;
     }, [contract_type, symbol]);
 
@@ -164,8 +173,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         const stake_element = stake_ref.current;
         const checkFocus = () => {
-            const is_focused = !!(stake_element && stake_element.contains(document.activeElement));
-            setIsFocused(is_focused);
+            setIsFocused(!!(stake_element && stake_element.contains(document.activeElement)));
         };
         document.addEventListener('focusin', checkFocus);
         document.addEventListener('focusout', checkFocus);
@@ -269,7 +277,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 position='left'
                 expandable={false}
                 shouldBlurOnClose={is_open}
-                className={is_focused ? 'test' : undefined}
+                // className={is_focused ? 'test' : undefined}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />

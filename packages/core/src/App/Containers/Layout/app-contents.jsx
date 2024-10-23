@@ -4,17 +4,9 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
-import {
-    CookieStorage,
-    TRACKING_STATUS_KEY,
-    platforms,
-    routes,
-    WS,
-    isDTraderV2,
-    isDTraderV2Width,
-} from '@deriv/shared';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { useDtraderV2Flag } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
 
@@ -49,19 +41,7 @@ const AppContents = observer(({ children }) => {
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
 
-    const [dtrader_v2_enabled_gb] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_enabled',
-        defaultValue: false,
-    });
-    const [dtrader_v2_enabled, setDTraderV2Enabled] = React.useState(false);
-
-    React.useEffect(() => {
-        setDTraderV2Enabled(
-            (isDTraderV2() || (Boolean(dtrader_v2_enabled_gb) && isDTraderV2Width())) &&
-                (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'))
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dtrader_v2_enabled_gb]);
+    const { dtrader_v2_enabled } = useDtraderV2Flag();
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

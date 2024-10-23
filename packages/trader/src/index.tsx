@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-    getPositionsV2TabIndexFromURL,
-    isDTraderV2,
-    isDTraderV2Width,
-    makeLazyLoader,
-    moduleLoader,
-    routes,
-} from '@deriv/shared';
+import { getPositionsV2TabIndexFromURL, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { Loading } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { TCoreStores } from '@deriv/stores/types';
 import { TWebSocket } from 'Types';
+import { useDtraderV2Flag } from '@deriv/hooks';
 
 type Apptypes = {
     passthrough: {
@@ -37,13 +30,10 @@ const AppV2Loader = makeLazyLoader(
 )() as React.ComponentType<Apptypes>;
 
 const App = ({ passthrough }: Apptypes) => {
-    const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_enabled',
-    });
-    return (isDTraderV2() || dtrader_v2_enabled) && isDTraderV2Width() ? (
-        <AppV2Loader passthrough={passthrough} />
-    ) : (
-        <AppLoader passthrough={passthrough} />
-    );
+    const { dtrader_v2_enabled, load_dtrader_module } = useDtraderV2Flag();
+    if (load_dtrader_module) {
+        return dtrader_v2_enabled ? <AppV2Loader passthrough={passthrough} /> : <AppLoader passthrough={passthrough} />;
+    }
+    return <Loading />;
 };
 export default App;

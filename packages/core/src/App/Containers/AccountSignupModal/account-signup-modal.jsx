@@ -59,6 +59,7 @@ const AccountSignup = ({
         // eslint-disable-next-line no-console
         cacheTrackEvents.pageLoadEvent([
             {
+                pages: 'onboarding',
                 event: {
                     name: 'ce_virtual_signup_form',
                     properties: {
@@ -73,6 +74,7 @@ const AccountSignup = ({
 
         cacheTrackEvents.pageLoadEvent([
             {
+                pages: 'onboarding',
                 event: {
                     name: 'ce_virtual_signup_form',
                     properties: {

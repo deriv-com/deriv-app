@@ -138,8 +138,10 @@ const CFDsListing = observer(() => {
                 case 'poa_failed':
                     return MT5_ACCOUNT_STATUS.FAILED;
                 case 'verification_pending':
+                case 'poa_pending':
                     return MT5_ACCOUNT_STATUS.PENDING;
                 case 'needs_verification':
+                case 'poa_required':
                     return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
                 case 'migrated_with_position':
                     return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;

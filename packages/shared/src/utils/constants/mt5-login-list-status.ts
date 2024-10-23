@@ -7,6 +7,7 @@ export const MT5_ACCOUNT_STATUS = {
     MIGRATED_WITHOUT_POSITION: 'migrated_without_position',
     NEEDS_VERIFICATION: 'needs_verification',
     PENDING: 'pending',
+    POA_REQUIRED: 'poa_required',
     POA_PENDING: 'poa_pending',
     POA_VERIFIED: 'poa_verified',
     UNDER_MAINTENANCE: 'under_maintenance',

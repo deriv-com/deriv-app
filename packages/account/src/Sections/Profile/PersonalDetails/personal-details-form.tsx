@@ -41,6 +41,7 @@ import {
     usePhoneNumberVerificationSetTimer,
     useIsPhoneNumberVerified,
     useTinValidations,
+    useGetPhoneNumberList,
 } from '@deriv/hooks';
 import './personal-details-form.scss';
 
@@ -89,6 +90,8 @@ const PersonalDetailsForm = observer(() => {
     const { field_ref_to_focus, setFieldRefToFocus } = ui;
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
+
+    const { formatted_countries_list_for_core } = useGetPhoneNumberList();
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
@@ -482,6 +485,15 @@ const PersonalDetailsForm = observer(() => {
                                     <Fragment>
                                         <fieldset className='account-form__fieldset'>
                                             <div className='account-form__fieldset--phone_container'>
+                                                <FormSelectField
+                                                    label={localize('Code*')}
+                                                    name='code'
+                                                    list_items={formatted_countries_list_for_core}
+                                                    onItemSelection={country_list => {
+                                                        setFieldValue('code', country_list.value, true);
+                                                    }}
+                                                    disabled={isFieldDisabled('code')}
+                                                />
                                                 <div className='account-form__fieldset--phone_input'>
                                                     <Input
                                                         data-lpignore='true'

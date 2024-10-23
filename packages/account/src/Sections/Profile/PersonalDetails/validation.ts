@@ -28,6 +28,7 @@ export const getPersonalDetailsInitialValues = (
         address_line_2: account_settings.address_line_2 ?? '',
         address_postcode: account_settings.address_postcode ?? '',
         address_state: '',
+        code: '+60',
         date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,

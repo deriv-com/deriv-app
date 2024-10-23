@@ -176,7 +176,7 @@ const SelectNative = ({
                                 <SelectNativeOptions
                                     list_items={list_items}
                                     should_hide_disabled_options={should_hide_disabled_options}
-                                    use_text={use_text}
+                                    use_text={use_text && label !== 'Code*'}
                                 />
                             </React.Fragment>
                         ) : (

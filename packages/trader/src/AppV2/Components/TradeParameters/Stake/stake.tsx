@@ -164,7 +164,13 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         const stake_element = stake_ref.current;
         const checkFocus = () => {
-            setIsFocused(!!(stake_element && stake_element.contains(document.activeElement)));
+            const is_focused = !!(stake_element && stake_element.contains(document.activeElement));
+            setIsFocused(is_focused);
+            if (is_focused)
+                document.querySelector('.quill-action-sheet--portal')?.scrollTo({
+                    top: 80,
+                    behavior: 'smooth',
+                });
         };
         document.addEventListener('focusin', checkFocus);
         document.addEventListener('focusout', checkFocus);

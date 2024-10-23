@@ -10,9 +10,7 @@ import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
 import {
     POIProvider,
-    getPositionsV2TabIndexFromURL,
     initFormErrorMessages,
-    routes,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
@@ -20,7 +18,6 @@ import {
 } from '@deriv/shared';
 import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
-import { useDtraderV2Flag } from '@deriv/hooks';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
@@ -48,8 +45,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
     const language = preferred_language ?? getInitialLanguage();
-
-    const { dtrader_v2_enabled } = useDtraderV2Flag();
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
@@ -90,22 +85,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
-    const getLoader = () =>
-        dtrader_v2_enabled ? (
-            <Loading.DTraderV2
-                initial_app_loading
-                is_contract_details={location.pathname.startsWith('/contract/')}
-                is_positions={location.pathname === routes.trader_positions}
-                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
-            />
-        ) : (
-            <Loading />
-        );
-
     React.useEffect(() => {
         const html = document?.querySelector('html');
 
-        if (!html || !dtrader_v2_enabled) return;
+        if (!html) return;
         if (is_dark_mode) {
             html.classList?.remove('light');
             html.classList?.add('dark');
@@ -127,7 +110,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
                                             {/* This is required as translation provider uses suspense to reload language */}
-                                            <React.Suspense fallback={getLoader()}>
+                                            <React.Suspense fallback={<Loading />}>
                                                 <AppContent passthrough={platform_passthrough} />
                                             </React.Suspense>
                                         </TranslationProvider>

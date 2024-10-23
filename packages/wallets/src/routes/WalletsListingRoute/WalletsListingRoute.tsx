@@ -7,7 +7,6 @@ import {
     WalletsCardLoader,
     WalletsDisclaimerBanner,
     WalletsResponsiveLoader,
-    WalletTourGuide,
 } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
@@ -44,7 +43,6 @@ const WalletsListingRoute: React.FC = () => {
                 <WalletsAddMoreCarousel />
             )}
             <ResetMT5PasswordHandler />
-            <WalletTourGuide />
             {isEuRegion && !activeWallet?.is_virtual && <WalletsDisclaimerBanner />}
         </div>
     );

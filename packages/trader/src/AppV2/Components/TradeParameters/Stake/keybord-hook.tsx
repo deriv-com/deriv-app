@@ -17,8 +17,15 @@ const useIsOnScreenKeyboardOpen = () => {
                 return;
             }
             const target = e.target as HTMLElement;
-            if (isKeyboardInput(target)) {
+            if (isKeyboardInput(target) && target.id === 'stake_input') {
                 setIsFocus(true);
+                setTimeout(
+                    () =>
+                        document
+                            .querySelector('#test_button')
+                            ?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }),
+                    800
+                );
             }
         };
         const handleFocusOut = (e: FocusEvent) => {

@@ -49,6 +49,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
+    const test = useIsOnScreenKeyboardOpen();
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -133,25 +134,25 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     }, [stake_error]);
 
-    const button = document.querySelector('#test_button');
+    // const button = document.querySelector('#test_button');
     React.useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5,
-        };
+        // const options = {
+        //     root: null,
+        //     rootMargin: '0px',
+        //     threshold: 0,
+        // };
 
-        const observer = new IntersectionObserver(([entry]) => {
-            if (!entry.isIntersecting && is_open) {
-                button?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-            }
-        }, options);
+        // const observer = new IntersectionObserver(([entry]) => {
+        //     if (!entry.isIntersecting && is_open) {
+        document.querySelector('#test_button')?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        //     }
+        // }, options);
 
-        if (button) observer.observe(button);
-        return () => {
-            if (button) observer.unobserve(button);
-        };
-    }, [button, is_open]);
+        // if (button) observer.observe(button);
+        // return () => {
+        //     if (button) observer.unobserve(button);
+        // };
+    }, [test]);
 
     React.useEffect(() => {
         displayed_error.current = false;
@@ -257,19 +258,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         [v2_params_initial_values, is_open]
     );
 
-    // React.useEffect(() => {
-    //     const focusHandler = () => {
-    //         const input = input_ref.current;
-    //         const button = document.querySelector('#test_button');
-    //         if (input && input.contains(document.activeElement) && button) {
-    //             setTimeout(() => button.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }), 100);
-    //         }
-    //     };
-
-    //     document.addEventListener('focusin', focusHandler);
-    //     return () => document.removeEventListener('focusin', focusHandler);
-    // }, []);
-
     return (
         <>
             <TextField
@@ -314,7 +302,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
-                            // ref={input_ref}
+                            id='stake_input'
                             variant='fill'
                         />
                         <StakeDetails

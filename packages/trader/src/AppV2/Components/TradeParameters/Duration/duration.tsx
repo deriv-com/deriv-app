@@ -45,11 +45,16 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             proposal_info[contract_type_object[0]]?.error_field === 'duration') ||
         validation_errors.duration.length > 0;
     const isInitialMount = useRef(true);
-    const { common } = useStore();
+    const { common, client } = useStore();
+    const { is_logged_in } = client;
     const { server_time } = common;
 
     useEffect(() => {
-        setExpiryTimeString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8));
+        if (expiry_epoch) {
+            setExpiryTimeString(
+                new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
+            );
+        }
     }, [expiry_epoch]);
 
     useEffect(() => {
@@ -81,16 +86,10 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                 expiry_type: 'duration',
             });
         }, 10);
+
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
-        const are_dates_equal =
-            new Date(start_date).getDate() === end_date.getDate() &&
-            new Date(start_date).getMonth() === end_date.getMonth() &&
-            new Date(start_date).getFullYear() === end_date.getFullYear();
-
-        if (!are_dates_equal) {
-            setEndDate(new Date(start_date));
-        }
+        setEndDate(new Date(start_date));
 
         return () => clearTimeout(start_duration);
     }, [symbol, contract_type, duration_min_max, duration_units_list]);
@@ -123,10 +122,14 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             const error_obj = proposal_info[contract_type_object[0]] || validation_errors?.duration?.[0];
             if (error_obj?.error_field === 'duration') {
                 addSnackbar({
-                    message: <Localize i18n_default_text={error_obj.message} />,
+                    message: error_obj.message,
                     status: 'fail',
                     hasCloseButton: true,
-                    style: { marginBottom: '48px' },
+                    hasFixedHeight: false,
+                    style: {
+                        marginBottom: is_logged_in ? '48px' : '-8px',
+                        width: 'calc(100% - var(--core-spacing-800)',
+                    },
                 });
             }
         }

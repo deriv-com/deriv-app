@@ -30,14 +30,13 @@ const getTradingTimes = async (target_time: TradingTimesRequest['trading_times']
 const ClosedMarketMessage = observer(() => {
     const { common } = useStore();
     const { current_language } = common;
-    const { symbol, prepareTradeStore } = useTraderStore();
+    const { symbol, prepareTradeStore, is_market_closed } = useTraderStore();
     const { activeSymbols } = useActiveSymbols();
 
     const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState<TWhenMarketOpens>({} as TWhenMarketOpens);
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
     const [is_loading, setLoading] = React.useState(true);
-    const is_market_closed = isMarketClosed(activeSymbols, symbol);
 
     React.useEffect(() => {
         if (is_market_closed) {

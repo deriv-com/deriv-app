@@ -9,7 +9,6 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
-import { useDebounce } from '@deriv/components';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -176,22 +175,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             document.removeEventListener('focusout', checkFocus);
         };
     });
-    const resizeHandler = useDebounce(() => {
-        if (is_focused) {
-            document.querySelector('.quill-action-sheet--portal')?.scrollTo({
-                top: 80,
-                behavior: 'smooth',
-            });
-        }
-    }, 800);
-
-    React.useEffect(() => {
-        window.addEventListener('resize', resizeHandler);
-
-        return () => {
-            window.removeEventListener('resize', resizeHandler);
-        };
-    }, []);
 
     React.useEffect(() => {
         if (is_open) {
@@ -286,6 +269,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 position='left'
                 expandable={false}
                 shouldBlurOnClose={is_open}
+                className={is_focused ? 'test' : undefined}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />

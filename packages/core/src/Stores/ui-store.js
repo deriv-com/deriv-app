@@ -85,6 +85,9 @@ export default class UIStore extends BaseStore {
     deposit_real_account_signup_target = undefined;
     has_real_account_signup_ended = false;
 
+    // wallets onboarding tour guide
+    is_wallets_onboarding_tour_guide_visible = false;
+
     // verification modal
     is_verification_modal_visible = false;
 
@@ -293,6 +296,7 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_verification_modal_visible: observable,
+            is_wallets_onboarding_tour_guide_visible: observable,
             is_verification_submitted: observable,
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
@@ -390,6 +394,7 @@ export default class UIStore extends BaseStore {
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
             setIsTradingAssessmentForNewUserEnabled: action.bound,
+            setIsWalletsOnboardingTourGuideVisible: action.bound,
             setManageRealAccountActiveTabIndex: action.bound,
             setModalIndex: action.bound,
             setPromptHandler: action.bound,
@@ -984,6 +989,10 @@ export default class UIStore extends BaseStore {
 
     setIsFromSuccessDepositModal(value) {
         this.is_from_success_deposit_modal = value;
+    }
+
+    setIsWalletsOnboardingTourGuideVisible(value) {
+        this.is_wallets_onboarding_tour_guide_visible = value;
     }
 
     setIsMFVericationPendingModal(value) {

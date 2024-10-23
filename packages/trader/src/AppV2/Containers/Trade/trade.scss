@@ -45,6 +45,7 @@
         }
     }
     &__chart {
+        direction: ltr;
         border-top-left-radius: var(--core-borderRadius-400);
         border-top-right-radius: var(--core-borderRadius-400);
         overflow: hidden;

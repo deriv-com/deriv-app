@@ -9,6 +9,7 @@ import Unsupported from '../../../Components/poi/status/unsupported';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
+import { useKycAuthStatusMocked } from '../../../hooks';
 
 const POISubmission = observer(
     ({
@@ -38,23 +39,15 @@ const POISubmission = observer(
         const { client, notifications } = useStore();
 
         const { account_settings, getChangeableFields, account_status } = client;
+        const { kyc_auth_status } = useKycAuthStatusMocked();
         const { refreshNotifications } = notifications;
         const is_high_risk = account_status.risk_classification === 'high';
 
-        const handleSelectionNext = (should_show_manual = false) => {
+        const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
-                const { submissions_left: idv_submissions_left } = idv;
-                const { submissions_left: onfido_submissions_left } = onfido;
-                const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
-                const is_onfido_supported =
-                    selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
-
-                if (!should_show_manual && is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
-                    setSubmissionService(service_code.idv);
-                } else if (!should_show_manual && Number(onfido_submissions_left) > 0 && is_onfido_supported) {
-                    setSubmissionService(service_code.onfido);
-                } else {
-                    setSubmissionService(service_code.manual);
+                const { identity } = kyc_auth_status;
+                if (identity.available_services) {
+                    setSubmissionService(identity.available_services[0]);
                 }
                 setSubmissionStatus(submission_status_code.submitting);
             }

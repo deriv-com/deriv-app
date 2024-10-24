@@ -196,8 +196,10 @@ export const MT5_ACCOUNT_STATUS = {
 
     // eslint-disable-next-line sort-keys
     NEEDS_VERIFICATION: 'needs_verification',
-    POA_PENDING: 'poa_pending',
+    POA_REQUIRED: 'poa_required',
+
     // eslint-disable-next-line sort-keys
+    POA_PENDING: 'poa_pending',
     VERIFICATION_PENDING: 'verification_pending',
     // eslint-disable-next-line sort-keys
     POA_VERIFIED: 'poa_verified',

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { THooks } from '../../../../../../types';
+import type { THooks } from '../../../../../../types';
 import { ClientVerificationStatusBadge } from '../../../../components';
 import {
-    CFD_PLATFORMS,
     DISABLED_PLATFORM_STATUSES,
     getMarketTypeDetails,
     MARKET_TYPE,
@@ -23,8 +22,10 @@ const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariation
         case MT5_ACCOUNT_STATUS.PROOF_FAILED:
             return 'failed';
         case MT5_ACCOUNT_STATUS.VERIFICATION_PENDING:
+        case MT5_ACCOUNT_STATUS.POA_PENDING:
             return 'in_review';
         case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.POA_REQUIRED:
             return 'needs_verification';
         default:
     }

@@ -10,7 +10,6 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import useIsOnScreenKeyboardOpen from './keybord-hook';
-import Carousel from 'AppV2/Components/Carousel';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -52,7 +51,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
     const input_id = 'stake_input';
-    // const should_scroll = useIsOnScreenKeyboardOpen(input_id);
+    const should_scroll = useIsOnScreenKeyboardOpen(input_id);
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -137,9 +136,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     }, [stake_error]);
 
-    // React.useEffect(() => {
-    //     window?.scrollTo({ top: 220, behavior: 'smooth' });
-    // }, [should_scroll]);
+    React.useEffect(() => {
+        window?.scrollTo({ top: 220, behavior: 'smooth' });
+    }, [should_scroll]);
 
     React.useEffect(() => {
         displayed_error.current = false;
@@ -244,11 +243,29 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         },
         [v2_params_initial_values, is_open]
     );
-    const barrier_carousel_pages = [
-        {
-            id: 1,
-            component: (
-                <React.Fragment>
+
+    return (
+        <>
+            <TextField
+                variant='fill'
+                readOnly
+                label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
+                noStatusIcon
+                onClick={() => setIsOpen(true)}
+                value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
+                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                status={stake_error && !is_open ? 'error' : undefined}
+                disabled={has_open_accu_contract}
+            />
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+                className='test'
+            >
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>
                         <TextFieldWithSteppers
@@ -304,34 +321,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                         }}
                         id='test_button'
                     />
-                </React.Fragment>
-            ),
-        },
-    ];
-
-    return (
-        <>
-            <TextField
-                variant='fill'
-                readOnly
-                label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
-                noStatusIcon
-                onClick={() => setIsOpen(true)}
-                value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                status={stake_error && !is_open ? 'error' : undefined}
-                disabled={has_open_accu_contract}
-            />
-            <ActionSheet.Root
-                isOpen={is_open}
-                onClose={onClose}
-                position='left'
-                expandable={false}
-                shouldBlurOnClose={is_open}
-                className='test'
-            >
-                <ActionSheet.Portal shouldCloseOnDrag>
-                    <Carousel title={<Localize i18n_default_text='Barrier' />} pages={barrier_carousel_pages} />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
         </>

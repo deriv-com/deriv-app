@@ -8,15 +8,15 @@ const isKeyboardInput = (elem: HTMLElement, target_id: string) =>
         !['button', 'submit', 'checkbox', 'file', 'image'].includes((elem as HTMLInputElement).type)) ||
         elem.hasAttribute('contenteditable'));
 
-const isVisibleInViewport = (elem: HTMLElement) => {
-    const rect = elem.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-};
+// const isVisibleInViewport = (elem: HTMLElement) => {
+//     const rect = elem.getBoundingClientRect();
+//     return (
+//         rect.top >= 0 &&
+//         rect.left >= 0 &&
+//         rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+//         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+//     );
+// };
 
 const useIsOnScreenKeyboardOpen = (target_id: string) => {
     const [is_focus, setIsFocus] = React.useState(false);
@@ -37,9 +37,8 @@ const useIsOnScreenKeyboardOpen = (target_id: string) => {
             const target = e.target as TWindow;
             if (!target || !target?.height || !target?.scale) return;
             const has_keyboard_changed_viewport = (target.height * target.scale) / window.screen.height < RATIO;
-            const is_visible = isVisibleInViewport(document.querySelector('#test_button') as HTMLElement);
 
-            setIsOpen(has_keyboard_changed_viewport && !is_visible);
+            setIsOpen(has_keyboard_changed_viewport);
         };
 
         document.addEventListener('focusin', handleFocus);

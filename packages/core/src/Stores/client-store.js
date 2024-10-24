@@ -146,7 +146,6 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
-    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -236,7 +235,6 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
-            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -366,6 +364,7 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
+            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             setIsClientStoreInitialized: action.bound,
             cleanUp: action.bound,
@@ -1483,10 +1482,6 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnboarding key after page refresh
-        /** will be removed later when header for the wallets is created) */
-        localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -2024,6 +2019,15 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    async updateMT5AccountDetails() {
+        if (this.is_logged_in) {
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized
+                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
+                .then(this.responseTradingPlatformAvailableAccounts);
+        }
+    }
+
     setInitialized(is_initialized) {
         this.initialized_broadcast = is_initialized;
     }
@@ -2475,6 +2479,7 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
+
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({

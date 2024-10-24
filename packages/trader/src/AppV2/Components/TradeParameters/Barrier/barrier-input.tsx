@@ -13,7 +13,7 @@ const chips_options = [
         name: <Localize i18n_default_text='Below spot' />,
     },
     {
-        name: <Localize i18n_default_text='Fixed price' />,
+        name: <Localize i18n_default_text='Fixed barrier' />,
     },
 ];
 const BarrierInput = observer(
@@ -28,6 +28,13 @@ const BarrierInput = observer(
     }) => {
         const { barrier_1, onChange, validation_errors, tick_data, setV2ParamsInitialValues } = useTraderStore();
         const [option, setOption] = React.useState(0);
+        const [should_show_error, setShouldShowError] = React.useState(false);
+        const [is_focused, setIsFocused] = React.useState(false);
+        const { pip_size } = tick_data ?? {};
+        const barrier_ref = React.useRef<HTMLInputElement | null>(null);
+        const show_hidden_error =
+            validation_errors?.barrier_1.length > 0 &&
+            ((barrier_1 && !['+', '-'].includes(barrier_1)) || should_show_error);
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
@@ -39,7 +46,28 @@ const BarrierInput = observer(
             } else {
                 setOption(2);
             }
+            onChange({ target: { name: 'barrier_1', value: barrier_1 } });
         }, []);
+
+        React.useEffect(() => {
+            const barrier_element = barrier_ref.current;
+            const checkFocus = () => {
+                setIsFocused(!!(barrier_element && barrier_element.contains(document.activeElement)));
+            };
+            document.addEventListener('focusin', checkFocus);
+            document.addEventListener('focusout', checkFocus);
+
+            return () => {
+                document.removeEventListener('focusin', checkFocus);
+                document.removeEventListener('focusout', checkFocus);
+            };
+        });
+
+        React.useEffect(() => {
+            if (is_focused) {
+                setShouldShowError(false);
+            }
+        }, [is_focused]);
 
         const handleChipSelect = (index: number) => {
             setOption(index);
@@ -57,7 +85,6 @@ const BarrierInput = observer(
                 newValue = `0${newValue}`;
             }
 
-            setV2ParamsInitialValues({ name: 'barrier_1', value: newValue });
             onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 
@@ -93,21 +120,19 @@ const BarrierInput = observer(
                                     customType='commaRemoval'
                                     name='barrier_1'
                                     noStatusIcon
-                                    status={
-                                        validation_errors?.barrier_1.length > 0 && barrier_1 !== ''
-                                            ? 'error'
-                                            : 'neutral'
-                                    }
+                                    status={show_hidden_error ? 'error' : 'neutral'}
                                     value={barrier_1}
                                     allowDecimals
+                                    decimals={pip_size}
                                     allowSign={false}
                                     inputMode='decimal'
                                     regex={/[^0-9.,]/g}
                                     textAlignment='center'
                                     onChange={handleOnChange}
-                                    placeholder={localize('Distance to spot')}
+                                    placeholder={localize('Price')}
                                     variant='fill'
-                                    message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
+                                    message={show_hidden_error ? validation_errors?.barrier_1[0] : ''}
+                                    ref={barrier_ref}
                                 />
                             ) : (
                                 <TextFieldAddon
@@ -116,23 +141,21 @@ const BarrierInput = observer(
                                     name='barrier_1'
                                     noStatusIcon
                                     addonLabel={option == 0 ? '+' : '-'}
+                                    decimals={pip_size}
                                     value={barrier_1.replace(/[+-]/g, '')}
                                     allowDecimals
                                     inputMode='decimal'
                                     allowSign={false}
-                                    status={
-                                        validation_errors?.barrier_1.length > 0 && barrier_1 !== ''
-                                            ? 'error'
-                                            : 'neutral'
-                                    }
+                                    status={show_hidden_error ? 'error' : 'neutral'}
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
                                     regex={/[^0-9.,]/g}
                                     variant='fill'
-                                    message={barrier_1 !== '' ? validation_errors?.barrier_1[0] : ''}
+                                    message={show_hidden_error ? validation_errors?.barrier_1[0] : ''}
+                                    ref={barrier_ref}
                                 />
                             )}
-                            {(validation_errors?.barrier_1.length == 0 || barrier_1 === '') && (
+                            {(validation_errors?.barrier_1.length == 0 || !show_hidden_error) && (
                                 <div className='barrier-params__error-area' />
                             )}
                         </div>
@@ -152,6 +175,8 @@ const BarrierInput = observer(
                         onAction: () => {
                             if (validation_errors.barrier_1.length === 0) {
                                 onClose(true);
+                            } else {
+                                setShouldShowError(true);
                             }
                         },
                     }}

@@ -144,7 +144,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
         // const observer = new IntersectionObserver(([entry]) => {
         //     if (!entry.isIntersecting && is_open) {
-        document.querySelector('#test_button')?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
         //     }
         // }, options);
 

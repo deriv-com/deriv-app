@@ -19,13 +19,7 @@ const useIsOnScreenKeyboardOpen = () => {
             const target = e.target as HTMLElement;
             if (isKeyboardInput(target) && target.id === 'stake_input') {
                 setIsFocus(true);
-                setTimeout(
-                    () =>
-                        document
-                            .querySelector('#test_button')
-                            ?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' }),
-                    800
-                );
+                setTimeout(() => document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200), 300);
             }
         };
         const handleFocusOut = (e: FocusEvent) => {

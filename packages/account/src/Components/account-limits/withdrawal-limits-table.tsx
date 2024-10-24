@@ -30,8 +30,10 @@ const WithdrawalLimitsTable = observer(() => {
                         {withdrawal_limit_details.map((withdrawal_limit_detail, index) => (
                             <tr key={index}>
                                 <AccountLimitsTableCell
+                                    className='da-account-limits__table-cell--withdrawal-limit'
                                     renderExtraInfo={() => (
                                         <AccountLimitsExtraInfo
+                                            should_display_in_info_tooltip
                                             message={withdrawal_limit_detail.withdrawal_info_message}
                                         />
                                     )}

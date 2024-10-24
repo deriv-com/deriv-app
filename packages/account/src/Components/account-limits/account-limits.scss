@@ -55,6 +55,11 @@
             &--submarket {
                 padding-left: 1rem;
             }
+            &--withdrawal-limit {
+                @include mobile-or-tablet-screen {
+                    flex-direction: row;
+                }
+            }
         }
 
         &-wrapper {

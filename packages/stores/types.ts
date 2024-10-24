@@ -1169,6 +1169,7 @@ type TTradersHubStore = {
     setIsCFDRestrictedCountry: (value: boolean) => void;
     setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
+    regulated_mt5_accounts: DetailsOfEachMT5Loginid[];
 };
 
 type TContractReplay = {

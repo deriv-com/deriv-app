@@ -134,7 +134,9 @@ const EmploymentTaxDetailsContainer = observer(
 
         // [TODO] - This should come from BE
         const should_disable_employment_status =
-            isFieldDisabled('employment_status') || Boolean(is_virtual && client.account_settings.employment_status);
+            isFieldDisabled('employment_status') ||
+            Boolean(is_virtual && client.account_settings.employment_status) ||
+            Boolean(!is_virtual && client.account_settings.immutable_fields?.includes('tax_identification_number'));
 
         return (
             <div id={'employment-tax-section'}>

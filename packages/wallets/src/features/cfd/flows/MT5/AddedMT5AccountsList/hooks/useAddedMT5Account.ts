@@ -4,6 +4,7 @@ import { useTranslations } from '@deriv-com/translations';
 import type { THooks } from '../../../../../../types';
 import { ClientVerificationStatusBadge } from '../../../../components';
 import {
+    CFD_PLATFORMS,
     DISABLED_PLATFORM_STATUSES,
     getMarketTypeDetails,
     MARKET_TYPE,

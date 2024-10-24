@@ -17,6 +17,7 @@ declare global {
             show: VoidFunction;
             hide: VoidFunction;
             open: VoidFunction;
+            close: VoidFunction;
             on: (key: string, callback: VoidFunction) => void;
             setConfig: (config: Record<string, Record<string, any>>) => void;
             isLoaded: () => boolean;

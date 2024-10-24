@@ -1169,6 +1169,7 @@ type TTradersHubStore = {
     setIsCFDRestrictedCountry: (value: boolean) => void;
     setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
+    has_available_cfd_account: boolean;
 };
 
 type TContractReplay = {

@@ -65,6 +65,11 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     platform?: TPlatform;
     product?: 'swap_free' | 'zero_spread' | 'derivx' | 'ctrader';
     market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
+    client_kyc_status?: {
+        poa_status: string;
+        poi_status: string;
+        valid_tin: 0 | 1;
+    };
 };
 
 export type TTradingPlatformAvailableAccount = {

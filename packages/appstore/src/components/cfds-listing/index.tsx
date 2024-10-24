@@ -228,7 +228,6 @@ const CFDsListing = observer(() => {
                                 : '';
                         return (
                             <TradingAppCard
-                                client_kyc_status={existing_account?.client_kyc_status}
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon

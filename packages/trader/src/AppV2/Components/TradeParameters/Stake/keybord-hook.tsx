@@ -1,43 +1,31 @@
 import React from 'react';
 
-const isKeyboardInput = (elem: HTMLElement) =>
-    (elem.tagName === 'INPUT' &&
+const isKeyboardInput = (elem: HTMLElement, target_id: string) =>
+    elem.id === target_id &&
+    ((elem.tagName === 'INPUT' &&
         !['button', 'submit', 'checkbox', 'file', 'image'].includes((elem as HTMLInputElement).type)) ||
-    elem.hasAttribute('contenteditable');
+        elem.hasAttribute('contenteditable'));
 
-const useIsOnScreenKeyboardOpen = () => {
+const useIsOnScreenKeyboardOpen = (target_id: string) => {
     const [is_focus, setIsFocus] = React.useState(false);
     const [is_open, setIsOpen] = React.useState(false);
 
-    const VIEWPORT_VS_CLIENT_HEIGHT_RATIO = 0.75;
+    const RATIO = 0.75;
 
     React.useEffect(() => {
         const handleFocusIn = (e: FocusEvent) => {
-            if (!e.target) {
-                return;
-            }
             const target = e.target as HTMLElement;
-            if (isKeyboardInput(target) && target.id === 'stake_input') {
-                setIsFocus(true);
-                // setTimeout(() => {
-                // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
-                // window?.scrollTo(0, 400);
-                // }, 300);
-            }
+            if (!e.target) return;
+            if (isKeyboardInput(target, target_id)) setIsFocus(true);
         };
         const handleFocusOut = (e: FocusEvent) => {
-            if (!e.target) {
-                return;
-            }
             const target = e.target as HTMLElement;
-            if (isKeyboardInput(target)) {
-                setIsFocus(false);
-            }
+            if (!e.target) return;
+            if (isKeyboardInput(target, target_id)) setIsFocus(false);
         };
         const resizeHandler = (e: any) => {
-            if ((e.target.height * e.target.scale) / window.screen.height < VIEWPORT_VS_CLIENT_HEIGHT_RATIO) {
-                setIsOpen(true);
-            } else setIsOpen(false);
+            const has_keyboard_changed_viewport = (e.target.height * e.target.scale) / window.screen.height < RATIO;
+            setIsOpen(has_keyboard_changed_viewport);
         };
 
         document.addEventListener('focusin', handleFocusIn);
@@ -49,6 +37,7 @@ const useIsOnScreenKeyboardOpen = () => {
             document.removeEventListener('focusout', handleFocusOut);
             window?.visualViewport?.removeEventListener('resize', resizeHandler);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return is_focus && is_open;

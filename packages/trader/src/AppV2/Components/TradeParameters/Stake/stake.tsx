@@ -49,7 +49,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
-    const test = useIsOnScreenKeyboardOpen();
+    const test = useIsOnScreenKeyboardOpen('stake_input');
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -136,8 +136,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     React.useEffect(() => {
         setTimeout(() => {
-            // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
-            window?.scrollTo(0, 400);
+            //check button bottom?
+            window?.scrollTo(0, 200);
         }, 300);
     }, [test]);
 

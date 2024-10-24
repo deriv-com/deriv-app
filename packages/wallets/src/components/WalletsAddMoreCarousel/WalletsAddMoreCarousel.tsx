@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
-import { useHover } from 'usehooks-ts';
+import { useHover, useIsMounted } from 'usehooks-ts';
 import { useAllWalletAccounts, useAuthorize } from '@deriv/api-v2';
 import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
@@ -26,16 +26,22 @@ const WalletsAddMoreCarousel: React.FC = () => {
     });
     const hoverRef = useRef<HTMLDivElement>(null);
     const isHover = useHover(hoverRef);
+    const isMounted = useIsMounted();
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
 
     const scrollPrev = useCallback(() => walletsAddMoreEmblaAPI?.scrollPrev(), [walletsAddMoreEmblaAPI]);
     const scrollNext = useCallback(() => walletsAddMoreEmblaAPI?.scrollNext(), [walletsAddMoreEmblaAPI]);
 
-    const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-        setPrevBtnEnabled(emblaApi.canScrollPrev());
-        setNextBtnEnabled(emblaApi.canScrollNext());
-    }, []);
+    const onSelect = useCallback(
+        (emblaApi: EmblaCarouselType) => {
+            if (isMounted()) {
+                setPrevBtnEnabled(emblaApi.canScrollPrev());
+                setNextBtnEnabled(emblaApi.canScrollNext());
+            }
+        },
+        [isMounted]
+    );
 
     useEffect(() => {
         if (!walletsAddMoreEmblaAPI) return;

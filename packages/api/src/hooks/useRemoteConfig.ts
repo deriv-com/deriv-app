@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ObjectUtils } from '@deriv-com/utils';
 import initData from '../remote_config.json';
 
@@ -17,14 +17,23 @@ const remoteConfigQuery = async function () {
 
 function useRemoteConfig(enabled = false) {
     const [data, setData] = useState(initData);
+    const isMounted = useRef(false);
 
     useEffect(() => {
-        enabled &&
+        isMounted.current = true;
+
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (enabled) {
             remoteConfigQuery()
                 .then(async res => {
                     const resHash = await ObjectUtils.hashObject(res);
                     const dataHash = await ObjectUtils.hashObject(data);
-                    if (resHash !== dataHash) {
+                    if (resHash !== dataHash && isMounted.current) {
                         setData(res);
                     }
                 })
@@ -32,7 +41,8 @@ function useRemoteConfig(enabled = false) {
                     // eslint-disable-next-line no-console
                     console.log('Remote Config error: ', error);
                 });
-    }, [enabled]);
+        }
+    }, [enabled, data]);
 
     return { data };
 }

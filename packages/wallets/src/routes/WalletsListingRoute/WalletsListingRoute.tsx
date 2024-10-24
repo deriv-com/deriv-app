@@ -1,7 +1,13 @@
 import React, { lazy } from 'react';
-import { useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { WalletListHeader, WalletsAddMoreCarousel, WalletsCardLoader, WalletsResponsiveLoader } from '../../components';
+import {
+    WalletListHeader,
+    WalletsAddMoreCarousel,
+    WalletsCardLoader,
+    WalletsDisclaimerBanner,
+    WalletsResponsiveLoader,
+} from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
@@ -11,7 +17,14 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 const WalletsListingRoute: React.FC = () => {
     const { isDesktop } = useDevice();
     const { data: wallets } = useWalletAccountsList();
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
+    const hasAllRealWalletsDisabled = !hasAnyActiveRealWallets && (wallets?.length ?? 0) > 1;
+    const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
+    const shouldHideAddMoreCarousel =
+        hasAllRealWalletsDisabled || isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
 
     return (
         <div className='wallets-listing-route'>
@@ -25,8 +38,9 @@ const WalletsListingRoute: React.FC = () => {
                     <LazyWalletsCarousel />
                 </React.Suspense>
             )}
-            {hasAnyActiveRealWallets && <WalletsAddMoreCarousel />}
+            {shouldHideAddMoreCarousel ? null : <WalletsAddMoreCarousel />}
             <ResetMT5PasswordHandler />
+            {isEuRegion && !activeWallet?.is_virtual && <WalletsDisclaimerBanner />}
         </div>
     );
 };

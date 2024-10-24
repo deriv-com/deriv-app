@@ -1,5 +1,11 @@
 import React from 'react';
-import { useCtraderAccountsList, useDxtradeAccountsList, useLandingCompany, useSortedMT5Accounts } from '@deriv/api-v2';
+import {
+    useCtraderAccountsList,
+    useDxtradeAccountsList,
+    useIsEuRegion,
+    useLandingCompany,
+    useSortedMT5Accounts,
+} from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import {
     AddedCTraderAccountsList,
@@ -28,6 +34,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
         isLoading: isDxtradeLoading,
     } = useDxtradeAccountsList();
     const { data: landingCompany, isLoading: isLandingCompanyLoading } = useLandingCompany();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading || isLandingCompanyLoading;
     const isFetchedAfterMount = isMT5FetchedAfterMount || isCtraderFetchedAfterMount || isDxtradeFetchedAfterMount;
@@ -61,7 +68,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
                     <AvailableMT5AccountsList account={account} key={`available-mt5-list${account.name}-${index}`} />
                 );
             })}
-            {!isRestricted && (
+            {!isRestricted && !isEuRegion && (
                 <>
                     {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
                     {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}

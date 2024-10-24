@@ -38,6 +38,7 @@ export * from './WalletsCarouselContent';
 export * from './WalletsCarouselHeader';
 export * from './WalletsContainer';
 export * from './WalletsDisabledAccountsBanner';
+export * from './WalletsDisclaimerBanner';
 export * from './WalletsErrorScreen';
 export * from './WalletsPercentageSelector';
 export * from './WalletsResetMT5Password';

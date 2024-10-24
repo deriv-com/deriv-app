@@ -12,13 +12,12 @@ export const AccountSwitcherWalletList = ({ wallets, closeAccountsDialog }: TAcc
     <div className='account-switcher-wallet-list'>
         {wallets?.map(account => {
             if (account.is_dtrader_account_disabled) return null;
-            const show_badge = account?.is_malta_wallet || account?.is_virtual;
             return (
                 <AccountSwitcherWalletItem
                     key={account.dtrade_loginid}
                     account={account}
                     closeAccountsDialog={closeAccountsDialog}
-                    show_badge={show_badge}
+                    show_badge={account?.is_virtual}
                 />
             );
         })}

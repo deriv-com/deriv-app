@@ -7,6 +7,9 @@ import MT5TradeLink from '../MT5TradeLink';
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderServiceToken: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
 }));
 
 jest.mock('../../../../../../helpers/urls', () => ({

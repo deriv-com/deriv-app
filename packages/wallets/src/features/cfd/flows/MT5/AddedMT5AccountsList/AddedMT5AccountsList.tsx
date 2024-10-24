@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useIsEuRegion, useJurisdictionStatus, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
@@ -108,7 +108,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         () => getVerificationStatus(account.landing_company_short || JURISDICTION.SVG, account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL];
+    const { data: isEuRegion } = useIsEuRegion();
+    const { icon, title } = getMarketTypeDetails(localize, account.product, isEuRegion)[
+        account.market_type ?? MARKET_TYPE.ALL
+    ];
     const { show } = useModal();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -154,9 +157,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     }
                 }}
             >
-                <TradingAccountCard.Icon className='wallets-added-mt5__icon'>
-                    {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-                </TradingAccountCard.Icon>
+                <TradingAccountCard.Icon className='wallets-added-mt5__icon'>{icon}</TradingAccountCard.Icon>
                 <TradingAccountCard.Section>
                     <TradingAccountCard.Content
                         className={classNames('wallets-added-mt5__details', {

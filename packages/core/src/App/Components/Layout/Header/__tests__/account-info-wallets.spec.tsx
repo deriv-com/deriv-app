@@ -185,35 +185,6 @@ describe('AccountInfoWallets component', () => {
         expect(screen.queryByText('SVG')).not.toBeInTheDocument();
     });
 
-    it('should render "MALTA" label', () => {
-        const mock = mockStore({
-            client: {
-                accounts: {
-                    CRW909900: {
-                        account_category: 'wallet',
-                        currency: 'USD',
-                        is_virtual: 0,
-                        is_disabled: 0,
-                        landing_company_name: 'maltainvest',
-                        linked_to: [{ loginid: 'CR123', platform: 'dtrade' }],
-                    },
-                    CR123: {
-                        account_category: 'trading',
-                        currency: 'USD',
-                        is_virtual: 0,
-                        is_disabled: 0,
-                    },
-                },
-                loginid: 'CR123',
-            },
-        });
-
-        const toggleDialog = jest.fn();
-        render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
-
-        expect(screen.queryByText('MALTA')).toBeInTheDocument();
-    });
-
     it('should render "IcLock" icon when "is_disabled" property is "true"', () => {
         const mock = mockStore({
             client: {

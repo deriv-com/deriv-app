@@ -14,17 +14,18 @@ jest.mock('@deriv/quill-icons', () => ({
 describe('Barrier Component', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({
-            modules: {
-                trade: {
-                    onChange: jest.fn(),
-                    validation_errors: { barrier_1: [] },
-                    duration: 10,
+    beforeEach(
+        () =>
+            (default_mock_store = mockStore({
+                modules: {
+                    trade: {
+                        onChange: jest.fn(),
+                        validation_errors: { barrier_1: [] },
+                        duration: 10,
+                    },
                 },
-            },
-        });
-    });
+            }))
+    );
     const mockBarriers = () => {
         render(
             <TraderProviders store={default_mock_store}>
@@ -42,6 +43,12 @@ describe('Barrier Component', () => {
         mockBarriers();
         userEvent.click(screen.getByRole('textbox'));
         expect(screen.getByText('Barrier Input')).toBeInTheDocument();
+    });
+
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockBarriers();
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 
     it('detects clicking outside the ActionSheet and closes it', async () => {

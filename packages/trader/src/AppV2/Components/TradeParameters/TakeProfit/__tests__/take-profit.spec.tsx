@@ -34,19 +34,26 @@ describe('TakeProfit', () => {
             </TraderProviders>
         );
 
-    it('should render TP trade parameter with correct take profit from trade store', () => {
+    it('renders TP trade parameter with correct take profit from trade store', () => {
         mockTakeProfit();
 
         expect(screen.getByRole('textbox')).toHaveValue('5 USD');
         expect(screen.getByText('Take profit')).toBeInTheDocument();
     });
 
-    it('should render TakeProfitAndStopLossInput and TradeParamDefinition when user clicks on TP input', () => {
+    it('renders TakeProfitAndStopLossInput and TradeParamDefinition when user clicks on TP input', () => {
         mockTakeProfit();
 
         userEvent.click(screen.getByText('Take profit'));
 
         expect(screen.getByText('TakeProfitAndStopLossInput')).toBeInTheDocument();
         expect(screen.getByText('TradeParamDefinition')).toBeInTheDocument();
+    });
+
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockTakeProfit();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 });

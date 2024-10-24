@@ -120,16 +120,16 @@ describe('Duration', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('should display a validation error message if there is a duration error', async () => {
+    it('should display a validation error message if there is a duration error', () => {
         default_trade_store.modules.trade.validation_errors.duration = [
             { message: 'Invalid duration', error_field: 'duration' },
         ];
         mockDuration();
-        await expect(mockAddSnackbar).toHaveBeenCalled();
+        expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
     it('should display the market closed message when the market is closed', () => {
-        default_trade_store.modules.trade.symbol = 'GBPUSD';
+        default_trade_store.modules.trade.is_market_closed = true;
         mockDuration();
         expect(screen.getByText(/duration/i)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeDisabled();

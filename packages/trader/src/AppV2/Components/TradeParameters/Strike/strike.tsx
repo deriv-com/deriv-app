@@ -11,18 +11,16 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import StrikeWheel from './strike-wheel';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TStrikeProps = {
-    is_minimized?: boolean;
-};
-
-const Strike = observer(({ is_minimized }: TStrikeProps) => {
+const Strike = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         barrier_1,
         barrier_choices: strike_price_choices,
         contract_type,
         currency,
+        is_market_closed,
         onChange,
         proposal_info,
         setV2ParamsInitialValues,
@@ -97,6 +95,7 @@ const Strike = observer(({ is_minimized }: TStrikeProps) => {
         <React.Fragment>
             <TextField
                 className={classname}
+                disabled={is_market_closed}
                 label={<Localize i18n_default_text='Strike price' key={`strike${is_minimized ? '-minimized' : ''}`} />}
                 onClick={() => setIsOpen(true)}
                 readOnly

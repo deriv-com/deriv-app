@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { Localize } from '@deriv/translations';
 import { Money, Skeleton } from '@deriv/components';
@@ -7,7 +8,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { CONTRACT_TYPES } from '@deriv/shared';
 
 const MultipliersDealCancellationInfo = observer(() => {
-    const { currency, proposal_info } = useTraderStore();
+    const { currency, is_market_closed, proposal_info } = useTraderStore();
     const deal_cancellation_fee_value = proposal_info?.[CONTRACT_TYPES.MULTIPLIER.UP]?.cancellation?.ask_price;
     const has_error =
         proposal_info?.[CONTRACT_TYPES.MULTIPLIER.UP]?.has_error ||
@@ -17,10 +18,10 @@ const MultipliersDealCancellationInfo = observer(() => {
 
     return (
         <div className='multipliers-info__row'>
-            <Text size='sm'>
+            <Text size='sm' className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 <Localize i18n_default_text='Deal cancellation fee' />
             </Text>
-            <Text size='sm' bold as='div'>
+            <Text size='sm' bold as='div' className={clsx(is_market_closed && 'trade-params__text--disabled')}>
                 {deal_cancellation_fee_value ? (
                     <Money amount={deal_cancellation_fee_value} show_currency currency={currency} />
                 ) : (

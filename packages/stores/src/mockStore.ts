@@ -318,6 +318,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTradersHubTracking: jest.fn(),
             account_time_of_closure: undefined,
             is_account_to_be_closed_by_residence: false,
+            statement: {},
         },
         common: {
             error: common_store_error,
@@ -390,6 +391,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_services_error_visible: false,
             should_show_phone_number_otp: false,
             is_trading_assessment_for_existing_user_enabled: false,
+            is_wallets_onboarding_tour_guide_visible: false,
             setIsForcedToExitPnv: jest.fn(),
             setIsPhoneVerificationCompleted: jest.fn(),
             setRedirectFromEmail: jest.fn(),
@@ -508,6 +510,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             url_hashed_values: '',
             is_tnc_update_modal_open: false,
             toggleTncUpdateModal: jest.fn(),
+            setIsWalletsOnboardingTourGuideVisible: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

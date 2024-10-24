@@ -50,8 +50,8 @@ describe('<Passwords />', () => {
         });
         renderComponent({ store_config });
 
-        const ele_mt5 = await screen.findByText('Deriv MT5 Password');
-        expect(ele_mt5).toBeInTheDocument();
+        const ele_mt5 = await screen.findAllByText('Deriv MT5 password');
+        expect(ele_mt5).toHaveLength(2);
     });
 
     it('should render DerivX platform section', async () => {
@@ -60,7 +60,7 @@ describe('<Passwords />', () => {
         });
         renderComponent({ store_config });
 
-        const ele_derivx = await screen.findByText('Deriv X Password');
-        expect(ele_derivx).toBeInTheDocument();
+        const ele_derivx = await screen.findAllByText('Deriv X password');
+        expect(ele_derivx).toHaveLength(2);
     });
 });

@@ -24,6 +24,7 @@ import type {
     P2POrderListResponse,
     WebsiteStatus,
     GetSelfExclusion,
+    Statement,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -644,6 +645,7 @@ export type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
+    statement: Statement;
 };
 
 type TCommonStoreError = {
@@ -659,7 +661,7 @@ type TCommonStoreError = {
     type?: string;
 };
 
-type TCommonStoreServicesError = {
+export type TCommonStoreServicesError = {
     code?: string;
     message?: string;
     type?: string;
@@ -741,6 +743,7 @@ type TUiStore = {
     is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
+    is_wallets_onboarding_tour_guide_visible: boolean;
     isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
@@ -861,6 +864,7 @@ type TUiStore = {
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
     is_trading_disabled_by_residence_modal_visible: boolean;
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
+    setIsWalletsOnboardingTourGuideVisible: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
     field_ref_to_focus: string | null; // field_ref_to_focus accepts a field identifier which will be focused

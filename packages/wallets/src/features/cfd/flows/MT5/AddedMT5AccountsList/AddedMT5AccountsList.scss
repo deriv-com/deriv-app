@@ -10,7 +10,6 @@
             }
         }
     }
-
     &__actions {
         display: flex;
         flex-direction: column;
@@ -87,8 +86,10 @@
 
     &__icon {
         width: fit-content;
+        color: var(--status-warning, #ffad3a);
         &--badge {
-            opacity: 1;
+            border: 1px solid var(--status-warning, #ffad3a);
+            border-radius: 1rem;
         }
         &--pending {
             opacity: 0.5;

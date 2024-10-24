@@ -39,7 +39,7 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                                         className='wallets-jurisdiction-tnc-checkbox__link'
                                         key={0}
                                         onClick={() => {
-                                            window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
+                                            window.open(getStaticUrl(selectedCompany.tncUrl, 'en'), '_blank');
                                         }}
                                         // Reason: To fix sonarcloud issue
                                         onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
@@ -48,7 +48,8 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                                                     getStaticUrl(
                                                         companyNamesAndUrls[
                                                             selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                                        ].tncUrl
+                                                        ].tncUrl,
+                                                        'en'
                                                     ),
                                                     '_blank'
                                                 );

@@ -4,7 +4,7 @@ import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
@@ -18,6 +18,7 @@ const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
+    const { localize } = useTranslations();
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
@@ -26,9 +27,12 @@ const WalletListCardDropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedText, setSelectedText] = useState('');
 
-    const generateTitleText = useCallback((wallet: THooks.WalletAccountsList) => {
-        return `${wallet?.currency} Wallet`;
-    }, []);
+    const generateTitleText = useCallback(
+        (wallet: THooks.WalletAccountsList) => {
+            return localize('{{currency}} Wallet', { currency: wallet?.currency });
+        },
+        [localize]
+    );
 
     const walletList = useMemo(() => {
         return (

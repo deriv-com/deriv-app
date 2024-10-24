@@ -102,4 +102,5 @@ export { default as usePhoneVerificationAnalytics } from './usePhoneVerification
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
 export { default as useIsSelectedMT5AccountCreated } from './useIsSelectedMT5AccountCreated';
 export { default as useOauth2 } from './useOauth2';
+export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimitsDetails';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

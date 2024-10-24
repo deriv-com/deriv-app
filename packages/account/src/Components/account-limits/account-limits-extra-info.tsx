@@ -3,12 +3,17 @@ import { useDevice } from '@deriv-com/ui';
 
 type TAccountLimitsExtraInfo = {
     message: string;
+    should_display_in_info_tooltip?: boolean;
     className?: string;
 };
 
-const AccountLimitsExtraInfo = ({ message, ...props }: TAccountLimitsExtraInfo) => {
+const AccountLimitsExtraInfo = ({
+    message,
+    should_display_in_info_tooltip = false,
+    ...props
+}: TAccountLimitsExtraInfo) => {
     const { isDesktop } = useDevice();
-    if (!isDesktop) {
+    if (!isDesktop && !should_display_in_info_tooltip) {
         return (
             <Text color='less-prominent' line_height='s' size='xxxs'>
                 {message}
@@ -19,7 +24,7 @@ const AccountLimitsExtraInfo = ({ message, ...props }: TAccountLimitsExtraInfo) 
     return (
         <Popover
             data_testid='dt_acc_limits_popover'
-            alignment='right'
+            alignment={isDesktop ? 'right' : 'top'}
             className='da-account-limits__popover'
             icon='info'
             is_bubble_hover_enabled

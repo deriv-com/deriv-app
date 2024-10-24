@@ -94,6 +94,7 @@ export { default as useTotalAssetCurrency } from './useTotalAssetCurrency';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useResidenceList } from './useResidenceList';
 export { default as useTinValidations } from './useTinValidations';
+export { default as useGetStatus } from './useGetStatus';
 export { default as usePhoneNumberVerificationSetTimer } from './usePhoneNumberVerificationSetTimer';
 export { default as usePhoneNumberVerificationSessionTimer } from './usePhoneNumberVerificationSessionTimer';
 export { default as useIsPhoneNumberVerified } from './useIsPhoneNumberVerified';
@@ -101,5 +102,6 @@ export { default as usePhoneVerificationAnalytics } from './usePhoneVerification
 export { default as useTradingPlatformStatus } from './useTradingPlatformStatus';
 export { default as useDtraderV2Flag } from './useDtraderV2Flag';
 export { default as useIsGrowthbookIsLoaded } from './useIsGrowthbookLoaded';
+export { default as useIsSelectedMT5AccountCreated } from './useIsSelectedMT5AccountCreated';
 export { default as useOauth2 } from './useOauth2';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

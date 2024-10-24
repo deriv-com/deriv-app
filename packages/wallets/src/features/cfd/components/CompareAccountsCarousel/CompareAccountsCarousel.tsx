@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
-import CFDCompareAccountsCarouselButton from './CompareAccountsCarouselButton';
+import CompareAccountsCarouselButton from './CompareAccountsCarouselButton';
 import './CompareAccountsCarousel.scss';
 
 type TCompareAccountsCarousel = {
@@ -39,18 +39,8 @@ const CompareAccountsCarousel = ({ children, isRtl = false }: TCompareAccountsCa
             <div className='wallets-compare-accounts-carousel__viewport' ref={emblaRef}>
                 <div className='wallets-compare-accounts-carousel__container'>{children}</div>
             </div>
-            <CFDCompareAccountsCarouselButton
-                enabled={prevBtnEnabled}
-                isNext={false}
-                isRtl={isRtl}
-                onClick={scrollPrev}
-            />
-            <CFDCompareAccountsCarouselButton
-                enabled={nextBtnEnabled}
-                isNext={true}
-                isRtl={isRtl}
-                onClick={scrollNext}
-            />
+            <CompareAccountsCarouselButton enabled={prevBtnEnabled} isNext={false} isRtl={isRtl} onClick={scrollPrev} />
+            <CompareAccountsCarouselButton enabled={nextBtnEnabled} isNext={true} isRtl={isRtl} onClick={scrollNext} />
         </div>
     );
 };

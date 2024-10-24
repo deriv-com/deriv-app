@@ -299,10 +299,8 @@ const AccountWizard = observer(props => {
     const submitForm = (payload = undefined) => {
         let clone = { ...form_values() };
         delete clone?.tax_identification_confirm;
-        delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
-        delete clone?.crs_confirmation;
 
         if (is_residence_self_declaration_required && clone?.resident_self_declaration)
             clone.resident_self_declaration = 1;
@@ -315,6 +313,9 @@ const AccountWizard = observer(props => {
             delete clone.tax_identification_number;
         }
 
+        if (clone?.tnc_acceptance) {
+            clone.tnc_acceptance = 1;
+        }
         clone = processInputData(clone);
         modifiedProps.setRealAccountFormData(clone);
         if (payload) {
@@ -329,7 +330,7 @@ const AccountWizard = observer(props => {
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
         // This is to sync clearing of value on change of Employment status personal details and occupation in financial assessment
         if (is_eu_user && index === 1) {
-            state_items[4].form_value = { ...state_items[4].form_value, occupation: value.occupation };
+            state_items[5].form_value = { ...state_items[5].form_value, occupation: value.occupation };
             setStateItems(state_items);
         }
         saveFormData(index, value);

@@ -33,7 +33,6 @@ import {
     hasBarrier,
     isHighLow,
     CONTRACT_TYPES,
-    getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
     isTouchContract,
@@ -243,6 +242,7 @@ export default class TradeStore extends BaseStore {
     basis = '';
     basis_list: Array<TTextValueStrings> = [];
     currency = '';
+    default_stake: number | undefined;
     stake_boundary: Partial<TStakeBoundary> = {};
 
     // Duration
@@ -341,13 +341,6 @@ export default class TradeStore extends BaseStore {
     is_trade_params_expanded = true;
     v2_params_initial_values: TV2ParamsInitialValues = {};
 
-    debouncedSendTradeParamsAnalytics = debounce((payload: TEvents['ce_contracts_set_up_form']) => {
-        if (payload.action === 'change_parameter_value') {
-            const { duration_type, parameter_value } = payload;
-            if (!duration_type && parameter_value === '') return;
-        }
-        Analytics.trackEvent('ce_contracts_set_up_form', payload);
-    }, 2000);
     debouncedSetChartStatus = debounce((status: boolean) => {
         runInAction(() => {
             this.is_chart_loading = status;
@@ -425,6 +418,7 @@ export default class TradeStore extends BaseStore {
             contract_types_list: observable,
             contract_types_list_v2: observable,
             currency: observable,
+            default_stake: observable,
             digit_stats: observable,
             duration_min_max: observable,
             duration_unit: observable,
@@ -475,6 +469,7 @@ export default class TradeStore extends BaseStore {
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             setHoveredBarrier: action.bound,
+            setDefaultStake: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
             setDigitStats: action.bound,
@@ -544,7 +539,6 @@ export default class TradeStore extends BaseStore {
             resetAccumulatorData: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
-            sendTradeParamsAnalytics: action.bound,
             setActiveSymbols: action.bound,
             setActiveSymbolsV2: action.bound,
             setBarrierChoices: action.bound,
@@ -976,6 +970,10 @@ export default class TradeStore extends BaseStore {
         this.hovered_barrier = hovered_value;
     }
 
+    setDefaultStake(default_stake?: number) {
+        this.default_stake = default_stake;
+    }
+
     setPreviousSymbol(symbol: string) {
         if (this.previous_symbol !== symbol) this.previous_symbol = symbol;
     }
@@ -1212,24 +1210,6 @@ export default class TradeStore extends BaseStore {
                                     status: 'open',
                                 });
                             }
-                            if (
-                                !this.root_store.ui.is_mobile &&
-                                (this.basis_list.length > 1 || this.duration_units_list.length > 1)
-                            ) {
-                                const durationMode =
-                                    this.root_store.ui.is_advanced_duration && this.expiry_type
-                                        ? this.expiry_type
-                                        : ANALYTICS_DURATIONS.find(value => value.startsWith(this.duration_unit)) ?? '';
-                                this.sendTradeParamsAnalytics({
-                                    action: 'run_contract',
-                                    ...(this.duration_units_list.length && durationMode
-                                        ? { switcher_duration_mode_name: durationMode }
-                                        : {}),
-                                    ...(this.basis_list.length > 1 && this.basis
-                                        ? { switcher_stakepayout_mode_name: this.basis }
-                                        : {}),
-                                });
-                            }
 
                             this.is_purchasing_contract = false;
                             return;
@@ -1259,28 +1239,6 @@ export default class TradeStore extends BaseStore {
         [].forEach.bind(el_purchase_value, el => {
             (el as HTMLDivElement).classList.add('trade-container__price-info--fade');
         })();
-    };
-
-    sendTradeParamsAnalytics = (
-        options: Partial<TEvents['ce_contracts_set_up_form']> & { durationUnit?: string },
-        isDebounced?: boolean
-    ) => {
-        const { durationUnit, ...passThrough } = options;
-        const payload = {
-            ...passThrough,
-            form_name: 'default',
-            trade_type_name: getContractTypesConfig()[this.contract_type]?.title,
-            ...(durationUnit
-                ? {
-                      duration_type: ANALYTICS_DURATIONS.find(value => value.startsWith(durationUnit ?? '')) ?? '',
-                  }
-                : {}),
-        } as TEvents['ce_contracts_set_up_form'];
-        if (isDebounced) {
-            this.debouncedSendTradeParamsAnalytics(payload);
-        } else {
-            Analytics.trackEvent('ce_contracts_set_up_form', payload);
-        }
     };
 
     /**
@@ -1374,6 +1332,11 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
+                if (this.is_dtrader_v2_enabled)
+                    this.setV2ParamsInitialValues({
+                        value: obj_new_values.amount ?? '',
+                        name: 'stake',
+                    });
             }
             this.currency = obj_new_values.currency ?? '';
         }
@@ -1387,6 +1350,31 @@ export default class TradeStore extends BaseStore {
             has_only_forward_starting_contracts =
                 ContractType.getContractCategories().has_only_forward_starting_contracts;
         }
+
+        // Set stake to default one (from contracts_for) on symbol or contract type switch.
+        // On contract type we also additionally reset take profit
+        if (this.default_stake && this.is_dtrader_v2_enabled) {
+            const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
+            const has_contract_type_changed =
+                obj_new_values.contract_type &&
+                obj_old_values?.contract_type &&
+                obj_new_values.contract_type !== obj_old_values.contract_type;
+
+            if (has_symbol_changed || has_contract_type_changed) {
+                const is_crypto = isCryptocurrency(this.currency ?? '');
+                const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
+                this.setV2ParamsInitialValues({
+                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    name: 'stake',
+                });
+                obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
+            }
+            if (has_contract_type_changed) {
+                obj_new_values.has_take_profit = false;
+                obj_new_values.take_profit = '';
+            }
+        }
+
         // TODO: remove all traces of setHasOnlyForwardingContracts and has_only_forward_starting_contracts in app
         //  once future contracts are implemented
         this.root_store.ui.setHasOnlyForwardingContracts(has_only_forward_starting_contracts);
@@ -1850,18 +1838,31 @@ export default class TradeStore extends BaseStore {
     }
 
     setChartModeFromURL() {
-        const { chartType: chartTypeParam, granularity: granularityParam } = getTradeURLParams();
+        const { chartType: chartTypeParam, granularity: granularityParam, contractType } = getTradeURLParams();
         const { chart_type, granularity, updateChartType, updateGranularity } = this.root_store.contract_trade;
+
         if (!isNaN(Number(granularityParam)) && granularityParam !== granularity) {
             updateGranularity(Number(granularityParam));
         }
         if (chartTypeParam && chartTypeParam !== chart_type) {
             updateChartType(chartTypeParam);
         }
-        setTradeURLParams({
+
+        const urlParams: {
+            chartType: string;
+            granularity: number;
+            contractType?: string;
+        } = {
             chartType: chartTypeParam ?? chart_type,
             granularity: granularityParam ?? Number(granularity),
-        });
+        };
+
+        if (contractType) {
+            this.contract_type = contractType ?? '';
+            urlParams.contractType = contractType;
+        }
+
+        setTradeURLParams(urlParams);
     }
 
     setChartStatus(status: boolean, isFromChart?: boolean) {

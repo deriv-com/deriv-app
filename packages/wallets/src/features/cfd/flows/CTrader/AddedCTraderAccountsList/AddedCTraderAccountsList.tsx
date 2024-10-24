@@ -38,26 +38,28 @@ const AddedCTraderAccountsList: React.FC = () => {
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                 >
                     <TradingAccountCard.Icon>{PlatformDetails.ctrader.icon}</TradingAccountCard.Icon>
-                    <TradingAccountCard.Content>
-                        <Text align='start' size='sm'>
-                            {PlatformDetails.ctrader.title}
-                        </Text>
-                        {totalBalance !== undefined && (
-                            <Text align='start' size='sm' weight='bold'>
-                                {displayBalance}
+                    <TradingAccountCard.Section>
+                        <TradingAccountCard.Content>
+                            <Text align='start' size='sm'>
+                                {PlatformDetails.ctrader.title}
                             </Text>
-                        )}
-                        <Text align='start' size='xs'>
-                            {account.login}
-                        </Text>
-                    </TradingAccountCard.Content>
-                    <TradingAccountCard.Button>
-                        {isRtl ? (
-                            <LabelPairedChevronLeftCaptionRegularIcon width={16} />
-                        ) : (
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
-                        )}
-                    </TradingAccountCard.Button>
+                            {totalBalance !== undefined && (
+                                <Text align='start' size='sm' weight='bold'>
+                                    {displayBalance}
+                                </Text>
+                            )}
+                            <Text align='start' size='xs'>
+                                {account.login}
+                            </Text>
+                        </TradingAccountCard.Content>
+                        <TradingAccountCard.Button>
+                            {isRtl ? (
+                                <LabelPairedChevronLeftCaptionRegularIcon width={16} />
+                            ) : (
+                                <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                            )}
+                        </TradingAccountCard.Button>
+                    </TradingAccountCard.Section>
                 </TradingAccountCard>
             ))}
         </React.Fragment>

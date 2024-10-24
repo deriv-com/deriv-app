@@ -334,6 +334,20 @@ $MIN_HEIGHT_FLOATING: calc(
                 color: var(--text-general);
             }
 
+            &--phone-number-input {
+                .dc-input__container {
+                    .dc-input__field {
+                        @include rtl {
+                            text-align: right;
+
+                            &[value] {
+                                direction: ltr;
+                            }
+                        }
+                    }
+                }
+            }
+
             &--2-cols {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -346,6 +360,21 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-rows: 1fr 1fr;
                 max-width: 40rem;
                 margin-bottom: 1rem;
+            }
+
+            &--phone {
+                &_container {
+                    display: flex;
+                }
+
+                &_input {
+                    width: 100%;
+
+                    .dc-input__container {
+                        border-start-end-radius: 0;
+                        border-end-end-radius: 0;
+                    }
+                }
             }
 
             .datepicker {
@@ -448,6 +477,12 @@ $MIN_HEIGHT_FLOATING: calc(
                     .datepicker-native__input {
                         height: 3.8rem;
                     }
+                }
+            }
+
+            .account-form__fieldset {
+                .dropdown-field {
+                    margin-bottom: 3.2rem;
                 }
             }
 
@@ -1787,7 +1822,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .dc-modal-header {
         border: none;
-        max-width: 44rem;
         margin-bottom: 0.8rem;
     }
 
@@ -1887,6 +1921,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__details {
+            max-width: 90%;
             margin-left: 2rem;
         }
 
@@ -2227,5 +2262,12 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: flex-start;
         justify-content: center;
         gap: 0.8rem;
+    }
+}
+
+.employment-tin-section {
+    .employment-status-field {
+        margin-bottom: 3.2rem;
+        max-width: 400px;
     }
 }

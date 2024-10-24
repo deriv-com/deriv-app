@@ -18,7 +18,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useOauth2 } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -42,11 +42,11 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         is_virtual,
         has_fiat,
         mt5_login_list,
+        logout: logoutClient,
         obj_total_balance,
         switchAccount,
         resetVirtualBalance,
         has_active_real_account,
-        logout: logoutClient,
         upgradeable_landing_companies,
         real_account_creation_unlock_date,
         has_any_real_account,
@@ -93,12 +93,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
     };
 
-    const handleLogout = async () => {
-        closeAccountsDialog();
-        if (is_positions_drawer_on) {
-            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-        }
-
+    const logoutHandler = async () => {
         // for DBot we need to logout first and only after this redirect to TH
         if (window.location.pathname.startsWith(routes.bot)) {
             await logoutClient();
@@ -107,6 +102,17 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             history.push(routes.traders_hub);
             await logoutClient();
         }
+    };
+
+    const { oAuthLogout } = useOauth2({ handleLogout: logoutHandler });
+
+    const handleLogout = async () => {
+        closeAccountsDialog();
+        if (is_positions_drawer_on) {
+            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+        }
+
+        await oAuthLogout();
     };
 
     const closeAccountsDialog = () => {

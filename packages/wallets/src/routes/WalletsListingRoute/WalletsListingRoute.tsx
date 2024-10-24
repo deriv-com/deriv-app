@@ -23,6 +23,8 @@ const WalletsListingRoute: React.FC = () => {
     const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
     const hasAllRealWalletsDisabled = !hasAnyActiveRealWallets && (wallets?.length ?? 0) > 1;
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
+    const shouldHideAddMoreCarousel =
+        hasAllRealWalletsDisabled || isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
 
     return (
         <div className='wallets-listing-route'>
@@ -36,12 +38,7 @@ const WalletsListingRoute: React.FC = () => {
                     <LazyWalletsCarousel />
                 </React.Suspense>
             )}
-            {hasAllRealWalletsDisabled ||
-            isAllWalletsLoading ||
-            isEuRegionLoading ||
-            (isEuRegion && hasAddedWallet) ? null : (
-                <WalletsAddMoreCarousel />
-            )}
+            {shouldHideAddMoreCarousel ? null : <WalletsAddMoreCarousel />}
             <ResetMT5PasswordHandler />
             {isEuRegion && !activeWallet?.is_virtual && <WalletsDisclaimerBanner />}
         </div>

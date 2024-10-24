@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isEmptyObject } from '@deriv/shared';
 
-const DTraderContractDetailsHeader = observer(() => {
+const ContractDetailsHeader = observer(() => {
     const { state } = useLocation();
     const history = useHistory();
     const { common } = useStore();
@@ -37,4 +37,4 @@ const DTraderContractDetailsHeader = observer(() => {
     );
 });
 
-export default DTraderContractDetailsHeader;
+export default ContractDetailsHeader;

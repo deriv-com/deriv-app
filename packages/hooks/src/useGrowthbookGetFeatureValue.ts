@@ -16,7 +16,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
     const [featureFlagValue, setFeatureFlagValue] = useState(
         Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
-    const isGBLoaded = useIsGrowthbookIsLoaded();
+    const { isGBLoaded } = useIsGrowthbookIsLoaded();
     const isMounted = useIsMounted();
 
     // Required for debugging Growthbook, this will be removed after Freshchat launch

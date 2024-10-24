@@ -1,6 +1,7 @@
 /* TODO: remove this component after /trader package is separated into its own repo.
 It's used to keep dtrader_v2 utils that are currently shared between various packages. */
 
+import { Analytics } from '@deriv-com/analytics';
 import { extractInfoFromShortcode, isHighLow } from '../shortcode';
 import { getMarketName, getTradeTypeName } from './market-underlying';
 
@@ -27,8 +28,17 @@ export const getPositionsV2TabIndexFromURL = () => {
     return 0;
 };
 
-export const isDTraderV2 = () =>
-    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && window.innerWidth < 600;
+export const isDTraderV2Width = () => window.innerWidth < 600;
+
+export const isDTraderV2 = () => {
+    const dtrader_v2_enabled_gb = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
+
+    return (
+        Boolean(
+            !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 || dtrader_v2_enabled_gb
+        ) && isDTraderV2Width()
+    );
+};
 
 export const getTradeNotificationMessage = (shortcode: string) => {
     const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);

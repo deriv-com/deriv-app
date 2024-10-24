@@ -16,7 +16,7 @@ describe('useIsGrowthbookIsLoaded', () => {
 
         const { result } = renderHook(() => useIsGrowthbookIsLoaded());
 
-        expect(result.current).toBe(false); // isGBLoaded
+        expect(result.current.isGBLoaded).toBe(false); // isGBLoaded
     });
 
     it('should update state when data.marketing_growthbook is true and Analytics instance is available', () => {
@@ -35,7 +35,7 @@ describe('useIsGrowthbookIsLoaded', () => {
         );
         const { result, rerender } = renderHook(() => useIsGrowthbookIsLoaded());
 
-        expect(result.current).toBe(false); // isGBLoaded initially false
+        expect(result.current.isGBLoaded).toBe(false); // isGBLoaded initially false
 
         act(() => {
             (Analytics.getInstances as jest.Mock).mockReturnValueOnce({ ab: true });
@@ -44,7 +44,7 @@ describe('useIsGrowthbookIsLoaded', () => {
             rerender();
         });
 
-        expect(result.current).toBe(true); // isGBLoaded should be true
+        expect(result.current.isGBLoaded).toBe(true); // isGBLoaded should be true
         expect(clearInterval).toHaveBeenCalledTimes(1);
     });
 
@@ -65,13 +65,13 @@ describe('useIsGrowthbookIsLoaded', () => {
 
         const { result } = renderHook(() => useIsGrowthbookIsLoaded());
 
-        expect(result.current).toBe(false); // isGBLoaded initially false
+        expect(result.current.isGBLoaded).toBe(false); // isGBLoaded initially false
 
         act(() => {
             jest.advanceTimersByTime(11000); // Move timer forward by 11 seconds
         });
 
-        expect(result.current).toBe(false); // isGBLoaded should still be false
+        expect(result.current.isGBLoaded).toBe(false); // isGBLoaded should still be false
     });
 
     it('should clear interval on unmount', () => {

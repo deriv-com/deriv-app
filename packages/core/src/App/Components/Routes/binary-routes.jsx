@@ -4,15 +4,15 @@ import { Loading } from '@deriv/components';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
-import { getPositionsV2TabIndexFromURL, isDTraderV2, routes } from '@deriv/shared';
+import { getPositionsV2TabIndexFromURL, routes } from '@deriv/shared';
+import { useDtraderV2Flag } from '@deriv/hooks';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();
     const { promptFn, prompt_when } = ui;
     const { pushDataLayer } = gtm;
     const location = useLocation();
-    const is_dtrader_v2 =
-        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
+    const { dtrader_v2_enabled } = useDtraderV2Flag();
 
     React.useEffect(() => {
         pushDataLayer({ event: 'page_load' });
@@ -20,7 +20,7 @@ const BinaryRoutes = observer(props => {
     }, [location]);
 
     const getLoader = () => {
-        if (is_dtrader_v2)
+        if (dtrader_v2_enabled)
             return (
                 <Loading.DTraderV2
                     initial_app_loading

@@ -1,5 +1,7 @@
 import React from 'react';
 
+type TWindow = Window & { height?: number; scale?: number };
+
 const isKeyboardInput = (elem: HTMLElement, target_id: string) =>
     elem.id === target_id &&
     ((elem.tagName === 'INPUT' &&
@@ -13,29 +15,29 @@ const useIsOnScreenKeyboardOpen = (target_id: string) => {
     const RATIO = 0.75;
 
     React.useEffect(() => {
-        const handleFocusIn = (e: FocusEvent) => {
-            const target = e.target as HTMLElement;
-            if (!e.target) return;
-            if (isKeyboardInput(target, target_id)) setIsFocus(true);
+        const handleFocus = (e: FocusEvent) => {
+            const target = e.target;
+            const is_focus_in = e.type === 'focusin';
+
+            if (!target) return;
+            if (isKeyboardInput(target as HTMLElement, target_id)) setIsFocus(is_focus_in);
         };
-        const handleFocusOut = (e: FocusEvent) => {
-            const target = e.target as HTMLElement;
-            if (!e.target) return;
-            if (isKeyboardInput(target, target_id)) setIsFocus(false);
-        };
-        const resizeHandler = (e: any) => {
-            const has_keyboard_changed_viewport = (e.target.height * e.target.scale) / window.screen.height < RATIO;
+
+        const resizeHandler = (e: Event) => {
+            const target = e.target as TWindow;
+            if (!target || !target?.height || !target?.scale) return;
+            const has_keyboard_changed_viewport = (target.height * target.scale) / window.screen.height < RATIO;
             setIsOpen(has_keyboard_changed_viewport);
         };
 
-        document.addEventListener('focusin', handleFocusIn);
-        document.addEventListener('focusout', handleFocusOut);
-        window?.visualViewport?.addEventListener('resize', resizeHandler);
+        document.addEventListener('focusin', handleFocus);
+        document.addEventListener('focusout', handleFocus);
+        window.visualViewport?.addEventListener('resize', resizeHandler);
 
         return () => {
-            document.removeEventListener('focusin', handleFocusIn);
-            document.removeEventListener('focusout', handleFocusOut);
-            window?.visualViewport?.removeEventListener('resize', resizeHandler);
+            document.removeEventListener('focusin', handleFocus);
+            document.removeEventListener('focusout', handleFocus);
+            window.visualViewport?.removeEventListener('resize', resizeHandler);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

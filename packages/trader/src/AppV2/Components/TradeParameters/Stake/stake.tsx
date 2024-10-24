@@ -49,7 +49,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
-    const test = useIsOnScreenKeyboardOpen('stake_input');
+    const should_scroll = useIsOnScreenKeyboardOpen('stake_input');
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -135,11 +135,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     }, [stake_error]);
 
     React.useEffect(() => {
-        setTimeout(() => {
-            //check button bottom?
-            window?.scrollTo(0, 300);
-        }, 300);
-    }, [test]);
+        //check button bottom?
+        window?.scrollTo(0, 250);
+    }, [should_scroll]);
 
     React.useEffect(() => {
         displayed_error.current = false;

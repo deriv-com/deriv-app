@@ -82,6 +82,7 @@ const AccountSignup = ({
                             : 'virtual_signup_web_desktop_default',
                     },
                 },
+                cache: true,
             },
         ]);
 

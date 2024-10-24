@@ -43,18 +43,39 @@ const cacheTrackEvents = {
     isReady: (): boolean => {
         // eslint-disable-next-line no-console
         console.log('Analytics', Analytics);
-        if (Analytics) {
-            const instances = Analytics?.getInstances();
-            return !!instances?.tracking;
-            // eslint-disable-next-line no-console
-            console.log('instances tracking', instances);
+        if (typeof Analytics === 'undefined' || Analytics === null) {
+            return false;
         }
-        return false;
+        const instances = Analytics?.getInstances();
+        return !!instances?.tracking;
+        // eslint-disable-next-line no-console
+        console.log('instances tracking', instances);
     },
-
-    parseCookies: (cookieName: string): Event[] | null => {
-        const cookieValue = Cookies.get(cookieName);
-        return cookieValue ? JSON.parse(cookieValue) : null;
+    parseCookies: (cookieName: string): any => {
+        // eslint-disable-next-line no-console
+        console.log('cookieName', cookieName);
+        const cookies: { [key: string]: string } = document.cookie
+            .split('; ')
+            .reduce((acc: { [key: string]: string }, cookie: string) => {
+                const [key, value] = cookie.split('=');
+                acc[decodeURIComponent(key)] = decodeURIComponent(value);
+                return acc;
+            }, {});
+        // eslint-disable-next-line no-console
+        console.log('cookies', cookies);
+        try {
+            // eslint-disable-next-line no-console
+            console.log('reaches in the parse try');
+            // eslint-disable-next-line no-console
+            console.log('cookies[cookieName]', cookies[cookieName]);
+            // eslint-disable-next-line no-console
+            console.log('parse cookies', JSON.parse(cookies[cookieName]));
+            return cookies[cookieName] ? JSON.parse(cookies[cookieName]) : null;
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log('return null');
+            return null;
+        }
     },
     isPageViewSent: (): boolean =>
         !!cacheTrackEvents.responses.find(e => e.payload?.type === 'page' && e.payload?.anonymousId),
@@ -67,6 +88,10 @@ const cacheTrackEvents = {
         let storedCookies: Event[] = [];
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
+        // eslint-disable-next-line no-console
+        console.log('cacheCookie', cacheCookie);
+        // eslint-disable-next-line no-console
+        console.log('storedCookies', storedCookies);
         storedCookies.push(data);
         let domain = '';
         if (window.location.hostname.includes('deriv.com')) {
@@ -96,9 +121,9 @@ const cacheTrackEvents = {
         }
         return event;
     },
-    track: (originalEvent: Event) => {
+    track: (originalEvent: Event, cache: boolean) => {
         const event: any = cacheTrackEvents.processEvent(originalEvent);
-        if (cacheTrackEvents.isReady()) {
+        if (!cacheTrackEvents.isReady() && !cache) {
             // eslint-disable-next-line no-console
             console.log('tracking with cache');
             Analytics?.trackEvent(event.name, event.properties);
@@ -123,16 +148,19 @@ const cacheTrackEvents = {
         }, 1000);
     },
     loadEvent: (items: Item[]) => {
-        items.forEach(({ event }) => {
+        items.forEach(({ event, cache }) => {
             // eslint-disable-next-line no-console
             console.log('items', items);
             const { name, properties } = event;
             // eslint-disable-next-line no-console
             console.log('event: ', event);
-            cacheTrackEvents.track({
-                name,
-                properties,
-            });
+            cacheTrackEvents.track(
+                {
+                    name,
+                    properties,
+                },
+                false
+            );
         });
         return cacheTrackEvents;
     },

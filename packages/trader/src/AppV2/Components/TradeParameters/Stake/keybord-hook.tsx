@@ -2,22 +2,6 @@ import React from 'react';
 
 type TWindow = Window & { height?: number; scale?: number };
 
-const isKeyboardInput = (elem: HTMLElement, target_id: string) =>
-    elem.id === target_id &&
-    ((elem.tagName === 'INPUT' &&
-        !['button', 'submit', 'checkbox', 'file', 'image'].includes((elem as HTMLInputElement).type)) ||
-        elem.hasAttribute('contenteditable'));
-
-// const isVisibleInViewport = (elem: HTMLElement) => {
-//     const rect = elem.getBoundingClientRect();
-//     return (
-//         rect.top >= 0 &&
-//         rect.left >= 0 &&
-//         rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-//         rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-//     );
-// };
-
 const useIsOnScreenKeyboardOpen = (target_id: string) => {
     const [is_focus, setIsFocus] = React.useState(false);
     const [is_open, setIsOpen] = React.useState(false);
@@ -30,7 +14,7 @@ const useIsOnScreenKeyboardOpen = (target_id: string) => {
             const is_focus_in = e.type === 'focusin';
 
             if (!target) return;
-            if (isKeyboardInput(target as HTMLElement, target_id)) setIsFocus(is_focus_in);
+            if ((target as HTMLElement).id === target_id) setIsFocus(is_focus_in);
         };
 
         const resizeHandler = (e: Event) => {

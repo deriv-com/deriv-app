@@ -49,7 +49,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
-    const should_scroll = useIsOnScreenKeyboardOpen('stake_input');
+
+    const input_id = 'stake_input';
+    const should_scroll = useIsOnScreenKeyboardOpen(input_id);
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -136,7 +138,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     React.useEffect(() => {
         //check button bottom?
-        window?.scrollTo(0, 250);
+        window?.scrollTo({ top: 220, behavior: 'smooth' });
     }, [should_scroll]);
 
     React.useEffect(() => {
@@ -286,7 +288,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
-                            id='stake_input'
+                            id={input_id}
                             variant='fill'
                         />
                         <StakeDetails
@@ -317,6 +319,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 }
                             },
                         }}
+                        id='test_button'
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

@@ -41,12 +41,17 @@ const cacheTrackEvents = {
         });
     },
     isReady: (): boolean => {
-        if (typeof Analytics === 'undefined' || Analytics === null) {
-            return false;
+        // eslint-disable-next-line no-console
+        console.log('Analytics', Analytics);
+        if (Analytics) {
+            const instances = Analytics?.getInstances();
+            return !!instances?.tracking;
+            // eslint-disable-next-line no-console
+            console.log('instances tracking', instances);
         }
-        const instances = Analytics?.getInstances();
-        return !!instances?.tracking;
+        return false;
     },
+
     parseCookies: (cookieName: string): Event[] | null => {
         const cookieValue = Cookies.get(cookieName);
         return cookieValue ? JSON.parse(cookieValue) : null;
@@ -55,14 +60,27 @@ const cacheTrackEvents = {
         !!cacheTrackEvents.responses.find(e => e.payload?.type === 'page' && e.payload?.anonymousId),
     set: (event: Event) => {
         cacheTrackEvents.push('cached_analytics_events', event);
+        // eslint-disable-next-line no-console
+        console.log('event pushed to cache');
     },
     push: (cookieName: string, data: Event) => {
         let storedCookies: Event[] = [];
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-        const domain = window.location.hostname.includes('deriv.com') ? '.deriv.com' : 'binary.sx';
+        let domain = '';
+        if (window.location.hostname.includes('deriv.com')) {
+            domain = '.deriv.com';
+        } else if (window.location.hostname.includes('binary.sx')) {
+            domain = '.binary.sx';
+        } else if (window.location.hostname.includes('localhost')) {
+            // eslint-disable-next-line no-console
+            console.log('reaches localhost');
+            domain = 'localhost:8443';
+        }
         document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=${domain}`;
+        // eslint-disable-next-line no-console
+        console.log('cookie set', document.cookie);
     },
     processEvent: (event: Event): Event => {
         const clientInfo = Cookies.get('client_information');
@@ -78,11 +96,15 @@ const cacheTrackEvents = {
         }
         return event;
     },
-    track: (originalEvent: Event, cache: boolean) => {
+    track: (originalEvent: Event) => {
         const event: any = cacheTrackEvents.processEvent(originalEvent);
-        if (cacheTrackEvents.isReady() && !cache) {
+        if (cacheTrackEvents.isReady()) {
+            // eslint-disable-next-line no-console
+            console.log('tracking with cache');
             Analytics?.trackEvent(event.name, event.properties);
         } else {
+            // eslint-disable-next-line no-console
+            console.log('create caching mech');
             cacheTrackEvents.set(event);
         }
     },
@@ -102,14 +124,15 @@ const cacheTrackEvents = {
     },
     loadEvent: (items: Item[]) => {
         items.forEach(({ event }) => {
+            // eslint-disable-next-line no-console
+            console.log('items', items);
             const { name, properties } = event;
-            cacheTrackEvents.track(
-                {
-                    name,
-                    properties,
-                },
-                false
-            );
+            // eslint-disable-next-line no-console
+            console.log('event: ', event);
+            cacheTrackEvents.track({
+                name,
+                properties,
+            });
         });
         return cacheTrackEvents;
     },

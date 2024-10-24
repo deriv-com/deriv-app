@@ -25,6 +25,7 @@ type TModalContext = {
 type TModalOptions = {
     defaultRootId?: 'wallets_modal_root' | 'wallets_modal_show_header_root';
     rootRef?: React.RefObject<HTMLElement>;
+    shouldCloseOnClickOutside?: boolean;
     shouldHideDerivAppHeader?: boolean;
 };
 
@@ -84,7 +85,10 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         }));
     };
 
-    useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
+    const onClickOutsideHandler = () =>
+        modalOptions?.shouldCloseOnClickOutside === false || !isDesktop ? () => undefined : hide;
+
+    useOnClickOutside(modalRef, onClickOutsideHandler);
 
     const modalRootRef = useMemo(() => {
         // if they specify their own root, prioritize this first

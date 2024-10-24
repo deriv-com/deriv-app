@@ -6,7 +6,7 @@ import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { trackEventWithCache } from 'Utils/Analytics/analytics.ts';
+import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
@@ -29,21 +29,20 @@ const PasswordSelectionModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
-            trackEventWithCache({
-                name: 'ce_virtual_signup_form',
-                properties: {
-                    action: 'password_screen_opened',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: 'ce_virtual_signup_form',
+                        properties: {
+                            action: 'password_screen_opened',
+                            form_name: is_mobile
+                                ? 'virtual_signup_web_mobile_default'
+                                : 'virtual_signup_web_desktop_default',
+                        },
+                    },
                 },
-            });
-
-            // Analytics.trackEvent('ce_virtual_signup_form', {
-            //     action: 'password_screen_opened',
-            //     form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-            // });
-
-            //eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+            ]);
+        }, [is_mobile]);
 
         return (
             <div className='account-signup__password-selection'>

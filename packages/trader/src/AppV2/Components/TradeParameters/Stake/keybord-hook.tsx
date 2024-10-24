@@ -19,10 +19,10 @@ const useIsOnScreenKeyboardOpen = () => {
             const target = e.target as HTMLElement;
             if (isKeyboardInput(target) && target.id === 'stake_input') {
                 setIsFocus(true);
-                setTimeout(() => {
-                    // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
-                    window?.scrollTo(0, 200);
-                }, 300);
+                // setTimeout(() => {
+                // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
+                // window?.scrollTo(0, 400);
+                // }, 300);
             }
         };
         const handleFocusOut = (e: FocusEvent) => {

@@ -137,7 +137,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         setTimeout(() => {
             // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
-            window?.scrollTo(0, 200);
+            window?.scrollTo(0, 400);
         }, 300);
     }, [test]);
 

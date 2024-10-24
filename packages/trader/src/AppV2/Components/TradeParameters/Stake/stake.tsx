@@ -134,27 +134,11 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     }, [stake_error]);
 
-    // const button = document.querySelector('#test_button');
     React.useEffect(() => {
-        // const options = {
-        //     root: null,
-        //     rootMargin: '0px',
-        //     threshold: 0,
-        // };
-
-        // const observer = new IntersectionObserver(([entry]) => {
-        //     if (!entry.isIntersecting && is_open) {
         setTimeout(() => {
-            document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
+            // document.querySelector('.quill-action-sheet--portal ')?.scrollTo(0, 200);
             window?.scrollTo(0, 200);
         }, 300);
-        //     }
-        // }, options);
-
-        // if (button) observer.observe(button);
-        // return () => {
-        //     if (button) observer.unobserve(button);
-        // };
     }, [test]);
 
     React.useEffect(() => {
@@ -280,7 +264,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 position='left'
                 expandable={false}
                 shouldBlurOnClose={is_open}
-                // className={is_focused ? 'test' : undefined}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
@@ -336,7 +319,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 }
                             },
                         }}
-                        id='test_button'
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

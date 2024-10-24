@@ -360,14 +360,35 @@ $MIN_HEIGHT_FLOATING: calc(
             &--phone {
                 &_container {
                     display: flex;
+
+                    .dc-select-native {
+                        width: 45%;
+
+                        .dc-select-native__container {
+                            border-start-end-radius: 0;
+                            border-end-end-radius: 0;
+                        }
+                    }
+
+                    .dc-autocomplete {
+                        width: 35%;
+
+                        .dc-dropdown-list {
+                            width: max-content !important;
+                        }
+
+                        .dc-input__container {
+                            border-start-end-radius: 0;
+                            border-end-end-radius: 0;
+                        }
+                    }
                 }
 
                 &_input {
                     width: 100%;
 
                     .dc-input__container {
-                        border-start-end-radius: 0;
-                        border-end-end-radius: 0;
+                        border-radius: 0;
                     }
                 }
             }

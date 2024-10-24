@@ -1,5 +1,6 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, Fragment } from 'react';
 import {
+    useGetPhoneNumberList,
     usePhoneNumberVerificationSetTimer,
     usePhoneVerificationAnalytics,
     useRequestPhoneNumberOTP,
@@ -7,9 +8,10 @@ import {
 } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Button, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
+import { Button, InputPhoneNumber, Snackbar, Text } from '@deriv-com/quill-ui';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { validatePhoneNumber } from './validation';
+import { TCountryCodes } from '@deriv-com/quill-ui/dist/types';
 
 type TConfirmPhoneNumber = {
     show_confirm_phone_number?: boolean;
@@ -31,7 +33,10 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         is_disabled_request_button,
         setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
+    const { formatted_countries_list, short_code_selected, selected_phone_code, selected_country_list } =
+        useGetPhoneNumberList();
     const { data: account_settings, invalidate } = useSettings();
+    const [selectedCountryCode, setSelectedCountryCode] = useState<TCountryCodes>();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
     const { next_phone_otp_request_timer, is_phone_otp_timer_loading } = usePhoneNumberVerificationSetTimer(true);
@@ -70,13 +75,23 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
 
     const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
-        validatePhoneNumber(`+${e.target.value}`, setErrorMessage, setIsDisabledRequestButton);
+        validatePhoneNumber(
+            `${selectedCountryCode?.phone_code ?? selected_phone_code}${e.target.value}`,
+            setErrorMessage,
+            setIsDisabledRequestButton
+        );
+    };
+
+    const handleOnChangeCountryCode = (item: TCountryCodes) => {
+        setSelectedCountryCode(item);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
         setIsButtonLoading(true);
         setPhoneVerificationType(phone_verification_type);
-        const { error } = await setUsersPhoneNumber({ phone: `+${phone_number}` });
+        const { error } = await setUsersPhoneNumber({
+            phone: `${selectedCountryCode?.phone_code ?? selected_phone_code}${phone_number}`,
+        });
 
         if (!error) {
             trackPhoneVerificationEvents({
@@ -116,21 +131,32 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         return resendPhoneOtpTimer;
     };
 
+    const isCarrierSupportedForSms = selectedCountryCode
+        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+          selectedCountryCode?.carriers.includes('sms')
+        : selected_country_list?.carriers.includes('sms');
+
+    const isCarrierSupportedForWhatsApp = selectedCountryCode
+        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+          selectedCountryCode?.carriers.includes('whatsapp')
+        : selected_country_list?.carriers.includes('whatsapp');
+
     return (
-        <>
+        <Fragment>
             <Text bold>
                 <Localize i18n_default_text='Step 2 of 3: Confirm your phone number' />
             </Text>
             <div className='phone-verification__card--inputfield'>
-                <TextFieldAddon
-                    type='number'
-                    label={localize('Phone number')}
+                <InputPhoneNumber
+                    countryCodes={formatted_countries_list}
+                    codeLabel={localize('Code')}
+                    shortCode={selectedCountryCode?.short_code || short_code_selected}
+                    onCodeChange={handleOnChangeCountryCode}
                     value={phone_number}
+                    label={localize('Phone Number')}
+                    onChange={handleOnChangePhoneNumber}
                     status={error_message ? 'error' : 'neutral'}
                     message={error_message}
-                    className='phone-verification__card--inputfield__phone-number-input'
-                    onChange={handleOnChangePhoneNumber}
-                    addonLabel='+'
                 />
             </div>
             <div className='phone-verification__card--buttons_container'>
@@ -144,7 +170,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
                         is_disabled_request_button ||
-                        is_phone_otp_timer_loading
+                        is_phone_otp_timer_loading ||
+                        !isCarrierSupportedForSms
                     }
                 >
                     <Text bold>
@@ -160,7 +187,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         is_button_loading ||
                         !!next_phone_otp_request_timer ||
                         is_disabled_request_button ||
-                        is_phone_otp_timer_loading
+                        is_phone_otp_timer_loading ||
+                        !isCarrierSupportedForWhatsApp
                     }
                 >
                     <Text color='white' bold>
@@ -178,7 +206,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 }
                 isVisible={!!next_phone_otp_request_timer}
             />
-        </>
+        </Fragment>
     );
 });
 

@@ -86,6 +86,7 @@ describe('TransferFormDropdown', () => {
                 demo_account: 0,
                 loginid: 'CR1234',
             },
+            hasPlatformStatus: jest.fn(),
         });
     });
 
@@ -110,6 +111,7 @@ describe('TransferFormDropdown', () => {
         });
         (useTransfer as jest.Mock).mockReturnValue({
             accounts: {},
+            hasPlatformStatus: jest.fn(),
         });
         (useDevice as jest.Mock).mockReturnValue({
             isMobile: true,
@@ -144,6 +146,7 @@ describe('TransferFormDropdown', () => {
                 displayBalance: '1000 USD',
                 loginid: 'CR1234',
             },
+            hasPlatformStatus: jest.fn(),
         });
         render(<TransferFormDropdown fieldName='fromAccount' mobileAccountsListRef={createRef()} />, { wrapper });
 
@@ -213,6 +216,7 @@ describe('TransferFormDropdown', () => {
                 currency: 'USD',
                 loginid: 'CR1234',
             },
+            hasPlatformStatus: jest.fn(),
         });
 
         render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });
@@ -246,6 +250,7 @@ describe('TransferFormDropdown', () => {
                 currency: 'USD',
                 loginid: 'CR1234',
             },
+            hasPlatformStatus: jest.fn(),
         });
 
         render(<TransferFormDropdown fieldName='toAccount' mobileAccountsListRef={createRef()} />, { wrapper });

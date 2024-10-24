@@ -28,9 +28,13 @@ const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWit
     return (
         <div
             aria-disabled={disabled}
-            className={classNames('wallets-trading-account-card', className, {
-                'wallets-trading-account-card--disabled': disabled,
-            })}
+            className={classNames(
+                'wallets-trading-account-card',
+                {
+                    'wallets-trading-account-card--disabled': disabled,
+                },
+                className
+            )}
             data-testid='dt_wallets_trading_account_card'
             onClick={handleClick}
             onKeyDown={handleClick}

@@ -137,7 +137,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         setTimeout(() => {
             //check button bottom?
-            window?.scrollTo(0, 200);
+            window?.scrollTo(0, 300);
         }, 300);
     }, [test]);
 

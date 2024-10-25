@@ -93,7 +93,6 @@ const Unsupported = ({
                 handlePOIforMT5Complete={handlePOIforMT5Complete}
                 handleComplete={handleViewComplete}
                 is_for_mt5={is_for_mt5}
-                needs_poa={needs_poa}
                 {...props}
             />
         );

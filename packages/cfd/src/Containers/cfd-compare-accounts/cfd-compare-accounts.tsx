@@ -64,20 +64,19 @@ const CompareCFDs = observer(() => {
             ? all_cfd_available_accounts.length + 1
             : all_cfd_available_accounts.length;
 
-    const getCompareAccountsHeader = () =>
-        selected_region === REGION.EU ? (
-            <Localize
-                i18n_default_text='Deriv MT5 CFDs {{title}} account'
-                values={{
-                    title: is_demo ? localize('demo') : localize('real'),
-                }}
-            />
-        ) : (
-            <Localize
-                i18n_default_text='Compare CFDs {{title}} accounts'
-                values={{ title: is_demo ? localize('demo') : '' }}
-            />
-        );
+    const CompareAccountsHeader = (
+        <Localize
+            i18n_default_text={
+                selected_region === REGION.EU
+                    ? 'Deriv MT5 CFDs {{real_title}} account'
+                    : 'Compare CFDs {{demo_title}} accounts'
+            }
+            values={{
+                demo_title: is_demo ? localize('demo') : '',
+                real_title: is_demo ? localize('Demo') : localize('real'),
+            }}
+        />
+    );
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -94,7 +93,7 @@ const CompareCFDs = observer(() => {
             </div>
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
-                    {getCompareAccountsHeader()}
+                    {CompareAccountsHeader}
                 </Text>
             </h1>
         </div>
@@ -143,7 +142,7 @@ const CompareCFDs = observer(() => {
 
     return (
         <PageOverlay
-            header={getCompareAccountsHeader()}
+            header={CompareAccountsHeader}
             header_classname='compare-cfd-header-title'
             is_from_app={!routes.traders_hub}
             onClickClose={() => history.push(routes.traders_hub)}

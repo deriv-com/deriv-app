@@ -21,7 +21,7 @@ type RiskManagementItemProps = {
     modal_body_content: React.ReactNode;
     is_deal_cancellation?: boolean;
     value?: number | null;
-    validation_params: {
+    validation_params?: {
         [key: string]: { min: number; max: number };
     };
     type?: 'take_profit' | 'stop_loss';
@@ -113,8 +113,8 @@ const RiskManagementItem = observer(
             setIsSheetOpen(false);
         };
 
-        const min_value = type && validation_params[type]?.min;
-        const max_value = type && validation_params[type]?.max;
+        const min_value = type && (validation_params?.[type]?.min ?? 0);
+        const max_value = type && (validation_params?.[type]?.max ?? 0);
 
         const error_message = (() => {
             const field_label = type === 'take_profit' ? localize('take profit') : localize('stop loss');

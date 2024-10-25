@@ -18,13 +18,15 @@ jest.mock('AppV2/Hooks/useContractDetails', () => ({
 
 jest.mock('../../RiskManagementItem', () => ({
     __esModule: true,
-    default: jest.fn(({ label, modal_body_content, value, type }) => (
+    default: jest.fn(({ label, modal_body_content, value, type, validation_params }) => (
         <div>
             <span>Risk Management Item Mock</span>
             <span>{label}</span>
             <span>{modal_body_content}</span>
             <span>{value}</span>
             <span>{type}</span>
+            <span>{validation_params.stop_loss.min}</span>
+            <span>{validation_params.stop_loss.max}</span>
         </div>
     )),
 }));
@@ -34,8 +36,16 @@ describe('StopLoss component', () => {
         jest.clearAllMocks();
     });
 
-    it('passes correct props to RiskManagementItem component when stop loss is visible', () => {
-        render(<StopLoss />);
+    it('passes correct validation_params prop to RiskManagementItem component', () => {
+        const validation_params = {
+            stop_loss: {
+                min: 1,
+                max: 50,
+            },
+        };
+
+        render(<StopLoss validation_params={validation_params} />);
+
         expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
         expect(screen.getByText('Stop loss')).toBeInTheDocument();
         expect(
@@ -43,5 +53,7 @@ describe('StopLoss component', () => {
                 'When your loss reaches or exceeds the set amount, your trade will be closed automatically.'
             )
         ).toBeInTheDocument();
+        expect(screen.getByText('1')).toBeInTheDocument();
+        expect(screen.getByText('50')).toBeInTheDocument();
     });
 });

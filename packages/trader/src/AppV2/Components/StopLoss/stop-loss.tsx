@@ -6,7 +6,7 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import RiskManagementItem from '../RiskManagementItem';
 
 type StopLossProps = {
-    validation_params: {
+    validation_params?: {
         [key: string]: { min: number; max: number };
     };
 };

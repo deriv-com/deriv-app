@@ -823,10 +823,15 @@ export default class TradersHubStore extends BaseStore {
     openFailedVerificationModal(selected_account_type) {
         const {
             common,
+            client,
             modules: { cfd },
         } = this.root_store;
         const { setJurisdictionSelectedShortcode, setAccountType } = cfd;
         const { setAppstorePlatform } = common;
+
+        if (selected_account_type?.client_kyc_status) {
+            client.setClientKYCStatus(selected_account_type.client_kyc_status);
+        }
 
         if (selected_account_type?.platform === CFD_PLATFORMS.MT5) {
             setAppstorePlatform(selected_account_type.platform);

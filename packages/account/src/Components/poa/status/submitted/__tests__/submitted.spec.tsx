@@ -14,23 +14,23 @@ describe('<Submitted />', () => {
 
     it('should render the Submitted component', () => {
         renderWithRouter(<Submitted needs_poi />);
-        expect(screen.getByText('Review in progress')).toBeInTheDocument();
+        expect(screen.getByText('Your documents were submitted successfully')).toBeInTheDocument();
     });
 
     it('should show submit_poi message if needs_poi is true', () => {
         renderWithRouter(<Submitted needs_poi />);
-        expect(screen.getByText('To start trading, you also need to verify your identity.')).toBeInTheDocument();
+        expect(screen.getByText('You must also submit a proof of identity.')).toBeInTheDocument();
     });
 
     it('should show review message if needs_poi is true', () => {
         renderWithRouter(<Submitted needs_poi />);
         expect(
-            screen.getByText('Your proof of address is under review. We’ll get back to you in 1–3 working days.')
+            screen.getByText('We’ll review your documents and notify you of its status within 1 to 3 days.')
         ).toBeInTheDocument();
     });
 
     it('should show ContinueTradingButton if no props are passed', () => {
         renderWithRouter(<Submitted />);
-        expect(screen.getByText("Return to Trader's Hub")).toBeInTheDocument();
+        expect(screen.getByTestId('continue-trading-button')).toBeInTheDocument();
     });
 });

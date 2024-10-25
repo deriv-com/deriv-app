@@ -114,18 +114,14 @@ describe('<CFDPasswordModal/>', () => {
         jest.clearAllMocks();
     });
 
-    it('should render create Password modal when valid conditions are met for dxtrade account', async () => {
+    it('should render create Password modal when valid conditions are met', async () => {
         const store = mockStore(mockRootStore);
-        const props = {
-            ...mock_props,
-            platform: 'dxtrade',
-        };
 
         store.client.account_status = { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] };
 
         render(
             <Router history={history}>
-                <CFDPasswordModal {...props} />
+                <CFDPasswordModal {...mock_props} />
             </Router>,
             {
                 wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
@@ -325,7 +321,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
 
-        fireEvent.click(await screen.findByRole('button', { name: /Transfer now/i }));
+        fireEvent.click(await screen.findByRole('button', { name: /ok/i }));
 
         await waitFor(() => {
             expect(mockSetCFDSuccessDialog).toHaveBeenCalledWith(false);
@@ -498,7 +494,7 @@ describe('<CFDPasswordModal/>', () => {
             }
         );
         fireEvent.change(await screen.findByTestId('dt_mt5_password'), { target: { value: user_input } });
-        fireEvent.click(await screen.findByRole('button', { name: 'Create account' }));
+        fireEvent.click(await screen.findByRole('button', { name: 'Create Deriv MT5 password' }));
 
         await waitFor(() => {
             expect(mockSubmitMt5Password).toHaveBeenCalled();

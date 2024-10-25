@@ -5,14 +5,11 @@ import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
-import { TAvailableMT5Account } from '../../types';
-import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
+import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
+import { CFD_PLATFORMS, getMarketTypeDetails, PlatformDetails, PRODUCT } from '../../constants';
 import './EnterPassword.scss';
 
-// Note: this component requires a proper refactor to remove props for keys available under the `account` prop
 type TProps = {
-    account?: TAvailableMT5Account;
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
     isTncChecked?: boolean;
@@ -31,7 +28,6 @@ type TProps = {
 };
 
 const EnterPassword: React.FC<TProps> = ({
-    account,
     isForgotPasswordLoading,
     isLoading,
     isTncChecked = true,
@@ -104,9 +100,13 @@ const EnterPassword: React.FC<TProps> = ({
                         {passwordErrorHints}
                     </Text>
                 )}
-                {account && !isVirtual && <MT5LicenceMessage account={account} />}
-                {account && account.shortcode !== JURISDICTION.SVG && platform === CFD_PLATFORMS.MT5 && !isVirtual && (
-                    <MT5PasswordModalTnc checked={isTncChecked} onChange={() => onTncChange?.()} />
+                {product === PRODUCT.ZEROSPREAD && !isVirtual && (
+                    <CFDPasswordModalTnc
+                        checked={isTncChecked}
+                        onChange={() => onTncChange?.()}
+                        platform={platform}
+                        product={product}
+                    />
                 )}
             </div>
             {isDesktop && (

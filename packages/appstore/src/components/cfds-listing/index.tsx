@@ -4,6 +4,8 @@ import { Loading, Text } from '@deriv/components';
 import {
     CFD_PLATFORMS,
     formatMoney,
+    getAuthenticationStatusInfo,
+    Jurisdiction,
     MT5_ACCOUNT_STATUS,
     TRADING_PLATFORM_STATUS,
     makeLazyLoader,
@@ -65,34 +67,41 @@ const CFDsListing = observer(() => {
         no_MF_account,
         toggleAccountTransferModal,
         is_demo,
+        openFailedVerificationModal,
         showTopUpModal,
         no_CR_account,
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
-        getDefaultJurisdiction,
     } = traders_hub;
+
     const {
         setAccountType,
         toggleCTraderTransferModal,
         setAccountUnavailableModal,
         setServerMaintenanceModal,
         setProduct,
-        setJurisdictionSelectedShortcode,
     } = cfd;
 
     const {
+        account_status,
         is_landing_company_loaded,
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
         ctrader_total_balance,
-        updateMT5AccountDetails,
     } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+
+    const {
+        poi_pending_for_bvi_labuan_vanuatu,
+        poi_resubmit_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
+        is_idv_revoked,
+    } = getAuthenticationStatusInfo(account_status);
 
     const [is_traders_dashboard_tracking_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'ce_tradershub_dashboard_tracking',
@@ -100,6 +109,7 @@ const CFDsListing = observer(() => {
     });
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
+    const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
     const { getPlatformStatus } = useTradingPlatformStatus();
 
@@ -132,23 +142,61 @@ const CFDsListing = observer(() => {
             return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
         } else if (current_acc_status === 'unavailable') {
             return TRADING_PLATFORM_STATUS.UNAVAILABLE;
-        } else if (jurisdiction) {
-            switch (current_acc_status) {
-                case 'proof_failed':
-                case 'poa_failed':
-                case 'poa_outdated':
-                    return MT5_ACCOUNT_STATUS.FAILED;
-                case 'verification_pending':
-                case 'poa_pending':
-                    return MT5_ACCOUNT_STATUS.PENDING;
-                case 'needs_verification':
-                case 'poa_required':
-                    return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
-                case 'migrated_with_position':
-                    return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
-                case 'migrated_without_position':
-                    return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+        }
+
+        if (jurisdiction) {
+            switch (jurisdiction) {
+                case Jurisdiction.BVI: {
+                    if (
+                        getAuthStatus([
+                            is_idv_revoked,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'proof_failed',
+                        ])
+                    ) {
+                        return MT5_ACCOUNT_STATUS.FAILED;
+                    } else if (
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
+                    ) {
+                        return MT5_ACCOUNT_STATUS.PENDING;
+                    }
+                    return null;
+                }
+                case Jurisdiction.LABUAN: {
+                    if (
+                        getAuthStatus([
+                            poa_resubmit_for_labuan,
+                            is_idv_revoked,
+                            poi_resubmit_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'proof_failed',
+                        ])
+                    ) {
+                        return MT5_ACCOUNT_STATUS.FAILED;
+                    } else if (
+                        getAuthStatus([
+                            poi_pending_for_bvi_labuan_vanuatu,
+                            current_acc_status === 'verification_pending',
+                        ])
+                    ) {
+                        return MT5_ACCOUNT_STATUS.PENDING;
+                    }
+                    return null;
+                }
                 default:
+                    if (current_acc_status === 'proof_failed') {
+                        return MT5_ACCOUNT_STATUS.FAILED;
+                    } else if (current_acc_status === 'verification_pending') {
+                        return MT5_ACCOUNT_STATUS.PENDING;
+                    } else if (current_acc_status === 'needs_verification') {
+                        return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
+                    } else if (current_acc_status === 'migrated_with_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
+                    } else if (current_acc_status === 'migrated_without_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+                    }
                     return null;
             }
         }
@@ -186,7 +234,6 @@ const CFDsListing = observer(() => {
             setPerformanceValue('switch_from_demo_to_real_time');
             setPerformanceValue('switch_from_real_to_demo_time');
         }
-        updateMT5AccountDetails();
     }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
     return (
@@ -213,21 +260,22 @@ const CFDsListing = observer(() => {
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
-                    {/* MT5 */}
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
                         const track_account_subtitle = existing_account.tracking_name ?? '';
 
                         const has_mt5_account_status =
-                            existing_account?.status || hasMaintenanceStatus
+                            existing_account?.status || is_idv_revoked || hasMaintenanceStatus
                                 ? getMT5AccountAuthStatus(
                                       existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
                                 : '';
+
                         return (
                             <TradingAppCard
+                                client_kyc_status={existing_account?.client_kyc_status}
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon
@@ -264,7 +312,6 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            setJurisdictionSelectedShortcode(getDefaultJurisdiction());
                                             getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
@@ -304,6 +351,12 @@ const CFDsListing = observer(() => {
                                                 });
                                             }
 
+                                            if (has_mt5_account_status === MT5_ACCOUNT_STATUS.FAILED && is_eu_user) {
+                                                setIsMT5VerificationFailedModal(true);
+                                                openFailedVerificationModal(existing_account);
+                                                return;
+                                            }
+
                                             startTrade(existing_account.platform, existing_account);
                                         }
                                     }
@@ -314,8 +367,8 @@ const CFDsListing = observer(() => {
                                     category: selected_account_type,
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
-                                    product: existing_account.product,
                                 }}
+                                openFailedVerificationModal={openFailedVerificationModal}
                                 market_type={existing_account?.market_type}
                             />
                         );
@@ -324,8 +377,6 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
-
-            {/* cTrader */}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <Fragment>
                     <div className='cfd-full-row'>
@@ -445,7 +496,6 @@ const CFDsListing = observer(() => {
                             </Text>
                         </div>
                     </React.Fragment>
-                    {/* dxtrade */}
                     {is_landing_company_loaded ? (
                         available_dxtrade_accounts?.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);

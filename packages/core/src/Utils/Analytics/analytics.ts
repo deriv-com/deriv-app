@@ -95,7 +95,7 @@ const cacheTrackEvents = {
         }
         return event;
     },
-    track: (originalEvent: Event, cache?: boolean) => {
+    track: (originalEvent: Event, cache: boolean) => {
         const event: any = cacheTrackEvents.processEvent(originalEvent);
         if (cacheTrackEvents.isReady() && !cache) {
             Analytics?.trackEvent(event.name, event.properties);
@@ -118,14 +118,14 @@ const cacheTrackEvents = {
         }, 1000);
     },
     loadEvent: (items: Item[]) => {
-        items.forEach(({ event, cache }) => {
+        items.forEach(({ event }) => {
             const { name, properties } = event;
             cacheTrackEvents.track(
                 {
                     name,
                     properties,
                 },
-                cache
+                false
             );
         });
         return cacheTrackEvents;

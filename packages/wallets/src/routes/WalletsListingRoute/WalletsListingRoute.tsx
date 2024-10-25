@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
@@ -16,15 +16,11 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 
 const WalletsListingRoute: React.FC = () => {
     const { isDesktop } = useDevice();
-    const { data: wallets } = useWalletAccountsList();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
-    const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
-    const hasAllRealWalletsDisabled = !hasAnyActiveRealWallets && (wallets?.length ?? 0) > 1;
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
-    const shouldHideAddMoreCarousel =
-        hasAllRealWalletsDisabled || isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
+    const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
 
     return (
         <div className='wallets-listing-route'>

@@ -146,6 +146,7 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
+    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -235,6 +236,7 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
+            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -364,7 +366,6 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
-            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             setIsClientStoreInitialized: action.bound,
             cleanUp: action.bound,
@@ -2019,15 +2020,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    async updateMT5AccountDetails() {
-        if (this.is_logged_in) {
-            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
-            await WS.authorized
-                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
-                .then(this.responseTradingPlatformAvailableAccounts);
-        }
-    }
-
     setInitialized(is_initialized) {
         this.initialized_broadcast = is_initialized;
     }
@@ -2479,7 +2471,6 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
-
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({

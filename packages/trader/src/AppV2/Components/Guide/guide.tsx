@@ -17,6 +17,7 @@ type TGuide = {
 const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide) => {
     const {
         ui: { is_dark_mode_on },
+        common: { current_language },
     } = useStore();
     const { contract_type } = useTraderStore();
     const contract_type_title = AVAILABLE_CONTRACTS.find(item => item.for.includes(contract_type))?.id ?? '';
@@ -61,6 +62,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
                 icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}
+                key={current_language}
             >
                 {has_label && (
                     <Text size='sm' bold color='quill-typography__color--prominent'>

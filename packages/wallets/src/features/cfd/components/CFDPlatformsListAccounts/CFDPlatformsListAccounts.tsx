@@ -15,6 +15,7 @@ import {
     AvailableDxtradeAccountsList,
     AvailableMT5AccountsList,
 } from '../../flows';
+import { TAddedMT5Account, TAvailableMT5Account } from '../../types';
 import './CFDPlatformsListAccounts.scss';
 
 const CFDPlatformsListAccounts: React.FC = () => {
@@ -62,10 +63,18 @@ const CFDPlatformsListAccounts: React.FC = () => {
         <div className='wallets-cfd-list-accounts__content'>
             {mt5AccountsList?.map((account, index) => {
                 if (account.is_added)
-                    return <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />;
+                    return (
+                        <AddedMT5AccountsList
+                            account={account as TAddedMT5Account}
+                            key={`added-mt5-list${(account as TAddedMT5Account).loginid}-${index}`}
+                        />
+                    );
 
                 return (
-                    <AvailableMT5AccountsList account={account} key={`available-mt5-list${account.name}-${index}`} />
+                    <AvailableMT5AccountsList
+                        account={account as TAvailableMT5Account}
+                        key={`available-mt5-list${account.name}-${index}`}
+                    />
                 );
             })}
             {!isRestricted && !isEuRegion && (

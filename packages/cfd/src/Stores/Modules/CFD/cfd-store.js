@@ -14,6 +14,7 @@ import BaseStore from '../../base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
+    is_cfd_personal_details_modal_visible = false;
     is_ctrader_transfer_modal_visible = false;
     is_jurisdiction_modal_visible = false;
     jurisdiction_selected_shortcode = '';
@@ -47,6 +48,7 @@ export default class CFDStore extends BaseStore {
 
     error_type = undefined;
 
+    is_cfd_verification_modal_visible = false;
     dxtrade_tokens = {
         demo: '',
         real: '',
@@ -68,6 +70,7 @@ export default class CFDStore extends BaseStore {
 
         makeObservable(this, {
             is_compare_accounts_visible: observable,
+            is_cfd_personal_details_modal_visible: observable,
             is_jurisdiction_modal_visible: observable,
             is_mt5_trade_modal_visible: observable,
             is_ctrader_transfer_modal_visible: observable,
@@ -85,6 +88,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_password_modal_enabled: observable,
             is_sent_email_modal_enabled: observable,
             current_account: observable,
+            is_cfd_verification_modal_visible: observable,
             error_type: observable,
             product: observable,
             dxtrade_tokens: observable,
@@ -97,6 +101,8 @@ export default class CFDStore extends BaseStore {
             is_account_unavailable_modal_visible: observable,
             account_title: computed,
             current_list: computed,
+            has_created_account_for_selected_jurisdiction: computed,
+            has_submitted_cfd_personal_details: computed,
             onMount: action.bound,
             onUnmount: override,
             checkShouldOpenAccount: action.bound,
@@ -142,6 +148,7 @@ export default class CFDStore extends BaseStore {
             topUpVirtual: action.bound,
             sendVerifyEmail: action.bound,
             setJurisdictionSelectedShortcode: action.bound,
+            toggleCFDVerificationModal: action.bound,
             setDxtradeToken: action.bound,
             setCTraderToken: action.bound,
             loadDxtradeTokens: action.bound,
@@ -157,6 +164,12 @@ export default class CFDStore extends BaseStore {
                   this.account_type.category
               ][this.account_type.type].title
             : '';
+    }
+
+    get has_submitted_cfd_personal_details() {
+        const { citizen, place_of_birth, tax_residence, tax_identification_number, account_opening_reason } =
+            this.root_store.client.account_settings;
+        return !!(citizen && place_of_birth && tax_residence && tax_identification_number && account_opening_reason);
     }
 
     get current_list() {
@@ -197,6 +210,24 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get dxtrade_companies() {
         return getDxCompanies();
+    }
+
+    get has_created_account_for_selected_jurisdiction() {
+        switch (this.account_type.type) {
+            case 'synthetic':
+                return this.real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+            // here
+            case 'all':
+                return this.real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+            default:
+                return this.real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+        }
     }
 
     onMount() {
@@ -444,7 +475,11 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
-            product: this.product,
+            ...(this.account_type.type === 'all'
+                ? this.product === 'swap_free'
+                    ? { product: 'swap_free' }
+                    : { product: 'zero_spread' }
+                : {}),
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode && this.account_type.category === 'real'
                 ? { company: this.jurisdiction_selected_shortcode }
@@ -843,6 +878,10 @@ export default class CFDStore extends BaseStore {
 
     setJurisdictionSelectedShortcode(shortcode) {
         this.jurisdiction_selected_shortcode = shortcode;
+    }
+
+    toggleCFDVerificationModal() {
+        this.is_cfd_verification_modal_visible = !this.is_cfd_verification_modal_visible;
     }
 
     setMigratedMT5Accounts(accounts) {

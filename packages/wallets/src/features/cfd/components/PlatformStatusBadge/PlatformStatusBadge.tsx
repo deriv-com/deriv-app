@@ -3,15 +3,15 @@ import { useTradingPlatformStatus } from '@deriv/api-v2';
 import { LegacyWarningIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Badge, Text } from '@deriv-com/ui';
+import { THooks } from '../../../../types';
 import type { TAccount } from '../../../cashier/modules/Transfer/types';
 import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../constants';
-import { TAddedMT5Account } from '../../types';
 
 type TProps = {
     badgeSize: ComponentProps<typeof Badge>['badgeSize'];
     cashierAccount?: TAccount;
     className?: ComponentProps<typeof Badge>['className'];
-    mt5Account?: TAddedMT5Account;
+    mt5Account?: THooks.MT5AccountsList;
 };
 
 const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, className, mt5Account }) => {

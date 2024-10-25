@@ -146,6 +146,7 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
+    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -169,6 +170,7 @@ export default class ClientStore extends BaseStore {
 
     subscriptions = {};
     exchange_rates = {};
+    client_kyc_status = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -234,6 +236,7 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
+            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -363,7 +366,6 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
-            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             setIsClientStoreInitialized: action.bound,
             cleanUp: action.bound,
@@ -433,6 +435,8 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            setClientKYCStatus: action.bound,
+            client_kyc_status: observable,
         });
 
         reaction(
@@ -2016,15 +2020,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    async updateMT5AccountDetails() {
-        if (this.is_logged_in) {
-            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
-            await WS.authorized
-                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
-                .then(this.responseTradingPlatformAvailableAccounts);
-        }
-    }
-
     setInitialized(is_initialized) {
         this.initialized_broadcast = is_initialized;
     }
@@ -2476,7 +2471,6 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
-
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
@@ -2940,5 +2934,9 @@ export default class ClientStore extends BaseStore {
 
     get is_account_to_be_closed_by_residence() {
         return this.account_time_of_closure && this.residence && this.residence === 'sn';
+    }
+
+    setClientKYCStatus(client_kyc_status) {
+        this.client_kyc_status = client_kyc_status;
     }
 }

@@ -1,13 +1,17 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
 import { formatDate, formatMoney, formatTime, TContractStore } from '@deriv/shared';
 import CardWrapper from '../CardWrapper';
+import Carousel from 'AppV2/Components/Carousel';
 import React, { useState } from 'react';
 import clsx from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 
+type THistory = TContractStore['contract_update_history'];
+
 type TContractHistory = {
     currency?: string;
-    history?: [] | TContractStore['contract_update_history'];
+    history?: [] | THistory;
+    is_multiplier?: boolean;
 };
 
 type TPagination = {
@@ -15,25 +19,32 @@ type TPagination = {
     totalPageCount: number;
 };
 
-const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
-    const [currentPage, setCurrentPage] = useState(0);
-    const itemsPerPage = 4;
-    const totalPages = Math.ceil(history.length / itemsPerPage);
+const TakeProfitHistory = ({ history = [], currency, is_multiplier }: TContractHistory) => {
+    const [current_page, setCurrentPage] = useState(0);
+    const items_per_page = 4;
+    const total_pages = Math.ceil(history.length / items_per_page);
 
-    const handlePageChange = (pagination: TPagination) => {
+    const handlePageChange = React.useCallback((pagination: TPagination) => {
         setCurrentPage(pagination.currentPage - 1);
-    };
+    }, []);
 
-    const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
+    const getHistoryTitle = () =>
+        is_multiplier ? <Localize i18n_default_text='TP & SL history' /> : <Localize i18n_default_text='TP history' />;
 
-    return (
-        <CardWrapper title={<Localize i18n_default_text='TP & SL history' />} className='take-profit-history'>
-            <div
-                className={clsx('take-profit-history__table', {
-                    'take-profit-history__table--fixed-height': history.length > itemsPerPage,
-                })}
-            >
-                {currentItems.map((item, index) => (
+    if (!history.length) return null;
+
+    const pages_config = (history as THistory).reduce((result: THistory[], _item: typeof history[0], index: number) => {
+        if (!(index % items_per_page)) {
+            result.push(history.slice(index, index + items_per_page));
+        }
+        return result;
+    }, []);
+
+    const pages = pages_config.map((array, index) => ({
+        id: index,
+        component: (
+            <React.Fragment>
+                {array.map((item, index) => (
                     <div key={`take-profit-history-${index}`} className='take-profit-history__table-row'>
                         <div
                             className={clsx('take-profit-history__table-cell', 'take-profit-history__table-cell--left')}
@@ -57,11 +68,30 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
                         </div>
                     </div>
                 ))}
+            </React.Fragment>
+        ),
+    }));
+
+    return (
+        <CardWrapper title={getHistoryTitle()} className='take-profit-history'>
+            <div
+                className={clsx('take-profit-history__table', {
+                    'take-profit-history__table--fixed-height': history.length > items_per_page,
+                })}
+            >
+                <Carousel
+                    classname='take-profit-history__carousel'
+                    current_index={current_page}
+                    is_swipeable
+                    pages={pages}
+                    setCurrentIndex={setCurrentPage}
+                />
             </div>
-            {totalPages > 1 && (
+            {total_pages > 1 && (
                 <Pagination
+                    initialPage={current_page + 1}
                     contentLength={history.length}
-                    contentPerPage={itemsPerPage}
+                    contentPerPage={items_per_page}
                     hideChevron
                     onClickPagination={handlePageChange}
                     variant='bullet'

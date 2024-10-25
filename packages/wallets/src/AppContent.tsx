@@ -1,15 +1,33 @@
 import React, { useEffect, useRef } from 'react';
-import { useDerivAccountsList } from '@deriv/api-v2';
+import { useDerivAccountsList, useSettings } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { Router } from './routes';
+import { TLanguageType } from './types';
 import './AppContent.scss';
 
-const AppContent: React.FC = () => {
+type AppContentProps = {
+    isWalletsOnboardingTourGuideVisible: boolean;
+    setPreferredLanguage: (language: TLanguageType | null) => void;
+};
+
+const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVisible, setPreferredLanguage }) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
     const previousDerivAccountListLenghtRef = useRef(0);
+    const appRef = useRef<HTMLDivElement>(null);
+    const {
+        data: { preferred_language: preferredLanguage },
+    } = useSettings();
+
+    useEffect(() => {
+        if (preferredLanguage) {
+            setPreferredLanguage(preferredLanguage as TLanguageType);
+        } else {
+            setPreferredLanguage(null);
+        }
+    }, [preferredLanguage, setPreferredLanguage]);
 
     useEffect(() => {
         if (!derivAccountList?.length) return;
@@ -35,8 +53,18 @@ const AppContent: React.FC = () => {
         });
     }, []);
 
+    // Scroll to top when the onboarding tour guide is not visible
+    useEffect(() => {
+        if (!isWalletsOnboardingTourGuideVisible) {
+            appRef.current?.scrollTo({
+                behavior: 'smooth',
+                top: 0,
+            });
+        }
+    }, [isWalletsOnboardingTourGuideVisible]);
+
     return (
-        <div className='wallets-app'>
+        <div className='wallets-app' ref={appRef}>
             <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
         </div>

@@ -11,15 +11,16 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
+    useOauth2,
 } from '@deriv/hooks';
-import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
+import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import WhatsApp from 'App/Components/Elements/WhatsApp';
 import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
 import PlatformSwitcher from './platform-switcher';
@@ -42,7 +43,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
-        loginid,
         logout: logoutClient,
         should_allow_authentication,
         should_allow_poinc_authentication,
@@ -72,11 +72,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const is_wallet_route = route.startsWith(routes.wallets) || route.startsWith(routes.wallets_compare_accounts);
 
-    const isMounted = useIsMounted();
-    const { data } = useRemoteConfig(isMounted());
+    const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
-    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -140,6 +138,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
+
+    const handleLogout = React.useCallback(async () => {
+        toggleDrawer();
+        history.push(routes.traders_hub);
+        await logoutClient();
+    }, [history, logoutClient, toggleDrawer]);
+
+    const { oAuthLogout } = useOauth2({ handleLogout });
 
     const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -428,18 +434,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {liveChat.isReady && cs_chat_whatsapp && (
+                                {cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
-                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
-                                        <a
-                                            className='header__menu-mobile-whatsapp-link'
-                                            href={whatsapp_url}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            onClick={toggleDrawer}
-                                        >
-                                            {localize('WhatsApp')}
-                                        </a>
+                                        <WhatsApp onClick={toggleDrawer} />
                                     </MobileDrawer.Item>
                                 )}
                                 {cs_chat_livechat && (
@@ -448,14 +445,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item
-                                        onClick={() => {
-                                            toggleDrawer();
-                                            history.push(routes.traders_hub);
-                                            logoutClient();
-                                        }}
-                                        className='dc-mobile-drawer__item'
-                                    >
+                                    <MobileDrawer.Item onClick={oAuthLogout} className='dc-mobile-drawer__item'>
                                         <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}

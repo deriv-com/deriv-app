@@ -69,7 +69,13 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                     if (AppsLinkMapper) {
                                         const AppIcon = AppToIconMapper[app as keyof typeof AppToIconMapper];
                                         const appLink = AppsLinkMapper;
-                                        return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                        return (
+                                            <AppIcon
+                                                data-testid={`dt_modal_trade_wrapper_${app}_icon`}
+                                                key={app}
+                                                onClick={() => window.open(appLink)}
+                                            />
+                                        );
                                     }
                                     return null;
                                 })}
@@ -79,7 +85,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 <QRCode size={80} value={link} />
                                 <Text align='center' size='xs'>
                                     <Localize
-                                        i18n_default_text=' Scan the QR code to download {{title}}'
+                                        i18n_default_text='Scan the QR code to download {{title}}'
                                         values={{ title }}
                                     />
                                 </Text>

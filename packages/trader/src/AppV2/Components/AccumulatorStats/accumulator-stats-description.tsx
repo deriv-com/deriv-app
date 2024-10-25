@@ -6,7 +6,7 @@ import StreamIframe from '../StreamIframe';
 
 const AccumulatorStatsDescription = ({ onActionSheetClose }: { onActionSheetClose: () => void }) => {
     return (
-        <ActionSheet.Portal showHandlebar={false}>
+        <ActionSheet.Portal showHandlebar shouldCloseOnDrag handleBarPosition='absolute'>
             <div className='stats-description'>
                 <StreamIframe src={UNIFIED_MODE_VIDEO_ID.accumulator_stats} title='accumulator_stats' />
                 <div className='stats-description__content'>

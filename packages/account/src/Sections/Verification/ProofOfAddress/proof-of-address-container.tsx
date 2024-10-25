@@ -5,7 +5,6 @@ import { WS, getPlatformRedirect, platforms, routes, AUTH_STATUS_CODES } from '@
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
-import NeedsReview from '../../../Components/poa/status/needs-review';
 import NotRequired from '../../../Components/poa/status/not-required';
 import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
@@ -30,6 +29,7 @@ type TAuthenticationStatus = Record<
     | 'resubmit_poa'
     | 'poa_expiring_soon'
     | 'poa_authenticated_with_idv'
+    | 'poa_authenticated_with_idv_photo'
     | 'has_submitted_duplicate_poa',
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
@@ -50,6 +50,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         poa_address_mismatch: false,
         poa_expiring_soon: false,
         poa_authenticated_with_idv: false,
+        poa_authenticated_with_idv_photo: false,
         has_submitted_duplicate_poa: false,
     });
 
@@ -74,6 +75,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poi,
                         poa_address_mismatch,
                         poa_authenticated_with_idv,
+                        poa_authenticated_with_idv_photo,
                         poa_expiring_soon,
                     } = populateVerificationStatus(get_account_status);
 
@@ -88,6 +90,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poi,
                         poa_address_mismatch,
                         poa_authenticated_with_idv,
+                        poa_authenticated_with_idv_photo,
                         poa_expiring_soon,
                     }));
                     setIsLoading(false);
@@ -136,6 +139,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         poa_address_mismatch,
         poa_expiring_soon,
         poa_authenticated_with_idv,
+        poa_authenticated_with_idv_photo,
         has_submitted_duplicate_poa,
     } = authentication_status;
 
@@ -151,7 +155,8 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch ||
         poa_expiring_soon ||
-        (poa_authenticated_with_idv && from_platform?.route === routes.cashier_p2p);
+        ((poa_authenticated_with_idv || poa_authenticated_with_idv_photo) &&
+            from_platform?.route === routes.cashier_p2p);
 
     const redirect_button = should_show_redirect_btn && (
         <Button
@@ -192,7 +197,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         case AUTH_STATUS_CODES.NONE:
             return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
         case AUTH_STATUS_CODES.PENDING:
-            return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
+            return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
         case AUTH_STATUS_CODES.VERIFIED:
             return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
         case AUTH_STATUS_CODES.EXPIRED:

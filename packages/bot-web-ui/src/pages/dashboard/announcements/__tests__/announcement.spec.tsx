@@ -1,11 +1,11 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { Notifications as Announcement } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { Notifications as Announcement } from '@deriv-com/ui';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 

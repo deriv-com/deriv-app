@@ -10,6 +10,7 @@ import {
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
+    VERIFICATION_SERVICES,
 } from '@deriv/shared';
 import { localize } from '@deriv-com/translations';
 import { getIDVDocuments } from '../Configs/idv-document-config';
@@ -157,7 +158,7 @@ export const isDocumentTypeValid = (document_type: FormikValues) => {
 export const isAdditionalDocumentValid = (document_type: FormikValues, additional_document_value?: string) => {
     const error_message = documentAdditionalError(additional_document_value, document_type?.additional);
     if (error_message) {
-        return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        return error_message + getExampleFormat(document_type?.additional?.example_format);
     }
     return undefined;
 };
@@ -277,3 +278,9 @@ export const verifyFields = (status: TIDVErrorStatus) => {
 
 export const isSpecialPaymentMethod = (payment_method_icon: string) =>
     ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);
+
+export const convertPhoneTypeDisplay = (phone_verification_type: string) => {
+    if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
+
+    return 'WhatsApp';
+};

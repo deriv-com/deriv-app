@@ -25,6 +25,8 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
         onChange({ target: { name: 'multiplier', value: multiplier } });
     };
 
+    const onClose = React.useCallback(() => setIsOpen(false), []);
+
     const action_sheet_content = [
         {
             id: 1,
@@ -70,12 +72,11 @@ const Multiplier = observer(({ is_minimized }: TMultiplierProps) => {
                 onClick={() => setIsOpen(true)}
             />
             <ActionSheet.Root
-                expandable
+                expandable={false}
                 isOpen={isOpen}
                 position='left'
-                onClose={() => {
-                    setIsOpen(false);
-                }}
+                onClose={onClose}
+                shouldBlurOnClose={isOpen}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel

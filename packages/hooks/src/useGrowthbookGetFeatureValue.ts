@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
+import { useIsMounted } from '@deriv/shared';
 
 interface UseGrowthbookGetFeatureValueArgs<T> {
     featureFlag: string;
@@ -16,13 +17,19 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
         Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
     const isGBLoaded = useIsGrowthbookIsLoaded();
+    const isMounted = useIsMounted();
+
+    // Required for debugging Growthbook, this will be removed after Freshchat launch
+    if (typeof window !== 'undefined') {
+        window.Analytics = Analytics;
+    }
 
     useEffect(() => {
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
                 const setFeatureValue = () => {
                     const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
-                    setFeatureFlagValue(value);
+                    if (isMounted()) setFeatureFlagValue(value);
                 };
                 setFeatureValue();
                 Analytics?.getInstances()?.ab?.GrowthBook?.setRenderer(() => {
@@ -31,7 +38,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
                 });
             }
         }
-    }, [isGBLoaded, resolvedDefaultValue, featureFlag]);
+    }, [isGBLoaded, resolvedDefaultValue, featureFlag, isMounted]);
 
     return [featureFlagValue, isGBLoaded];
 };

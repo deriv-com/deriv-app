@@ -59,7 +59,7 @@ const RiskManagementItem = observer(
         const finalValue = Math.abs(value as number);
 
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
-        const errorMessage = validation_errors[errorKey]?.[0] ?? '';
+        const validation_error_message = validation_errors[errorKey]?.[0] ?? '';
 
         const messageForMultiplier = is_valid_to_cancel ? (
             <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
@@ -130,7 +130,7 @@ const RiskManagementItem = observer(
                     max_value,
                 });
             }
-            return errorMessage;
+            return validation_error_message;
         })();
 
         return (

@@ -79,6 +79,7 @@ describe('OptionsAndMultipliersListing', () => {
         const icon = within(tradingAccountCard).queryByTestId('dt_label_paired_chevron');
         expect(icon).toBeInTheDocument();
     });
+
     it('renders only accounts with availability EU when is_eu is true', () => {
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'MF-1' },
@@ -88,9 +89,8 @@ describe('OptionsAndMultipliersListing', () => {
             isLoading: false,
         });
         render(<OptionsAndMultipliersListing />, { wrapper });
-        screen.debug(undefined, Infinity);
         expect(screen.getByTestId('dt_wallets_trading_account_card')).toBeInTheDocument();
-        expect(screen.queryByTestId('Deriv Trader')).toBeInTheDocument();
-        expect(screen.queryByTestId('Custom charts, low-entry costs.')).toBeInTheDocument();
+        expect(screen.queryByText('Deriv Trader')).toBeInTheDocument();
+        expect(screen.queryByText('Custom charts, low-entry costs.')).toBeInTheDocument();
     });
 });

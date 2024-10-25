@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { useDebounceCallback } from 'usehooks-ts';
 import { focusAndOpenKeyboard, getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -139,8 +138,6 @@ const TakeProfitAndStopLossInput = ({
     };
 
     React.useEffect(() => {
-        if (!is_enabled) return;
-
         const onProposalResponse: TOnProposalResponse = response => {
             const { error } = response;
 
@@ -155,20 +152,20 @@ const TakeProfitAndStopLossInput = ({
         };
 
         if (response) onProposalResponse(response);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_enabled, new_input_value, response]);
+    }, [is_enabled, response]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        is_api_response_received_ref.current = false;
         let value = String(e.target.value);
         if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
+        // If new value is equal to previous one, then we won't send API request
+        const is_equal = value === new_input_value;
+        is_api_response_received_ref.current = is_equal;
+        if (is_equal) return;
         setFEErrorText('');
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
     };
-
-    const debouncedOnInputChange = useDebounceCallback(onInputChange, 300);
 
     const onSave = () => {
         // Prevent from saving if user clicks before BE validation
@@ -243,7 +240,7 @@ const TakeProfitAndStopLossInput = ({
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
                     noStatusIcon
-                    onChange={debouncedOnInputChange}
+                    onChange={onInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}
                     regex={/[^0-9.,]/g}

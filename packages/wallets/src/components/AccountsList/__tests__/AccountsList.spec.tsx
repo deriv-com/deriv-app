@@ -1,6 +1,6 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
 import { WalletTourGuide } from 'src/components/WalletTourGuide';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -50,7 +50,7 @@ describe('AccountsList', () => {
         jest.clearAllMocks();
     });
 
-    it('should render account list in mobile view', () => {
+    it('renders account list in mobile view', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
@@ -61,7 +61,7 @@ describe('AccountsList', () => {
         expect(screen.getByText('Compare accounts')).toBeInTheDocument();
     });
 
-    it('should show Options tab in mobile view when the tab active', () => {
+    it('shows Options tab in mobile view when the tab active', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
@@ -78,7 +78,42 @@ describe('AccountsList', () => {
         expect(screen.getByText('Deriv GO')).toBeInTheDocument();
     });
 
-    it('should trigger `onTabClickHandler` with proper tab index when the user switches the tab', () => {
+    it('shows Multipliers tab when is_eu is true', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: true,
+            isLoading: false,
+        });
+        render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, { wrapper });
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
+        expect(screen.queryByText('Options')).not.toBeInTheDocument();
+        expect(
+            screen.getByText('Trade bigger positions with less capital on a wide range of global markets.')
+        ).toBeInTheDocument();
+    });
+
+    it('shows Options tab when is_eu is false', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: false,
+        });
+        render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, { wrapper });
+        expect(screen.queryByText('Multipliers')).not.toBeInTheDocument();
+        expect(screen.getByText('Options')).toBeInTheDocument();
+    });
+
+    it('show the loader when isEuRegion is loading', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: true,
+        });
+        render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, { wrapper });
+        expect(screen.getByTestId('dt_wallets_tabs_loader')).toBeInTheDocument();
+    });
+
+    it('triggers `onTabClickHandler` with proper tab index when the user switches the tab', () => {
         const onTabClickHandler = jest.fn();
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
@@ -90,7 +125,7 @@ describe('AccountsList', () => {
         expect(onTabClickHandler).toHaveBeenCalledWith(1);
     });
 
-    it('should render account list in desktop view', () => {
+    it('renders account list in desktop view', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         render(<AccountsList />, { wrapper });
 
@@ -99,7 +134,7 @@ describe('AccountsList', () => {
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
     });
 
-    it('should render wallet tour guide in mobile view with isWalletSettled set to false', () => {
+    it('renders wallet tour guide in mobile view with isWalletSettled set to false', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
@@ -109,7 +144,7 @@ describe('AccountsList', () => {
         expect(mockWalletTourGuide);
     });
 
-    it('should render wallet tour guide in mobile view with isWalletSettled set to true', () => {
+    it('renders wallet tour guide in mobile view with isWalletSettled set to true', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {

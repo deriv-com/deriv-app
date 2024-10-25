@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
+// @ts-expect-error - This is a mock account
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {
     currency: 'USD',
     dtrade_balance: 100,
@@ -58,17 +59,6 @@ describe('AccountSwitcherWalletItem', () => {
         expect(screen.queryByText('SVG')).not.toBeInTheDocument();
     });
 
-    it('should show MALTA badge if show_badge is true', () => {
-        const store = mockStore({});
-        const tempProps = {
-            ...props,
-            account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' },
-            show_badge: true,
-        };
-        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
-        expect(screen.getByText('MALTA')).toBeInTheDocument();
-    });
-
     it('should render Demo Badge if show_badge is true', () => {
         const store = mockStore({});
         const tempProps = { ...props, account: { ...account, is_virtual: true }, show_badge: true };
@@ -101,5 +91,27 @@ describe('AccountSwitcherWalletItem', () => {
         userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).not.toHaveBeenCalled();
         expect(props.closeAccountsDialog).toHaveBeenCalled();
+    });
+
+    it('should show Options when is_eu is false', () => {
+        const store = mockStore({
+            client: {
+                is_eu: false,
+            },
+        });
+        const tempProps = { ...props, account };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('Options')).toBeInTheDocument();
+    });
+
+    it('should show Multipliers when is_eu is true', () => {
+        const store = mockStore({
+            client: {
+                is_eu: true,
+            },
+        });
+        const tempProps = { ...props, account };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
     });
 });

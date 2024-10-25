@@ -5,6 +5,7 @@ import {
     useActiveWalletAccount,
     useCreateNewRealAccount,
     useInvalidateQuery,
+    useIsEuRegion,
 } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -21,6 +22,7 @@ jest.mock('@deriv/api-v2', () => ({
     })),
     useCreateNewRealAccount: jest.fn(() => ({ isLoading: false })),
     useInvalidateQuery: jest.fn(() => Promise.resolve({})),
+    useIsEuRegion: jest.fn(() => ({ isLoading: false })),
 }));
 
 jest.mock('../../../hooks/useSyncLocalStorageClientAccounts', () =>
@@ -134,5 +136,27 @@ describe('DerivAppsGetAccount', () => {
         const button = screen.getByRole('button', { name: 'Enable' });
         userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).not.toBeCalled());
+    });
+
+    it('shows Options tab when is_eu is false', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: false,
+        });
+        render(<DerivAppsGetAccount />, { wrapper });
+        expect(screen.getByText('Options')).toBeInTheDocument();
+        expect(screen.queryByText('One options account for all platforms.')).toBeInTheDocument();
+    });
+
+    it('shows Multipliers tab when is_eu is true', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: true,
+            isLoading: false,
+        });
+        render(<DerivAppsGetAccount />, { wrapper });
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
+        expect(screen.queryByText('Expand your potential gains; risk only what you put in.')).toBeInTheDocument();
     });
 });

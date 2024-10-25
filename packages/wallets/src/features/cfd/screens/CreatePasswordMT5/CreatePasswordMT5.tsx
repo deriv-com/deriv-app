@@ -3,15 +3,13 @@ import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
-import { TPlatforms } from '../../../../types';
+import { THooks, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
-import { TAvailableMT5Account } from '../../types';
-import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
+import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
+import { CFD_PLATFORMS, PlatformDetails, PRODUCT } from '../../constants';
 import './CreatePasswordMT5.scss';
 
 type TProps = {
-    account: TAvailableMT5Account;
     isLoading?: boolean;
     isTncChecked: boolean;
     isVirtual?: boolean;
@@ -20,10 +18,10 @@ type TProps = {
     onTncChange: () => void;
     password: string;
     platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'];
 };
 
 const CreatePasswordMT5: React.FC<TProps> = ({
-    account,
     isLoading,
     isTncChecked,
     isVirtual,
@@ -32,6 +30,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     onTncChange,
     password,
     platform,
+    product,
 }) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
@@ -62,9 +61,13 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                     onChange={onPasswordChange}
                     password={password}
                 />
-                {!isVirtual && <MT5LicenceMessage account={account} />}
-                {!isVirtual && account.shortcode !== 'svg' && (
-                    <MT5PasswordModalTnc checked={isTncChecked} onChange={onTncChange} />
+                {product === PRODUCT.ZEROSPREAD && !isVirtual && (
+                    <CFDPasswordModalTnc
+                        checked={isTncChecked}
+                        onChange={onTncChange}
+                        platform={platform}
+                        product={product}
+                    />
                 )}
             </div>
 

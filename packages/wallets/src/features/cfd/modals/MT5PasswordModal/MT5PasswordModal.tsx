@@ -124,7 +124,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         availableMT5AccountsData,
         createMT5AccountMutate,
         isVirtual,
-        isMT5PasswordNotSet,
         marketType,
         password,
         product,

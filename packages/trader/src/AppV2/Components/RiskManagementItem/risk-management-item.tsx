@@ -21,11 +21,21 @@ type RiskManagementItemProps = {
     modal_body_content: React.ReactNode;
     is_deal_cancellation?: boolean;
     value?: number | null;
-    type?: string;
+    validation_params: {
+        [key: string]: { min: number; max: number };
+    };
+    type?: 'take_profit' | 'stop_loss';
 };
 
 const RiskManagementItem = observer(
-    ({ label, modal_body_content, is_deal_cancellation = false, value, type }: RiskManagementItemProps) => {
+    ({
+        label,
+        modal_body_content,
+        is_deal_cancellation = false,
+        value,
+        validation_params,
+        type,
+    }: RiskManagementItemProps) => {
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
@@ -91,6 +101,7 @@ const RiskManagementItem = observer(
         };
 
         const onSave = () => {
+            if (error_message) return;
             if (isEnabled) {
                 contract.onChange?.({
                     name: `has_contract_update_${type}`,
@@ -99,7 +110,29 @@ const RiskManagementItem = observer(
                 setIsEnabled(false);
             }
             updateLimitOrder();
+            setIsSheetOpen(false);
         };
+
+        const min_value = type && validation_params[type]?.min;
+        const max_value = type && validation_params[type]?.max;
+
+        const error_message = (() => {
+            const field_label = type === 'take_profit' ? localize('take profit') : localize('stop loss');
+            if (stepperValue && min_value && Number(stepperValue) < min_value) {
+                return localize('Please enter a {{field_label}} amount that’s at least {{min_value}}.', {
+                    field_label,
+                    min_value,
+                });
+            }
+            if (stepperValue && max_value && Number(stepperValue) > max_value) {
+                return localize('Maximum {{field_label}} allowed is {{max_value}}.', {
+                    field_label,
+                    max_value,
+                });
+            }
+            return errorMessage;
+        })();
+
         return (
             <div className='risk-management-item__container'>
                 <div className='risk-management-item'>
@@ -163,14 +196,14 @@ const RiskManagementItem = observer(
                                     className='text-field--custom'
                                     customType='commaRemoval'
                                     decimals={getDecimalPlaces(currency)}
-                                    message={errorMessage}
+                                    message={error_message}
                                     minusDisabled={Number(stepperValue) - 1 <= 0}
                                     name={type}
                                     noStatusIcon
                                     onChange={onChange}
                                     placeholder={localize('Amount')}
                                     regex={/[^0-9.,]/g}
-                                    status={errorMessage ? 'error' : 'neutral'}
+                                    status={error_message ? 'error' : 'neutral'}
                                     textAlignment='center'
                                     inputMode='decimal'
                                     unitLeft={getCurrencyDisplayCode(currency)}
@@ -187,10 +220,7 @@ const RiskManagementItem = observer(
                             )}
                         </ActionSheet.Content>
                         <ActionSheet.Footer
-                            isPrimaryButtonDisabled={
-                                !!errorMessage || finalValue == stepperValue || stepperValue === '' || stepperValue == 0
-                            }
-                            shouldCloseOnPrimaryButtonClick
+                            shouldCloseOnPrimaryButtonClick={false}
                             primaryAction={{
                                 content: <Localize i18n_default_text='Save' />,
                                 onAction: onSave,

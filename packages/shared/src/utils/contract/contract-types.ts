@@ -20,6 +20,9 @@ export type TContractStore = {
 export type TContractInfo = ProposalOpenContract &
     Portfolio1 & {
         contract_update?: ContractUpdate;
+        validation_params: {
+            [key: string]: { min: number; max: number };
+        };
     };
 
 export type TTickItem = {

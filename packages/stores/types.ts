@@ -158,6 +158,9 @@ export type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
+            validation_params: {
+                [key: string]: { min: number; max: number };
+            };
         };
     current_tick?: number;
     details?: string;

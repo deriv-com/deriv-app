@@ -48,6 +48,8 @@ const cacheTrackEvents = {
         return !!instances?.tracking;
     },
     parseCookies: (cookieName: string): any => {
+        // eslint-disable-next-line no-console
+        console.log('cookieName', cookieName);
         const cookies: { [key: string]: string } = document.cookie
             .split('; ')
             .reduce((acc: { [key: string]: string }, cookie: string) => {
@@ -55,9 +57,13 @@ const cacheTrackEvents = {
                 acc[decodeURIComponent(key)] = decodeURIComponent(value);
                 return acc;
             }, {});
+        // eslint-disable-next-line no-console
+        console.log('cookies', cookies);
         try {
             return cookies[cookieName] ? JSON.parse(cookies[cookieName]) : null;
         } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log('error');
             return null;
         }
     },
@@ -71,9 +77,11 @@ const cacheTrackEvents = {
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-        document.cookie = `${cookieName}=${JSON.stringify(
-            storedCookies
-        )}; path=/; Domain=deriv-app-git-fork-agrim-deriv-agrim-cachingmes.binary.sx`;
+        // eslint-disable-next-line no-console
+        console.log('cacheCookie', cacheCookie);
+        // eslint-disable-next-line no-console
+        console.log('storedCookies', storedCookies);
+        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.binary.sx;`;
     },
     processEvent: (event: Event): Event => {
         const clientInfo = Cookies.get('client_information');
@@ -89,7 +97,7 @@ const cacheTrackEvents = {
         }
         return event;
     },
-    track: (originalEvent: Event, cache: boolean) => {
+    track: (originalEvent: Event, cache?: boolean) => {
         const event: any = cacheTrackEvents.processEvent(originalEvent);
         if (cacheTrackEvents.isReady() && !cache) {
             Analytics?.trackEvent(event.name, event.properties);
@@ -112,14 +120,14 @@ const cacheTrackEvents = {
         }, 1000);
     },
     loadEvent: (items: Item[]) => {
-        items.forEach(({ event }) => {
+        items.forEach(({ event, cache }) => {
             const { name, properties } = event;
             cacheTrackEvents.track(
                 {
                     name,
                     properties,
                 },
-                false
+                cache
             );
         });
         return cacheTrackEvents;

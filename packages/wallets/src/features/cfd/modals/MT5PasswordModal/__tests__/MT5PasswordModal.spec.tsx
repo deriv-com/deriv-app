@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     useAccountStatus,
-    useActiveWalletAccount,
     useAvailableMT5Accounts,
     useCreateMT5Account,
     useMT5AccountsList,
@@ -182,9 +181,15 @@ describe('MT5PasswordModal', () => {
     const mockEmailVerificationMutate = jest.fn();
     const mockCreateMT5AccountMutate = jest.fn();
 
-    const defaultProps = {
-        marketType: 'synthetic' as const,
-        platform: 'ctrader' as const,
+    const mockAccount = {
+        market_type: 'synthetic',
+        platform: 'mt5',
+        product: 'financial',
+    };
+
+    const mockCtraderAccount = {
+        market_type: 'all',
+        platform: 'ctrader',
     };
 
     beforeEach(() => {
@@ -194,7 +199,6 @@ describe('MT5PasswordModal', () => {
         (useModal as jest.Mock).mockReturnValue({ getModalState: jest.fn(), hide: jest.fn() });
         (useVerifyEmail as jest.Mock).mockReturnValue({ error: undefined, status: 'idle' });
         (useSettings as jest.Mock).mockReturnValue({ data: { email: undefined } });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: undefined });
         (useAvailableMT5Accounts as jest.Mock).mockReturnValue({
             data: [{ market_type: 'synthetic', product: 'standard', shortcode: 'bvi' }],
         });
@@ -206,13 +210,15 @@ describe('MT5PasswordModal', () => {
     it('renders loader if isLoading is true', () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ isLoading: true });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('renders EnterPassword by default for desktop view', () => {
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
     });
@@ -220,7 +226,8 @@ describe('MT5PasswordModal', () => {
     it('renders EnterPassword by default with title and footer for mobile view', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
@@ -228,10 +235,10 @@ describe('MT5PasswordModal', () => {
     });
 
     it('renders default content for demo account', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} isVirtual />);
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
@@ -244,7 +251,8 @@ describe('MT5PasswordModal', () => {
             status: 'error',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('WalletError')).toBeInTheDocument();
     });
@@ -255,7 +263,8 @@ describe('MT5PasswordModal', () => {
             status: 'error',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('WalletError')).toBeInTheDocument();
     });
@@ -263,7 +272,8 @@ describe('MT5PasswordModal', () => {
     it('renders SentEmailContent when email verification succeeds', () => {
         (useVerifyEmail as jest.Mock).mockReturnValue({ status: 'success' });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('SentEmailContent')).toBeInTheDocument();
     });
@@ -287,7 +297,8 @@ describe('MT5PasswordModal', () => {
             },
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         const passwordInput = screen.getByTestId('dt_enter_password_input');
         const tncCheckbox = screen.getByTestId('dt_enter_password_tnc');
@@ -323,7 +334,8 @@ describe('MT5PasswordModal', () => {
     it('renders CreatePassword when MT5 password is not set', () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockCtraderAccount} />);
 
         expect(screen.getByText('CreatePassword')).toBeInTheDocument();
     });
@@ -332,7 +344,8 @@ describe('MT5PasswordModal', () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('Create Deriv MT5 password')).toBeInTheDocument();
     });
@@ -344,7 +357,8 @@ describe('MT5PasswordModal', () => {
             mutateAsync: mockTradingPasswordChangeMutateAsync,
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockCtraderAccount} />);
 
         const input = screen.getByTestId('dt_create_password_input');
         userEvent.type(input, 'test123');
@@ -358,7 +372,8 @@ describe('MT5PasswordModal', () => {
     it('renders CreatePasswordMT5 when MT5 password is not set and platform is MT5', () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
 
-        render(<MT5PasswordModal {...defaultProps} platform='mt5' />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} platform='mt5' />);
 
         expect(screen.getByText('CreatePasswordMT5')).toBeInTheDocument();
     });
@@ -369,7 +384,8 @@ describe('MT5PasswordModal', () => {
             mutateAsync: mockTradingPasswordChangeMutateAsync,
         });
 
-        render(<MT5PasswordModal {...defaultProps} platform='mt5' />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} platform='mt5' />);
 
         const passwordInput = screen.getByTestId('dt_create_password_mt5_input');
         const tncCheckbox = screen.getByTestId('dt_create_password_mt5_tnc');
@@ -388,7 +404,8 @@ describe('MT5PasswordModal', () => {
             status: 'error',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('MT5ResetPasswordModal')).toBeInTheDocument();
     });
@@ -400,7 +417,8 @@ describe('MT5PasswordModal', () => {
             status: 'error',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('MT5ResetPasswordModal')).toBeInTheDocument();
         expect(screen.getByText('Deriv MT5 latest password requirements')).toBeInTheDocument();
@@ -420,7 +438,8 @@ describe('MT5PasswordModal', () => {
             status: 'idle',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_primary_button'));
         expect(mockTradingPasswordChangeMutateAsync).toHaveBeenCalledWith({
@@ -446,7 +465,8 @@ describe('MT5PasswordModal', () => {
             status: 'success',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('MT5AccountAdded')).toBeInTheDocument();
     });
@@ -457,7 +477,8 @@ describe('MT5PasswordModal', () => {
             status: 'error',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('PasswordLimitExceededModal')).toBeInTheDocument();
     });
@@ -473,7 +494,8 @@ describe('MT5PasswordModal', () => {
             status: 'idle',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         userEvent.click(screen.getByTestId('dt_password_limit_exceeded_modal_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
@@ -486,7 +508,6 @@ describe('MT5PasswordModal', () => {
     });
 
     it('handles secondary button click for MT5PasswordModalFooter', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false } });
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         (useVerifyEmail as jest.Mock).mockReturnValue({
@@ -494,7 +515,8 @@ describe('MT5PasswordModal', () => {
             status: 'idle',
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockAccount} />);
 
         userEvent.click(screen.getByTestId('dt_mt5_password_modal_footer_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
@@ -506,19 +528,8 @@ describe('MT5PasswordModal', () => {
         });
     });
 
-    it('renders SuccessModalFooter when account creation is successful', () => {
-        (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
-        (useCreateMT5Account as jest.Mock).mockReturnValue({ isSuccess: true, status: 'success' });
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
-
-        render(<MT5PasswordModal {...defaultProps} />);
-
-        expect(screen.getByText('SuccessModalFooter')).toBeInTheDocument();
-    });
-
     it('sends create MT5 account request with correct parameters for demo account', () => {
         (useCreateMT5Account as jest.Mock).mockReturnValue({ mutate: mockCreateMT5AccountMutate, status: 'idle' });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         (useSettings as jest.Mock).mockReturnValue({
             data: {
@@ -533,7 +544,8 @@ describe('MT5PasswordModal', () => {
             },
         });
 
-        render(<MT5PasswordModal {...defaultProps} />);
+        //@ts-expect-error since this is a mock, we only need partial properties of the account
+        render(<MT5PasswordModal account={mockCtraderAccount} isVirtual />);
 
         userEvent.click(screen.getByTestId('dt_enter_password_primary_button'));
         expect(mockCreateMT5AccountMutate).toHaveBeenCalledWith({

@@ -155,8 +155,6 @@ const TakeProfitAndStopLossInput = ({
         };
 
         if (response) onProposalResponse(response);
-
-        return () => clearTimeout(focus_timeout.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_enabled, new_input_value, response]);
 
@@ -217,6 +215,8 @@ const TakeProfitAndStopLossInput = ({
                 : info
         );
     }, [min_value, max_value]);
+
+    React.useEffect(() => () => clearTimeout(focus_timeout.current), []);
 
     return (
         <React.Fragment>

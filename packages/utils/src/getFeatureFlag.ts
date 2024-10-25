@@ -7,7 +7,7 @@ const waitForGrowthbook = () => {
             if (typeof Analytics !== 'undefined' && Analytics.getInstances()?.ab !== undefined) {
                 resolve(Analytics);
             } else {
-                setTimeout(checkAnalytics, 100); // Retry every 100ms
+                setTimeout(checkAnalytics, 50);
             }
         };
 

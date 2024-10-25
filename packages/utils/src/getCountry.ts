@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 /*
 Temp solution for growthbook to fetch country and handle experiments/fratures without causing inconsistencies to the UI. 
 */
@@ -8,7 +9,7 @@ const getCountry = async () => {
         const text = response ? await response.text().catch(() => '') : '';
         const entries = text ? text.split('\n').map(v => v.split('=', 2)) : [];
         const data = entries.length ? Object.fromEntries(entries) : {};
-        return data?.loc?.toLowerCase() ?? '';
+        return data?.loc?.toLowerCase() || JSON.parse(Cookies.get('website_status') || '') || '';
     } catch {
         return '';
     }

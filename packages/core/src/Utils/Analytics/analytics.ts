@@ -71,15 +71,9 @@ const cacheTrackEvents = {
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-        let domain = '';
-        if (window.location.hostname.includes('deriv.com')) {
-            domain = '.deriv.com';
-        } else if (window.location.hostname.includes('binary.sx')) {
-            domain = '.binary.sx';
-        } else if (window.location.hostname.includes('localhost')) {
-            domain = 'localhost';
-        }
-        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=${domain}`;
+        document.cookie = `${cookieName}=${JSON.stringify(
+            storedCookies
+        )}; path=/; Domain=deriv-app-git-fork-agrim-deriv-agrim-cachingmes.binary.sx`;
     },
     processEvent: (event: Event): Event => {
         const clientInfo = Cookies.get('client_information');

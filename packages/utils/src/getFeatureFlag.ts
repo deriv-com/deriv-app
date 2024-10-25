@@ -38,13 +38,13 @@ const waitForGrowthbook = () => {
 const getFeatureFlag = async (feature: string, defaultValue?: string | boolean | undefined) => {
     let enabled = false;
 
-    if (typeof window?.GrowthBookFeatures === 'undefined') {
-        window.GrowthBookFeatures = {};
+    if (typeof window?.GrowthbookFeatures === 'undefined') {
+        window.GrowthbookFeatures = {};
     }
 
     // Avoid rechecks and return previous result immediately
-    if (typeof window.GrowthBookFeatures[feature] !== 'undefined') {
-        return window.GrowthBookFeatures[feature];
+    if (typeof window.GrowthbookFeatures[feature] !== 'undefined') {
+        return window.GrowthbookFeatures[feature];
     }
 
     const isSuccessfullyLoaded = await waitForGrowthbook();
@@ -58,7 +58,7 @@ const getFeatureFlag = async (feature: string, defaultValue?: string | boolean |
         }
     }
 
-    window.GrowthBookFeatures[feature] = enabled;
+    window.GrowthbookFeatures[feature] = enabled;
 
     return enabled;
 };

@@ -14,11 +14,11 @@ jest.mock('@deriv-com/analytics', () => ({
 describe('getFeatureFlag', () => {
     beforeEach(() => {
         jest.clearAllMocks();
-        (window as any).GrowthBookFeatures = {}; // Type assertion for window
+        (window as any).GrowthbookFeatures = {}; // Type assertion for window
     });
 
-    it('should return cached feature flag value if already defined in window.GrowthBookFeatures', async () => {
-        (window as any).GrowthBookFeatures.feature_flag = true;
+    it('should return cached feature flag value if already defined in window.GrowthbookFeatures', async () => {
+        (window as any).GrowthbookFeatures.feature_flag = true;
 
         const result = await getFeatureFlag('feature_flag');
 
@@ -38,7 +38,7 @@ describe('getFeatureFlag', () => {
 
         expect(result).toBe(true);
         expect(Analytics.getFeatureValue).toHaveBeenCalledWith('feature_flag', false);
-        expect((window as any).GrowthBookFeatures.feature_flag).toBe(true);
+        expect((window as any).GrowthbookFeatures.feature_flag).toBe(true);
     });
 
     it('should return the defaultValue if provided and GrowthBook feature is unavailable', async () => {
@@ -65,6 +65,6 @@ describe('getFeatureFlag', () => {
         const result = await getFeatureFlag('feature_flag');
 
         expect(result).toBe(false);
-        expect((window as any).GrowthBookFeatures.feature_flag).toBe(false);
+        expect((window as any).GrowthbookFeatures.feature_flag).toBe(false);
     });
 });

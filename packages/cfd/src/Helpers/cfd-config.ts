@@ -23,7 +23,6 @@ export const PRODUCT = {
     ZEROSPREAD: 'zero_spread',
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
-    STP: 'stp',
 } as const;
 
 export const MOBILE_PLATFORMS = {
@@ -52,10 +51,14 @@ export const JURISDICTION = {
 } as const;
 
 export const MARKET_TYPE_SHORTCODE = {
-    SYNTHETIC: 'synthetic',
+    SYNTHETIC_SVG: 'synthetic_svg',
+    SYNTHETIC_BVI: 'synthetic_bvi',
+    SYNTHETIC_VANUATU: 'synthetic_vanuatu',
     GAMING: 'gaming',
-    FINANCIAL: 'financial',
-    FINANCIAL_LABUAN: 'financial_stp_labuan',
+    FINANCIAL_SVG: 'financial_svg',
+    FINANCIAL_BVI: 'financial_bvi',
+    FINANCIAL_VANUATU: 'financial_vanuatu',
+    FINANCIAL_LABUAN: 'financial_labuan',
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
     ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
     ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',

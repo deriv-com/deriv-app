@@ -263,7 +263,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 position='left'
                 expandable={false}
                 shouldBlurOnClose={is_open}
-                className='test'
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />

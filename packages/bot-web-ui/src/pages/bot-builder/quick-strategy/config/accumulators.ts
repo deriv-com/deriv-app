@@ -1,0 +1,62 @@
+import { localize } from '@deriv/translations';
+import {
+    D_ALEMBERT as D_ALEMBERT_CONTENT,
+    MARTINGALE as MARTINGALE_CONTENT,
+    OSCARS_GRIND as OSCARS_GRIND_CONTENT,
+    REVERSE_D_ALEMBERT as REVERSE_D_ALEMBERT_CONTENT,
+    REVERSE_MARTINGALE as REVERSE_MARTINGALE_CONTENT,
+    STRATEGY_1_3_2_6 as STRATEGY_1_3_2_6_CONTENT,
+} from '../../../../constants/quick-strategies';
+import { TStrategy } from '../types';
+import {
+    CHECKBOX_MAX_STAKE,
+    DURATION,
+    DURATION_TYPE,
+    LABEL_DALEMBERT_UNIT,
+    LABEL_DURATION,
+    LABEL_LAST_DIGIT_PREDICTION,
+    LABEL_LOSS,
+    LABEL_MARTINGALE_SIZE,
+    LABEL_PROFIT,
+    LABEL_PURCHASE_TYPE,
+    LABEL_REVERSE_DALEMBERT_UNIT,
+    LABEL_REVERSE_MARTINGALE_SIZE,
+    LABEL_STAKE,
+    LABEL_SYMBOL,
+    LABEL_TRADETYPE,
+    LAST_DIGIT_PREDICTION,
+    LOSS,
+    MAX_STAKE,
+    PROFIT,
+    PURCHASE_TYPE,
+    SIZE,
+    STAKE,
+    SYMBOL,
+    TRADETYPE,
+    UNIT,
+} from './fields';
+
+export const ACCUMULATOR_MARTINGALE: TStrategy = {
+    name: 'martingale_max-stake',
+    label: localize('Martingale'),
+    rs_strategy_name: 'martingale',
+    description: MARTINGALE_CONTENT,
+    fields: [
+        [
+            LABEL_SYMBOL,
+            SYMBOL,
+            LABEL_TRADETYPE,
+            TRADETYPE,
+            LABEL_PURCHASE_TYPE,
+            PURCHASE_TYPE,
+            LABEL_LAST_DIGIT_PREDICTION,
+            LAST_DIGIT_PREDICTION,
+            LABEL_STAKE,
+            STAKE,
+            LABEL_DURATION,
+            DURATION_TYPE,
+            DURATION,
+        ],
+        [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_MARTINGALE_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+    ],
+};

@@ -48,7 +48,7 @@ const App = () => {
     React.useEffect(() => {
         if (isGBLoaded) {
             if (is_p2p_standalone_enabled) {
-                window.location.href = is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging;
+                window.location.replace(is_production ? URLConstants.derivP2pProduction : URLConstants.derivP2pStaging);
             }
         }
     }, [isGBLoaded, is_p2p_standalone_enabled, is_production]);
@@ -165,7 +165,7 @@ const App = () => {
     // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
     React.useEffect(() => {
         if (/\/p2p$/.test(location.pathname) || location.pathname === '/cashier/p2p/') {
-            history.push(routes.p2p_buy_sell);
+            history.replace(routes.p2p_buy_sell);
             general_store.setActiveIndex(0);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

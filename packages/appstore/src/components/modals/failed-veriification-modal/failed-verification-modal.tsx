@@ -77,7 +77,7 @@ const FailedVerificationModal = () => {
         open_failed_verification_for,
         startTrade,
     } = traders_hub;
-    const { account_status } = client;
+    const { account_status, client_kyc_status } = client;
     const { toggleCFDVerificationModal, current_list } = cfd;
     const { disableApp, enableApp, is_mt5_verification_failed_modal, setIsMT5VerificationFailedModal } = ui;
     const is_from_multipliers = open_failed_verification_for === 'multipliers';
@@ -85,8 +85,7 @@ const FailedVerificationModal = () => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === Jurisdiction.MALTA_INVEST);
 
-    const { poi_resubmit_for_maltainvest, poi_resubmit_for_bvi_labuan_vanuatu, need_poa_resubmission } =
-        getAuthenticationStatusInfo(account_status);
+    const { poi_resubmit_for_maltainvest } = getAuthenticationStatusInfo(account_status);
     const history = useHistory();
 
     const closeModal = () => {
@@ -117,9 +116,10 @@ const FailedVerificationModal = () => {
         if (is_from_multipliers || open_failed_verification_for === 'maltainvest') {
             return poi_resubmit_for_maltainvest;
         }
-        return poi_resubmit_for_bvi_labuan_vanuatu;
+        return ['rejected', 'expired', 'suspected'].includes(client_kyc_status?.poi_status);
     };
-    const should_resubmit_poa = need_poa_resubmission;
+
+    const should_resubmit_poa = ['rejected', 'expired', 'suspected'].includes(client_kyc_status?.poa_status);
     const from_account_label = is_from_multipliers ? localize('Multipliers') : localize('MT5');
 
     return (

@@ -16,7 +16,7 @@ import { useDtraderQuery } from './useDtraderQuery';
 const useActiveSymbols = () => {
     const { client, common } = useStore();
     const { loginid, is_switching } = client;
-    const { showError } = common;
+    const { showError, current_language } = common;
     const {
         active_symbols: symbols_from_store,
         contract_type,
@@ -58,7 +58,7 @@ const useActiveSymbols = () => {
     };
 
     const { data: response } = useDtraderQuery<ActiveSymbolsResponse>(
-        ['active_symbols', loginid ?? '', getContractType()],
+        ['active_symbols', loginid ?? '', getContractType(), current_language],
         {
             active_symbols: 'brief',
             contract_type: getContractTypesList(),

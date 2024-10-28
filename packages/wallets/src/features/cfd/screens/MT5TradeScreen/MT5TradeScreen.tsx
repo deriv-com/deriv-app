@@ -90,6 +90,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
+    const shouldShowBadge =
+        !activeWalletData?.is_virtual &&
+        details &&
+        'product' in details &&
+        //@ts-expect-error needs backend type
+        details.product !== 'stp' &&
+        details.landing_company_name !== 'labuan';
+
     const migrationMessage = useMemo(() => {
         if (platform === mt5Platform && !activeWalletData?.is_virtual) {
             switch (
@@ -138,7 +146,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 <Text align='start' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
                                 </Text>
-                                {!activeWalletData?.is_virtual && (
+                                {shouldShowBadge && (
                                     <WalletBadge>{details?.landing_company_short?.toUpperCase()}</WalletBadge>
                                 )}
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}

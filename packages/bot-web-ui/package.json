@@ -79,7 +79,7 @@
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-charts": "^2.5.1",
         "@deriv/hooks": "^1.0.0",
-        "@deriv/quill-icons": "1.23.3",
+        "@deriv/quill-icons": "1.23.14",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

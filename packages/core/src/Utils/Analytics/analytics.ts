@@ -76,12 +76,17 @@ const cacheTrackEvents = {
         let storedCookies: Event[] = [];
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
-        storedCookies.push(data);
+        // eslint-disable-next-line no-console
+        console.log('data', data);
         // eslint-disable-next-line no-console
         console.log('cacheCookie', cacheCookie);
         // eslint-disable-next-line no-console
         console.log('storedCookies', storedCookies);
-        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.binary.sx;`;
+        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=localhost;`;
+        if (cacheTrackEvents.isReady()) {
+            storedCookies.push(data);
+            cacheTrackEvents.track(data, false);
+        }
     },
     processEvent: (event: Event): Event => {
         const clientInfo = Cookies.get('client_information');

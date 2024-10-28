@@ -37,13 +37,19 @@ const EmploymentTaxDetailsContainer = observer(
         const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
         const { data: residence_list } = useResidenceList();
-        const { client } = useStore();
+        const { client, traders_hub } = useStore();
 
         const { is_virtual, account_settings } = client;
+        const { regulated_mt5_accounts } = traders_hub;
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+        const has_regulated_mt5 = regulated_mt5_accounts.length > 0;
+
+        const is_tin_required =
+            !is_virtual &&
+            values.employment_status &&
+            !tin_employment_status_bypass?.includes(values.employment_status);
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -141,7 +147,7 @@ const EmploymentTaxDetailsContainer = observer(
         return (
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
-                    required
+                    required={has_regulated_mt5}
                     is_disabled={should_disable_employment_status}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
                 />

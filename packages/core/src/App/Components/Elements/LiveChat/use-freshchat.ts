@@ -5,8 +5,7 @@ import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 const useFreshChat = (token: string | null) => {
     const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
     const [isReady, setIsReady] = useState(false);
-    const language = localStorage.getItem('i18n_language') || 'EN';
-    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+    const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
     });
 
@@ -14,7 +13,6 @@ const useFreshChat = (token: string | null) => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined') {
                 if (window.fcWidget?.isInitialized() == true && !isReady) {
-                    // window.fcWidget?.user.setLocale(language.toLowerCase());
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
@@ -34,8 +32,8 @@ const useFreshChat = (token: string | null) => {
             }
         };
 
-        enable_freshworks_live_chat && initFreshChat();
-    }, [isReady, language, scriptStatus, token]);
+        enable_freshworks_live_chat && isGBLoaded && initFreshChat();
+    }, [enable_freshworks_live_chat, isGBLoaded, isReady, scriptStatus, token]);
 
     return {
         isReady,

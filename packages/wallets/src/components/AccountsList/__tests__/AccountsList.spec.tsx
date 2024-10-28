@@ -28,9 +28,7 @@ jest.mock(
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useIsEuRegion: jest.fn(() => ({
-        data: false,
-    })),
+    useIsEuRegion: jest.fn(),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (
@@ -44,6 +42,10 @@ const wrapper = ({ children }: PropsWithChildren) => (
 describe('AccountsList', () => {
     beforeEach(() => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: false,
+        });
     });
 
     afterAll(() => {

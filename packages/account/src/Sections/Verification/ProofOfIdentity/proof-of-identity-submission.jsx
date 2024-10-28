@@ -197,6 +197,9 @@ const POISubmission = observer(
                             />
                         );
                     }
+                    case 'smileid': {
+                        return <div>smileid</div>
+                    }
                     case service_code.manual:
                         return (
                             <Unsupported

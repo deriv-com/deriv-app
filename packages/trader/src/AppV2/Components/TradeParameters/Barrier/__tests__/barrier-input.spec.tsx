@@ -38,7 +38,7 @@ describe('BarrierInput', () => {
         mockBarrierInput(mockStore(default_trade_store));
         expect(screen.getByText('Above spot')).toBeInTheDocument();
         expect(screen.getByText('Below spot')).toBeInTheDocument();
-        expect(screen.getByText('Fixed price')).toBeInTheDocument();
+        expect(screen.getByText('Fixed barrier')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Distance to spot')).toBeInTheDocument();
         expect(screen.getByText('Current spot')).toBeInTheDocument();
     });
@@ -61,7 +61,7 @@ describe('BarrierInput', () => {
         mockBarrierInput(mockStore(default_trade_store));
         const aboveSpotChip = screen.getByText('Above spot');
         const belowSpotChip = screen.getByText('Below spot');
-        const fixedPriceChip = screen.getByText('Fixed price');
+        const fixedPriceChip = screen.getByText('Fixed barrier');
 
         userEvent.click(belowSpotChip);
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-10' } });
@@ -139,11 +139,11 @@ describe('BarrierInput', () => {
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-0.6' } });
     });
 
-    it('handles chip selection correctly for Fixed price', () => {
+    it('handles chip selection correctly for Fixed barrier', () => {
         default_trade_store.modules.trade.barrier_1 = '+.6';
         mockBarrierInput(mockStore(default_trade_store));
 
-        const fixedPriceChip = screen.getByText('Fixed price');
+        const fixedPriceChip = screen.getByText('Fixed barrier');
         userEvent.click(fixedPriceChip);
 
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '0.6' } });

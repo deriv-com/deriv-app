@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import clsx from 'clsx';
 import { ActionSheet, CaptionText, TextField } from '@deriv-com/quill-ui';
-import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import LastDigitSelector from './last-digit-selector';
@@ -28,10 +27,10 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
     const onSaveButtonClick = () => {
         if (last_digit !== selected_digit) handleLastDigitChange(selected_digit);
     };
-    const onActionSheetClose = () => {
+    const onActionSheetClose = React.useCallback(() => {
         setIsOpen(false);
         setSelectedDigit(last_digit);
-    };
+    }, [last_digit]);
 
     if (is_minimized)
         return (
@@ -49,7 +48,13 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                     className={clsx('trade-params__option', 'trade-params__option--minimized')}
                     onClick={() => setIsOpen(true)}
                 />
-                <ActionSheet.Root isOpen={is_open} onClose={onActionSheetClose} position='left' expandable={false}>
+                <ActionSheet.Root
+                    isOpen={is_open}
+                    onClose={onActionSheetClose}
+                    position='left'
+                    expandable={false}
+                    shouldBlurOnClose={is_open}
+                >
                     <ActionSheet.Portal shouldCloseOnDrag>
                         <ActionSheet.Header title={<Localize i18n_default_text='Last digit prediction' />} />
                         <ActionSheet.Content>
@@ -71,7 +76,7 @@ const LastDigitPrediction = observer(({ is_minimized }: TLastDigitSelectorProps)
                 </ActionSheet.Root>
             </>
         );
-    if (!digit_stats.length) return <Skeleton height={182} />;
+
     return (
         <div className='last-digit-prediction'>
             <CaptionText size='sm' className='last-digit-prediction__title'>

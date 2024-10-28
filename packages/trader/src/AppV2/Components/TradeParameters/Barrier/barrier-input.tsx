@@ -121,6 +121,7 @@ const BarrierInput = observer(
                                     name='barrier_1'
                                     noStatusIcon
                                     status={show_hidden_error ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     value={barrier_1}
                                     allowDecimals
                                     decimals={pip_size}
@@ -147,6 +148,7 @@ const BarrierInput = observer(
                                     inputMode='decimal'
                                     allowSign={false}
                                     status={show_hidden_error ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
                                     regex={/[^0-9.,]/g}

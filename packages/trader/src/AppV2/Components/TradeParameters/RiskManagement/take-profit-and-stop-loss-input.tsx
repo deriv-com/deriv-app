@@ -287,6 +287,7 @@ const TakeProfitAndStopLossInput = ({
                     ref={input_ref}
                     regex={/[^0-9.,]/g}
                     status={fe_error_text || error_text ? 'error' : 'neutral'}
+                    shouldRound={false}
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'

@@ -31,14 +31,17 @@ const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize'
 
 export const getMarketTypeDetails = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product']
+    product?: THooks.AvailableMT5Accounts['product'] | 'stp'
 ) =>
     ({
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
-            description: localize('CFDs on financial instruments'),
+            description:
+                product === 'stp'
+                    ? localize('Direct access to market prices')
+                    : localize('CFDs on financial instruments'),
             icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
-            title: 'Financial',
+            title: product === 'stp' ? 'Financial STP' : 'Financial',
         },
         synthetic: {
             description: localize('CFDs on derived and financial instruments'),

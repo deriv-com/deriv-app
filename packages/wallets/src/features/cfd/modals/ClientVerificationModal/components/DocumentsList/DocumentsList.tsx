@@ -52,7 +52,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                 <DocumentTile
                     // @ts-expect-error the following link is not part of wallets routes config
                     onClick={() => history.push('/account/personal-details')}
-                    title={localize('Personal details')}
+                    title={localize('Additional information')}
                 />
             )}
         </div>

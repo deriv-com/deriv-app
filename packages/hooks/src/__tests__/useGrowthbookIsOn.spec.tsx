@@ -17,7 +17,7 @@ describe('useGrowthbookIsOn', () => {
 
     it('should return initial state correctly', () => {
         (useRemoteConfig as jest.Mock).mockReturnValue({ data: {} });
-        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(false);
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue({ isGBLoaded: false });
         Analytics.isFeatureOn = jest.fn(() => false);
 
         const { result } = renderHook(() => useGrowthbookIsOn({ featureFlag: mockFeatureFlag }));
@@ -28,7 +28,7 @@ describe('useGrowthbookIsOn', () => {
 
     it('should update state when data.marketing_growthbook and isGBLoaded change', () => {
         (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
-        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(true);
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue({ isGBLoaded: true });
         Analytics.isFeatureOn = jest.fn(() => true);
         Analytics.getInstances = jest.fn(
             () =>
@@ -50,7 +50,7 @@ describe('useGrowthbookIsOn', () => {
 
     it('should set feature value when Analytics instances are available', () => {
         (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
-        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(true);
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue({ isGBLoaded: true });
         Analytics.isFeatureOn = jest.fn(() => false);
         const setRendererMock = jest.fn();
 

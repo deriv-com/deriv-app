@@ -10,6 +10,8 @@ export const HEIGHT = {
     PADDING: 24,
 };
 
+export const ASPECT_RATIO = 0.5625;
+
 export const isTradeParamVisible = ({
     component_key,
     contract_type,

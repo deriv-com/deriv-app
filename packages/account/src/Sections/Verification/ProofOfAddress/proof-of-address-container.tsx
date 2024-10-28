@@ -29,6 +29,7 @@ type TAuthenticationStatus = Record<
     | 'resubmit_poa'
     | 'poa_expiring_soon'
     | 'poa_authenticated_with_idv'
+    | 'poa_authenticated_with_idv_photo'
     | 'has_submitted_duplicate_poa',
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
@@ -49,6 +50,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         poa_address_mismatch: false,
         poa_expiring_soon: false,
         poa_authenticated_with_idv: false,
+        poa_authenticated_with_idv_photo: false,
         has_submitted_duplicate_poa: false,
     });
 
@@ -73,6 +75,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poi,
                         poa_address_mismatch,
                         poa_authenticated_with_idv,
+                        poa_authenticated_with_idv_photo,
                         poa_expiring_soon,
                     } = populateVerificationStatus(get_account_status);
 
@@ -87,6 +90,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poi,
                         poa_address_mismatch,
                         poa_authenticated_with_idv,
+                        poa_authenticated_with_idv_photo,
                         poa_expiring_soon,
                     }));
                     setIsLoading(false);
@@ -135,6 +139,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         poa_address_mismatch,
         poa_expiring_soon,
         poa_authenticated_with_idv,
+        poa_authenticated_with_idv_photo,
         has_submitted_duplicate_poa,
     } = authentication_status;
 
@@ -150,7 +155,8 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch ||
         poa_expiring_soon ||
-        (poa_authenticated_with_idv && from_platform?.route === routes.cashier_p2p);
+        ((poa_authenticated_with_idv || poa_authenticated_with_idv_photo) &&
+            from_platform?.route === routes.cashier_p2p);
 
     const redirect_button = should_show_redirect_btn && (
         <Button

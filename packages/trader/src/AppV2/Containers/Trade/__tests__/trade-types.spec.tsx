@@ -90,7 +90,7 @@ describe('TradeTypes', () => {
         const removeButton = screen.getAllByTestId('dt_draggable_list_item_icon')[0];
         await userEvent.click(removeButton);
 
-        const addButton = screen.getAllByTestId('dt_trade_type_list_item_right_icon')[0];
+        const addButton = (await screen.findAllByTestId('dt_trade_type_list_item_right_icon'))[0];
         await userEvent.click(addButton);
 
         expect(screen.getByText('Trade types')).toBeInTheDocument();

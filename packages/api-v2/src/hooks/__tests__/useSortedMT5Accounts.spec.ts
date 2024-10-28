@@ -120,6 +120,12 @@ describe('useSortedMT5Accounts', () => {
             {
                 is_added: false,
                 is_default_jurisdiction: 'true',
+                product: 'stp',
+                shortcode: 'vanuatu',
+            },
+            {
+                is_added: false,
+                is_default_jurisdiction: 'true',
                 product: 'swap_free',
                 shortcode: 'svg',
             },
@@ -178,6 +184,12 @@ describe('useSortedMT5Accounts', () => {
             {
                 is_added: false,
                 is_default_jurisdiction: 'true',
+                product: 'stp',
+                shortcode: 'vanuatu',
+            },
+            {
+                is_added: false,
+                is_default_jurisdiction: 'true',
                 product: 'swap_free',
                 shortcode: 'svg',
             },
@@ -226,27 +238,10 @@ describe('useSortedMT5Accounts', () => {
         expect(result.current.data?.map(account => account.product)).toStrictEqual([
             'standard',
             'financial',
+            'stp',
             'swap_free',
             'zero_spread',
         ]);
-    });
-
-    it('filters-out available MT5 financial stp account disabling clients to create it', () => {
-        (useAvailableMT5Accounts as jest.Mock).mockReturnValue({
-            data: mockMT5NonEUAvailableAccounts,
-        });
-        (useMT5AccountsList as jest.Mock).mockReturnValue({
-            data: [],
-        });
-
-        const { result } = renderHook(() => useSortedMT5Accounts());
-
-        expect(result.current.data).not.toContain({
-            is_added: false,
-            is_default_jurisdiction: 'true',
-            product: 'stp',
-            shortcode: 'vanuatu',
-        });
     });
 
     it('all available MT5 accounts are created', () => {
@@ -260,6 +255,11 @@ describe('useSortedMT5Accounts', () => {
                     is_virtual: false,
                     landing_company_short: 'svg',
                     product: 'swap_free',
+                },
+                {
+                    is_virtual: false,
+                    landing_company_short: 'vanuatu',
+                    product: 'stp',
                 },
             ],
         });
@@ -278,6 +278,12 @@ describe('useSortedMT5Accounts', () => {
                 is_virtual: false,
                 landing_company_short: 'vanuatu',
                 product: 'financial',
+            },
+            {
+                is_added: true,
+                is_virtual: false,
+                landing_company_short: 'vanuatu',
+                product: 'stp',
             },
             {
                 is_added: true,

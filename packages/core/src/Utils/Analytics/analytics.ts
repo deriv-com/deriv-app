@@ -82,7 +82,7 @@ const cacheTrackEvents = {
         console.log('cacheCookie', cacheCookie);
         // eslint-disable-next-line no-console
         console.log('storedCookies', storedCookies);
-        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=localhost;`;
+        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.binary.sx;`;
         if (cacheTrackEvents.isReady()) {
             storedCookies.push(data);
             cacheTrackEvents.track(data, false);

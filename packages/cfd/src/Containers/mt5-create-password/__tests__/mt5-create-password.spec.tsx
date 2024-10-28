@@ -23,8 +23,8 @@ jest.mock('@deriv/shared', () => ({
     validPassword: jest.fn().mockReturnValue(true),
     isDesktop: jest.fn().mockReturnValue(true),
     DBVI_COMPANY_NAMES: {
-        svg: { name: 'Sample Company', licence_name: 'Sample Licence' },
-        other: { name: 'Other Company', licence_name: 'Other Licence' },
+        svg: { licence_name: 'Sample Licence' },
+        other: { licence_name: 'Other Licence' },
     },
 }));
 

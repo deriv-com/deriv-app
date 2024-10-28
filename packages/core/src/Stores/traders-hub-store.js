@@ -424,15 +424,19 @@ export default class TradersHubStore extends BaseStore {
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
                 availability: 'All',
             },
-            {
-                name: 'Financial',
-                description: getAccountDesc(),
-                platform: CFD_PLATFORMS.MT5,
-                market_type: 'financial',
-                product: PRODUCT.STP,
-                icon: 'Financial',
-                availability: 'Non-EU',
-            },
+            ...(this.is_real
+                ? [
+                      {
+                          name: 'Financial STP',
+                          description: localize('Direct access to market prices.'),
+                          platform: CFD_PLATFORMS.MT5,
+                          market_type: 'financial',
+                          product: PRODUCT.STP,
+                          icon: 'Financial',
+                          availability: 'Non-EU',
+                      },
+                  ]
+                : []),
             {
                 name: 'Swap-Free',
                 description: getSwapFreeAccountDesc(),
@@ -768,7 +772,8 @@ export default class TradersHubStore extends BaseStore {
                             name: `${formatMoney(existing_account.currency, existing_account.display_balance, true)} ${
                                 existing_account.currency
                             }`,
-                            short_code_and_region: this.getShortCodeAndRegion(existing_account),
+                            short_code_and_region:
+                                account.product === PRODUCT.STP ? '' : this.getShortCodeAndRegion(existing_account),
                             platform: account.platform,
                             description: existing_account.display_login,
                             key: `trading_app_card_${existing_account.display_login}`,
@@ -780,8 +785,6 @@ export default class TradersHubStore extends BaseStore {
                         },
                     ];
                 });
-            } else if (account.product === PRODUCT.STP) {
-                this.combined_cfd_mt5_accounts = [...this.combined_cfd_mt5_accounts];
             } else {
                 this.combined_cfd_mt5_accounts = [
                     ...this.combined_cfd_mt5_accounts,

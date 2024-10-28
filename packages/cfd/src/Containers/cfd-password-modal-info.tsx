@@ -11,12 +11,7 @@ type CfdPasswordModalInfoProps = {
     need_tnc: boolean;
 };
 
-const CfdPasswordModalInfo = ({
-    jurisdiction_selected_shortcode,
-    platform,
-    product,
-    need_tnc,
-}: CfdPasswordModalInfoProps) => {
+const CfdPasswordModalInfo = ({ platform, product, need_tnc }: CfdPasswordModalInfoProps) => {
     const { available_account_to_create } = useIsSelectedMT5AccountCreated();
     return (
         <div className='cfd-password-modal-info'>
@@ -26,7 +21,7 @@ const CfdPasswordModalInfo = ({
             <Text size='xxxs'>
                 {need_tnc ? (
                     <Localize
-                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{regulatory_authority}} (license no.<0/> )'
+                        i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the {{regulatory_authority}} (license no.<0/>)'
                         values={{
                             platform,
                             product,
@@ -46,7 +41,7 @@ const CfdPasswordModalInfo = ({
                         values={{
                             platform,
                             product,
-                            company: DBVI_COMPANY_NAMES[jurisdiction_selected_shortcode].name,
+                            company: available_account_to_create?.name,
                         }}
                     />
                 )}

@@ -36,6 +36,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
+    const accountTitle = isVirtual ? localize('demo {{title}}', { title }) : title;
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
 
@@ -44,7 +45,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
             {isDesktop && (
                 <div className='wallets-create-password-mt5__header'>
                     <Text lineHeight='xl' weight='bold'>
-                        <Localize i18n_default_text='Create a {{title}} password' values={{ title }} />
+                        <Localize i18n_default_text='Create a {{accountTitle}} password' values={{ accountTitle }} />
                     </Text>
                 </div>
             )}

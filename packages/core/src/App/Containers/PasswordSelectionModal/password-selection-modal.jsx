@@ -40,6 +40,7 @@ const PasswordSelectionModal = observer(
                                 : 'virtual_signup_web_desktop_default',
                         },
                     },
+                    cache: true,
                 },
             ]);
         }, [is_mobile]);

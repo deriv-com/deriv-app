@@ -113,8 +113,14 @@ const cacheTrackEvents = {
         }
         let pageViewInterval: NodeJS.Timeout | null = null;
         pageViewInterval = setInterval(() => {
+            const loggedIn = !!Cookies.get('client_information');
+            const signup_device = Cookies.get('signup_device');
+
             if (Analytics !== undefined && typeof Analytics?.pageView === 'function' && cacheTrackEvents.isReady()) {
-                Analytics?.pageView(window.location.href);
+                Analytics?.pageView(window.location.href, 'Deriv-App', {
+                    loggedIn,
+                    signup_device: signup_device || 'none',
+                });
             }
             if (cacheTrackEvents.isPageViewSent()) {
                 clearInterval(pageViewInterval!);

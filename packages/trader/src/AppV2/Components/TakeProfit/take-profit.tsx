@@ -5,13 +5,7 @@ import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import RiskManagementItem from '../RiskManagementItem';
 
-type TakeProfitProps = {
-    validation_params?: {
-        [key: string]: { min: number; max: number };
-    };
-};
-
-const TakeProfit = observer(({ validation_params }: TakeProfitProps) => {
+const TakeProfit = observer(() => {
     const { contract_info } = useContractDetails();
     const { limit_order } = contract_info;
     const { isTakeProfitVisible } = getContractDetailsConfig(contract_info.contract_type ?? '');
@@ -22,7 +16,6 @@ const TakeProfit = observer(({ validation_params }: TakeProfitProps) => {
                 <Localize i18n_default_text='When your profit reaches or exceeds the set amount, your trade will be closed automatically.' />
             }
             value={limit_order?.take_profit?.order_amount}
-            validation_params={validation_params}
             type='take_profit'
         />
     ) : null;

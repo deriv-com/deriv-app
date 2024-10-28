@@ -21,9 +21,6 @@ type RiskManagementItemProps = {
     modal_body_content: React.ReactNode;
     is_deal_cancellation?: boolean;
     value?: number | null;
-    validation_params?: {
-        [key: string]: { min: number; max: number };
-    };
     type?: 'take_profit' | 'stop_loss';
 };
 
@@ -33,7 +30,6 @@ const RiskManagementItem = observer(
         modal_body_content,
         is_deal_cancellation = false,
         value,
-        validation_params,
         type,
     }: RiskManagementItemProps) => {
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
@@ -41,7 +37,7 @@ const RiskManagementItem = observer(
         const [isEnabled, setIsEnabled] = React.useState(false);
         const [stepperValue, setStepperValue] = React.useState<number | string>();
         const { contract_info, contract } = useContractDetails();
-        const { contract_type, currency } = contract_info;
+        const { contract_type, currency, validation_params } = contract_info;
         const { validation_errors, updateLimitOrder, clearContractUpdateConfigValues } = contract;
         const is_valid_to_cancel = isValidToCancel(contract_info);
         const is_accumulator = isAccumulatorContract(contract_type);
@@ -118,13 +114,13 @@ const RiskManagementItem = observer(
 
         const error_message = (() => {
             const field_label = type === 'take_profit' ? localize('take profit') : localize('stop loss');
-            if (stepperValue && min_value && Number(stepperValue) < min_value) {
+            if (stepperValue && min_value && +stepperValue < +min_value) {
                 return localize('Please enter a {{field_label}} amount that’s at least {{min_value}}.', {
                     field_label,
                     min_value,
                 });
             }
-            if (stepperValue && max_value && Number(stepperValue) > max_value) {
+            if (stepperValue && max_value && +stepperValue > +max_value) {
                 return localize('Maximum {{field_label}} allowed is {{max_value}}.', {
                     field_label,
                     max_value,

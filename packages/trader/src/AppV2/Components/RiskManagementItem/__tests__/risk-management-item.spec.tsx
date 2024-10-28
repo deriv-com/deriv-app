@@ -82,16 +82,16 @@ describe('RiskManagementItem component', () => {
                 contract_id: 1,
                 is_valid_to_cancel: 1,
                 validation_params: {
-                    stop_loss: { min: 1, max: 100 },
-                    take_profit: { min: 1, max: 100 },
+                    stop_loss: { min: '1', max: '100' },
+                    take_profit: { min: '1', max: '100' },
                 },
             },
             contract: {
                 contract_info: {
                     contract_id: 1,
                     validation_params: {
-                        stop_loss: { min: 1, max: 100 },
-                        take_profit: { min: 1, max: 100 },
+                        stop_loss: { min: '1', max: '100' },
+                        take_profit: { min: '1', max: '100' },
                     },
                 },
                 contract_update_history: [],

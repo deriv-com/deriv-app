@@ -30,7 +30,7 @@ import ForwardStartingBanner from 'AppV2/Components/ForwardStartingBanner';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
-    const { contract_id, currency, contract_type, limit_order, validation_params } = contract_info;
+    const { contract_id, currency, contract_type, limit_order } = contract_info;
     const { take_profit, stop_loss } = limit_order ?? { take_profit: {}, stop_loss: {} };
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
     const { common } = useStore();
@@ -90,8 +90,8 @@ const ContractDetails = observer(() => {
                 <DealCancellation />
                 {showRiskManagement && (
                     <CardWrapper>
-                        <TakeProfit validation_params={validation_params} />
-                        <StopLoss validation_params={validation_params} />
+                        <TakeProfit />
+                        <StopLoss />
                     </CardWrapper>
                 )}
                 <OrderDetails contract_info={contract_info} />

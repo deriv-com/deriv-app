@@ -1,3 +1,4 @@
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 

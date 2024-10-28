@@ -25,13 +25,7 @@ type RiskManagementItemProps = {
 };
 
 const RiskManagementItem = observer(
-    ({
-        label,
-        modal_body_content,
-        is_deal_cancellation = false,
-        value,
-        type,
-    }: RiskManagementItemProps) => {
+    ({ label, modal_body_content, is_deal_cancellation = false, value, type }: RiskManagementItemProps) => {
         const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);

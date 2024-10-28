@@ -33,7 +33,7 @@ const IdvSubmitComplete = observer(
                 if (is_expired_or_failed_error)
                     return <Localize i18n_default_text='Your document has been submitted' />;
             }
-            return <Localize i18n_default_text='Review in progress' />;
+            return <Localize i18n_default_text='Your documents were submitted successfully' />;
         };
 
         const getDescriptionText = () => {
@@ -42,11 +42,13 @@ const IdvSubmitComplete = observer(
                     <Localize i18n_default_text="We'll review your proof of identity again and will give you an update as soon as possible." />
                 );
             return (
-                <Localize i18n_default_text='Your proof of identity is under review. We’ll get back to you within 5 minutes.' />
+                <Localize i18n_default_text='We’ll review your documents and notify you of its status within 5 minutes.' />
             );
         };
 
-        const poa_button = !is_from_external && <PoaButton custom_text={<Localize i18n_default_text='Next' />} />;
+        const poa_button = !is_from_external && (
+            <PoaButton custom_text={<Localize i18n_default_text='Submit proof of address' />} />
+        );
 
         return (
             <div className={clsx('proof-of-identity__container', 'proof-of-identity__container--status')}>
@@ -60,7 +62,7 @@ const IdvSubmitComplete = observer(
                 {needs_poa ? (
                     <React.Fragment>
                         <Text className='text' size='xs' align='center'>
-                            <Localize i18n_default_text='To start trading, you also need to verify your address.' />
+                            <Localize i18n_default_text="Next, we'll need your proof of address." />
                         </Text>
                         {poa_button}
                     </React.Fragment>

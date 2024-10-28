@@ -11,24 +11,22 @@ import { useMFAccountStatus } from '@deriv/hooks';
 
 const AccountNeedsVerification = observer(() => {
     const mf_account_status = useMFAccountStatus();
-    const { client, traders_hub, common } = useStore();
-    const { account_list, loginid } = client;
-    const { openModal, setVerificationModalOpen } = traders_hub;
-    const { setAppstorePlatform } = common;
+    const { client, traders_hub } = useStore();
+    const { account_list, loginid, account_status } = client;
+    const { openModal, openFailedVerificationModal } = traders_hub;
 
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
     const icon_title = account?.title;
 
-    const onClickBanner = () => {
-        setAppstorePlatform('');
-        setVerificationModalOpen(true);
-    };
+    const { authentication } = account_status || {};
 
-    const {
-        text: badge_text,
-        icon: badge_icon,
-        icon_size: badge_icon_size,
-    } = getStatusBadgeConfig(mf_account_status, onClickBanner);
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        mf_account_status,
+        openFailedVerificationModal,
+        'multipliers',
+        undefined,
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
+    );
 
     return (
         <CurrencySwitcherContainer
@@ -43,13 +41,7 @@ const AccountNeedsVerification = observer(() => {
                 return openModal('currency_selection');
             }}
         >
-            <StatusBadge
-                account_status={mf_account_status}
-                icon={badge_icon}
-                text={badge_text}
-                icon_size={badge_icon_size}
-                onClick={onClickBanner}
-            />
+            <StatusBadge account_status={mf_account_status} icon={badge_icon} text={badge_text} />
         </CurrencySwitcherContainer>
     );
 });

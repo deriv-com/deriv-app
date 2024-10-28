@@ -55,7 +55,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
-    const wallets_allowed_languages = current_language === 'EN' || current_language === 'AR';
+    const wallets_allowed_languages =
+        current_language === 'EN' ||
+        current_language === 'AR' ||
+        current_language === 'FR' ||
+        current_language === 'ES';
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
         is_client_store_initialized,

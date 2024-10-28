@@ -29,7 +29,9 @@ const LanguageSettings = observer(() => {
 
     if (has_wallet) {
         allowed_languages = Object.fromEntries(
-            Object.entries(allowed_languages).filter(([language_key]) => ['EN', 'AR'].includes(language_key))
+            Object.entries(allowed_languages).filter(([language_key]) =>
+                ['EN', 'AR', 'FR', 'ES'].includes(language_key)
+            )
         );
     }
 

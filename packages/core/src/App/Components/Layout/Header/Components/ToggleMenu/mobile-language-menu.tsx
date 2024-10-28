@@ -21,7 +21,7 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
     const allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
 
     const filtered_languages = has_wallet
-        ? allowed_languages.filter(lang => lang === 'EN' || lang === 'AR')
+        ? allowed_languages.filter(lang => lang === 'EN' || lang === 'AR' || lang === 'FR' || lang === 'ES')
         : allowed_languages;
 
     return (

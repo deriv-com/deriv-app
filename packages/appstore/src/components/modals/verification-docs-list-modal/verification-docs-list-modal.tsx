@@ -1,12 +1,10 @@
 import React, { Suspense } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { DerivLightUserVerificationIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
+import { Text, Modal, UILoader, MobileDialog, Icon } from '@deriv/components';
 import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES } from '@deriv/shared';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import IconUserVerification from '../../../../../components/src/components/icon/common/ic-deriv-light-user-verification.svg';
 import ListItem from './ListItem';
 import './verification-docs-list-modal.scss';
 
@@ -49,7 +47,7 @@ const VerificationDocsListModalContent = observer(() => {
     ].filter(Boolean) as TItems[];
     return (
         <div className='verification-docs-list-modal__content'>
-            <IconUserVerification />
+            <Icon icon='IcDerivLightUserVerification' size={128} />
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
                 {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
                     <Localize i18n_default_text='Confirm your details to open the account. After verification, you can begin trading.' />

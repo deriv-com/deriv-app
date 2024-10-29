@@ -16,7 +16,11 @@ const MarketSelector = observer(() => {
     const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
-    const current_spot_replacement = is_market_closed ? '-' : <Skeleton.Square height={18} width={64} rounded />;
+    const current_spot_replacement = is_market_closed ? (
+        <Text>-</Text>
+    ) : (
+        <Skeleton.Square height={18} width={64} rounded />
+    );
 
     // For closed markets exchange_is_open === 0
     if (typeof currentSymbol?.exchange_is_open === 'undefined')

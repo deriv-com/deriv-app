@@ -49,6 +49,7 @@ const TradeTypeTabs = observer(({ is_minimized }: TTradeParametersProps) => {
             onChange={handleTabChange}
             options={tab_list.map(({ label }) => ({ disabled: is_market_closed, label }))}
             selectedItemIndex={tab_index}
+            key={`${tab_index}${is_market_closed}`}
         />
     );
 });

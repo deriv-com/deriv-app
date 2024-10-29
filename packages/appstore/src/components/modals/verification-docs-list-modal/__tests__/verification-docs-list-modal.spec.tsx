@@ -21,12 +21,12 @@ jest.mock('@deriv/hooks', () => ({
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
     LabelPairedChevronRightCaptionBoldIcon: () => <div>LabelPairedChevronRightCaptionBoldIcon</div>,
-    DerivLightUserVerificationIcon: () => <div>DerivLightUserVerificationIcon</div>,
 }));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     StatusBadge: () => <div>StatusBadge</div>,
+    Icon: jest.fn(() => 'mockedIcon'),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -95,7 +95,7 @@ describe('<VerificationDocsListModal />', () => {
             },
         });
         renderComponent({});
-        expect(screen.getByText('DerivLightUserVerificationIcon')).toBeInTheDocument();
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
         expect(screen.getByText('Complete your profile')).toBeInTheDocument();
         expect(
             screen.getByText('Confirm your details to open the account. After verification, you can begin trading.')
@@ -122,7 +122,7 @@ describe('<VerificationDocsListModal />', () => {
             },
         });
         renderComponent({ store: mock_store });
-        expect(screen.getByText('DerivLightUserVerificationIcon')).toBeInTheDocument();
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
         expect(screen.getByText('Verification required')).toBeInTheDocument();
         expect(screen.getByText('Your account needs verification.')).toBeInTheDocument();
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();

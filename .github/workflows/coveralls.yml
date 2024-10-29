@@ -45,6 +45,7 @@ jobs:
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
         with:
+          allow-empty: true
           flag-name: ${{ matrix.packages}}
           parallel: true
 

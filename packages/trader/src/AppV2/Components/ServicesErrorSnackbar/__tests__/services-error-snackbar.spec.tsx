@@ -5,6 +5,7 @@ import { useSnackbar } from '@deriv-com/quill-ui';
 import { useLocation } from 'react-router';
 import TraderProviders from '../../../../trader-providers';
 import ServicesErrorSnackbar from '../services-error-snackbar';
+import { SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
@@ -50,6 +51,20 @@ describe('ServicesErrorSnackbar', () => {
         (useLocation as jest.Mock).mockReturnValue({
             pathname: '/dtrader',
         });
+        render(mockServicesErrorSnackbar());
+
+        expect(mockAddSnackbar).toHaveBeenCalled();
+    });
+
+    it('calls useSnackbar with specific arguments if it is a company wide limit error', () => {
+        (useLocation as jest.Mock).mockReturnValue({
+            pathname: '/dtrader',
+        });
+        default_mock_store.common.services_error = {
+            code: SERVICE_ERROR.COMPANY_WIDE_LIMIT_EXCEEDED,
+            message: 'Mock error message',
+            type: 'buy',
+        };
         render(mockServicesErrorSnackbar());
 
         expect(mockAddSnackbar).toHaveBeenCalled();

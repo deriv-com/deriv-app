@@ -6,9 +6,30 @@ on:
     types: [opened, synchronize, edited]    
 name: Coveralls
 jobs:
-  build:
-    name: Reporter
+
+  list_packages:
+    name: List packages
     runs-on: Runner_16cores_Deriv-app
+    outputs:
+      packages: ${{ steps.list_packages.outputs.packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Get list of package directories
+        id: list_packages
+        run: |
+          packages_list=$(find packages/* -maxdepth 0 -type d -exec basename {} \; | jq -R . | jq -s -c .)
+          echo "Packages found: $packages_list"  # For testing/debugging
+          echo "packages=$packages_list" >> $GITHUB_OUTPUT
+
+  test:
+    name: Run tests in parallel
+    needs: list_packages
+    runs-on: Runner_16cores_Deriv-app
+    strategy:
+      matrix:
+        packages: ${{ fromJson(needs.list_packages.outputs.packages) }}
+      fail-fast: true
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
@@ -16,9 +37,24 @@ jobs:
         uses: './.github/actions/setup_node'
       - name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"
-      - name: Build
-        uses: "./.github/actions/build"
+      - name: Build components package
+        working-directory: packages/components
+        run: npm run build
       - name: Test
-        run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
-      - name: Coveralls
+        run: JEST_MAX_WORKERS=95% npm run test:jest packages/${{ matrix.packages }} -- --collectCoverage --passWithNoTests
+      - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+        with:
+          flag-name: ${{ matrix.packages}}
+          parallel: true
+
+  finish:
+    name: Coveralls Finished
+    needs: [test]
+    if: ${{ always() }}
+    runs-on: Runner_16cores_Deriv-app
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+        with:
+          parallel-finished: true

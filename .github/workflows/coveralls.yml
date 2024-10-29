@@ -9,7 +9,8 @@ jobs:
 
   list_packages:
     name: List packages
-    runs-on: Runner_16cores_Deriv-app
+    # runs-on: Runner_16cores_Deriv-app
+    runs-on: ubuntu-latest
     outputs:
       packages: ${{ steps.list_packages.outputs.packages }}
     steps:
@@ -25,11 +26,12 @@ jobs:
   convert_to_string:      
     name: List packages
     needs: list_packages
-    runs-on: Runner_16cores_Deriv-app
+    # runs-on: Runner_16cores_Deriv-app
+    runs-on: ubuntu-latest
     steps:
       - name: Convert to string
         run: |
-          echo "${{ fromJson(needs.list_packages.outputs.packages) }}"
+          $(echo "${{ fromJson(steps.list_packages.outputs.packages) }}" | jq -r 'map("run-" + .) | join(",")')
           
   # test:
   #   name: CoverallsReporter

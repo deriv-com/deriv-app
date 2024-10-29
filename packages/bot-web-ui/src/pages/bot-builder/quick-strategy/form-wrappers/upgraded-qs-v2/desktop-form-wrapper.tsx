@@ -67,7 +67,7 @@ const FormWrapper = observer(
         const { selected_strategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
         const { handleSubmit } = useQsSubmitHandler();
 
-        const selected_startegy_label = STRATEGIES[selected_strategy as keyof typeof STRATEGIES].label;
+        const selected_startegy_label = STRATEGIES[selected_strategy as keyof typeof STRATEGIES]?.label || '';
         const is_selected_strategy_step = current_step === QsSteps.StrategySelect;
 
         React.useEffect(() => {

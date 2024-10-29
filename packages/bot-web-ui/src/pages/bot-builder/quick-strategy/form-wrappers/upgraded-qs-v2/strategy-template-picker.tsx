@@ -18,13 +18,9 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
     const { setActiveTabTutorial, setActiveTab, setFAQSearchValue, filterTuotrialTab } = dashboard;
     const { setFormVisibility, setSelectedStrategy } = quick_strategy;
 
-    const [selector_chip_value, setSelectorChipValue] = React.useState(0);
+    const [chip, setChip] = React.useState('ALL');
     const [is_searching, setIsSearching] = React.useState(false);
     const [search_value, setSearchValue] = React.useState('');
-
-    const handleChipSelect = (index: number) => {
-        setSelectorChipValue(index);
-    };
 
     const onSelectStrategy = (strategy: string, trade_type: string) => {
         setSelectedStrategy(strategy);
@@ -61,17 +57,17 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
             <div className='strategy-template-picker__chips'>
                 {TRADE_TYPES.map((item, index) => (
                     <Chip.Selectable
-                        key={index}
-                        onClick={() => handleChipSelect(index)}
-                        selected={index == selector_chip_value}
+                        key={`${item.label}-chip-${index}`}
+                        onClick={() => setChip(item.value)}
+                        selected={item.value === chip}
                         size='sm'
-                        label={item}
+                        label={item.label}
                     />
                 ))}
             </div>
             <StrategyList
-                selector_chip_value={selector_chip_value}
-                search_value={search_value}
+                category={chip}
+                search={search_value}
                 is_searching={is_searching}
                 onSelectStrategy={onSelectStrategy}
             />

@@ -1,4 +1,4 @@
-import { STRATEGIES } from '../../config';
+import { localize } from '@deriv/translations';
 
 export enum QsSteps {
     StrategySelect,
@@ -7,63 +7,88 @@ export enum QsSteps {
 }
 
 type TTradeTypesItemsIndex = {
-    [key: string]: number;
+    [key: string]: string;
 };
 
-export const TRADE_TYPE_INDEX: TTradeTypesItemsIndex = Object.freeze({
-    // ALL: 0,
-    // ACCUMULATORS: 1,
-    OPTIONS: 0,
-    // MULTIPLIERS: 3,
+export const TRADE_TYPE_MAP: TTradeTypesItemsIndex = Object.freeze({
+    ACCUMULATOR: localize('Accumulators'),
+    OPTIONS: localize('Options'),
+    // MULTIPLIERS: localize('Multipliers'),
 });
 
 // export const TRADE_TYPES = ['All', 'Accumulators', 'Options', 'Multipliers'];
-export const TRADE_TYPES = ['Options'];
-
-export type TTStrategyTradeAssociation = {
-    name: string;
-    display_name: string;
-    id: number;
-    parent: Array<string>;
-};
-
-export type TStrategyTradeAssociations = Array<TTStrategyTradeAssociation>;
-
-export const STRATEGY_TRADE_ASSOCIATIONS: TStrategyTradeAssociations = [
+export const TRADE_TYPES = [
     {
-        name: 'MARTINGALE',
-        display_name: STRATEGIES.MARTINGALE.label,
-        id: 0,
-        parent: ['Options', 'Multipliers', 'Accumulators'],
+        label: localize('All'),
+        value: 'ALL',
     },
     {
-        name: 'D_ALEMBERT',
-        display_name: STRATEGIES.D_ALEMBERT.label,
-        id: 1,
-        parent: ['Options', 'Multipliers', 'Accumulators'],
+        label: TRADE_TYPE_MAP.ACCUMULATORS,
+        value: 'ACCUMULATOR',
     },
     {
-        name: 'REVERSE_MARTINGALE',
-        display_name: STRATEGIES.REVERSE_MARTINGALE.label,
-        id: 2,
-        parent: ['Options', 'Multipliers', 'Accumulators'],
-    },
-    {
-        name: 'REVERSE_D_ALEMBERT',
-        display_name: STRATEGIES.REVERSE_D_ALEMBERT.label,
-        id: 3,
-        parent: ['Options', 'Multipliers', 'Accumulators'],
-    },
-    {
-        name: 'OSCARS_GRIND',
-        display_name: STRATEGIES.OSCARS_GRIND.label,
-        id: 4,
-        parent: ['Options'],
-    },
-    {
-        name: 'STRATEGY_1_3_2_6',
-        display_name: STRATEGIES.STRATEGY_1_3_2_6.label,
-        id: 5,
-        parent: ['Options', 'Multipliers'],
+        label: TRADE_TYPE_MAP.OPTIONS,
+        value: 'OPTIONS',
     },
 ];
+
+export type TStrategy = {
+    label: string;
+};
+
+export type TStrategyGroup = {
+    [key: string]: TStrategy;
+};
+
+export type TStrategyList = {
+    [key: string]: TStrategyGroup;
+};
+
+export const STRATEGY_LIST: TStrategyList = {
+    ACCUMULATOR: {
+        MARTINGALE_TICK_COUNT_TAKE_PROFIT: {
+            label: localize('Martingale'),
+        },
+        MARTINGALE_STAT_RESET_TICK_COUNT_TAKE_PROFIT: {
+            label: localize('Martingale with reset'),
+        },
+        // D_ALEMBERT: {
+        //     label: localize(`D'Alembert`),
+        // },
+        // D_ALEMBERT_WITH_RESET: {
+        //     label: localize(`D'Alembert with reset`),
+        // },
+        // REVERSE_MARTINGALE: {
+        //     label: localize(`Reverse Martingale`),
+        // },
+        // REVERSE_MARTINGALE_WITH_RESET: {
+        //     label: localize(`Reverse Martingale with reset`),
+        // },
+        // REVERSE_D_ALEMBERT: {
+        //     label: localize(`Reverse D'Alembert`),
+        // },
+        // REVERSE_D_ALEMBERT_WITH_RESET: {
+        //     label: localize(`Reverse D'Alembert with reset`),
+        // },
+    },
+    OPTIONS: {
+        MARTINGALE: {
+            label: localize(`Martingale`),
+        },
+        D_ALEMBERT: {
+            label: localize(`D'Alembert`),
+        },
+        REVERSE_MARTINGALE: {
+            label: localize(`Reverse Martingale`),
+        },
+        REVERSE_D_ALEMBERT: {
+            label: localize(`Reverse D'Alembert`),
+        },
+        OSCARS_GRIND: {
+            label: localize(`Oscars Grind`),
+        },
+        STRATEGY_1_3_2_6: {
+            label: localize(`Strategy 1-3-2-6`),
+        },
+    },
+};

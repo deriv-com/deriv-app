@@ -6,7 +6,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useDtraderV2Flag } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
 
@@ -41,7 +41,9 @@ const AppContents = observer(({ children }) => {
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
 
-    const { dtrader_v2_enabled } = useDtraderV2Flag();
+    const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled',
+    });
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

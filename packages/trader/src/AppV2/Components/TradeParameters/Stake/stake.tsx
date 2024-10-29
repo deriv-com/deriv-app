@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces, isCryptocurrency } from '@deriv/shared';
@@ -38,6 +39,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         validation_errors,
         validation_params,
     } = useTraderStore();
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
     const [is_focused, setIsFocused] = React.useState(false);
@@ -120,7 +124,10 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 message: <Localize i18n_default_text='Please adjust your stake.' />,
                 status: 'fail',
                 hasCloseButton: true,
-                style: { marginBottom: '48px' },
+                style: {
+                    marginBottom: is_logged_in ? '48px' : '-8px',
+                    width: 'calc(100% - var(--core-spacing-800)',
+                },
             });
         }
     }, [stake_error]);
@@ -226,7 +233,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 setIsOpen(false);
             }
         },
-        [v2_params_initial_values, is_open]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [is_open, v2_params_initial_values.stake, amount]
     );
 
     return (

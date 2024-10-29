@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Convert to string
         run: |
-          run_string=$(echo "${{ fromJson(needs.list_packages.outputs.packages) }}" | jq -r 'map("run-" + .) | join(",")')
+          run_string=$(echo "${{ needs.list_packages.outputs.packages }}" | jq -r 'map("run-" + .) | join(",")')
           echo "Transformed string: $run_string"
           
   # test:

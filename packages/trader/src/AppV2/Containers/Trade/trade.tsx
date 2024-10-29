@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
-import { Loading } from '@deriv/components';
+import { Loading, Skeleton } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -24,7 +24,7 @@ const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
-        client: { is_logged_in },
+        client: { is_logged_in, is_switching },
         ui: { is_dark_mode_on },
     } = useStore();
     const {
@@ -84,7 +84,7 @@ const Trade = observer(() => {
 
     return (
         <BottomNav onScroll={onScroll}>
-            {symbols.length && trade_types.length ? (
+            {symbols.length && trade_types.length && !is_switching ? (
                 <React.Fragment>
                     <div className='trade'>
                         <TradeTypes

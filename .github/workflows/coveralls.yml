@@ -20,46 +20,51 @@ jobs:
         run: |
           packages_list=$(find packages/* -maxdepth 0 -type d -exec basename {} \; | jq -R . | jq -s -c .)
           echo "Packages found: $packages_list"  # For testing/debugging
-          # Set output to pass the array to other steps
           echo "packages=$packages_list" >> $GITHUB_OUTPUT
 
-  build:
-    name: Reporter
+  convert_to_string:      
+    name: List packages
     needs: list_packages
     runs-on: Runner_16cores_Deriv-app
-    strategy:
-      matrix:
-        packages: ['cashier','wallets']
-        # packages: ${{ fromJson(needs.list_packages.outputs.packages) }}
-      fail-fast: true
     steps:
-      - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: Setup Node
-        uses: './.github/actions/setup_node'
-      - name: Install dependencies
-        uses: "./.github/actions/npm_install_from_cache"
-      - name: Build components package
-        working-directory: packages/components
+      - name: Convert to string
         run: |
-          npm run build
-      # - name: Build
-      #   uses: "./.github/actions/build"
-      - name: Test
-        run: JEST_MAX_WORKERS=95% npm run test:jest packages/${{ matrix.packages }} -- --collectCoverage --passWithNoTests
-      - name: Coveralls Parallel
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
-        with:
-          flag-name: run-${{ join(matrix.*, '-') }}
-          parallel: true
+          echo "${{ fromJson(needs.list_packages.outputs.packages) }}"
+          
+  # test:
+  #   name: CoverallsReporter
+  #   needs: list_packages
+  #   runs-on: Runner_16cores_Deriv-app
+  #   strategy:
+  #     matrix:
+  #       packages: ${{ fromJson(needs.list_packages.outputs.packages) }}
+  #     fail-fast: true
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+  #     - name: Setup Node
+  #       uses: './.github/actions/setup_node'
+  #     - name: Install dependencies
+  #       uses: "./.github/actions/npm_install_from_cache"
+  #     - name: Build components package
+  #       working-directory: packages/components
+  #       run: |
+  #         npm run build
+  #     - name: Test
+  #       run: JEST_MAX_WORKERS=95% npm run test:jest packages/${{ matrix.packages }} -- --collectCoverage --passWithNoTests
+  #     - name: Coveralls Parallel
+  #       uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+  #       with:
+  #         flag-name: run-${{ matrix.packages}}
+  #         parallel: true
 
-  finish:
-    needs: build
-    if: ${{ always() }}
-    runs-on: Runner_16cores_Deriv-app
-    steps:
-    - name: Coveralls Finished
-      uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
-      with:
-        parallel-finished: true
-        carryforward: "run-wallets,run-cashier"
+  # finish:
+  #   needs: [test, list_packages]
+  #   if: ${{ always() }}
+  #   runs-on: Runner_16cores_Deriv-app
+  #   steps:
+  #   - name: Coveralls Finished
+  #     uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+  #     with:
+  #       parallel-finished: true
+  #       carryforward: "run-wallets,run-cashier"

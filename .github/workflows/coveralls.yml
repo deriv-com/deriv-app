@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Convert to string
         run: |
-          $(echo "${{ fromJson(steps.list_packages.outputs.packages) }}" | jq -r 'map("run-" + .) | join(",")')
+          echo "${{ fromJson(needs.list_packages.outputs.packages) }}" | jq -r 'map("run-" + .) | join(",")'
           
   # test:
   #   name: CoverallsReporter

@@ -116,7 +116,7 @@ describe('Trade', () => {
                     ],
                 },
             },
-            client: { is_logged_in: true },
+            client: { is_logged_in: true, is_switching: false },
             common: { resetServicesError: jest.fn() },
         });
         (useSignupTrigger as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
@@ -138,6 +138,14 @@ describe('Trade', () => {
     };
 
     it('should render loader if there is no active_symbols or contract_types_list', () => {
+        default_mock_store = mockStore({});
+        render(mockTrade());
+
+        expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
+    });
+
+    it('should show loader if we are switching from demo to real account', () => {
+        default_mock_store.client.is_switching = true;
         default_mock_store = mockStore({});
         render(mockTrade());
 

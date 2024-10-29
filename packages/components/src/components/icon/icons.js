@@ -381,6 +381,7 @@ import './common/ic-delete.svg';
 import './common/ic-demo-reset-balance-done.svg';
 import './common/ic-demo-reset-balance.svg';
 import './common/ic-demo.svg';
+import './common/ic-deriv-light-user-verification.svg';
 import './common/ic-deriv-outline.svg';
 import './common/ic-deriv-short-logo.svg';
 import './common/ic-deriv.svg';

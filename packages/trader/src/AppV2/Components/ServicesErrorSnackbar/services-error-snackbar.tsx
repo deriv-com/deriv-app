@@ -39,6 +39,7 @@ const ServicesErrorSnackbar = observer(() => {
             : '48px';
     const action_props = {
         actionText: localize('View'),
+        delay: 8000,
         onActionClick: () => {
             window.open(getStaticUrl('tnc/trading-terms.pdf', true));
         },

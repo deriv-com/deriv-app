@@ -139,10 +139,14 @@ const DocumentSubmission: React.FC<TDocumentSubmissionProps> = ({ countryCode })
                         titleType='bold'
                     />
                     <div className='wallets-poa__document__container__upload__requirements'>
-                        <Text size={!isDesktop ? 'xs' : 'sm'}>
+                        <Text align='start' size={!isDesktop ? 'xs' : 'sm'}>
                             <Localize i18n_default_text='Supported formats : JPEG, JPG, PNG, PDF, and GIF only' />
                         </Text>
-                        <Text size={!isDesktop ? 'xs' : 'sm'}>
+                        <Text
+                            align='end'
+                            className='wallets-poa__document__container__upload__size'
+                            size={!isDesktop ? 'xs' : 'sm'}
+                        >
                             <Localize i18n_default_text='Maximum size : 8MB' />
                         </Text>
                     </div>

@@ -232,15 +232,19 @@ export default class NotificationStore extends BaseStore {
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
-        if (identity.status === 'verified') {
+        const status = this.root_store.client.account_status.status;
+        if (identity.status === 'verified' && !status.includes('allow_poi_resubmission')) {
             //identity
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (!['none', 'pending', 'expired'].includes(identity.status)) {
+        } else if (
+            !['none', 'pending', 'expired'].includes(identity.status) ||
+            status.includes('allow_poi_resubmission')
+        ) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
 
         // document
-        if (document.status === 'verified') {
+        if (document.status === 'verified' && !status.includes('allow_poa_resubmission')) {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
             if (document.status === 'pending') {
@@ -250,7 +254,10 @@ export default class NotificationStore extends BaseStore {
             }
         } else if (has_mt5_account_with_rejected_poa) {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
-        } else if (!['none', 'pending', 'expired'].includes(document.status)) {
+        } else if (
+            !['none', 'pending', 'expired'].includes(document.status) ||
+            status.includes('allow_poa_resubmission')
+        ) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }
@@ -823,7 +830,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to unlock it.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget.call('maximize');
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1077,7 +1084,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget.call('maximize');
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1273,7 +1280,7 @@ export default class NotificationStore extends BaseStore {
                     ),
                     action: {
                         onClick: () => {
-                            window.LiveChatWidget.call('maximize');
+                            window.LiveChatWidget?.call('maximize');
                         },
                         text: localize('Go to live chat'),
                     },
@@ -1386,7 +1393,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget.call('maximize');
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1398,7 +1405,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget.call('maximize');
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1573,7 +1580,7 @@ export default class NotificationStore extends BaseStore {
                 ),
                 action: {
                     onClick: async () => {
-                        window.LiveChatWidget.call('maximize');
+                        window.LiveChatWidget?.call('maximize');
                     },
                     text: localize('Go to LiveChat'),
                 },
@@ -1589,9 +1596,10 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Update now'),
                     onClick: () => {
                         if (this.is_notifications_visible) this.toggleNotificationsModal();
-                        ui.toggleAdditionalKycInfoModal();
+                        ui.setFieldRefToFocus('account-opening-reason');
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
+                    route: routes.personal_details,
                 },
                 type: 'warning',
             },
@@ -1740,7 +1748,7 @@ export default class NotificationStore extends BaseStore {
             : {
                   text: localize('Contact live chat'),
                   onClick: () => {
-                      window.LiveChatWidget.call('maximize');
+                      window.LiveChatWidget?.call('maximize');
                   },
               };
 

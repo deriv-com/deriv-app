@@ -33,6 +33,7 @@ import {
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
+import { getCountry } from '@deriv/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
@@ -106,7 +107,7 @@ export default class ClientStore extends BaseStore {
     ctrader_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
-    statement = [];
+    statement = {};
     obj_total_balance = {
         amount_real: undefined,
         amount_mt5: undefined,
@@ -169,6 +170,7 @@ export default class ClientStore extends BaseStore {
 
     subscriptions = {};
     exchange_rates = {};
+    client_kyc_status = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -433,6 +435,8 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            setClientKYCStatus: action.bound,
+            client_kyc_status: observable,
         });
 
         reaction(
@@ -1189,6 +1193,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
         localStorage.setItem('active_user_id', this.user_id);
+        localStorage.setItem(storage_key, JSON.stringify(this.accounts));
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
@@ -1297,6 +1302,9 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+        if (!form_values.tax_residence) {
+            form_values.tax_residence = this.residence;
+        }
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
@@ -1475,10 +1483,6 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnboarding key after page refresh
-        /** will be removed later when header for the wallets is created) */
-        localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1786,7 +1790,7 @@ export default class ClientStore extends BaseStore {
         const broker = LocalStore?.get('active_loginid')
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
-        setTimeout(() => {
+        setTimeout(async () => {
             const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
@@ -1795,13 +1799,15 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                country: await getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
+                url: window.location.href,
             };
+
             if (this.user_id) analytics_config.user_id = this.user_id;
             Analytics.setAttributes(analytics_config);
         }, 4);
@@ -2928,5 +2934,9 @@ export default class ClientStore extends BaseStore {
 
     get is_account_to_be_closed_by_residence() {
         return this.account_time_of_closure && this.residence && this.residence === 'sn';
+    }
+
+    setClientKYCStatus(client_kyc_status) {
+        this.client_kyc_status = client_kyc_status;
     }
 }

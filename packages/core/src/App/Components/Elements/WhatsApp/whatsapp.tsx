@@ -3,14 +3,18 @@ import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
-import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 
 const WhatsApp = ({ showPopover, onClick }: { showPopover?: boolean; onClick?: () => void }) => {
     const { isDesktop } = useDevice();
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
-    if (!is_livechat_available) return null;
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
+
+    if (!is_livechat_available && !enable_freshworks_live_chat) return null;
 
     if (!isDesktop)
         return (

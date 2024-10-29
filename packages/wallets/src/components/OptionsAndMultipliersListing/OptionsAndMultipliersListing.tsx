@@ -90,19 +90,19 @@ const OptionsAndMultipliersListing = () => {
 
     const title = isEuRegion ? <Localize i18n_default_text='Multipliers' /> : <Localize i18n_default_text='Options' />;
     const subtitle = isEuRegion ? (
-        <Localize
-            components={[<WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />]}
-            i18n_default_text='Leverage your trading; risk only what you put in. <0>Learn more</0>'
-        />
+        <>
+            <Localize i18n_default_text='Leverage your trading; risk only what you put in.' />{' '}
+            <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
+                <Localize i18n_default_text='Learn more' />
+            </WalletLink>
+        </>
     ) : (
-        <Localize
-            components={[
-                <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/'>
-                    <Localize i18n_default_text='Learn more' />
-                </WalletLink>,
-            ]}
-            i18n_default_text='Predict the market, profit if you’re right, risk only what you put in. <0>Learn more</0>'
-        />
+        <>
+            <Localize i18n_default_text='Predict the market, profit if you’re right, risk only what you put in.' />{' '}
+            <WalletLink staticUrl='/trade-types/options/digital-options/up-and-down/'>
+                <Localize i18n_default_text='Learn more' />
+            </WalletLink>
+        </>
     );
 
     return (

@@ -3,6 +3,7 @@ import {
     ChartBarrierStore,
     isAccumulatorContract,
     isDigitContract,
+    isDtraderV2Enabled,
     isEnded,
     isEqualObject,
     isMultiplierContract,
@@ -384,10 +385,14 @@ export default class ContractStore extends BaseStore {
         Object.keys(limit_order).length !== 0 &&
             WS.contractUpdate(this.contract_id, limit_order).then(response => {
                 if (response.error) {
-                    this.root_store.common.setServicesError({
-                        type: response.msg_type,
-                        ...response.error,
-                    });
+                    this.root_store.common.setServicesError(
+                        {
+                            type: response.msg_type,
+                            ...response.error,
+                        },
+                        // Temporary switching off old snackbar for DTrader-V2
+                        isDtraderV2Enabled(this.root_store.ui.is_mobile)
+                    );
                     return;
                 }
 

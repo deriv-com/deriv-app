@@ -87,6 +87,7 @@ const OptionsAndMultipliersListing = () => {
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const isLoading = isEuRegionLoading;
+
     const title = isEuRegion ? <Localize i18n_default_text='Multipliers' /> : <Localize i18n_default_text='Options' />;
     const subtitle = isEuRegion ? (
         <Localize

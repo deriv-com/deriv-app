@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter, useHistory, useLocation } from 'react-router-dom';
-import DTraderContractDetailsHeader from '../dtrader-v2-contract-detail-header';
+import ContractDetailsHeader from '../contract-details-header';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-describe('DTraderV2Header', () => {
+describe('ContractDetailsHeader', () => {
     const mock_store = mockStore({
         contract_replay: {
             onClickCancel: jest.fn(),
@@ -34,7 +34,7 @@ describe('DTraderV2Header', () => {
         render(
             <StoreProvider store={mock_store}>
                 <BrowserRouter>
-                    <DTraderContractDetailsHeader />
+                    <ContractDetailsHeader />
                 </BrowserRouter>
             </StoreProvider>
         );
@@ -48,7 +48,7 @@ describe('DTraderV2Header', () => {
         render(
             <StoreProvider store={mock_store}>
                 <BrowserRouter>
-                    <DTraderContractDetailsHeader />
+                    <ContractDetailsHeader />
                 </BrowserRouter>
             </StoreProvider>
         );
@@ -70,7 +70,7 @@ describe('DTraderV2Header', () => {
         render(
             <StoreProvider store={mock_store}>
                 <BrowserRouter>
-                    <DTraderContractDetailsHeader />
+                    <ContractDetailsHeader />
                 </BrowserRouter>
             </StoreProvider>
         );

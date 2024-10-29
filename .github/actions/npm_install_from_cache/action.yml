@@ -3,9 +3,18 @@ description: Install npm packages
 runs:
   using: composite
   steps:
-  - name: Install npm packages
-    run: npm ci
-    shell: bash
-  - name: Bootstrap 
-    run: npm run bootstrap:ci
+  - name: Cache node modules
+    id: cache-npm
+    uses: actions/cache@v3
+    with:
+      # npm cache files are stored in `node_modules` on Linux/macOS
+      path: |
+        node_modules
+        packages/*/node_modules
+      key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
+  - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+    name: Install dependencies
+    run: |
+      npm ci
+      npm run bootstrap:ci
     shell: bash

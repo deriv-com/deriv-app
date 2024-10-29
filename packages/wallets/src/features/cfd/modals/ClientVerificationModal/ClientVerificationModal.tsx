@@ -1,8 +1,8 @@
 import React from 'react';
-import { DerivLightUserVerificationIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
+import DerivLightUserVerificationIcon from '../../../../public/images/ic-deriv-light-user-verification.svg';
 import { TModifiedMT5Account } from '../../types';
 import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';

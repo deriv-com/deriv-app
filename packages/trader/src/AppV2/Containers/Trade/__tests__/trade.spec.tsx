@@ -146,7 +146,6 @@ describe('Trade', () => {
 
     it('should show loader if we are switching from demo to real account', () => {
         default_mock_store.client.is_switching = true;
-        default_mock_store = mockStore({});
         render(mockTrade());
 
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();

@@ -129,7 +129,7 @@ export default class TradersHubStore extends BaseStore {
             setIsCFDRestrictedCountry: action.bound,
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
-            regulated_mt5_accounts: computed,
+            is_employment_status_tin_mandatory: computed,
         });
 
         reaction(
@@ -885,9 +885,11 @@ export default class TradersHubStore extends BaseStore {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
     }
 
-    get regulated_mt5_accounts() {
-        return this.root_store.client.mt5_login_list?.filter(
-            account => account.account_type === 'real' && account.landing_company_short !== 'svg'
+    get is_employment_status_tin_mandatory() {
+        const { client, ui } = this.root_store;
+        return (
+            client.is_financial_assessment_needed &&
+            (ui.is_redirected_from_financial_assessment || localStorage.getItem('financial_assessment_redirect'))
         );
     }
 }

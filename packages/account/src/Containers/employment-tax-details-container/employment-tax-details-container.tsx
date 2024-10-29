@@ -40,11 +40,11 @@ const EmploymentTaxDetailsContainer = observer(
         const { client, traders_hub } = useStore();
 
         const { is_virtual, account_settings } = client;
-        const { regulated_mt5_accounts } = traders_hub;
+        const { is_employment_status_tin_mandatory } = traders_hub;
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const has_regulated_mt5 = regulated_mt5_accounts.length > 0;
+        const is_employment_status_mandatory = is_virtual ? true : is_employment_status_tin_mandatory;
 
         const is_tin_required =
             !is_virtual &&
@@ -138,16 +138,13 @@ const EmploymentTaxDetailsContainer = observer(
 
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
-        // [TODO] - This should come from BE
         const should_disable_employment_status =
-            isFieldDisabled('employment_status') ||
-            Boolean(is_virtual && client.account_settings.employment_status) ||
-            Boolean(!is_virtual && client.account_settings.immutable_fields?.includes('tax_identification_number'));
+            isFieldDisabled('employment_status') || Boolean(is_virtual && client.account_settings.employment_status);
 
         return (
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
-                    required={has_regulated_mt5}
+                    required={is_employment_status_mandatory}
                     is_disabled={should_disable_employment_status}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
                 />

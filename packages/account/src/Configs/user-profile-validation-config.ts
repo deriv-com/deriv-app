@@ -2,7 +2,6 @@ import { localize } from '@deriv-com/translations';
 import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import dayjs from 'dayjs';
-import { TinValidations } from '@deriv/api/types';
 import { TEmployeeDetailsTinValidationConfig } from '../Types';
 
 const {

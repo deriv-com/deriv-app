@@ -28,7 +28,7 @@ export const VerifyButton = observer(
         states_list,
     }: TVerifyButton) => {
         const { client, ui } = useStore();
-        const { setShouldShowPhoneNumberOTP } = ui;
+        const { setShouldShowPhoneNumberOTP, setIsRedirectedFromFinancialAssessment } = ui;
         const { setVerificationCode, is_authorize, is_virtual } = client;
         const { is_phone_number_verified } = useIsPhoneNumberVerified();
         const history = useHistory();
@@ -64,6 +64,7 @@ export const VerifyButton = observer(
             // @ts-expect-error GetSettings types doesn't match updated set_settings payload types
             updateSettings({ payload: request })
                 .then(() => {
+                    setIsRedirectedFromFinancialAssessment(false);
                     sendPhoneNumberVerifyEmail();
                 })
                 .catch(err => {

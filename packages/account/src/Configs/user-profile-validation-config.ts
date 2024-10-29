@@ -24,10 +24,7 @@ type TINDepdendents = {
      * This flag indicates that tin was skipped before and was set by BE
      */
     is_tin_auto_set?: boolean;
-    /**
-     * This flag indicates whether user has regulated MT5 account so that Tin can be made mandatory
-     */
-    has_regulated_mt5?: boolean;
+    is_employment_status_tin_mandatory?: boolean;
 };
 
 Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
@@ -41,14 +38,20 @@ Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
     });
 });
 
-const makeTinOptional = ({ is_mf, is_real, tin_skipped, is_tin_auto_set, has_regulated_mt5 }: TINDepdendents) => {
+const makeTinOptional = ({
+    is_mf,
+    is_real,
+    tin_skipped,
+    is_tin_auto_set,
+    is_employment_status_tin_mandatory,
+}: TINDepdendents) => {
     const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
     if (is_real) {
         // Students and unemployed are not required to provide TIN to have a regulated MT5 jurisdiction
-        if (is_tin_auto_set && has_regulated_mt5) {
+        if (is_tin_auto_set && is_employment_status_tin_mandatory) {
             return true;
         }
-        return check_if_tin_skipped || !has_regulated_mt5;
+        return check_if_tin_skipped || !is_employment_status_tin_mandatory;
     }
     // Check For Virtual account
     if (is_mf) {
@@ -63,11 +66,11 @@ export const getEmploymentAndTaxValidationSchema = ({
     is_real = false,
     is_tin_auto_set = false,
     is_duplicate_account = false,
-    has_regulated_mt5 = false,
+    is_employment_status_tin_mandatory = false,
 }: TEmployeeDetailsTinValidationConfig) => {
     return Yup.object({
-        employment_status: Yup.string().when('has_regulated_mt5', {
-            is: () => has_regulated_mt5,
+        employment_status: Yup.string().when('is_employment_status_tin_mandatory', {
+            is: () => is_employment_status_tin_mandatory,
             then: Yup.string().required(localize('Employment status is required.')),
             otherwise: Yup.string().notRequired(),
         }),
@@ -86,7 +89,13 @@ export const getEmploymentAndTaxValidationSchema = ({
         tax_identification_number: Yup.string()
             .when(['tin_skipped'], {
                 is: (tin_skipped: boolean) =>
-                    makeTinOptional({ is_mf, is_real, tin_skipped, is_tin_auto_set, has_regulated_mt5 }),
+                    makeTinOptional({
+                        is_mf,
+                        is_real,
+                        tin_skipped,
+                        is_tin_auto_set,
+                        is_employment_status_tin_mandatory,
+                    }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })

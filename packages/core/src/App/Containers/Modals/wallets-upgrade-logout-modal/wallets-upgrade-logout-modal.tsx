@@ -3,6 +3,7 @@ import { Analytics, TEvents } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { redirectToLogin, routes } from '@deriv/shared';
+import { useOauth2 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';
@@ -30,24 +31,26 @@ const WalletsUpgradeLogoutModal = observer(() => {
         trackAnalyticsEvent('open', account_mode);
     }, [account_mode]);
 
-    const onConfirmHandler = () => {
+    const onConfirmHandler = async () => {
         Cookies.set('recent_wallets_migration', 'true', {
             path: '/', // not available on other subdomains
             expires: 0.5, // 12 hours expiration time
             secure: true,
         });
-        logout().then(() => {
+        await logout().then(() => {
             window.location.href = routes.traders_hub;
             redirectToLogin(false, getLanguage());
         });
         trackAnalyticsEvent('click_cta', account_mode);
     };
 
+    const { oAuthLogout } = useOauth2({ handleLogout: onConfirmHandler });
+
     return (
         <Dialog
             className='wallets-upgrade-logout-modal'
             confirm_button_text={localize('Log out')}
-            onConfirm={onConfirmHandler}
+            onConfirm={oAuthLogout}
             is_closed_on_confirm
             is_visible
             dismissable={false}

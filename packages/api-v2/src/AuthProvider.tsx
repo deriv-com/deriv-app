@@ -4,6 +4,7 @@ import { useAPIContext } from './APIProvider';
 import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
 import useMutation from './useMutation';
 import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
+import { useOauth2 } from '@deriv/hooks';
 import useAPI from './useAPI';
 import { API_ERROR_CODES } from './constants';
 
@@ -109,6 +110,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
     const { mutateAsync } = useMutation('authorize');
 
     const { queryClient, setOnReconnected, setOnConnected, wsClient } = useAPIContext();
+    const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -193,7 +195,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                     })
                     .catch(async (e: TAuthorizeError) => {
                         if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
-                            await logout?.();
+                            await oAuthLogout();
                         }
                         setIsLoading(false);
                         setIsInitializing(false);
@@ -238,14 +240,14 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                 processAuthorizeResponse(authorizeResponse);
             } catch (e: unknown) {
                 if (typeof e === 'object' && (e as TAuthorizeError)?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
-                    await logout?.();
+                    await oAuthLogout();
                 }
             } finally {
                 setIsLoading(false);
                 setIsSwitching(false);
             }
         },
-        [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]
+        [loginid, oAuthLogout, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {
@@ -266,9 +268,9 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isSwitching,
             isInitializing,
             subscribe,
-            logout,
+            oAuthLogout,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, logout, subscribe]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, oAuthLogout, subscribe]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

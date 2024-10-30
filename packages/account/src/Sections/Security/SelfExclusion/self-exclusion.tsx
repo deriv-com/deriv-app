@@ -10,6 +10,7 @@ import {
     useIsMounted,
     WS,
 } from '@deriv/shared';
+import { useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import DemoMessage from '../../../Components/demo-message';
 import '../../../Components/self-exclusion/self-exclusion.scss';
@@ -83,6 +84,11 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         getLimits: getLimitsFromStore,
     } = client;
     const { is_tablet } = ui;
+    const { oAuthLogout } = useOauth2({
+        handleLogout: async () => {
+            await logout();
+        },
+    });
     const is_wrapper_bypassed = false;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const is_cr = standpoint.svg;
@@ -319,7 +325,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
                         submit_error_message: response.error.message,
                     });
                 } else {
-                    logout();
+                    await oAuthLogout();
                 }
             } else {
                 setState({ show_confirm: true });

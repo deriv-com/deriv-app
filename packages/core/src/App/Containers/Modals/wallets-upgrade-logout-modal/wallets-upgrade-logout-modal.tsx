@@ -37,7 +37,6 @@ const WalletsUpgradeLogoutModal = observer(() => {
             secure: true,
         });
         logout().then(() => {
-            window.location.href = routes.traders_hub;
             redirectToLogin(false, getLanguage());
         });
         trackAnalyticsEvent('click_cta', account_mode);

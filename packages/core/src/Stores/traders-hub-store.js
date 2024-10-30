@@ -888,7 +888,7 @@ export default class TradersHubStore extends BaseStore {
     get is_employment_status_tin_mandatory() {
         const { client, ui } = this.root_store;
         return (
-            client.is_financial_assessment_needed &&
+            (client.is_financial_assessment_needed || client.is_financial_information_incomplete) &&
             (ui.is_redirected_from_financial_assessment || localStorage.getItem('financial_assessment_redirect'))
         );
     }

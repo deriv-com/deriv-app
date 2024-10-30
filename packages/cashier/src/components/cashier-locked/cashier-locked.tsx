@@ -28,7 +28,6 @@ const CashierLocked = observer(() => {
         is_identity_verification_needed,
         is_account_to_be_closed_by_residence,
         account_time_of_closure,
-        residence,
     } = client;
     const mf_account_status = useMFAccountStatus();
     const is_cashier_locked = useCashierLocked();
@@ -53,7 +52,6 @@ const CashierLocked = observer(() => {
         is_duplicate_dob_phone,
         is_account_to_be_closed_by_residence,
         account_time_of_closure,
-        residence,
     });
 
     return (

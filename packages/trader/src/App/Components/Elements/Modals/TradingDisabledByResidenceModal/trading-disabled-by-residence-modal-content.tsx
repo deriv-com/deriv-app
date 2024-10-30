@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 
 export const TradingDisabledByResidenceModalContent = observer(() => {
     const { client } = useStore();
-    const { account_time_of_closure, residence } = client;
+    const { account_time_of_closure } = client;
 
     return (
         <div className='trading-disabled-by-residence-modal__content'>
@@ -16,10 +16,9 @@ export const TradingDisabledByResidenceModalContent = observer(() => {
             </Text>
             <Text align='center' size='xs'>
                 <Localize
-                    i18n_default_text='Due to business changes, {{residence}} client accounts are to be closed. Withdraw any remaining funds by {{date}}.'
+                    i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw any remaining funds by {{date}}.'
                     values={{
                         date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
-                        residence: residence
                     }}
                 />
             </Text>

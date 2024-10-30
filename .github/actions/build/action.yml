@@ -83,9 +83,9 @@ runs:
       # nx cache files are stored in `node_modules` on Linux/macOS
       path: |
         node_modules/.cache/nx
-      key: cache-nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}
+      key: nx-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}
       restore-keys: |
-            cache-nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+            nx-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
   - if: ${{ steps.cache-nx.outputs.cache-hit != 'true' }}
     name: Run build
     run: npm run build:all

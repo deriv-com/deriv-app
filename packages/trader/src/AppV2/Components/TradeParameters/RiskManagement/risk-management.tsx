@@ -75,7 +75,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                 className={classname}
                 label={
                     <Localize
-                        i18n_default_text='Risk Management'
+                        i18n_default_text='Risk management'
                         key={`risk-management${is_minimized ? '-minimized' : ''}`}
                     />
                 }
@@ -99,7 +99,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                         )}
                         header={CarouselHeader}
                         pages={action_sheet_content}
-                        title={<Localize i18n_default_text='Risk Management' />}
+                        title={<Localize i18n_default_text='Risk management' />}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

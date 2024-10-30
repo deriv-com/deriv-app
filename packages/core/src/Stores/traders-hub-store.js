@@ -401,6 +401,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableCFDAccounts() {
+        const { trading_platform_available_accounts } = this.root_store.client;
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('CFDs on financial instruments.')
@@ -413,8 +414,16 @@ export default class TradersHubStore extends BaseStore {
             return localize('Zero spread CFDs on financial and derived instruments');
         };
 
-        const all_available_accounts = [
-            ...getCFDAvailableAccount(),
+        const getMT5Accounts = [
+            {
+                name: 'Standard',
+                description: localize('CFDs on derived and financial instruments.'),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'synthetic',
+                product: 'standard',
+                icon: 'Standard',
+                availability: 'Non-EU',
+            },
             {
                 name: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
                 description: getAccountDesc(),
@@ -456,6 +465,27 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'Non-EU',
             },
         ];
+
+        const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {
+            const { product, is_default_jurisdiction } = item;
+            if (
+                is_default_jurisdiction === 'true' ||
+                (acc[product] && acc[product].some(i => i.is_default_jurisdiction === 'true'))
+            ) {
+                if (!acc[product]) {
+                    acc[product] = [];
+                }
+                acc[product].push(item);
+            }
+
+            return acc;
+        }, {});
+
+        const filteredAccounts = getMT5Accounts.filter(account =>
+            Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
+        );
+
+        const all_available_accounts = [...getCFDAvailableAccount(), ...filteredAccounts];
         this.available_cfd_accounts = all_available_accounts.map(account => {
             return {
                 ...account,
@@ -495,13 +525,6 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
-        if (this.is_eu_user && !this.is_demo_low_risk) {
-            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
-                ['EU', 'All'].some(region => region === account.availability)
-            );
-            return;
-        }
-
         if (this.financial_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
                 account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5

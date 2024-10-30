@@ -54,7 +54,7 @@ const getFeatureFlag = async (feature: string, defaultValue?: string | boolean |
 
         // If Growthbook has config error, down or encountering issues, feature flag will default to false
         if (gbState.isLoaded && gbState.status?.success) {
-            enabled = Analytics.getFeatureValue(feature, !!defaultValue);
+            enabled = Analytics?.getFeatureValue(feature, !!defaultValue);
         }
     }
 

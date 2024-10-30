@@ -56,7 +56,7 @@ describe('ServicesErrorSnackbar', () => {
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
-    it('calls useSnackbar with specific arguments if it is a company wide limit error', () => {
+    it('calls useSnackbar if it is a company wide limit error', () => {
         (useLocation as jest.Mock).mockReturnValue({
             pathname: '/dtrader',
         });

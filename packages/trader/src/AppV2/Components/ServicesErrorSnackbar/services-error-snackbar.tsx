@@ -55,11 +55,11 @@ const ServicesErrorSnackbar = observer(() => {
                     marginBottom: is_logged_in ? bottom_position : '-8px',
                     width: 'calc(100% - var(--core-spacing-800)',
                 },
-                ...(should_contain_action ? { action_props } : {}),
+                ...(should_contain_action ? action_props : {}),
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_show_error_snackbar]);
+    }, [should_show_error_snackbar, should_contain_action]);
 
     return <SnackbarController />;
 });

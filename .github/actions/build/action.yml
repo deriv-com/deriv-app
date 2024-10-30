@@ -77,5 +77,16 @@ runs:
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
+    id: cache-nx
+    uses: actions/cache@v3
+    with:
+      # npm cache files are stored in `node_modules` on Linux/macOS
+      path: |
+        node_modules/.cache/nx
+      key: cache-nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
+      restore-keys: |
+            cache-nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+  - if: ${{ steps.cache-nx.outputs.cache-hit != 'true' }}
+    name: Run build
     run: npm run build:all
     shell: bash

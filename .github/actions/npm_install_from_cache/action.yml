@@ -11,7 +11,7 @@ runs:
       path: |
         node_modules
         packages/*/node_modules
-      key: ${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
+      key: node_modules-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
   - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
     name: Install dependencies
     run: |

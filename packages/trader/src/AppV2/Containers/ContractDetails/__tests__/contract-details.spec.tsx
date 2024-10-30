@@ -88,6 +88,12 @@ jest.mock('AppV2/Containers/Chart/contract-details-chart.tsx', () => {
     return ContractDetailsChart;
 });
 
+jest.mock('AppV2/Components/ContractDetailsHeader/contract-details-header.tsx', () => {
+    const ContractDetailsHeader = () => <div>Contract Details Header Placeholder</div>;
+    ContractDetailsHeader.displayName = 'ContractDetailsHeader';
+    return ContractDetailsHeader;
+});
+
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isValidToSell: jest.fn(),

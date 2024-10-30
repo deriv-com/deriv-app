@@ -61,7 +61,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
         (isTransferAllowed = false) => {
             if (isTransferAllowed) {
                 return (
-                    <div className='wallets-mt5-password-modal__footerr'>
+                    <div className='wallets-mt5-password-modal__footer'>
                         <WalletButtonGroup isFlex isFullWidth>
                             <Button
                                 borderWidth='sm'

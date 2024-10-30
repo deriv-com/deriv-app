@@ -49,7 +49,7 @@ const getFeatureFlag = async (feature: string, defaultValue?: string | boolean |
 
     const isSuccessfullyLoaded = await waitForGrowthbook();
 
-    if (Analytics && isSuccessfullyLoaded) {
+    if (Analytics && Analytics?.getGrowthbookStatus && isSuccessfullyLoaded) {
         const gbState = await Analytics?.getGrowthbookStatus();
 
         // If Growthbook has config error, down or encountering issues, feature flag will default to false

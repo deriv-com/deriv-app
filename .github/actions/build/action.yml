@@ -80,7 +80,7 @@ runs:
     id: cache-nx
     uses: actions/cache@v3
     with:
-      # npm cache files are stored in `node_modules` on Linux/macOS
+      # nx cache files are stored in `node_modules` on Linux/macOS
       path: |
         node_modules/.cache/nx
       key: cache-nx-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}

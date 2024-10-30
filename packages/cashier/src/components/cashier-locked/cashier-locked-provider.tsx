@@ -37,7 +37,6 @@ const getMessage = ({
     is_duplicate_dob_phone,
     is_account_to_be_closed_by_residence,
     account_time_of_closure,
-    residence,
 }: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
@@ -68,7 +67,6 @@ const getMessage = ({
                     i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw any remaining funds by {{date}}.'
                     values={{
                         date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
-                        residence: residence
                     }}
                 />
             ),

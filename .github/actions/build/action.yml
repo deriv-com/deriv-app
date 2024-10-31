@@ -67,7 +67,7 @@ runs:
       restore-keys: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
   - name: Print key
     run: |
-      echo "Key: ${{ steps.restore-cache.outputs.cache-primary-key }}"
+      echo "Key: ${{ steps.restore-cache.outputs.cache-matched-key }}"
     shell: bash
   - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}
     name: Run build

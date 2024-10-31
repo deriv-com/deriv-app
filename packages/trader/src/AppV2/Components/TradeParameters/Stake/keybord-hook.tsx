@@ -1,43 +1,52 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
-type TWindow = Window & { height?: number; scale?: number };
+const useKeyboardVisibility = (): {
+    isKeyboardOpen: boolean;
+    scrollRequired: boolean;
+} => {
+    const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
+    const [scrollRequired, setScrollRequired] = useState<boolean>(false);
+    let previousHeight = window.innerHeight;
+    let previousVisualHeight = window.visualViewport?.height || previousHeight;
 
-const useIsOnScreenKeyboardOpen = (target_id: string) => {
-    const [is_focus, setIsFocus] = React.useState(false);
-    const [is_open, setIsOpen] = React.useState(false);
+    const handleResize = () => {
+        const currentHeight = window.innerHeight;
+        const currentVisualHeight = window.visualViewport?.height || currentHeight;
 
-    const RATIO = 0.75;
+        const keyboardIsOpen = currentHeight < previousHeight || currentVisualHeight < previousVisualHeight;
 
-    React.useEffect(() => {
-        const handleFocus = (e: FocusEvent) => {
-            const target = e.target;
-            const is_focus_in = e.type === 'focusin';
+        if (keyboardIsOpen) {
+            setIsKeyboardOpen(true);
+            const documentHeight = document.documentElement.scrollHeight;
+            const viewportHeight = currentVisualHeight;
 
-            if (!target) return;
-            if ((target as HTMLElement).id === target_id) setIsFocus(is_focus_in);
-        };
+            // Determine if scrolling is required
+            setScrollRequired(documentHeight > viewportHeight);
+        } else {
+            setIsKeyboardOpen(false);
+            setScrollRequired(false);
+        }
 
-        const resizeHandler = (e: Event) => {
-            const target = e.target as TWindow;
-            if (!target || !target?.height || !target?.scale) return;
-            const has_keyboard_changed_viewport = (target.height * target.scale) / window.screen.height < RATIO;
+        // Update previous heights
+        previousHeight = currentHeight;
+        previousVisualHeight = currentVisualHeight;
+    };
 
-            setIsOpen(has_keyboard_changed_viewport);
-        };
-
-        document.addEventListener('focusin', handleFocus);
-        document.addEventListener('focusout', handleFocus);
-        window.visualViewport?.addEventListener('resize', resizeHandler);
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleResize);
+        }
 
         return () => {
-            document.removeEventListener('focusin', handleFocus);
-            document.removeEventListener('focusout', handleFocus);
-            window.visualViewport?.removeEventListener('resize', resizeHandler);
+            window.removeEventListener('resize', handleResize);
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', handleResize);
+            }
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return is_focus && is_open;
+    return { isKeyboardOpen, scrollRequired };
 };
 
-export default useIsOnScreenKeyboardOpen;
+export default useKeyboardVisibility;

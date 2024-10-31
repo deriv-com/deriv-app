@@ -26,8 +26,7 @@
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",
         "deploy:staging": "echo \"No deploy:staging specified\"",
-        "deploy:production": "echo \"No deploy:production specified\"",
-        "test-test": "npm run test && npm run serve"
+        "deploy:production": "echo \"No deploy:production specified\""
     },
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.8",

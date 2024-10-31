@@ -43,8 +43,11 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                 <DocumentTile
                     badge={statusBadge[statuses.poa_status]}
                     disabled={!isPoaRequired}
-                    // @ts-expect-error the following link is not part of wallets routes config
-                    onClick={() => history.push('/account/proof-of-address')}
+                    onClick={() => {
+                        localStorage.setItem('mt5_poa_status', statuses.poa_status);
+                        // @ts-expect-error the following link is not part of wallets routes config
+                        history.push('/account/proof-of-address');
+                    }}
                     title={localize('Proof of address')}
                 />
             )}

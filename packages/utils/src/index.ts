@@ -11,6 +11,7 @@ export { default as unFormatLocaleString } from './unFormatLocaleString';
 export { default as getLoginHistoryFormattedData } from './getLoginHistoryFormattedData';
 export { default as getCountry } from './getCountry';
 export { default as getFeatureFlag } from './getFeatureFlag';
+export { default as Chat } from './chat';
 export * from './parse-url';
 export * from './moment';
 export * from './files';

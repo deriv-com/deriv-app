@@ -10,6 +10,7 @@ import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
+import { sendDtraderV2OpenAnalytics } from './Utils/analytics';
 
 type Apptypes = {
     passthrough: {
@@ -24,6 +25,10 @@ const App = ({ passthrough }: Apptypes) => {
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
+
+    React.useEffect(() => {
+        sendDtraderV2OpenAnalytics();
+    }, []);
 
     return (
         <TraderProviders store={root_store}>

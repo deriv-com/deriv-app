@@ -8,6 +8,11 @@ import { CONTRACT_LIST, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-util
 import { getTerm } from 'AppV2/Utils/contract-description-utils';
 import TraderProviders from '../../../../trader-providers';
 import Guide from '../guide';
+import { sendOpenGuideAnalytics } from 'AppV2/Utils/analytics';
+
+jest.mock('AppV2/Utils/analytics', () => ({
+    sendOpenGuideAnalytics: jest.fn(),
+}));
 
 const trade_types = 'Trade types';
 
@@ -124,6 +129,7 @@ describe('Guide', () => {
         userEvent.click(screen.getByRole('button'));
 
         expect(screen.getByText(trade_types)).toBeInTheDocument();
+        expect(sendOpenGuideAnalytics).toHaveBeenCalledWith(TRADE_TYPES.RISE_FALL, 'trade_type_page');
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
@@ -134,6 +140,7 @@ describe('Guide', () => {
 
         expect(screen.queryByText(trade_types)).not.toBeInTheDocument();
         expect(screen.getByText(CONTRACT_LIST.RISE_FALL)).toBeInTheDocument();
+        expect(sendOpenGuideAnalytics).toHaveBeenCalledWith(TRADE_TYPES.RISE_FALL, 'main_trade_page');
 
         AVAILABLE_CONTRACTS.forEach(({ id }) =>
             id === CONTRACT_LIST.RISE_FALL

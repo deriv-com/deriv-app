@@ -4,8 +4,7 @@
 import getFeatureFlag from './getFeatureFlag';
 
 const Chat = {
-    // isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
-    isFreshChat: async () => true,
+    isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
     open: async () => {
         (await Chat.isFreshChat()) ? window.fcWidget?.open() : window.LiveChatWidget?.call('maximize');
     },

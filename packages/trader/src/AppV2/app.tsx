@@ -40,21 +40,19 @@ const App = ({ passthrough }: Apptypes) => {
     }, []);
 
     return (
-        <React.Fragment>
-            <TraderProviders store={root_store}>
-                <ReportsStoreProvider>
-                    <ModulesProvider store={root_store}>
-                        <NotificationsProvider>
-                            <SnackbarProvider>
-                                <Notifications />
-                                <Router />
-                                <ServicesErrorSnackbar />
-                            </SnackbarProvider>
-                        </NotificationsProvider>
-                    </ModulesProvider>
-                </ReportsStoreProvider>
-            </TraderProviders>
-        </React.Fragment>
+        <TraderProviders store={root_store}>
+            <ReportsStoreProvider>
+                <ModulesProvider store={root_store}>
+                    <NotificationsProvider>
+                        <SnackbarProvider>
+                            <Notifications />
+                            <Router />
+                            <ServicesErrorSnackbar />
+                        </SnackbarProvider>
+                    </NotificationsProvider>
+                </ModulesProvider>
+            </ReportsStoreProvider>
+        </TraderProviders>
     );
 };
 

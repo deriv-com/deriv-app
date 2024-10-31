@@ -4,7 +4,6 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFDPasswordModalTnc } from '../../components/CFDPasswordModalTnc';
 import { CFD_PLATFORMS, getMarketTypeDetails, PlatformDetails, PRODUCT } from '../../constants';
 import './EnterPassword.scss';
@@ -12,6 +11,7 @@ import './EnterPassword.scss';
 type TProps = {
     isForgotPasswordLoading?: boolean;
     isLoading?: boolean;
+    isMT5PasswordNotSet?: boolean;
     isTncChecked?: boolean;
     isVirtual?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
@@ -30,6 +30,7 @@ type TProps = {
 const EnterPassword: React.FC<TProps> = ({
     isForgotPasswordLoading,
     isLoading,
+    isMT5PasswordNotSet,
     isTncChecked = true,
     isVirtual,
     marketType,
@@ -48,8 +49,6 @@ const EnterPassword: React.FC<TProps> = ({
     const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
 
-    const isMT5 = platform === CFD_PLATFORMS.MT5;
-    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
@@ -60,6 +59,7 @@ const EnterPassword: React.FC<TProps> = ({
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }
     );
+    const isAddAccountBtnDisabled = !password || isLoading || !isTncChecked;
 
     useEffect(() => {
         if (passwordError) {
@@ -89,6 +89,7 @@ const EnterPassword: React.FC<TProps> = ({
                     />
                 </Text>
                 <WalletPasswordFieldLazy
+                    isMT5PasswordNotSet={isMT5PasswordNotSet}
                     label={localize('{{title}} password', { title })}
                     onChange={onPasswordChange}
                     password={password}
@@ -122,7 +123,7 @@ const EnterPassword: React.FC<TProps> = ({
                         <Localize i18n_default_text='Forgot password?' />
                     </Button>
                     <Button
-                        disabled={!password || isLoading || disableButton || !isTncChecked}
+                        disabled={isAddAccountBtnDisabled}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

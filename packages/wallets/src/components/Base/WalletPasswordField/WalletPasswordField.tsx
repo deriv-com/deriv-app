@@ -20,11 +20,15 @@ import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-export const validatePassword = (
-    password: string,
-    mt5Policy: boolean,
-    localize: ReturnType<typeof useTranslations>['localize']
-) => {
+type TValidatePasswordProps = {
+    isMT5PasswordNotSet?: boolean;
+    localize: ReturnType<typeof useTranslations>['localize'];
+    mt5Policy: boolean;
+    password: string;
+};
+
+export const validatePassword = (values: TValidatePasswordProps) => {
+    const { isMT5PasswordNotSet, localize, mt5Policy, password } = values;
     const score = mt5Policy ? calculateScoreMT5(password) : calculateScoreCFD(password);
     let validationErrorMessage = '';
 
@@ -38,7 +42,9 @@ export const validatePassword = (
         } else {
             cfdSchema(localize).validateSync(password);
         }
-        validationErrorMessage = getWarningMessages(localize)[feedback.warning as passwordKeys] ?? '';
+        validationErrorMessage = isMT5PasswordNotSet
+            ? getWarningMessages(localize)[feedback.warning as passwordKeys] ?? ''
+            : '';
     } catch (err) {
         if (err instanceof ValidationError) {
             validationErrorMessage = err?.message;
@@ -50,6 +56,7 @@ export const validatePassword = (
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
+    isMT5PasswordNotSet,
     label,
     mt5Policy = false,
     name = 'walletPasswordField',
@@ -67,8 +74,8 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [errorMessage, setErrorMessage] = useState('');
 
     const { score, validationErrorMessage } = useMemo(
-        () => validatePassword(password, mt5Policy, localize),
-        [password, mt5Policy, localize]
+        () => validatePassword({ isMT5PasswordNotSet, localize, mt5Policy, password }),
+        [password, mt5Policy, localize, isMT5PasswordNotSet]
     );
     const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
 

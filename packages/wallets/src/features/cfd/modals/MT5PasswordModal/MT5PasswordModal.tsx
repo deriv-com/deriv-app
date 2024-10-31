@@ -292,6 +292,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ isVirtual, marketType, platform, p
         return (
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                isMT5PasswordNotSet={isMT5PasswordNotSet}
                 isTncChecked={isTncChecked}
                 isVirtual={activeWalletData?.is_virtual}
                 marketType={marketType}

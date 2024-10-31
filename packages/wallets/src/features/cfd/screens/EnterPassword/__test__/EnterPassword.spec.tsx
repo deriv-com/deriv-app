@@ -15,7 +15,6 @@ describe('EnterPassword', () => {
     });
 
     const title = `Enter your ${PlatformDetails.mt5.title} password`;
-    const shortPassword = 'abcd';
     const validPassword = 'Abcd1234!';
 
     const defaultProps = {
@@ -74,12 +73,6 @@ describe('EnterPassword', () => {
         const addAccountButton = screen.getByRole('button', { name: 'Add account' });
         await userEvent.click(addAccountButton);
         expect(defaultProps.onPrimaryClick).toHaveBeenCalled();
-    });
-
-    it('disables the "Add account" button when password is invalid', () => {
-        renderComponent({ password: shortPassword });
-        const addAccountButton = screen.getByRole('button', { name: 'Add account' });
-        expect(addAccountButton).toBeDisabled();
     });
 
     it('shows password error hints when passwordError is true', () => {

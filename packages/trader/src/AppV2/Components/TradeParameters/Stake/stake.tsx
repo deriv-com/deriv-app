@@ -139,12 +139,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     React.useEffect(() => {
         if (isKeyboardOpen && scrollRequired) {
             const documentHeight = document.documentElement.scrollHeight;
-            const currentScroll = window.scrollY;
             const viewportHeight = window.innerHeight;
+            const currentScrollY = window.scrollY;
 
-            // Scroll to the bottom where needed
-            if (currentScroll + viewportHeight < documentHeight) {
-                window.scrollTo(0, documentHeight - viewportHeight);
+            // Only scroll if there's a need to
+            if (currentScrollY + viewportHeight < documentHeight) {
+                window.scrollTo({
+                    top: documentHeight - viewportHeight,
+                    behavior: 'smooth', // Add smooth scroll for a better UX
+                });
             }
         }
     }, [isKeyboardOpen, scrollRequired]);
@@ -256,6 +259,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
 
     return (
         <>
+            <div style={{ position: 'absolute', top: '60px', left: '10px', zIndex: '99', fontSize: 'xx-large' }}>
+                documentHeight: {document.documentElement.scrollHeight}
+            </div>
+            <div style={{ position: 'absolute', top: '100px', left: '10px', zIndex: '99', fontSize: 'xx-large' }}>
+                viewportHeight: {window.innerHeight}
+            </div>
+            <div style={{ position: 'absolute', top: '140px', left: '10px', zIndex: '99', fontSize: 'xx-large' }}>
+                currentScrollY: {window.scrollY}
+            </div>
             <TextField
                 variant='fill'
                 readOnly

@@ -23,7 +23,7 @@ import { CSSTransition } from 'react-transition-group';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { usePrevious } from '@deriv/components';
 import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
-import { sendDtraderV2PurchaseAnalytics } from 'AppV2/Utils/analytics';
+import { sendDtraderV2PurchaseToAnalytics } from '../../../Analytics';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
@@ -110,7 +110,7 @@ const PurchaseButton = observer(() => {
     };
 
     const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], contract_id: number) => {
-        sendDtraderV2PurchaseAnalytics(contract_type, symbol, contract_id);
+        sendDtraderV2PurchaseToAnalytics(contract_type, symbol, contract_id);
         return addBanner({
             icon: (
                 <StandaloneStopwatchRegularIcon

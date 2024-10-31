@@ -19,7 +19,7 @@ import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
-import { sendSelectedTradeTypeAnalytics } from 'AppV2/Utils/analytics';
+import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -68,7 +68,7 @@ const Trade = observer(() => {
                     value,
                 },
             });
-            sendSelectedTradeTypeAnalytics(value || '', subform_name, symbol, trade_type_count);
+            sendSelectedTradeTypeToAnalytics(value || '', subform_name, symbol, trade_type_count);
         },
         [trade_types, onChange, symbol]
     );

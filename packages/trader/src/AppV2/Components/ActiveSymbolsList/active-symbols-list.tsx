@@ -5,7 +5,7 @@ import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { sendMarketTypeAnalytics } from 'AppV2/Utils/analytics';
+import { sendMarketTypeToAnalytics } from '../../../Analytics';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -52,7 +52,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 setSearchValue={setSearchValue}
                                 setIsOpen={setIsOpen}
                                 setSelectedSymbol={(symbol: string) => {
-                                    sendMarketTypeAnalytics(symbol, contract_type);
+                                    sendMarketTypeToAnalytics(symbol, contract_type);
                                     setSelectedSymbol(symbol);
                                 }}
                             />
@@ -60,7 +60,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                             <MarketCategories
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={(symbol: string) => {
-                                    sendMarketTypeAnalytics(symbol, contract_type);
+                                    sendMarketTypeToAnalytics(symbol, contract_type);
                                     setSelectedSymbol(symbol);
                                 }}
                                 setIsOpen={setIsOpen}

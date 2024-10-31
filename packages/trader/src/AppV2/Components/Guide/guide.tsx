@@ -8,7 +8,7 @@ import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-util
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
-import { sendOpenGuideAnalytics } from 'AppV2/Utils/analytics';
+import { sendOpenGuideToAnalytics } from '../../../Analytics';
 
 type TGuide = {
     has_label?: boolean;
@@ -62,7 +62,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
                 color={is_dark_mode_on ? 'white' : 'black'}
                 icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                 onClick={() => {
-                    sendOpenGuideAnalytics(
+                    sendOpenGuideToAnalytics(
                         contract_type,
                         show_guide_for_selected_contract ? 'main_trade_page' : 'trade_type_page'
                     );

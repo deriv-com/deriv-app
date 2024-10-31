@@ -10,7 +10,7 @@ import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
-import { sendDtraderV2OpenAnalytics } from './Utils/analytics';
+import { sendDtraderV2OpenToAnalytics } from '../Analytics';
 
 type Apptypes = {
     passthrough: {
@@ -27,7 +27,7 @@ const App = ({ passthrough }: Apptypes) => {
     }, [root_store]);
 
     React.useEffect(() => {
-        sendDtraderV2OpenAnalytics();
+        sendDtraderV2OpenToAnalytics();
     }, []);
 
     return (

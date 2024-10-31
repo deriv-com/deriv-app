@@ -75,7 +75,7 @@ import {
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
 import { safeParse } from '@deriv/utils';
-import { sendDtraderPurchaseAnalytics } from 'AppV2/Utils/analytics';
+import { sendDtraderPurchaseToAnalytics } from '../../../Analytics';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -207,7 +207,6 @@ type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params']
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
-const ANALYTICS_DURATIONS = ['ticks', 'seconds', 'minutes', 'hours', 'days'];
 
 export default class TradeStore extends BaseStore {
     // Control values
@@ -1172,7 +1171,7 @@ export default class TradeStore extends BaseStore {
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
                             if (!is_dtrader_v2) {
-                                sendDtraderPurchaseAnalytics(contract_type, this.symbol, contract_id);
+                                sendDtraderPurchaseToAnalytics(contract_type, this.symbol, contract_id);
                             }
 
                             if (!isMobile) {

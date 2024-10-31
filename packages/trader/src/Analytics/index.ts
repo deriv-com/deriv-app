@@ -1,12 +1,12 @@
 import { Analytics } from '@deriv-com/analytics';
 
-export const sendDtraderV2OpenAnalytics = () => {
+export const sendDtraderV2OpenToAnalytics = () => {
     Analytics.trackEvent('ce_dtrader_trade_form', {
         action: 'open',
     });
 };
 
-export const sendSelectedTradeTypeAnalytics = (
+export const sendSelectedTradeTypeToAnalytics = (
     trade_name: string,
     subform_name: string,
     market_name: string,
@@ -21,7 +21,7 @@ export const sendSelectedTradeTypeAnalytics = (
     });
 };
 
-export const sendOpenGuideAnalytics = (trade_name: string, subform_name: string) => {
+export const sendOpenGuideToAnalytics = (trade_name: string, subform_name: string) => {
     Analytics.trackEvent('ce_dtrader_trade_form', {
         action: 'open_guide',
         trade_name,
@@ -29,7 +29,7 @@ export const sendOpenGuideAnalytics = (trade_name: string, subform_name: string)
     });
 };
 
-export const sendMarketTypeAnalytics = (market_name: string, trade_name: string) => {
+export const sendMarketTypeToAnalytics = (market_name: string, trade_name: string) => {
     Analytics.trackEvent('ce_dtrader_trade_form', {
         action: 'select_market_type',
         market_name,
@@ -37,7 +37,7 @@ export const sendMarketTypeAnalytics = (market_name: string, trade_name: string)
     });
 };
 
-export const sendDtraderV2PurchaseAnalytics = (trade_name: string, market_name: string, contract_id: number) => {
+export const sendDtraderV2PurchaseToAnalytics = (trade_name: string, market_name: string, contract_id: number) => {
     Analytics.trackEvent('ce_dtrader_trade_form', {
         action: 'run_contract',
         trade_name,
@@ -46,10 +46,8 @@ export const sendDtraderV2PurchaseAnalytics = (trade_name: string, market_name: 
     });
 };
 
-export const sendDtraderPurchaseAnalytics = (trade_name: string, market_name: string, contract_id: number) => {
+export const sendDtraderPurchaseToAnalytics = (trade_name: string, market_name: string, contract_id: number) => {
     Analytics.trackEvent('ce_contracts_set_up_form', {
-        form_name: 'ce_contracts_set_up_form',
-        trade_type_name: trade_name,
         action: 'run_contract',
         trade_name,
         market_name,

@@ -879,6 +879,7 @@ type TUiStore = {
     url_hashed_values: string;
     is_tnc_update_modal_open: boolean;
     toggleTncUpdateModal: (value: boolean) => void;
+    setIsRedirectedFromFinancialAssessment: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -1175,6 +1176,7 @@ type TTradersHubStore = {
     setIsCFDRestrictedCountry: (value: boolean) => void;
     setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
+    is_employment_status_tin_mandatory: boolean;
 };
 
 type TContractReplay = {

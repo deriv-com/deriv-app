@@ -69,6 +69,7 @@ const PersonalDetailsForm = observer(() => {
         client,
         ui,
         notifications,
+        traders_hub: { is_employment_status_tin_mandatory },
         common: { is_language_changing },
     } = useStore();
     const { is_phone_number_verified } = useIsPhoneNumberVerified();
@@ -86,7 +87,7 @@ const PersonalDetailsForm = observer(() => {
         is_mf_account,
     } = client;
 
-    const { field_ref_to_focus, setFieldRefToFocus } = ui;
+    const { field_ref_to_focus, setFieldRefToFocus, setIsRedirectedFromFinancialAssessment } = ui;
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
 
@@ -198,6 +199,7 @@ const PersonalDetailsForm = observer(() => {
                     setSubmitting(false);
                 },
             });
+            setIsRedirectedFromFinancialAssessment(false);
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -305,7 +307,8 @@ const PersonalDetailsForm = observer(() => {
         is_svg,
         tin_validation_config,
         is_tin_auto_set,
-        account_settings?.immutable_fields
+        account_settings?.immutable_fields,
+        is_employment_status_tin_mandatory
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {

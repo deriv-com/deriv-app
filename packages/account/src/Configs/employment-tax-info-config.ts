@@ -36,7 +36,7 @@ const generateEmploymentTaxInfoFormValues = ({
     },
 });
 
-const getEmploymentTaxIfoConfig = (
+const getEmploymentTaxInfoConfig = (
     {
         account_settings,
         residence_list,
@@ -60,4 +60,4 @@ const getEmploymentTaxIfoConfig = (
     };
 };
 
-export default getEmploymentTaxIfoConfig;
+export default getEmploymentTaxInfoConfig;

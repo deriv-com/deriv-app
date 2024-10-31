@@ -129,6 +129,7 @@ export default class TradersHubStore extends BaseStore {
             setIsCFDRestrictedCountry: action.bound,
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
+            is_employment_status_tin_mandatory: computed,
         });
 
         reaction(
@@ -882,5 +883,13 @@ export default class TradersHubStore extends BaseStore {
 
     setIsSetupRealAccountOrGoToDemoModalVisible(value) {
         this.is_setup_real_account_or_go_to_demo_modal_visible = value;
+    }
+
+    get is_employment_status_tin_mandatory() {
+        const { client, ui } = this.root_store;
+        return (
+            (client.is_financial_assessment_needed || client.is_financial_information_incomplete) &&
+            (ui.is_redirected_from_financial_assessment || localStorage.getItem('financial_assessment_redirect'))
+        );
     }
 }

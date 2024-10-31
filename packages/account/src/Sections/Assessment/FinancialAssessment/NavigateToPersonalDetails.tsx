@@ -23,7 +23,7 @@ const NavigateToPersonalDetails = observer(() => {
         } else {
             field_to_scroll = 'employment-tax-section';
         }
-
+        ui.setIsRedirectedFromFinancialAssessment(true);
         ui.setFieldRefToFocus(field_to_scroll);
         history.push(routes.personal_details);
     };

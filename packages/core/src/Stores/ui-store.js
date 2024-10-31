@@ -189,6 +189,7 @@ export default class UIStore extends BaseStore {
     isUrlUnavailableModalVisible = false;
     sub_section_index = 0;
     field_ref_to_focus = null;
+    is_redirected_from_financial_assessment = false;
 
     // tnc update
     is_tnc_update_modal_open = false;
@@ -221,6 +222,8 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            is_redirected_from_financial_assessment: observable,
+            setIsRedirectedFromFinancialAssessment: action.bound,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -1036,5 +1039,14 @@ export default class UIStore extends BaseStore {
 
     toggleTncUpdateModal(value) {
         this.is_tnc_update_modal_open = value;
+    }
+
+    setIsRedirectedFromFinancialAssessment(status) {
+        if (status) {
+            localStorage.setItem('financial_assessment_redirect', status.toString());
+        } else {
+            localStorage.removeItem('financial_assessment_redirect');
+        }
+        this.is_redirected_from_financial_assessment = status;
     }
 }

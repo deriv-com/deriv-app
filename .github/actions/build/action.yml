@@ -89,7 +89,8 @@ runs:
     shell: bash
   - name: Print key
     run: |
-      echo "Key: ${{ steps.restore-cache.outputs.cache-primary-key }}" 
+      echo "Key: ${{ steps.restore-cache.outputs.cache-primary-key }}"
+    shell: bash
   - name: Save nx cache
     uses: actions/cache/save@v4
     with:

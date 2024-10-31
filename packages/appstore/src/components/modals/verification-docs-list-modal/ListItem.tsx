@@ -62,6 +62,9 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         if (id === 'tax') {
             ui.setFieldRefToFocus('employment-tax-section');
         }
+        if (id === 'address' && status) {
+            localStorage.setItem('mt5_poa_status', String(status));
+        }
         history.push(route);
         setVerificationModalOpen(false);
     };

@@ -59,6 +59,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     const { has_restricted_mt5_account, is_switching } = client;
     const { is_verification_modal_visible } = ui;
     const { refreshNotifications } = notifications;
+    const mt5_poa_status = localStorage.getItem('mt5_poa_status');
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -216,10 +217,9 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                 return null;
         }
     };
-    const mt5_poa_status = localStorage.getItem('mt5_poa_status');
     if (mt5_poa_status) return getDocumentStatus(mt5_poa_status);
-
-    if (document_status) return getDocumentStatus(document_status);
+    else if (document_status) return getDocumentStatus(document_status);
+    return null;
 });
 
 export default ProofOfAddressContainer;

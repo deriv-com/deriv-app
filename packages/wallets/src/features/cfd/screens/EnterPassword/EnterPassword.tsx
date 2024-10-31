@@ -70,7 +70,7 @@ const EnterPassword: React.FC<TProps> = ({
     return (
         <div className='wallets-enter-password'>
             {isDesktop && (
-                <Text align='start' lineHeight='xl' weight='bold'>
+                <Text align='start' lineHeight='xl'>
                     {modalTitle}
                 </Text>
             )}

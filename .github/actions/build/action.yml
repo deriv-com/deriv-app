@@ -65,6 +65,10 @@ runs:
       path: node_modules/.cache/nx
       key: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}
       restore-keys: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
+  - name: Print key
+    run: |
+      echo "Key: ${{ steps.restore-cache.outputs.cache-primary-key }}"
+    shell: bash
   - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}
     name: Run build
     env:
@@ -86,10 +90,6 @@ runs:
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
     run: npm run build:all
-    shell: bash
-  - name: Print key
-    run: |
-      echo "Key: ${{ steps.restore-cache.outputs.cache-primary-key }}"
     shell: bash
   - name: Save nx cache
     uses: actions/cache/save@v4

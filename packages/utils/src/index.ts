@@ -10,6 +10,7 @@ export { default as getTruncatedString } from './getTruncatedString';
 export { default as unFormatLocaleString } from './unFormatLocaleString';
 export { default as getLoginHistoryFormattedData } from './getLoginHistoryFormattedData';
 export { default as getCountry } from './getCountry';
+export { default as getFeatureFlag } from './getFeatureFlag';
 export * from './parse-url';
 export * from './moment';
 export * from './files';

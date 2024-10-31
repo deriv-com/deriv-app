@@ -58,7 +58,14 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Build all packages
+  - name: Restore nx cache
+    uses: actions/cache/restore@v3
+    id: restore-cache
+    with:
+      path: node_modules/.cache/nx
+      key: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
+  - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}
+    name: Run build
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
       DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
@@ -77,16 +84,10 @@ runs:
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
-    id: cache-nx
-    uses: actions/cache@v3
-    with:
-      # nx cache files are stored in `node_modules` on Linux/macOS
-      path: |
-        node_modules/.cache/nx
-      key: nx-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}
-      restore-keys: |
-            nx-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-  - if: ${{ steps.cache-nx.outputs.cache-hit != 'true' }}
-    name: Run build
     run: npm run build:all
     shell: bash
+  - name: Save nx cache
+    uses: actions/cache/save@v3
+    with:
+      path: node_modules/.cache/nx
+      key: ${{ steps.restore-cache.outputs.cache-primary-key }}

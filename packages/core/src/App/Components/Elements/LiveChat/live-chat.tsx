@@ -17,7 +17,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const freshChat = useFreshChat(token);
 
-    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+    const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
     });
 
@@ -26,7 +26,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const isFreshchatEnabledButNotReady = enable_freshworks_live_chat && !chat?.isReady;
     const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !enable_freshworks_live_chat;
 
-    if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
+    if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable || isGBLoaded) {
         return null;
     }
 

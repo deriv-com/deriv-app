@@ -22,7 +22,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                 header: localize('Why can’t I see the funds deposited in my Deriv account?'),
                 content: (
                     <Localize
-                        i18n_default_text='We process deposits immediately.  If your funds don’t appear in your account within 24 hours, contact us via <0>live chat</0> Provide the transaction details, including the amount, date, and time, so we can assist you quickly.'
+                        i18n_default_text='We process deposits immediately. If your funds don’t appear in your account within 24 hours, contact us via <0>live chat</0>. Provide the transaction details, including the amount, date, and time, so we can assist you quickly.'
                         components={[
                             <span key={0} className='link' onClick={onClickHandler} onKeyDown={onClickHandler} />,
                         ]}

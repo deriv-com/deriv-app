@@ -136,9 +136,9 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         }
     }, [stake_error]);
 
-    // React.useEffect(() => {
-    //     window?.scrollTo({ top: 220, behavior: 'smooth' });
-    // }, [should_scroll]);
+    React.useEffect(() => {
+        window?.scrollTo({ top: 220, behavior: 'smooth' });
+    }, [should_scroll]);
 
     React.useEffect(() => {
         displayed_error.current = false;

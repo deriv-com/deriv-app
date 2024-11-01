@@ -90,7 +90,7 @@
         "sass-loader": "^12.6.0",
         "sass-resources-loader": "^2.1.1",
         "terser-webpack-plugin": "^5.1.1",
-        "ts-jest": "^27.1.4",
+        "ts-jest": "^29.2.5",
         "typescript": "^4.6.3",
         "webpack": "^5.95.0"
     }

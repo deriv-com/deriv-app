@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce';
 import { useEffect, useState } from 'react';
 
 const useKeyboardVisibility = (): {
@@ -6,8 +7,10 @@ const useKeyboardVisibility = (): {
 } => {
     const [isKeyboardOpen, setIsKeyboardOpen] = useState<boolean>(false);
     const [scrollRequired, setScrollRequired] = useState<boolean>(false);
-    let previousHeight = window.innerHeight;
-    let previousVisualHeight = window.visualViewport?.height || previousHeight;
+    const [previousHeight, setPreviousHeight] = useState<number>(window.innerHeight);
+    const [previousVisualHeight, setPreviousVisualHeight] = useState<number>(
+        window.visualViewport?.height || window.innerHeight
+    );
 
     const handleResize = () => {
         const currentHeight = window.innerHeight;
@@ -15,12 +18,12 @@ const useKeyboardVisibility = (): {
 
         const keyboardIsOpen = currentHeight < previousHeight || currentVisualHeight < previousVisualHeight;
 
+        const element = document.querySelector<HTMLElement>('.trade');
+        const documentHeight = element?.scrollHeight || 0;
+        const viewportHeight = currentVisualHeight;
+
         if (keyboardIsOpen) {
             setIsKeyboardOpen(true);
-            const documentHeight = document.documentElement.scrollHeight;
-            const viewportHeight = currentVisualHeight;
-
-            // Determine if scrolling is required
             setScrollRequired(documentHeight > viewportHeight);
         } else {
             setIsKeyboardOpen(false);
@@ -28,20 +31,20 @@ const useKeyboardVisibility = (): {
         }
 
         // Update previous heights
-        previousHeight = currentHeight;
-        previousVisualHeight = currentVisualHeight;
+        setPreviousHeight(currentHeight);
+        setPreviousVisualHeight(currentVisualHeight);
     };
 
     useEffect(() => {
         window.addEventListener('resize', handleResize);
         if (window.visualViewport) {
-            window.visualViewport.addEventListener('resize', handleResize);
+            window.visualViewport.addEventListener('resize', debounce(handleResize, 200));
         }
 
         return () => {
             window.removeEventListener('resize', handleResize);
             if (window.visualViewport) {
-                window.visualViewport.removeEventListener('resize', handleResize);
+                window.visualViewport.removeEventListener('resize', debounce(handleResize, 200));
             }
         };
     }, []);

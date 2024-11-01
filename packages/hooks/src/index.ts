@@ -104,4 +104,5 @@ export { default as useIsSelectedMT5AccountCreated } from './useIsSelectedMT5Acc
 export { default as useDtraderV2Flag } from './useDtraderV2Flag';
 export { default as useIsGrowthbookIsLoaded } from './useIsGrowthbookLoaded';
 export { default as useOauth2 } from './useOauth2';
+export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimitsDetails';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

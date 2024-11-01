@@ -23,7 +23,8 @@ const VerificationDocsListModalContent = observer(() => {
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     if (!client_kyc_status) return null;
-    const { poi_status, poa_status, valid_tin } = client_kyc_status;
+    const { poi_status, poa_status, valid_tin, required_tin } = client_kyc_status;
+    const is_tin_required = required_tin === 1 && valid_tin === 0;
 
     const items: TItems[] = [
         poi_status && {
@@ -38,13 +39,14 @@ const VerificationDocsListModalContent = observer(() => {
             status: poa_status,
             route: routes.proof_of_address,
         },
-        valid_tin === 0 && {
+        is_tin_required && {
             id: 'tax',
             text: 'Additional information',
             status: valid_tin,
             route: routes.personal_details,
         },
     ].filter(Boolean) as TItems[];
+
     return (
         <div className='verification-docs-list-modal__content'>
             <Icon icon='IcDerivLightUserVerification' size={128} />

@@ -75,6 +75,7 @@ describe('<VerificationDocsListModal />', () => {
                 poi_status: 'none',
                 poa_status: 'verified',
                 valid_tin: 1,
+                required_tin: 1,
             },
         });
         renderComponent({});
@@ -92,6 +93,7 @@ describe('<VerificationDocsListModal />', () => {
                 poi_status: 'pending',
                 poa_status: 'none',
                 valid_tin: 0,
+                required_tin: 1,
             },
         });
         renderComponent({});
@@ -128,5 +130,64 @@ describe('<VerificationDocsListModal />', () => {
         expect(screen.getByText('Proof of identity')).toBeInTheDocument();
         expect(screen.getByText('Proof of address')).toBeInTheDocument();
         expect(screen.queryByText('Additional information ')).not.toBeInTheDocument();
+    });
+    it('should render the modal with tax details when mt5 account requires tin and tin is invalid', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
+        (useGetStatus as jest.Mock).mockReturnValueOnce({
+            client_kyc_status: {
+                poi_status: 'pending',
+                poa_status: 'none',
+                valid_tin: 0,
+                required_tin: 1,
+            },
+        });
+        renderComponent({});
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
+        expect(screen.getByText('Complete your profile')).toBeInTheDocument();
+        expect(
+            screen.getByText('Confirm your details to open the account. After verification, you can begin trading.')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Proof of identity')).toBeInTheDocument();
+        expect(screen.getByText('Proof of address')).toBeInTheDocument();
+        expect(screen.queryByText('Additional information')).toBeInTheDocument();
+    });
+    it('should render the modal without tax details when mt5 account doesnt require tin', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
+        (useGetStatus as jest.Mock).mockReturnValueOnce({
+            client_kyc_status: {
+                poi_status: 'pending',
+                poa_status: 'none',
+                valid_tin: 0,
+                required_tin: 0,
+            },
+        });
+        renderComponent({});
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
+        expect(screen.getByText('Complete your profile')).toBeInTheDocument();
+        expect(
+            screen.getByText('Confirm your details to open the account. After verification, you can begin trading.')
+        ).toBeInTheDocument();
+
+        expect(screen.queryByText('Additional information')).not.toBeInTheDocument();
+    });
+
+    it('should render the modal without tax details when mt5 account require tin and valid tin is present', () => {
+        (useIsSelectedMT5AccountCreated as jest.Mock).mockReturnValue({ is_selected_MT5_account_created: false });
+        (useGetStatus as jest.Mock).mockReturnValueOnce({
+            client_kyc_status: {
+                poi_status: 'pending',
+                poa_status: 'none',
+                valid_tin: 1,
+                required_tin: 1,
+            },
+        });
+        renderComponent({});
+        expect(screen.getByText('mockedIcon')).toBeInTheDocument();
+        expect(screen.getByText('Complete your profile')).toBeInTheDocument();
+        expect(
+            screen.getByText('Confirm your details to open the account. After verification, you can begin trading.')
+        ).toBeInTheDocument();
+
+        expect(screen.queryByText('Additional information')).not.toBeInTheDocument();
     });
 });

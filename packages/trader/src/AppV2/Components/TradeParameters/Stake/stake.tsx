@@ -50,7 +50,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
-    const input_id = 'stake_input';
     const { isKeyboardOpen, scrollRequired } = useKeyboardVisibility();
 
     // default_stake resetting data
@@ -285,7 +284,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 position='left'
                 expandable={false}
                 shouldBlurOnClose={is_open}
-                className='test'
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
@@ -310,7 +308,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
-                            id={input_id}
                             variant='fill'
                         />
                         <StakeDetails
@@ -341,7 +338,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                                 }
                             },
                         }}
-                        id='test_button'
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

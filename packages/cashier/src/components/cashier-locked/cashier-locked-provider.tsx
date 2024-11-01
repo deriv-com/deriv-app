@@ -64,7 +64,7 @@ const getMessage = ({
             title: localize('Deposits disabled'),
             description: (
                 <Localize
-                    i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw any remaining funds by {{date}}.'
+                    i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw any remaining funds by {{date}}.'
                     values={{
                         date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
                     }}

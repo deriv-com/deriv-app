@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Text, Modal, UILoader, MobileDialog, Icon } from '@deriv/components';
-import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES } from '@deriv/shared';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import ListItem from './ListItem';
 import './verification-docs-list-modal.scss';

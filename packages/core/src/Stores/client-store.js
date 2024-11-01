@@ -2942,7 +2942,9 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_account_to_be_closed_by_residence() {
-        return this.account_time_of_closure && this.residence && this.residence === 'sn';
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        );
     }
 
     setClientKYCStatus(client_kyc_status) {

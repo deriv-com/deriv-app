@@ -14,13 +14,21 @@ const CoolDownPeriodModal = observer(
     ({ show_cool_down_period_modal, setShowCoolDownPeriodModal }: TCoolDownPeriodModal) => {
         const { ui } = useStore();
         const history = useHistory();
+        const previous_route = localStorage.getItem('routes_from_notification_to_pnv');
+        const should_route_back_to_previous =
+            previous_route !== routes.personal_details &&
+            previous_route !== routes.phone_verification &&
+            !!previous_route;
+
         const { isMobile } = useDevice();
         const { setIsForcedToExitPnv, setShouldShowPhoneNumberOTP } = ui;
         const handleCloseCoolDownPeriodModal = () => {
             setShouldShowPhoneNumberOTP(false);
             setIsForcedToExitPnv(false);
             setShowCoolDownPeriodModal(false);
-            history.push(routes.personal_details);
+            localStorage.removeItem('routes_from_notification_to_pnv');
+
+            should_route_back_to_previous ? history.push(previous_route) : history.push(routes.traders_hub);
         };
         return (
             <Modal

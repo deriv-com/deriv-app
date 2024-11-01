@@ -9,7 +9,7 @@ const Chat = {
         (await Chat.isFreshChat()) ? window.fcWidget?.open() : window.LiveChatWidget?.call('maximize');
     },
     close: async () => {
-        (await Chat.isFreshChat()) ? window.fcWidget?.close() : window.LiveChatWidget?.call('minimize');
+        (await Chat.isFreshChat()) ? window.fcWidget?.close() : window.LiveChatWidget?.call('hide');
     },
 };
 

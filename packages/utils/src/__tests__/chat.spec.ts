@@ -52,7 +52,7 @@ describe('Chat Utility', () => {
             await Chat.close();
 
             expect(window.fcWidget.close).not.toHaveBeenCalled();
-            expect(window.LiveChatWidget.call).toHaveBeenCalledWith('minimize');
+            expect(window.LiveChatWidget.call).toHaveBeenCalledWith('hide');
         });
     });
 });

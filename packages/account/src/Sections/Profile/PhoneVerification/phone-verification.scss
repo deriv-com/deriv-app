@@ -72,6 +72,10 @@
             width: 60%;
             margin-top: 2.4rem;
             margin-bottom: 2.4rem;
+
+            &--error {
+                margin-bottom: 0.2rem;
+            }
             @include mobile-or-tablet-screen {
                 margin-top: 3.2rem;
             }

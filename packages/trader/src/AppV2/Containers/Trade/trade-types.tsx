@@ -239,9 +239,33 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
             <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header
-                        title={<Localize i18n_default_text='Trade types' />}
+                        title={
+                            <div style={{ margin: '24px 0px' }}>
+                                <Localize i18n_default_text='Trade types' />
+                            </div>
+                        }
                         icon={!is_editing && <Guide />}
                     />
+                    <div>
+                        <div className='draggable-list-category-header'>
+                            <Text size='sm' bold className='draggable-list-category-header-title'>
+                                {is_editing && <Localize i18n_default_text='Pinned' />}
+                            </Text>
+
+                            <Button
+                                color='black'
+                                variant='secondary'
+                                className='draggable-list-category-header-button'
+                                onClick={is_editing ? savePinnedToLocalStorage : handleCustomizeTradeTypes}
+                            >
+                                {is_editing ? (
+                                    <Localize i18n_default_text='Done' />
+                                ) : (
+                                    <Localize i18n_default_text='Customise' />
+                                )}
+                            </Button>
+                        </div>
+                    </div>
                     <ActionSheet.Content className='mock-action-sheet--content'>
                         {is_editing ? (
                             <DraggableList
@@ -253,10 +277,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                         ) : (
                             <TradeTypeList
                                 categories={pinned_trade_types}
-                                onAction={handleCustomizeTradeTypes}
                                 onTradeTypeClick={handleOnTradeTypeSelect}
                                 isSelected={id => isTradeTypeSelected(id)}
-                                should_show_title={false}
                                 selectable
                             />
                         )}

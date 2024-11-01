@@ -72,7 +72,7 @@ const cacheTrackEvents = {
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=${getDomainName()};`;
+        document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.${getDomainName()};`;
     },
     processEvent: (event: Event): Event => {
         const clientInfo = Cookies.get('client_information');

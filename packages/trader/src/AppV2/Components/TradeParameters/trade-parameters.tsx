@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { isTradeParamVisible } from 'AppV2/Utils/layout-utils';
 import AllowEquals from './AllowEquals';
@@ -28,6 +29,9 @@ type TTradeParametersProps = {
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
+    const {
+        common: { current_language },
+    } = useStore();
     const isVisible = (component_key: string) =>
         isTradeParamVisible({ component_key, contract_type, has_cancellation, symbol });
 
@@ -37,6 +41,7 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 'trade-params__options__wrapper',
                 is_minimized && 'trade-params__options__wrapper--minimized'
             )}
+            key={current_language}
         >
             {is_minimized && (
                 <React.Fragment>

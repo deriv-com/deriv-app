@@ -48,8 +48,6 @@ const cacheTrackEvents = {
         return !!instances?.tracking;
     },
     parseCookies: (cookieName: string): any => {
-        // eslint-disable-next-line no-console
-        console.log('cookieName', cookieName);
         const cookies: { [key: string]: string } = document.cookie
             .split('; ')
             .reduce((acc: { [key: string]: string }, cookie: string) => {
@@ -57,13 +55,9 @@ const cacheTrackEvents = {
                 acc[decodeURIComponent(key)] = decodeURIComponent(value);
                 return acc;
             }, {});
-        // eslint-disable-next-line no-console
-        console.log('cookies', cookies);
         try {
             return cookies[cookieName] ? JSON.parse(cookies[cookieName]) : null;
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log('error');
             return null;
         }
     },
@@ -77,12 +71,6 @@ const cacheTrackEvents = {
         const cacheCookie = cacheTrackEvents.parseCookies(cookieName);
         if (cacheCookie) storedCookies = cacheCookie;
         storedCookies.push(data);
-        // eslint-disable-next-line no-console
-        console.log('data', data);
-        // eslint-disable-next-line no-console
-        console.log('cacheCookie', cacheCookie);
-        // eslint-disable-next-line no-console
-        console.log('storedCookies', storedCookies);
         document.cookie = `${cookieName}=${JSON.stringify(storedCookies)}; path=/; Domain=.binary.sx;`;
     },
     processEvent: (event: Event): Event => {

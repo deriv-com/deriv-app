@@ -28,7 +28,7 @@ jest.mock('../components', () => ({
 }));
 
 describe('<DocumentsList />', () => {
-    it('poi tile is not rendered', () => {
+    it('poa tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -122,6 +122,7 @@ describe('<DocumentsList />', () => {
                 account={{
                     // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
+                        required_tin: 1,
                         valid_tin: 0,
                     },
                 }}

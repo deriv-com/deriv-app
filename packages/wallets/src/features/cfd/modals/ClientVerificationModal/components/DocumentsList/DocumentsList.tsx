@@ -25,8 +25,18 @@ const statusBadge: TStatusBadgeProps = {
 const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const history = useHistory();
     const { localize } = useTranslations();
-    const { hasPoaStatus, hasPoiStatus, hasTinStatus, isPoaRequired, isPoiRequired, isTinRequired, statuses } =
-        getClientVerification(account);
+    const {
+        hasPoaStatus,
+        hasPoiStatus,
+        hasRequiredTin,
+        hasTinStatus,
+        isPoaRequired,
+        isPoiRequired,
+        isTinRequired,
+        statuses,
+    } = getClientVerification(account);
+
+    const shouldShowTin = hasRequiredTin && hasTinStatus && isTinRequired;
 
     return (
         <div className='wallets-documents-list'>
@@ -51,7 +61,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                     title={localize('Proof of address')}
                 />
             )}
-            {hasTinStatus && isTinRequired && (
+            {shouldShowTin && (
                 <DocumentTile
                     // @ts-expect-error the following link is not part of wallets routes config
                     onClick={() => history.push('/account/personal-details')}

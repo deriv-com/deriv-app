@@ -9,6 +9,7 @@ import { useStore, observer } from '@deriv/stores';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
+// import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -51,7 +52,10 @@ const AppContents = observer(({ children }) => {
     }, []);
 
     React.useEffect(() => {
-        Analytics.pageView(window.location.href);
+        Analytics.pageView(window.location.href, {
+            loggedIn: is_logged_in,
+            device_type: isMobile ? 'mobile' : 'desktop',
+        });
         // react-hooks/exhaustive-deps
     }, [window.location.href]);
 

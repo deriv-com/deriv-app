@@ -63,9 +63,7 @@ runs:
     id: restore-cache
     with:
       path: node_modules/.cache/nx
-      key: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}-${{ github.sha }}
-      restore-keys: nx-cache-${{ hashFiles('package-lock.json') }}-${{ hashFiles('packages/*/package.json') }}
-  - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}
+      key: nx-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
     name: Run build
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
@@ -87,8 +85,8 @@ runs:
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
     run: npm run build:all
     shell: bash
-  - if: ${{ steps.restore-cache.outputs.cache-matched-key == '' }}   
-    name: Save nx cache
+  - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}   
+    name: Invalidate and save nx cache
     uses: actions/cache/save@v4
     with:
       path: node_modules/.cache/nx

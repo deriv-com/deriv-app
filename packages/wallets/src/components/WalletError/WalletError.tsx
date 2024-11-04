@@ -13,7 +13,7 @@ type TProps = {
     title?: string;
 };
 
-const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'contained', errorMessage, onClick, title }) => {
+const WalletError: React.FC<TProps> = ({ buttonText, buttonVariant = 'ghost', errorMessage, onClick, title }) => {
     const { isDesktop } = useDevice();
 
     return (

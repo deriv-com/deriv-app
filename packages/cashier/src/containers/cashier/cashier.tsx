@@ -139,7 +139,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     setActiveTab('deposit');
                     break;
                 case routes.cashier_withdrawal:
-                    setActiveTab('deposit');
+                    setActiveTab('withdraw');
                     break;
                 case routes.cashier_pa:
                     setActiveTab('payment_agent');

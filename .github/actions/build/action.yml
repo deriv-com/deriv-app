@@ -83,12 +83,7 @@ runs:
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
-    run: |
-      if [ "${{ steps.restore-cache.outputs.cache-hit }}" == "true" ]; then
-        npm run build:since:all
-      else
-        npm run build:all
-      fi
+    run: npm run build:all
     shell: bash
   - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}   
     name: Invalidate and save nx cache

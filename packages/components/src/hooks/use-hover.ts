@@ -8,31 +8,20 @@ export const useHover = <T extends HTMLElement | SVGSVGElement>(
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
-    const handleHoverBegin = () => setValue(true);
-    const handleHoverFinish = () => setValue(false);
-
     React.useEffect(() => {
         const node = ref.current;
-        if (node) {
-            if (should_prevent_bubbling) {
-                node.addEventListener('mouseenter', handleHoverBegin);
-                node.addEventListener('mouseleave', handleHoverFinish);
-            } else {
-                node.addEventListener('mouseover', handleHoverBegin);
-                node.addEventListener('mouseout', handleHoverFinish);
-            }
+        if (!node) return;
 
-            return () => {
-                if (should_prevent_bubbling) {
-                    node.removeEventListener('mouseenter', handleHoverBegin);
-                    node.removeEventListener('mouseleave', handleHoverFinish);
-                } else {
-                    node.removeEventListener('mouseover', handleHoverBegin);
-                    node.removeEventListener('mouseout', handleHoverFinish);
-                }
-            };
-        }
-        return undefined;
+        const events = should_prevent_bubbling
+            ? { enter: 'mouseenter', leave: 'mouseleave' }
+            : { enter: 'mouseover', leave: 'mouseout' };
+
+        node.addEventListener(events.enter, () => setValue(true));
+
+        return () => {
+            node.removeEventListener(events.enter, () => setValue(true));
+            setValue(false);
+        };
     }, [ref, should_prevent_bubbling]);
 
     return [ref, value] as const;

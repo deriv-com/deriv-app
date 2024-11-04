@@ -1,6 +1,8 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { routes } from '@deriv/shared';
+import { useTranslations } from '@deriv-com/translations';
+import RouteButton from '../../../route-button';
 import PoaButton from '../../../poa/poa-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPOIStatus } from 'Types';
@@ -11,15 +13,18 @@ export const UploadComplete = ({
     is_from_external,
     is_manual_upload = false,
 }: TPOIStatus) => {
-    const message = localize('Your documents were submitted successfully');
+    const { localize } = useTranslations();
+    const message = localize('Review in progress');
     const description = is_manual_upload
-        ? localize('We’ll review your documents and notify you of its status within 1 - 3 working days.')
-        : localize('We’ll review your documents and notify you of its status within 5 minutes.');
+        ? localize('Your proof of identity is under review. We’ll get back to you within 1–3 working days.')
+        : localize('Your proof of identity is under review. We’ll get back to you within 5 minutes.');
 
     if (!needs_poa) {
         return (
             <IconMessageContent message={message} text={description} icon={<Icon icon='IcPoiVerified' size={128} />}>
-                {!is_from_external && redirect_button}
+                {!is_from_external && (
+                    <RouteButton button_label={localize("Return to Trader's Hub")} route={routes.traders_hub} />
+                )}
             </IconMessageContent>
         );
     }
@@ -31,10 +36,10 @@ export const UploadComplete = ({
                         {description}
                     </Text>
                     <Text align='center' size='xs' as='p'>
-                        {localize('You must also submit a proof of address.')}
+                        {localize('To start trading, you also need to verify your address.')}
                     </Text>
                 </div>
-                <PoaButton />
+                <PoaButton custom_text={localize('Next')} />
             </React.Fragment>
             {!is_from_external && redirect_button}
         </IconMessageContent>

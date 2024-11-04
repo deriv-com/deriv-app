@@ -18,6 +18,7 @@ import Form from './form';
 import { TConfigItem, TFormData, TFormValues } from './types';
 import './quick-strategy.scss';
 import { QsSteps } from './form-wrappers/upgraded-qs-v2/trade-constants';
+import { requestAccumulatorsQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 
 type TFormikWrapper = {
     children: React.ReactNode;
@@ -42,6 +43,9 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 };
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
+    const {
+        client: { currency },
+    } = useStore();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData } =
         quick_strategy;
@@ -76,8 +80,15 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
             action: data?.action ?? 'RUN',
             max_stake: data?.max_stake ?? 10,
-            boolean_max_stake: data?.boolean_max_stake || false,
+            boolean_max_stake: data?.boolean_max_stake ?? false,
             last_digit_prediction: data?.last_digit_prediction ?? 1,
+            growth_rate: data?.growth_rate ?? '1',
+            tick_count: data?.tick_count ?? 1,
+            take_profit: data?.tick_profit ?? 10,
+            boolean_take_profit: data?.boolean_max_stake ?? false,
+            sell_conditions: data?.sell_conditions ?? 'tick_count',
+            max_payout: data?.max_payout ?? 0,
+            max_ticks: data?.max_ticks ?? 0,
         };
         return initial_value;
     };
@@ -93,11 +104,11 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getErrors = (formikData: TFormData) => {
+    const updateSchema = (formikData: TFormData) => {
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
-            group.forEach(field => {
+            group.forEach(async field => {
                 if (field?.validation?.length && field?.name) {
                     if (field.validation.includes('number')) {
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
@@ -178,7 +189,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        getErrors(form_data);
+        updateSchema(form_data);
         localStorage?.setItem('qs-fields', JSON.stringify(form_data));
         return form_data;
     };
@@ -188,7 +199,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             initialValues={getInitialValue()}
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
-            validate={values => getErrors(values)}
+            validate={values => updateSchema(values)}
             validateOnChange={false}
         >
             {children}

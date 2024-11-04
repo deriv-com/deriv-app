@@ -127,10 +127,12 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
 
     onSubmit = async (data: TFormData) => {
+        console.log('test data', data);
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
+        console.log('test data', market, submarket, trade_type_cat);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.utils.xml.textToDom(strategy_xml.default);
@@ -151,8 +153,12 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
         const modifyFieldDropdownValues = (name: string, value: string) => {
             const name_list = `${name.toUpperCase()}_LIST`;
+            console.log('test name_list', name_list, value);
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
-
+            if (value === 'ACCU') {
+                const accu_check = ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
+                if (accu_check.includes(name_list)) value = 'accumulator';
+            }
             el_blocks?.forEach((el_block: HTMLElement) => {
                 el_block.innerHTML = value;
             });
@@ -204,6 +210,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             strategy_id: null,
             showIncompatibleStrategyDialog: null,
         });
+
+        if (data.tradetype === 'accumulator') {
+            const growth_rate = Number(data.growth_rate) / 100;
+            window?.Blockly?.derivWorkspace?.topBlocks?.[0]?.childBlocks_[2]?.inputList[0]?.fieldRow[1]?.setValue(
+                growth_rate.toString()
+            );
+        }
     };
 
     toggleStopBotDialog = (): void => {

@@ -119,7 +119,8 @@ export type TRsStrategyName =
     | `oscar's-grind`
     | `reverse martingale`
     | `reverse d'alembert`
-    | `1-3-2-6`;
+    | `1-3-2-6`
+    | `D’Alembert`;
 
 export type TDurationType = 't' | 's' | 'm' | 'h' | 'd';
 

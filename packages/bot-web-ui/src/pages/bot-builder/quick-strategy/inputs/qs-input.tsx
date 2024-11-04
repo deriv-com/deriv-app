@@ -36,7 +36,7 @@ const QSInput: React.FC<TQSInput> = observer(
         const { loss_threshold_warning_data } = quick_strategy;
 
         const [has_focus, setFocus] = React.useState(false);
-        const { setFieldValue, setFieldTouched } = useFormikContext();
+        const { setFieldValue, setFieldTouched, errors } = useFormikContext();
         const is_number = type === 'number';
         const max_value = Number.MAX_SAFE_INTEGER;
         const input_ref = React.useRef<HTMLInputElement>(null);
@@ -86,6 +86,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     const { error } = meta;
                     const has_error = error;
                     const is_exclusive_field = has_currency_unit;
+
                     return (
                         <div
                             className={classNames('qs__form__field qs__form__field__input', {

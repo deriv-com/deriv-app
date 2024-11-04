@@ -17,6 +17,7 @@ import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
+import { useFeatureFlags } from '@deriv/hooks';
 
 type TDesktopFormWrapper = {
     active_tab_ref?: React.MutableRefObject<HTMLDivElement | null>;
@@ -30,8 +31,15 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const { submitForm, isValid, setFieldValue, validateForm, values } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
+    const { is_next_qs_enabled } = useFeatureFlags();
+    if (!is_next_qs_enabled) {
+        delete STRATEGIES.ACCUMULATORS_DALEMBERT;
+    }
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+
     const { handleSubmit } = useQsSubmitHandler();
+
+    console.log(is_next_qs_enabled, STRATEGIES);
 
     React.useEffect(() => {
         validateForm();

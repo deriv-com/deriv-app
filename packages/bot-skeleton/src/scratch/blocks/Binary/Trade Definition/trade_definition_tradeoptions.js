@@ -522,6 +522,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     setCurrency() {
         const currency_field = this.getField('CURRENCY_LIST');
         const { currency } = DBotStore.instance.client;
+        if (!currency_field) return;
         currency_field.setText(getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],

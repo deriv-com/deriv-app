@@ -7,8 +7,10 @@ import {
     REVERSE_D_ALEMBERT,
     REVERSE_MARTINGALE,
     STRATEGY_1_3_2_6,
+    ACCUMULATORS_DALEMBERT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
+import { requestAccumulatorsQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 
 export const FORM_TABS = [
     {
@@ -23,6 +25,12 @@ export const FORM_TABS = [
 ];
 
 const NUMBER_DEFAULT_VALIDATION: TValidationItem = {
+    type: 'min',
+    value: 1,
+    getMessage: (min: string | number) => localize('Must be a number higher than {{ min }}', { min: Number(min) - 1 }),
+};
+
+const ACCUMULATORS_MIN_MAX_VALIDATION: TValidationItem = {
     type: 'min',
     value: 1,
     getMessage: (min: string | number) => localize('Must be a number higher than {{ min }}', { min: Number(min) - 1 }),
@@ -61,6 +69,17 @@ const PURCHASE_TYPE: TConfigItem = {
     type: 'contract_type',
     name: 'type',
     dependencies: ['symbol', 'tradetype'],
+};
+
+const SELL_CONDITIONS: TConfigItem = {
+    type: 'label',
+    label: localize('Sell conditions'),
+    description: localize('Your bot uses a single trade type for each run.'),
+};
+
+const SELL_CONDITIONS_TYPE: TConfigItem = {
+    type: 'sell_conditions',
+    name: 'sell_conditions',
 };
 
 const LABEL_STAKE: TConfigItem = {
@@ -109,6 +128,21 @@ const PROFIT: TConfigItem = {
     has_currency_unit: true,
 };
 
+const GROWTH_RATE: TConfigItem = {
+    type: 'label',
+    label: localize('Growth rate'),
+    description: localize(
+        'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier_percentage}} from the previous spot price.'
+    ),
+};
+
+const GROWTH_RATE_VALUE: TConfigItem = {
+    type: 'growth_rate',
+    name: 'growth_rate',
+    attached: true,
+    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
+};
+
 const LABEL_LOSS: TConfigItem = {
     type: 'label',
     label: localize('Loss threshold'),
@@ -126,6 +160,12 @@ const LABEL_MARTINGALE_SIZE: TConfigItem = {
     type: 'label',
     label: localize('Size'),
     description: localize('The size used to multiply the stake after a losing trade for the next trade.'),
+};
+
+const LABEL_ACCUMULAORTS_UNIT: TConfigItem = {
+    type: 'label',
+    label: localize('Unit'),
+    description: localize('The unit used to multiply the stake after a losing trade for the next trade.'),
 };
 
 const LABEL_REVERSE_MARTINGALE_SIZE: TConfigItem = {
@@ -188,6 +228,44 @@ const MAX_STAKE: TConfigItem = {
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: true,
+};
+
+const TAKE_PROFIT: TConfigItem = {
+    type: 'number',
+    name: 'take_profit',
+    // validation: ['number', 'required', 'ceil'],
+    should_have: [{ key: 'sell_conditions', value: 'take_profit' }],
+    hide_without_should_have: true,
+    attached: true,
+    has_currency_unit: true,
+};
+
+const TICK_COUNT_LABEL = {
+    type: 'label',
+    label: localize('Tick Count'),
+    description: localize(
+        'Specify the number of ticks that the current spot price must remain within ±{{tick_size_barrier_percentage}} from the previous spot price to trigger the growth rate.'
+    ),
+    should_have: [{ key: 'sell_conditions', value: 'tick_count' }],
+    hide_without_should_have: true,
+};
+
+const TICK_COUNT = {
+    type: 'number',
+    name: 'tick_count',
+    // validation: ['number', 'required', 'ceil'],
+    should_have: [{ key: 'sell_conditions', value: 'tick_count' }],
+    hide_without_should_have: true,
+    attached: true,
+    has_currency_unit: false,
+};
+
+const TAKE_PROFIT_LABEL = {
+    type: 'label',
+    label: localize('Take Profit'),
+    description: localize('The bot will stop trading if your total profit exceeds this amount.'),
+    should_have: [{ key: 'sell_conditions', value: 'take_profit' }],
+    hide_without_should_have: true,
 };
 
 const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
@@ -359,6 +437,37 @@ export const STRATEGIES: TStrategies = {
                 DURATION,
             ],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
+        ],
+    },
+    ACCUMULATORS_DALEMBERT: {
+        name: 'accumulators_dalembert',
+        label: localize('D’Alembert'),
+        rs_strategy_name: 'D’Alembert',
+        description: ACCUMULATORS_DALEMBERT,
+        fields: [
+            [
+                LABEL_SYMBOL,
+                SYMBOL,
+                LABEL_TRADETYPE,
+                TRADETYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
+                LABEL_STAKE,
+                STAKE,
+                GROWTH_RATE,
+                GROWTH_RATE_VALUE,
+            ],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_ACCUMULAORTS_UNIT, UNIT],
+            [
+                SELL_CONDITIONS,
+                SELL_CONDITIONS_TYPE,
+                TAKE_PROFIT_LABEL,
+                TAKE_PROFIT,
+                TICK_COUNT_LABEL,
+                TICK_COUNT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+            ],
         ],
     },
 };

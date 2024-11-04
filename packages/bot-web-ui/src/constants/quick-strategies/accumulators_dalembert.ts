@@ -2,6 +2,7 @@ import { getImageLocation } from '../../public-path';
 import { localize } from '@deriv/translations';
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
 
+// TODO: Added dummy description because it has dependency with tutorial sections
 export const ACCUMULATORS_DALEMBERT: TDescriptionItem[] = [
     {
         type: 'subtitle',

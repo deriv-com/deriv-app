@@ -211,6 +211,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             showIncompatibleStrategyDialog: null,
         });
 
+        //TODO: need to update the value fropm block and remove this later
         if (data.tradetype === 'accumulator') {
             const growth_rate = Number(data.growth_rate) / 100;
             window?.Blockly?.derivWorkspace?.topBlocks?.[0]?.childBlocks_[2]?.inputList[0]?.fieldRow[1]?.setValue(

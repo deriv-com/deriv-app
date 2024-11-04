@@ -233,7 +233,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 setIsOpen(false);
             }
         },
-        [v2_params_initial_values, is_open]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [is_open, v2_params_initial_values.stake, amount]
     );
 
     return (

@@ -7,7 +7,7 @@
     "devDependencies": {
         "@babel/core": "^7.25.2",
         "@babel/eslint-parser": "^7.25.1",
-       "@babel/plugin-transform-class-properties": "^7.25.4",
+        "@babel/plugin-transform-class-properties": "^7.25.4",
         "@babel/plugin-proposal-decorators": "^7.24.7",
         "@babel/plugin-proposal-export-default-from": "^7.24.7",
         "@babel/plugin-proposal-export-namespace-from": "^7.12.1",
@@ -60,6 +60,7 @@
         "analyze:build": "nx run-many --target=analyze:build",
         "analyze:stats": "nx run-many --target=analyze:stats",
         "build:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account  --skip-nx-cache && nx build @deriv/bot-web-ui --skip-nx-cache && nx run-many --target=build",
+        "build:since:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account  --skip-nx-cache && nx build @deriv/bot-web-ui --skip-nx-cache && nx affected --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",
         "test:eslint-all": "nx run-many --target=test:eslint",

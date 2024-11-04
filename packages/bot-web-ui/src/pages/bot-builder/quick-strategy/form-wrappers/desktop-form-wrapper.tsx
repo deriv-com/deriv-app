@@ -39,8 +39,6 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
 
     const { handleSubmit } = useQsSubmitHandler();
 
-    console.log(is_next_qs_enabled, STRATEGIES);
-
     React.useEffect(() => {
         validateForm();
     }, [selected_strategy, validateForm]);

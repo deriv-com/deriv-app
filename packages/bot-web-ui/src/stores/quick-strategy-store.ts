@@ -127,12 +127,10 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
 
     onSubmit = async (data: TFormData) => {
-        console.log('test data', data);
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(data.symbol);
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
-        console.log('test data', market, submarket, trade_type_cat);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.utils.xml.textToDom(strategy_xml.default);
@@ -153,7 +151,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
         const modifyFieldDropdownValues = (name: string, value: string) => {
             const name_list = `${name.toUpperCase()}_LIST`;
-            console.log('test name_list', name_list, value);
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
             if (value === 'ACCU') {
                 const accu_check = ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'];

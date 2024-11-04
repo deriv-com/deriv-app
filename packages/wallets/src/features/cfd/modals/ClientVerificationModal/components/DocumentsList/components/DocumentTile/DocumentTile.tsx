@@ -14,7 +14,9 @@ type TDocumentTileProps = {
 const DocumentTile: React.FC<TDocumentTileProps> = ({ badge, disabled, onClick, title }) => {
     return (
         <button className='wallets-document-tile' disabled={disabled} onClick={onClick}>
-            <Text align='start'>{title}</Text>
+            <Text align='start' size='sm' weight='bold'>
+                {title}
+            </Text>
             <div className='wallets-document-tile__status'>
                 {badge}
                 <LabelPairedChevronRightMdRegularIcon

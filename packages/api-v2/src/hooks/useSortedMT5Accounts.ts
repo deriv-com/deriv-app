@@ -28,19 +28,16 @@ const useSortedMT5Accounts = (regulation?: string) => {
                     : account.landing_company_short !== 'maltainvest')
         );
 
-        const available_accounts = filtered_available_accounts.filter(available => {
-            return (
-                !filtered_mt5_accounts.find(added => added.product === available.product) &&
-                // @ts-expect-error type for is_default_jurisdiction is unavailable in mt5_login_list and trading_platform_available_accounts
-                available.is_default_jurisdiction === 'true' &&
-                /* 
-                    TODO: remove this check to filter out the creation of `stp` accounts in phase 2 of default jurisdiction 
-                    when this product type is separated from `financial` type.
-                */
-                // @ts-expect-error type `stp` is unavailable in the type for trading_platform_available_accounts
-                available.product !== 'stp'
-            );
-        });
+        const available_accounts = filtered_available_accounts
+            .filter(available => {
+                return (
+                    !filtered_mt5_accounts.find(added => added.product === available.product) &&
+                    // @ts-expect-error type for is_default_jurisdiction is unavailable in mt5_login_list and trading_platform_available_accounts
+                    available.is_default_jurisdiction === 'true'
+                );
+            })
+            //@ts-expect-error needs backend type
+            .filter(account => !activeAccount?.is_virtual || account.product !== 'stp');
 
         const combined_accounts = [
             ...available_accounts.map(account => ({ ...account, is_added: false })),

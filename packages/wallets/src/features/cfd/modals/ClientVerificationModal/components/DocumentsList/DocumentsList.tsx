@@ -25,8 +25,18 @@ const statusBadge: TStatusBadgeProps = {
 const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const history = useHistory();
     const { localize } = useTranslations();
-    const { hasPoaStatus, hasPoiStatus, hasTinStatus, isPoaRequired, isPoiRequired, isTinRequired, statuses } =
-        getClientVerification(account);
+    const {
+        hasPoaStatus,
+        hasPoiStatus,
+        hasRequiredTin,
+        hasTinStatus,
+        isPoaRequired,
+        isPoiRequired,
+        isTinRequired,
+        statuses,
+    } = getClientVerification(account);
+
+    const shouldShowTin = hasRequiredTin && hasTinStatus && isTinRequired;
 
     return (
         <div className='wallets-documents-list'>
@@ -43,16 +53,19 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                 <DocumentTile
                     badge={statusBadge[statuses.poa_status]}
                     disabled={!isPoaRequired}
-                    // @ts-expect-error the following link is not part of wallets routes config
-                    onClick={() => history.push('/account/proof-of-address')}
+                    onClick={() => {
+                        localStorage.setItem('mt5_poa_status', statuses.poa_status);
+                        // @ts-expect-error the following link is not part of wallets routes config
+                        history.push('/account/proof-of-address');
+                    }}
                     title={localize('Proof of address')}
                 />
             )}
-            {hasTinStatus && isTinRequired && (
+            {shouldShowTin && (
                 <DocumentTile
                     // @ts-expect-error the following link is not part of wallets routes config
                     onClick={() => history.push('/account/personal-details')}
-                    title={localize('Personal details')}
+                    title={localize('Additional information')}
                 />
             )}
         </div>

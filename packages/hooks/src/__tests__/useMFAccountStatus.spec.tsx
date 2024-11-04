@@ -23,7 +23,7 @@ describe('useMFAccountStatus', () => {
         mock_store.client.is_eu = true;
         mockUseHasMaltaInvestAccount.mockReturnValue(true);
         mockUseGetMFAccountStatus.mockReturnValue({
-            kyc_status: { poi_status: 'verified', poa_status: 'verified', valid_tin: 1 },
+            kyc_status: { poi_status: 'verified', poa_status: 'verified', valid_tin: 1, required_tin: 1 },
             mf_account_status: ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION,
         });
         const { result } = renderHook(() => useMFAccountStatus(), {
@@ -34,7 +34,7 @@ describe('useMFAccountStatus', () => {
     it('should return null if conditions are not met', () => {
         mockUseHasMaltaInvestAccount.mockReturnValue(false);
         mockUseGetMFAccountStatus.mockReturnValue({
-            kyc_status: { poi_status: 'verified', poa_status: 'verified', valid_tin: 1 },
+            kyc_status: { poi_status: 'verified', poa_status: 'verified', valid_tin: 1, required_tin: 1 },
             mf_account_status: ACCOUNT_BADGE_STATUS.NEEDS_VERIFICATION,
         });
         const { result } = renderHook(() => useMFAccountStatus(), {

@@ -49,7 +49,7 @@ const getBadgeStatus = (status: TAuthStatusCodes) => {
 
 const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
-    const { traders_hub } = useStore();
+    const { traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
     const { setVerificationModalOpen } = traders_hub;
     const history = useHistory();
@@ -58,6 +58,12 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const onClickItem = () => {
         if (is_document_verified) {
             return;
+        }
+        if (id === 'tax') {
+            ui.setFieldRefToFocus('employment-tax-section');
+        }
+        if (id === 'address' && status) {
+            localStorage.setItem('mt5_poa_status', String(status));
         }
         history.push(route);
         setVerificationModalOpen(false);

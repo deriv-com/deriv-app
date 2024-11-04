@@ -115,6 +115,7 @@ type TClientKyCStatus = {
     poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
     poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
     valid_tin?: 0 | 1;
+    required_tin?: 0 | 1;
 };
 export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     product?: 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';

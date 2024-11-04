@@ -28,7 +28,7 @@ jest.mock('../components', () => ({
 }));
 
 describe('<DocumentsList />', () => {
-    it('poi tile is not rendered', () => {
+    it('poa tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -60,7 +60,7 @@ describe('<DocumentsList />', () => {
         expect(screen.queryByText('Proof of address')).not.toBeInTheDocument();
     });
 
-    it('personal details tile is not rendered', () => {
+    it('`Additional information` tile is not rendered', () => {
         render(
             <DocumentsList
                 account={{
@@ -73,7 +73,7 @@ describe('<DocumentsList />', () => {
             />
         );
 
-        expect(screen.queryByText('Personal details')).not.toBeInTheDocument();
+        expect(screen.queryByText('Additional information')).not.toBeInTheDocument();
     });
 
     it('on click poi tile redirects to correct page', async () => {
@@ -116,20 +116,21 @@ describe('<DocumentsList />', () => {
         });
     });
 
-    it('on click personal details tile redirects to correct page', async () => {
+    it('on click `Additional information` tile redirects to correct page', async () => {
         render(
             <DocumentsList
                 account={{
                     // @ts-expect-error - since this is a mock, we only need partial properties of the account
                     client_kyc_status: {
+                        required_tin: 1,
                         valid_tin: 0,
                     },
                 }}
             />
         );
 
-        const personalDetailsTile = screen.getByText('Personal details');
-        userEvent.click(personalDetailsTile);
+        const additionalInfoTile = screen.getByText('Additional information');
+        userEvent.click(additionalInfoTile);
 
         await waitFor(() => {
             expect(mockHistoryPush).toBeCalledWith('/account/personal-details');

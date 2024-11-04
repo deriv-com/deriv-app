@@ -10,6 +10,7 @@ export type TModifiedMT5Account = THooks.SortedMT5Accounts & {
     client_kyc_status: {
         poa_status: TStatuses;
         poi_status: TStatuses;
+        required_tin: 0 | 1;
         valid_tin: 0 | 1;
     };
     licence_number: string;

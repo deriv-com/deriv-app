@@ -186,8 +186,6 @@ describe('AddedMT5AccountsList', () => {
         await waitFor(() => {
             expect(screen.getByText('TradingPlatformStatusModal')).toBeInTheDocument();
             expect(mockPropsFn).toBeCalledWith({
-                badgeSize: 'md',
-                className: 'wallets-added-mt5__icon--badge',
                 status: 'under_maintenance',
             });
         });

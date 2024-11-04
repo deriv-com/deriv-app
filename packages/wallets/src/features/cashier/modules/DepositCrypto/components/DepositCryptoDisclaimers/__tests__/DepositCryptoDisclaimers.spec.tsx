@@ -42,7 +42,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send Ethereum (ETH) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv ETH Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv ETH Wallet address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Ethereum \(ETH\) network/)).toBeInTheDocument();
         expect(
@@ -68,7 +70,9 @@ describe('DepositCryptoDisclaimers', () => {
 
         expect(screen.getByText('Only send Tether TRC20 (tUSDT) to this address.')).toBeInTheDocument();
         expect(
-            screen.getByText('Make sure to copy the Deriv tUSDT Wallet address to your crypto wallet.')
+            screen.getByText(
+                'Make sure to copy the Deriv tUSDT Wallet address above and paste it into your crypto wallet.'
+            )
         ).toBeInTheDocument();
         expect(screen.getByText(/Tron \(TRC20\) network/)).toBeInTheDocument();
         expect(screen.getByText(/A minimum deposit value of/)).toBeInTheDocument();

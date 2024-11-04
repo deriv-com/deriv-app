@@ -16,7 +16,7 @@
         grid-gap: 0.8rem;
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(2, auto);
-        padding: 1.6rem;
+        padding-inline-end: 1.6rem;
     }
 
     &__content {

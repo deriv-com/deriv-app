@@ -60,11 +60,16 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: string;
+            product?: string;
         };
     platform?: TPlatform;
     product?: 'swap_free' | 'zero_spread' | 'derivx' | 'ctrader';
-    openFailedVerificationModal?: (from_account: string) => void;
     market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
+    client_kyc_status?: {
+        poa_status: string;
+        poi_status: string;
+        valid_tin: 0 | 1;
+    };
 };
 
 export type TTradingPlatformAvailableAccount = {

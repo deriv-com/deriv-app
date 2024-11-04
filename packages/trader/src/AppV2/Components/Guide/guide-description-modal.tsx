@@ -11,7 +11,7 @@ type TGuideDescriptionModal = {
     contract_list: { tradeType: React.ReactNode; id: string }[];
     is_dark_mode_on?: boolean;
     is_open?: boolean;
-    onChipSelect: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onChipSelect: (id: string) => void;
     onClose: () => void;
     onTermClick: (term: string) => void;
     selected_contract_type: string;
@@ -58,7 +58,7 @@ const GuideDescriptionModal = ({
                                 {contract_list.map(({ tradeType, id }: { tradeType: React.ReactNode; id: string }) => (
                                     <Chip.Selectable
                                         key={id}
-                                        onChipSelect={onChipSelect}
+                                        onChipSelect={() => onChipSelect(id)}
                                         selected={id === selected_contract_type}
                                     >
                                         <Text size='sm'>{tradeType}</Text>

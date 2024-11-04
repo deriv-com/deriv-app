@@ -7,7 +7,6 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';
-import { getContractTypesConfig } from '@deriv/shared';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 
 type TGuide = {
@@ -18,9 +17,10 @@ type TGuide = {
 const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide) => {
     const {
         ui: { is_dark_mode_on },
+        common: { current_language },
     } = useStore();
-    const { contract_type, is_vanilla } = useTraderStore();
-    const contract_type_title = is_vanilla ? CONTRACT_LIST.VANILLAS : getContractTypesConfig()[contract_type]?.title;
+    const { contract_type } = useTraderStore();
+    const contract_type_title = AVAILABLE_CONTRACTS.find(item => item.for.includes(contract_type))?.id ?? '';
     const { trade_types } = useContractsForCompany();
     const order = [
         CONTRACT_LIST.RISE_FALL,
@@ -47,9 +47,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
     const [selected_contract_type, setSelectedContractType] = React.useState(contract_type_title);
     const [selected_term, setSelectedTerm] = React.useState<string>('');
 
-    const onChipSelect = React.useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
-    }, []);
+    const onChipSelect = React.useCallback((id: string) => setSelectedContractType(id ?? ''), []);
 
     const onClose = React.useCallback(() => setIsDescriptionOpened(false), []);
 
@@ -64,6 +62,7 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
                 icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}
+                key={current_language}
             >
                 {has_label && (
                     <Text size='sm' bold color='quill-typography__color--prominent'>

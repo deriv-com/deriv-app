@@ -28,9 +28,10 @@ const useContractsForCompany = () => {
     const [contract_types_list, setContractTypesList] = React.useState<TContractTypesList | []>([]);
 
     const [trade_types, setTradeTypes] = React.useState<TContractType[]>([]);
-    const { contract_type, onChange, setContractTypesListV2 } = useTraderStore();
+    const { contract_type, onChange, setContractTypesListV2, processContractsForV2, symbol } = useTraderStore();
     const { client } = useStore();
     const { loginid, is_switching, landing_company_shortcode } = client;
+    const prev_landing_company_shortcode_ref = React.useRef(landing_company_shortcode);
 
     const isQueryEnabled = useCallback(() => {
         if (isLoginidDefined(loginid) && !landing_company_shortcode) return false;
@@ -149,6 +150,7 @@ const useContractsForCompany = () => {
                         contract_types[type].barrier_count === 0
                             ? 'euro_atm'
                             : (contract.barrier_category as TConfig['barrier_category']);
+                    config.default_stake = contract.default_stake;
 
                     available_contract_types[type].config = config;
                 });
@@ -162,6 +164,18 @@ const useContractsForCompany = () => {
 
                 const new_contract_type = getNewContractType(trade_types);
                 processNewContractType(new_contract_type);
+
+                if (landing_company_shortcode !== prev_landing_company_shortcode_ref.current) {
+                    onChange({
+                        target: {
+                            name: 'symbol',
+                            value: symbol,
+                        },
+                    }).then(() => {
+                        processContractsForV2();
+                        prev_landing_company_shortcode_ref.current = landing_company_shortcode;
+                    });
+                }
             }
         } catch (err) {
             /* eslint-disable no-console */

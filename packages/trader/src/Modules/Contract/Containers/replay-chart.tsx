@@ -14,7 +14,7 @@ import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/re
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 import { useDevice } from '@deriv-com/ui';
-import { useFeatureFlags } from '@deriv/hooks';
+import { isDtraderV2Enabled } from '@deriv/shared/src/utils/platform/platform';
 
 const ReplayChart = observer(
     ({
@@ -82,9 +82,7 @@ const ReplayChart = observer(
         const prev_start_epoch = usePrevious(start_epoch);
 
         const has_ended = !!getEndTime(contract_info);
-
-        const is_dtrader_v2_enabled =
-            useFeatureFlags()['is_dtrader_v2_enabled' as keyof ReturnType<typeof useFeatureFlags>];
+        const is_dtrader_v2_enabled = isDtraderV2Enabled(ui.is_mobile);
 
         return (
             <SmartChart

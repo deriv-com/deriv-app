@@ -21,10 +21,30 @@ jobs:
           packages_list=$(find packages/* -maxdepth 0 -type d -exec basename {} \; | jq -R . | jq -s -c .)
           echo "Packages found: $packages_list"  # For testing/debugging
           echo "packages=$packages_list" >> $GITHUB_OUTPUT
+  
+  install_and_upload_deps:
+    name: Install and upload dependencies artifact
+    runs-on: Runner_16cores_Deriv-app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm run bootstrap:ci
+        shell: bash
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: |
+            node_modules
+            packages/*/node_modules
+          retention-days: 0
 
   test:
     name: Run tests in parallel
-    needs: list_packages
+    needs: [list_packages, install_and_upload_deps]
     runs-on: Runner_16cores_Deriv-app
     strategy:
       matrix:
@@ -35,8 +55,10 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
-      - name: Install dependencies
-        uses: "./.github/actions/npm_install_from_cache"
+      - name: Download dependencies artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-artifact
       - name: Build components package
         working-directory: packages/components
         run: npm run build

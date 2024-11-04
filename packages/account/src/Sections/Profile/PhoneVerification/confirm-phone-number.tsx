@@ -165,27 +165,28 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 />
             </div>
             <div className='phone-verification__card--buttons_container'>
-                <Button
-                    variant='secondary'
-                    color='black-white'
-                    fullWidth
-                    size='lg'
-                    onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
-                    disabled={
-                        is_button_loading ||
-                        !!next_phone_otp_request_timer ||
-                        is_disabled_request_button ||
-                        is_phone_otp_timer_loading ||
-                        !isCarrierSupportedForSms
-                    }
-                >
-                    <Text bold>
-                        <Localize i18n_default_text='Get code via SMS' />
-                    </Text>
-                </Button>
+                {isCarrierSupportedForSms && (
+                    <Button
+                        variant='secondary'
+                        color='black-white'
+                        fullWidth
+                        size='lg'
+                        onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
+                        disabled={
+                            is_button_loading ||
+                            !!next_phone_otp_request_timer ||
+                            is_disabled_request_button ||
+                            is_phone_otp_timer_loading
+                        }
+                    >
+                        <Text bold>
+                            <Localize i18n_default_text='Get code via SMS' />
+                        </Text>
+                    </Button>
+                )}
                 <Button
                     color='coral'
-                    fullWidth
+                    fullWidth={isCarrierSupportedForSms}
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
                     disabled={

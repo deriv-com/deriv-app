@@ -110,6 +110,7 @@
             display: flex;
             gap: 1.6rem;
             margin-top: 0.8rem;
+            justify-content: center;
 
             @include tablet-screen {
                 margin-bottom: 29rem;

@@ -237,13 +237,7 @@ const AccountLimits = observer(
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
 
-                                {!is_app_settings && (
-                                    <WithdrawalLimitsTable
-                                        num_of_days_limit={num_of_days_limit}
-                                        remainder={remainder}
-                                        withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
-                                    />
-                                )}
+                                {!is_app_settings && <WithdrawalLimitsTable />}
                             </ThemedScrollbars>
                         </div>
                         {should_show_article && isDesktop && <AccountLimitsArticle />}

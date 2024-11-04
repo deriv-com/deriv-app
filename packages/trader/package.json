@@ -96,7 +96,7 @@
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.5.1",
+        "@deriv/deriv-charts": "^2.6.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

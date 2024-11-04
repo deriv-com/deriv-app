@@ -8,6 +8,7 @@ module.exports = {
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     testEnvironment: 'jsdom',
+    resolver: '<rootDir>../../tests/common/resolver.js',
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
     // This is needed to transform es modules imported from node_modules of the target component.
     transformIgnorePatterns: [

@@ -58,13 +58,13 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Restore nx cache
+  - name: Restore nx cache and run build
     uses: actions/cache/restore@v4
     id: restore-cache
     with:
       path: node_modules/.cache/nx
       key: nx-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
-    name: Run build
+  - name: Run build
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
       DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}

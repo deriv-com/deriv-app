@@ -85,9 +85,9 @@ runs:
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
     run: |
       if [ "${{ steps.restore-cache.outputs.cache-hit }}" == "true" ]; then
-        npm run build:all
-      else
         npm run build:since:all
+      else
+        npm run build:all
       fi
     shell: bash
   - if: ${{ steps.restore-cache.outputs.cache-hit != 'true' }}   

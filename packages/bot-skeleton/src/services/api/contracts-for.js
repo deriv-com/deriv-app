@@ -499,7 +499,7 @@ export default class ContractsFor {
     async getTradeTypesForQuickStrategy(symbol, trade_type = '') {
         const trade_type_options = [];
         const filtered_trade_type_categories = [];
-        if (trade_type === 'multiplier' || trade_type === 'ACCU') {
+        if (trade_type === 'ACCU') {
             trade_type_options.push({
                 text: 'Buy',
                 value: 'ACCU',

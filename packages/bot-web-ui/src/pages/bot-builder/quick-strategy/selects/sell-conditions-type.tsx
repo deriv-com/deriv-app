@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Autocomplete } from '@deriv/components';
@@ -10,19 +10,34 @@ type TDurationUnit = {
     attached?: boolean;
 };
 
+type TSellConditionItem = {
+    text: string;
+    value: string;
+};
+
+const list_options = [
+    { text: 'Take Profit', value: 'take_profit' },
+    { text: 'Tick Count', value: 'tick_count' },
+];
+
 const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
-    const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
-    const { values, setFieldValue } = useFormikContext<TFormData>();
+    const { setFieldValue, values } = useFormikContext<TFormData>();
+    const [selectedValue, setSelectedValue] = useState<TSellConditionItem>(
+        values.boolean_take_profit ? list_options[0] : list_options[1]
+    );
 
-    React.useEffect(() => {
-       const sell_conditions = [
-           { text: 'Take Profit', value: 'take_profit' },
-           { text: 'Tick Count', value: 'tick_count' },
-       ];
-       setList(sell_conditions);
-    }, []);
+    const handleItemSelection = (item: TItem) => {
+        if ((item as TDurationUnitItem)?.value) {
+            const { value } = item as TDurationUnitItem;
+            const is_take_profit = value === 'take_profit';
+            const text = is_take_profit ? 'Take Profit' : 'Tick Count';
+            setValue('boolean_take_profit', is_take_profit);
+            setFieldValue?.('boolean_take_profit', is_take_profit);
+            setSelectedValue({ ...selectedValue, text });
+        }
+    };
 
     return (
         <div
@@ -32,7 +47,6 @@ const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) =>
         >
             <Field name='sell_conditions' key='sell_conditions' id='sell_conditions'>
                 {({ field }: FieldProps) => {
-                    const selected_item = list?.find(item => item.value === field.value);
                     return (
                         <Autocomplete
                             {...field}
@@ -41,15 +55,9 @@ const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) =>
                             data-testid='dt_qs_sell_conditions'
                             autoComplete='off'
                             className='qs__select'
-                            value={selected_item?.text || ''}
-                            list_items={list}
-                            onItemSelection={(item: TItem) => {
-                                const { value } = item as TDurationUnitItem;
-                                if (value) {
-                                    setValue('sell_conditions', value);
-                                    setFieldValue?.('sell_conditions', value);
-                                }
-                            }}
+                            value={selectedValue.text}
+                            list_items={list_options}
+                            onItemSelection={handleItemSelection}
                         />
                     );
                 }}

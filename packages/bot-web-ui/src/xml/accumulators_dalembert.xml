@@ -118,7 +118,7 @@
         </value>
         <statement name="ACCUMULATOR_PARAMS">
           <block type="accumulator_take_profit" id="6uNPj*D2,{qgT=*rL3H(" disabled="true">
-            <value name="AMOUNT">
+            <value name="AMOUNT" strategy_value="take_profit">
               <shadow type="math_number_positive" id="B5jKPNx507-%(HhNG*p(">
                 <field name="NUM">0</field>
               </shadow>

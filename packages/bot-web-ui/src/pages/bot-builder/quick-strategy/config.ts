@@ -10,7 +10,7 @@ import {
     ACCUMULATORS_DALEMBERT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
-import { requestAccumulatorsQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
+import { requestProposalForQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 
 export const FORM_TABS = [
     {
@@ -25,12 +25,6 @@ export const FORM_TABS = [
 ];
 
 const NUMBER_DEFAULT_VALIDATION: TValidationItem = {
-    type: 'min',
-    value: 1,
-    getMessage: (min: string | number) => localize('Must be a number higher than {{ min }}', { min: Number(min) - 1 }),
-};
-
-const ACCUMULATORS_MIN_MAX_VALIDATION: TValidationItem = {
     type: 'min',
     value: 1,
     getMessage: (min: string | number) => localize('Must be a number higher than {{ min }}', { min: Number(min) - 1 }),
@@ -140,7 +134,7 @@ const GROWTH_RATE_VALUE: TConfigItem = {
     type: 'growth_rate',
     name: 'growth_rate',
     attached: true,
-    validation: ['number', 'required', 'ceil', NUMBER_DEFAULT_VALIDATION],
+    validation: ['number', 'required', 'ceil'],
 };
 
 const LABEL_LOSS: TConfigItem = {
@@ -233,11 +227,27 @@ const MAX_STAKE: TConfigItem = {
 const TAKE_PROFIT: TConfigItem = {
     type: 'number',
     name: 'take_profit',
-    // validation: ['number', 'required', 'ceil'],
-    should_have: [{ key: 'sell_conditions', value: 'take_profit' }],
+    should_have: [{ key: 'boolean_take_profit', value: true }],
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: true,
+};
+
+const TAKE_PROFIT_LABEL = {
+    type: 'label',
+    label: localize('Take Profit'),
+    description: localize('The bot will stop trading if your total profit exceeds this amount.'),
+    should_have: [{ key: 'boolean_take_profit', value: true }],
+    hide_without_should_have: true,
+};
+
+const TICK_COUNT = {
+    type: 'number',
+    name: 'tick_count',
+    should_have: [{ key: 'boolean_take_profit', value: false }],
+    hide_without_should_have: true,
+    attached: true,
+    has_currency_unit: false,
 };
 
 const TICK_COUNT_LABEL = {
@@ -246,25 +256,7 @@ const TICK_COUNT_LABEL = {
     description: localize(
         'Specify the number of ticks that the current spot price must remain within ±{{tick_size_barrier_percentage}} from the previous spot price to trigger the growth rate.'
     ),
-    should_have: [{ key: 'sell_conditions', value: 'tick_count' }],
-    hide_without_should_have: true,
-};
-
-const TICK_COUNT = {
-    type: 'number',
-    name: 'tick_count',
-    // validation: ['number', 'required', 'ceil'],
-    should_have: [{ key: 'sell_conditions', value: 'tick_count' }],
-    hide_without_should_have: true,
-    attached: true,
-    has_currency_unit: false,
-};
-
-const TAKE_PROFIT_LABEL = {
-    type: 'label',
-    label: localize('Take Profit'),
-    description: localize('The bot will stop trading if your total profit exceeds this amount.'),
-    should_have: [{ key: 'sell_conditions', value: 'take_profit' }],
+    should_have: [{ key: 'boolean_take_profit', value: false }],
     hide_without_should_have: true,
 };
 
@@ -442,7 +434,7 @@ export const STRATEGIES: TStrategies = {
     ACCUMULATORS_DALEMBERT: {
         name: 'accumulators_dalembert',
         label: localize('D’Alembert'),
-        rs_strategy_name: 'D’Alembert',
+        rs_strategy_name: `accumulators d'alembert`,
         description: ACCUMULATORS_DALEMBERT,
         fields: [
             [

@@ -6,7 +6,7 @@ import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDropdownItems, TFormData } from '../types';
-import { requestAccumulatorsQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
+import { requestProposalForQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 import { currency } from '@deriv/components/src/components/icon/icons-manifest';
 import debounce from 'lodash.debounce';
 
@@ -22,8 +22,6 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
-
-    const is_take_profit_selected = values.sell_conditions === 'take_profit';
 
     const prev_proposal_payload = React.useRef(null);
     const prev_error = React.useRef<{
@@ -45,15 +43,14 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     }, []);
 
     React.useEffect(() => {
-        setFieldValue('boolean_take_profit', is_take_profit_selected);
-        if (is_take_profit_selected) {
+        if (values.boolean_take_profit) {
             setFieldValue('tick_count', 1);
             setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
         } else {
             setFieldValue('take_profit', 10);
             setFieldError('tick_count', prev_error.current?.tick_count ?? undefined);
         }
-    }, [values, errors.take_profit, errors.tick_count, is_take_profit_selected]);
+    }, [values, errors.take_profit, errors.tick_count, values.boolean_take_profit]);
 
     const validateMinMaxForAccumulators = async field_values => {
         const growth_rate = Number(field_values.growth_rate) / 100;
@@ -71,7 +68,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         prev_proposal_payload.current = request_proposal;
 
         try {
-            const response = await requestAccumulatorsQS(request_proposal);
+            const response = await requestProposalForQS(request_proposal);
 
             let min = 1;
             let max = response?.proposal?.validation_params.max_ticks;

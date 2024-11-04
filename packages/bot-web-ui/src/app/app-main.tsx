@@ -22,7 +22,7 @@ const App = ({ passthrough }: TAppProps) => {
 
         initSurvicate();
         return () => {
-            const survicate_box = document.getElementById('survicate-box') || undefined;
+            const survicate_box = document.getElementById('survicate-box');
             if (survicate_box) {
                 survicate_box.style.display = 'none';
             }

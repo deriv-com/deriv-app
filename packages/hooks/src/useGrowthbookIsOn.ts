@@ -8,7 +8,7 @@ interface UseGrowthbookIsOneArgs {
 
 const useGrowthbookIsOn = ({ featureFlag }: UseGrowthbookIsOneArgs) => {
     const [featureIsOn, setFeatureIsOn] = useState(Analytics?.isFeatureOn(featureFlag));
-    const isGBLoaded = useIsGrowthbookIsLoaded();
+    const { isGBLoaded } = useIsGrowthbookIsLoaded();
 
     useEffect(() => {
         if (isGBLoaded) {

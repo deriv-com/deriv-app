@@ -19,7 +19,7 @@ describe('OnboardingGuide', () => {
     });
 
     it('should render Modal with correct content for trading page after 800ms after mounting', async () => {
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide />);
 
         await waitFor(() => jest.advanceTimersByTime(800));
@@ -32,7 +32,7 @@ describe('OnboardingGuide', () => {
     });
 
     it('should render Modal with correct content for positions page after 800ms after mounting', async () => {
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide type='positions_page' />);
 
         await waitFor(() => jest.advanceTimersByTime(800));
@@ -45,7 +45,7 @@ describe('OnboardingGuide', () => {
     });
 
     it('should close the Modal for trading page and start the guide after user clicks on "Let\'s begin" button', async () => {
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide />);
 
         await waitFor(() => jest.advanceTimersByTime(800));
@@ -64,7 +64,7 @@ describe('OnboardingGuide', () => {
 
     it('should close the Modal for positions page, set flag to localStorage equal to true and do NOT start the guide after user clicks on "Got it" button', async () => {
         const field = 'positions_page';
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide type='positions_page' />);
 
         await waitFor(() => jest.advanceTimersByTime(800));
@@ -85,7 +85,7 @@ describe('OnboardingGuide', () => {
 
     it('should close the Modal for trading page and set flag to localStorage equal to true if user clicks on overlay and do NOT start the guide', async () => {
         const field = 'trade_page';
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide />);
 
         await waitFor(() => jest.advanceTimersByTime(800));
@@ -106,7 +106,7 @@ describe('OnboardingGuide', () => {
 
     it('should execute callback function after Modal is closed', async () => {
         const callback = jest.fn();
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         render(<OnboardingGuide callback={callback} type='positions_page' />);
 
         await waitFor(() => jest.advanceTimersByTime(800));

@@ -15,7 +15,7 @@ jest.mock('@deriv/shared', () => {
 
 describe('server_time', () => {
     beforeEach(() => {
-        jest.useFakeTimers('legacy');
+        jest.useFakeTimers({ legacyFakeTimers: true });
         jest.clearAllMocks();
     });
 

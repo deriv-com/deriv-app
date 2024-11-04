@@ -26,7 +26,7 @@ const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, clas
 
     const getBadgeText = () => {
         if (isMaintenance) return localize('Server maintenance');
-        if (isUnavailable) return localize('Unavailable');
+        if (isUnavailable) return localize('Temporarily Unavailable');
         return '';
     };
 

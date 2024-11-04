@@ -1178,6 +1178,7 @@
     "1140585027": "Entrée invalide {{ input_value }}.",
     "1142023511": "Sélectionnez le type de document :",
     "1143730031": "Direction est {{ direction_type }}",
+    "1143854257": "Deriv P2P and Payment Agent services are currently unavailable for Wallets.",
     "1144028300": "Tableau de Relative Strength Index",
     "1144740912": "Annuler la vérification du numéro de téléphone ?",
     "1145927365": "Exécutez les blocs à l'intérieur après un nombre donné de secondes",

@@ -1178,6 +1178,7 @@
     "1140585027": "Nieprawidłowe dane wejściowe {{ input_value }}.",
     "1142023511": "Wybierz rodzaj dokumentu:",
     "1143730031": "Kierunek to {{ direction_type }}",
+    "1143854257": "Deriv P2P and Payment Agent services are currently unavailable for Wallets.",
     "1144028300": "Szereg wskaźnika względnej siły (RSIA)",
     "1144740912": "Anulować weryfikację numeru telefonu?",
     "1145927365": "Uruchom bloki wewnętrzne po określonej liczbie sekund",

@@ -103,7 +103,7 @@ const TakeProfitAndStopLossInput = ({
     );
 
     const input_message =
-        info.min_value && info.max_value && is_enabled ? (
+        info.min_value && info.max_value ? (
             <Localize
                 i18n_default_text='Acceptable range: {{min_value}} to {{max_value}} {{currency}}'
                 values={{
@@ -236,7 +236,7 @@ const TakeProfitAndStopLossInput = ({
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
                     inputMode='decimal'
-                    message={fe_error_text || error_text || input_message}
+                    message={is_enabled && (fe_error_text || error_text || input_message)}
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
                     noStatusIcon

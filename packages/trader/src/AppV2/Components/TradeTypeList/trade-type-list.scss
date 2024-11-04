@@ -29,21 +29,6 @@
     &-category {
         padding-bottom: var(--core-spacing-400);
 
-        &-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 var(--core-spacing-600) 0 var(--core-spacing-800);
-
-            &-title,
-            &-button {
-                margin-bottom: var(--core-spacing-100);
-            }
-        }
-
-        &__title {
-            font-size: var(--core-fontSize-75);
-        }
-
         &__items {
             margin-top: var(--core-spacing-400);
         }

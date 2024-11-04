@@ -256,7 +256,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                             <Text size='sm' bold className='draggable-list-category-header-title'>
                                 {is_editing && <Localize i18n_default_text='Pinned' />}
                             </Text>
-
                             <Button
                                 color='black'
                                 variant='secondary'

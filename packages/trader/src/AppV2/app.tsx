@@ -11,6 +11,7 @@ import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
+import { routes } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {
@@ -27,7 +28,9 @@ const App = ({ passthrough }: Apptypes) => {
     }, [root_store]);
 
     React.useEffect(() => {
-        sendDtraderV2OpenToAnalytics();
+        if (!window.location.pathname.startsWith('/contract')) {
+            sendDtraderV2OpenToAnalytics();
+        }
     }, []);
 
     return (

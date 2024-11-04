@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { LegacyWarningIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationCaptionRegularIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Badge, Text } from '@deriv-com/ui';
 import { DISABLED_PLATFORM_STATUSES, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../constants';
@@ -32,15 +32,15 @@ const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, className, status })
         <Badge
             badgeSize={badgeSize}
             className={className}
-            color='warning'
+            color='warning-secondary'
             isBold
-            leftIcon={<LegacyWarningIcon height={12} iconSize='xs' width={12} />}
+            leftIcon={<LabelPairedCircleExclamationCaptionRegularIcon fill='#C47D00' />}
             padding='loose'
             rounded='sm'
             variant='bordered'
         >
-            <Text color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                <span style={{ color: 'var(--status-warning, #ffad3a)' }}>{getBadgeText(status, localize)}</span>
+            <Text lineHeight='2xl' size='2xs' weight='bold'>
+                {getBadgeText(status, localize)}
             </Text>
         </Badge>
     );

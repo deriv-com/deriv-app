@@ -99,11 +99,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             />
                         )}
                         {!isAccountDisabled && platformStatus && (
-                            <PlatformStatusBadge
-                                badgeSize='md'
-                                className='wallets-added-mt5__icon--badge'
-                                status={platformStatus as TDisabledPlatformStatus}
-                            />
+                            <PlatformStatusBadge badgeSize='md' status={platformStatus as TDisabledPlatformStatus} />
                         )}
                         {isAccountDisabled && <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />}
                     </TradingAccountCard.Content>

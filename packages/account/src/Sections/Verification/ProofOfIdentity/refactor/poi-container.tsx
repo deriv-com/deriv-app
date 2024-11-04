@@ -2,6 +2,7 @@ import { observer } from '@deriv/stores';
 import { useKycAuthStatus } from '../../../../hooks';
 import { Loading } from '@deriv/components';
 import POISubmission from './poi-submission';
+// import { } from '@deriv/api';
 
 type ProofOfIdentityContainerProps = {
     height: number;
@@ -38,11 +39,10 @@ const ProofOfIdentityContainer = observer(
         } else if (identity?.status === 'verified') {
             return <div>Verified</div>;
         } else if (identity?.status === 'none') {
-            return <POISubmission />;
+            return <POISubmission identity={identity} />;
         }
         return <div>ProofOfIdentityContainer</div>;
     }
 );
 
 export default ProofOfIdentityContainer;
-cccccbhhflncntkffjvfjblddigtgkvudctdb

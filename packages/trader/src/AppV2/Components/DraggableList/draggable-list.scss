@@ -40,11 +40,14 @@
             margin-bottom: var(--core-spacing-500);
             display: flex;
             justify-content: space-between;
-            padding: 0 var(--core-spacing-600) 0 var(--core-spacing-800);
+            padding: 0 var(--core-spacing-1200) 0 var(--core-spacing-1600);
             &-button {
                 font-size: var(--core-fontSize-75);
                 font-weight: var(--core-fontWeight-bold);
                 line-height: var(--core-lineHeight-200);
+            }
+            &-title {
+                margin-top: 5px;
             }
         }
 

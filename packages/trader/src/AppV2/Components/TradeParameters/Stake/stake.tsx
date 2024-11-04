@@ -9,6 +9,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import useKeyboardVisibility from './keybord-hook';
 
 type TStakeProps = {
     is_minimized?: boolean;
@@ -48,6 +49,8 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const [should_show_error, setShouldShowError] = React.useState(true);
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
+
+    const { isKeyboardOpen, scrollRequired } = useKeyboardVisibility();
 
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
@@ -131,6 +134,24 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
             });
         }
     }, [stake_error]);
+
+    React.useEffect(() => {
+        const element = document.querySelector<HTMLElement>('.trade');
+
+        if (isKeyboardOpen && scrollRequired && element) {
+            const documentHeight = element?.scrollHeight;
+            const viewportHeight = window.visualViewport?.height || window.innerHeight;
+            const currentScrollY = window.scrollY;
+
+            // Only scroll if there's a need to
+            if (currentScrollY + viewportHeight < documentHeight) {
+                window.scrollTo({
+                    top: documentHeight - viewportHeight,
+                    behavior: 'smooth', // Add smooth scroll for a better UX
+                });
+            }
+        }
+    }, [isKeyboardOpen, scrollRequired]);
 
     React.useEffect(() => {
         displayed_error.current = false;

@@ -1178,6 +1178,7 @@
     "1140585027": "Ungültige Eingabe {{ input_value }}.",
     "1142023511": "Wählen Sie den Dokumenttyp:",
     "1143730031": "Richtung ist {{ direction_type }}",
+    "1143854257": "Deriv P2P und Zahlungsagenten-Dienste sind derzeit für Wallets nicht verfügbar.",
     "1144028300": "Array für den relativen Stärkeindex (RSIA)",
     "1144740912": "Telefonnummer-Überprüfung abbrechen?",
     "1145927365": "Lasse die Blöcke nach einer bestimmten Anzahl von Sekunden im Inneren laufen",

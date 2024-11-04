@@ -1178,6 +1178,7 @@
     "1140585027": "Input non valido {{ input_value }}.",
     "1142023511": "Seleziona il tipo di documento:",
     "1143730031": "La direzione è {{ direction_type }}",
+    "1143854257": "I servizi Deriv P2P e Payment Agent non sono attualmente disponibili per i Wallet.",
     "1144028300": "Serie di Indici di Forza Relativa (RSIA)",
     "1144740912": "Annulla la verifica del numero di telefono?",
     "1145927365": "Attiva i blocchi interni dopo un determinato numero di secondi",

@@ -1178,6 +1178,7 @@
     "1140585027": "Giá trị đầu vào không hợp lệ {{ input_value }}.",
     "1142023511": "Chọn loại giấy tờ:",
     "1143730031": "Xu hướng là {{ direction_type }}",
+    "1143854257": "Dịch vụ Deriv P2P và Đại lý thanh toán hiện không khả dụng cho Wallet.",
     "1144028300": "Mảng Chỉ số Tiềm lực Tương đối (RSIA)",
     "1144740912": "Hủy bỏ việc xác minh số điện thoại?",
     "1145927365": "Chạy các khung bên trong sau một số giây nhất định",

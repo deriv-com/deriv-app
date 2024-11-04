@@ -236,11 +236,16 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     </Text>
                 </Button>
             )}
-            <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
+            <ActionSheet.Root
+                className='trade-types-dialog'
+                isOpen={is_open}
+                expandable={false}
+                onClose={handleCloseTradeTypes}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header
                         title={
-                            <div style={{ margin: '24px 0px' }}>
+                            <div className='trade-types-dialog__title'>
                                 <Localize i18n_default_text='Trade types' />
                             </div>
                         }
@@ -266,7 +271,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                             </Button>
                         </div>
                     </div>
-                    <ActionSheet.Content className='mock-action-sheet--content'>
+                    <ActionSheet.Content className='trade-types-dialog__content'>
                         {is_editing ? (
                             <DraggableList
                                 categories={pinned_trade_types}

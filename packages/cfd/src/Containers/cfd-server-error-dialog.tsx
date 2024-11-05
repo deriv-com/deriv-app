@@ -28,14 +28,14 @@ const CFDServerErrorDialog = observer(() => {
     if (should_show_error && error_type === 'ASK_FIX_DETAILS') {
         return (
             <Dialog
-                title={localize('Something’s not right')}
-                confirm_button_text={localize('OK')}
+                title={localize('Complete your profile')}
+                confirm_button_text={localize('Update profile')}
                 onConfirm={getRedirection}
                 disableApp={disableApp}
                 enableApp={enableApp}
                 is_visible={should_show_error}
             >
-                {error_message}
+                {localize('To continue, provide the required information in the Personal details section.')}
             </Dialog>
         );
     }

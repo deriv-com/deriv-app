@@ -332,6 +332,7 @@ describe('<PersonalDetails/>', () => {
                     text: 'I want to do this later',
                     value: 'none',
                 },
+                citizen: 'Afghanistan',
             },
         };
 
@@ -537,6 +538,7 @@ describe('<PersonalDetails/>', () => {
                 phone: '+93',
                 account_opening_reason: 'Hedging',
                 place_of_birth: 'Aland Islands',
+                citizen: 'Afghanistan',
             },
         };
 

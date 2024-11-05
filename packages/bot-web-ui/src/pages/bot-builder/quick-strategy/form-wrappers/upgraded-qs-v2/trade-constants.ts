@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import { STRATEGIES } from '../../config';
 
 export enum QsSteps {
@@ -18,7 +19,7 @@ export const TRADE_TYPE_INDEX: TTradeTypesItemsIndex = Object.freeze({
 });
 
 // export const TRADE_TYPES = ['All', 'Accumulators', 'Options', 'Multipliers'];
-export const TRADE_TYPES = ['All', 'Accumulators', 'Options'];
+export const TRADE_TYPES = [localize('All'), localize('Accumulators'), localize('Options')];
 
 export type TTStrategyTradeAssociation = {
     name: string;
@@ -34,31 +35,31 @@ export const STRATEGY_TRADE_ASSOCIATIONS: TStrategyTradeAssociations = [
         name: 'MARTINGALE',
         display_name: STRATEGIES.MARTINGALE.label,
         id: 0,
-        parent: ['Options'],
+        parent: [localize('Options')],
     },
     {
         name: 'D_ALEMBERT',
         display_name: STRATEGIES.D_ALEMBERT.label,
         id: 1,
-        parent: ['Options'],
+        parent: [localize('Options')],
     },
     {
         name: 'REVERSE_MARTINGALE',
         display_name: STRATEGIES.REVERSE_MARTINGALE.label,
         id: 2,
-        parent: ['Options'],
+        parent: [localize('Options')],
     },
     {
         name: 'REVERSE_D_ALEMBERT',
         display_name: STRATEGIES.REVERSE_D_ALEMBERT.label,
         id: 3,
-        parent: ['Options'],
+        parent: [localize('Options')],
     },
     {
         name: 'OSCARS_GRIND',
         display_name: STRATEGIES.OSCARS_GRIND.label,
         id: 4,
-        parent: ['Options'],
+        parent: [localize('Options')],
     },
     {
         name: 'STRATEGY_1_3_2_6',

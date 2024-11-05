@@ -8,6 +8,7 @@ import { WalletBadge, WalletListCardBadge } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
+import { TAddedMT5Account } from '../../types';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
 import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
@@ -15,7 +16,7 @@ import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 
 type MT5TradeScreenProps = {
-    mt5Account?: THooks.MT5AccountsList;
+    mt5Account?: TAddedMT5Account;
 };
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
@@ -89,6 +90,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
+    const shouldShowBadge =
+        !activeWalletData?.is_virtual &&
+        details &&
+        'product' in details &&
+        //@ts-expect-error needs backend type
+        details.product !== 'stp' &&
+        details.landing_company_name !== 'labuan';
+
     const migrationMessage = useMemo(() => {
         if (platform === mt5Platform && !activeWalletData?.is_virtual) {
             switch (
@@ -137,7 +146,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 <Text align='start' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
                                 </Text>
-                                {!activeWalletData?.is_virtual && (
+                                {shouldShowBadge && (
                                     <WalletBadge>{details?.landing_company_short?.toUpperCase()}</WalletBadge>
                                 )}
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}

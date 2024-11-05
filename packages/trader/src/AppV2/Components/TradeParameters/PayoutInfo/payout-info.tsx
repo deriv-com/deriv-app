@@ -10,8 +10,6 @@ const PayoutInfo = observer(() => {
     const { value: payout } = proposal_info[trade_type_tab]?.obj_contract_basis || {};
     const has_error = proposal_info[trade_type_tab]?.has_error;
 
-    if (has_error) return null;
-
     return (
         <div className='payout-info__container'>
             <Text size='sm'>
@@ -21,7 +19,7 @@ const PayoutInfo = observer(() => {
                 <Text size='sm' bold>
                     <Money amount={payout} show_currency currency={currency} />
                 </Text>
-            ) : (
+            ) : has_error ? <Text size='sm' bold>- {currency}</Text> : (
                 <Skeleton width={60} height={14} />
             )}
         </div>

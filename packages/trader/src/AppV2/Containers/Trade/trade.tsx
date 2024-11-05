@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
+import { useSnackbar } from '@deriv-com/quill-ui';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
 import BottomNav from 'AppV2/Components/BottomNav';
@@ -31,14 +32,17 @@ const Trade = observer(() => {
         active_symbols,
         contract_type,
         has_cancellation,
-        symbol,
         is_accumulator,
         is_market_closed,
-        onMount,
         onChange,
+        onMount,
         onUnmount,
+        proposal_info,
+        symbol,
+        trade_type_tab,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
+    const { addSnackbar } = useSnackbar();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
@@ -81,6 +85,20 @@ const Trade = observer(() => {
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        const { has_error, error_field, error_code, message } = proposal_info?.[trade_type_tab] || {};
+
+
+        if (has_error && !error_field && error_code === 'ContractBuyValidationError') {
+            addSnackbar({
+                message,
+                hasCloseButton: true,
+                status: 'fail',
+                style: { marginBottom: '48px' },
+            });
+        }
+    }, [proposal_info?.[trade_type_tab]?.message]);
 
     return (
         <BottomNav onScroll={onScroll}>

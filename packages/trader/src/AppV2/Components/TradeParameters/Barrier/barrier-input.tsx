@@ -77,6 +77,8 @@ const BarrierInput = observer(
                 newValue = `+${newValue}`;
             } else if (index === 1) {
                 newValue = `-${newValue}`;
+            } else if (index === 2) {
+                newValue = '';
             }
 
             if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {

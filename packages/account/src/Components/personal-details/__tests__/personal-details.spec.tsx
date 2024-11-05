@@ -332,6 +332,7 @@ describe('<PersonalDetails/>', () => {
                     text: 'I want to do this later',
                     value: 'none',
                 },
+                citizen: 'Afghanistan',
             },
         };
 

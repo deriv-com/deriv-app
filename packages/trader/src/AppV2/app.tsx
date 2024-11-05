@@ -10,6 +10,8 @@ import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
+import { sendDtraderV2OpenToAnalytics } from '../Analytics';
+import { routes } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {
@@ -37,6 +39,12 @@ const App = ({ passthrough }: Apptypes) => {
         dtrader_links_clone.forEach(link => head.appendChild(link));
 
         return () => dtrader_links_clone?.forEach(link => head.removeChild(link));
+    }, []);
+
+    React.useEffect(() => {
+        if (!window.location.pathname.startsWith('/contract')) {
+            sendDtraderV2OpenToAnalytics();
+        }
     }, []);
 
     return (

@@ -11,7 +11,11 @@ import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeType
 import Guide from '../../Components/Guide';
 
 type TTradeTypesProps = {
-    onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    onTradeTypeSelect: (
+        e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+        subform_name: string,
+        trade_type_count: number
+    ) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
     is_dark_mode_on: boolean;
@@ -180,7 +184,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        onTradeTypeSelect(e);
+        onTradeTypeSelect(e, 'trade_type_page', getPinnedItems().length);
         scrollToSelectedTradeType();
         setIsOpen(false);
     };
@@ -219,7 +223,11 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>
             {trade_type_chips.map(({ title, id }: TItem) => (
-                <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
+                <Chip.Selectable
+                    key={id}
+                    onChipSelect={e => onTradeTypeSelect(e, 'main_trade_page', getPinnedItems().length)}
+                    selected={isTradeTypeSelected(id)}
+                >
                     <Text size='sm'>{title}</Text>
                 </Chip.Selectable>
             ))}

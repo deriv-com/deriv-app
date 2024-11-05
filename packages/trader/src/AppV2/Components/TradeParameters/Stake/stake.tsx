@@ -9,12 +9,9 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TStakeProps = {
-    is_minimized?: boolean;
-};
-
-const Stake = observer(({ is_minimized }: TStakeProps) => {
+const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         amount,
         basis,
@@ -27,6 +24,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_multiplier,
         is_turbos,
         is_vanilla,
+        is_market_closed,
         onChange,
         proposal_info,
         setDefaultStake,
@@ -240,6 +238,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     return (
         <>
             <TextField
+                disabled={has_open_accu_contract || is_market_closed}
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
@@ -248,7 +247,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
-                disabled={has_open_accu_contract}
             />
             <ActionSheet.Root
                 isOpen={is_open}

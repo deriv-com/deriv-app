@@ -9,6 +9,11 @@
 
     &__title {
         border-bottom: var(--core-borderWidth-75) dotted var(--component-textIcon-normal-default);
+
+        &--disabled {
+            color: var(--component-textIcon-normal-disabled);
+            border-bottom: var(--core-borderWidth-75) dotted var(--component-textIcon-normal-disabled);
+        }
     }
 
     &__definition {

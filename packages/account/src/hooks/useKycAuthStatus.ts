@@ -13,9 +13,16 @@ export const useKycAuthStatus = (payload?: TKycAuthStatusPayload) => {
         payload,
         options: { enabled: is_authorize },
     });
+
+    // const getService = () => {
+    //     const service = data?.kyc_auth_status?.identity?.available_services?.[0];
+    //     return service;
+    // };
+
     return {
         /** The KYC auth status */
         kyc_auth_status: data?.kyc_auth_status,
+        // getService,
         ...kyc_auth_status_rest,
     };
 };

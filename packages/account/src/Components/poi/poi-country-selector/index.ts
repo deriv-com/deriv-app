@@ -1,3 +1,3 @@
-import PoiCountrySelector from './poi-country-selector';
+import PoiCountrySelector from './refactor/poi-country-selector';
 
 export default PoiCountrySelector;

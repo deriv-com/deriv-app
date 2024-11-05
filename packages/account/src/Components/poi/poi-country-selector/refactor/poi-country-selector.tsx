@@ -4,7 +4,7 @@ import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik
 import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv/components';
 import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormFooter from '../../form-footer';
+import FormFooter from '../../../form-footer';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/api';
 
@@ -38,6 +38,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
 
     const updateSelectedCountry = (country_name: string) => {
         const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
+        console.log('matching_country', matching_country);
         if (matching_country) {
             setSelectedCountry?.(matching_country.value ?? '');
         }

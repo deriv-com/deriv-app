@@ -39,7 +39,7 @@ const ProofOfIdentityContainer = observer(
         } else if (identity?.status === 'verified') {
             return <div>Verified</div>;
         } else if (identity?.status === 'none') {
-            return <POISubmission identity={identity} />;
+            return <POISubmission />;
         }
         return <div>ProofOfIdentityContainer</div>;
     }

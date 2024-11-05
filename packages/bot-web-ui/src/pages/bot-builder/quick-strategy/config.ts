@@ -75,7 +75,7 @@ const SELL_CONDITIONS_TYPE_TAKE_PROFIT: TConfigItem = {
 const SELL_CONDITIONS_TYPE_TICK_COUNT: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
-    description: 'Tick Count: Counting the number of ticks before selling the position.',
+    description: localize('Tick Count: Counting the number of ticks before selling the position.'),
     should_have: [{ key: 'boolean_take_profit', value: false }],
     hide_without_should_have: true,
 };

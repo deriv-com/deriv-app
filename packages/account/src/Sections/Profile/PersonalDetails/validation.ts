@@ -13,7 +13,8 @@ export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings & { tin_skipped?: 0 | 1 },
     residence_list: ResidenceList,
     states_list: StatesList,
-    is_virtual?: boolean
+    is_virtual?: boolean,
+    selected_phone_code?: string
 ): PersonalDetailsValueTypes => {
     const virtualAccountInitialValues: PersonalDetailsValueTypes = {
         email_consent: account_settings.email_consent ?? 0,
@@ -28,11 +29,11 @@ export const getPersonalDetailsInitialValues = (
         address_line_2: account_settings.address_line_2 ?? '',
         address_postcode: account_settings.address_postcode ?? '',
         address_state: '',
-        code: '+60',
+        calling_country_code: selected_phone_code,
         date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
-        phone: `+${account_settings.phone?.replace(/\D/g, '')}`,
+        phone: account_settings.phone?.replace(/\D/g, ''),
         account_opening_reason: account_settings.account_opening_reason,
         employment_status: account_settings?.employment_status,
         tax_residence:
@@ -142,7 +143,7 @@ export const getPersonalDetailsValidationSchema = (
     const personal_details_schema = getPersonalDetailsBaseValidationSchema().pick([
         'first_name',
         'last_name',
-        'phone',
+        // 'phone',
         'date_of_birth',
         'citizen',
     ]);

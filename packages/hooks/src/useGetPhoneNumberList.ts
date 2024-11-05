@@ -1,72 +1,44 @@
+import { useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
+import useSettings from './useSettings';
 
 const useGetPhoneNumberList = () => {
-    const countries = useMemo(
-        () => [
-            {
-                calling_country_code: '+1',
-                display_name: 'United States',
-                carriers: ['sms', 'whatsapp'],
-                country_code: 'US',
-            },
-            {
-                calling_country_code: '+44',
-                display_name: 'United Kingdom',
-                carriers: ['sms', 'whatsapp'],
-                country_code: 'GB',
-            },
-            {
-                calling_country_code: '+33',
-                display_name: 'France',
-                carriers: ['sms', 'whatsapp'],
-                country_code: 'FR',
-            },
-            {
-                calling_country_code: '+60',
-                display_name: 'Malaysia',
-                carriers: ['sms', 'whatsapp'],
-                country_code: 'MY',
-            },
-            {
-                calling_country_code: '+55',
-                display_name: 'Brazil',
-                carriers: ['whatsapp'],
-                country_code: 'BR',
-            },
-        ],
-        []
-    );
+    const { data } = useQuery('phone_settings');
+    const countries = data?.phone_settings?.countries;
 
     const { client } = useStore();
+    const { data: account_settings } = useSettings();
     const {
         website_status: { clients_country },
     } = client;
 
     const getSelectedPhoneCode = useCallback(() => {
-        const country = countries.find(c => c.country_code.toLowerCase() === clients_country);
+        const country = countries?.find(c => c.country_code.toLowerCase() === clients_country);
         return country?.calling_country_code;
     }, [clients_country, countries]);
 
     const getSelectedCountryList = useCallback(() => {
-        const country = countries.find(c => c.country_code.toLowerCase() === clients_country);
+        const country = countries?.find(c => c.country_code.toLowerCase() === clients_country);
         return country;
     }, [clients_country, countries]);
 
-    const formatted_countries_list = countries.map(country => ({
-        name: country.display_name,
-        short_code: country.country_code,
-        phone_code: country.calling_country_code,
-        carriers: country.carriers,
-    }));
+    const formatted_countries_list =
+        countries?.map(country => ({
+            name: country.display_name,
+            short_code: country.country_code,
+            phone_code: country.calling_country_code,
+            carriers: country.carriers,
+        })) || [];
 
-    const formatted_countries_list_for_core = countries.map(country => ({
+    const formatted_countries_list_for_core = countries?.map(country => ({
         text: `${country.display_name} (${country.calling_country_code})`,
         value: country.calling_country_code,
         disabled: false,
     }));
 
-    const selected_phone_code = getSelectedPhoneCode();
+    //@ts-expect-error will remove this once the account_settings is updated
+    const selected_phone_code = account_settings?.calling_country_code || getSelectedPhoneCode();
 
     const selected_country_list = getSelectedCountryList();
 

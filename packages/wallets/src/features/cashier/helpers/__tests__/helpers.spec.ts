@@ -95,6 +95,18 @@ describe('Cashier Helpers', () => {
             ).toBe(MT5MarketTypeDetails.financial.landingCompany?.svg.title);
         });
 
+        it('returns correct name for MT5 financial STP account', () => {
+            expect(
+                getAccountName({
+                    accountCategory: 'trading',
+                    accountType: PlatformDetails.mt5.name,
+                    landingCompanyName: 'svg',
+                    mt5MarketType: MT5MarketTypeDetails.financial.name,
+                    product: 'stp',
+                })
+            ).toBe(MT5MarketTypeDetails.financial.product?.stp?.title);
+        });
+
         it('returns correct name for MT5 synthetic account', () => {
             expect(
                 getAccountName({

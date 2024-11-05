@@ -10,10 +10,7 @@ import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
 import {
     POIProvider,
-    getPositionsV2TabIndexFromURL,
     initFormErrorMessages,
-    isDTraderV2,
-    routes,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
@@ -47,8 +44,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { preferred_language } = root_store.client;
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
-    const is_dtrader_v2 =
-        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
     const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
@@ -63,13 +58,6 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = async () => {
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-            await delay(3000);
-            window.LiveChatWidget.init();
-        };
-
         initializeTranslations();
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
@@ -79,17 +67,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
-        const max_timeout = setTimeout(loadExternalScripts, 15 * 1000); // 15 seconds
-
-        window.addEventListener('load', () => {
-            clearTimeout(max_timeout);
-            loadExternalScripts();
-        });
-
-        return () => {
-            window.removeEventListener('load', loadExternalScripts);
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -108,22 +85,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
-    const getLoader = () =>
-        is_dtrader_v2 ? (
-            <Loading.DTraderV2
-                initial_app_loading
-                is_contract_details={location.pathname.startsWith('/contract/')}
-                is_positions={location.pathname === routes.trader_positions}
-                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
-            />
-        ) : (
-            <Loading />
-        );
-
     React.useEffect(() => {
         const html = document?.querySelector('html');
 
-        if (!html || !is_dtrader_v2) return;
+        if (!html) return;
         if (is_dark_mode) {
             html.classList?.remove('light');
             html.classList?.add('dark');
@@ -145,7 +110,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
                                             {/* This is required as translation provider uses suspense to reload language */}
-                                            <React.Suspense fallback={getLoader()}>
+                                            <React.Suspense fallback={<Loading />}>
                                                 <AppContent passthrough={platform_passthrough} />
                                             </React.Suspense>
                                         </TranslationProvider>

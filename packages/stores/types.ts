@@ -24,6 +24,7 @@ import type {
     P2POrderListResponse,
     WebsiteStatus,
     GetSelfExclusion,
+    Statement,
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -104,9 +105,22 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
+
+// TODO: Remove this type once the API types are updated
+
+type TClientKyCStatus = {
+    poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    valid_tin?: 0 | 1;
+    required_tin?: 0 | 1;
+};
+export type TAdditionalDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    product?: 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
+    client_kyc_status?: TClientKyCStatus;
+};
 
 type TIconTypes =
     | 'Derived'
@@ -157,6 +171,9 @@ export type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
+            validation_params?: {
+                [key: string]: { min: string; max: string };
+            };
         };
     current_tick?: number;
     details?: string;
@@ -193,7 +210,7 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     account_category?: 'wallet' | 'trading';
 };
 
-type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
+type TCtraderAccountsList = TAdditionalDetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;
 };
@@ -225,7 +242,7 @@ type TAccountsList = {
     is_disabled?: boolean | number;
     loginid?: string;
     trader_accounts_list?: DetailsOfEachMT5Loginid[];
-    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    mt5_login_list?: TAdditionalDetailsOfEachMT5Loginid[];
     title?: string;
 }[];
 
@@ -239,7 +256,7 @@ export type TActiveAccount = TAccount & {
     token: string;
 };
 
-type TTradingPlatformAvailableAccount = {
+export type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
@@ -252,11 +269,21 @@ type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
+    client_kyc_status?: TClientKyCStatus;
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
-    product: TProduct;
+    //TODO: remove once api-types for default jurisdiction project
+    product?: TProduct;
+    is_default_jurisdiction?: string;
+    licence_number?: string;
+    regulatory_authority?: string;
+    instruments?: string[];
+    product_details?: {
+        max_leverage?: string;
+        min_spread?: string;
+    };
 };
 
 type TAvailableCFDAccounts = {
@@ -397,6 +424,14 @@ type RealAccountSignupSettings = {
     previous_currency: string;
     success_message: string;
 };
+const AUTH_STATUS_CODES = {
+    NONE: 'none',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    VERIFIED: 'verified',
+    EXPIRED: 'expired',
+    SUSPECTED: 'suspected',
+} as const;
 
 export type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
@@ -494,8 +529,8 @@ export type TClientStore = {
     responseMt5LoginList: ({
         mt5_login_list,
     }: {
-        mt5_login_list: DetailsOfEachMT5Loginid[];
-    }) => DetailsOfEachMT5Loginid[];
+        mt5_login_list: TAdditionalDetailsOfEachMT5Loginid[];
+    }) => TAdditionalDetailsOfEachMT5Loginid[];
     responseTradingPlatformAccountsList: ({
         trading_platform_accounts,
     }: {
@@ -532,9 +567,10 @@ export type TClientStore = {
     email: string;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
+    updateMT5AccountDetails: () => Promise<void>;
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
-    mt5_login_list: DetailsOfEachMT5Loginid[];
+    mt5_login_list: TAdditionalDetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     should_allow_poinc_authentication: boolean;
@@ -544,6 +580,7 @@ export type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        tin_skipped?: 0 | 1;
         tnc_status?: Record<string, number>;
         phone_number_verification?: {
             verified?: 0 | 1;
@@ -581,7 +618,7 @@ export type TClientStore = {
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
-    dxtrade_accounts_list: (DetailsOfEachMT5Loginid & { account_id?: string })[];
+    dxtrade_accounts_list: (TAdditionalDetailsOfEachMT5Loginid & { account_id?: string })[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -643,6 +680,13 @@ export type TClientStore = {
     setTradersHubTracking: (value: boolean) => void;
     account_time_of_closure?: number;
     is_account_to_be_closed_by_residence: boolean;
+    statement: Statement;
+    setClientKYCStatus: (status: { poa_status: string; poi_status: string; valid_tin: 0 | 1 }) => void;
+    client_kyc_status: {
+        poa_status: string;
+        poi_status: string;
+        valid_tin: 0 | 1;
+    };
 };
 
 type TCommonStoreError = {
@@ -658,7 +702,7 @@ type TCommonStoreError = {
     type?: string;
 };
 
-type TCommonStoreServicesError = {
+export type TCommonStoreServicesError = {
     code?: string;
     message?: string;
     type?: string;
@@ -722,7 +766,6 @@ type TUiStore = {
     is_closing_create_real_account_modal: boolean;
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
-    is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
@@ -741,6 +784,7 @@ type TUiStore = {
     is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
+    is_wallets_onboarding_tour_guide_visible: boolean;
     isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
@@ -781,7 +825,6 @@ type TUiStore = {
     setIsVerificationModalVisible: (value: boolean) => void;
     setIsFromSuccessDepositModal: (value: boolean) => void;
     setIsVerificationSubmitted: (value: boolean) => void;
-    setIsMT5VerificationFailedModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
@@ -853,8 +896,6 @@ type TUiStore = {
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: (value: boolean) => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
-    toggleAdditionalKycInfoModal: () => void;
-    toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;
@@ -863,8 +904,11 @@ type TUiStore = {
     setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
     is_trading_disabled_by_residence_modal_visible: boolean;
     setIsTradingDisabledByResidenceModal: (value: boolean) => void;
+    setIsWalletsOnboardingTourGuideVisible: (value: boolean) => void;
     should_show_same_dob_phone_modal: boolean;
     setShouldShowSameDOBPhoneModal: (value: boolean) => void;
+    field_ref_to_focus: string | null; // field_ref_to_focus accepts a field identifier which will be focused
+    setFieldRefToFocus: (value: string | null) => void;
     setHashedValue: (value: string) => void;
     url_hashed_values: string;
     is_tnc_update_modal_open: boolean;
@@ -1121,10 +1165,11 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
     is_real: boolean;
+    is_verification_docs_list_modal_visible: boolean;
     selectRegion: (region: string) => void;
     closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
-    openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
+    setVerificationModalOpen: (value: boolean) => void;
     modal_data: TModalData;
     financial_restricted_countries: boolean;
     selected_account_type: string;
@@ -1165,6 +1210,10 @@ type TTradersHubStore = {
     setIsCFDRestrictedCountry: (value: boolean) => void;
     setIsFinancialRestrictedCountry: (value: boolean) => void;
     setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
+    selected_jurisdiction_kyc_status: Record<string, string>;
+    setSelectedJurisdictionKYCStatus: (value: Record<string, string>) => void;
+    getDefaultJurisdiction: () => string;
+    getMT5AccountKYCStatus: () => void;
 };
 
 type TContractReplay = {

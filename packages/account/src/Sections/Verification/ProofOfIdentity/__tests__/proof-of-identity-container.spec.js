@@ -22,6 +22,9 @@ jest.mock('@deriv/components', () => ({
 jest.mock('../../Helpers/verification.js', () => ({
     populateVerificationStatus: jest.fn().mockReturnValue({
         is_age_verified: false,
+        identity_last_attempt: {
+            service: 'idv',
+        },
     }),
 }));
 

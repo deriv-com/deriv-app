@@ -6,6 +6,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import moment from 'moment';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -80,6 +81,9 @@ describe('DurationActionSheetContainer', () => {
                     contract_type: 'call',
                     symbol: '1HZ100V',
                 },
+            },
+            common: {
+                server_time: moment('2024-10-10T11:23:10.895Z'),
             },
         });
     });
@@ -165,7 +169,6 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('1 min')).toBeInTheDocument();
         userEvent.click(screen.getByText('hours'));
         expect(screen.getByText('1 h')).toBeInTheDocument();
-        userEvent.click(screen.getByText('End Time'));
     });
 
     it('should call onChangeMultiple with correct data with seconds', () => {
@@ -244,19 +247,8 @@ describe('DurationActionSheetContainer', () => {
 
     it('should show End Time Screen on selecting the days unit', () => {
         renderDurationContainer(default_trade_store, 'd');
-
         const date_input = screen.getByTestId('dt_date_input');
-        const time_input = screen.getByDisplayValue('23:59:59 GMT');
         expect(date_input).toBeInTheDocument();
-        expect(time_input).toBeInTheDocument();
-    });
-
-    it('should open timepicker on clicking on time input in the days page', () => {
-        renderDurationContainer(default_trade_store, 'd');
-        const time_input = screen.getByDisplayValue('23:59:59 GMT');
-        expect(time_input).toBeInTheDocument();
-        userEvent.click(time_input);
-        expect(screen.getByText('Pick an end time'));
     });
 
     it('should open datepicker on clicking on date input in the days page', () => {

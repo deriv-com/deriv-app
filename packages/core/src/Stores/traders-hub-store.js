@@ -528,6 +528,12 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableMt5Accounts() {
+        if (this.is_eu_user && !this.is_demo_low_risk && !this.root_store.client.is_logged_in) {
+            this.available_mt5_accounts = this.available_cfd_accounts.filter(account =>
+                ['EU', 'All'].some(region => region === account.availability)
+            );
+            return;
+        }
         if (this.financial_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
                 account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5

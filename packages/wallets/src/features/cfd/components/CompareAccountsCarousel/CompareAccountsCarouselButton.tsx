@@ -11,16 +11,16 @@ type TPrevNextButtonProps = {
     onClick: () => void;
 };
 
-const CFDCompareAccountsCarouselButton = ({ enabled, isNext, isRtl, onClick }: TPrevNextButtonProps) => {
+const CompareAccountsCarouselButton = ({ enabled, isNext, isRtl, onClick }: TPrevNextButtonProps) => {
     const nextButton = isRtl ? (
-        <LabelPairedChevronLeftLgFillIcon fill='#333333' />
+        <LabelPairedChevronLeftLgFillIcon data-testid='dt_compare_accounts_carousel_next_rtl_icon' fill='#333333' />
     ) : (
-        <LabelPairedChevronRightLgFillIcon fill='#333333' />
+        <LabelPairedChevronRightLgFillIcon data-testid='dt_compare_accounts_carousel_next_ltr_icon' fill='#333333' />
     );
     const prevButton = isRtl ? (
-        <LabelPairedChevronRightLgFillIcon fill='#333333' />
+        <LabelPairedChevronRightLgFillIcon data-testid='dt_compare_accounts_carousel_prev_rtl_icon' fill='#333333' />
     ) : (
-        <LabelPairedChevronLeftLgFillIcon fill='#333333' />
+        <LabelPairedChevronLeftLgFillIcon data-testid='dt_compare_accounts_carousel_prev_ltr_icon' fill='#333333' />
     );
 
     return (
@@ -39,4 +39,4 @@ const CFDCompareAccountsCarouselButton = ({ enabled, isNext, isRtl, onClick }: T
     );
 };
 
-export default CFDCompareAccountsCarouselButton;
+export default CompareAccountsCarouselButton;

@@ -66,14 +66,14 @@ describe('GrowthRate', () => {
                 </ModulesProvider>
             </TraderProviders>
         );
-    it('should render Skeleton loader if growth_rate is falsy', () => {
+    it('renders Skeleton loader if growth_rate is falsy', () => {
         default_mock_store.modules.trade.growth_rate = 0;
         mockGrowthRate();
 
         expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
         expect(screen.queryByText(growth_rate_param_label)).not.toBeInTheDocument();
     });
-    it('should render trade param with "Growth rate" label and input with a value equal to the current growth_rate value in %', () => {
+    it('renders trade param with "Growth rate" label and input with a value equal to the current growth_rate value in %', () => {
         mockGrowthRate();
 
         expect(screen.getByText(growth_rate_param_label)).toBeInTheDocument();
@@ -81,13 +81,19 @@ describe('GrowthRate', () => {
             `${getGrowthRatePercentage(default_mock_store.modules.trade.growth_rate)}%`
         );
     });
-    it('should disable trade param if has_open_accu_contract === true', () => {
+    it('disables trade param if has_open_accu_contract === true', () => {
         default_mock_store.modules.trade.has_open_accu_contract = true;
         mockGrowthRate();
 
         expect(screen.getByRole('textbox')).toBeDisabled();
     });
-    it('should open ActionSheet with WheelPicker component, details, "Save" button and trade param definition if user clicks on "Growth rate" trade param', () => {
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockGrowthRate();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
+    });
+    it('opens ActionSheet with WheelPicker component, details, "Save" button and trade param definition if user clicks on "Growth rate" trade param', () => {
         default_mock_store.modules.trade.maximum_ticks = 55;
         mockGrowthRate();
 
@@ -106,7 +112,7 @@ describe('GrowthRate', () => {
         expect(screen.getByText('Save')).toBeInTheDocument();
         expect(screen.getByText(mocked_definition)).toBeInTheDocument();
     });
-    it('should render skeleton instead of WheelPicker if accumulator_range_list is empty', () => {
+    it('renders skeleton instead of WheelPicker if accumulator_range_list is empty', () => {
         default_mock_store.modules.trade.accumulator_range_list = [];
         mockGrowthRate();
 
@@ -116,7 +122,7 @@ describe('GrowthRate', () => {
         expect(screen.queryByText('WheelPicker')).not.toBeInTheDocument();
         expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
     });
-    it('should render skeletons instead of details if proposal data is not available', () => {
+    it('renders skeletons instead of details if proposal data is not available', () => {
         default_mock_store.modules.trade.proposal_info = {};
         default_mock_store.modules.trade.is_purchase_enabled = false;
         mockGrowthRate();
@@ -129,7 +135,7 @@ describe('GrowthRate', () => {
         expect(screen.queryByText(`${default_mock_store.modules.trade.maximum_ticks} ticks`)).not.toBeInTheDocument();
         expect(screen.getAllByTestId(skeleton_testid)).toHaveLength(2);
     });
-    it('should apply specific className if innerHeight is <= 640px', () => {
+    it('applies specific className if innerHeight is <= 640px', () => {
         const original_height = window.innerHeight;
         window.innerHeight = 640;
         mockGrowthRate();
@@ -139,7 +145,7 @@ describe('GrowthRate', () => {
         expect(screen.getByTestId(growth_rate_carousel_testid)).toHaveClass('growth-rate__carousel--small');
         window.innerHeight = original_height;
     });
-    it('should call onChange function if user changes selected value', async () => {
+    it('calls onChange function if user changes selected value', async () => {
         jest.useFakeTimers();
         mockGrowthRate();
 

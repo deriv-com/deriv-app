@@ -6,7 +6,7 @@
     "sideEffects": false,
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.8",
-        "@deriv-com/analytics": "1.14.0",
+        "@deriv-com/analytics": "1.25.1",
         "@deriv/api": "^1.0.0",
         "@deriv-com/auth-client": "1.0.29",
         "@deriv/stores": "^1.0.0",
@@ -21,7 +21,8 @@
         "dayjs": "^1.11.11",
         "@types/js-cookie": "^3.0.1",
         "js-cookie": "^2.2.1",
-        "@deriv-com/utils": "^0.0.36"
+        "@deriv-com/utils": "^0.0.36",
+        "@deriv-com/ui": "1.36.4"
     },
     "devDependencies": {
         "typescript": "^4.6.3",

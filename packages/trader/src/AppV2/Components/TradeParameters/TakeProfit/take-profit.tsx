@@ -9,13 +9,10 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitAndStopLossInput from '../RiskManagement/take-profit-and-stop-loss-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TTakeProfitProps = {
-    is_minimized?: boolean;
-};
-
-const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
-    const { currency, has_open_accu_contract, has_take_profit, take_profit } = useTraderStore();
+const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { currency, has_open_accu_contract, has_take_profit, is_market_closed, take_profit } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -42,7 +39,7 @@ const TakeProfit = observer(({ is_minimized }: TTakeProfitProps) => {
         <React.Fragment>
             <TextField
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                disabled={has_open_accu_contract}
+                disabled={has_open_accu_contract || is_market_closed}
                 label={
                     <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
                 }

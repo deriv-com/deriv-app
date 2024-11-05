@@ -11,7 +11,6 @@ import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
-import { routes } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {

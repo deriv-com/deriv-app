@@ -4,13 +4,10 @@ import clsx from 'clsx';
 import { SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TTradeTypeTabsProps = {
-    is_minimized?: boolean;
-};
-
-const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
-    const { contract_type, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
+const TradeTypeTabs = observer(({ is_minimized }: TTradeParametersProps) => {
+    const { contract_type, is_market_closed, onChange, trade_type_tab, setTradeTypeTab } = useTraderStore();
     const tab_list = getTradeTypeTabsList(contract_type);
     let initial_index = 0;
 
@@ -50,8 +47,9 @@ const TradeTypeTabs = observer(({ is_minimized }: TTradeTypeTabsProps) => {
             className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
             hasContainerWidth
             onChange={handleTabChange}
-            options={tab_list.map(({ label }) => ({ label }))}
+            options={tab_list.map(({ label }) => ({ disabled: is_market_closed, label }))}
             selectedItemIndex={tab_index}
+            key={`${tab_index}${is_market_closed}`}
         />
     );
 });

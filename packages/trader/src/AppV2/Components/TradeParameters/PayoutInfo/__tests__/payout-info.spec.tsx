@@ -4,6 +4,8 @@ import { mockStore } from '@deriv/stores';
 import PayoutInfo from '../payout-info';
 import TraderProviders from '../../../../../trader-providers';
 
+const label = 'Payout';
+
 describe('<PayoutInfo />', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
@@ -34,11 +36,11 @@ describe('<PayoutInfo />', () => {
             </TraderProviders>
         );
 
-    it('should render loader if payout is falsy but there is no API error', () => {
+    it('renders loader if payout is falsy but there is no API error', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockedPayoutInfo();
 
-        expect(screen.getByText('Payout')).toBeInTheDocument();
+        expect(screen.getByText(label)).toBeInTheDocument();
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
         expect(screen.queryByText('123.00 USD')).not.toBeInTheDocument();
     });
@@ -46,6 +48,13 @@ describe('<PayoutInfo />', () => {
         mockedPayoutInfo();
 
         expect(screen.getByText('123.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('Payout')).toBeInTheDocument();
+        expect(screen.getByText(label)).toBeInTheDocument();
+        expect(screen.getByText(label)).not.toHaveClass('trade-params__text--disabled');
+    });
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockedPayoutInfo();
+
+        expect(screen.getByText(label)).toHaveClass('trade-params__text--disabled');
     });
 });

@@ -64,10 +64,20 @@ const PURCHASE_TYPE: TConfigItem = {
     dependencies: ['symbol', 'tradetype'],
 };
 
-const SELL_CONDITIONS: TConfigItem = {
+const SELL_CONDITIONS_TYPE_TAKE_PROFIT: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
-    description: localize('Your bot uses a single trade type for each run.'),
+    description: localize('Take Profit: The position closes after the profit and loss crosses the take profit amount.'),
+    should_have: [{ key: 'boolean_take_profit', value: true }],
+    hide_without_should_have: true,
+};
+
+const SELL_CONDITIONS_TYPE_TICK_COUNT: TConfigItem = {
+    type: 'label',
+    label: localize('Sell conditions'),
+    description: 'Tick Count: Counting the number of ticks before selling the position.',
+    should_have: [{ key: 'boolean_take_profit', value: false }],
+    hide_without_should_have: true,
 };
 
 const SELL_CONDITIONS_TYPE: TConfigItem = {
@@ -232,14 +242,6 @@ const TAKE_PROFIT: TConfigItem = {
     has_currency_unit: true,
 };
 
-const TAKE_PROFIT_LABEL = {
-    type: 'label',
-    label: localize('Take Profit'),
-    description: localize('The bot will stop trading if your total profit exceeds this amount.'),
-    should_have: [{ key: 'boolean_take_profit', value: true }],
-    hide_without_should_have: true,
-};
-
 const TICK_COUNT = {
     type: 'number',
     name: 'tick_count',
@@ -247,14 +249,6 @@ const TICK_COUNT = {
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: false,
-};
-
-const TICK_COUNT_LABEL = {
-    type: 'label',
-    label: localize('Tick Count'),
-    description: localize('Specify the number of ticks that the contract should run'),
-    should_have: [{ key: 'boolean_take_profit', value: false }],
-    hide_without_should_have: true,
 };
 
 const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
@@ -448,11 +442,10 @@ export const STRATEGIES: TStrategies = {
             ],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_ACCUMULAORTS_UNIT, UNIT],
             [
-                SELL_CONDITIONS,
+                SELL_CONDITIONS_TYPE_TAKE_PROFIT,
+                SELL_CONDITIONS_TYPE_TICK_COUNT,
                 SELL_CONDITIONS_TYPE,
-                TAKE_PROFIT_LABEL,
                 TAKE_PROFIT,
-                TICK_COUNT_LABEL,
                 TICK_COUNT,
                 CHECKBOX_MAX_STAKE,
                 MAX_STAKE,

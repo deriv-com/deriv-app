@@ -10,6 +10,8 @@ import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
+import { sendDtraderV2OpenToAnalytics } from '../Analytics';
+import { routes } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {
@@ -24,6 +26,12 @@ const App = ({ passthrough }: Apptypes) => {
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
+
+    React.useEffect(() => {
+        if (!window.location.pathname.startsWith('/contract')) {
+            sendDtraderV2OpenToAnalytics();
+        }
+    }, []);
 
     return (
         <TraderProviders store={root_store}>

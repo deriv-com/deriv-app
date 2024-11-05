@@ -1,6 +1,7 @@
 import React from 'react';
 import { VerticalStepper } from '@deriv-com/quill-ui';
 import { LinearProgressBar } from '@deriv-com/ui';
+import { localize } from '@deriv/translations';
 import { QsSteps } from './trade-constants';
 
 type TQSStepper = {

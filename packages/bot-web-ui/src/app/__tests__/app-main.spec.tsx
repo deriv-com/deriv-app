@@ -1,3 +1,4 @@
+import { initSurvicate, initSurvicateCalled } from '../../public-path';
 import React from 'react';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
@@ -29,7 +30,15 @@ jest.mock('@deriv/deriv-charts', () => ({
 
 jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading...</div>,
+    initSurvicate: () => <div>script...</div>,
 }));
+
+const mockDOM = `
+  <div id="dbot-survicate">
+    <div id="survicate-box" style="display: block;"></div>
+  </div>
+`;
+document.body.innerHTML = mockDOM;
 
 describe('App', () => {
     //mock for blockly
@@ -49,5 +58,11 @@ describe('App', () => {
             />
         );
         expect(container).toBeInTheDocument();
+    });
+
+    it('check survicate script appended', () => {
+        initSurvicate();
+
+        expect(initSurvicateCalled).toBe(true);
     });
 });

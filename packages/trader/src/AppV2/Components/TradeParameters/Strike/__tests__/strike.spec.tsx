@@ -63,7 +63,7 @@ describe('Strike', () => {
                 </ModulesProvider>
             </TraderProviders>
         );
-    it('should render Skeleton loader if strike (barrier_1) is falsy', () => {
+    it('renders Skeleton loader if strike (barrier_1) is falsy', () => {
         default_mock_store.modules.trade.barrier_1 = '';
         mockStrike();
 
@@ -71,14 +71,14 @@ describe('Strike', () => {
         expect(screen.queryByText(strike_trade_param_label)).not.toBeInTheDocument();
     });
 
-    it('should render trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
+    it('renders trade param with "Strike price" label and input with value equal to current strike value (barrier_1)', () => {
         mockStrike();
 
         expect(screen.getByText(strike_trade_param_label)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue('+1.80');
     });
 
-    it('should open ActionSheet with WheelPicker component, Payout per point information, "Save" button and text content with definition if user clicks on trade param', () => {
+    it('opens ActionSheet with WheelPicker component, Payout per point information, "Save" button and text content with definition if user clicks on trade param', () => {
         mockStrike();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('Strike', () => {
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
-    it('should not render Payout per point information if proposal_info is empty object', () => {
+    it('does not render Payout per point information if proposal_info is empty object', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockStrike();
 
@@ -102,7 +102,7 @@ describe('Strike', () => {
         expect(screen.queryByText(/14.245555/)).not.toBeInTheDocument();
     });
 
-    it('should apply specific className if innerHeight is <= 640px', () => {
+    it('applies specific className if innerHeight is <= 640px', () => {
         const original_height = window.innerHeight;
         window.innerHeight = 640;
         mockStrike();
@@ -113,7 +113,7 @@ describe('Strike', () => {
         window.innerHeight = original_height;
     });
 
-    it('should call onChange function if user changes selected value', async () => {
+    it('calls onChange function if user changes selected value', async () => {
         jest.useFakeTimers();
         mockStrike();
 
@@ -128,5 +128,12 @@ describe('Strike', () => {
 
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
         jest.useRealTimers();
+    });
+
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockStrike();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 });

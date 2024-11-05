@@ -23,9 +23,7 @@ import BarrierInfo from './BarrierInfo';
 import PayoutPerPointInfo from './PayoutPerPointInfo';
 import PayoutInfo from './PayoutInfo';
 
-type TTradeParametersProps = {
-    is_minimized?: boolean;
-};
+export type TTradeParametersProps = { is_minimized?: boolean };
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();

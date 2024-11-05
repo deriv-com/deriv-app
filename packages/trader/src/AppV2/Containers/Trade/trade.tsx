@@ -89,7 +89,6 @@ const Trade = observer(() => {
     React.useEffect(() => {
         const { has_error, error_field, error_code, message } = proposal_info?.[trade_type_tab] || {};
 
-
         if (has_error && !error_field && error_code === 'ContractBuyValidationError') {
             addSnackbar({
                 message,

@@ -19,7 +19,11 @@ const PayoutInfo = observer(() => {
                 <Text size='sm' bold>
                     <Money amount={payout} show_currency currency={currency} />
                 </Text>
-            ) : has_error ? <Text size='sm' bold>- {currency}</Text> : (
+            ) : has_error ? (
+                <Text size='sm' bold>
+                    - {currency}
+                </Text>
+            ) : (
                 <Skeleton width={60} height={14} />
             )}
         </div>

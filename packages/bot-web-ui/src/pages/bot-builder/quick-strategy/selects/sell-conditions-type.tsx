@@ -25,7 +25,7 @@ const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) =>
     const { setValue } = quick_strategy;
     const { setFieldValue, values } = useFormikContext<TFormData>();
     const [selectedValue, setSelectedValue] = useState<TSellConditionItem>(
-        values.boolean_take_profit ? list_options[0] : list_options[1]
+        values.boolean_tick_count ? list_options[1] : list_options[0]
     );
 
     const handleItemSelection = (item: TItem) => {
@@ -33,8 +33,8 @@ const SellConditions: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) =>
             const { value } = item as TDurationUnitItem;
             const is_take_profit = value === 'take_profit';
             const text = is_take_profit ? 'Take Profit' : 'Tick Count';
-            setValue('boolean_take_profit', is_take_profit);
-            setFieldValue?.('boolean_take_profit', is_take_profit);
+            setValue('boolean_tick_count', !is_take_profit);
+            setFieldValue?.('boolean_tick_count', !is_take_profit);
             setSelectedValue({ ...selectedValue, text });
         }
     };

@@ -68,7 +68,7 @@ const SELL_CONDITIONS_TYPE_TAKE_PROFIT: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
     description: localize('Take Profit: The position closes after the profit and loss crosses the take profit amount.'),
-    should_have: [{ key: 'boolean_take_profit', value: true }],
+    should_have: [{ key: 'boolean_tick_count', value: false }],
     hide_without_should_have: true,
 };
 
@@ -76,7 +76,7 @@ const SELL_CONDITIONS_TYPE_TICK_COUNT: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
     description: localize('Tick Count: Counting the number of ticks before selling the position.'),
-    should_have: [{ key: 'boolean_take_profit', value: false }],
+    should_have: [{ key: 'boolean_tick_count', value: true }],
     hide_without_should_have: true,
 };
 
@@ -236,7 +236,7 @@ const MAX_STAKE: TConfigItem = {
 const TAKE_PROFIT: TConfigItem = {
     type: 'number',
     name: 'take_profit',
-    should_have: [{ key: 'boolean_take_profit', value: true }],
+    should_have: [{ key: 'boolean_tick_count', value: false }],
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: true,
@@ -245,7 +245,7 @@ const TAKE_PROFIT: TConfigItem = {
 const TICK_COUNT = {
     type: 'number',
     name: 'tick_count',
-    should_have: [{ key: 'boolean_take_profit', value: false }],
+    should_have: [{ key: 'boolean_tick_count', value: true }],
     hide_without_should_have: true,
     attached: true,
     has_currency_unit: false,

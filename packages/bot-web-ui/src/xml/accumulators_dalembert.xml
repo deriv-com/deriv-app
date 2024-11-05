@@ -57,7 +57,7 @@
     <statement name="INITIALIZATION">
       <block type="variables_set" id="`5)$dT!cqK_+F()Cv@?^">
         <field name="VAR" id="52xfAd@7%m%OGj6@$J#f">Sell by 'Count Down'? If false, sell by 'Take Profit'</field>
-        <value name="VALUE" strategy_value="boolean_take_profit">
+        <value name="VALUE" strategy_value="boolean_tick_count">
           <block type="logic_boolean" id="QH`mR__-buv{!d!jV_U}">
             <field name="BOOL">TRUE</field>
           </block>

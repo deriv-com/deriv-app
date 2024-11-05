@@ -53,18 +53,18 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     }, []);
 
     React.useEffect(() => {
-        if (values.boolean_take_profit) {
-            setFieldValue('tick_count', 1);
-            setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
-        } else {
+        if (values.boolean_tick_count) {
             setFieldValue('take_profit', 10);
             setFieldError('tick_count', prev_error.current?.tick_count ?? undefined);
+        } else {
+            setFieldValue('tick_count', 1);
+            setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
         }
-    }, [values, errors.take_profit, errors.tick_count, values.boolean_take_profit]);
+    }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count]);
 
     const validateMinMaxForAccumulators = async field_values => {
         const growth_rate = Number(field_values.growth_rate) / 100;
-        const amount = field_values.boolean_take_profit ? field_values.take_profit : 1;
+        const amount = field_values.boolean_tick_count ? 1 : field_values.take_profit;
         const request_proposal = {
             amount,
             currency: client.currency,

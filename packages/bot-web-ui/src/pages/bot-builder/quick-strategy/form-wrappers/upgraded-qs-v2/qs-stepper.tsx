@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stepper } from '@deriv-com/quill-ui';
 import { LinearProgressBar } from '@deriv-com/ui';
+import { localize } from '@deriv/translations';
 import { QsSteps } from './trade-constants';
 import './stepper.scss';
 
@@ -17,7 +18,7 @@ const QSStepper = ({ current_step, is_mobile = false }: TQSStepper) => {
         <div className='qs-stepper'>
             <Stepper.Vertical
                 currentStep={current_step}
-                labels={['Default', 'Strategy template', 'Trade parameters']}
+                labels={[localize('Default'), localize('Strategy template'), localize('Trade parameters')]}
             />
         </div>
     );

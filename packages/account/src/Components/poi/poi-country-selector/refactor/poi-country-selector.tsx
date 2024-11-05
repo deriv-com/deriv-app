@@ -7,15 +7,15 @@ import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../form-footer';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/api';
+import { submission_status_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
 type TCountrySelector = {
-    handleSelectionNext?: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };
 
-const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_status }: TCountrySelector) => {
-    const { setSelectedCountry } = React.useContext(POIContext);
+const CountrySelector = ({ is_from_external, mismatch_status }: TCountrySelector) => {
+    const { setSelectedCountry, setSubmissionStatus } = React.useContext(POIContext);
     const { data: country_list, isLoading } = useResidenceList();
 
     const initial_form_values: FormikValues = {
@@ -38,7 +38,6 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
 
     const updateSelectedCountry = (country_name: string) => {
         const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
-        console.log('matching_country', matching_country);
         if (matching_country) {
             setSelectedCountry?.(matching_country.value ?? '');
         }
@@ -46,8 +45,8 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
 
     const submitHandler = (values: FormikValues, { setSubmitting }: FormikHelpers<FormikValues>) => {
         updateSelectedCountry(values.country_input);
+        setSubmissionStatus(submission_status_code.submitting);
         setSubmitting(false);
-        handleSelectionNext?.();
     };
 
     const failed_message: React.ReactNode = mismatch_status ? IDV_ERROR_STATUS[mismatch_status]?.message ?? null : null;

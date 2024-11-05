@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ResidenceList } from '@deriv/api-types';
 
 const submission_status_code = {
     selecting: 'selecting',

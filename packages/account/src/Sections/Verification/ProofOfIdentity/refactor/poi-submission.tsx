@@ -33,23 +33,22 @@ const POISubmission = () => {
 
     // const identity = kyc_auth_status?.identity;
 
-    const handleSelectionNext = () => {
-        if (selected_country === '') {
-            if (identity?.available_services) {
-                setSubmissionService(identity.available_services[0] as 'idv' | 'onfido' | 'manual');
-            } else {
-                setSubmissionService(submission_service);
-            }
-            setSubmissionStatus(submission_status_code.submitting);
-        }
-    };
+    // const handleSelectionNext = () => {
+    //     if (selected_country !== '') {
+    //         if (identity?.available_services) {
+    //             setSubmissionService(identity.available_services[0] as 'idv' | 'onfido' | 'manual');
+    //         } else {
+    //             setSubmissionService(submission_service);
+    //         }
+    //         setSubmissionStatus(submission_status_code.submitting);
+    //     }
+    // };
 
     // TODO: add useEffect to makesure service code and status is updated when selected country changes
 
     // TODO: we also need sth like setIdentityService to handle the service code and status
     // when we show other screens rather than select country component
-    if (submission_status === submission_status_code.selecting)
-        return <CountrySelector is_from_external={false} handleSelectionNext={handleSelectionNext} />;
+    if (submission_status === submission_status_code.selecting) return <CountrySelector is_from_external={false} />;
 
     return <PoiService />;
 };

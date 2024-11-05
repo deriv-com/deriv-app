@@ -15,6 +15,16 @@ type TContractTypes = {
     attached?: boolean;
 };
 
+type TProposalRequest = {
+    amount: number;
+    currency: string;
+    growth_rate: number;
+    symbol: string;
+    limit_order: {
+        take_profit: number;
+    };
+};
+
 const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui, client } = useStore();
     const { is_desktop } = ui;
@@ -23,7 +33,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { setValue } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
-    const prev_proposal_payload = React.useRef(null);
+    const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
     const prev_error = React.useRef<{
         tick_count: string | null;
         take_profit: string | null;
@@ -54,7 +64,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
 
     const validateMinMaxForAccumulators = async field_values => {
         const growth_rate = Number(field_values.growth_rate) / 100;
-        let amount = field_values.boolean_take_profit ? field_values.take_profit : 1;
+        const amount = field_values.boolean_take_profit ? field_values.take_profit : 1;
         const request_proposal = {
             amount,
             currency: client.currency,
@@ -70,18 +80,18 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         try {
             const response = await requestProposalForQS(request_proposal);
 
-            let min = 1;
-            let max = response?.proposal?.validation_params.max_ticks;
+            const min = 1;
+            const max = response?.proposal?.validation_params.max_ticks;
             let min_error = '';
             let max_error = '';
 
             const current_tick_count = Number(field_values.tick_count);
             if (!isNaN(current_tick_count) && current_tick_count > max) {
-                max_error = 'Maximum tick count is: ' + max;
+                max_error = `Maximum tick count is: ${max}`;
                 setFieldError('tick_count', max_error);
                 prev_error.current.tick_count = max_error;
             } else if (!isNaN(current_tick_count) && current_tick_count < min) {
-                min_error = 'Minimum tick count is: ' + min;
+                min_error = `Minimum tick count is: ${min}`;
                 setFieldError('tick_count', min_error);
                 prev_error.current.tick_count = min_error;
             } else {

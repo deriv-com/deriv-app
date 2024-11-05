@@ -152,12 +152,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const modifyFieldDropdownValues = (name: string, value: string) => {
             const name_list = `${name.toUpperCase()}_LIST`;
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
-            if (value === 'ACCU') {
+            let dropdown_value = value;
+            if (dropdown_value === 'ACCU') {
                 const accu_check = ['TRADETYPECAT_LIST', 'TRADETYPE_LIST'];
-                if (accu_check.includes(name_list)) value = 'accumulator';
+                if (accu_check.includes(name_list)) dropdown_value = 'accumulator';
             }
             el_blocks?.forEach((el_block: HTMLElement) => {
-                el_block.innerHTML = value;
+                el_block.innerHTML = dropdown_value;
             });
         };
         const { unit, action, type, ...rest_data } = data;

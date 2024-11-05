@@ -38,7 +38,7 @@ export const handleProposalRequestForAccumulators = instance => {
     window.Blockly.accumulators_request = proposal_request;
 };
 
-export const requestProposalForQS = async (input_values) => {
+export const requestProposalForQS = input_values => {
     if (!input_values) return;
 
     const { amount, currency, symbol, growth_rate, limit_order } = input_values;
@@ -55,5 +55,5 @@ export const requestProposalForQS = async (input_values) => {
             take_profit,
         },
     };
-    return await api_base?.api?.send(proposal_request);
+    return api_base?.api?.send(proposal_request);
 };

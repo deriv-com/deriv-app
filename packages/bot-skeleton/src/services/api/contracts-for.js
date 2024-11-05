@@ -624,10 +624,11 @@ export default class ContractsFor {
 
     getContractTypes = trade_type => {
         const { opposites } = config;
-        if (trade_type === 'ACCU') {
-            trade_type = 'accumulator';
+        let trade_type_value = trade_type;
+        if (trade_type_value === 'ACCU') {
+            trade_type_value = 'accumulator';
         }
-        const categories = opposites[trade_type.toUpperCase()].map(opposite => ({
+        const categories = opposites[trade_type_value.toUpperCase()].map(opposite => ({
             value: Object.keys(opposite)[0],
             text: Object.values(opposite)[0],
         }));

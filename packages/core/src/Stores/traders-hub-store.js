@@ -481,11 +481,14 @@ export default class TradersHubStore extends BaseStore {
             return acc;
         }, {});
 
-        const filteredAccounts = getMT5Accounts.filter(account =>
-            Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
-        );
+        const getFilteredAccounts = () =>
+            this.root_store.client.is_logged_in
+                ? getMT5Accounts.filter(account =>
+                      Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
+                  )
+                : getMT5Accounts;
 
-        const all_available_accounts = [...getCFDAvailableAccount(), ...filteredAccounts];
+        const all_available_accounts = [...getCFDAvailableAccount(), ...getFilteredAccounts()];
         this.available_cfd_accounts = all_available_accounts.map(account => {
             return {
                 ...account,

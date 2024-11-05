@@ -217,7 +217,7 @@ export type TAccounts = {
     title?: string;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
 
 type TPendingAccountDetails = {
     balance?: number;
@@ -235,7 +235,6 @@ export type TDetailsOfCtraderAccount = DetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;
     account_id?: string;
-    product?: TProduct;
 };
 
 export type TLoginHistoryItems = {

@@ -162,12 +162,12 @@
             z-index: 1;
 
             @include tablet-screen {
-                position: sticky;
+                position: relative;
                 width: fit-content;
             }
 
             @include desktop {
-                position: sticky;
+                position: relative;
                 width: fit-content;
             }
         }

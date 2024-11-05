@@ -10,7 +10,6 @@ import {
     ACCUMULATORS_DALEMBERT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
-import { requestProposalForQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 
 export const FORM_TABS = [
     {
@@ -126,7 +125,7 @@ const GROWTH_RATE: TConfigItem = {
     type: 'label',
     label: localize('Growth rate'),
     description: localize(
-        'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier_percentage}} from the previous spot price.'
+        'Your stake will grow at growth_rate% per tick as long as the current spot price remains within from the previous spot price.'
     ),
 };
 
@@ -253,9 +252,7 @@ const TICK_COUNT = {
 const TICK_COUNT_LABEL = {
     type: 'label',
     label: localize('Tick Count'),
-    description: localize(
-        'Specify the number of ticks that the current spot price must remain within ±{{tick_size_barrier_percentage}} from the previous spot price to trigger the growth rate.'
-    ),
+    description: localize('Specify the number of ticks that the contract should run'),
     should_have: [{ key: 'boolean_take_profit', value: false }],
     hide_without_should_have: true,
 };

@@ -209,48 +209,6 @@ describe('CashierLockedContent', () => {
         expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
     });
 
-    it('renders correct message when isPendingVerification status received for MF transfer module', () => {
-        const result = getCashierLockedDesc({
-            currency: 'EUR',
-            isEuRegion: true,
-            isPendingVerification: true,
-            module: 'transfer',
-        });
-
-        if (result) render(result);
-        expect(
-            screen.getByText(/You cannot make a fund transfer as your documents are still under review./)
-        ).toBeInTheDocument();
-    });
-
-    it('renders correct message when isPendingVerification status received for MF withdrawal module', () => {
-        const result = getCashierLockedDesc({
-            currency: 'EUR',
-            isEuRegion: true,
-            isPendingVerification: true,
-            module: 'withdrawal',
-        });
-
-        if (result) render(result);
-        expect(
-            screen.getByText(/You cannot make a withdrawal as your documents are still under review./)
-        ).toBeInTheDocument();
-    });
-
-    it('renders correct message when isPendingVerification status received for MF deposit module', () => {
-        const result = getCashierLockedDesc({
-            currency: 'EUR',
-            isEuRegion: true,
-            isPendingVerification: true,
-            module: 'deposit',
-        });
-
-        if (result) render(result);
-        expect(
-            screen.getByText(/You cannot make further deposits as your documents are still under review./)
-        ).toBeInTheDocument();
-    });
-
     it('renders correct message when askFinancialRiskApproval status received', () => {
         const result = getCashierLockedDesc({
             askFinancialRiskApproval: true,

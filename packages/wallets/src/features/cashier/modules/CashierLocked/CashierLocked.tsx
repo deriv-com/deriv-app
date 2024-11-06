@@ -33,7 +33,6 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
 
     const poaNeedsVerification = poaStatus?.poa_needs_verification;
     const poiNeedsVerification = poiStatus?.poi_needs_verification;
-    const isPendingVerification = poiStatus?.is_pending || poaStatus?.is_pending;
 
     const askAuthenticate = cashierValidation?.ask_authenticate;
     const askCurrency = cashierValidation?.ask_currency;
@@ -73,7 +72,6 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         documentsExpired,
         financialAssessmentRequired,
         isEuRegion,
-        isPendingVerification,
         module,
         noResidence,
         poaNeedsVerification,

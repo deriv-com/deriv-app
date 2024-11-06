@@ -436,6 +436,7 @@ export default class ClientStore extends BaseStore {
             is_account_to_be_closed_by_residence: computed,
             setClientKYCStatus: action.bound,
             client_kyc_status: observable,
+            getToken: action.bound,
         });
 
         reaction(

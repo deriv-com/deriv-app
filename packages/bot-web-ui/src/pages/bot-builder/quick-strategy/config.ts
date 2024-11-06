@@ -135,7 +135,7 @@ const GROWTH_RATE: TConfigItem = {
     type: 'label',
     label: localize('Growth rate'),
     description: localize(
-        'Your stake will grow at growth_rate% per tick as long as the current spot price remains within from the previous spot price.'
+        'Your stake will grow at the specified growth rate per tick as long as the current spot price remains within the range of the previous spot price.'
     ),
 };
 

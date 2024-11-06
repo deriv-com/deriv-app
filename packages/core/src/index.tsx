@@ -2,7 +2,6 @@
 /* eslint-disable import/no-named-as-default */
 import ReactDOM from 'react-dom';
 import React from 'react';
-import 'babel-polyfill';
 import 'promise-polyfill';
 // eslint-disable-next-line
 import registerServiceWorker from 'Utils/pwa';

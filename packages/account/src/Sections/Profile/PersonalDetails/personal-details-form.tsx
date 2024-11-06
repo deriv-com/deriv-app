@@ -449,16 +449,15 @@ const PersonalDetailsForm = observer(() => {
                                                 value={values.date_of_birth}
                                             />
                                         </fieldset>
-                                        {'citizen' in values && (
-                                            <fieldset className='account-form__fieldset'>
-                                                <FormSelectField
-                                                    label={localize('Citizenship')}
-                                                    name='citizen'
-                                                    list_items={residence_list}
-                                                    disabled={isFieldDisabled('citizen')}
-                                                />
-                                            </fieldset>
-                                        )}
+
+                                        <fieldset className='account-form__fieldset'>
+                                            <FormSelectField
+                                                label={localize('Citizenship*')}
+                                                name='citizen'
+                                                list_items={residence_list}
+                                                disabled={isFieldDisabled('citizen')}
+                                            />
+                                        </fieldset>
                                     </Fragment>
                                 )}
                                 <fieldset className='account-form__fieldset'>

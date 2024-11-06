@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCFDCompareAccounts } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCFDCompareAccounts, useIsEuRegion } from '@deriv/api-v2';
 import useIsRtl from '../../../../hooks/useIsRtl';
 import { CompareAccountsCarousel } from '../../components';
 import CompareAccountsCard from './CompareAccountsCard';
@@ -9,11 +9,14 @@ import './CompareAccountsScreen.scss';
 const CompareAccountsScreen = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const isRtl = useIsRtl();
-    // Temporary false until we have useIsEuRegion() ready
-    const isEuRegion = false;
+    const { data: isEuRegion } = useIsEuRegion();
     const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
 
-    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
+    const {
+        data: compareAccounts,
+        hasCTraderAccountAvailable,
+        hasDxtradeAccountAvailable,
+    } = useCFDCompareAccounts(isEuRegion);
 
     const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;
 

@@ -14,6 +14,9 @@
     @include mobile-or-tablet-screen {
         width: 18rem;
         height: 66.6rem;
+        &--eu {
+            height: fit-content;
+        }
     }
 
     &__eu-clients {

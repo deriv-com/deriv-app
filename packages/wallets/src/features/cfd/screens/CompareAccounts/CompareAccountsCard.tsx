@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
@@ -30,7 +31,11 @@ const CompareAccountsCard = ({
 }: TCompareAccountsCard) => {
     return (
         <div>
-            <div className='wallets-compare-accounts-card'>
+            <div
+                className={classNames('wallets-compare-accounts-card', {
+                    'wallets-compare-accounts-card--eu': isEuRegion,
+                })}
+            >
                 <CompareAccountsPlatformLabel platform={platform} />
                 {product === PRODUCT.ZEROSPREAD && (
                     <div className='wallets-compare-accounts-card__banner'>

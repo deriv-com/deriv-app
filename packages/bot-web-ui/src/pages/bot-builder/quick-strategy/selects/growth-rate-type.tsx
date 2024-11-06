@@ -54,11 +54,13 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
 
     React.useEffect(() => {
         if (values.boolean_tick_count) {
-            setFieldValue('take_profit', 10);
+            setFieldValue('take_profit', 0);
             setFieldError('tick_count', prev_error.current?.tick_count ?? undefined);
+            setFieldError('take_profit', undefined);
         } else {
             setFieldValue('tick_count', 1);
             setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
+            setFieldError('tick_count', undefined);
         }
     }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count]);
 

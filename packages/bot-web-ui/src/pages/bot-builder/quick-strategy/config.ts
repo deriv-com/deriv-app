@@ -10,6 +10,7 @@ import {
     ACCUMULATORS_DALEMBERT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
+import { LocalizeHTMLForSellConditions } from './localize_html';
 
 export const FORM_TABS = [
     {
@@ -64,20 +65,10 @@ const PURCHASE_TYPE: TConfigItem = {
     dependencies: ['symbol', 'tradetype'],
 };
 
-const SELL_CONDITIONS_TYPE_TAKE_PROFIT: TConfigItem = {
+const SELL_CONDITIONS_TYPE_INFO: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
-    description: localize('Take Profit: The position closes after the profit and loss crosses the take profit amount.'),
-    should_have: [{ key: 'boolean_tick_count', value: false }],
-    hide_without_should_have: true,
-};
-
-const SELL_CONDITIONS_TYPE_TICK_COUNT: TConfigItem = {
-    type: 'label',
-    label: localize('Sell conditions'),
-    description: localize('Tick Count: Counting the number of ticks before selling the position.'),
-    should_have: [{ key: 'boolean_tick_count', value: true }],
-    hide_without_should_have: true,
+    description: LocalizeHTMLForSellConditions(),
 };
 
 const SELL_CONDITIONS_TYPE: TConfigItem = {
@@ -428,22 +419,15 @@ export const STRATEGIES: TStrategies = {
         rs_strategy_name: `accumulators d'alembert`,
         description: ACCUMULATORS_DALEMBERT,
         fields: [
+            [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [
-                LABEL_SYMBOL,
-                SYMBOL,
-                LABEL_TRADETYPE,
-                TRADETYPE,
-                LABEL_PURCHASE_TYPE,
-                PURCHASE_TYPE,
-                LABEL_STAKE,
-                STAKE,
-                GROWTH_RATE,
-                GROWTH_RATE_VALUE,
-            ],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_ACCUMULAORTS_UNIT, UNIT],
-            [
-                SELL_CONDITIONS_TYPE_TAKE_PROFIT,
-                SELL_CONDITIONS_TYPE_TICK_COUNT,
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_ACCUMULAORTS_UNIT,
+                UNIT,
+                SELL_CONDITIONS_TYPE_INFO,
                 SELL_CONDITIONS_TYPE,
                 TAKE_PROFIT,
                 TICK_COUNT,

@@ -34,7 +34,7 @@ export type TConfigItem = Partial<{
     name: keyof TFormData;
     dependencies: string[];
     label: string;
-    description: string;
+    description: ReactNode;
     attached: boolean;
     hide: string[];
     validation: TValidationItem[];

@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -15,6 +15,7 @@ jest.mock('@deriv/api-v2', () => ({
             },
         },
     })),
+    useIsEuRegion: jest.fn(),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -51,6 +52,10 @@ describe('CFDPlatformsList', () => {
         it('renders proper content', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             expect(
@@ -63,6 +68,10 @@ describe('CFDPlatformsList', () => {
         it('opens proper link when the user is clicking on `Learn more` text', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
@@ -73,6 +82,10 @@ describe('CFDPlatformsList', () => {
         it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
@@ -84,6 +97,10 @@ describe('CFDPlatformsList', () => {
 
     describe('Desktop view', () => {
         it('renders proper content', () => {
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             expect(screen.getByText('CFDs')).toBeInTheDocument();
@@ -95,6 +112,10 @@ describe('CFDPlatformsList', () => {
         });
 
         it('opens proper link when the user is clicking on `Learn more` text', () => {
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
@@ -103,6 +124,10 @@ describe('CFDPlatformsList', () => {
         });
 
         it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
@@ -113,12 +138,20 @@ describe('CFDPlatformsList', () => {
     });
 
     it('renders proper content for fiat accounts', () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+            data: false,
+            isLoading: false,
+        }));
         render(<CFDPlatformsList />, { wrapper });
 
         expect(screen.getByText('CFDPlatformsListAccounts')).toBeInTheDocument();
     });
 
     it('renders proper content for crypto accounts', () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+            data: false,
+            isLoading: false,
+        }));
         mockUseActiveWalletAccount.mockReturnValueOnce({
             data: {
                 //@ts-expect-error we only need partial action types

@@ -23,7 +23,7 @@ type ProofOfIdentityContainerProps = {
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange }: ProofOfIdentityContainerProps) => {
-        const { kyc_auth_status, isLoading } = useKycAuthStatus();
+        const { kyc_auth_status, isLoading } = useKycAuthStatus(undefined, true);
         const identity = kyc_auth_status?.identity;
 
         if (isLoading) {

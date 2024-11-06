@@ -1,3 +1,3 @@
-import IdvDocumentSubmit from './idv-document-submit';
+import IdvDocumentSubmit from './refactor/idv-doc-submit';
 
 export default IdvDocumentSubmit;

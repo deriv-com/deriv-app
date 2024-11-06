@@ -1,20 +1,22 @@
+/* eslint-disable no-console */
 import { useContext, useEffect } from 'react';
 import { POIContext } from '@deriv/shared';
 import { useKycAuthStatus } from '../../../../hooks';
+import { submission_status_code } from '../proof-of-identity-utils';
+import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
+import { observer } from '@deriv/stores';
 
-const PoiService = () => {
-    const {
-        submission_service,
-        setSubmissionService,
-        // submission_status,
-        // setSubmissionStatus,
-        selected_country,
-        // setSelectedCountry,
-    } = useContext(POIContext);
+const PoiService = observer(() => {
+    const { submission_service, setSubmissionService, setSubmissionStatus, selected_country } = useContext(POIContext);
 
-    const { kyc_auth_status, isLoading } = useKycAuthStatus({
-        country: selected_country,
-    });
+    const { kyc_auth_status, isLoading } = useKycAuthStatus(
+        {
+            country: selected_country,
+        },
+        true
+    );
+
+    const { identity } = kyc_auth_status;
 
     useEffect(() => {
         if (!isLoading && kyc_auth_status) {
@@ -24,16 +26,17 @@ const PoiService = () => {
             if (available_services) {
                 setSubmissionService(available_services[0] as 'idv' | 'onfido' | 'manual');
             }
+            setSubmissionStatus(submission_status_code.submitting);
         }
-    }, [kyc_auth_status, isLoading, setSubmissionService]);
+    }, [kyc_auth_status, isLoading, setSubmissionService, setSubmissionStatus]);
 
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    // here we need to call useKycAuthStatus with the selected_country from poi context
+
     switch (submission_service) {
         case 'idv': {
-            return <div>idv component</div>;
+            return <IdvDocumentSubmit supported_documents={identity?.supported_documents || []} />;
         }
         case 'onfido': {
             return <div>onfido component {selected_country}</div>;
@@ -45,6 +48,6 @@ const PoiService = () => {
             return null;
         }
     }
-};
+});
 
 export default PoiService;

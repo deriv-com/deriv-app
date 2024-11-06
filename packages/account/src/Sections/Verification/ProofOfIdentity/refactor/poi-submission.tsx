@@ -6,6 +6,7 @@ import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import { useKycAuthStatus } from '../../../../hooks';
 import PoiService from './poi-service';
+import { observer } from '@deriv/stores';
 // import OnfidoSdkViewContainer from '../onfido-sdk-view-container';
 // import Unsupported from 'Components/poi/status/unsupported';
 
@@ -17,7 +18,7 @@ import PoiService from './poi-service';
 // 3. IdvFailed
 // 4. IdvSubmitComplete
 // 5. OnfidoSdkViewContainer
-const POISubmission = () => {
+const POISubmission = observer(() => {
     const {
         submission_service,
         setSubmissionService,
@@ -51,6 +52,6 @@ const POISubmission = () => {
     if (submission_status === submission_status_code.selecting) return <CountrySelector is_from_external={false} />;
 
     return <PoiService />;
-};
+});
 
 export default POISubmission;

@@ -99,7 +99,7 @@ export const getCFDAccountKey = ({
                 return 'all_demo';
         }
     }
-    if (market_type === 'all') {
+    if (market_type === 'all' && platform !== CFD_PLATFORMS.MT5) {
         switch (platform) {
             case CFD_PLATFORMS.CTRADER:
                 return 'ctrader';

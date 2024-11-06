@@ -217,17 +217,20 @@ export type TAccounts = {
     title?: string;
 };
 
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+
 type TPendingAccountDetails = {
     balance?: number;
     currency?: string;
     display_login?: string;
     positions?: number;
     withdrawals?: number;
+    product?: TProduct;
 };
 
 export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
 export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
-export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
+export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string; product?: TProduct };
 export type TDetailsOfCtraderAccount = DetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;

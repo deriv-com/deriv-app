@@ -17,6 +17,7 @@ const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
+            getToken: jest.fn(),
             account_settings: {},
             account_type: 'virtual',
             accounts: {},

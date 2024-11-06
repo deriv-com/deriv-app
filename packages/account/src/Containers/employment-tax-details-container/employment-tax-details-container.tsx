@@ -39,11 +39,18 @@ const EmploymentTaxDetailsContainer = observer(
         const { data: residence_list } = useResidenceList();
         const { client } = useStore();
 
-        const { is_virtual, account_settings } = client;
+        const { is_virtual, account_settings, account_status } = client;
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+        const is_tin_required =
+            !is_virtual &&
+            values.employment_status &&
+            !tin_employment_status_bypass?.includes(values.employment_status);
+
+        const is_employment_status_mandatory = is_virtual
+            ? true
+            : Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -132,15 +139,11 @@ const EmploymentTaxDetailsContainer = observer(
 
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
-        // [TODO] - This should come from BE
-        const should_disable_employment_status =
-            isFieldDisabled('employment_status') || Boolean(is_virtual && client.account_settings.employment_status);
-
         return (
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
-                    required
-                    is_disabled={should_disable_employment_status}
+                    required={is_employment_status_mandatory}
+                    is_disabled={isFieldDisabled('employment_status')}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
                 />
 

@@ -11,17 +11,15 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import GrowthRatePicker from './growth-rate-picker';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TGrowthRateProps = {
-    is_minimized?: boolean;
-};
-
-const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
+const GrowthRate = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         accumulator_range_list,
         growth_rate,
         is_purchase_enabled,
         is_trade_enabled,
+        is_market_closed,
         has_open_accu_contract,
         maximum_ticks,
         onChange,
@@ -92,7 +90,7 @@ const GrowthRate = observer(({ is_minimized }: TGrowthRateProps) => {
         <>
             <TextField
                 className={classname}
-                disabled={has_open_accu_contract}
+                disabled={has_open_accu_contract || is_market_closed}
                 label={
                     <Localize i18n_default_text='Growth rate' key={`growth-rate${is_minimized ? '-minimized' : ''}`} />
                 }

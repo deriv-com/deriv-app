@@ -35,8 +35,8 @@
     },
     "homepage": "https://github.com/deriv-com/deriv-app",
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/preset-react": "^7.16.7",
+        "@babel/eslint-parser": "^7.25.1",
+        "@babel/preset-react": "^7.24.7",
         "@testing-library/jest-dom": "^5.12.0",
         "@testing-library/react": "^12.0.0",
         "@testing-library/react-hooks": "^7.0.2",
@@ -45,7 +45,7 @@
         "@types/react": "^18.0.7",
         "@types/react-beautiful-dnd": "^13.1.8",
         "@types/react-dom": "^18.0.0",
-        "babel-loader": "^8.1.0",
+        "babel-loader": "^9.2.1",
         "circular-dependency-plugin": "^5.2.2",
         "clean-webpack-plugin": "^3.0.0",
         "copy-webpack-plugin": "^9.0.1",
@@ -88,7 +88,7 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
-        "@deriv-com/analytics": "1.14.0",
+        "@deriv-com/analytics": "1.26.1",
         "@deriv-com/quill-tokens": "2.0.4",
         "@deriv-com/quill-ui": "1.19.1",
         "@deriv-com/utils": "^0.0.36",
@@ -96,7 +96,7 @@
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.5.1",
+        "@deriv/deriv-charts": "^2.6.1",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

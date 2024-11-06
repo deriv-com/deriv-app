@@ -170,6 +170,7 @@ export default class ClientStore extends BaseStore {
     subscriptions = {};
     exchange_rates = {};
     client_kyc_status = {};
+    isLoggedOutV2 = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -367,6 +368,7 @@ export default class ClientStore extends BaseStore {
             updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             setIsClientStoreInitialized: action.bound,
+            resetIsLoggedOutV2: action.bound,
             cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
@@ -435,6 +437,7 @@ export default class ClientStore extends BaseStore {
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
             setClientKYCStatus: action.bound,
+            isLoggedOutV2: observable,
             client_kyc_status: observable,
         });
 
@@ -2078,7 +2081,12 @@ export default class ClientStore extends BaseStore {
             this.setLogout(true);
         }
 
+        this.isLoggedOutV2 = true;
         return response;
+    }
+
+    resetIsLoggedOutV2() {
+        this.isLoggedOutV2 = false;
     }
 
     setLogout(is_logged_out) {

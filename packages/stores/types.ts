@@ -438,6 +438,8 @@ export type TClientStore = {
     account_type: string;
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
+    isLoggedOutV2: boolean;
+    resetIsLoggedOutV2: () => void;
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     ctrader_trading_platform_available_accounts: TTradingPlatformAvailableAccount[];

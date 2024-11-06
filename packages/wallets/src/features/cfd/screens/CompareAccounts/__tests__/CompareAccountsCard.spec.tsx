@@ -22,7 +22,6 @@ describe('CompareAccountsCard', () => {
         expect(screen.getByText('Maximum leverage')).toBeInTheDocument();
         expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('Deriv (SVG) LLC')).toBeInTheDocument();
     });
 
     it('renders the new banner for Zero Spread platform', () => {

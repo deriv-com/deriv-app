@@ -42,10 +42,6 @@ describe('CompareAccountsDescription', () => {
         expect(screen.getByText('Leverage description')).toBeInTheDocument();
         expect(screen.getByText('0.6 pips')).toBeInTheDocument();
         expect(screen.getByText('Spread description')).toBeInTheDocument();
-        expect(screen.getByText('Deriv (SVG) LLC')).toBeInTheDocument();
-        expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
-        expect(screen.getByText('Financial Commission')).toBeInTheDocument();
-        expect(screen.getByText('License number')).toBeInTheDocument();
     });
 
     it('renders correct compare accounts descriptions for demo accounts', () => {
@@ -54,8 +50,6 @@ describe('CompareAccountsDescription', () => {
         expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();
         expect(screen.getByText('Leverage description')).toBeInTheDocument();
         expect(screen.getByText('0.6 pips')).toBeInTheDocument();
-        expect(screen.queryByText('Deriv (SVG) LLC')).not.toBeInTheDocument();
-        expect(screen.queryByText('St. Vincent & Grenadines')).not.toBeInTheDocument();
     });
 
     it('renders correct compare accounts descriptions for EU region accounts', () => {

@@ -14,7 +14,16 @@ const KYC = observer(() => {
     url.searchParams.append('server', server);
     url.searchParams.append('token', token);
 
-    return <iframe src={url.toString()} title='KYC' width='100%' height='100%' style={{ border: 'none' }} />;
+    return (
+        <iframe
+            src={url.toString()}
+            title='KYC'
+            width='100%'
+            height='100%'
+            style={{ border: 'none' }}
+            allow='camera; microphone'
+        />
+    );
 });
 
 export default KYC;

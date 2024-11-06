@@ -3,6 +3,7 @@ import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
+    AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
@@ -31,24 +32,50 @@ const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize'
     title: 'Swap-Free',
 });
 
-export const getMarketTypeDetails = (
+const getMarketTypeDetailsDescription = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product'],
+    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
     isEuRegion?: boolean
 ) => {
-    return {
+    if (isEuRegion && product !== 'stp') {
+        return localize('Your all-in-one access to financial and derived instruments.');
+    }
+
+    if (product === 'stp') {
+        return localize('Direct access to market prices');
+    }
+
+    return localize('CFDs on financial instruments');
+};
+
+const getMarketTypeDetailsTitle = (product?: THooks.AvailableMT5Accounts['product'] | 'stp', isEuRegion?: boolean) => {
+    if (isEuRegion && product !== 'stp') {
+        return 'CFDs';
+    }
+
+    if (product === 'stp') {
+        return 'Financial STP';
+    }
+
+    return 'Financial';
+};
+
+export const getMarketTypeDetails = (
+    localize: ReturnType<typeof useTranslations>['localize'],
+    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
+    isEuRegion?: boolean
+) =>
+    ({
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
             availability: 'All',
-            description: isEuRegion
-                ? localize('Your all-in-one access to financial and derived instruments.')
-                : localize('CFDs on financial instruments'),
+            description: getMarketTypeDetailsDescription(localize, product, isEuRegion),
             icon: isEuRegion ? (
                 <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
             ) : (
-                <AccountsDmt5ZrsIcon height={48} width={48} />
+                <AccountsDmt5FinancialIcon height={48} width={48} />
             ),
-            title: isEuRegion ? 'CFDs' : 'Financial',
+            title: getMarketTypeDetailsTitle(product, isEuRegion),
         },
         synthetic: {
             availability: 'Non-EU',
@@ -56,8 +83,7 @@ export const getMarketTypeDetails = (
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const;
-};
+    } as const);
 
 export const PlatformDetails = {
     ctrader: {
@@ -199,12 +225,24 @@ export const MT5_ACCOUNT_STATUS = {
     FAILED: 'failed',
     MIGRATED_WITH_POSITION: 'migrated_with_position',
     MIGRATED_WITHOUT_POSITION: 'migrated_without_position',
-    NEEDS_VERIFICATION: 'needs_verification',
     PENDING: 'pending',
-    POA_PENDING: 'poa_pending',
-    POA_VERIFIED: 'poa_verified',
     UNAVAILABLE: 'unavailable',
     UNDER_MAINTENANCE: 'under_maintenance',
+    // TODO: remove all the statuses below once the KYC statuses are consolidated by BE
+    // eslint-disable-next-line sort-keys
+    POA_FAILED: 'poa_failed',
+    POA_OUTDATED: 'poa_outdated',
+    PROOF_FAILED: 'proof_failed',
+
+    // eslint-disable-next-line sort-keys
+    NEEDS_VERIFICATION: 'needs_verification',
+    POA_REQUIRED: 'poa_required',
+
+    // eslint-disable-next-line sort-keys
+    POA_PENDING: 'poa_pending',
+    VERIFICATION_PENDING: 'verification_pending',
+    // eslint-disable-next-line sort-keys
+    POA_VERIFIED: 'poa_verified',
 } as const;
 
 /**

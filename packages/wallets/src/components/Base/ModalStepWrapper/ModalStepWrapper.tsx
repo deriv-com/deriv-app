@@ -83,7 +83,12 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                     />
                 </div>
             )}
-            <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
+            <div
+                className={classNames('wallets-modal-step-wrapper__body', {
+                    'wallets-modal-step-wrapper__body--disable-scroll': disableScroll,
+                })}
+                data-testid='dt_modal_step_wrapper_body'
+            >
                 {children}
                 {!shouldFixedFooter && <Footer hasRenderFooter={hasRenderFooter} renderFooter={renderFooter} />}
             </div>

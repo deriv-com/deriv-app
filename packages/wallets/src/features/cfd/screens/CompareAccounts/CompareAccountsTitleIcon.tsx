@@ -30,9 +30,12 @@ const getAccountIcon = (
     if (isEuRegion && marketType === MARKET_TYPE.FINANCIAL) {
         return ACCOUNT_ICONS[marketType].Eu;
     }
+
+    if (marketType === MARKET_TYPE.FINANCIAL) {
+        return ACCOUNT_ICONS[marketType].NonEU;
+    }
     return (
         (product === PRODUCT.ZEROSPREAD && ACCOUNT_ICONS[product]) ||
-        (marketType === MARKET_TYPE.FINANCIAL && ACCOUNT_ICONS[marketType].NonEU) ||
         (marketType && ACCOUNT_ICONS[marketType]) ||
         ACCOUNT_ICONS.default
     );

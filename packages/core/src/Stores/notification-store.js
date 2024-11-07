@@ -1114,6 +1114,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
                         WS.verifyEmail(email, 'phone_number_verification');
                         localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
                     },

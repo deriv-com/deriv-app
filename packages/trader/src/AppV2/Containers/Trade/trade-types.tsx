@@ -257,7 +257,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                                 {is_editing && <Localize i18n_default_text='Pinned' />}
                             </Text>
                             <Button
-                                color='black'
+                                color={is_dark_mode_on ? 'white' : 'black'}
                                 variant='secondary'
                                 className='draggable-list-category-header-button'
                                 onClick={is_editing ? savePinnedToLocalStorage : handleCustomizeTradeTypes}

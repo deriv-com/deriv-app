@@ -43,14 +43,15 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { tin_employment_status_bypass } = tin_validation_config;
 
-        const is_tin_required =
-            !is_virtual &&
-            values.employment_status &&
-            !tin_employment_status_bypass?.includes(values.employment_status);
-
         const is_employment_status_mandatory = is_virtual
             ? true
             : Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
+
+        const is_tin_required =
+            !is_virtual &&
+            values.employment_status &&
+            !tin_employment_status_bypass?.includes(values.employment_status) &&
+            is_employment_status_mandatory;
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);

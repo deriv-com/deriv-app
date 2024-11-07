@@ -37,11 +37,21 @@ declare global {
         };
         Analytics: any;
         GrowthbookFeatures: { [key: string]: boolean };
+        navigator: Navigator;
     }
+
     interface FreshChatConfig {
         token: string | null;
         locale?: string;
         hideButton?: boolean;
+    }
+    interface Navigator {
+        connection?: NetworkInformation;
+    }
+    interface NetworkInformation {
+        effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
+        rtt?: number;
+        downlink?: number;
     }
 }
 

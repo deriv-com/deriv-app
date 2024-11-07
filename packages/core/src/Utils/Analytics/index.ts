@@ -44,9 +44,9 @@ export const AnalyticsInitializer = async () => {
                         utm_content: ppc_campaign_cookies?.utm_content,
                         domain: window.location.hostname,
                         url: window.location.href,
-                        network_type: (window.navigator as any).connection?.effectiveType,
-                        network_rtt: (window.navigator as any).connection?.rtt,
-                        network_downlink: (window.navigator as any).connection?.downlink,
+                        network_type: navigator.connection?.effectiveType,
+                        network_rtt: navigator.connection?.rtt,
+                        network_downlink: navigator.connection?.downlink,
                     },
                 },
             };

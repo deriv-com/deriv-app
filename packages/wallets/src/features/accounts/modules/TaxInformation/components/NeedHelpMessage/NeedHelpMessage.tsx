@@ -1,9 +1,10 @@
 import React from 'react';
+import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { InlineMessage, Text } from '@deriv-com/ui';
 
 const NeedHelpMessage = () => {
-    const onClickLiveChat = () => window.LiveChatWidget?.call('maximize');
+    const onClickLiveChat = () => Chat.open();
 
     return (
         <div className='wallets-tax-information__message'>

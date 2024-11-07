@@ -1,6 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { localize, Localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 
 export const VERIFICATION_SERVICES = {
     SMS: 'sms',
@@ -34,7 +35,7 @@ export const getUseRequestPhoneNumberOTPErrorMessage = (
                         <span
                             key={0}
                             className='phone-verification__card--inputfield__livechat'
-                            onClick={() => window.LiveChatWidget?.call('maximize')}
+                            onClick={() => Chat.open()}
                         />,
                     ]}
                 />

@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import { Chat } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -110,7 +111,7 @@ describe('WalletsDisabledAccountsBanner', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0], mockDisabledAccounts[1]]} />);
 
         const chatButton = screen.getByRole('button');
-        chatButton.addEventListener('click', () => window.LiveChatWidget.call('maximize'));
+        chatButton.addEventListener('click', () => Chat.open());
         userEvent.click(chatButton);
 
         expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');

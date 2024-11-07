@@ -5,6 +5,7 @@ import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores';
+import { Chat } from '@deriv/utils';
 
 type TAdVisibilityErrorModalProps = {
     error_code: string;
@@ -46,11 +47,7 @@ const AdVisibilityErrorModal = ({ error_code }: TAdVisibilityErrorModalProps) =>
                             components={[
                                 <Text key={0} size='xs' weight='bold' />,
                                 <br key={1} />,
-                                <a
-                                    key={2}
-                                    className='link link--orange'
-                                    onClick={() => window.LiveChatWidget?.call('maximize')}
-                                />,
+                                <a key={2} className='link link--orange' onClick={() => Chat.open()} />,
                             ]}
                         />
                     ),

@@ -4,6 +4,7 @@ import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import './side-note-faq.scss';
+import { Chat } from '@deriv/utils';
 
 type TSideNoteFAQProps = {
     transaction_type?: 'deposit' | 'withdraw';
@@ -14,7 +15,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     const { isMobile } = useDevice();
     const { is_eu } = client;
 
-    const onClickHandler = () => window.LiveChatWidget?.call('maximize');
+    const onClickHandler = () => Chat.open();
 
     const deposit_faq_list = useMemo(() => {
         return [

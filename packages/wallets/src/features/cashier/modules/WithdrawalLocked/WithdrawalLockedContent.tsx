@@ -1,4 +1,5 @@
 import React from 'react';
+import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletLink } from '../../../../components';
@@ -101,7 +102,7 @@ const getWithdrawalLockedDesc = ({
                         <button
                             className='wallets-link wallets-link__variant--bold'
                             key={0}
-                            onClick={() => window.LiveChatWidget?.call('maximize')}
+                            onClick={() => Chat.open()}
                         />,
                     ]}
                     i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'

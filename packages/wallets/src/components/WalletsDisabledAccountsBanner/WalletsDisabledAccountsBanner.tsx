@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useWalletAccountsList } from '@deriv/api-v2';
+import { Chat } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { SectionMessage, Text, useDevice } from '@deriv-com/ui';
 import './WalletsDisabledAccountsBanner.scss';
@@ -36,7 +37,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                                 aria-label={localize('Contact live chat')}
                                 className='wallets-link wallets-link__variant--dark'
                                 key={0}
-                                onClick={() => window.LiveChatWidget.call('maximize')}
+                                onClick={() => Chat.open()}
                             />,
                         ]}
                         i18n_default_text='Your {{currencies}} {{accountType}} {{verb}} disabled. Contact us via <0>live chat</0> for details.'

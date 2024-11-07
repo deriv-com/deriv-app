@@ -1,5 +1,6 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
+import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { InlineMessage, Text } from '@deriv-com/ui';
 
@@ -8,7 +9,7 @@ type TErrorMessageProps = {
 };
 
 const VerifyPersonalDetailsErrorMessage: React.FC<TErrorMessageProps> = ({ error }) => {
-    const handleOnClickLink = () => window.LiveChatWidget.call('maximize');
+    const handleOnClickLink = () => Chat.open();
 
     if (error === 'DuplicateAccount') {
         return (

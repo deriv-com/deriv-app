@@ -32,9 +32,7 @@ const BarrierInput = observer(
         const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
-        const show_hidden_error =
-            validation_errors?.barrier_1.length > 0 &&
-            ((barrier_1 && !['+', '-'].includes(barrier_1)) || should_show_error);
+        const show_hidden_error = validation_errors?.barrier_1.length > 0 && (barrier_1 || should_show_error);
 
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);

@@ -71,7 +71,11 @@
         &--inputfield {
             width: 60%;
             margin-top: 2.4rem;
-            margin-bottom: 4.4rem;
+            margin-bottom: 2.4rem;
+
+            &--error {
+                margin-bottom: 0.2rem;
+            }
             @include mobile-or-tablet-screen {
                 margin-top: 3.2rem;
             }
@@ -107,11 +111,16 @@
             gap: 1.6rem;
             margin-top: 0.8rem;
 
+            @include tablet-screen {
+                margin-bottom: 29rem;
+            }
+
+            @include desktop {
+                margin-bottom: 29rem;
+            }
+
             @include mobile {
                 flex-direction: column-reverse;
-                position: fixed;
-                padding: 0 1.6rem;
-                bottom: 1.6rem;
             }
         }
 
@@ -151,6 +160,16 @@
 
         .quill-snackbar {
             z-index: 1;
+
+            @include tablet-screen {
+                position: relative;
+                width: fit-content;
+            }
+
+            @include desktop {
+                position: relative;
+                width: fit-content;
+            }
         }
 
         @include mobile {
@@ -160,13 +179,6 @@
 
             .dc-input {
                 width: 100%;
-            }
-        }
-
-        @include desktop {
-            .quill-snackbar {
-                margin-bottom: 3.2rem;
-                width: fit-content;
             }
         }
     }

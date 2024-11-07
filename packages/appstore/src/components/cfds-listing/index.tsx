@@ -190,7 +190,7 @@ const CFDsListing = observer(() => {
         updateMT5AccountDetails();
     }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
-    const is_mt5_list_loading = (is_landing_company_loaded && is_populating_mt5_account_list) || is_switching;
+    const is_mt5_list_loading = !is_landing_company_loaded || is_populating_mt5_account_list || is_switching;
     return (
         <ListingContainer
             title={

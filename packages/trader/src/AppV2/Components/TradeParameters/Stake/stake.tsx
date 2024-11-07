@@ -36,10 +36,9 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         v2_params_initial_values,
         validation_errors,
         validation_params,
-        default_stake: default_stake_value,
     } = useTraderStore();
     const {
-        client: { is_logged_in, currency: client_currency, isLoggedOutV2, resetIsLoggedOutV2 },
+        client: { is_logged_in, currency: client_currency },
     } = useStore();
     const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
@@ -57,15 +56,12 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     useEffect(() => {
         if (client_currency !== currency) {
             onChange({ target: { name: 'currency', value: client_currency } });
+            if (!isCryptocurrency(client_currency ?? '')) {
+                onChange({ target: { name: 'amount', value: default_stake } });
+                setV2ParamsInitialValues({ value: default_stake as number, name: 'stake' });
+            }
         }
     }, [client_currency]);
-
-    useEffect(() => {
-        if (isLoggedOutV2) {
-            onChange({ target: { name: 'amount', value: default_stake_value } });
-            resetIsLoggedOutV2();
-        }
-    }, [isLoggedOutV2]);
 
     const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);

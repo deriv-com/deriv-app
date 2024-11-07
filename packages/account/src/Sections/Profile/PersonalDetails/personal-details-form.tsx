@@ -60,6 +60,10 @@ const PersonalDetailsForm = observer(() => {
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
+
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
 
     const { tin_validation_config, mutate } = useTinValidations();
@@ -289,7 +293,9 @@ const PersonalDetailsForm = observer(() => {
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    const stripped_phone_number = account_settings.phone?.replace(/\D/g, '');
+    const stripped_phone_number = isCountryCodeDropdownEnabled
+        ? account_settings.phone?.replace(/\D/g, '')
+        : `+${account_settings.phone?.replace(/\D/g, '')}`;
 
     //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
@@ -311,7 +317,8 @@ const PersonalDetailsForm = observer(() => {
         tin_validation_config,
         is_tin_auto_set,
         account_settings?.immutable_fields,
-        is_employment_status_tin_mandatory
+        is_employment_status_tin_mandatory,
+        isCountryCodeDropdownEnabled
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {
@@ -336,7 +343,8 @@ const PersonalDetailsForm = observer(() => {
         residence_list,
         states_list,
         is_virtual,
-        selected_phone_code
+        selected_phone_code,
+        isCountryCodeDropdownEnabled
     );
 
     return (
@@ -491,19 +499,25 @@ const PersonalDetailsForm = observer(() => {
                                     <Fragment>
                                         <fieldset className='account-form__fieldset'>
                                             <div className='account-form__fieldset--phone_container'>
-                                                <FormSelectField
-                                                    label={localize('Code*')}
-                                                    name='calling_country_code'
-                                                    list_items={formatted_countries_list_for_core}
-                                                    onItemSelection={country_list => {
-                                                        setFieldValue('calling_country_code', country_list.value, true);
-                                                    }}
-                                                    disabled={
-                                                        isFieldDisabled('calling_country_code') ||
-                                                        !!next_email_otp_request_timer ||
-                                                        is_email_otp_timer_loading
-                                                    }
-                                                />
+                                                {isCountryCodeDropdownEnabled && (
+                                                    <FormSelectField
+                                                        label={localize('Code*')}
+                                                        name='calling_country_code'
+                                                        list_items={formatted_countries_list_for_core}
+                                                        onItemSelection={country_list => {
+                                                            setFieldValue(
+                                                                'calling_country_code',
+                                                                country_list.value,
+                                                                true
+                                                            );
+                                                        }}
+                                                        disabled={
+                                                            isFieldDisabled('calling_country_code') ||
+                                                            !!next_email_otp_request_timer ||
+                                                            is_email_otp_timer_loading
+                                                        }
+                                                    />
+                                                )}
                                                 <div className='account-form__fieldset--phone_input'>
                                                     <Input
                                                         data-lpignore='true'
@@ -516,7 +530,13 @@ const PersonalDetailsForm = observer(() => {
                                                         hint={hintMessage()}
                                                         className='account-form__fieldset--phone-number-input'
                                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                                                            const phone_number = e.target.value.replace(/\D/g, '');
+                                                            let phone_number = e.target.value.replace(/\D/g, '');
+                                                            if (!isCountryCodeDropdownEnabled) {
+                                                                phone_number =
+                                                                    phone_number.length === 0
+                                                                        ? '+'
+                                                                        : `+${phone_number}`;
+                                                            }
                                                             setFieldValue('phone', phone_number, true);
                                                             setStatus('');
                                                         }}

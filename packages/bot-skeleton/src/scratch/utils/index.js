@@ -681,7 +681,7 @@ const all_context_menu_options = [
     localize('Download Block'),
 ];
 
-const deleteBlocksLocaleText = localize('Delete Blocks');
+const deleteBlocksLocaleText = localize('Delete Block');
 const deleteAllBlocksLocaleText = localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
@@ -696,10 +696,12 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
 
     for (let i = 0; i < menu.length; i++) {
         const menu_text = menu[i].text.toLowerCase();
-        if (menu_text.includes('block') && !menu_text.includes('blocks')) {
-            menu[i].text = deleteBlocksLocaleText;
-        } else if (menu_text.includes('blocks')) {
-            menu[i].text = deleteAllBlocksLocaleText;
+        if (menu_text.includes('delete')) {
+            if (menu_text.includes('block') && !menu_text.includes('blocks')) {
+                menu[i].text = deleteBlocksLocaleText;
+            } else {
+                menu[i].text = deleteAllBlocksLocaleText;
+            }
         } else {
             const localized_text = localize(menu[i].text);
             if (all_context_menu_options.includes(localized_text)) {

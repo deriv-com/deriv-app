@@ -18,7 +18,7 @@ const modifyBlocklyWorkSpaceContextMenu = () => {
         cleanWorkspace: localize('Clean up Blocks'),
         collapseWorkspace: localize('Collapse Blocks'),
         expandWorkspace: localize('Expand Blocks'),
-        workspaceDelete: localize('Delete All Block'),
+        workspaceDelete: localize('Delete All BlockS'),
     };
 
     Object.keys(items_to_localize).forEach(item_id => {

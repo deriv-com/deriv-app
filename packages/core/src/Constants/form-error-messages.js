@@ -9,10 +9,7 @@ export const FORM_ERROR_MESSAGES = {
             permitted_characters: address_permitted_special_characters_message,
             interpolation: { escapeValue: false },
         }),
-    barrier: () =>
-        localize('Only numbers and these special characters are allowed: {{permitted_characters}}', {
-            permitted_characters: '+ - .',
-        }),
+    barrier: () => localize('Should be a valid number.'),
     email: () => localize('Invalid email address.'),
     general: () => localize('Only letters, numbers, space, hyphen, period, and apostrophe are allowed.'),
     name: () => localize('Letters, spaces, periods, hyphens, apostrophes only.'),

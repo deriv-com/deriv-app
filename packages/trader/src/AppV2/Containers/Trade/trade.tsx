@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
@@ -39,7 +39,7 @@ const Trade = observer(() => {
         onChange,
         onUnmount,
     } = useTraderStore();
-    const { trade_types } = useContractsForCompany();
+    const { trade_types, resetTradeTypes } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
@@ -87,6 +87,13 @@ const Trade = observer(() => {
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (is_switching) {
+            resetTradeTypes();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_switching]);
 
     return (
         <BottomNav onScroll={onScroll}>

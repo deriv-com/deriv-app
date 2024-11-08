@@ -67,6 +67,7 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     default: jest.fn(() => ({
         is_fetching_ref: { current: false },
         trade_types: mock_contract_data.contracts_for_company.available,
+        resetTradeTypes: jest.fn(),
     })),
 }));
 

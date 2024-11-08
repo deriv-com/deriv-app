@@ -5,7 +5,7 @@ import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../../../../../trader-providers';
 import RiskManagement from '../risk-management';
 
-const risk_management = 'Risk Management';
+const risk_management = 'Risk management';
 
 describe('RiskManagement', () => {
     let default_mock_store: ReturnType<typeof mockStore>;

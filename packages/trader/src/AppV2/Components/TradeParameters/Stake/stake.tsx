@@ -275,6 +275,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             ref={stake_ref}
                             regex={/[^0-9.,]/g}
                             status={should_show_error && stake_error ? 'error' : 'neutral'}
+                            shouldRound={false}
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}

@@ -9,6 +9,7 @@ import { TDropdownItems, TFormData } from '../types';
 import { requestProposalForQS } from '@deriv/bot-skeleton/src/scratch/accumulators-proposal-handler';
 import { currency } from '@deriv/components/src/components/icon/icons-manifest';
 import debounce from 'lodash.debounce';
+import { localize } from '@deriv/translations';
 
 type TContractTypes = {
     name: string;
@@ -34,6 +35,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
     const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
+    const ref_max_payout = React.useRef<TProposalRequest | null>(null);
     const prev_error = React.useRef<{
         tick_count: string | null;
         take_profit: string | null;
@@ -44,12 +46,14 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
 
     React.useEffect(() => {
         setList([
-            { text: '1%', value: '1' },
-            { text: '2%', value: '2' },
-            { text: '3%', value: '3' },
-            { text: '4%', value: '4' },
-            { text: '5%', value: '5' },
+            { text: '1%', value: '0.01' },
+            { text: '2%', value: '0.02' },
+            { text: '3%', value: '0.03' },
+            { text: '4%', value: '0.04' },
+            { text: '5%', value: '0.05' },
         ]);
+        setFieldValue?.('tradetype', 'accumulator');
+        setValue('tradetype', 'accumulator');
     }, []);
 
     React.useEffect(() => {
@@ -58,35 +62,34 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             setFieldError('tick_count', prev_error.current?.tick_count ?? undefined);
             setFieldError('take_profit', undefined);
         } else {
-            setFieldValue('tick_count', 1);
+            setFieldValue('tick_count', 0);
             setFieldError('take_profit', prev_error.current?.take_profit ?? undefined);
             setFieldError('tick_count', undefined);
         }
     }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count]);
 
     const validateMinMaxForAccumulators = async field_values => {
-        const growth_rate = Number(field_values.growth_rate) / 100;
-        const amount = field_values.boolean_tick_count ? 1 : field_values.take_profit;
+        const growth_rate = Number(field_values.growth_rate);
+        const amount = field_values.stake;
+        const take_profit = Number(field_values.take_profit);
         const request_proposal = {
             amount,
             currency: client.currency,
             growth_rate,
             symbol: field_values.symbol,
             limit_order: {
-                take_profit: field_values.take_profit,
+                ...(!values.boolean_tick_count && { take_profit }),
             },
         };
 
         prev_proposal_payload.current = request_proposal;
-
         try {
             const response = await requestProposalForQS(request_proposal);
-
             const min = 1;
             const max = response?.proposal?.validation_params.max_ticks;
             let min_error = '';
             let max_error = '';
-
+            ref_max_payout.current = response?.proposal?.validation_params?.max_payout;
             const current_tick_count = Number(field_values.tick_count);
             if (!isNaN(current_tick_count) && current_tick_count > max) {
                 max_error = `Maximum tick count is: ${max}`;
@@ -102,8 +105,26 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             }
             prev_error.current.take_profit = null;
         } catch (error_response) {
-            setFieldError('take_profit', error_response?.error?.message);
-            prev_error.current.take_profit = error_response?.error?.message;
+            let errror_message = error_response?.error?.message;
+
+            if (values.boolean_tick_count) {
+                setFieldError('tick_count', errror_message);
+                prev_error.current.tick_count = errror_message;
+            } else {
+                if (error_response?.error?.details?.field === 'take_profit') {
+                    errror_message = `Your total payout is ${
+                        Number(field_values.take_profit) + Number(field_values.stake)
+                    }. Enter amount less than ${ref_max_payout.current} ${localize(
+                        'By changing your initial stake and/or take profit.'
+                    )}`;
+                }
+
+                if (error_response?.error?.details?.field === 'stake') {
+                    errror_message = `${error_response?.error?.message} ${localize('Update your initial stake.')}`;
+                }
+                setFieldError('take_profit', errror_message);
+                prev_error.current.take_profit = errror_message;
+            }
         }
     };
 
@@ -118,20 +139,20 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                 leading: false,
             }
         ),
-        []
+        [values]
     );
 
     React.useEffect(() => {
         if (
             prev_proposal_payload.current?.symbol !== values.symbol ||
-            prev_proposal_payload.current?.amount !== values.amount ||
+            prev_proposal_payload.current?.amount !== values.stake ||
             prev_proposal_payload.current?.limit_order?.take_profit !== values.take_profit ||
             prev_proposal_payload.current?.currency !== client.currency ||
             prev_proposal_payload.current?.growth_rate !== values.growth_rate
         ) {
             debounceChange(values);
         }
-    }, [values.take_profit, values.tick_count, values.amount, currency]);
+    }, [values.take_profit, values.tick_count, values.stake, currency]);
 
     const handleChange = async (value: string) => {
         setFieldValue?.(name, value);

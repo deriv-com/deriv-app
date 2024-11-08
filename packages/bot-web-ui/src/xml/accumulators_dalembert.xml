@@ -106,7 +106,7 @@
     </statement>
     <statement name="SUBMARKET">
       <block type="trade_definition_accumulator" id="`XbWhq)3{Z(,9m%LJDfg">
-        <field name="GROWTHRATE_LIST">0.01</field>
+        <field name="GROWTHRATE_LIST" strategy_value="growth_rate">0.01</field>
         <value name="AMOUNT">
           <shadow type="math_number_positive" id="^yX?!K_KxpvHpoSlsZx`">
             <field name="NUM">1</field>
@@ -573,7 +573,7 @@
                     <statement name="DO0">
                       <block type="variables_set" id="ZwPpNMsK]IT,,eM_`vn)">
                         <field name="VAR" id="nGC!N,V4~gxge3//ZqMs" variabletype="">dalembert:changeInUnit</field>
-                        <value name="VALUE" strategy_value="alembert_unit">
+                        <value name="VALUE" strategy_value="dalembert_unit">
                           <shadow type="math_number" id="p[LNf|7[5av$)xK[t~e;">
                             <field name="NUM">1</field>
                           </shadow>

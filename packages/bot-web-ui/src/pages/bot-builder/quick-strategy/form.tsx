@@ -25,7 +25,7 @@ const QuickStrategyForm = observer(() => {
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
 
-    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(values?.boolean_max_stake ?? false);
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -41,6 +41,12 @@ const QuickStrategyForm = observer(() => {
             window.removeEventListener('keydown', handleEnter);
         };
     }, []);
+
+    React.useEffect(() => {
+        if (!isEnabledToggleSwitch && values?.max_stake) {
+            setFieldValue('max_stake', 0);
+        }
+    }, [isEnabledToggleSwitch, values?.max_stake]);
 
     const onChange = async (key: string, value: string | number | boolean) => {
         setValue(key, value);

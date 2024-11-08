@@ -324,7 +324,7 @@ describe('DxtradeEnterPasswordModal', () => {
         expect(screen.getByText('Reset password error message')).toBeInTheDocument();
     });
 
-    it('should return null when required data is not available', () => {
+    it('returns null when required data is not available', () => {
         (useAccountStatus as jest.Mock).mockReturnValue({
             data: undefined,
             isSuccess: false,

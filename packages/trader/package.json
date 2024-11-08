@@ -90,7 +90,7 @@
     "dependencies": {
         "@deriv-com/analytics": "1.26.1",
         "@deriv-com/quill-tokens": "2.0.4",
-        "@deriv-com/quill-ui": "1.20.0",
+        "@deriv-com/quill-ui": "1.21.0",
         "@deriv-com/utils": "^0.0.36",
         "@deriv-com/ui": "1.36.4",
         "@deriv/api-types": "1.0.172",

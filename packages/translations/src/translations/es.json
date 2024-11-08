@@ -4379,6 +4379,7 @@
     "-1488537825": "Si tiene una cuenta, inicie sesión para continuar.",
     "-2079171087": "No podemos enviar códigos a través de {{ current_carrier }} en este momento. Obtenga su código a través de {{other_carriers}}.",
     "-1366327411": "Código expirado. Obtenga uno nuevo.",
+    "-987182219": "Try again. You have 1 attempt left.",
     "-227482563": "Código expirado. Obtenga un nuevo código.",
     "-1867522447": "Código inválido. Inténtalo de nuevo o consigue un nuevo código.",
     "-886317740": "La <0>fecha de nacimiento</0> que figura en su documento de identidad no coincide con su perfil.",

@@ -4379,6 +4379,7 @@
     "-1488537825": "Hesabınız varsa devam etmek için oturum açın.",
     "-2079171087": "Şu anda {{ current_carrier }} üzerinden kod göndermemiz mümkün değil. Kodunuzu {{other_carriers}} ile alın.",
     "-1366327411": "Kod süresi doldu. Yeni bir tane al.",
+    "-987182219": "Try again. You have 1 attempt left.",
     "-227482563": "Kod süresi doldu. Yeni bir kod al.",
     "-1867522447": "Geçersiz kod. Lütfen tekrar deneyin veya yeni bir kod alın.",
     "-886317740": "Kimlik belgenizdeki <0>doğum tarihi</0> profilinizle eşleşmiyor.",

@@ -133,6 +133,20 @@
     }
 }
 
+.quoted-button {
+    white-space: nowrap;
+    &:before {
+        // for opening quotes
+        content: '\201C';
+        color: var(--component-textIcon-normal-default);
+    }
+    &:after {
+        // for closing quotes
+        content: '\201D';
+        color: var(--component-textIcon-normal-default);
+    }
+}
+
 .definition {
     &__title {
         margin-block-end: var(--component-actionSheet-spacing-padding-lg);

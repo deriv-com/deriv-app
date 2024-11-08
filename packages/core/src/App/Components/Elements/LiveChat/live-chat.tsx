@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
 import { observer, useStore } from '@deriv/stores';
+import { Chat } from '@deriv/utils';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { client } = useStore();
@@ -38,7 +39,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     }, 10);
 
     const liveChatClickHandler = () => {
-        enable_freshworks_live_chat ? freshChat.widget.open() : window.LiveChatWidget?.call('maximize');
+        Chat.open();
     };
 
     if (isDesktop)

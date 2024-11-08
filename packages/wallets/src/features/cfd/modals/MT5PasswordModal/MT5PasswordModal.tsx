@@ -9,7 +9,7 @@ import {
 } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Loader, useDevice } from '@deriv-com/ui';
-import { SentEmailContent, WalletError } from '../../../../components';
+import { SentEmailContent } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
@@ -18,6 +18,7 @@ import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../..
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import { TAvailableMT5Account } from '../../types';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
+import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter } from './MT5PasswordModalFooters';
 import './MT5PasswordModal.scss';
@@ -327,13 +328,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     }
 
     if (emailVerificationStatus === 'error') {
-        return (
-            <WalletError
-                errorMessage={emailVerificationError?.error?.message ?? ''}
-                onClick={hide}
-                title={emailVerificationError?.error?.code ?? localize('Error')}
-            />
-        );
+        return <MT5ErrorModal error={emailVerificationError?.error} onClickHandler={hide} />;
     }
 
     if (emailVerificationStatus === 'success') {
@@ -366,13 +361,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         createMT5AccountError?.error?.code !== 'PasswordError' &&
         !updateMT5Password
     ) {
-        return (
-            <WalletError
-                errorMessage={createMT5AccountError?.error.message}
-                onClick={hide}
-                title={createMT5AccountError?.error?.code}
-            />
-        );
+        return <MT5ErrorModal error={createMT5AccountError?.error} onClickHandler={hide} />;
     }
 
     if (isDesktop) {

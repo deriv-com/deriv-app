@@ -240,6 +240,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                     is_disabled={account.is_disabled}
                                     is_virtual={account.is_virtual}
                                     loginid={account.loginid}
+                                    product={account.product}
                                     redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
                                     onClickResetVirtualBalance={resetBalance}
                                     selected_loginid={account_loginid}

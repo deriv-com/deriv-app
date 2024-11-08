@@ -95,7 +95,7 @@ const DxtradeEnterPasswordModal = () => {
         );
     }
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
-        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error.code} />;
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (resetPasswordError) {

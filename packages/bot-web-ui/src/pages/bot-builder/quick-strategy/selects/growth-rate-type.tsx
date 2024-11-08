@@ -30,7 +30,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui, client } = useStore();
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
-    const { quick_strategy } = useDBotStore();
+    const { quick_strategy, ws } = useDBotStore();
     const { setValue } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
@@ -84,7 +84,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
 
         prev_proposal_payload.current = request_proposal;
         try {
-            const response = await requestProposalForQS(request_proposal);
+            const response = await requestProposalForQS(request_proposal, ws);
             const min = 1;
             const max = response?.proposal?.validation_params.max_ticks;
             let min_error = '';
@@ -105,7 +105,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             }
             prev_error.current.take_profit = null;
         } catch (error_response) {
-            let errror_message = error_response?.error?.message;
+            let errror_message = error_response?.message || error_response?.error?.message;
 
             if (values.boolean_tick_count) {
                 setFieldError('tick_count', errror_message);

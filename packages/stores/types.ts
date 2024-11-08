@@ -995,6 +995,7 @@ type TBarriers = Array<{
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;
+    updateColor: ({ barrier_color, shade_color }: { barrier_color?: string; shade_color?: string }) => void;
 }>;
 type TContractTradeStore = {
     accountSwitchListener: () => Promise<void>;

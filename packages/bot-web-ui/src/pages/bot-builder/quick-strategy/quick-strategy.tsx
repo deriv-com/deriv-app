@@ -78,7 +78,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             max_stake: data?.max_stake ?? 10,
             boolean_max_stake: data?.boolean_max_stake ?? false,
             last_digit_prediction: data?.last_digit_prediction ?? 1,
-            growth_rate: data?.growth_rate ?? '1',
+            growth_rate: data?.growth_rate ?? '0.01',
             tick_count: data?.tick_count ?? 0,
             take_profit: data?.take_profit ?? 0,
             boolean_tick_count: data?.boolean_tick_count ?? false,

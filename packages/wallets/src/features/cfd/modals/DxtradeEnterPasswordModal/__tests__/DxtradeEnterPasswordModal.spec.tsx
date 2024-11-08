@@ -6,14 +6,17 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import useSendPasswordResetEmail from '../../../../../hooks/useSendPasswordResetEmail';
 import DxtradeEnterPasswordModal from '../DxtradeEnterPasswordModal';
 
+const mockPush = jest.fn();
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
-        push: jest.fn(),
+        push: mockPush,
     }),
 }));
 
@@ -31,6 +34,7 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(() => ({
         ...jest.requireActual('../../../../../components/ModalProvider').useModal(),
         hide: mockHide,
+        show: jest.fn(),
     })),
 }));
 
@@ -38,13 +42,15 @@ jest.mock('../../CreatePasswordModal', () => ({
     CreatePasswordModal: ({
         onPasswordChange,
         onPrimaryClick,
+        password,
     }: {
-        onPasswordChange: () => void;
+        onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
         onPrimaryClick: () => void;
+        password: string;
     }) => (
         <div>
             CreatePasswordModal
-            <input data-testid='password-input' onChange={onPasswordChange} />
+            <input data-testid='dt_password_input' onChange={onPasswordChange} value={password} />
             <button onClick={onPrimaryClick}>Submit</button>
         </div>
     ),
@@ -62,7 +68,7 @@ jest.mock('../../EnterPasswordModal', () => ({
     }) => (
         <div>
             EnterPasswordModal
-            <input data-testid='password-input' onChange={onPasswordChange} />
+            <input data-testid='dt_password_input' onChange={onPasswordChange} />
             <button onClick={onPrimaryClick}>Submit</button>
             <button onClick={onSecondaryClick}>Forgot Password</button>
         </div>
@@ -105,7 +111,7 @@ describe('DxtradeEnterPasswordModal', () => {
     beforeEach(() => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { is_virtual: false },
+            data: { currency: 'USD', is_virtual: false },
         });
         (useDxtradeAccountsList as jest.Mock).mockReturnValue({
             data: undefined,
@@ -122,7 +128,7 @@ describe('DxtradeEnterPasswordModal', () => {
         (useSendPasswordResetEmail as jest.Mock).mockReturnValue({
             error: null,
             isLoading: false,
-            isSuccess: false,
+            isSuccess: true,
             sendEmail: jest.fn(),
         });
     });
@@ -131,7 +137,13 @@ describe('DxtradeEnterPasswordModal', () => {
         jest.clearAllMocks();
     });
 
-    it('renders CreatePasswordModal when password is not set', () => {
+    it('handles CreatePasswordModal password change and submission', async () => {
+        const mockMutateAsync = jest.fn().mockResolvedValueOnce({});
+        (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
+            isSuccess: false,
+            mutateAsync: mockMutateAsync,
+            status: 'idle',
+        });
         (useAccountStatus as jest.Mock).mockReturnValue({
             data: { is_dxtrade_password_not_set: true },
             isSuccess: true,
@@ -142,10 +154,58 @@ describe('DxtradeEnterPasswordModal', () => {
                 <DxtradeEnterPasswordModal />
             </ModalProvider>
         );
+
         expect(screen.getByText('CreatePasswordModal')).toBeInTheDocument();
+        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        userEvent.click(screen.getByText('Submit'));
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            payload: {
+                account_type: 'real',
+                market_type: 'all',
+                password: 'NewPassword123',
+                platform: 'dxtrade',
+            },
+        });
     });
 
-    it('renders EnterPasswordModal when password is set', () => {
+    it('clears password on mutateAsync error', async () => {
+        const mockMutateAsync = jest.fn().mockRejectedValueOnce({ error: { code: 'Error', message: 'Error message' } });
+        (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
+            isSuccess: false,
+            mutateAsync: mockMutateAsync,
+            status: 'idle',
+        });
+        (useAccountStatus as jest.Mock).mockReturnValue({
+            data: { is_dxtrade_password_not_set: true },
+            isSuccess: true,
+        });
+
+        render(
+            <ModalProvider>
+                <DxtradeEnterPasswordModal />
+            </ModalProvider>
+        );
+
+        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        userEvent.click(screen.getByText('Submit'));
+        await waitFor(() => {
+            expect(mockMutateAsync).toHaveBeenCalled();
+            expect(screen.getByTestId('dt_password_input')).toHaveValue('');
+        });
+    });
+
+    it('handles EnterPasswordModal password change and button clicks', () => {
+        const mockMutateAsync = jest.fn().mockResolvedValueOnce({});
+        const mockSendEmail = jest.fn();
+        (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
+            error: { error: { code: 'PasswordError' } },
+            isSuccess: false,
+            mutateAsync: mockMutateAsync,
+            status: 'idle',
+        });
+        (useSendPasswordResetEmail as jest.Mock).mockReturnValue({
+            sendEmail: mockSendEmail,
+        });
         (useAccountStatus as jest.Mock).mockReturnValue({
             data: { is_dxtrade_password_not_set: false },
             isSuccess: true,
@@ -156,10 +216,30 @@ describe('DxtradeEnterPasswordModal', () => {
                 <DxtradeEnterPasswordModal />
             </ModalProvider>
         );
+
         expect(screen.getByText('EnterPasswordModal')).toBeInTheDocument();
+        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        userEvent.click(screen.getByText('Submit'));
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            payload: {
+                account_type: 'real',
+                market_type: 'all',
+                password: 'NewPassword123',
+                platform: 'dxtrade',
+            },
+        });
+
+        userEvent.click(screen.getByText('Forgot Password'));
+        expect(mockSendEmail).toHaveBeenCalledWith({
+            platform: 'dxtrade',
+        });
     });
 
-    it('renders PasswordLimitExceededModal on password reset error', () => {
+    it('handles PasswordLimitExceededModal primary and secondary button clicks', () => {
+        const mockSendEmail = jest.fn();
+        (useSendPasswordResetEmail as jest.Mock).mockReturnValue({
+            sendEmail: mockSendEmail,
+        });
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
             error: { error: { code: 'PasswordReset' } },
             status: 'error',
@@ -170,11 +250,22 @@ describe('DxtradeEnterPasswordModal', () => {
                 <DxtradeEnterPasswordModal />
             </ModalProvider>
         );
+
         expect(screen.getByText('PasswordLimitExceededModal')).toBeInTheDocument();
+        userEvent.click(screen.getByText('OK'));
+        expect(mockHide).toHaveBeenCalled();
+
+        userEvent.click(screen.getByText('Reset Password'));
+        expect(mockSendEmail).toHaveBeenCalledWith({
+            platform: 'dxtrade',
+        });
     });
 
-    it('renders SuccessModal on successful account creation', () => {
+    it('handles SuccessModal primary and secondary button clicks', () => {
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
+            data: {
+                account_id: 'CRW123',
+            },
             isSuccess: true,
             status: 'success',
         });
@@ -191,7 +282,16 @@ describe('DxtradeEnterPasswordModal', () => {
                 <DxtradeEnterPasswordModal />
             </ModalProvider>
         );
+
         expect(screen.getByText('SuccessModal')).toBeInTheDocument();
+        userEvent.click(screen.getByText('Transfer'));
+        expect(mockHide).toHaveBeenCalled();
+        expect(mockPush).toHaveBeenCalledWith('/wallet/account-transfer', {
+            toAccountLoginId: 'CRW123',
+        });
+
+        userEvent.click(screen.getByText('Maybe Later'));
+        expect(mockHide).toHaveBeenCalled();
     });
 
     it('renders WalletError on general error', () => {
@@ -222,5 +322,28 @@ describe('DxtradeEnterPasswordModal', () => {
             </ModalProvider>
         );
         expect(screen.getByText('Reset password error message')).toBeInTheDocument();
+    });
+
+    it('should return null when required data is not available', () => {
+        (useAccountStatus as jest.Mock).mockReturnValue({
+            data: undefined,
+            isSuccess: false,
+        });
+        (useDxtradeAccountsList as jest.Mock).mockReturnValue({
+            data: undefined,
+            isSuccess: false,
+        });
+        (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
+            isSuccess: false,
+            status: 'idle',
+        });
+
+        const { container } = render(
+            <ModalProvider>
+                <DxtradeEnterPasswordModal />
+            </ModalProvider>
+        );
+
+        expect(container).toBeEmptyDOMElement();
     });
 });

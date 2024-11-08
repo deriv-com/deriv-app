@@ -3,9 +3,8 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet } from '@deriv-com/quill-ui';
 import { getLanguage, Localize } from '@deriv/translations';
-import { isEmptyObject, redirectToLogin, routes } from '@deriv/shared';
+import { isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
 import { useHistory } from 'react-router';
-import { useSignupTrigger } from 'AppV2/Hooks/useSignupTrigger';
 import ServiceErrorDescription from './service-error-description';
 import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 
@@ -16,7 +15,6 @@ const ServiceErrorSheet = observer(() => {
     const { has_wallet, is_virtual } = client;
     const { services_error, resetServicesError } = common;
     const { clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
-    const { handleSignup } = useSignupTrigger();
     const history = useHistory();
 
     const { code, message, type } = services_error || {};
@@ -58,7 +56,7 @@ const ServiceErrorSheet = observer(() => {
                     content: <Localize i18n_default_text='Create free account' />,
                     onAction: () => {
                         resetServicesError();
-                        handleSignup();
+                        redirectToSignUp();
                     },
                 },
                 secondaryAction: {

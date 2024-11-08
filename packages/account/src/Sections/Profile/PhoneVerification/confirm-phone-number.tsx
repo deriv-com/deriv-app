@@ -97,8 +97,9 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         setPhoneVerificationType(phone_verification_type);
         const { error } = await setUsersPhoneNumber({
             phone: isCountryCodeDropdownEnabled ? phone_number : `+${phone_number}`,
-            //@ts-expect-error will remove once solved
-            ...(isCountryCodeDropdownEnabled && { calling_country_code: account_settings?.calling_country_code }),
+            ...(isCountryCodeDropdownEnabled && {
+                calling_country_code: selectedCountryCode?.phone_code || selected_phone_code,
+            }),
         });
 
         if (!error) {

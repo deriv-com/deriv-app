@@ -26,9 +26,7 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
     const { isMobile } = useDevice();
     const {
         ui,
-        client: {
-            account_settings: { phone },
-        },
+        client: { account_settings },
     } = useStore();
     const { setIsPhoneVerificationCompleted, setShouldShowPhoneNumberOTP } = ui;
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
@@ -61,7 +59,8 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
                 <div className='phone-verification__verified-modal--contents'>
                     <div className='phone-verification__verified-modal--contents__phone-number-container'>
                         <div className='phone-verification__verified-modal--contents__phone-number-container__phone-number'>
-                            {phone}
+                            {/* @ts-expect-error will remove once solved */}
+                            {`${account_settings?.calling_country_code}${account_settings?.phone}`}
                         </div>
                         &nbsp;
                         <Text>

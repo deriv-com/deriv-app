@@ -55,6 +55,11 @@
             &--submarket {
                 padding-left: 1rem;
             }
+            &--withdrawal-limit {
+                @include mobile-or-tablet-screen {
+                    flex-direction: row;
+                }
+            }
         }
 
         &-wrapper {
@@ -68,10 +73,6 @@
                 margin-inline-end: 1.6rem;
             }
         }
-    }
-
-    &__text-container {
-        margin: 1.2rem 1.2rem 1.2rem 0;
     }
 
     &__popover {

@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { ActionSheet, ToggleSwitch, Text, Heading } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
@@ -7,8 +8,15 @@ import { hasCallPutEqual, hasDurationForCallPutEqual } from 'Stores/Modules/Trad
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const AllowEquals = observer(() => {
-    const { contract_types_list, contract_start_type, duration_unit, expiry_type, is_equal, onChange } =
-        useTraderStore();
+    const {
+        contract_types_list,
+        contract_start_type,
+        duration_unit,
+        expiry_type,
+        is_equal,
+        is_market_closed,
+        onChange,
+    } = useTraderStore();
 
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -26,6 +34,7 @@ const AllowEquals = observer(() => {
     };
 
     const openDescription = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        if (is_market_closed) return;
         clickAndKeyEventHandler(() => setIsOpen(true), e);
     };
 
@@ -36,10 +45,15 @@ const AllowEquals = observer(() => {
     return (
         <React.Fragment>
             <div className='allow-equals__wrapper'>
-                <Text size='sm' className='allow-equals__title' onClick={openDescription} onKeyDown={openDescription}>
+                <Text
+                    size='sm'
+                    className={clsx('allow-equals__title', is_market_closed && 'allow-equals__title--disabled')}
+                    onClick={openDescription}
+                    onKeyDown={openDescription}
+                >
                     <Localize i18n_default_text='Allow equals' />
                 </Text>
-                <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} />
+                <ToggleSwitch checked={!!is_equal} onChange={onToggleSwitch} disabled={is_market_closed} />
             </div>
             <ActionSheet.Root isOpen={is_open} onClose={closeDescription} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

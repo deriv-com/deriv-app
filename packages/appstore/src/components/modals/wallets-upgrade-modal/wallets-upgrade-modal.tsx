@@ -5,6 +5,7 @@ import { Button, Text, Modal, VideoPlayer } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useWalletMigration } from '@deriv/hooks';
+import { SectionMessage } from '@deriv-com/ui';
 import {
     getWalletMigrationVideoTranslations,
     WALLET_MIGRATION_VIDEO_TRANSLATIONS,
@@ -91,6 +92,11 @@ const WalletsUpgradeModal = observer(() => {
                             />
                         </Text>
                     </div>
+                    <SectionMessage variant='info' className='wallets-upgrade-modal__disclaimer'>
+                        <Text size='xs' className='wallets-upgrade-modal__disclaimer-message'>
+                            <Localize i18n_default_text='Deriv P2P and Payment Agent services are currently unavailable for Wallets.' />
+                        </Text>
+                    </SectionMessage>
                 </div>
                 <div
                     className={classNames({

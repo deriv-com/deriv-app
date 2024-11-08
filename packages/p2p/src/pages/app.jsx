@@ -298,7 +298,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
+    if (!isGBLoaded || is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
         return <Loading className='p2p__loading' />;
     }
 

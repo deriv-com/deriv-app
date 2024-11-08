@@ -212,6 +212,7 @@ const RiskManagementItem = observer(
                                     placeholder={localize('Amount')}
                                     regex={/[^0-9.,]/g}
                                     status={error_message ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     textAlignment='center'
                                     inputMode='decimal'
                                     unitLeft={getCurrencyDisplayCode(currency)}

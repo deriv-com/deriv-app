@@ -148,6 +148,7 @@ export const getPersonalDetailsValidationSchema = (
         'first_name',
         'last_name',
         'phone',
+        ...(isCountryCodeDropdownEnabled ? (['calling_country_code'] as const) : []),
         'date_of_birth',
         'citizen',
     ]);

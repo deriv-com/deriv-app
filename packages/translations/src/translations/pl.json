@@ -4379,6 +4379,7 @@
     "-1488537825": "Jeśli masz konto, zaloguj się, aby kontynuować.",
     "-2079171087": "Nie możemy teraz wysłać kodów przez {{ current_carrier }}. Uzyskaj swój kod przez {{other_carriers}}.",
     "-1366327411": "Kod wygasł. Uzyskaj nowy.",
+    "-987182219": "Try again. You have 1 attempt left.",
     "-227482563": "Kod wygasł. Uzyskaj nowy kod.",
     "-1867522447": "Nieprawidłowy kod. Spróbuj ponownie lub zdobądź nowy kod.",
     "-886317740": "<0>Data urodzenia w</0> dokumencie tożsamości nie pasuje do Twojego profilu.",

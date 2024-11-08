@@ -60,6 +60,9 @@
 
         @include mobile-or-tablet-screen {
             grid-template-rows: repeat(5, 1fr);
+            &--eu {
+                grid-template-rows: repeat(1, 1fr);
+            }
             grid-template-columns: auto;
             gap: 0;
         }

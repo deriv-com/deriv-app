@@ -16,6 +16,7 @@ import { TradingAppCardLoader } from '../SkeletonLoader';
 import { TradingAccountCard } from '../TradingAccountCard';
 import LinkTitle from './LinkTitle';
 import './OptionsAndMultipliersListing.scss';
+import classNames from 'classnames';
 
 const OptionsAndMultipliersListingContentLoader = () => {
     return (
@@ -128,7 +129,11 @@ const OptionsAndMultipliersListing = () => {
                 </div>
                 {isLoading ? <TradingAppCardLoader /> : <DerivAppsSection />}
             </section>
-            <div className='wallets-options-and-multipliers-listing__content'>
+            <div
+                className={classNames('wallets-options-and-multipliers-listing__content', {
+                    'wallets-options-and-multipliers-listing__content--eu': isEuRegion,
+                })}
+            >
                 {isLoading ? (
                     <OptionsAndMultipliersListingContentLoader />
                 ) : (

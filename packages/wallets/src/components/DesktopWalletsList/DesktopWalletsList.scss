@@ -3,7 +3,6 @@
     width: 100%;
     &--with-banner {
         @include desktop-screen {
-            height: calc(100% - 6rem - 4.8rem - 3.6rem); /* 6rem - banner, 4.8rem - padding, 3.6rem - footer */
             max-height: 63rem;
         }
     }

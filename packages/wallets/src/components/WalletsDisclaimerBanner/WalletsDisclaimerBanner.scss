@@ -3,12 +3,13 @@
     justify-content: center;
     width: 100%;
     @include desktop-screen {
-        max-height: 6rem;
+        height: fit-content;
     }
 
     position: fixed;
     @include desktop-screen {
-        bottom: 3rem;
+        z-index: 3;
+        bottom: 3.6rem;
         left: 0;
         right: 0;
         padding: 0 10rem;

@@ -170,7 +170,8 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at <1>{{users_phone_number}}</1>. <0></0>'
                             values={{
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
-                                users_phone_number: account_settings?.phone,
+                                //@ts-expect-error will remove once solved
+                                users_phone_number: `${account_settings?.calling_country_code}${account_settings?.phone}`,
                             }}
                             components={[
                                 <Button

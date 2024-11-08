@@ -124,6 +124,8 @@ const AccumulatorsProfitLossText = ({
                 color={won ? 'profit-success' : 'loss-danger'}
                 className={classNames(`${className}__profit`, {
                     [`${className}__profit--fading-in`]: is_fading_in,
+                    [`${className}__profit--won`]: won,
+                    [`${className}__profit--loss`]: !won,
                 })}
                 data-testid='dt_accumulator_profit_text'
             >

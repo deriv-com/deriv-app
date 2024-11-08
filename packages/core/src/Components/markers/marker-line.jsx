@@ -13,7 +13,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
                 <Icon
                     icon='IcContractExitTimeCircle'
                     className='chart-marker-line__icon'
-                    color={status === 'lost' ? 'red' : 'green'}
+                    custom_color={status === 'lost' ? '#e6190e' : '#008832'}
                     size={24}
                 />
             )}

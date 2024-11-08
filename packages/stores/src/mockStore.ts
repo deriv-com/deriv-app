@@ -782,7 +782,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 payout_choices: [],
                 requestProposal: jest.fn(),
                 resetPreviousSymbol: jest.fn(),
-                setHoveredBarrier: jest.fn(),
                 setIsTradeParamsExpanded: jest.fn(),
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),

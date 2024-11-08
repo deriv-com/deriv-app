@@ -53,7 +53,7 @@ const usePhoneNumberVerificationSessionTimer = () => {
                 countdown = setInterval(() => {
                     setSessionTimer(session_timer - 1);
                 }, 1000);
-            } else if (session_timer === 0) {
+            } else {
                 setShouldShowSessionTimeoutModal(true);
             }
         }

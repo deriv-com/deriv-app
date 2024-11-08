@@ -521,7 +521,7 @@ const PersonalDetailsForm = observer(() => {
                                                 <div className='account-form__fieldset--phone_input'>
                                                     <Input
                                                         data-lpignore='true'
-                                                        type='number'
+                                                        type='text'
                                                         inputMode='numeric'
                                                         name='phone'
                                                         id={'phone'}

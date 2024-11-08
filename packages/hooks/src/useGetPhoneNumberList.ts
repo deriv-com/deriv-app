@@ -41,6 +41,7 @@ const useGetPhoneNumberList = () => {
     const formatted_countries_list_for_core = countries?.map(country => ({
         text: `${country.display_name} (${country.calling_country_code})`,
         value: country.calling_country_code,
+        id: `${country.calling_country_code}_${country.country_code}`,
         disabled: false,
     }));
 

@@ -97,9 +97,11 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         setPhoneVerificationType(phone_verification_type);
         const { error } = await setUsersPhoneNumber({
             phone: isCountryCodeDropdownEnabled ? phone_number : `+${phone_number}`,
-            ...(isCountryCodeDropdownEnabled && {
-                calling_country_code: selectedCountryCode?.phone_code || selected_phone_code,
-            }),
+            ...(isCountryCodeDropdownEnabled
+                ? {
+                      calling_country_code: selectedCountryCode?.phone_code || selected_phone_code,
+                  }
+                : {}),
         });
 
         if (!error) {
@@ -140,15 +142,19 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         return resendPhoneOtpTimer;
     };
 
-    const isCarrierSupportedForSms = selectedCountryCode
-        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-          selectedCountryCode?.carriers.includes('sms')
-        : selected_country_list?.carriers.includes('sms');
+    const isCarrierSupportedForSms =
+        !isCountryCodeDropdownEnabled ||
+        (selectedCountryCode
+            ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+              selectedCountryCode?.carriers.includes('sms')
+            : selected_country_list?.carriers.includes('sms'));
 
-    const isCarrierSupportedForWhatsApp = selectedCountryCode
-        ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-          selectedCountryCode?.carriers.includes('whatsapp')
-        : selected_country_list?.carriers.includes('whatsapp');
+    const isCarrierSupportedForWhatsApp =
+        !isCountryCodeDropdownEnabled ||
+        (selectedCountryCode
+            ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
+              selectedCountryCode?.carriers.includes('whatsapp')
+            : selected_country_list?.carriers.includes('whatsapp'));
 
     return (
         <Fragment>
@@ -207,23 +213,24 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         </Text>
                     </Button>
                 )}
-                <Button
-                    color='coral'
-                    fullWidth={isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true}
-                    size='lg'
-                    onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
-                    disabled={
-                        is_button_loading ||
-                        !!next_phone_otp_request_timer ||
-                        is_disabled_request_button ||
-                        is_phone_otp_timer_loading ||
-                        (!!isCountryCodeDropdownEnabled && !isCarrierSupportedForWhatsApp)
-                    }
-                >
-                    <Text color='white' bold>
-                        <Localize i18n_default_text='Get code via WhatsApp' />
-                    </Text>
-                </Button>
+                {(isCountryCodeDropdownEnabled ? isCarrierSupportedForWhatsApp : true) && (
+                    <Button
+                        color='coral'
+                        fullWidth={isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true}
+                        size='lg'
+                        onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
+                        disabled={
+                            is_button_loading ||
+                            !!next_phone_otp_request_timer ||
+                            is_disabled_request_button ||
+                            is_phone_otp_timer_loading
+                        }
+                    >
+                        <Text color='white' bold>
+                            <Localize i18n_default_text='Get code via WhatsApp' />
+                        </Text>
+                    </Button>
+                )}
             </div>
             <Snackbar
                 hasCloseButton={false}

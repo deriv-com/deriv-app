@@ -70,7 +70,7 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
                 {group_names.map(option => (
                     <optgroup key={option} label={option}>
                         {dropdown_items[option].map((value: TListItem) => (
-                            <option key={value.value} value={use_text ? value.text : value.value}>
+                            <option key={value.id || value.value} value={use_text ? value.text : value.value}>
                                 {value.nativepicker_text || value.text}
                             </option>
                         ))}

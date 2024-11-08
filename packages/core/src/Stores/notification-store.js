@@ -1114,6 +1114,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
                         WS.verifyEmail(email, 'phone_number_verification');
                         localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
                     },
@@ -1612,7 +1613,7 @@ export default class NotificationStore extends BaseStore {
                 key: 'notify_account_is_to_be_closed_by_residence',
                 message: (
                     <Localize
-                        i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw your funds by {{date}}.'
+                        i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw your funds by {{date}}.'
                         values={{
                             date: formatDate(this.root_store.client.account_time_of_closure, 'DD MMM YYYY'),
                         }}

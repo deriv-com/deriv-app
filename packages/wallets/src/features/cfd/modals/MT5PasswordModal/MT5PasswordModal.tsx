@@ -17,7 +17,7 @@ import { validPassword, validPasswordMT5 } from '../../../../utils/password-vali
 import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import { TAvailableMT5Account } from '../../types';
-import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
+import { MT5AccountAdded } from '../MT5AccountAdded';
 import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter } from './MT5PasswordModalFooters';
@@ -63,7 +63,16 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const { data: settingsData } = useSettings();
     const { localize } = useTranslations();
 
-    const { email } = settingsData;
+    const {
+        address_city: addressCity,
+        address_line_1: addressLine1,
+        address_postcode: addressPostcode,
+        address_state: addressState,
+        country_code: countryCode,
+        email,
+        first_name: firstName,
+        phone,
+    } = settingsData;
 
     const [password, setPassword] = useState('');
 
@@ -101,10 +110,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         createMT5AccountMutate({
             payload: {
                 account_type: categoryAccountType,
-                address: settingsData?.address_line_1 ?? '',
-                city: settingsData?.address_city ?? '',
-                country: settingsData?.country_code ?? '',
-                email: settingsData?.email ?? '',
+                address: addressLine1 ?? '',
+                city: addressCity ?? '',
+                country: countryCode ?? '',
+                email: email ?? '',
                 leverage: availableMT5AccountsData?.find(acc => acc.market_type === marketType)?.leverage ?? 500,
                 mainPassword: password,
                 ...(selectedJurisdiction && !isVirtual ? { company: selectedJurisdiction } : {}),
@@ -122,10 +131,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                               mt5_account_type: 'financial_stp',
                           })),
                 ...(marketType === MARKET_TYPE.ALL && { product }),
-                name: settingsData?.first_name ?? '',
-                phone: settingsData?.phone ?? '',
-                state: settingsData?.address_state ?? '',
-                zipCode: settingsData?.address_postcode ?? '',
+                name: firstName ?? '',
+                phone: phone ?? '',
+                state: addressState ?? '',
+                zipCode: addressPostcode ?? '',
             },
         });
     }, [
@@ -136,14 +145,14 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         marketType,
         mt5Platform,
         password,
-        settingsData?.address_city,
-        settingsData?.address_line_1,
-        settingsData?.address_postcode,
-        settingsData?.address_state,
-        settingsData?.country_code,
-        settingsData?.email,
-        settingsData?.first_name,
-        settingsData?.phone,
+        addressCity,
+        addressLine1,
+        addressPostcode,
+        addressState,
+        countryCode,
+        email,
+        firstName,
+        phone,
         tradingPasswordChangeMutateAsync,
         selectedJurisdiction,
         product,

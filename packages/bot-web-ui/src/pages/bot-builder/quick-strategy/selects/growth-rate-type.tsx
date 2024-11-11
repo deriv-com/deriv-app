@@ -24,6 +24,7 @@ type TProposalRequest = {
     limit_order: {
         take_profit: number;
     };
+    boolean_tick_count: boolean;
 };
 
 const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
@@ -68,21 +69,21 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         }
     }, [values, errors.take_profit, errors.tick_count, values.boolean_tick_count]);
 
-    const validateMinMaxForAccumulators = async field_values => {
-        const growth_rate = Number(field_values.growth_rate);
-        const amount = field_values.stake;
-        const take_profit = Number(field_values.take_profit);
+    const validateMinMaxForAccumulators = async values => {
+        const growth_rate = Number(values.growth_rate);
+        const amount = Number(values.stake);
+        const take_profit = Number(values.take_profit);
         const request_proposal = {
             amount,
             currency: client.currency,
             growth_rate,
-            symbol: field_values.symbol,
+            symbol: values.symbol,
             limit_order: {
                 ...(!values.boolean_tick_count && { take_profit }),
             },
         };
 
-        prev_proposal_payload.current = request_proposal;
+        prev_proposal_payload.current = { ...request_proposal, boolean_tick_count: values.boolean_tick_count };
         try {
             const response = await requestProposalForQS(request_proposal, ws);
             const min = 1;
@@ -90,7 +91,8 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             let min_error = '';
             let max_error = '';
             ref_max_payout.current = response?.proposal?.validation_params?.max_payout;
-            const current_tick_count = Number(field_values.tick_count);
+            const current_tick_count = Number(values.tick_count);
+
             if (!isNaN(current_tick_count) && current_tick_count > max) {
                 max_error = `Maximum tick count is: ${max}`;
                 setFieldError('tick_count', max_error);
@@ -113,7 +115,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             } else {
                 if (error_response?.error?.details?.field === 'take_profit') {
                     errror_message = `Your total payout is ${
-                        Number(field_values.take_profit) + Number(field_values.stake)
+                        Number(values.take_profit) + Number(values.stake)
                     }. Enter amount less than ${ref_max_payout.current} ${localize(
                         'By changing your initial stake and/or take profit.'
                     )}`;
@@ -129,17 +131,11 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     };
 
     const debounceChange = React.useCallback(
-        debounce(
-            values => {
-                validateMinMaxForAccumulators(values);
-            },
-            500,
-            {
-                trailing: true,
-                leading: false,
-            }
-        ),
-        [values]
+        debounce(validateMinMaxForAccumulators, 500, {
+            trailing: true,
+            leading: false,
+        }),
+        []
     );
 
     React.useEffect(() => {
@@ -148,11 +144,12 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             prev_proposal_payload.current?.amount !== values.stake ||
             prev_proposal_payload.current?.limit_order?.take_profit !== values.take_profit ||
             prev_proposal_payload.current?.currency !== client.currency ||
-            prev_proposal_payload.current?.growth_rate !== values.growth_rate
+            prev_proposal_payload.current?.growth_rate !== values.growth_rate ||
+            prev_proposal_payload.current?.boolean_tick_count !== values.boolean_tick_count
         ) {
             debounceChange(values);
         }
-    }, [values.take_profit, values.tick_count, values.stake, values.growth_rate, currency]);
+    }, [values.take_profit, values.tick_count, values.stake, values.growth_rate, currency, values.boolean_tick_count]);
 
     const handleChange = async (value: string) => {
         setFieldValue?.(name, value);

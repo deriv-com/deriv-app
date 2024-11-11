@@ -498,7 +498,12 @@ const PersonalDetailsForm = observer(() => {
                                 {!is_virtual && (
                                     <Fragment>
                                         <fieldset className='account-form__fieldset'>
-                                            <div className='account-form__fieldset--phone_container'>
+                                            <div
+                                                className={clsx('account-form__fieldset--phone_container', {
+                                                    'account-form__fieldset--phone_container--verified':
+                                                        is_phone_number_verified,
+                                                })}
+                                            >
                                                 {isCountryCodeDropdownEnabled && (
                                                     <FormSelectField
                                                         label={localize('Code*')}
@@ -528,7 +533,6 @@ const PersonalDetailsForm = observer(() => {
                                                         label={localize('Phone number*')}
                                                         //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                                         value={values.phone}
-                                                        hint={hintMessage()}
                                                         className='account-form__fieldset--phone-number-input'
                                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                             let phone_number = e.target.value.replace(/\D/g, '');
@@ -568,6 +572,11 @@ const PersonalDetailsForm = observer(() => {
                                                         setStatus={setStatus}
                                                     />
                                                 )}
+                                            </div>
+                                            <div className='account-form__fieldset--phone_container--verified-hint'>
+                                                <Text as='p' color='less-prominent' size='xxs'>
+                                                    {hintMessage()}
+                                                </Text>
                                             </div>
                                         </fieldset>
                                         <AccountOpeningReasonField

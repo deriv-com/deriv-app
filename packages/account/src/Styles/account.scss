@@ -382,6 +382,27 @@ $MIN_HEIGHT_FLOATING: calc(
                             border-end-end-radius: 0;
                         }
                     }
+
+                    &--verified {
+                        .dc-autocomplete {
+                            margin-bottom: 0 !important;
+                        }
+                        .dc-input {
+                            margin-bottom: 0 !important;
+                        }
+                        .dc-select-native {
+                            margin-bottom: 0;
+                        }
+
+                        &-hint {
+                            margin-bottom: 3.2rem;
+                            margin-inline-start: 1.3rem;
+
+                            @include mobile-or-tablet-screen {
+                                margin-bottom: 1.2rem;
+                            }
+                        }
+                    }
                 }
 
                 &_input {

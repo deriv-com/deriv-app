@@ -434,6 +434,7 @@ const AUTH_STATUS_CODES = {
 } as const;
 
 export type TClientStore = {
+    getToken: () => string;
     fetchStatesList: () => Promise<StatesList>;
     account_type: string;
     accounts: { [k: string]: TActiveAccount };

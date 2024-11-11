@@ -1,8 +1,6 @@
 import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
-import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
-import { Localize } from '@deriv/translations';
 
 export type TDraggableListItem = {
     id: string;
@@ -40,7 +38,6 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
     const handleOnDragStart = (start: DragStart) => setDraggedItemId(start.draggableId);
 
     React.useEffect(() => setCategoryList(categories), [categories]);
-
     return (
         <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleOnDragStart}>
             {category_list.map(category => (
@@ -63,7 +60,6 @@ const DraggableCategory: React.FC<{
     onAction?: () => void;
 }> = ({ category, draggedItemId, onRightIconClick, onAction }) => (
     <div className='draggable-list-category'>
-        <DraggableCategoryHeader title={category.title} button_title={category.button_title} onAction={onAction} />
         <Droppable droppableId={category.id}>
             {provided => (
                 <div
@@ -80,23 +76,6 @@ const DraggableCategory: React.FC<{
                 </div>
             )}
         </Droppable>
-    </div>
-);
-
-const DraggableCategoryHeader: React.FC<{
-    title?: string;
-    button_title?: string;
-    onAction?: () => void;
-}> = ({ title, button_title, onAction }) => (
-    <div className='draggable-list-category-header'>
-        <Text size='sm' bold className='draggable-list-category-header-title'>
-            {title}
-        </Text>
-        {onAction && (
-            <Text size='sm' bold underlined className='draggable-list-category-header-button' onClick={onAction}>
-                {button_title || <Localize i18n_default_text='Done' />}
-            </Text>
-        )}
     </div>
 );
 

@@ -32,7 +32,7 @@ describe('MultipliersDealCancellationInfo', () => {
             </TraderProviders>
         );
 
-    it('should not render if there is an API error ', () => {
+    it('does not render if there is an API error ', () => {
         default_mock_store.modules.trade.proposal_info = {
             MULTUP: {
                 has_error: true,
@@ -43,17 +43,26 @@ describe('MultipliersDealCancellationInfo', () => {
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render skeleton, if proposal_info is empty', () => {
+    it('renders skeleton, if proposal_info is empty', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockMultipliersDealCancellationInfo();
 
         expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
     });
 
-    it('should render component', () => {
+    it('renders component with title and value', () => {
         mockMultipliersDealCancellationInfo();
 
-        expect(screen.getByText('Deal cancellation fee')).toBeInTheDocument();
+        const title = screen.getByText('Deal cancellation fee');
+        expect(title).toBeInTheDocument();
+        expect(title).not.toHaveClass('trade-params__text--disabled');
         expect(screen.getByText(/4.00 USD/)).toBeInTheDocument();
+    });
+
+    it('applies specific className if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockMultipliersDealCancellationInfo();
+
+        expect(screen.getByText('Deal cancellation fee')).toHaveClass('trade-params__text--disabled');
     });
 });

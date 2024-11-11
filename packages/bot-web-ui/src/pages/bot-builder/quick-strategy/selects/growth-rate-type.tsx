@@ -152,7 +152,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         ) {
             debounceChange(values);
         }
-    }, [values.take_profit, values.tick_count, values.stake, currency]);
+    }, [values.take_profit, values.tick_count, values.stake, values.growth_rate, currency]);
 
     const handleChange = async (value: string) => {
         setFieldValue?.(name, value);

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
+import { useIsMounted, useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useCreateNewRealAccount, useCreateWallet, useMutation, useSettings } from '@deriv/api-v2';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
 
@@ -9,6 +9,7 @@ type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>
 const useSyncLocalStorageClientAccounts = () => {
     const { mutateAsync } = useMutation('account_list');
     const { data: settingsData } = useSettings();
+    const isMounted = useIsMounted();
     const [, setLocalStorageClientAccounts] = useLocalStorage(
         'client.accounts',
         useReadLocalStorage('client.accounts') ?? {}
@@ -23,7 +24,7 @@ const useSyncLocalStorageClientAccounts = () => {
 
             if (!account) return;
 
-            if (newAccount && account) {
+            if (newAccount && account && isMounted()) {
                 const dataToStore = {
                     accepted_bch: 0,
                     account_category: account.account_category,
@@ -48,7 +49,7 @@ const useSyncLocalStorageClientAccounts = () => {
                 setLocalStorageClientAccounts(localStorageData);
             }
         },
-        [mutateAsync, setLocalStorageClientAccounts, settingsData]
+        [isMounted, mutateAsync, setLocalStorageClientAccounts, settingsData]
     );
 
     const addTradingAccountToLocalStorage = useCallback(
@@ -60,7 +61,7 @@ const useSyncLocalStorageClientAccounts = () => {
 
             if (!account || !account.loginid) return;
 
-            if (newAccount) {
+            if (newAccount && isMounted()) {
                 const dataToStore = {
                     accepted_bch: 0,
                     account_category: 'trading',
@@ -99,10 +100,12 @@ const useSyncLocalStorageClientAccounts = () => {
                     ];
                 }
 
-                setLocalStorageClientAccounts(localStorageData);
+                if (isMounted()) {
+                    setLocalStorageClientAccounts(localStorageData);
+                }
             }
         },
-        [mutateAsync, setLocalStorageClientAccounts, settingsData]
+        [isMounted, mutateAsync, setLocalStorageClientAccounts, settingsData]
     );
 
     return { addTradingAccountToLocalStorage, addWalletAccountToLocalStorage };

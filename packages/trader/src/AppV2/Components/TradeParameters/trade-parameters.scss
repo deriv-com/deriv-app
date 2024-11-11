@@ -74,6 +74,10 @@
             padding-bottom: 0;
         }
     }
+
+    &__text--disabled {
+        color: var(--component-textIcon-normal-disabled);
+    }
 }
 
 .text-field--custom {

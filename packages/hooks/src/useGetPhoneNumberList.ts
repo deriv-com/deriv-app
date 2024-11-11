@@ -4,14 +4,14 @@ import { useCallback } from 'react';
 import useSettings from './useSettings';
 
 const useGetPhoneNumberList = () => {
-    const { data } = useQuery('phone_settings');
-    const countries = data?.phone_settings?.countries;
-
     const { client } = useStore();
     const { data: account_settings } = useSettings();
     const {
         website_status: { clients_country },
+        is_authorize,
     } = client;
+    const { data } = useQuery('phone_settings', { options: { enabled: is_authorize } });
+    const countries = data?.phone_settings?.countries;
 
     const getSelectedPhoneCode = useCallback(() => {
         const country = countries?.find(c => c.country_code.toLowerCase() === clients_country);

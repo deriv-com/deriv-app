@@ -4379,6 +4379,7 @@
     "-1488537825": "Se possiedi un conto, effettua il login per continuare.",
     "-2079171087": "Non possiamo inviare codici tramite {{ current_carrier }} in questo momento. Ricevi il tuo codice tramite {{other_carriers}}.",
     "-1366327411": "Il codice è scaduto. Ottieni uno nuovo.",
+    "-987182219": "Riprova. Hai 1 tentativo rimasto.",
     "-227482563": "Il codice è scaduto. Ottieni un nuovo codice.",
     "-1867522447": "Codice non valido. Riprova o ottieni un nuovo codice.",
     "-886317740": "La <0>data di</0> nascita sul suo documento d'identità non corrisponde al suo profilo.",

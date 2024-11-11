@@ -8,6 +8,8 @@ const usePOA = () => {
     const modified_authentication_data = useMemo(() => {
         if (!authentication_data?.document) return;
 
+        const needs_verification = new Set(authentication_data?.needs_verification);
+
         return {
             ...authentication_data.document,
             has_attempted_poa: authentication_data?.document.status !== 'none',
@@ -17,6 +19,7 @@ const usePOA = () => {
             is_suspected: authentication_data?.document.status === 'suspected',
             is_verified: authentication_data?.document.status === 'verified',
             is_need_submission: !['pending', 'verified'].includes(authentication_data?.document.status || ''),
+            poa_needs_verification: needs_verification.has('document'),
         };
     }, [authentication_data]);
 

@@ -10,15 +10,8 @@ jest.mock('../compareAccountsConfig', () => ({
 
 describe('CompareAccountsDescription', () => {
     const mockJurisdictionData = {
-        counterparty_company: 'Deriv (SVG) LLC',
-        counterparty_company_description: 'Counterparty company description',
-        jurisdiction: 'St. Vincent & Grenadines',
-        jurisdiction_description: 'Jurisdiction description',
         leverage: 'Up to 1:1000',
         leverage_description: 'Leverage description',
-        regulator: 'Financial Commission',
-        regulator_description: 'Regulator description',
-        regulator_license: 'License number',
         spread: '0.6 pips',
         spread_description: 'Spread description',
     };

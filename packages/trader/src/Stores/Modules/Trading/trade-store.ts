@@ -75,6 +75,7 @@ import {
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
 import { safeParse } from '@deriv/utils';
+import { sendDtraderPurchaseToAnalytics } from '../../../Analytics';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -206,7 +207,6 @@ type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params']
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
-const ANALYTICS_DURATIONS = ['ticks', 'seconds', 'minutes', 'hours', 'days'];
 
 export default class TradeStore extends BaseStore {
     // Control values
@@ -1058,7 +1058,7 @@ export default class TradeStore extends BaseStore {
     async onPurchaseV2(
         trade_type: string,
         isMobile: boolean,
-        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+        callback?: (params: { message: string; redirectTo: string; title: string }, contract_id: number) => void
     ) {
         await when(() => {
             const proposal_info_keys = Object.keys(this.proposal_info);
@@ -1067,7 +1067,7 @@ export default class TradeStore extends BaseStore {
         });
 
         const info = this.proposal_info?.[trade_type];
-        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback);
+        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback, true);
     }
 
     onPurchase = debounce(this.processPurchase, 300);
@@ -1077,7 +1077,8 @@ export default class TradeStore extends BaseStore {
         price: string | number,
         type: string,
         isMobile: boolean,
-        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+        callback?: (params: { message: string; redirectTo: string; title: string }, contract_id: number) => void,
+        is_dtrader_v2?: boolean
     ) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
@@ -1171,6 +1172,10 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
+                            if (!is_dtrader_v2) {
+                                sendDtraderPurchaseToAnalytics(contract_type, this.symbol, contract_id);
+                            }
+
                             if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
@@ -1196,11 +1201,14 @@ export default class TradeStore extends BaseStore {
                                 const trade_type = extracted_info_from_shortcode.category;
 
                                 if (window.location.pathname === routes.trade)
-                                    callback?.({
-                                        message: getTradeNotificationMessage(shortcode),
-                                        redirectTo: getContractPath(contract_id),
-                                        title: formatted_stake,
-                                    });
+                                    callback?.(
+                                        {
+                                            message: getTradeNotificationMessage(shortcode),
+                                            redirectTo: getContractPath(contract_id),
+                                            title: formatted_stake,
+                                        },
+                                        contract_id
+                                    );
 
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,

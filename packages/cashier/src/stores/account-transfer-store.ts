@@ -405,6 +405,7 @@ export default class AccountTransferStore {
                               platform: account.account_type,
                               is_eu: this.root_store.client.is_eu,
                               is_transfer_form: true,
+                              product: account.product,
                           }) || ''
                       }`;
             const account_text_display = is_cfd

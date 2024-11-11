@@ -19,6 +19,7 @@ declare global {
             show: VoidFunction;
             hide: VoidFunction;
             open: VoidFunction;
+            close: VoidFunction;
             on: (key: string, callback: VoidFunction) => void;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setConfig: (config: Record<string, Record<string, any>>) => void;
@@ -39,7 +40,9 @@ declare global {
         FreshChat: {
             initialize: (config: FreshChatConfig) => void;
         };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Analytics: any;
+        GrowthbookFeatures: { [key: string]: boolean };
     }
     interface FreshChatConfig {
         token: string | null;

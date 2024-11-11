@@ -20,7 +20,7 @@ import { TAvailableMT5Account } from '../../types';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
-import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import { MT5PasswordModalFooter } from './MT5PasswordModalFooters';
 import './MT5PasswordModal.scss';
 
 type TProps = {
@@ -186,13 +186,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     }, [isMT5PasswordNotSet, isVirtual, localize, title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {
-        if (createMT5AccountSuccess)
-            return (
-                <div className='wallets-mt5-password-modal__footer'>
-                    <SuccessModalFooter isDemo={isVirtual} />
-                </div>
-            );
-
         if (isMT5PasswordNotSet)
             return (
                 <div className='wallets-mt5-password-modal__footer'>
@@ -233,8 +226,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         );
     }, [
         createMT5AccountLoading,
-        createMT5AccountSuccess,
-        isVirtual,
         isDesktop,
         isMT5PasswordNotSet,
         title,

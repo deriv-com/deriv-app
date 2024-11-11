@@ -292,6 +292,74 @@ const SectionMessage = ({ children, className, ctaSection, icon, title, variant 
     );
 };
 
+const Notifications = ({ componentConfig, notifications = [], clearNotificationsCallback = jest.fn() }) => {
+    return (
+        <div data-testid='announcement-container'>
+            {/* Clear all notifications button */}
+            <button data-testid='clear-notifications-button' onClick={clearNotificationsCallback}>
+                {componentConfig?.clearButtonText || 'Mark all as read'}
+            </button>
+
+            {/* Notifications list */}
+            <div data-testid='notifications-list'>
+                {notifications.map((notification, index) => (
+                    <div key={index} data-testid={`notification-${index}`} className='notification'>
+                        <div className='notification__container'>
+                            <div className='notification__icon'>{notification.icon}</div>
+                            <div className='notification__text'>
+                                <div className='notification__title'>{notification.title}</div>
+                                <div className='notification__message'>
+                                    <p>{notification.message}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {notification.buttonAction && notification.actionText && (
+                            <div className='notification__button-container'>
+                                <button className='notification__button' onClick={notification.buttonAction}>
+                                    {notification.actionText}
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const LinearProgressBar = ({
+    danger_limit = 30,
+    is_loading = false,
+    label = '',
+    percentage = 0,
+    warning_limit = 50,
+    ...rest
+}) => {
+    return (
+        <div data-testid='linear-progress-bar' {...rest}>
+            <div data-testid='progress-label'>{label}</div>
+            {is_loading || percentage < 1 ? (
+                <div data-testid='loading-indicator'>Loading...</div>
+            ) : (
+                <div
+                    data-testid='progress-track'
+                    data-percentage={percentage}
+                    data-status={
+                        // eslint-disable-next-line no-nested-ternary -- This is a mock component!
+                        percentage >= warning_limit
+                            ? 'green'
+                            : percentage < warning_limit && percentage >= danger_limit
+                              ? 'yellow'
+                              : 'red'
+                    }
+                >
+                    Progress Track
+                </div>
+            )}
+        </div>
+    );
+};
+
 export {
     ActionScreen,
     Badge,
@@ -308,4 +376,6 @@ export {
     InlineMessage,
     Loader,
     SectionMessage,
+    Notifications,
+    LinearProgressBar,
 };

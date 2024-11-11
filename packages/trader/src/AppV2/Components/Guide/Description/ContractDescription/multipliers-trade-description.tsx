@@ -68,20 +68,20 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<1>Stop loss</1>” and “<2>Deal cancellation</2>” allow you to adjust your level of risk aversion.'
+                    i18n_default_text='Additional features are available to manage your positions: <0>Take profit</0>, <1>Stop loss</1> and <2>Deal cancellation</2> allow you to adjust your level of risk aversion.'
                     components={[
                         <button
-                            className='description__content--definition'
+                            className='description__content--definition quoted-button'
                             key={0}
                             onClick={() => onTermClick(TAKE_PROFIT)}
                         />,
                         <button
-                            className='description__content--definition'
+                            className='description__content--definition quoted-button'
                             key={1}
                             onClick={() => onTermClick(STOP_LOSS)}
                         />,
                         <button
-                            className='description__content--definition'
+                            className='description__content--definition quoted-button'
                             key={2}
                             onClick={() => onTermClick(DEAL_CANCELLATION)}
                         />,

@@ -10,6 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Button, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { validatePhoneNumber } from './validation';
+import clsx from 'clsx';
 
 type TConfirmPhoneNumber = {
     show_confirm_phone_number?: boolean;
@@ -121,7 +122,11 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
             <Text bold>
                 <Localize i18n_default_text='Step 2 of 3: Confirm your phone number' />
             </Text>
-            <div className='phone-verification__card--inputfield'>
+            <div
+                className={clsx('phone-verification__card--inputfield', {
+                    'phone-verification__card--inputfield--error': error_message,
+                })}
+            >
                 <TextFieldAddon
                     type='number'
                     label={localize('Phone number')}

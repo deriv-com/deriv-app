@@ -8,7 +8,7 @@ configure({ safeDescriptors: false });
 let iframe_store: IframeStore, root_store: TRootStore;
 
 beforeEach(() => {
-    jest.useFakeTimers();
+    jest.useFakeTimers({ legacyFakeTimers: true });
     jest.spyOn(global, 'setInterval');
     jest.spyOn(global, 'clearInterval');
     jest.spyOn(global, 'setTimeout');
@@ -51,7 +51,7 @@ describe('IframeStore', () => {
     });
 
     it('should clear timeout cashier url', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
 
         iframe_store.timeout_session = 999;
         iframe_store.clearTimeoutCashierUrl();
@@ -61,7 +61,7 @@ describe('IframeStore', () => {
     });
 
     it('should set timeout cashier url', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
 
         const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
         const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');

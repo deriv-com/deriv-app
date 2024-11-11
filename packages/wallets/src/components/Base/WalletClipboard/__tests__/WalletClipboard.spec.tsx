@@ -23,7 +23,7 @@ describe('WalletClipboard', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         mockCopy = jest.fn();
         mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         jest.spyOn(global, 'setInterval');
         jest.spyOn(global, 'clearInterval');
         jest.spyOn(global, 'setTimeout');
@@ -43,7 +43,7 @@ describe('WalletClipboard', () => {
         });
     });
     it('clears timeout on unmount', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         const { unmount } = await renderComponent();
         unmount();
 
@@ -93,7 +93,7 @@ describe('WalletClipboard', () => {
             });
         });
         it('resets the icon and message after 2 seconds', async () => {
-            jest.useFakeTimers();
+            jest.useFakeTimers({ legacyFakeTimers: true });
             await renderScenario();
 
             await waitFor(() => {

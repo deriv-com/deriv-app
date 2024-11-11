@@ -35,6 +35,7 @@ describe('DepositCryptoAddress', () => {
     });
 
     it('should show copy text when hovering', async () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useHover as jest.Mock).mockReturnValue(true);
         render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' />);
         await userEvent.hover(screen.getByRole('button'));

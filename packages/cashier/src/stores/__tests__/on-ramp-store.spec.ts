@@ -14,7 +14,7 @@ let banxa_provider: TOnRampProvider,
     WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
-    jest.useFakeTimers();
+    jest.useFakeTimers({ legacyFakeTimers: true });
     jest.spyOn(global, 'setInterval');
     jest.spyOn(global, 'clearInterval');
     jest.spyOn(global, 'setTimeout');
@@ -191,7 +191,7 @@ describe('OnRampStore', () => {
     });
 
     it('should set api error and clear deposit address interval if there is an error in response when pollApiForDepositAddress method was called', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         const spySetApiError = jest.spyOn(onramp_store, 'setApiError');
         onramp_store.WS.authorized.cashier = jest
             .fn()
@@ -205,7 +205,7 @@ describe('OnRampStore', () => {
     });
 
     it('should set empty deposit address when pollApiForDepositAddress method was called with should_allow_empty_address = true', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         const spySetDepositAddress = jest.spyOn(onramp_store, 'setDepositAddress');
         onramp_store.WS.authorized.cashier = jest.fn().mockResolvedValueOnce({ cashier: { deposit: { address: '' } } });
         await onramp_store.pollApiForDepositAddress(true);
@@ -217,7 +217,7 @@ describe('OnRampStore', () => {
     });
 
     it('should set deposit address when pollApiForDepositAddress method was called with should_allow_empty_address = false', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         const spySetDepositAddress = jest.spyOn(onramp_store, 'setDepositAddress');
         await onramp_store.pollApiForDepositAddress(false);
 
@@ -228,7 +228,7 @@ describe('OnRampStore', () => {
     });
 
     it('should set deposit address interval to 3 seconds when pollApiForDepositAddress method was called', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         await onramp_store.pollApiForDepositAddress(false);
         jest.runOnlyPendingTimers();
 
@@ -239,7 +239,7 @@ describe('OnRampStore', () => {
     });
 
     it('should clear interval after 30 seconds if there is an empty deposit address in response when pollApiForDepositAddress method was called with should_allow_empty_address = false', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         await onramp_store.pollApiForDepositAddress(false);
         jest.runOnlyPendingTimers();
 

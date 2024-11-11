@@ -15,7 +15,7 @@ describe('MT5MobileRedirectOption', () => {
     let originalLocation: Location;
 
     beforeEach(() => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         (getDeeplinkUrl as jest.Mock).mockReturnValue('mock-deeplink-url');
         (getMobileAppInstallerUrl as jest.Mock).mockResolvedValue('mock-installer-url');
         (getWebtraderUrl as jest.Mock).mockReturnValue('mock-webtrader-url');

@@ -1,6 +1,7 @@
-import { renderHook, act } from '@testing-library/react-hooks';
 import { useRemoteConfig } from '@deriv/api';
 import { Analytics } from '@deriv-com/analytics';
+import { act, renderHook } from '@testing-library/react-hooks';
+
 import useIsGrowthbookIsLoaded from '../useIsGrowthbookLoaded';
 
 jest.mock('@deriv/api');
@@ -8,7 +9,7 @@ jest.mock('@deriv-com/analytics');
 
 describe('useIsGrowthbookIsLoaded', () => {
     beforeEach(() => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         jest.spyOn(global, 'setInterval');
         jest.spyOn(global, 'clearInterval');
         jest.spyOn(global, 'setTimeout');
@@ -25,7 +26,7 @@ describe('useIsGrowthbookIsLoaded', () => {
     });
 
     it('should update state when data.marketing_growthbook is true and Analytics instance is available', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
         Analytics.getInstances = jest.fn(
             () =>
@@ -54,7 +55,7 @@ describe('useIsGrowthbookIsLoaded', () => {
     });
 
     it('should clear interval after 10 seconds if Analytics instance is not available', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: false } });
         Analytics.getInstances = jest.fn(
             () =>
@@ -80,7 +81,7 @@ describe('useIsGrowthbookIsLoaded', () => {
     });
 
     it('should clear interval on unmount', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         const { unmount } = renderHook(useIsGrowthbookIsLoaded);
         unmount();
 

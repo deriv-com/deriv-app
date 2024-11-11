@@ -191,7 +191,9 @@ const CFDsListing = observer(() => {
     }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
     const is_mt5_list_loading = !is_landing_company_loaded || is_populating_mt5_account_list || is_switching;
-    return (
+    const is_cfd_accounts_supported =
+        combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
+    return is_cfd_accounts_supported ? (
         <ListingContainer
             title={
                 isDesktop && (
@@ -553,7 +555,7 @@ const CFDsListing = observer(() => {
                 </Fragment>
             )}
         </ListingContainer>
-    );
+    ) : null;
 });
 
 export default CFDsListing;

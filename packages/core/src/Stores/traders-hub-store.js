@@ -467,9 +467,20 @@ export default class TradersHubStore extends BaseStore {
         ];
 
         const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {
-            const { product, is_default_jurisdiction } = item;
-            if (
-                is_default_jurisdiction === 'true' ||
+            const { product, is_default_jurisdiction, linkable_landing_companies } = item;
+            if (this.is_demo) {
+                if (
+                    is_default_jurisdiction === 'true' ||
+                    (acc[product] && acc[product].some(i => i.is_default_jurisdiction === 'true'))
+                ) {
+                    if (!acc[product]) {
+                        acc[product] = [];
+                    }
+                    acc[product].push(item);
+                }
+            } else if (
+                (linkable_landing_companies.includes(this.root_store.client.landing_company_shortcode) &&
+                    is_default_jurisdiction === 'true') ||
                 (acc[product] && acc[product].some(i => i.is_default_jurisdiction === 'true'))
             ) {
                 if (!acc[product]) {
@@ -477,7 +488,6 @@ export default class TradersHubStore extends BaseStore {
                 }
                 acc[product].push(item);
             }
-
             return acc;
         }, {});
 
@@ -534,6 +544,7 @@ export default class TradersHubStore extends BaseStore {
             );
             return;
         }
+
         if (this.financial_restricted_countries) {
             this.available_mt5_accounts = this.available_cfd_accounts.filter(
                 account => account.market_type === 'financial' && account.platform === CFD_PLATFORMS.MT5

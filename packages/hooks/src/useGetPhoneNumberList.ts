@@ -5,12 +5,14 @@ import useSettings from './useSettings';
 
 const useGetPhoneNumberList = () => {
     const { client } = useStore();
-    const { data: account_settings } = useSettings();
+    const { data: account_settings, isLoading: isAccountSettingsLoading } = useSettings();
     const {
         website_status: { clients_country },
         is_authorize,
     } = client;
-    const { data } = useQuery('phone_settings', { options: { enabled: is_authorize } });
+    const { data, isLoading: isPhoneSettingLoading } = useQuery('phone_settings', {
+        options: { enabled: is_authorize },
+    });
     const countries = data?.phone_settings?.countries;
 
     const getSelectedPhoneCode = useCallback(() => {
@@ -19,9 +21,13 @@ const useGetPhoneNumberList = () => {
     }, [clients_country, countries]);
 
     const getSelectedCountryList = useCallback(() => {
-        const country = countries?.find(c => c.country_code.toLowerCase() === clients_country);
+        //@ts-expect-error calling_country_code is not defined in GetSettings
+        const phone_code = account_settings?.calling_country_code;
+        const country = phone_code
+            ? countries?.find(c => c.calling_country_code === phone_code)
+            : countries?.find(c => c.country_code.toLowerCase() === clients_country);
         return country;
-    }, [clients_country, countries]);
+    }, [clients_country, countries, account_settings]);
 
     const getShortCodeSelected = useCallback(() => {
         //@ts-expect-error calling_country_code is not defined in GetSettings
@@ -58,6 +64,7 @@ const useGetPhoneNumberList = () => {
         short_code_selected,
         selected_phone_code,
         selected_country_list,
+        isLoading: isAccountSettingsLoading || isPhoneSettingLoading,
     };
 };
 

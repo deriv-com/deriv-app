@@ -38,7 +38,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         is_disabled_request_button,
         setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
-    const { formatted_countries_list, short_code_selected, selected_phone_code, selected_country_list } =
+    const { formatted_countries_list, short_code_selected, selected_phone_code, selected_country_list, isLoading } =
         useGetPhoneNumberList();
     const { data: account_settings, invalidate } = useSettings();
     const [selectedCountryCode, setSelectedCountryCode] = useState<TCountryCodes>();
@@ -167,7 +167,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 })}
             >
                 {isCountryCodeDropdownEnabled ? (
-                    formatted_countries_list && (
+                    formatted_countries_list &&
+                    !isLoading && (
                         <InputPhoneNumber
                             countryCodes={formatted_countries_list}
                             codeLabel={localize('Code')}
@@ -194,7 +195,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                 )}
             </div>
             <div className='phone-verification__card--buttons_container'>
-                {(isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true) && (
+                {(isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true) && !isLoading && (
                     <Button
                         variant='secondary'
                         color='black-white'
@@ -213,7 +214,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                         </Text>
                     </Button>
                 )}
-                {(isCountryCodeDropdownEnabled ? isCarrierSupportedForWhatsApp : true) && (
+                {(isCountryCodeDropdownEnabled ? isCarrierSupportedForWhatsApp : true) && !isLoading && (
                     <Button
                         color='coral'
                         fullWidth={isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true}

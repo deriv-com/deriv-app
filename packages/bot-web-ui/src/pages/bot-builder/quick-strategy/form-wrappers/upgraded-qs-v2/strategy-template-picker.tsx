@@ -2,6 +2,7 @@ import React from 'react';
 import { LegacyGuide1pxIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { Chip, SearchField } from '@deriv-com/quill-ui';
+import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import StrategyList from './strategy-list';
@@ -42,7 +43,7 @@ const StrategyTemplatePicker = observer(({ setCurrentStep, setSelectedTradeType 
                         setFAQSearchValue(event.target.value);
                         filterTuotrialTab(event.target.value);
                     }}
-                    placeholder='Search'
+                    placeholder={localize('Search')}
                     type='text'
                     value={search_value}
                     inputSize='sm'

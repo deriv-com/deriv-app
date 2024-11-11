@@ -30,6 +30,7 @@ const RiskManagementItem = observer(
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
         const [stepperValue, setStepperValue] = React.useState<number | string>();
+        const [showError, setShowError] = React.useState(false);
         const { contract_info, contract } = useContractDetails();
         const { contract_type, currency, validation_params } = contract_info;
         const { validation_errors, updateLimitOrder, clearContractUpdateConfigValues } = contract;
@@ -68,6 +69,7 @@ const RiskManagementItem = observer(
         ) => {
             const { value } = e.target;
             setStepperValue(value as number);
+            setShowError(true);
             contract.onChange?.({
                 name: `contract_update_${type}`,
                 value,
@@ -80,6 +82,7 @@ const RiskManagementItem = observer(
                 setIsSheetOpen(true);
                 setStepperValue('');
                 setIsEnabled(true);
+                setShowError(false);
             } else {
                 contract.onChange?.({
                     name: `has_contract_update_${type}`,
@@ -90,8 +93,41 @@ const RiskManagementItem = observer(
             }
         };
 
+        const min_value = type && (validation_params?.[type]?.min ?? 0);
+        const max_value = type && (validation_params?.[type]?.max ?? 0);
+
+        const getErrorMessage = () => {
+            const field_label = type === 'take_profit' ? localize('take profit') : localize('stop loss');
+            if (!stepperValue) {
+                return localize('Please enter a {{field_label}} amount.', { field_label });
+            }
+            if (min_value && +stepperValue < +min_value) {
+                return localize("Please enter a {{field_label}} amount that's at least {{min_value}}.", {
+                    field_label,
+                    min_value,
+                });
+            }
+            if (max_value && +stepperValue > +max_value) {
+                return localize('Maximum {{field_label}} allowed is {{max_value}}.', {
+                    field_label,
+                    max_value,
+                });
+            }
+            return validation_error_message;
+        };
+
+        const error_message = showError ? getErrorMessage() : '';
+
         const onSave = () => {
-            if (error_message) return;
+            setShowError(true);
+            const current_error_message = getErrorMessage();
+            if (current_error_message) {
+                contract.onChange?.({
+                    name: errorKey,
+                    value: current_error_message,
+                });
+                return;
+            }
             if (isEnabled) {
                 contract.onChange?.({
                     name: `has_contract_update_${type}`,
@@ -102,26 +138,6 @@ const RiskManagementItem = observer(
             updateLimitOrder();
             setIsSheetOpen(false);
         };
-
-        const min_value = type && (validation_params?.[type]?.min ?? 0);
-        const max_value = type && (validation_params?.[type]?.max ?? 0);
-
-        const error_message = (() => {
-            const field_label = type === 'take_profit' ? localize('take profit') : localize('stop loss');
-            if (stepperValue && min_value && +stepperValue < +min_value) {
-                return localize('Please enter a {{field_label}} amount that’s at least {{min_value}}.', {
-                    field_label,
-                    min_value,
-                });
-            }
-            if (stepperValue && max_value && +stepperValue > +max_value) {
-                return localize('Maximum {{field_label}} allowed is {{max_value}}.', {
-                    field_label,
-                    max_value,
-                });
-            }
-            return validation_error_message;
-        })();
 
         return (
             <div className='risk-management-item__container'>
@@ -163,6 +179,7 @@ const RiskManagementItem = observer(
                             clearContractUpdateConfigValues();
                             setStepperValue(finalValue);
                             setIsSheetOpen(true);
+                            setShowError(false);
                         }}
                         onFocus={() => setIsSheetOpen(true)}
                     />
@@ -174,6 +191,7 @@ const RiskManagementItem = observer(
                     onClose={() => {
                         setIsEnabled(false);
                         setIsSheetOpen(false);
+                        setShowError(false);
                     }}
                 >
                     <ActionSheet.Portal shouldCloseOnDrag>
@@ -194,6 +212,7 @@ const RiskManagementItem = observer(
                                     placeholder={localize('Amount')}
                                     regex={/[^0-9.,]/g}
                                     status={error_message ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     textAlignment='center'
                                     inputMode='decimal'
                                     unitLeft={getCurrencyDisplayCode(currency)}
@@ -222,4 +241,5 @@ const RiskManagementItem = observer(
         );
     }
 );
+
 export default RiskManagementItem;

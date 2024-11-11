@@ -37,12 +37,16 @@
         border-bottom: var(--core-borderWidth-75) solid var(--semantic-color-monochrome-surface-normal-low);
 
         &-header {
-            margin-bottom: var(--core-spacing-500);
             display: flex;
             justify-content: space-between;
-            padding: 0 var(--core-spacing-600) 0 var(--core-spacing-800);
+            padding: 0 var(--core-spacing-800) 0 var(--core-spacing-1600);
             &-button {
-                color: var(--component-textIcon-normal-prominent);
+                font-size: var(--core-fontSize-75);
+                font-weight: var(--core-fontWeight-bold);
+                line-height: var(--core-lineHeight-200);
+            }
+            &-title {
+                margin-top: var(--core-spacing-300);
             }
         }
 

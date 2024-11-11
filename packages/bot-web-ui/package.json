@@ -71,7 +71,7 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "@deriv-com/quill-ui": "1.21.0",
+        "@deriv-com/quill-ui": "1.22.0",
         "@deriv-com/ui": "1.36.4",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",

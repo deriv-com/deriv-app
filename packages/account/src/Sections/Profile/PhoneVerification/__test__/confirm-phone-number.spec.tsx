@@ -173,7 +173,7 @@ describe('ConfirmPhoneNumber', () => {
         renderComponent();
         const phone_number_textfield = screen.getByRole('textbox', { name: 'Phone number' });
         expect(phone_number_textfield).toBeInTheDocument();
-        expect(phone_number_textfield).toHaveValue('12 3456 789');
+        expect(phone_number_textfield).toHaveValue('123456789');
         expect(screen.getByText('+60')).toBeInTheDocument();
         expect(screen.getByText('Code')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: sms_button_text })).toBeInTheDocument();

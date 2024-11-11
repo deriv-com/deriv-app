@@ -244,13 +244,41 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     </Text>
                 </Button>
             )}
-            <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
+            <ActionSheet.Root
+                className='trade-types-dialog'
+                isOpen={is_open}
+                expandable={false}
+                onClose={handleCloseTradeTypes}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header
-                        title={<Localize i18n_default_text='Trade types' />}
+                        title={
+                            <div className='trade-types-dialog__title'>
+                                <Localize i18n_default_text='Trade types' />
+                            </div>
+                        }
                         icon={!is_editing && <Guide />}
                     />
-                    <ActionSheet.Content className='mock-action-sheet--content'>
+                    <div>
+                        <div className='draggable-list-category-header'>
+                            <Text size='sm' bold className='draggable-list-category-header-title'>
+                                {is_editing && <Localize i18n_default_text='Pinned' />}
+                            </Text>
+                            <Button
+                                color={is_dark_mode_on ? 'white' : 'black'}
+                                variant='secondary'
+                                className='draggable-list-category-header-button'
+                                onClick={is_editing ? savePinnedToLocalStorage : handleCustomizeTradeTypes}
+                            >
+                                {is_editing ? (
+                                    <Localize i18n_default_text='Done' />
+                                ) : (
+                                    <Localize i18n_default_text='Customise' />
+                                )}
+                            </Button>
+                        </div>
+                    </div>
+                    <ActionSheet.Content className='trade-types-dialog__content'>
                         {is_editing ? (
                             <DraggableList
                                 categories={pinned_trade_types}
@@ -261,10 +289,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                         ) : (
                             <TradeTypeList
                                 categories={pinned_trade_types}
-                                onAction={handleCustomizeTradeTypes}
                                 onTradeTypeClick={handleOnTradeTypeSelect}
                                 isSelected={id => isTradeTypeSelected(id)}
-                                should_show_title={false}
                                 selectable
                             />
                         )}

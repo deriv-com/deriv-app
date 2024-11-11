@@ -1,14 +1,7 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import {
-    APIProvider,
-    useActiveWalletAccount,
-    useJurisdictionStatus,
-    useMT5AccountsList,
-    usePOA,
-    usePOI,
-} from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -40,15 +33,6 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {},
     })),
-    useJurisdictionStatus: jest.fn(() => ({
-        getVerificationStatus: jest.fn(() => ({
-            is_failed: false,
-            is_not_applicable: false,
-            is_pending: false,
-            is_verified: true,
-        })),
-        isSuccess: true,
-    })),
     useMT5AccountsList: jest.fn(() => ({
         data: [{ display_balance: '10,000.00 USD', login: 'MD12345', market_type: 'financial' }],
     })),
@@ -73,7 +57,7 @@ describe('MT5AccountAdded', () => {
     });
 
     const history = createMemoryHistory();
-    it('should render mt5 account added success modal for demo account', () => {
+    it('renders mt5 account added success modal for demo account', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 display_balance: '10000 USD',
@@ -99,7 +83,7 @@ describe('MT5AccountAdded', () => {
         expect(mockHide).toBeCalledTimes(1);
     });
 
-    it('should render mt5 account added success modal for real account', () => {
+    it('renders mt5 account added success modal for real account', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 display_balance: '10000 USD',
@@ -124,7 +108,7 @@ describe('MT5AccountAdded', () => {
         ).toBeInTheDocument();
     });
 
-    it('should redirect to transfer page when transfer funds button is clicked', () => {
+    it('redirects to transfer page when transfer funds button is clicked', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 display_balance: '10000 USD',
@@ -157,97 +141,7 @@ describe('MT5AccountAdded', () => {
         expect(history.location.pathname).toEqual('/wallet/account-transfer');
     });
 
-    it('should render the onfido verification pending message if document is not verified', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: {
-                display_balance: '10000 USD',
-                is_virtual: false,
-                wallet_currentcy_type: 'USD',
-            },
-        });
-        (useJurisdictionStatus as jest.Mock).mockReturnValue({
-            getVerificationStatus: jest.fn(() => ({
-                is_failed: false,
-                is_not_applicable: false,
-                is_pending: true,
-                is_verified: false,
-            })),
-            isSuccess: true,
-        });
-        (usePOI as jest.Mock).mockReturnValue({
-            data: {
-                current: {
-                    service: 'onfido',
-                },
-                previous: {
-                    service: 'onfido',
-                },
-                status: 'pending',
-            },
-        });
-        render(
-            <APIProvider>
-                <WalletsAuthProvider>
-                    <ModalProvider>
-                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
-                    </ModalProvider>
-                </WalletsAuthProvider>
-            </APIProvider>
-        );
-        expect(screen.getByText('Almost there')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                "We need 1-3 days to review your documents before you can start trading with your Financial (SVG) account. You'll get an email as soon as this is done."
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should render idv verification pending message if document is not verified', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: {
-                display_balance: '10000 USD',
-                is_virtual: false,
-                wallet_currentcy_type: 'USD',
-            },
-        });
-        (useJurisdictionStatus as jest.Mock).mockReturnValue({
-            getVerificationStatus: jest.fn(() => ({
-                is_failed: false,
-                is_not_applicable: false,
-                is_pending: true,
-                is_verified: false,
-            })),
-            isSuccess: true,
-        });
-        (usePOI as jest.Mock).mockReturnValue({
-            data: {
-                current: {
-                    service: 'idv',
-                },
-                previous: {
-                    service: 'idv',
-                },
-                status: 'pending',
-            },
-        });
-        render(
-            <APIProvider>
-                <WalletsAuthProvider>
-                    <ModalProvider>
-                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
-                    </ModalProvider>
-                </WalletsAuthProvider>
-            </APIProvider>
-        );
-        expect(screen.getByText('Almost there')).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                "We need a few minutes to review your documents before you can start trading with your Financial (SVG) account. You'll get an in-app notification as soon as this is done."
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should render mt5 account added success screen for mobile', () => {
+    it('renders mt5 account added success screen for mobile', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
@@ -256,15 +150,6 @@ describe('MT5AccountAdded', () => {
                 wallet_currency_type: 'USD',
             },
             isLoading: false,
-        });
-        (useJurisdictionStatus as jest.Mock).mockReturnValue({
-            getVerificationStatus: jest.fn(() => ({
-                is_failed: false,
-                is_not_applicable: false,
-                is_pending: false,
-                is_verified: true,
-            })),
-            isSuccess: true,
         });
         (useMT5AccountsList as jest.Mock).mockReturnValue({
             data: [{ display_balance: '10,000.00 USD', login: 'MD12345', market_type: 'financial' }],
@@ -296,10 +181,11 @@ describe('MT5AccountAdded', () => {
         expect(
             screen.getByText('Transfer funds from your USD Wallet to your Financial (SVG) account to start trading.')
         ).toBeInTheDocument();
-        expect(screen.getAllByRole('button', { name: 'OK' })[0]).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Maybe later' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
 
-    it('should render loading state', () => {
+    it('renders loading state', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ isLoading: true });
         (useMT5AccountsList as jest.Mock).mockReturnValue({ isLoading: true });
         (usePOA as jest.Mock).mockReturnValue({ isLoading: true });
@@ -320,7 +206,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.queryByText('Your Financial account is ready')).not.toBeInTheDocument();
     });
 
-    it('should handle "Maybe later" button click', () => {
+    it('handles "Maybe later" button click', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 display_balance: '10000 USD',
@@ -328,15 +214,6 @@ describe('MT5AccountAdded', () => {
                 wallet_currency_type: 'USD',
             },
             isLoading: false,
-        });
-        (useJurisdictionStatus as jest.Mock).mockReturnValue({
-            getVerificationStatus: jest.fn(() => ({
-                is_failed: false,
-                is_not_applicable: false,
-                is_pending: false,
-                is_verified: true,
-            })),
-            isSuccess: true,
         });
         (useMT5AccountsList as jest.Mock).mockReturnValue({
             data: [{ display_balance: '10,000.00 USD', login: 'MD12345', market_type: 'financial' }],

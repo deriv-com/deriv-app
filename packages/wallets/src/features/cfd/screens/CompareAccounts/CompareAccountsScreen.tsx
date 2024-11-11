@@ -9,7 +9,7 @@ import './CompareAccountsScreen.scss';
 const CompareAccountsScreen = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const isRtl = useIsRtl();
-    const { data: isEuRegion } = useIsEuRegion();
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
 
     const {
@@ -22,7 +22,7 @@ const CompareAccountsScreen = () => {
 
     return (
         <div className='wallets-compare-accounts'>
-            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
+            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} isLoading={isEuRegionLoading} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel isRtl={isRtl}>
                     {mt5Accounts?.map((item, index) => (

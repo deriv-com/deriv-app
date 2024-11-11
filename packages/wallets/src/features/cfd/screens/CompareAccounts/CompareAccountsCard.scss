@@ -23,6 +23,8 @@
         position: relative;
         top: 0.5rem;
         text-align: center;
+        display: flex;
+        justify-content: center;
     }
 
     &__banner {

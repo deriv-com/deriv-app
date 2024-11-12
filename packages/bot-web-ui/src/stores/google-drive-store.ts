@@ -119,8 +119,31 @@ export default class GoogleDriveStore {
             const current_epoch_time = Math.floor(Date.now() / 1000);
             if (current_epoch_time > Number(expiry_time)) {
                 try {
-                    //request new access token if invalid
-                    await this.client.requestAccessToken({ prompt: '' });
+                    // Remove any old tokens from localStorage
+                    localStorage.removeItem('google_access_token_expiry');
+                    localStorage.removeItem('google_access_token');
+                    // Make the token request
+                    const tokenRequest = this.client.requestAccessToken({ prompt: '' });
+
+                    const waitForToken = new Promise((resolve, reject) => {
+                        const interval = setInterval(() => {
+                            const token = localStorage.getItem('google_access_token');
+                            if (token) {
+                                clearInterval(interval);
+                                resolve(token);
+                            }
+                        }, 10); // Check every 10ms
+
+                        setTimeout(() => {
+                            clearInterval(interval); // Clear the interval after timeout
+                            reject(new Error('Token not found within timeout.'));
+                        }, 10000);
+                    });
+                    await tokenRequest;
+                    // Wait for the token to appear in localStorage
+                    await waitForToken;
+
+                    return 'verified';
                 } catch (error) {
                     this.signOut();
                     this.setGoogleDriveTokenValid(false);
@@ -179,7 +202,6 @@ export default class GoogleDriveStore {
     async loadFile() {
         if (!this.is_google_drive_token_valid) return;
         await this.signIn();
-
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
         try {
             await gapi.client.drive.files.list({

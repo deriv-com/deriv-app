@@ -29,22 +29,30 @@ const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState<TTradeType[]>([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
+    const { setValue, selected_strategy } = quick_strategy;
+    const ACCUMULATORS_STRATEGIES = ['ACCUMULATORS_DALEMBERT'];
+    const is_strategy_accumulator = ACCUMULATORS_STRATEGIES.includes(selected_strategy);
 
     React.useEffect(() => {
         if (values?.symbol) {
             const selected = values?.tradetype;
+            const is_symbol_accumulator = is_strategy_accumulator ? 'ACCU' : '';
 
             const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
             const getTradeTypes = async () => {
-                const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
-                setTradeTypes(trade_types);
+                const trade_types = await contracts_for.getTradeTypesForQuickStrategy(
+                    values?.symbol,
+                    is_symbol_accumulator
+                );
+
                 const has_selected = trade_types?.some(trade_type => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
                     setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     setValue('tradetype', trade_types?.[0].value);
                 }
+                setTradeTypes(trade_types);
             };
+
             getTradeTypes();
             validateForm();
         }
@@ -67,6 +75,9 @@ const TradeTypeSelect: React.FC = () => {
                     const selected_trade_type = trade_type_dropdown_options?.find(
                         trade_type => trade_type.value === field.value
                     );
+
+                    const is_accumulator = is_strategy_accumulator ? 'Buy' : selected_trade_type?.text;
+
                     return (
                         <Autocomplete
                             {...field}
@@ -75,7 +86,7 @@ const TradeTypeSelect: React.FC = () => {
                             data-testid='dt_qs_tradetype'
                             autoComplete='off'
                             className='qs__autocomplete'
-                            value={selected_trade_type?.text || ''}
+                            value={is_accumulator || ''}
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
                                 const value = (item as TTradeType)?.value;

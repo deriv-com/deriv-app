@@ -20,7 +20,7 @@ const useSendOTPVerificationCode = () => {
         isSuccess: is_phone_number_verified,
         ...rest
     } = useMutation('phone_number_verify');
-    const { refetch } = useSettings();
+    const { data: account_settings, refetch } = useSettings();
     const {
         sendEmailOTPVerification,
         email_otp_error,
@@ -31,6 +31,10 @@ const useSendOTPVerificationCode = () => {
         requestOnWhatsApp,
     } = useRequestPhoneNumberOTP();
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
+    // @ts-expect-error will remove once solved
+    const challenge_attempts_remaining = account_settings?.phone_number_verification?.challenge_attempts_remaining;
+    // @ts-expect-error will remove once solved
+    const verify_attempts_remaining = account_settings?.phone_number_verification?.verify_attempts_remaining;
 
     type OTPErrorCode =
         | 'PhoneCodeExpired'
@@ -42,12 +46,42 @@ const useSendOTPVerificationCode = () => {
 
     const formatOtpError = (error: TSocketError<'phone_number_verify' | 'phone_number_challenge'>['error']) => {
         const errorHandlers: Record<OTPErrorCode, () => void> = {
-            PhoneCodeExpired: () => setPhoneOtpErrorMessage(phoneOTPErrorMessage('PhoneCodeExpired')),
-            InvalidOTP: () => setPhoneOtpErrorMessage(phoneOTPErrorMessage('InvalidOTP')),
+            PhoneCodeExpired: () =>
+                setPhoneOtpErrorMessage(phoneOTPErrorMessage('PhoneCodeExpired', verify_attempts_remaining)),
+            InvalidOTP: () => {
+                refetch();
+                if (verify_attempts_remaining - 1 === 0) {
+                    setIsForcedToExitPnv(true);
+                    setShowCoolDownPeriodModal(true);
+                    return;
+                }
+                setPhoneOtpErrorMessage(phoneOTPErrorMessage('InvalidOTP', verify_attempts_remaining));
+            },
             EmailCodeExpired: () =>
-                setPhoneOtpErrorMessage(emailOTPErrorMessage('EmailCodeExpired', getCurrentCarrier, getOtherCarrier)),
-            InvalidToken: () =>
-                setPhoneOtpErrorMessage(emailOTPErrorMessage('InvalidToken', getCurrentCarrier, getOtherCarrier)),
+                setPhoneOtpErrorMessage(
+                    emailOTPErrorMessage(
+                        'EmailCodeExpired',
+                        getCurrentCarrier,
+                        getOtherCarrier,
+                        challenge_attempts_remaining
+                    )
+                ),
+            InvalidToken: () => {
+                refetch();
+                if (challenge_attempts_remaining - 1 === 0) {
+                    setIsForcedToExitPnv(true);
+                    setShowCoolDownPeriodModal(true);
+                    return;
+                }
+                setPhoneOtpErrorMessage(
+                    emailOTPErrorMessage(
+                        'InvalidToken',
+                        getCurrentCarrier,
+                        getOtherCarrier,
+                        challenge_attempts_remaining
+                    )
+                );
+            },
             NoAttemptsLeft: () => {
                 refetch();
                 setIsForcedToExitPnv(true);
@@ -55,7 +89,12 @@ const useSendOTPVerificationCode = () => {
             },
             PhoneNumberVerificationSuspended: () =>
                 setPhoneOtpErrorMessage(
-                    emailOTPErrorMessage('PhoneNumberVerificationSuspended', getCurrentCarrier, getOtherCarrier)
+                    emailOTPErrorMessage(
+                        'PhoneNumberVerificationSuspended',
+                        getCurrentCarrier,
+                        getOtherCarrier,
+                        challenge_attempts_remaining
+                    )
                 ),
         };
 

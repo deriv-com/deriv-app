@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import WheelPicker from '../wheel-picker';
 import userEvent from '@testing-library/user-event';
 
@@ -23,17 +22,17 @@ describe('WheelPicker Component', () => {
         expect(screen.getByText('30 USD')).toBeInTheDocument();
     });
 
-    test('should call onClick with the correct value when up button is clicked', () => {
+    test('should call onClick with the correct value when up button is clicked', async () => {
         renderComponent('20');
         const upButton = screen.getByTestId('dt_up_btn');
-        userEvent.click(upButton);
+        await userEvent.click(upButton);
         expect(mockOnClick).toHaveBeenCalledWith('10');
     });
 
-    test('should call onClick with the correct value when down button is clicked', () => {
+    test('should call onClick with the correct value when down button is clicked', async () => {
         renderComponent('20');
         const downButton = screen.getByTestId('dt_down_btn');
-        userEvent.click(downButton);
+        await userEvent.click(downButton);
         expect(mockOnClick).toHaveBeenCalledWith('30');
     });
 

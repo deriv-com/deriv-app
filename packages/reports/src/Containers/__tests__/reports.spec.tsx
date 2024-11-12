@@ -7,7 +7,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
-import ui from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/analytics', () => ({
     Analytics: {
@@ -159,23 +159,21 @@ describe('Reports', () => {
         );
     });
 
-    test('navigates to a different route on select change', () => {
-        const spy = jest.spyOn(ui, 'useDevice').mockImplementation(() => ({
+    test('navigates to a different route on select change', async () => {
+        (useDevice as jest.Mock).mockReturnValue({
             isDesktop: false,
             isMobile: true,
             isTablet: false,
             isTabletPortrait: false,
             isMobileOrTabletLandscape: false,
-        }));
+        });
         const history = createMemoryHistory();
         renderReports(store, history);
-        userEvent.selectOptions(screen.getByRole('combobox'), route2);
+        await userEvent.selectOptions(screen.getByRole('combobox'), route2);
         expect(history.location.pathname).toBe(route2);
-
-        spy.mockRestore();
     });
 
-    test('calls routeBackInApp on close button click', () => {
+    test('calls routeBackInApp on close button click', async () => {
         const mockRouteBackInApp = jest.fn();
         store = mockStore({
             ...mock,
@@ -186,11 +184,18 @@ describe('Reports', () => {
         });
         const history = createMemoryHistory();
         renderReports(store, history);
-        userEvent.click(screen.getByTestId(onCloseClick));
+        await userEvent.click(screen.getByTestId(onCloseClick));
         expect(mockRouteBackInApp).toHaveBeenCalled();
     });
 
     test('sets vertical_tab_index to 0 if the selected route is default', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+            isTabletPortrait: false,
+            isMobileOrTabletLandscape: false,
+        });
         const history = createMemoryHistory();
         history.push(route1);
         renderReports(store, history);
@@ -203,6 +208,13 @@ describe('Reports', () => {
     });
 
     test('sets vertical_tab_index to reports_route_tab_index if the selected route is not default', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+            isTabletPortrait: false,
+            isMobileOrTabletLandscape: false,
+        });
         const history = createMemoryHistory();
         history.push(route2);
         renderReports(store, history);

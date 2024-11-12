@@ -1,4 +1,7 @@
-export { ACCUMULATORS_DALEMBERT } from './accumulators_dalembert';
+export { ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT } from './accumulators_dalembert_on_stat_reset_with_tick_count_take_profit';
+export { ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT } from './accumulators_dalembert_with_tick_count_take_profit';
+export { ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT } from './accumulators_martingale_on_stat_reset_with_tick_count_take_profit';
+export { ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT } from './accumulators_martingale_with_tick_count_take_profit';
 export { D_ALEMBERT } from './d_alembert';
 export { MARTINGALE } from './martingale';
 export { OSCARS_GRIND } from './oscars_grind';

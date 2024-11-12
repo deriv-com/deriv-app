@@ -123,6 +123,19 @@
             @include mobile {
                 flex-direction: column-reverse;
             }
+
+            &--with-1-carrier {
+                @include desktop {
+                    .quill-button {
+                        width: 27.6rem;
+                    }
+                }
+                @include tablet-screen {
+                    .quill-button {
+                        width: 27.6rem;
+                    }
+                }
+            }
         }
 
         &--email-verification {

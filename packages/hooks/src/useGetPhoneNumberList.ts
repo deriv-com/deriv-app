@@ -14,6 +14,8 @@ const useGetPhoneNumberList = () => {
         options: { enabled: is_authorize },
     });
 
+    const available_carriers = data?.phone_settings?.carriers && data?.phone_settings?.carriers.length;
+
     const is_carriers_supported = data?.phone_settings?.carriers && data.phone_settings.carriers.length > 0;
 
     const countries = data?.phone_settings?.countries;
@@ -62,6 +64,7 @@ const useGetPhoneNumberList = () => {
     const short_code_selected = getShortCodeSelected() || clients_country;
 
     return {
+        available_carriers,
         is_carriers_supported,
         formatted_countries_list_for_core,
         formatted_countries_list,

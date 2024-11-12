@@ -1,4 +1,6 @@
-import { useState, useEffect, ChangeEvent, Fragment } from 'react';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
+import clsx from 'clsx';
+
 import {
     useGetPhoneNumberList,
     useGrowthbookGetFeatureValue,
@@ -10,10 +12,10 @@ import {
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Button, InputPhoneNumber, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
-import { Localize, useTranslations } from '@deriv-com/translations';
-import { validatePhoneNumber } from './validation';
-import clsx from 'clsx';
 import { TCountryCodes } from '@deriv-com/quill-ui/dist/types';
+import { Localize, useTranslations } from '@deriv-com/translations';
+
+import { validatePhoneNumber } from './validation';
 
 type TConfirmPhoneNumber = {
     show_confirm_phone_number?: boolean;
@@ -38,8 +40,14 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         is_disabled_request_button,
         setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
-    const { formatted_countries_list, short_code_selected, selected_phone_code, selected_country_list, isLoading } =
-        useGetPhoneNumberList();
+    const {
+        available_carriers,
+        formatted_countries_list,
+        short_code_selected,
+        selected_phone_code,
+        selected_country_list,
+        isLoading,
+    } = useGetPhoneNumberList();
     const { data: account_settings, invalidate } = useSettings();
     const [selectedCountryCode, setSelectedCountryCode] = useState<TCountryCodes>();
     const { ui } = useStore();
@@ -47,6 +55,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { next_phone_otp_request_timer, is_phone_otp_timer_loading } = usePhoneNumberVerificationSetTimer(true);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
+    const only_1_carrier_supported = available_carriers === 1;
 
     useEffect(() => {
         if (show_confirm_phone_number) {
@@ -156,6 +165,16 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
               selectedCountryCode?.carriers.includes('whatsapp')
             : selected_country_list?.carriers.includes('whatsapp'));
 
+    const getSMSButtonVariant = () => {
+        if (!isCountryCodeDropdownEnabled) return 'secondary';
+        return isCarrierSupportedForWhatsApp ? 'secondary' : 'primary';
+    };
+
+    const getSmsButtonColor = () => {
+        if (!isCountryCodeDropdownEnabled) return 'black-white';
+        return isCarrierSupportedForWhatsApp ? 'black-white' : 'coral';
+    };
+
     return (
         <Fragment>
             <Text bold>
@@ -194,12 +213,16 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     />
                 )}
             </div>
-            <div className='phone-verification__card--buttons_container'>
+            <div
+                className={clsx('phone-verification__card--buttons_container', {
+                    'phone-verification__card--buttons_container--with-1-carrier': only_1_carrier_supported,
+                })}
+            >
                 {(isCountryCodeDropdownEnabled ? isCarrierSupportedForSms : true) && !isLoading && (
                     <Button
-                        variant='secondary'
-                        color='black-white'
-                        fullWidth
+                        variant={getSMSButtonVariant()}
+                        color={getSmsButtonColor()}
+                        fullWidth={isCountryCodeDropdownEnabled ? isCarrierSupportedForWhatsApp : true}
                         size='lg'
                         onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
                         disabled={

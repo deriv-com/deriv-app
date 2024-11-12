@@ -6,22 +6,6 @@ on:
     types: [opened, synchronize, edited]    
 name: Coveralls
 jobs:
-
-  # list_packages:
-  #   name: List packages
-  #   runs-on: Runner_16cores_Deriv-app
-  #   outputs:
-  #     packages: ${{ steps.list_packages.outputs.packages }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-  #     - name: Get list of package directories
-  #       id: list_packages
-  #       run: |
-  #         packages_list=$(find packages/* -maxdepth 0 -type d -exec basename {} \; | jq -R . | jq -s -c .)
-  #         echo "Packages found: $packages_list"  # For testing/debugging
-  #         echo "packages=$packages_list" >> $GITHUB_OUTPUT
-
   test:
     name: Run tests in parallel
     runs-on: Runner_16cores_Deriv-app

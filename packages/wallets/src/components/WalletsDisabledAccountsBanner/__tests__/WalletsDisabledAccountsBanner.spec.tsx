@@ -107,19 +107,19 @@ describe('WalletsDisabledAccountsBanner', () => {
         expect(screen.getByText(/Your USD, EUR, and BTC Wallets are disabled/)).toBeInTheDocument();
     });
 
-    it('calls open_chat_window on button click', () => {
+    it('calls open_chat_window on button click', async () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0], mockDisabledAccounts[1]]} />);
 
         const chatButton = screen.getByRole('button');
+
         chatButton.addEventListener('click', () => Chat.open());
-        userEvent.click(chatButton);
+        await userEvent.click(chatButton);
 
         expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
     it('renders the icon', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0]]} />);
-        expect(screen.getByRole('img')).toBeInTheDocument();
-        expect(screen.getByRole('img')).toHaveClass('deriv-section-message__icon--warning');
+        expect(screen.getByText('MockWarningIcon')).toBeInTheDocument();
     });
 });

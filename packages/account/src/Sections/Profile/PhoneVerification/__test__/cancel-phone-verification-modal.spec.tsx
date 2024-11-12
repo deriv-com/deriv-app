@@ -63,17 +63,17 @@ describe('CancelPhoneVerificationModal', () => {
         expect(screen.getByText(/If you cancel, you'll lose all progress./)).toBeInTheDocument();
     });
 
-    it('it should render only mockSetShowCancelModal when Continue verification is clicked', () => {
+    it('it should render only mockSetShowCancelModal when Continue verification is clicked', async () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[0] });
-        userEvent.click(cancelButton);
+        await userEvent.click(cancelButton);
         expect(mock_push).not.toBeCalled();
     });
 
-    it('it should render mockSetShowCancelModal and mock_back_router when Cancel is clicked', () => {
+    it('it should render mockSetShowCancelModal and mock_back_router when Cancel is clicked', async () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
-        userEvent.click(cancelButton);
+        await userEvent.click(cancelButton);
         expect(mock_push).toBeCalledWith(routes.personal_details);
     });
 });

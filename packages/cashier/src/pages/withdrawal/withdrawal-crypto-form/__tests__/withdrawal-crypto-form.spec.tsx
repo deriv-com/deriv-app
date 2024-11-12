@@ -51,6 +51,8 @@ describe('<WithdrawalCryptoForm />', () => {
                         onChangeConverterFromAmount: jest.fn(),
                         onChangeConverterToAmount: jest.fn(),
                         resetConverter: jest.fn(),
+                        converter_from_amount: '0.0000',
+                        converter_to_amount: '0',
                     },
                     withdraw: {
                         blockchain_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',

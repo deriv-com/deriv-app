@@ -156,8 +156,8 @@ describe('DxtradeEnterPasswordModal', () => {
         );
 
         expect(screen.getByText('CreatePasswordModal')).toBeInTheDocument();
-        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
-        userEvent.click(screen.getByText('Submit'));
+        await userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        await userEvent.click(screen.getByText('Submit'));
         expect(mockMutateAsync).toHaveBeenCalledWith({
             payload: {
                 account_type: 'real',
@@ -186,15 +186,15 @@ describe('DxtradeEnterPasswordModal', () => {
             </ModalProvider>
         );
 
-        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
-        userEvent.click(screen.getByText('Submit'));
+        await userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        await userEvent.click(screen.getByText('Submit'));
         await waitFor(() => {
             expect(mockMutateAsync).toHaveBeenCalled();
             expect(screen.getByTestId('dt_password_input')).toHaveValue('');
         });
     });
 
-    it('handles EnterPasswordModal password change and button clicks', () => {
+    it('handles EnterPasswordModal password change and button clicks', async () => {
         const mockMutateAsync = jest.fn().mockResolvedValueOnce({});
         const mockSendEmail = jest.fn();
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
@@ -218,8 +218,8 @@ describe('DxtradeEnterPasswordModal', () => {
         );
 
         expect(screen.getByText('EnterPasswordModal')).toBeInTheDocument();
-        userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
-        userEvent.click(screen.getByText('Submit'));
+        await userEvent.type(screen.getByTestId('dt_password_input'), 'NewPassword123');
+        await userEvent.click(screen.getByText('Submit'));
         expect(mockMutateAsync).toHaveBeenCalledWith({
             payload: {
                 account_type: 'real',
@@ -229,13 +229,13 @@ describe('DxtradeEnterPasswordModal', () => {
             },
         });
 
-        userEvent.click(screen.getByText('Forgot Password'));
+        await userEvent.click(screen.getByText('Forgot Password'));
         expect(mockSendEmail).toHaveBeenCalledWith({
             platform: 'dxtrade',
         });
     });
 
-    it('handles PasswordLimitExceededModal primary and secondary button clicks', () => {
+    it('handles PasswordLimitExceededModal primary and secondary button clicks', async () => {
         const mockSendEmail = jest.fn();
         (useSendPasswordResetEmail as jest.Mock).mockReturnValue({
             sendEmail: mockSendEmail,
@@ -252,16 +252,16 @@ describe('DxtradeEnterPasswordModal', () => {
         );
 
         expect(screen.getByText('PasswordLimitExceededModal')).toBeInTheDocument();
-        userEvent.click(screen.getByText('OK'));
+        await userEvent.click(screen.getByText('OK'));
         expect(mockHide).toHaveBeenCalled();
 
-        userEvent.click(screen.getByText('Reset Password'));
+        await userEvent.click(screen.getByText('Reset Password'));
         expect(mockSendEmail).toHaveBeenCalledWith({
             platform: 'dxtrade',
         });
     });
 
-    it('handles SuccessModal primary and secondary button clicks', () => {
+    it('handles SuccessModal primary and secondary button clicks', async () => {
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
             data: {
                 account_id: 'CRW123',
@@ -284,13 +284,13 @@ describe('DxtradeEnterPasswordModal', () => {
         );
 
         expect(screen.getByText('SuccessModal')).toBeInTheDocument();
-        userEvent.click(screen.getByText('Transfer'));
+        await userEvent.click(screen.getByText('Transfer'));
         expect(mockHide).toHaveBeenCalled();
         expect(mockPush).toHaveBeenCalledWith('/wallet/account-transfer', {
             toAccountLoginId: 'CRW123',
         });
 
-        userEvent.click(screen.getByText('Maybe Later'));
+        await userEvent.click(screen.getByText('Maybe Later'));
         expect(mockHide).toHaveBeenCalled();
     });
 

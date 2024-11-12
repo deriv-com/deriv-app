@@ -24,7 +24,10 @@ import ErrorStore from './error-store';
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(
+        public WS: TWebSocket,
+        public root_store: TRootStore
+    ) {
         makeObservable(this, {
             accounts_list: observable,
             error: observable,
@@ -230,7 +233,7 @@ export default class AccountTransferStore {
     setMinimumFee() {
         const decimals = getDecimalPlaces(this.selected_from.currency || '');
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
+        this.minimum_fee = (1 / 10 ** decimals).toFixed(decimals);
     }
 
     setTransferLimit() {

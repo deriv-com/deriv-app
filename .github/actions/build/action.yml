@@ -62,7 +62,7 @@ runs:
     uses: actions/cache/restore@v4
     id: restore-cache
     with:
-      path: node_modules/.cache/nx
+      path: nx
       key: nx-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
   - name: Run build
     env:
@@ -89,5 +89,5 @@ runs:
     name: Invalidate and save nx cache
     uses: actions/cache/save@v4
     with:
-      path: node_modules/.cache/nx
+      path: nx
       key: ${{ steps.restore-cache.outputs.cache-primary-key }}

@@ -128,23 +128,21 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
             },
         });
     }, [
-        availableMT5AccountsData,
-        createMT5AccountMutate,
-        isMT5PasswordNotSet,
-        isVirtual,
-        marketType,
-        password,
         addressCity,
         addressLine1,
         addressPostcode,
         addressState,
+        availableMT5AccountsData,
         countryCode,
+        createMT5AccountMutate,
         email,
         firstName,
+        isVirtual,
+        marketType,
+        password,
         phone,
-        tradingPasswordChangeMutateAsync,
-        selectedJurisdiction,
         product,
+        selectedJurisdiction,
     ]);
 
     const onSubmit = useCallback(async () => {

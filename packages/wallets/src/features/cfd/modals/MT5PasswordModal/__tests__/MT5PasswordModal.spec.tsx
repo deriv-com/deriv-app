@@ -9,7 +9,7 @@ import {
     useVerifyEmail,
 } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5PasswordModal from '../MT5PasswordModal';
@@ -196,7 +196,11 @@ describe('MT5PasswordModal', () => {
         (useCreateMT5Account as jest.Mock).mockReturnValue({ error: undefined, mutate: jest.fn(), status: 'idle' });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({ mutateAsync: jest.fn() });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: undefined, isLoading: false });
-        (useModal as jest.Mock).mockReturnValue({ getModalState: jest.fn(), hide: jest.fn() });
+        (useModal as jest.Mock).mockReturnValue({
+            getModalState: jest.fn(),
+            hide: jest.fn(),
+            setModalOptions: jest.fn(),
+        });
         (useVerifyEmail as jest.Mock).mockReturnValue({ error: undefined, status: 'idle' });
         (useSettings as jest.Mock).mockReturnValue({ data: { email: undefined } });
         (useAvailableMT5Accounts as jest.Mock).mockReturnValue({
@@ -424,14 +428,14 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('Deriv MT5 latest password requirements')).toBeInTheDocument();
     });
 
-    it('handles primary and secondary button clicks for MT5ResetPasswordModal', async () => {
+    it('handles primary and secondary button clicks for MT5ResetPasswordModal', () => {
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useCreateMT5Account as jest.Mock).mockReturnValue({
             error: { error: { code: 'InvalidTradingPlatformPasswordFormat' } },
             status: 'error',
         });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({
-            mutateAsync: mockTradingPasswordChangeMutateAsync,
+            mutateAsync: mockTradingPasswordChangeMutateAsync.mockImplementation(params => Promise.resolve(params)),
         });
         (useVerifyEmail as jest.Mock).mockReturnValue({
             mutate: mockEmailVerificationMutate,
@@ -441,14 +445,14 @@ describe('MT5PasswordModal', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of the account
         render(<MT5PasswordModal account={mockAccount} />);
 
-        await userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_primary_button'));
+        fireEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_primary_button'));
         expect(mockTradingPasswordChangeMutateAsync).toHaveBeenCalledWith({
             new_password: 'newPass',
             old_password: 'oldPass',
             platform: 'mt5',
         });
 
-        await userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_secondary_button'));
+        fireEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
             url_parameters: {

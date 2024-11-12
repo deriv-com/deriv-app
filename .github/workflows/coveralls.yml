@@ -27,7 +27,7 @@ jobs:
     runs-on: Runner_16cores_Deriv-app
     strategy:
       matrix:
-        shards: [1,2,3,4,5,6,7,8,9,10]
+        shard: [1,2,3,4,5,6,7,8,9,10]
       fail-fast: true
     steps:
       - name: Checkout
@@ -40,12 +40,12 @@ jobs:
         working-directory: packages/components
         run: npm run build
       - name: Test
-        run: npm jest --all --shard=${{ matrix.shards }}/10 --maxWorkers=${JEST_MAX_WORKERS:-'95%'} -- --collectCoverage
+        run: JEST_MAX_WORKERS=95% SHARD_NUMBER=${{ matrix.shard }} npm run test:jest -- --collectCoverage
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
         with:
           allow-empty: true
-          flag-name: ${{ matrix.shards}}
+          flag-name: ${{ matrix.shard}}
           parallel: true
 
   finish:

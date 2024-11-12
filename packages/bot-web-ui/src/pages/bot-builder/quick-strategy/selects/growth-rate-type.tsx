@@ -86,19 +86,19 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
         prev_proposal_payload.current = { ...request_proposal, boolean_tick_count: values.boolean_tick_count };
         try {
             const response = await requestProposalForQS(request_proposal, ws);
-            const min = 1;
-            const max = response?.proposal?.validation_params.max_ticks;
+            const min_ticks = 1;
+            const max_ticks = response?.proposal?.validation_params?.max_ticks;
             let min_error = '';
             let max_error = '';
             ref_max_payout.current = response?.proposal?.validation_params?.max_payout;
             const current_tick_count = Number(values.tick_count);
 
-            if (!isNaN(current_tick_count) && current_tick_count > max) {
-                max_error = `Maximum tick count is: ${max}`;
+            if (!isNaN(current_tick_count) && current_tick_count > max_ticks) {
+                max_error = `Maximum tick count is: ${max_ticks}`;
                 setFieldError('tick_count', max_error);
                 prev_error.current.tick_count = max_error;
-            } else if (!isNaN(current_tick_count) && current_tick_count < min) {
-                min_error = `Minimum tick count is: ${min}`;
+            } else if (!isNaN(current_tick_count) && current_tick_count < min_ticks) {
+                min_error = `Minimum tick count is: ${min_ticks}`;
                 setFieldError('tick_count', min_error);
                 prev_error.current.tick_count = min_error;
             } else {
@@ -107,7 +107,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             }
             prev_error.current.take_profit = null;
         } catch (error_response) {
-            let errror_message = error_response?.message || error_response?.error?.message;
+            let errror_message = error_response?.message ?? error_response?.error?.message;
 
             if (values.boolean_tick_count) {
                 setFieldError('tick_count', errror_message);
@@ -174,9 +174,6 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                                             className={classNames('qs__form__field__list__item', {
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
-                                            onClick={() => {
-                                                handleChange(item?.value);
-                                            }}
                                             onChange={() => {
                                                 handleChange(item?.value);
                                             }}

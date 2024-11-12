@@ -71,6 +71,7 @@ const SELL_CONDITIONS_TYPE_INFO: TConfigItem = {
     description: LocalizeHTMLForSellConditions(),
 };
 
+// This will trigger the boolean_tick_count value to render the take profit and tick count fields
 const SELL_CONDITIONS_TYPE: TConfigItem = {
     type: 'sell_conditions',
     name: 'sell_conditions',

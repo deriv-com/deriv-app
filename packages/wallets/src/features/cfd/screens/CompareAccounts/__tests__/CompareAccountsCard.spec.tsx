@@ -48,7 +48,7 @@ describe('CompareAccountsCard', () => {
     });
 
     it('renders the EU clients disclaimer for EU users', () => {
-        render(<CompareAccountsCard {...defaultProps} isEuUser={true} />, { wrapper });
+        render(<CompareAccountsCard {...defaultProps} isEuRegion={true} />, { wrapper });
 
         expect(screen.getByText('*Boom 300 and Crash 300 Index')).toBeInTheDocument();
     });

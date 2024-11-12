@@ -1,5 +1,5 @@
 // __mocks__/@deriv-com/ui.js
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 
 const ActionScreen = props => (
     <div data-testid={props['data-testid']}>
@@ -292,38 +292,228 @@ const SectionMessage = ({ children, className, ctaSection, icon, title, variant 
     );
 };
 
-const Notifications = ({ componentConfig, notifications = [], clearNotificationsCallback = jest.fn() }) => {
-    return (
-        <div data-testid='announcement-container'>
-            {/* Clear all notifications button */}
-            <button data-testid='clear-notifications-button' onClick={clearNotificationsCallback}>
-                {componentConfig?.clearButtonText || 'Mark all as read'}
-            </button>
+const CloseIcon = ({ className, onClick, ...rest }) => (
+    <div data-testid='mock-close-icon' className={className} onClick={onClick} {...rest}>
+        Mock Close Icon
+    </div>
+);
 
-            {/* Notifications list */}
-            <div data-testid='notifications-list'>
-                {notifications.map((notification, index) => (
-                    <div key={index} data-testid={`notification-${index}`} className='notification'>
-                        <div className='notification__container'>
-                            <div className='notification__icon'>{notification.icon}</div>
-                            <div className='notification__text'>
-                                <div className='notification__title'>{notification.title}</div>
-                                <div className='notification__message'>
-                                    <p>{notification.message}</p>
-                                </div>
-                            </div>
+const ModalBody = ({ children, className, ...rest }) => (
+    <div data-testid='mock-modal-body' className={`deriv-modal__body ${className || ''}`} {...rest}>
+        {children}
+    </div>
+);
+
+const ModalFooter = ({ children, className, hideBorder = false, ...rest }) => (
+    <div
+        data-testid='mock-modal-footer'
+        className={`deriv-modal__footer ${hideBorder ? 'deriv-modal__footer--no-border' : ''} ${className || ''}`}
+        {...rest}
+    >
+        {children}
+    </div>
+);
+
+const ModalHeader = ({ children, hideCloseIcon, className, onRequestClose, hideBorder = false, ...rest }) => (
+    <div
+        data-testid='mock-modal-header'
+        className={`deriv-modal__header ${hideBorder ? 'deriv-modal__header--no-border' : ''} ${className || ''}`}
+        {...rest}
+    >
+        {children}
+        {!hideCloseIcon && (
+            <CloseIcon data-testid='dt-close-icon' onClick={onRequestClose} className='deriv-modal__close-icon' />
+        )}
+    </div>
+);
+
+const Modal = ({ children, style, className, isOpen, onRequestClose, ...rest }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div data-testid='mock-modal' className={`deriv-modal__wrapper ${className || ''}`} {...rest}>
+            {children}
+        </div>
+    );
+};
+
+Modal.Header = ModalHeader;
+Modal.Body = ModalBody;
+Modal.Footer = ModalFooter;
+Modal.setAppElement = jest.fn();
+
+const ContextMenu = forwardRef(({ children, className, isOpen, onClick, ...rest }, ref) => {
+    if (!isOpen) return null;
+
+    return (
+        <div
+            ref={ref}
+            data-testid='mock-context-menu'
+            className={className}
+            onClick={e => {
+                e.stopPropagation();
+                onClick?.(e);
+            }}
+            {...rest}
+        >
+            {children}
+        </div>
+    );
+});
+
+ContextMenu.displayName = 'ContextMenu';
+
+const Notification = ({ icon, title, message, buttonAction, actionText }) => {
+    const haveAction = typeof buttonAction === 'function' && typeof actionText === 'string';
+    return (
+        <div data-testid='notification'>
+            <div data-testid='notification-container'>
+                <div data-testid='notification-icon'>{icon}</div>
+                <div data-testid='notification-text'>
+                    <h3 data-testid='notification-title'>{title}</h3>
+                    <div data-testid='notification-message'>
+                        <p>{message}</p>
+                    </div>
+                </div>
+            </div>
+            {haveAction && (
+                <div data-testid='notification-button-container'>
+                    <button className='notification__button' data-testid='notification-button' onClick={buttonAction}>
+                        {actionText}
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+const Notifications = ({
+    isMobile = true,
+    isOpen = false,
+    setIsOpen = () => {},
+    notifications = [],
+    isLoading = false,
+    className = '',
+    clearNotificationsCallback = () => {},
+    componentConfig = {
+        modalTitle: 'Notifications',
+        noNotificationsTitle: 'No notifications',
+        noNotificationsMessage: 'You have no notifications',
+        clearButtonText: 'Clear all',
+    },
+    ...rest
+}) => {
+    const notificationsRef = React.useRef(null);
+    const notificationsScrollRef = React.useRef(null);
+
+    return (
+        <>
+            {isMobile && (
+                <Modal
+                    className={`notifications ${className}`}
+                    isOpen={isOpen}
+                    onRequestClose={() => setIsOpen(false)}
+                    {...rest}
+                >
+                    <Modal.Header onRequestClose={() => setIsOpen(false)}>
+                        <Text as='div' weight='bold' className='deriv-modal__header-title'>
+                            {componentConfig.modalTitle}
+                        </Text>
+                    </Modal.Header>
+                    {notifications.length === 0 && (
+                        <div className='notifications__empty' data-testid='notifications-empty'>
+                            <img src='mock-icon-path' alt='empty notifications' />
+                            <Text as='p' align='center' className='notifications__empty-text'>
+                                {componentConfig.noNotificationsTitle}
+                            </Text>
+                            <Text as='span' align='center'>
+                                {componentConfig.noNotificationsMessage}
+                            </Text>
                         </div>
-                        {notification.buttonAction && notification.actionText && (
-                            <div className='notification__button-container'>
-                                <button className='notification__button' onClick={notification.buttonAction}>
-                                    {notification.actionText}
-                                </button>
+                    )}
+                    <div
+                        className='notifications__content'
+                        ref={notificationsScrollRef}
+                        onScroll={jest.fn()}
+                        data-testid='notifications-content'
+                    >
+                        {notifications.map(notification => {
+                            return <Notification key={notification.id} {...notification} />;
+                        })}
+                        {isLoading && (
+                            <div className='notifications__loader' data-testid='notifications-loader'>
+                                <Loader isFullScreen={false} />
                             </div>
                         )}
                     </div>
-                ))}
-            </div>
-        </div>
+                    <Modal.Footer className='notifications__footer'>
+                        <button
+                            className={`notifications__footer__clear-button ${
+                                notifications.length === 0 ? 'notifications__footer__clear-button--disabled' : ''
+                            }`}
+                            onClick={() => {
+                                if (notifications.length > 0) {
+                                    setIsOpen(false);
+                                    clearNotificationsCallback();
+                                }
+                            }}
+                            data-testid='clear-notifications-button'
+                        >
+                            {componentConfig.clearButtonText}
+                        </button>
+                    </Modal.Footer>
+                </Modal>
+            )}
+
+            {!isMobile && (
+                <ContextMenu ref={notificationsRef} isOpen={isOpen} className={`notifications ${className}`} {...rest}>
+                    <Text as='span' className='notifications__header-desktop'>
+                        {componentConfig.modalTitle}
+                    </Text>
+                    {notifications.length === 0 && (
+                        <div className='notifications__empty' data-testid='notifications-empty'>
+                            <img src='mock-icon-path' alt='empty notifications' />
+                            <Text as='p' align='center' className='notifications__empty-text'>
+                                {componentConfig.noNotificationsTitle}
+                            </Text>
+                            <Text as='span' align='center'>
+                                {componentConfig.noNotificationsMessage}
+                            </Text>
+                        </div>
+                    )}
+                    <div
+                        className='notifications__content'
+                        ref={notificationsScrollRef}
+                        onScroll={jest.fn()}
+                        data-testid='notifications-content'
+                    >
+                        {notifications.map(notification => {
+                            return <Notification key={notification.id} {...notification} />;
+                        })}
+                        {isLoading && (
+                            <div className='notifications__loader' data-testid='notifications-loader'>
+                                <Loader isFullScreen={false} />
+                            </div>
+                        )}
+                    </div>
+                    <div className='notifications__footer'>
+                        <div className='notifications__footer-box'>
+                            <button
+                                className={`notifications__footer__clear-button ${notifications.length === 0 ? 'notifications__footer__clear-button--disabled' : ''}`}
+                                onClick={() => {
+                                    if (notifications.length > 0) {
+                                        clearNotificationsCallback();
+                                    }
+                                }}
+                                data-testid='clear-notifications-button'
+                            >
+                                {componentConfig.clearButtonText}
+                            </button>
+                        </div>
+                    </div>
+                </ContextMenu>
+            )}
+        </>
     );
 };
 
@@ -378,4 +568,10 @@ export {
     SectionMessage,
     Notifications,
     LinearProgressBar,
+    Modal,
+    ContextMenu,
+    CloseIcon,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
 };

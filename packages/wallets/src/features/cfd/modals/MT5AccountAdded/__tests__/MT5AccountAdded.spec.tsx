@@ -206,7 +206,7 @@ describe('MT5AccountAdded', () => {
         expect(screen.queryByText('Your Financial account is ready')).not.toBeInTheDocument();
     });
 
-    it('handles "Maybe later" button click', () => {
+    it('handles "Maybe later" button click', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 display_balance: '10000 USD',
@@ -243,7 +243,7 @@ describe('MT5AccountAdded', () => {
 
         const maybeLaterButton = screen.getAllByRole('button', { name: 'Maybe later' })[0];
         expect(maybeLaterButton).toBeInTheDocument();
-        userEvent.click(maybeLaterButton);
+        await userEvent.click(maybeLaterButton);
         expect(mockHide).toHaveBeenCalled();
     });
 });

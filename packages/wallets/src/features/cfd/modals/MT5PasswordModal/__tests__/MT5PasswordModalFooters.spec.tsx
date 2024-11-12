@@ -25,7 +25,7 @@ describe('MT5PasswordModalFooter', () => {
         expect(screen.getByText('Add account')).toBeInTheDocument();
     });
 
-    it('calls onSecondaryClick when forgot password button is clicked', () => {
+    it('calls onSecondaryClick when forgot password button is clicked', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         const mockSecondaryClick = jest.fn();
 
@@ -37,11 +37,11 @@ describe('MT5PasswordModalFooter', () => {
                 onSecondaryClick={mockSecondaryClick}
             />
         );
-        userEvent.click(screen.getByText('Forgot password?'));
+        await userEvent.click(screen.getByText('Forgot password?'));
         expect(mockSecondaryClick).toHaveBeenCalled();
     });
 
-    it('calls onPrimaryClick when add account button is clicked', () => {
+    it('calls onPrimaryClick when add account button is clicked', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         const mockPrimaryClick = jest.fn();
 
@@ -53,7 +53,7 @@ describe('MT5PasswordModalFooter', () => {
                 onSecondaryClick={jest.fn()}
             />
         );
-        userEvent.click(screen.getByText('Add account'));
+        await userEvent.click(screen.getByText('Add account'));
         expect(mockPrimaryClick).toHaveBeenCalled();
     });
 });

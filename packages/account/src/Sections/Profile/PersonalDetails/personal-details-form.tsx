@@ -95,7 +95,7 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
 
-    const { formatted_countries_list_for_core, selected_phone_code } = useGetPhoneNumberList();
+    const { formatted_countries_list_for_core, selected_phone_code, is_carriers_supported } = useGetPhoneNumberList();
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
@@ -556,7 +556,7 @@ const PersonalDetailsForm = observer(() => {
                                                         data-testid='dt_phone'
                                                     />
                                                 </div>
-                                                {isPhoneNumberVerificationEnabled && (
+                                                {isPhoneNumberVerificationEnabled && is_carriers_supported && (
                                                     <VerifyButton
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||

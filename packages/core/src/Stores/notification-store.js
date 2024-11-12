@@ -344,7 +344,9 @@ export default class NotificationStore extends BaseStore {
             is_p2p_enabled,
             is_poa_expired,
             currency,
+            phone_settings,
         } = this.root_store.client;
+        const carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length > 0;
         const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -364,7 +366,8 @@ export default class NotificationStore extends BaseStore {
             account_settings?.phone &&
             !is_next_email_attempt_timer_running &&
             !is_virtual &&
-            is_phone_number_verification_enabled;
+            is_phone_number_verification_enabled &&
+            carriers_supported;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);

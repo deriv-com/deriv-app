@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    phone_settings = {};
     prev_real_account_loginid = '';
     prev_account_type = 'demo';
     external_url_params = {};
@@ -237,6 +238,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
@@ -322,6 +324,7 @@ export default class ClientStore extends BaseStore {
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
             setCFDDisabledSignupTypes: action.bound,
+            setPhoneSettings: action.bound,
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
@@ -448,6 +451,7 @@ export default class ClientStore extends BaseStore {
                 this.residence,
                 this.account_settings,
                 this.preferred_language,
+                this.phone_settings,
             ],
             () => {
                 this.setCookieAccount();
@@ -896,6 +900,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setPhoneSettings(phone_settings) {
+        this.phone_settings = phone_settings;
     }
 
     setTradersHubTracking(is_tradershub_tracking = false) {

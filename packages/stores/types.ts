@@ -565,6 +565,24 @@ export type TClientStore = {
     };
     website_status: WebsiteStatus;
     email: string;
+    phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    };
+    setPhoneSettings: (phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    }) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     updateMT5AccountDetails: () => Promise<void>;

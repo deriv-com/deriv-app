@@ -193,6 +193,9 @@ jest.mock('../config', () => ({
         STRATEGY_1_3_2_6: {
             label: '1-3-2-6',
         },
+        ACCUMULATORS_DALEMBERT: {
+            label: 'Accumulators D’Alembert',
+        },
     },
 }));
 

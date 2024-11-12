@@ -13,6 +13,8 @@ import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
+import GrowthRateSelect from './selects/growth-rate-type';
+import SellConditions from './selects/sell-conditions-type';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
@@ -23,7 +25,7 @@ const QuickStrategyForm = observer(() => {
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
 
-    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(values?.boolean_max_stake ?? false);
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -39,6 +41,12 @@ const QuickStrategyForm = observer(() => {
             window.removeEventListener('keydown', handleEnter);
         };
     }, []);
+
+    React.useEffect(() => {
+        if (!isEnabledToggleSwitch && values?.max_stake) {
+            setFieldValue('max_stake', 0);
+        }
+    }, [isEnabledToggleSwitch, values?.max_stake]);
 
     const onChange = async (key: string, value: string | number | boolean) => {
         setValue(key, value);
@@ -175,6 +183,10 @@ const QuickStrategyForm = observer(() => {
                                 return <DurationTypeSelect {...field} key={key} />;
                             case 'contract_type':
                                 return <ContractTypeSelect {...field} key={key} name={field.name as string} />;
+                            case 'growth_rate':
+                                return <GrowthRateSelect {...field} name={field.name as string} />;
+                            case 'sell_conditions':
+                                return <SellConditions {...field} key={key} />;
                             default:
                                 return null;
                         }

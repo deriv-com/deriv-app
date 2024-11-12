@@ -76,8 +76,14 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
             action: data?.action ?? 'RUN',
             max_stake: data?.max_stake ?? 10,
-            boolean_max_stake: data?.boolean_max_stake || false,
+            boolean_max_stake: data?.boolean_max_stake ?? false,
             last_digit_prediction: data?.last_digit_prediction ?? 1,
+            growth_rate: data?.growth_rate ?? '0.01',
+            tick_count: data?.tick_count ?? 0,
+            take_profit: data?.take_profit ?? 0,
+            boolean_tick_count: data?.boolean_tick_count ?? false,
+            max_payout: data?.max_payout ?? 0,
+            max_ticks: data?.max_ticks ?? 0,
         };
         return initial_value;
     };
@@ -93,11 +99,11 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getErrors = (formikData: TFormData) => {
+    const updateSchema = (formikData: TFormData) => {
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
-            group.forEach(field => {
+            group.forEach(async field => {
                 if (field?.validation?.length && field?.name) {
                     if (field.validation.includes('number')) {
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
@@ -178,7 +184,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        getErrors(form_data);
+        updateSchema(form_data);
         localStorage?.setItem('qs-fields', JSON.stringify(form_data));
         return form_data;
     };
@@ -188,7 +194,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             initialValues={getInitialValue()}
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
-            validate={values => getErrors(values)}
+            validate={values => updateSchema(values)}
             validateOnChange={false}
         >
             {children}

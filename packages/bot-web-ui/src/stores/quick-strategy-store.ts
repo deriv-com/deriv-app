@@ -152,12 +152,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const modifyFieldDropdownValues = (name: string, value: string) => {
             const name_list = `${name.toUpperCase()}_LIST`;
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
-
+            const dropdown_value = value;
             el_blocks?.forEach((el_block: HTMLElement) => {
-                el_block.innerHTML = value;
+                el_block.innerHTML = dropdown_value;
             });
         };
-        const { unit, action, type, ...rest_data } = data;
+
+        const { unit, action, type, growth_rate, ...rest_data } = data;
         const fields_to_update = {
             market,
             submarket,
@@ -167,12 +168,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             type: 'both',
             ...rest_data,
             purchase: type,
+            growthrate: growth_rate ? growth_rate.toString() : undefined,
         };
 
         Object.keys(fields_to_update).forEach(key => {
             const value = fields_to_update[key as keyof typeof fields_to_update];
 
-            if (!isNaN(value as number)) {
+            if (!isNaN(value as number) && key !== 'growthrate') {
                 modifyValueInputs(key, value as number);
             } else if (typeof value === 'string') {
                 modifyFieldDropdownValues(key, value);

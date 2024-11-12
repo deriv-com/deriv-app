@@ -69,6 +69,11 @@ module.exports = function (env) {
             is_test_env: false,
             env,
         }),
+        externals: [
+            {
+                '@deriv/utils': true,
+            },
+        ],
         snapshot: {
             managedPaths: [],
         },

@@ -43,14 +43,14 @@ const PhoneVerificationPage = observer(() => {
         setVerificationCode,
         phone_settings,
     } = client;
-    const is_carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length > 0;
+    const no_carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length === 0;
 
     useEffect(() => {
         if (
             (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
             is_virtual ||
             is_phone_number_verified ||
-            !is_carriers_supported
+            no_carriers_supported
         ) {
             setIsForcedToExitPnv(true);
             history.push(routes.personal_details);

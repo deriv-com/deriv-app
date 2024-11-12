@@ -21,6 +21,7 @@ export type TLossThresholdWarningData = {
 };
 
 interface IQuickStrategyStore {
+    additional_data: Record<string, any>;
     current_duration_min_max: {
         min: number;
         max: number;
@@ -62,9 +63,11 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     loss_threshold_warning_data: TLossThresholdWarningData = {
         show: false,
     };
+    additional_data = {};
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
+            additional_data: observable,
             current_duration_min_max: observable,
             form_data: observable,
             is_contract_dialog_open: observable,
@@ -74,6 +77,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             selected_strategy: observable,
             loss_threshold_warning_data: observable,
             onSubmit: action,
+            setAdditionalData: action,
             setCurrentDurationMinMax: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
@@ -91,6 +95,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             }
         );
     }
+
+    setAdditionalData = (data: Record<string, any>) => {
+        this.additional_data = {
+            ...this.additional_data,
+            ...data,
+        };
+    };
 
     setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
         this.loss_threshold_warning_data = {

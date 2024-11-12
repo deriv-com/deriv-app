@@ -4,13 +4,14 @@ import { Popover, Text } from '@deriv/components';
 type TQSInputLabel = {
     children?: React.ReactNode;
     label?: string;
-    description?: string | (() => React.ReactNode);
+    description?: string | ((additional_data?: Record<string, any>) => React.ReactNode);
+    additional_data?: Record<string, any>;
 };
 
-const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description }) => {
+const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description, additional_data }) => {
     let tooltip_msg;
     if (typeof description === 'function') {
-        tooltip_msg = description();
+        tooltip_msg = description(additional_data);
     } else {
         tooltip_msg = description;
     }

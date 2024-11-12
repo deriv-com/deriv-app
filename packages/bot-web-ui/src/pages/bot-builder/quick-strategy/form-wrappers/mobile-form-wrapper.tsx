@@ -33,7 +33,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
 
     const { is_next_qs_enabled } = useFeatureFlags();
     if (!is_next_qs_enabled) {
-        delete STRATEGIES.ACCUMULATORS_DALEMBERT;
+        delete STRATEGIES.ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT;
     }
     React.useEffect(() => {
         validateForm();

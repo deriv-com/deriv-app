@@ -30,7 +30,12 @@ const TradeTypeSelect: React.FC = () => {
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
     const { setValue, selected_strategy } = quick_strategy;
-    const ACCUMULATORS_STRATEGIES = ['ACCUMULATORS_DALEMBERT'];
+    const ACCUMULATORS_STRATEGIES = [
+        'ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
+        'ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
+        'ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+        'ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+    ];
     const is_strategy_accumulator = ACCUMULATORS_STRATEGIES.includes(selected_strategy);
 
     React.useEffect(() => {

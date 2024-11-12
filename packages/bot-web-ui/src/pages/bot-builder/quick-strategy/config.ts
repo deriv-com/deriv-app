@@ -7,7 +7,10 @@ import {
     REVERSE_D_ALEMBERT,
     REVERSE_MARTINGALE,
     STRATEGY_1_3_2_6,
-    ACCUMULATORS_DALEMBERT,
+    ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT,
+    ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT,
+    ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
+    ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 import { LocalizeHTMLForSellConditions } from './localize_html';
@@ -68,7 +71,7 @@ const PURCHASE_TYPE: TConfigItem = {
 const SELL_CONDITIONS_TYPE_INFO: TConfigItem = {
     type: 'label',
     label: localize('Sell conditions'),
-    description: LocalizeHTMLForSellConditions(),
+    description: LocalizeHTMLForSellConditions,
 };
 
 // This will trigger the boolean_tick_count value to render the take profit and tick count fields
@@ -161,6 +164,12 @@ const LABEL_ACCUMULAORTS_UNIT: TConfigItem = {
     type: 'label',
     label: localize('Unit'),
     description: localize('The unit used to multiply the stake after a losing trade for the next trade.'),
+};
+
+const LABEL_ACCUMULAORTS_SIZE: TConfigItem = {
+    type: 'label',
+    label: localize('Size'),
+    description: localize('The size used to multiply the stake after a successful trade for the next trade.'),
 };
 
 const LABEL_REVERSE_MARTINGALE_SIZE: TConfigItem = {
@@ -414,11 +423,80 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
         ],
     },
-    ACCUMULATORS_DALEMBERT: {
-        name: 'accumulators_dalembert',
-        label: localize('D’Alembert'),
-        rs_strategy_name: `accumulators d'alembert`,
-        description: ACCUMULATORS_DALEMBERT,
+    ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
+        name: 'accumulators_martingale_with_tick_count_take_profit',
+        label: localize('Martingale with Tick Count/Take Profit'),
+        rs_strategy_name: `accumulators_martingale_with_tick_count_take_profit`,
+        description: ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT,
+        fields: [
+            [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_ACCUMULAORTS_SIZE,
+                SIZE,
+                SELL_CONDITIONS_TYPE_INFO,
+                SELL_CONDITIONS_TYPE,
+                TAKE_PROFIT,
+                TICK_COUNT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+            ],
+        ],
+    },
+    ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
+        name: 'accumulators_dalembert_with_tick_count_take_profit',
+        label: localize('D’Alembert with Tick Count/Take Profit'),
+        rs_strategy_name: `accumulators_dalembert_with_tick_count_take_profit`,
+        description: ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT,
+        fields: [
+            [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_ACCUMULAORTS_UNIT,
+                UNIT,
+                SELL_CONDITIONS_TYPE_INFO,
+                SELL_CONDITIONS_TYPE,
+                TAKE_PROFIT,
+                TICK_COUNT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+            ],
+        ],
+    },
+    ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+        name: 'accumulators_martingale_on_stat_reset_with_tick_count_take_profit',
+        label: localize('Martingale on Stat Reset with Tick Count/Take Profit'),
+        rs_strategy_name: `accumulators_martingale_on_stat_reset_with_tick_count_take_profit`,
+        description: ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
+        fields: [
+            [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_ACCUMULAORTS_SIZE,
+                SIZE,
+                SELL_CONDITIONS_TYPE_INFO,
+                SELL_CONDITIONS_TYPE,
+                TAKE_PROFIT,
+                TICK_COUNT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+            ],
+        ],
+    },
+    ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+        name: 'accumulators_dalembert_on_stat_reset_with_tick_count_take_profit',
+        label: localize("D'Alembert on Stat Reset with Tick Count/Take Profit"),
+        rs_strategy_name: `accumulators_dalembert_on_stat_reset_with_tick_count_take_profit`,
+        description: ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [

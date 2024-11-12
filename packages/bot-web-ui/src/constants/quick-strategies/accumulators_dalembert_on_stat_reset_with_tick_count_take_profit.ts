@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { TDescriptionItem } from '../../pages/bot-builder/quick-strategy/types';
 
 // TODO: Added dummy description because it has dependency with tutorial sections
-export const ACCUMULATORS_DALEMBERT: TDescriptionItem[] = [
+export const ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the D’Alembert strategy in Deriv Bot')],

@@ -368,6 +368,10 @@ $MIN_HEIGHT_FLOATING: calc(
                             border-start-end-radius: 0;
                             border-end-end-radius: 0;
                         }
+
+                        @include mobile {
+                            width: 45%;
+                        }
                     }
 
                     .dc-autocomplete {

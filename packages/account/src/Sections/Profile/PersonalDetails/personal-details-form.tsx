@@ -573,11 +573,13 @@ const PersonalDetailsForm = observer(() => {
                                                     />
                                                 )}
                                             </div>
-                                            <div className='account-form__fieldset--phone_container--verified-hint'>
-                                                <Text as='p' color='less-prominent' size='xxs'>
-                                                    {hintMessage()}
-                                                </Text>
-                                            </div>
+                                            {is_phone_number_verified && (
+                                                <div className='account-form__fieldset--phone_container--verified-hint'>
+                                                    <Text as='p' color='less-prominent' size='xxs'>
+                                                        {hintMessage()}
+                                                    </Text>
+                                                </div>
+                                            )}
                                         </fieldset>
                                         <AccountOpeningReasonField
                                             account_opening_reason_list={account_opening_reason_list}

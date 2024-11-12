@@ -10,7 +10,7 @@ const CompareAccountsScreen = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const isRtl = useIsRtl();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
-    const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
+    const { is_virtual: isDemo = false } = activeWallet || {};
 
     const {
         data: compareAccounts,
@@ -29,7 +29,6 @@ const CompareAccountsScreen = () => {
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             key={`compare-accounts-${item?.product}-${index}`}
                             marketType={item?.market_type}
                             platform={item?.platform}
@@ -42,7 +41,6 @@ const CompareAccountsScreen = () => {
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             marketType={ctraderAccount.market_type}
                             platform={ctraderAccount.platform}
                             shortCode={ctraderAccount.shortcode}
@@ -53,7 +51,6 @@ const CompareAccountsScreen = () => {
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             marketType={dxtradeAccount.market_type}
                             platform={dxtradeAccount.platform}
                             shortCode={dxtradeAccount.shortcode}

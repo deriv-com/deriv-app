@@ -22,9 +22,9 @@
     &__eu-clients {
         position: relative;
         top: 0.5rem;
-        text-align: center;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        padding: 0 2.4rem;
     }
 
     &__banner {

@@ -38,7 +38,7 @@ const CompareAccountsDescription = ({
     return (
         <div
             className={classNames('wallets-compare-accounts-text-container', {
-                'wallets-compare-accounts-text-container--demo': isDemo,
+                'wallets-compare-accounts-text-container--demo': isDemo && !isEuRegion,
                 'wallets-compare-accounts-text-container--eu': isEuRegion,
             })}
         >

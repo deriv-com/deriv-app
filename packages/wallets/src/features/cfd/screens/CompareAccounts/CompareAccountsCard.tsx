@@ -13,7 +13,6 @@ import './CompareAccountsCard.scss';
 type TCompareAccountsCard = {
     isDemo: boolean;
     isEuRegion: boolean;
-    isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
@@ -23,7 +22,6 @@ type TCompareAccountsCard = {
 const CompareAccountsCard = ({
     isDemo,
     isEuRegion,
-    isEuUser,
     marketType,
     platform,
     product,
@@ -67,7 +65,7 @@ const CompareAccountsCard = ({
                     product={product}
                     shortCode={shortCode}
                 />
-                {isEuUser && (
+                {isEuRegion && (
                     <div className='wallets-compare-accounts-card__eu-clients'>
                         <Text color='red' size='2xs' weight='bold'>
                             <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />

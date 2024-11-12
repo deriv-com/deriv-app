@@ -12,11 +12,6 @@ jest.mock('@deriv/api-v2', () => ({
     useTradingPlatformStatus: jest.fn(),
 }));
 
-jest.mock('../../../../flows/ClientVerification/ClientVerification', () => ({
-    ...jest.requireActual('../../../../flows/ClientVerification/ClientVerification'),
-    ClientVerification: jest.fn(() => <div>ClientVerification</div>),
-}));
-
 jest.mock('../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));
@@ -132,7 +127,7 @@ describe('AvailableMT5AccountsList', () => {
         expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={true} />);
     });
 
-    it('shows MT5PasswordModal for non-regulated real accounts if client is verified', () => {
+    it('shows MT5PasswordModal for non-regulated real accounts if client is verified', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: undefined,
         });
@@ -140,13 +135,13 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={nonRegulatedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<MT5PasswordModal account={nonRegulatedAccount} />);
     });
 
-    it('shows ClientVerificationModal for regulated real accounts if client is unverified', () => {
+    it('shows ClientVerificationModal for regulated real accounts if client is unverified', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 is_virtual: false,
@@ -156,13 +151,13 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={regulatedUnverifiedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<ClientVerificationModal account={regulatedUnverifiedAccount} />);
     });
 
-    it('shows MT5PasswordModal for demo accounts for verified clients', () => {
+    it('shows MT5PasswordModal for demo accounts for verified clients', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 is_virtual: true,
@@ -172,7 +167,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={regulatedVerifiedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<MT5PasswordModal account={regulatedVerifiedAccount} isVirtual={true} />);

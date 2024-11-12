@@ -2,7 +2,7 @@
     "extends": "nx/presets/npm.json",
     "tasksRunnerOptions": {
         "default": {
-            "runner": "@nrwl/workspace/tasks-runners/default",
+            "runner": "@nx/workspace/tasks-runners/default",
             "options": {
                 "cacheableOperations": ["build", "test", "test:eslint", "package", "prepare", "build:travis"]
             }
@@ -32,7 +32,7 @@
         "defaultBase": "master"
     },
     "pluginsConfig": {
-        "@nrwl/js": {
+        "@nx/js": {
             "analyzeSourceFiles": false
         }
     }

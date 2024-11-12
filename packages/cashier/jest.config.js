@@ -15,6 +15,7 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
         '^Containers/(.*)$': '<rootDir>/src/containers/$1',
         '^Pages/(.*)$': '<rootDir>/src/pages/$1',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
     },
     testPathIgnorePatterns: ['/Routes/', '/validator/'],
     coveragePathIgnorePatterns: [

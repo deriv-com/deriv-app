@@ -16,6 +16,7 @@ import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
+import { useFeatureFlags } from '@deriv/hooks';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -30,6 +31,10 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const { handleSubmit } = useQsSubmitHandler();
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
 
+    const { is_next_qs_enabled } = useFeatureFlags();
+    if (!is_next_qs_enabled) {
+        delete STRATEGIES.ACCUMULATORS_DALEMBERT;
+    }
     React.useEffect(() => {
         validateForm();
     }, [selected_strategy, validateForm]);

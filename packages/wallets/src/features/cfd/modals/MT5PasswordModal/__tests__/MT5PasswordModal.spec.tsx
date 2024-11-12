@@ -278,7 +278,7 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('SentEmailContent')).toBeInTheDocument();
     });
 
-    it('handles primary and secondary button clicks in EnterPassword', () => {
+    it('handles primary and secondary button clicks in EnterPassword', async () => {
         (useCreateMT5Account as jest.Mock).mockReturnValue({ mutate: mockCreateMT5AccountMutate, status: 'idle' });
         (useVerifyEmail as jest.Mock).mockReturnValue({
             mutate: mockEmailVerificationMutate,
@@ -302,9 +302,9 @@ describe('MT5PasswordModal', () => {
 
         const passwordInput = screen.getByTestId('dt_enter_password_input');
         const tncCheckbox = screen.getByTestId('dt_enter_password_tnc');
-        userEvent.type(passwordInput, 'test123');
-        userEvent.click(tncCheckbox);
-        userEvent.click(screen.getByTestId('dt_enter_password_primary_button'));
+        await userEvent.type(passwordInput, 'test123');
+        await userEvent.click(tncCheckbox);
+        await userEvent.click(screen.getByTestId('dt_enter_password_primary_button'));
         expect(mockCreateMT5AccountMutate).toHaveBeenCalledWith({
             payload: {
                 account_type: 'gaming',
@@ -321,7 +321,7 @@ describe('MT5PasswordModal', () => {
             },
         });
 
-        userEvent.click(screen.getByTestId('dt_enter_password_secondary_button'));
+        await userEvent.click(screen.getByTestId('dt_enter_password_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
             url_parameters: {
@@ -350,7 +350,7 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('Create Deriv MT5 password')).toBeInTheDocument();
     });
 
-    it('handles primary button click for CreatePassword', () => {
+    it('handles primary button click for CreatePassword', async () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({
@@ -361,8 +361,8 @@ describe('MT5PasswordModal', () => {
         render(<MT5PasswordModal account={mockCtraderAccount} />);
 
         const input = screen.getByTestId('dt_create_password_input');
-        userEvent.type(input, 'test123');
-        userEvent.click(screen.getByTestId('dt_create_password_primary_button'));
+        await userEvent.type(input, 'test123');
+        await userEvent.click(screen.getByTestId('dt_create_password_primary_button'));
         expect(mockTradingPasswordChangeMutateAsync).toHaveBeenCalledWith({
             new_password: 'test123',
             platform: 'mt5',
@@ -378,7 +378,7 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('CreatePasswordMT5')).toBeInTheDocument();
     });
 
-    it('handles primary button click for CreatePasswordMT5', () => {
+    it('handles primary button click for CreatePasswordMT5', async () => {
         (useAccountStatus as jest.Mock).mockReturnValue({ data: { is_mt5_password_not_set: true }, isLoading: false });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({
             mutateAsync: mockTradingPasswordChangeMutateAsync,
@@ -389,9 +389,9 @@ describe('MT5PasswordModal', () => {
 
         const passwordInput = screen.getByTestId('dt_create_password_mt5_input');
         const tncCheckbox = screen.getByTestId('dt_create_password_mt5_tnc');
-        userEvent.type(passwordInput, 'test123');
-        userEvent.click(tncCheckbox);
-        userEvent.click(screen.getByTestId('dt_create_password_mt5_primary_button'));
+        await userEvent.type(passwordInput, 'test123');
+        await userEvent.click(tncCheckbox);
+        await userEvent.click(screen.getByTestId('dt_create_password_mt5_primary_button'));
         expect(mockTradingPasswordChangeMutateAsync).toHaveBeenCalledWith({
             new_password: 'test123',
             platform: 'mt5',
@@ -424,7 +424,7 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('Deriv MT5 latest password requirements')).toBeInTheDocument();
     });
 
-    it('handles primary and secondary button clicks for MT5ResetPasswordModal', () => {
+    it('handles primary and secondary button clicks for MT5ResetPasswordModal', async () => {
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useCreateMT5Account as jest.Mock).mockReturnValue({
             error: { error: { code: 'InvalidTradingPlatformPasswordFormat' } },
@@ -441,14 +441,14 @@ describe('MT5PasswordModal', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of the account
         render(<MT5PasswordModal account={mockAccount} />);
 
-        userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_primary_button'));
+        await userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_primary_button'));
         expect(mockTradingPasswordChangeMutateAsync).toHaveBeenCalledWith({
             new_password: 'newPass',
             old_password: 'oldPass',
             platform: 'mt5',
         });
 
-        userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_secondary_button'));
+        await userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
             url_parameters: {
@@ -483,7 +483,7 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('PasswordLimitExceededModal')).toBeInTheDocument();
     });
 
-    it('handles primary button click for PasswordLimitExceededModal', () => {
+    it('handles primary button click for PasswordLimitExceededModal', async () => {
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useCreateMT5Account as jest.Mock).mockReturnValue({
             error: { error: { code: 'PasswordReset' } },
@@ -497,7 +497,7 @@ describe('MT5PasswordModal', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of the account
         render(<MT5PasswordModal account={mockAccount} />);
 
-        userEvent.click(screen.getByTestId('dt_password_limit_exceeded_modal_secondary_button'));
+        await userEvent.click(screen.getByTestId('dt_password_limit_exceeded_modal_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
             url_parameters: {
@@ -507,7 +507,7 @@ describe('MT5PasswordModal', () => {
         });
     });
 
-    it('handles secondary button click for MT5PasswordModalFooter', () => {
+    it('handles secondary button click for MT5PasswordModalFooter', async () => {
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         (useVerifyEmail as jest.Mock).mockReturnValue({
@@ -518,7 +518,7 @@ describe('MT5PasswordModal', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of the account
         render(<MT5PasswordModal account={mockAccount} />);
 
-        userEvent.click(screen.getByTestId('dt_mt5_password_modal_footer_secondary_button'));
+        await userEvent.click(screen.getByTestId('dt_mt5_password_modal_footer_secondary_button'));
         expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
             type: 'trading_platform_mt5_password_reset',
             url_parameters: {
@@ -528,7 +528,7 @@ describe('MT5PasswordModal', () => {
         });
     });
 
-    it('sends create MT5 account request with correct parameters for demo account', () => {
+    it('sends create MT5 account request with correct parameters for demo account', async () => {
         (useCreateMT5Account as jest.Mock).mockReturnValue({ mutate: mockCreateMT5AccountMutate, status: 'idle' });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         (useSettings as jest.Mock).mockReturnValue({
@@ -547,7 +547,7 @@ describe('MT5PasswordModal', () => {
         //@ts-expect-error since this is a mock, we only need partial properties of the account
         render(<MT5PasswordModal account={mockAccount} isVirtual />);
 
-        userEvent.click(screen.getByTestId('dt_enter_password_primary_button'));
+        await userEvent.click(screen.getByTestId('dt_enter_password_primary_button'));
         expect(mockCreateMT5AccountMutate).toHaveBeenCalledWith({
             payload: {
                 account_type: 'demo',

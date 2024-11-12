@@ -1648,6 +1648,9 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
+            if (Object.keys(this.phone_settings).length === 0) {
+                this.setPhoneSettings((await WS.getPhoneSettings()).phone_settings);
+            }
             if (Object.keys(this.account_settings).length === 0) {
                 this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
             }

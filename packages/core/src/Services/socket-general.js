@@ -283,6 +283,7 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
+        WS.getPhoneSettings();
         subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();

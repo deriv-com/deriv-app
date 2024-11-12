@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useJurisdictionStatus, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
+import { useActiveWalletAccount, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
@@ -27,7 +27,6 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const { data: poiData, isLoading: isPOILoading } = usePOI();
     const { data: poaData, isLoading: isPOALoading } = usePOA();
-    const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
 
     const history = useHistory();
     const { isDesktop } = useDevice();
@@ -58,42 +57,42 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const buttonSize = isDesktop ? 'md' : 'lg';
 
     const renderAccountSuccessButton = useCallback(
-        (isTransferAllowed = false) => {
-            if (isTransferAllowed) {
+        (isDemo?: boolean) => {
+            if (isDemo) {
                 return (
-                    <div className='wallets-mt5-password-modal__footer'>
-                        <WalletButtonGroup isFlex isFullWidth>
-                            <Button
-                                borderWidth='sm'
-                                color='black'
-                                onClick={hide}
-                                size={buttonSize}
-                                textSize='sm'
-                                variant='outlined'
-                            >
-                                <Localize i18n_default_text='Maybe later' />
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    hide();
-                                    history.push('/wallet/account-transfer', {
-                                        toAccountLoginId: addedAccount?.loginid,
-                                    });
-                                }}
-                                size={buttonSize}
-                                textSize='sm'
-                            >
-                                <Localize i18n_default_text='Transfer funds' />
-                            </Button>
-                        </WalletButtonGroup>
+                    <div className='wallets-success-btn'>
+                        <Button isFullWidth onClick={hide} size={buttonSize} textSize='sm'>
+                            <Localize i18n_default_text='OK' />
+                        </Button>
                     </div>
                 );
             }
             return (
-                <div className='wallets-success-btn'>
-                    <Button isFullWidth onClick={hide} size={buttonSize} textSize='sm'>
-                        <Localize i18n_default_text='OK' />
-                    </Button>
+                <div className='wallets-mt5-password-modal__footer'>
+                    <WalletButtonGroup isFlex isFullWidth>
+                        <Button
+                            borderWidth='sm'
+                            color='black'
+                            onClick={hide}
+                            size={buttonSize}
+                            textSize='sm'
+                            variant='outlined'
+                        >
+                            <Localize i18n_default_text='Maybe later' />
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                hide();
+                                history.push('/wallet/account-transfer', {
+                                    toAccountLoginId: addedAccount?.loginid,
+                                });
+                            }}
+                            size={buttonSize}
+                            textSize='sm'
+                        >
+                            <Localize i18n_default_text='Transfer funds' />
+                        </Button>
+                    </WalletButtonGroup>
                 </div>
             );
         },
@@ -120,60 +119,11 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     ]);
 
     const renderMainContent = useMemo(() => {
-        if (!isSuccess || isLoading) return null;
-
-        const verificationStatus = getVerificationStatus(addedAccount.landing_company_short, addedAccount.status);
-        const poiService = poiData.is_pending ? poiData.previous?.service : poiData.current?.service;
-        const isPOIVerified = poiData.status === 'verified';
-        const isPOAVerified = poaData.status === 'verified';
-
-        if (!verificationStatus.is_not_applicable && !isPOIVerified && !isPOAVerified) {
-            if (poiService === 'idv') {
-                return (
-                    <CFDSuccess
-                        actionButtons={renderAccountSuccessButton()}
-                        description={localize(
-                            "We need a few minutes to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an in-app notification as soon as this is done.",
-                            {
-                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
-                                marketTypeTitle,
-                            }
-                        )}
-                        displayBalance={addedAccount?.display_balance}
-                        landingCompanyName={landingCompanyName}
-                        marketType={marketType}
-                        platform={platform}
-                        product={product}
-                        title={localize('Almost there')}
-                    />
-                );
-            }
-
-            if (poiService === 'onfido') {
-                return (
-                    <CFDSuccess
-                        actionButtons={renderAccountSuccessButton()}
-                        description={localize(
-                            "We need 1-3 days to review your documents before you can start trading with your {{marketTypeTitle}} {{demoTitle}} account. You'll get an email as soon as this is done.",
-                            {
-                                demoTitle: isDemo ? localize('demo') : landingCompanyName,
-                                marketTypeTitle,
-                            }
-                        )}
-                        displayBalance={addedAccount?.display_balance}
-                        landingCompanyName={landingCompanyName}
-                        marketType={marketType}
-                        platform={platform}
-                        product={product}
-                        title={localize('Almost there')}
-                    />
-                );
-            }
-        }
+        if (isLoading) return null;
 
         return (
             <CFDSuccess
-                actionButtons={renderAccountSuccessButton(!isDemo)}
+                actionButtons={renderAccountSuccessButton(isDemo)}
                 description={renderSuccessDescription}
                 displayBalance={addedAccount?.display_balance}
                 landingCompanyName={landingCompanyName}
@@ -193,19 +143,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
         );
     }, [
         addedAccount?.display_balance,
-        addedAccount?.landing_company_short,
-        addedAccount?.status,
-        getVerificationStatus,
         isDemo,
         isLoading,
-        isSuccess,
         landingCompanyName,
         localize,
         marketType,
         marketTypeTitle,
         platform,
-        poaData?.status,
-        poiData,
         renderAccountSuccessButton,
         renderSuccessDescription,
         product,
@@ -222,7 +166,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     }
 
     return (
-        <ModalStepWrapper renderFooter={renderAccountSuccessButton}>
+        <ModalStepWrapper renderFooter={() => renderAccountSuccessButton(isDemo)}>
             <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
         </ModalStepWrapper>
     );

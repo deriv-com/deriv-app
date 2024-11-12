@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import PayoutPerPointMobileInput from '../payout-per-point-mobile-input';
 import userEvent from '@testing-library/user-event';
 
@@ -60,20 +59,20 @@ describe('PayoutPerPointMobileInput', () => {
         ).toBeGreaterThan(0);
     });
 
-    test('Save button works correctly', () => {
+    test('Save button works correctly', async () => {
         render(<PayoutPerPointMobileInput {...defaultProps} />);
 
-        userEvent.click(screen.getByText('Set Value'));
-        userEvent.click(screen.getByText('Save'));
+        await userEvent.click(screen.getByText('Set Value'));
+        await userEvent.click(screen.getByText('Save'));
 
         expect(defaultProps.togglePayoutWheelPicker).toHaveBeenCalled();
         expect(defaultProps.onPayoutClick).toHaveBeenCalledWith(defaultProps.payoutChoices[0]);
     });
 
-    test('Close button works correctly', () => {
+    test('Close button works correctly', async () => {
         render(<PayoutPerPointMobileInput {...defaultProps} />);
 
-        userEvent.click(screen.getByText('IcCross'));
+        await userEvent.click(screen.getByText('IcCross'));
 
         expect(defaultProps.togglePayoutWheelPicker).toHaveBeenCalled();
         expect(defaultProps.onPayoutClick).toHaveBeenCalledWith(defaultProps.payout_per_point);

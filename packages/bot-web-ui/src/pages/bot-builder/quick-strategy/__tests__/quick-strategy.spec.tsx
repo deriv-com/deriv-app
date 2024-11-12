@@ -193,6 +193,9 @@ jest.mock('../config', () => ({
         STRATEGY_1_3_2_6: {
             label: '1-3-2-6',
         },
+        ACCUMULATORS_DALEMBERT: {
+            label: 'Accumulators D’Alembert',
+        },
     },
 }));
 
@@ -233,8 +236,8 @@ describe('<QuickStrategy />', () => {
             wrapper,
         });
 
-        await waitFor(() => {
-            userEvent.click(screen.getByTestId('qs-run-button'));
+        await waitFor(async () => {
+            await userEvent.click(screen.getByTestId('qs-run-button'));
         });
 
         expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
@@ -249,8 +252,8 @@ describe('<QuickStrategy />', () => {
 
         expect(close_button).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(close_button);
+        await waitFor(async () => {
+            await userEvent.click(close_button);
         });
 
         expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();

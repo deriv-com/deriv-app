@@ -63,6 +63,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         toggleSetCurrencyModal,
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
+        setIsForcedToExitPnv,
     } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -94,6 +95,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     };
 
     const logoutHandler = async () => {
+        await setIsForcedToExitPnv(true);
         // for DBot we need to logout first and only after this redirect to TH
         if (window.location.pathname.startsWith(routes.bot)) {
             await logoutClient();

@@ -24,7 +24,7 @@ jobs:
         working-directory: packages/components
         run: npm run build
       - name: Test
-        run: JEST_MAX_WORKERS=95% SHARD_NUMBER=${{ matrix.shard }} npm run test:shard
+        run: JEST_MAX_WORKERS=95% SHARD_NUMBER=${{ matrix.shard }} npm run test:shard -- --collectCoverage
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
         with:

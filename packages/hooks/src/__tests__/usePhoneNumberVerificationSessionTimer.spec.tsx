@@ -1,7 +1,9 @@
 import React from 'react';
+
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
+
 import usePhoneNumberVerificationSessionTimer from '../usePhoneNumberVerificationSessionTimer';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -26,7 +28,7 @@ describe('usePhoneNumberVerificationSetTimer', () => {
     );
     beforeEach(() => {
         jest.clearAllMocks();
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
     });
 
     afterEach(() => {

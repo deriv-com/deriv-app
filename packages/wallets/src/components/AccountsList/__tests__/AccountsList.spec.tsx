@@ -66,13 +66,14 @@ describe('AccountsList', () => {
     it('shows Options tab in mobile view when the tab active', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
-        render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
+        const { rerender } = render(<AccountsList accountsActiveTabIndex={0} onTabClickHandler={jest.fn()} />, {
             wrapper,
         });
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
 
         screen.getAllByText('Options')[0].click();
+        rerender(<AccountsList accountsActiveTabIndex={1} onTabClickHandler={jest.fn()} />);
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
         expect(screen.getByText('Deriv Trader')).toBeInTheDocument();
         expect(screen.getByText('Deriv Bot')).toBeInTheDocument();

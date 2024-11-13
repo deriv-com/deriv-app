@@ -79,7 +79,7 @@ describe('CFDPlatformsList', () => {
             expect(learnMoreEl).toHaveAttribute('href', 'https://deriv.com/trade-types/cfds/');
         });
 
-        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
+        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', async () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
             (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
@@ -89,7 +89,7 @@ describe('CFDPlatformsList', () => {
             render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
-            userEvent.click(compareAccountsBtn);
+            await userEvent.click(compareAccountsBtn);
 
             expect(mockPush).toHaveBeenCalledWith('/compare-accounts');
         });
@@ -116,6 +116,10 @@ describe('CFDPlatformsList', () => {
                 data: false,
                 isLoading: false,
             }));
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
             render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
@@ -123,7 +127,7 @@ describe('CFDPlatformsList', () => {
             expect(learnMoreEl).toHaveAttribute('href', 'https://deriv.com/trade-types/cfds');
         });
 
-        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
+        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', async () => {
             (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
                 data: false,
                 isLoading: false,
@@ -131,7 +135,7 @@ describe('CFDPlatformsList', () => {
             render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
-            userEvent.click(compareAccountsBtn);
+            await userEvent.click(compareAccountsBtn);
 
             expect(mockPush).toHaveBeenCalledWith('/compare-accounts');
         });

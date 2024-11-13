@@ -91,7 +91,7 @@ describe('DerivAppsGetAccount', () => {
         mockUseInvalidateQuery.mockReturnValue(mockInvalidate);
         render(<DerivAppsGetAccount />, { wrapper });
         const button = screen.getByRole('button', { name: 'Enable' });
-        userEvent.click(button);
+        await userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).toBeCalled());
         await waitFor(() => expect(mockInvalidate).toBeCalledWith('account_list'));
     });
@@ -134,7 +134,7 @@ describe('DerivAppsGetAccount', () => {
         });
         render(<DerivAppsGetAccount />, { wrapper });
         const button = screen.getByRole('button', { name: 'Enable' });
-        userEvent.click(button);
+        await userEvent.click(button);
         await waitFor(() => expect(mockMutateAsync).not.toBeCalled());
     });
 

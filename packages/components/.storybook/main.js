@@ -1,15 +1,22 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin-v6');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     stories: ['../stories/**/*.stories.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+
     addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions'],
+
     framework: '@storybook/react',
+
     core: {
-        builder: '@storybook/builder-webpack5',
+        builder: {
+            name: '@storybook/builder-webpack5',
+            options: {},
+        },
     },
+
     webpackFinal: async config => {
-        config?.module?.rules?.push({
+        config.module.rules.push({
             test: /\.scss$/,
             use: [
                 'style-loader',
@@ -18,32 +25,23 @@ module.exports = {
                 {
                     loader: 'sass-resources-loader',
                     options: {
-                        // Provide path to the file with resources
                         resources: require('@deriv/shared/src/styles/index.js'),
                     },
                 },
             ],
+            include: path.resolve(__dirname, '../'),
         });
 
         config.resolve.alias = {
-            ...config.resolve?.alias,
+            ...config.resolve.alias,
             Components: path.resolve(__dirname, '../src/components'),
             Stories: path.resolve(__dirname, '../stories'),
             Shared: path.resolve(__dirname, './shared'),
         };
 
-        config?.module?.rules?.push({
-            resolve: {
-                alias: {
-                    Components: path.resolve(__dirname, '../src/components'),
-                    Stories: path.resolve(__dirname, '../stories'),
-                },
-                extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            },
-        });
-        config?.module?.rules?.push({
-            test: /\.js[x]?$/,
-            exclude: /(node_modules)/,
+        config.module.rules.push({
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
             use: {
                 loader: 'babel-loader',
                 options: {
@@ -58,21 +56,26 @@ module.exports = {
                         '@babel/plugin-syntax-dynamic-import',
                         '@babel/plugin-transform-optional-chaining',
                         '@babel/plugin-transform-nullish-coalescing-operator',
-                        ['@babel/plugin-proposal-private-methods', { loose: true }],
+                        ['@babel/plugin-transform-private-methods', { loose: true }],
                         ['@babel/plugin-transform-private-property-in-object', { loose: true }],
                     ],
                 },
             },
         });
 
-        config?.plugins?.push(
-            new CopyPlugin({
+        config.plugins.push(
+            new CopyWebpackPlugin({
                 patterns: [
-                    { from: path.resolve(__dirname, '../lib/icon/sprites'), to: 'public/sprites', toType: 'dir' },
+                    {
+                        from: path.resolve(__dirname, '../lib/icon/sprites'),
+                        to: 'public/sprites',
+                        noErrorOnMissing: true,
+                    },
                 ],
             })
         );
-        // Return the altered config
+
+        config.resolve.extensions.push('.js', '.jsx', '.ts', '.tsx');
         return config;
     },
 };

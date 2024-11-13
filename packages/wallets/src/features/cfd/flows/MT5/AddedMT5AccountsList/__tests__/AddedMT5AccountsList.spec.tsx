@@ -136,7 +136,7 @@ describe('AddedMT5AccountsList', () => {
         expect(badge).toBeInTheDocument();
         expect(mockPropsFn).toBeCalledWith('mockKycStatus');
 
-        userEvent.click(badge);
+        await userEvent.click(badge);
 
         await waitFor(() => {
             expect(screen.getByText('ClientVerificationModal')).toBeInTheDocument();
@@ -166,7 +166,7 @@ describe('AddedMT5AccountsList', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
+        await userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
 
         await waitFor(() => {
             expect(screen.getByText('MT5TradeModal')).toBeInTheDocument();
@@ -188,7 +188,7 @@ describe('AddedMT5AccountsList', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
+        await userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
 
         await waitFor(() => {
             expect(screen.getByText('TradingPlatformStatusModal')).toBeInTheDocument();
@@ -209,8 +209,8 @@ describe('AddedMT5AccountsList', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        await waitFor(() => {
-            userEvent.click(screen.getByText('WalletStatusBadge'));
+        await waitFor(async () => {
+            await userEvent.click(screen.getByText('WalletStatusBadge'));
         });
 
         await waitFor(() => {

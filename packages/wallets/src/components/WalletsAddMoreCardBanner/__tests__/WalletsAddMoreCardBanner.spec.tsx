@@ -7,7 +7,6 @@ import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorag
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';
 import WalletsAddMoreCardBanner from '../WalletsAddMoreCardBanner';
-import '@testing-library/jest-dom/extend-expect';
 
 type TWalletError = {
     buttonText: string;

@@ -314,6 +314,7 @@ export const getOptionPerUnit = (
 
 export const getSmallestDuration = (
     obj: { [x: string]: { min: number; max: number } | { min: number } },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     durationUnits: any[]
 ) => {
     const keysPriority = ['tick', 'intraday', 'daily'];
@@ -421,7 +422,7 @@ export const getDatePickerStartDate = (
 
     const getMomentContractStartDateTime = () => {
         const minDurationDate = getMinDuration(server_time, duration_units_list);
-        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
+        const time = isTimeValid(start_time ?? '') ? start_time : (server_time?.toISOString().substr(11, 8) ?? '');
         return setMinTime(minDurationDate, time ?? '');
     };
 

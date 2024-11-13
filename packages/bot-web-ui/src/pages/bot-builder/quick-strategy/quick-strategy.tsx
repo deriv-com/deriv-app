@@ -100,12 +100,14 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     }, []);
 
     const updateSchema = (formikData: TFormData) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
             group.forEach(async field => {
                 if (field?.validation?.length && field?.name) {
                     if (field.validation.includes('number')) {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
                         let min = 0;
                         let max = 10;

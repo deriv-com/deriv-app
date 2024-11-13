@@ -7,7 +7,10 @@ import ErrorStore from './error-store';
 import { TWebSocket, TRootStore } from '../types';
 
 export default class WithdrawStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(
+        public WS: TWebSocket,
+        public root_store: TRootStore
+    ) {
         makeObservable(this, {
             blockchain_address: observable,
             crypto_estimations_fee_unique_id: observable,
@@ -303,7 +306,7 @@ export default class WithdrawStore {
         const remainder = client.account_limits?.remainder;
         this.setMaxWithdrawAmount(Number(remainder));
 
-        const fractional_digit = Math.pow(10, -getDecimalPlaces(client.currency));
+        const fractional_digit = 10 ** -getDecimalPlaces(client.currency);
         const min_withdrawal = getMinWithdrawal(client.currency);
         const is_limit_reached = !!(
             typeof remainder !== 'undefined' &&
@@ -347,7 +350,7 @@ export default class WithdrawStore {
 
         const min_withdraw_amount =
             currency === 'XRP'
-                ? Math.pow(10, -getDecimalPlaces(client.currency))
+                ? 10 ** -getDecimalPlaces(client.currency)
                 : Number(this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal);
         const max_withdraw_amount =
             Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);

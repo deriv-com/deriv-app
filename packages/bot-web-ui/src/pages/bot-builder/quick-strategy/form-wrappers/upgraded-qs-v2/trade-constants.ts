@@ -91,4 +91,28 @@ export const STRATEGY_TRADE_ASSOCIATIONS: TStrategyTradeAssociations = [
         id: 9,
         parent: [localize('Accumulators')],
     },
+    {
+        name: 'ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
+        display_name: STRATEGIES.ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT.label,
+        id: 10,
+        parent: [localize('Accumulators')],
+    },
+    {
+        name: 'ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+        display_name: STRATEGIES.ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT.label,
+        id: 11,
+        parent: [localize('Accumulators')],
+    },
+    {
+        name: 'ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
+        display_name: STRATEGIES.ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT.label,
+        id: 12,
+        parent: [localize('Accumulators')],
+    },
+    {
+        name: 'ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+        display_name: STRATEGIES.ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT.label,
+        id: 12,
+        parent: [localize('Accumulators')],
+    },
 ];

@@ -167,12 +167,14 @@
             display: flex;
             justify-content: space-between;
             &__description {
+                width: 25rem;
                 font-size: 1.3rem;
                 align-items: center;
             }
             @include tablet-screen;
             @include mobile-screen {
                 &__description {
+                    width: 25rem;
                     font-size: 1.3rem;
                     flex-direction: column;
                     justify-content: center;

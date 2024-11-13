@@ -48,8 +48,6 @@ const PasswordSelectionModal = observer(
                         },
                     ]);
                 }
-
-                // console.log('Captured error message:', errorMessage);
             });
 
             cacheTrackEvents.loadEvent([
@@ -68,7 +66,6 @@ const PasswordSelectionModal = observer(
         }, [is_mobile]);
 
         return (
-            console.error('Test error message without an Error object');
             <div className='account-signup__password-selection'>
                 <Text
                     as='p'

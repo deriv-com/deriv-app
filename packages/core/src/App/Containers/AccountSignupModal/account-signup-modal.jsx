@@ -77,8 +77,6 @@ const AccountSignup = ({
                     },
                 ]);
             }
-
-            // console.log('Captured error message:', errorMessage);
         });
 
         cacheTrackEvents.loadEvent([
@@ -119,7 +117,6 @@ const AccountSignup = ({
         });
         // need to modify data from ab testing platform to reach translation and tracking needs
         const fetchQuestionnarieData = () => {
-            console.error('Test error message without an Error object');
             let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive') || 'inactive';
             const default_ab_value = ab_value;
             ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;

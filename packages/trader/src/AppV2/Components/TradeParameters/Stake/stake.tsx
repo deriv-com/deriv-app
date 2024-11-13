@@ -77,10 +77,13 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const proposal_error_message_2 =
         has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
     const has_both_errors = has_error_1 && has_error_2;
-    const proposal_error_message =
-        contract_types[1] && has_both_errors
-            ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
-            : (!(contract_types[1] && !has_both_errors) && proposal_error_message_1) || validation_errors?.amount?.[0];
+    const proposal_error_with_two_contract = contract_types[1] && has_both_errors;
+
+    const proposal_error_with_one_contract = !(contract_types[1] && !has_both_errors) && proposal_error_message_1;
+
+    const proposal_error_message = proposal_error_with_two_contract
+        ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
+        : proposal_error_with_one_contract || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
     E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;

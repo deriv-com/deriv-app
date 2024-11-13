@@ -16,6 +16,10 @@ const useGetPhoneNumberList = () => {
 
     const available_carriers = data?.phone_settings?.carriers && data?.phone_settings?.carriers.length;
 
+    const is_global_sms_available = data?.phone_settings?.carriers?.includes('sms');
+
+    const is_global_whatsapp_available = data?.phone_settings?.carriers?.includes('whatsapp');
+
     const is_carriers_supported = data?.phone_settings?.carriers && data.phone_settings.carriers.length > 0;
 
     const countries = data?.phone_settings?.countries;
@@ -64,6 +68,8 @@ const useGetPhoneNumberList = () => {
     const short_code_selected = getShortCodeSelected() || clients_country;
 
     return {
+        is_global_sms_available,
+        is_global_whatsapp_available,
         available_carriers,
         is_carriers_supported,
         formatted_countries_list_for_core,

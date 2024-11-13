@@ -7,10 +7,6 @@ import {
     REVERSE_D_ALEMBERT,
     REVERSE_MARTINGALE,
     STRATEGY_1_3_2_6,
-    ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT,
-    ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT,
-    ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
-    ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
 } from '../../../constants/quick-strategies';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 import { LocalizeHTMLForSellConditions } from './localize_html';
@@ -427,7 +423,7 @@ export const STRATEGIES: TStrategies = {
         name: 'accumulators_martingale_with_tick_count_take_profit',
         label: localize('Martingale with Tick Count/Take Profit'),
         rs_strategy_name: `accumulators_martingale_with_tick_count_take_profit`,
-        description: ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT,
+        description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [
@@ -450,7 +446,7 @@ export const STRATEGIES: TStrategies = {
         name: 'accumulators_dalembert_with_tick_count_take_profit',
         label: localize('D’Alembert with Tick Count/Take Profit'),
         rs_strategy_name: `accumulators_dalembert_with_tick_count_take_profit`,
-        description: ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT,
+        description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [
@@ -473,7 +469,7 @@ export const STRATEGIES: TStrategies = {
         name: 'accumulators_martingale_on_stat_reset_with_tick_count_take_profit',
         label: localize('Martingale on Stat Reset with Tick Count/Take Profit'),
         rs_strategy_name: `accumulators_martingale_on_stat_reset_with_tick_count_take_profit`,
-        description: ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
+        description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [
@@ -496,7 +492,7 @@ export const STRATEGIES: TStrategies = {
         name: 'accumulators_dalembert_on_stat_reset_with_tick_count_take_profit',
         label: localize("D'Alembert on Stat Reset with Tick Count/Take Profit"),
         rs_strategy_name: `accumulators_dalembert_on_stat_reset_with_tick_count_take_profit`,
-        description: ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT,
+        description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
             [

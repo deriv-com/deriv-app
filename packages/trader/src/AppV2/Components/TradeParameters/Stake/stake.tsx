@@ -110,7 +110,10 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
             ? proposal_error_message_2
             : proposal_error_message_1) || proposal_error_message;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = (has_both_errors ? two_contracts_error : !contract_types[1] && proposal_error_message) || '';
+    const stake_error =
+        (has_both_errors
+            ? two_contracts_error
+            : (!contract_types[1] || amount.toString() === '') && proposal_error_message) || '';
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,

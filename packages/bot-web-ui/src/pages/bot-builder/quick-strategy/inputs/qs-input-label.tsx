@@ -4,10 +4,8 @@ import { Popover, Text } from '@deriv/components';
 type TQSInputLabel = {
     children?: React.ReactNode;
     label?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    description?: string | ((additional_data?: Record<string, any>) => React.ReactNode);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    additional_data?: Record<string, any>;
+    description?: string | ((additional_data?: Record<string, unknown>) => React.ReactNode);
+    additional_data?: Record<string, unknown>;
 };
 
 const QSInputLabel: React.FC<TQSInputLabel> = ({ label, description, additional_data }) => {

@@ -21,8 +21,7 @@ export type TLossThresholdWarningData = {
 };
 
 interface IQuickStrategyStore {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    additional_data: Record<string, any>;
+    additional_data: Record<string, unknown>;
     current_duration_min_max: {
         min: number;
         max: number;
@@ -97,8 +96,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setAdditionalData = (data: Record<string, any>) => {
+    setAdditionalData = (data: Record<string, unknown>) => {
         this.additional_data = {
             ...this.additional_data,
             ...data,

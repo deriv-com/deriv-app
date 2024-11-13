@@ -17,6 +17,7 @@ import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 import { useFeatureFlags } from '@deriv/hooks';
+import { V2_QS_STRATEGIES } from '../utils';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -33,16 +34,9 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
 
     const { is_next_qs_enabled } = useFeatureFlags();
     if (!is_next_qs_enabled) {
-        [
-            'ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
-            'ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
-        ].forEach(key => delete STRATEGIES[key]);
+        V2_QS_STRATEGIES.forEach(key => delete STRATEGIES[key]);
     }
+
     React.useEffect(() => {
         validateForm();
     }, [selected_strategy, validateForm]);

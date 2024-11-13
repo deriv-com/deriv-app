@@ -205,6 +205,18 @@ jest.mock('../config', () => ({
         ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
             label: 'Accumulators Martingale on stat reset with tick count take profit',
         },
+        ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Reverse D’Alembert with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Reverse Martingale with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Reverse Martingale on stat reset with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Reverse D’Alembert on stat reset with tick count take profit',
+        },
     },
 }));
 

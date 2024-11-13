@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
 import { VideoPlayer } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -16,6 +17,7 @@ type TGuideDescriptionModal = {
     onTermClick: (term: string) => void;
     selected_contract_type: string;
     show_guide_for_selected_contract?: boolean;
+    show_description_in_a_modal?: boolean;
 };
 
 const GuideDescriptionModal = ({
@@ -27,6 +29,7 @@ const GuideDescriptionModal = ({
     onTermClick,
     selected_contract_type,
     show_guide_for_selected_contract,
+    show_description_in_a_modal = true,
 }: TGuideDescriptionModal) => {
     const [is_video_player_opened, setIsVideoPlayerOpened] = React.useState(false);
     const modal_ref = React.useRef<HTMLDialogElement>(null);
@@ -36,6 +39,37 @@ const GuideDescriptionModal = ({
     const toggleVideoPlayer = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         clickAndKeyEventHandler(() => setIsVideoPlayerOpened(!is_video_player_opened), e);
     };
+    // TODO: move outside
+    const GuideContent = (
+        <React.Fragment>
+            {!show_guide_for_selected_contract && (
+                <div className='guide__menu'>
+                    {contract_list.map(({ tradeType, id }: { tradeType: React.ReactNode; id: string }) => (
+                        <Chip.Selectable
+                            key={id}
+                            onChipSelect={() => onChipSelect(id)}
+                            selected={id === selected_contract_type}
+                        >
+                            <Text size='sm'>{tradeType}</Text>
+                        </Chip.Selectable>
+                    ))}
+                </div>
+            )}
+            <div
+                className={clsx('guide__contract-description', {
+                    'guide__contract-description--without-btn': !show_description_in_a_modal,
+                })}
+                key={selected_contract_type}
+            >
+                <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
+                <VideoPreview
+                    contract_type={selected_contract_type}
+                    toggleVideoPlayer={toggleVideoPlayer}
+                    video_src={video_src}
+                />
+            </div>
+        </React.Fragment>
+    );
 
     React.useEffect(() => {
         if (modal_ref.current) is_video_player_opened ? modal_ref.current.showModal() : modal_ref.current.close();
@@ -43,48 +77,32 @@ const GuideDescriptionModal = ({
 
     return (
         <React.Fragment>
-            <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left' expandable={false}>
-                <ActionSheet.Portal shouldCloseOnDrag>
-                    <ActionSheet.Content className='guide__wrapper--content'>
-                        <Heading.H4 className='guide__title'>
-                            {show_guide_for_selected_contract ? (
-                                selected_contract_type
-                            ) : (
-                                <Localize i18n_default_text='Trade types' />
-                            )}
-                        </Heading.H4>
-                        {!show_guide_for_selected_contract && (
-                            <div className='guide__menu'>
-                                {contract_list.map(({ tradeType, id }: { tradeType: React.ReactNode; id: string }) => (
-                                    <Chip.Selectable
-                                        key={id}
-                                        onChipSelect={() => onChipSelect(id)}
-                                        selected={id === selected_contract_type}
-                                    >
-                                        <Text size='sm'>{tradeType}</Text>
-                                    </Chip.Selectable>
-                                ))}
-                            </div>
-                        )}
-                        <div className='guide__contract-description' key={selected_contract_type}>
-                            <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
-                            <VideoPreview
-                                contract_type={selected_contract_type}
-                                toggleVideoPlayer={toggleVideoPlayer}
-                                video_src={video_src}
-                            />
-                        </div>
-                    </ActionSheet.Content>
-                    <ActionSheet.Footer
-                        alignment='vertical'
-                        primaryAction={{
-                            content: <Localize i18n_default_text='Got it' />,
-                            onAction: onClose,
-                        }}
-                        className='guide__button'
-                    />
-                </ActionSheet.Portal>
-            </ActionSheet.Root>
+            {show_description_in_a_modal ? (
+                <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left' expandable={false}>
+                    <ActionSheet.Portal shouldCloseOnDrag>
+                        <ActionSheet.Content className='guide__wrapper__content'>
+                            <Heading.H4 className='guide__title'>
+                                {show_guide_for_selected_contract ? (
+                                    selected_contract_type
+                                ) : (
+                                    <Localize i18n_default_text='Trade types' />
+                                )}
+                            </Heading.H4>
+                            {GuideContent}
+                        </ActionSheet.Content>
+                        <ActionSheet.Footer
+                            alignment='vertical'
+                            primaryAction={{
+                                content: <Localize i18n_default_text='Got it' />,
+                                onAction: onClose,
+                            }}
+                            className='guide__button'
+                        />
+                    </ActionSheet.Portal>
+                </ActionSheet.Root>
+            ) : (
+                <div className='guide__wrapper__content--separate'>{GuideContent}</div>
+            )}
             {is_video_player_opened && (
                 <dialog
                     ref={modal_ref}

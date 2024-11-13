@@ -1,5 +1,5 @@
 import React from 'react';
-import CarouselHeader from './carousel-header';
+import CarouselHeader, { TQuillIcon } from './carousel-header';
 import { useSwipeable } from 'react-swipeable';
 import clsx from 'clsx';
 
@@ -11,6 +11,8 @@ type TCarousel = {
     is_infinite_loop?: boolean;
     pages: { id: number; component: JSX.Element }[];
     title?: React.ReactNode;
+    previous_icon?: TQuillIcon;
+    next_icon?: TQuillIcon;
     setCurrentIndex?: (arg: number) => void;
 };
 
@@ -23,6 +25,8 @@ const Carousel = ({
     pages,
     setCurrentIndex,
     title,
+    previous_icon,
+    next_icon,
 }: TCarousel) => {
     const [internalIndex, setInternalIndex] = React.useState(0);
 
@@ -55,6 +59,8 @@ const Carousel = ({
                     current_index={index}
                     onNextClick={handleNextClick}
                     onPrevClick={handlePrevClick}
+                    previous_icon={previous_icon}
+                    next_icon={next_icon}
                     title={title}
                 />
             )}

@@ -11,7 +11,7 @@ export const getCarriers = () =>
     ({
         SMS: localize('SMS'),
         WHATSAPP: localize('WhatsApp'),
-    } as const);
+    }) as const;
 
 export const shouldShowPhoneVerificationNotification = (nextAttemptTimestamp: number, current_time: dayjs.Dayjs) => {
     const request_in_milliseconds = dayjs(nextAttemptTimestamp * 1000);
@@ -58,11 +58,14 @@ export const getUseRequestPhoneNumberOTPErrorMessage = (
     }
 };
 
-export const phoneOTPErrorMessage = (error_code: string) => {
+export const phoneOTPErrorMessage = (error_code: string, verify_attempts_remaining: number) => {
     switch (error_code) {
         case 'PhoneCodeExpired':
             return <Localize i18n_default_text='Code expired. Get a new one.' />;
         case 'InvalidOTP':
+            if (verify_attempts_remaining - 1 === 1) {
+                return <Localize i18n_default_text='Try again. You have 1 attempt left.' />;
+            }
             return <Localize i18n_default_text='Invalid code. Try again.' />;
         default:
             break;
@@ -72,12 +75,16 @@ export const phoneOTPErrorMessage = (error_code: string) => {
 export const emailOTPErrorMessage = (
     error_code: string,
     getCurrentCarrier: () => string,
-    getOtherCarrier: () => string
+    getOtherCarrier: () => string,
+    challenge_attempts_remaining: number
 ) => {
     switch (error_code) {
         case 'EmailCodeExpired':
             return <Localize i18n_default_text='Code expired. Get a new code.' />;
         case 'InvalidToken':
+            if (challenge_attempts_remaining - 1 === 1) {
+                return <Localize i18n_default_text='Try again. You have 1 attempt left.' />;
+            }
             return <Localize i18n_default_text='Invalid code. Try again or get a new code.' />;
         case 'PhoneNumberVerificationSuspended':
             return (

@@ -37,3 +37,32 @@ export const handleProposalRequestForAccumulators = instance => {
     };
     window.Blockly.accumulators_request = proposal_request;
 };
+
+export const requestProposalForQS = (input_values, ws) => {
+    const { amount, currency, symbol, growth_rate, limit_order } = input_values;
+    const { take_profit } = limit_order;
+
+    const proposal_request = {
+        ...DEFAULT_PROPOSAL_REQUEST,
+        amount,
+        currency,
+        symbol,
+        growth_rate,
+        subscribe: undefined,
+        limit_order: {
+            take_profit,
+        },
+    };
+
+    return ws
+        ?.send(proposal_request)
+        .then(response => {
+            if (response.error) {
+                return Promise.reject(response.error);
+            }
+            return response;
+        })
+        .catch(error => {
+            throw error;
+        });
+};

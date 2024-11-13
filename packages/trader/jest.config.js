@@ -17,5 +17,6 @@ module.exports = {
         '^Utils/(.*)$': '<rootDir>/src/Utils/$1',
         '^Services/(.*)$': '<rootDir>/src/Services/$1',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
     },
 };

@@ -17,10 +17,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     redirectToLogin: jest.fn(),
-}));
-jest.mock('AppV2/Hooks/useSignupTrigger', () => ({
-    ...jest.requireActual('AppV2/Hooks/useSignupTrigger'),
-    useSignupTrigger: jest.fn(() => ({ handleSignup: jest.fn() })),
+    redirectToSignUp: jest.fn(),
 }));
 
 describe('ServiceErrorSheet', () => {
@@ -55,12 +52,12 @@ describe('ServiceErrorSheet', () => {
         );
     };
 
-    it('renders the Action Sheet with appropriate message and action for InsufficientBalance error', () => {
+    it('renders the Action Sheet with appropriate message and action for InsufficientBalance error', async () => {
         render(mockTrade());
 
         expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button'));
+        await userEvent.click(screen.getByRole('button'));
         expect(default_mock_store.common.resetServicesError).toBeCalled();
     });
 
@@ -71,38 +68,38 @@ describe('ServiceErrorSheet', () => {
         expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
     });
 
-    it('renders the Action Sheet with appropriate message and actions for AuthorizationRequired error', () => {
+    it('renders the Action Sheet with appropriate message and actions for AuthorizationRequired error', async () => {
         const spyRedirectToLogin = jest.spyOn(fileUtils, 'redirectToLogin');
         default_mock_store.common.services_error.code = 'AuthorizationRequired';
         render(mockTrade());
 
         expect(screen.getByText('Start trading with us')).toBeInTheDocument();
 
-        userEvent.click(screen.getByText('Create free account'));
+        await userEvent.click(screen.getByText('Create free account'));
         expect(default_mock_store.common.resetServicesError).toBeCalled();
 
-        userEvent.click(screen.getByText('Login'));
+        await userEvent.click(screen.getByText('Login'));
         expect(spyRedirectToLogin).toBeCalled();
     });
 
-    it('renders the Action Sheet with appropriate message and action for PleaseAuthenticate error', () => {
+    it('renders the Action Sheet with appropriate message and action for PleaseAuthenticate error', async () => {
         default_mock_store.common.services_error.code = 'PleaseAuthenticate';
         render(mockTrade());
 
         expect(screen.getByText('Account verification required')).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button'));
+        await userEvent.click(screen.getByRole('button'));
         expect(default_mock_store.common.resetServicesError).toBeCalled();
     });
 
-    it('renders the Action Sheet with appropriate message and action if is_mf_verification_pending_modal_visible === true', () => {
+    it('renders the Action Sheet with appropriate message and action if is_mf_verification_pending_modal_visible === true', async () => {
         default_mock_store.common.services_error.code = '';
         default_mock_store.ui.is_mf_verification_pending_modal_visible = true;
         render(mockTrade());
 
         expect(screen.getByText('Pending verification')).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button'));
+        await userEvent.click(screen.getByRole('button'));
         expect(default_mock_store.common.resetServicesError).toBeCalled();
         expect(default_mock_store.ui.setIsMFVericationPendingModal).toBeCalled();
     });

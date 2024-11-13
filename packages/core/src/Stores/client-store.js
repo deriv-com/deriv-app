@@ -1407,7 +1407,6 @@ export default class ClientStore extends BaseStore {
         if (this.accounts && this.accounts[this.loginid]) {
             return this.accounts[this.loginid].email;
         }
-
         return '';
     }
 
@@ -2068,6 +2067,7 @@ export default class ClientStore extends BaseStore {
     async logout() {
         // makes sure to clear the cached traders-hub data when logging out
         localStorage.removeItem('traders_hub_store');
+        localStorage.removeItem('trade_store');
 
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();

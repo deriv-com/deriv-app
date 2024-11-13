@@ -536,7 +536,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit',
-        label: localize('Reverse Martingale on stat reset with Tick Count / Take Profit'),
+        label: localize('Reverse Martingale on Stat Reset with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -582,7 +582,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit',
-        label: localize("Reverse D'Alembert on stat reset with Tick Count / Take Profit"),
+        label: localize("Reverse D'Alembert on Stat Reset with Tick Count / Take Profit"),
         rs_strategy_name: `accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [

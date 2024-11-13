@@ -222,7 +222,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
     const trade_type_chips = getTradeTypeChips();
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
-
+    const show_trade_type_list_divider = !!other_trade_types[0]?.items?.length;
+    const show_editing_divider = trade_types_array.length !== pinned_trade_types[0]?.items?.length;
     // TODO: move it to a separate component
     const TradeParamsBody = (
         <React.Fragment>
@@ -250,8 +251,8 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     <DraggableList
                         categories={pinned_trade_types}
                         onRightIconClick={handleRemovePinnedClick}
-                        onAction={savePinnedToLocalStorage}
                         onDrag={handleOnDrag}
+                        show_editing_divider={show_editing_divider}
                     />
                 ) : (
                     <TradeTypeList
@@ -259,6 +260,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                         onTradeTypeClick={handleOnTradeTypeSelect}
                         isSelected={id => isTradeTypeSelected(id)}
                         selectable
+                        show_divider={show_trade_type_list_divider}
                     />
                 )}
                 <TradeTypeList

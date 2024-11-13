@@ -169,7 +169,7 @@
             &__description {
                 width: 25rem;
                 font-size: 1.3rem;
-                align-items: center;
+                text-align: end;
             }
             @include tablet-screen;
             @include mobile-screen {

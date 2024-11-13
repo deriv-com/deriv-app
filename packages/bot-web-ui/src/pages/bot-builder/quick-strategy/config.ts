@@ -421,7 +421,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_martingale_with_tick_count_take_profit',
-        label: localize('Martingale with Tick Count/Take Profit'),
+        label: localize('Martingale with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_martingale_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -444,7 +444,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_dalembert_with_tick_count_take_profit',
-        label: localize('D’Alembert with Tick Count/Take Profit'),
+        label: localize('D’Alembert with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_dalembert_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -467,7 +467,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_martingale_on_stat_reset_with_tick_count_take_profit',
-        label: localize('Martingale on Stat Reset with Tick Count/Take Profit'),
+        label: localize('Martingale on Stat Reset with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_martingale_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -490,7 +490,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_dalembert_on_stat_reset_with_tick_count_take_profit',
-        label: localize("D'Alembert on Stat Reset with Tick Count/Take Profit"),
+        label: localize("D'Alembert on Stat Reset with Tick Count / Take Profit"),
         rs_strategy_name: `accumulators_dalembert_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -513,7 +513,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_martingale_with_tick_count_take_profit',
-        label: localize('Reverse Martingale with Tick Count/Take Profit'),
+        label: localize('Reverse Martingale with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_reverse_martingale_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -536,7 +536,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit',
-        label: localize('Reverse Martingale on stat reset with Tick Count/Take Profit'),
+        label: localize('Reverse Martingale on stat reset with Tick Count / Take Profit'),
         rs_strategy_name: `accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -559,7 +559,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_dalembert_with_tick_count_take_profit',
-        label: localize("Reverse D'Alembert with Tick Count/Take Profit"),
+        label: localize("Reverse D'Alembert with Tick Count / Take Profit"),
         rs_strategy_name: `accumulators_reverse_dalembert_with_tick_count_take_profit`,
         description: [],
         fields: [
@@ -582,7 +582,7 @@ export const STRATEGIES: TStrategies = {
     },
     ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
         name: 'accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit',
-        label: localize("Reverse D'Alembert on stat reset with Tick Count/Take Profit"),
+        label: localize("Reverse D'Alembert on stat reset with Tick Count / Take Profit"),
         rs_strategy_name: `accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit`,
         description: [],
         fields: [

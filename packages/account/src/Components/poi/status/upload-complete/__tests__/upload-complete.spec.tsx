@@ -49,7 +49,7 @@ describe('<UploadComplete />', () => {
     it('should show redirect button if needs_poa and is_from_external are false and have redirect button', () => {
         renderWithRouter(<UploadComplete redirect_button={redirect_button} />);
 
-        expect(screen.getByRole('button')).toBeInTheDocument();
+        expect(screen.getByText(`Return to Trader's Hub`)).toBeInTheDocument();
     });
 
     it('should show needs_poa review message and extra submission message, and poa_buttons', () => {

@@ -36,7 +36,12 @@ describe('useGetMFAccountStatus', () => {
         });
 
         expect(result.current.mf_account_status).toBe('needs_verification');
-        expect(result.current.kyc_status).toStrictEqual({ poa_status: 'none', poi_status: 'verified', valid_tin: 1 });
+        expect(result.current.kyc_status).toStrictEqual({
+            poa_status: 'none',
+            poi_status: 'verified',
+            valid_tin: 1,
+            required_tin: 1,
+        });
     });
 
     it('should return failed if either POI or POA is failed', () => {
@@ -72,7 +77,7 @@ describe('useGetMFAccountStatus', () => {
         });
 
         expect(result.current).toStrictEqual({
-            kyc_status: { poa_status: 'suspected', poi_status: 'rejected', valid_tin: 1 },
+            kyc_status: { poa_status: 'suspected', poi_status: 'rejected', valid_tin: 1, required_tin: 1 },
             mf_account_status: 'failed',
         });
     });
@@ -110,7 +115,7 @@ describe('useGetMFAccountStatus', () => {
         });
 
         expect(result.current).toStrictEqual({
-            kyc_status: { poa_status: 'verified', poi_status: 'pending', valid_tin: 1 },
+            kyc_status: { poa_status: 'verified', poi_status: 'pending', valid_tin: 1, required_tin: 1 },
             mf_account_status: 'pending',
         });
     });

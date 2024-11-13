@@ -55,6 +55,7 @@ describe('useGetStatus', () => {
                     poa_status: 'pending',
                     poi_status: 'verified',
                     valid_tin: 1,
+                    required_tin: 1,
                 },
             },
             is_selected_MT5_account_created: false,
@@ -72,6 +73,7 @@ describe('useGetStatus', () => {
                 poa_status: 'pending',
                 poi_status: 'verified',
                 valid_tin: 1,
+                required_tin: 1,
             },
         });
     });
@@ -134,6 +136,7 @@ describe('useGetStatus', () => {
                 poi_status: 'pending',
                 poa_status: 'verified',
                 valid_tin: 1,
+                required_tin: 1,
             },
         });
 
@@ -154,6 +157,7 @@ describe('useGetStatus', () => {
                 poi_status: 'pending',
                 poa_status: 'verified',
                 valid_tin: 1,
+                required_tin: 1,
             },
         });
     });

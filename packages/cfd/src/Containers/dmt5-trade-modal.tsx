@@ -1,12 +1,12 @@
 import React from 'react';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 import { useDevice } from '@deriv-com/ui';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import getMT5StatusBadgeConfig from '@deriv/account/src/Configs/get-mt5-status-badge-config';
-import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { getCFDAccountKey, MT5_ACCOUNT_STATUS, PRODUCT, Jurisdiction } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../Helpers/cfd-config';
+import { CFD_PLATFORMS, MARKET_TYPE } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationBanner from './migration-banner';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
@@ -17,7 +17,7 @@ import { TCFDPasswordReset } from './props.types';
 import { TProducts, TTradingPlatformAccounts } from '../Components/props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: DetailsOfEachMT5Loginid;
+    mt5_trade_account: TAdditionalDetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
@@ -51,13 +51,18 @@ const DMT5TradeModal = observer(
         const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
 
         const getAccountTitle = () => {
-            if (show_eu_related_content) return 'CFDs';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
-                return 'Swap-Free';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
-                return 'Zero Spread';
-            return 'Financial';
+            switch (mt5_trade_account.product) {
+                case PRODUCT.STANDARD:
+                    return 'Standard';
+                case PRODUCT.SWAPFREE:
+                    return 'Swap-Free';
+                case PRODUCT.ZEROSPREAD:
+                    return 'Zero Spread';
+                case PRODUCT.STP:
+                    return 'Financial STP';
+                default:
+                    return show_eu_related_content ? 'CFDs' : 'Financial';
+            }
         };
 
         const getAccountIcons = () => {
@@ -75,14 +80,18 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
-
-        const shortcode =
-            mt5_trade_account.landing_company_short &&
-            mt5_trade_account.landing_company_short !== 'svg' &&
-            mt5_trade_account.landing_company_short !== 'bvi'
-                ? mt5_trade_account.landing_company_short?.charAt(0).toUpperCase() +
-                  mt5_trade_account.landing_company_short?.slice(1)
-                : mt5_trade_account.landing_company_short?.toUpperCase();
+        const getShortcode = () => {
+            switch (mt5_trade_account.landing_company_short) {
+                case Jurisdiction.SVG:
+                    return 'SVG';
+                case Jurisdiction.BVI:
+                    return 'BVI';
+                case Jurisdiction.VANUATU:
+                    return 'Vanuatu';
+                default:
+                    return null;
+            }
+        };
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -94,9 +103,11 @@ const DMT5TradeModal = observer(
                                 {getAccountTitle()}
                             </Text>
                             {!is_demo ? (
-                                <Text size='xxs' line_height='l' className='cfd-trade-modal__desc-heading--real'>
-                                    {shortcode}
-                                </Text>
+                                getShortcode() && (
+                                    <Text size='xxs' line_height='l' className='cfd-trade-modal__desc-heading--real'>
+                                        {getShortcode()}
+                                    </Text>
+                                )
                             ) : (
                                 <Text
                                     size='xxs'
@@ -149,7 +160,7 @@ const DMT5TradeModal = observer(
                         <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>
                         <SpecBox
                             is_bold
-                            value={(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}
+                            value={(mt5_trade_account as TAdditionalDetailsOfEachMT5Loginid)?.server_info?.environment}
                         />
                     </div>
                     <div className='cfd-trade-modal__login-specs-item'>
@@ -174,7 +185,7 @@ const DMT5TradeModal = observer(
                                         getTitle(mt5_trade_account.market_type ?? '', show_eu_related_content),
                                         mt5_trade_account.account_type ?? '',
                                         account_type,
-                                        (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
+                                        (mt5_trade_account as TAdditionalDetailsOfEachMT5Loginid)?.server
                                     );
                                     toggleModal();
                                 }}

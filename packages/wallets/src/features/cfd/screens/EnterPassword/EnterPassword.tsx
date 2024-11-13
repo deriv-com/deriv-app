@@ -79,7 +79,7 @@ const EnterPassword: React.FC<TProps> = ({
                 </Text>
             )}
             <div className='wallets-enter-password__content'>
-                <Text align='start' size={isDesktop ? 'sm' : 'md'}>
+                <Text align='start' className='wallets-enter-password__description' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
                         i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
                         values={{
@@ -100,7 +100,7 @@ const EnterPassword: React.FC<TProps> = ({
                     shouldDisablePasswordMeter
                 />
                 {passwordError && (
-                    <Text align='start' size={isDesktop ? 'sm' : 'md'}>
+                    <Text align='start' className='wallets-enter-password__hint' size={isDesktop ? 'sm' : 'md'}>
                         {passwordErrorHints}
                     </Text>
                 )}

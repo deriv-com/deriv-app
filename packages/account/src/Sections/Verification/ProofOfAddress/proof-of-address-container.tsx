@@ -59,6 +59,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     const { has_restricted_mt5_account, is_switching } = client;
     const { is_verification_modal_visible } = ui;
     const { refreshNotifications } = notifications;
+    const mt5_poa_status = localStorage.getItem('mt5_poa_status');
 
     React.useEffect(() => {
         if (!is_switching) {
@@ -99,6 +100,11 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             });
         }
     }, [is_switching, refreshNotifications]);
+    React.useEffect(() => {
+        return () => {
+            localStorage.removeItem('mt5_poa_status');
+        };
+    }, []);
 
     const handleResubmit = () => {
         setAuthenticationStatus(authentication_status => ({
@@ -192,22 +198,28 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     if (should_allow_resubmit) {
         return <ProofOfAddressForm is_resubmit={!poa_expiring_soon} onSubmit={onSubmitDocument} />;
     }
-
-    switch (document_status) {
-        case AUTH_STATUS_CODES.NONE:
-            return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
-        case AUTH_STATUS_CODES.PENDING:
-            return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.VERIFIED:
-            return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.EXPIRED:
-            return <Expired onClick={handleResubmit} />;
-        case AUTH_STATUS_CODES.REJECTED:
-        case AUTH_STATUS_CODES.SUSPECTED:
-            return <Unverified onClick={handleResubmit} />;
-        default:
-            return null;
-    }
+    const getDocumentStatus = (
+        document_status: DeepRequired<GetAccountStatus>['authentication']['document']['status'] | string
+    ) => {
+        switch (document_status) {
+            case AUTH_STATUS_CODES.NONE:
+                return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
+            case AUTH_STATUS_CODES.PENDING:
+                return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
+            case AUTH_STATUS_CODES.VERIFIED:
+                return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
+            case AUTH_STATUS_CODES.EXPIRED:
+                return <Expired onClick={handleResubmit} />;
+            case AUTH_STATUS_CODES.REJECTED:
+            case AUTH_STATUS_CODES.SUSPECTED:
+                return <Unverified onClick={handleResubmit} />;
+            default:
+                return null;
+        }
+    };
+    if (mt5_poa_status) return getDocumentStatus(mt5_poa_status);
+    else if (document_status) return getDocumentStatus(document_status);
+    return null;
 });
 
 export default ProofOfAddressContainer;

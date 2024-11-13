@@ -1,10 +1,9 @@
 import React, { Suspense } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { DerivLightUserVerificationIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import { Text, Modal, UILoader, MobileDialog } from '@deriv/components';
-import { routes, CFD_PLATFORMS, AUTH_STATUS_CODES } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { Text, Modal, UILoader, MobileDialog, Icon } from '@deriv/components';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import ListItem from './ListItem';
 import './verification-docs-list-modal.scss';
@@ -24,7 +23,8 @@ const VerificationDocsListModalContent = observer(() => {
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     if (!client_kyc_status) return null;
-    const { poi_status, poa_status, valid_tin } = client_kyc_status;
+    const { poi_status, poa_status, valid_tin, required_tin } = client_kyc_status;
+    const is_tin_required = required_tin === 1 && valid_tin === 0;
 
     const items: TItems[] = [
         poi_status && {
@@ -39,16 +39,17 @@ const VerificationDocsListModalContent = observer(() => {
             status: poa_status,
             route: routes.proof_of_address,
         },
-        valid_tin === 0 && {
+        is_tin_required && {
             id: 'tax',
             text: 'Additional information',
             status: valid_tin,
             route: routes.personal_details,
         },
     ].filter(Boolean) as TItems[];
+
     return (
         <div className='verification-docs-list-modal__content'>
-            <DerivLightUserVerificationIcon height='120px' width='120px' />
+            <Icon icon='IcDerivLightUserVerification' size={128} />
             <Text size={isMobile ? 'xxs' : 'xs'} line_height='xl' align='center'>
                 {platform === CFD_PLATFORMS.MT5 && !is_selected_MT5_account_created ? (
                     <Localize i18n_default_text='Confirm your details to open the account. After verification, you can begin trading.' />

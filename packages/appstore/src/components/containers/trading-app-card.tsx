@@ -28,6 +28,7 @@ import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
 
 const TradingAppCard = ({
+    client_kyc_status,
     availability,
     name,
     icon,

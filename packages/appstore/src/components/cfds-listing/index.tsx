@@ -87,6 +87,7 @@ const CFDsListing = observer(() => {
         real_account_creation_unlock_date,
         ctrader_total_balance,
         updateMT5AccountDetails,
+        is_switching,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
@@ -189,6 +190,7 @@ const CFDsListing = observer(() => {
         updateMT5AccountDetails();
     }, [is_landing_company_loaded, is_populating_mt5_account_list]);
 
+    const is_mt5_list_loading = !is_landing_company_loaded || is_populating_mt5_account_list || is_switching;
     return (
         <ListingContainer
             title={
@@ -211,7 +213,7 @@ const CFDsListing = observer(() => {
                 </Text>
             </div>
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
-            {is_landing_company_loaded && !is_populating_mt5_account_list ? (
+            {!is_mt5_list_loading ? (
                 <React.Fragment>
                     {/* MT5 */}
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -228,6 +230,7 @@ const CFDsListing = observer(() => {
                                 : '';
                         return (
                             <TradingAppCard
+                                client_kyc_status={existing_account?.client_kyc_status}
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon

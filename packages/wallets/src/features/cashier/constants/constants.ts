@@ -1,3 +1,4 @@
+import { localize } from '@deriv-com/translations';
 import {
     TMarketTypes,
     TMT5LandingCompanyName,
@@ -14,7 +15,7 @@ interface TDefinedMT5LandingCompanyDetails {
 
 interface TMT5MarketTypeDetails extends TMT5MarketTypeDetailsCommon {
     landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
-    product?: Record<TProductForMarketDetails, TMT5MarketTypeDetailsCommon>;
+    product?: Partial<Record<TProductForMarketDetails, TMT5MarketTypeDetailsCommon>>;
 }
 
 interface TMT5MarketTypeDetailsCommon {
@@ -81,6 +82,12 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
             },
         },
         name: 'financial',
+        product: {
+            stp: {
+                name: 'financial',
+                title: 'MT5 Financial STP',
+            },
+        },
         title: 'MT5 Financial',
     },
     synthetic: {
@@ -109,6 +116,6 @@ export const PlatformDetails = {
     },
     standard: {
         name: 'standard',
-        title: 'Options',
+        title: localize('Options'),
     },
 } as const;

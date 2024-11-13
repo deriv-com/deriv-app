@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { isNavigationFromP2P, isNavigationFromDerivGO, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { useTranslations } from '@deriv-com/translations';
-import PoaButton from '../../../poa/poa-button';
 import RouteButton from '../../../route-button';
+import PoaButton from '../../../poa/poa-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPOIStatus } from 'Types';
 
@@ -19,16 +19,12 @@ export const UploadComplete = ({
         ? localize('Your proof of identity is under review. We’ll get back to you within 1–3 working days.')
         : localize('Your proof of identity is under review. We’ll get back to you within 5 minutes.');
 
-    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
-
     if (!needs_poa) {
         return (
             <IconMessageContent message={message} text={description} icon={<Icon icon='IcPoiVerified' size={128} />}>
-                {!is_from_external &&
-                    (redirect_button ||
-                        (!is_redirected_from_platform && (
-                            <RouteButton button_label={localize("Return to Trader's Hub")} route={routes.traders_hub} />
-                        )))}
+                {!is_from_external && (
+                    <RouteButton button_label={localize("Return to Trader's Hub")} route={routes.traders_hub} />
+                )}
             </IconMessageContent>
         );
     }

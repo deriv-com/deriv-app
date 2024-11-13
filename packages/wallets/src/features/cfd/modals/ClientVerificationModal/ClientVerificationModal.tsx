@@ -1,9 +1,8 @@
 import React from 'react';
-import { DerivLightUploadPoiIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper } from '../../../../components';
-import { getMarketTypeDetails, MARKET_TYPE } from '../../constants';
+import DerivLightUserVerificationIcon from '../../../../public/images/ic-deriv-light-user-verification.svg';
 import { TModifiedMT5Account } from '../../types';
 import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
@@ -15,12 +14,14 @@ type TClientVerificationModal = {
 const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }) => {
     const { localize } = useTranslations();
     const { isMobile } = useDevice();
-    const { title } = getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL];
 
     return (
-        <ModalStepWrapper title={account.is_added ? localize('Verify account') : localize('Create account')}>
+        <ModalStepWrapper
+            disableScroll
+            title={account.is_added ? localize('Verification required') : localize('Complete your profile')}
+        >
             <div className='wallets-client-verification-modal'>
-                <DerivLightUploadPoiIcon height={128} width={128} />
+                <DerivLightUserVerificationIcon height={128} width={128} />
                 <Text
                     align='center'
                     className='wallets-client-verification-modal__description'
@@ -31,9 +32,8 @@ const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }
                     ) : (
                         <Localize
                             i18n_default_text={
-                                'Once your account details are complete, your MT5 {{accountName}} account will be ready for you.'
+                                'Confirm your details to open the account. After verification, you can begin trading.'
                             }
-                            values={{ accountName: title }}
                         />
                     )}
                 </Text>

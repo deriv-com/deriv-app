@@ -26,7 +26,9 @@ const Digit = ({ digit, digit_stats = [], is_active, is_disabled, is_max, is_min
                 onClick={() => onClick?.(digit)}
                 name='last_digit'
             >
-                <Text size='xl'>{digit}</Text>
+                <Text size='xl' color={is_disabled ? 'quill-typography__color--disabled' : ''}>
+                    {digit}
+                </Text>
             </button>
             {display_percentage ? (
                 <CaptionText

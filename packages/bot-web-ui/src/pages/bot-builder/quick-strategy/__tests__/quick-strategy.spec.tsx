@@ -193,8 +193,17 @@ jest.mock('../config', () => ({
         STRATEGY_1_3_2_6: {
             label: '1-3-2-6',
         },
-        ACCUMULATORS_DALEMBERT: {
-            label: 'Accumulators D’Alembert',
+        ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators D’Alembert on stat reset with tick count take profit',
+        },
+        ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators D’Alembert with tick count take profit',
+        },
+        ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Martingale with tick count take profit',
+        },
+        ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
+            label: 'Accumulators Martingale on stat reset with tick count take profit',
         },
     },
 }));

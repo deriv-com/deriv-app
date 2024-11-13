@@ -33,7 +33,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const { selected_strategy, setSelectedStrategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
     const { is_next_qs_enabled } = useFeatureFlags();
     if (!is_next_qs_enabled) {
-        delete STRATEGIES.ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT;
+        [
+            'ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+        ].forEach(key => delete STRATEGIES[key]);
     }
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const { handleSubmit } = useQsSubmitHandler();

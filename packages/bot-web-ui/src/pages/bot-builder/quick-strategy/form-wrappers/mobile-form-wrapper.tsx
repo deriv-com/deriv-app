@@ -33,7 +33,12 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
 
     const { is_next_qs_enabled } = useFeatureFlags();
     if (!is_next_qs_enabled) {
-        delete STRATEGIES.ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT;
+        [
+            'ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+            'ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT',
+        ].forEach(key => delete STRATEGIES[key]);
     }
     React.useEffect(() => {
         validateForm();

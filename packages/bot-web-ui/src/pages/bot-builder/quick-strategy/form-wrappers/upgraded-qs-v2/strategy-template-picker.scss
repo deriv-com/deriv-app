@@ -166,6 +166,19 @@
         &__item {
             display: flex;
             justify-content: space-between;
+            &__description {
+                font-size: 1.3rem;
+                align-items: center;
+            }
+            @include tablet-screen;
+            @include mobile-screen {
+                &__description {
+                    font-size: 1.3rem;
+                    flex-direction: column;
+                    justify-content: center;
+                    text-align: right;
+                }
+            }
         }
     }
 }

@@ -509,6 +509,7 @@ const PersonalDetailsForm = observer(() => {
                                                         label={localize('Code*')}
                                                         name='calling_country_code'
                                                         list_items={formatted_countries_list_for_core}
+                                                        is_country_code_dropdown
                                                         onItemSelection={country_list => {
                                                             setFieldValue(
                                                                 'calling_country_code',

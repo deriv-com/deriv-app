@@ -1,6 +1,5 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import BarrierInput from '../barrier-input';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
@@ -45,8 +44,8 @@ describe('BarrierInput', () => {
 
     it('closes ActionSheet on pressing primary action when on first page', async () => {
         mockBarrierInput(mockStore(default_trade_store));
-        userEvent.click(screen.getByRole('textbox'));
-        userEvent.click(screen.getByText(/Save/));
+        await userEvent.click(screen.getByRole('textbox'));
+        await userEvent.click(screen.getByText(/Save/));
         await waitFor(() => {
             expect(onClose).toBeCalledWith(true);
         });
@@ -57,23 +56,23 @@ describe('BarrierInput', () => {
         expect(setInitialBarrierValue).toHaveBeenCalledWith('+10');
     });
 
-    it('handles chip selection correctly', () => {
+    it('handles chip selection correctly', async () => {
         mockBarrierInput(mockStore(default_trade_store));
         const aboveSpotChip = screen.getByText('Above spot');
         const belowSpotChip = screen.getByText('Below spot');
         const fixedPriceChip = screen.getByText('Fixed barrier');
 
-        userEvent.click(belowSpotChip);
+        await userEvent.click(belowSpotChip);
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-10' } });
 
-        userEvent.click(fixedPriceChip);
+        await userEvent.click(fixedPriceChip);
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
 
-        userEvent.click(aboveSpotChip);
+        await userEvent.click(aboveSpotChip);
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+10' } });
     });
 
-    it('handles input change correctly', () => {
+    it('handles input change correctly', async () => {
         mockBarrierInput(mockStore(default_trade_store));
         const input = screen.getByPlaceholderText('Distance to spot');
 
@@ -81,7 +80,7 @@ describe('BarrierInput', () => {
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+20' } });
 
         const belowSpotChip = screen.getByText('Below spot');
-        userEvent.click(belowSpotChip);
+        await userEvent.click(belowSpotChip);
         fireEvent.change(input, { target: { value: '15' } });
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-15' } });
     });
@@ -119,42 +118,42 @@ describe('BarrierInput', () => {
         expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     });
 
-    it('handles chip selection correctly for Above spot when initial barrier is negative', () => {
+    it('handles chip selection correctly for Above spot when initial barrier is negative', async () => {
         default_trade_store.modules.trade.barrier_1 = '-10';
         mockBarrierInput(mockStore(default_trade_store));
 
         const aboveSpotChip = screen.getByText('Above spot');
-        userEvent.click(aboveSpotChip);
+        await userEvent.click(aboveSpotChip);
 
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+10' } });
     });
 
-    it('handles chip selection correctly for Below spot when initial barrier is positive', () => {
+    it('handles chip selection correctly for Below spot when initial barrier is positive', async () => {
         default_trade_store.modules.trade.barrier_1 = '+.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const belowSpotChip = screen.getByText('Below spot');
-        userEvent.click(belowSpotChip);
+        await userEvent.click(belowSpotChip);
 
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-0.6' } });
     });
 
-    it('handles chip selection correctly for Fixed barrier', () => {
+    it('handles chip selection correctly for Fixed barrier', async () => {
         default_trade_store.modules.trade.barrier_1 = '+.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const fixedPriceChip = screen.getByText('Fixed barrier');
-        userEvent.click(fixedPriceChip);
+        await userEvent.click(fixedPriceChip);
 
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
     });
 
-    it('handles chip selection correctly for Above spot when initial barrier is fixed price', () => {
+    it('handles chip selection correctly for Above spot when initial barrier is fixed price', async () => {
         default_trade_store.modules.trade.barrier_1 = '.6';
         mockBarrierInput(mockStore(default_trade_store));
 
         const aboveSpotChip = screen.getByText('Above spot');
-        userEvent.click(aboveSpotChip);
+        await userEvent.click(aboveSpotChip);
 
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+0.6' } });
     });

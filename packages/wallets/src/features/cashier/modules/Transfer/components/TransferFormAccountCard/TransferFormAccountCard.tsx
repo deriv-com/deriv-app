@@ -20,7 +20,8 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
     const isModal = type === 'modal';
 
     const hasPlatformStatus =
-        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
+        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
+        account?.status === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     return (
         <div
@@ -65,7 +66,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                 </Text>
             </div>
 
-            {account?.status && hasPlatformStatus && (
+            {hasPlatformStatus && (
                 <PlatformStatusBadge
                     badgeSize='sm'
                     cashierAccount={account}

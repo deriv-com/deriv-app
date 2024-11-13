@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import WalletGradientBackground from '../WalletGradientBackground';
-import '@testing-library/jest-dom/extend-expect';
 
 describe('WalletGradientBackground', () => {
     const defaultProps = {

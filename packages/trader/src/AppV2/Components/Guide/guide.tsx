@@ -70,7 +70,6 @@ const Guide = observer(
             setIsDescriptionOpened(is_description_opened);
         }, [is_open_by_default]);
 
-        // TODO: add sendOpenGuideToAnalytics to trade types
         return (
             <React.Fragment>
                 {show_trigger_button && (

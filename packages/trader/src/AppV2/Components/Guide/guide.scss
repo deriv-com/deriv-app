@@ -31,7 +31,8 @@
             overflow-x: hidden;
 
             &--separate {
-                padding: 0 var(--component-actionSheet-spacing-padding-lg) 0;
+                padding: 0 var(--component-actionSheet-spacing-padding-lg)
+                    var(--component-actionSheet-spacing-padding-md);
                 overflow-x: hidden;
             }
         }

@@ -1,12 +1,10 @@
 import React from 'react';
-import clsx from 'clsx';
-import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
+import { ActionSheet, Heading } from '@deriv-com/quill-ui';
 import { VideoPlayer } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { clickAndKeyEventHandler } from '@deriv/shared';
 import { getDescriptionVideoIds } from 'AppV2/Utils/contract-description-utils';
-import TradeDescription from './Description/trade-description';
-import VideoPreview from './Description/video-preview';
+import GuideContent from './guide-content';
 
 type TGuideDescriptionModal = {
     contract_list: { tradeType: React.ReactNode; id: string }[];
@@ -39,37 +37,6 @@ const GuideDescriptionModal = ({
     const toggleVideoPlayer = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         clickAndKeyEventHandler(() => setIsVideoPlayerOpened(!is_video_player_opened), e);
     };
-    // TODO: move outside
-    const GuideContent = (
-        <React.Fragment>
-            {!show_guide_for_selected_contract && (
-                <div className='guide__menu'>
-                    {contract_list.map(({ tradeType, id }: { tradeType: React.ReactNode; id: string }) => (
-                        <Chip.Selectable
-                            key={id}
-                            onChipSelect={() => onChipSelect(id)}
-                            selected={id === selected_contract_type}
-                        >
-                            <Text size='sm'>{tradeType}</Text>
-                        </Chip.Selectable>
-                    ))}
-                </div>
-            )}
-            <div
-                className={clsx('guide__contract-description', {
-                    'guide__contract-description--without-btn': !show_description_in_a_modal,
-                })}
-                key={selected_contract_type}
-            >
-                <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
-                <VideoPreview
-                    contract_type={selected_contract_type}
-                    toggleVideoPlayer={toggleVideoPlayer}
-                    video_src={video_src}
-                />
-            </div>
-        </React.Fragment>
-    );
 
     React.useEffect(() => {
         if (modal_ref.current) is_video_player_opened ? modal_ref.current.showModal() : modal_ref.current.close();
@@ -88,7 +55,16 @@ const GuideDescriptionModal = ({
                                     <Localize i18n_default_text='Trade types' />
                                 )}
                             </Heading.H4>
-                            {GuideContent}
+                            <GuideContent
+                                contract_list={contract_list}
+                                onChipSelect={onChipSelect}
+                                onTermClick={onTermClick}
+                                selected_contract_type={selected_contract_type}
+                                show_guide_for_selected_contract={show_guide_for_selected_contract}
+                                show_description_in_a_modal={show_description_in_a_modal}
+                                toggleVideoPlayer={toggleVideoPlayer}
+                                video_src={video_src}
+                            />
                         </ActionSheet.Content>
                         <ActionSheet.Footer
                             alignment='vertical'
@@ -101,7 +77,18 @@ const GuideDescriptionModal = ({
                     </ActionSheet.Portal>
                 </ActionSheet.Root>
             ) : (
-                <div className='guide__wrapper__content--separate'>{GuideContent}</div>
+                <div className='guide__wrapper__content--separate'>
+                    <GuideContent
+                        contract_list={contract_list}
+                        onChipSelect={onChipSelect}
+                        onTermClick={onTermClick}
+                        selected_contract_type={selected_contract_type}
+                        show_guide_for_selected_contract={show_guide_for_selected_contract}
+                        show_description_in_a_modal={show_description_in_a_modal}
+                        toggleVideoPlayer={toggleVideoPlayer}
+                        video_src={video_src}
+                    />
+                </div>
             )}
             {is_video_player_opened && (
                 <dialog

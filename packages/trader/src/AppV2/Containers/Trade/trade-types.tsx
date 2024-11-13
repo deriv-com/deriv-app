@@ -11,7 +11,9 @@ import { safeParse } from '@deriv/utils';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import TradeTypesContent from './trade-types-content';
 import Guide from '../../Components/Guide';
+import { sendOpenGuideToAnalytics } from '../../../Analytics';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (
@@ -24,13 +26,13 @@ type TTradeTypesProps = {
     is_dark_mode_on: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
-type TItem = {
+export type TItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
 };
 
-type TResultItem = {
+export type TResultItem = {
     id: string;
     title?: string;
     button_title?: string;
@@ -224,59 +226,27 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
     const show_trade_type_list_divider = !!other_trade_types[0]?.items?.length;
     const show_editing_divider = trade_types_array.length !== pinned_trade_types[0]?.items?.length;
-    // TODO: move it to a separate component
-    const TradeParamsBody = (
-        <React.Fragment>
-            <div>
-                <div className='draggable-list-category-header'>
-                    <Text size='sm' bold className='draggable-list-category-header-title'>
-                        {is_editing && <Localize i18n_default_text='Pinned' />}
-                    </Text>
-                    <Button
-                        color={is_dark_mode_on ? 'white' : 'black'}
-                        variant='secondary'
-                        className='draggable-list-category-header-button'
-                        onClick={is_editing ? savePinnedToLocalStorage : handleCustomizeTradeTypes}
-                    >
-                        {is_editing ? (
-                            <Localize i18n_default_text='Done' />
-                        ) : (
-                            <Localize i18n_default_text='Customise' />
-                        )}
-                    </Button>
-                </div>
-            </div>
-            <ActionSheet.Content className='trade-types-dialog__content'>
-                {is_editing ? (
-                    <DraggableList
-                        categories={pinned_trade_types}
-                        onRightIconClick={handleRemovePinnedClick}
-                        onDrag={handleOnDrag}
-                        show_editing_divider={show_editing_divider}
-                    />
-                ) : (
-                    <TradeTypeList
-                        categories={pinned_trade_types}
-                        onTradeTypeClick={handleOnTradeTypeSelect}
-                        isSelected={id => isTradeTypeSelected(id)}
-                        selectable
-                        show_divider={show_trade_type_list_divider}
-                    />
-                )}
-                <TradeTypeList
-                    categories={other_trade_types}
-                    onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
-                    onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
-                    isSelected={id => isTradeTypeSelected(id)}
-                    selectable={!is_editing}
-                />
-            </ActionSheet.Content>
-        </React.Fragment>
-    );
+
     const action_sheet_content = [
         {
             id: 1,
-            component: TradeParamsBody,
+            component: (
+                <TradeTypesContent
+                    handleCustomizeTradeTypes={handleCustomizeTradeTypes}
+                    handleRemovePinnedClick={handleRemovePinnedClick}
+                    handleOnDrag={handleOnDrag}
+                    handleOnTradeTypeSelect={handleOnTradeTypeSelect}
+                    handleAddPinnedClick={handleAddPinnedClick}
+                    is_editing={is_editing}
+                    is_dark_mode_on={is_dark_mode_on}
+                    isTradeTypeSelected={isTradeTypeSelected}
+                    savePinnedToLocalStorage={savePinnedToLocalStorage}
+                    show_trade_type_list_divider={show_trade_type_list_divider}
+                    show_editing_divider={show_editing_divider}
+                    other_trade_types={other_trade_types}
+                    pinned_trade_types={pinned_trade_types}
+                />
+            ),
         },
         {
             id: 2,
@@ -324,7 +294,21 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                                     </div>
                                 }
                             />
-                            {TradeParamsBody}
+                            <TradeTypesContent
+                                handleCustomizeTradeTypes={handleCustomizeTradeTypes}
+                                handleRemovePinnedClick={handleRemovePinnedClick}
+                                handleOnDrag={handleOnDrag}
+                                handleOnTradeTypeSelect={handleOnTradeTypeSelect}
+                                handleAddPinnedClick={handleAddPinnedClick}
+                                is_editing={is_editing}
+                                is_dark_mode_on={is_dark_mode_on}
+                                isTradeTypeSelected={isTradeTypeSelected}
+                                savePinnedToLocalStorage={savePinnedToLocalStorage}
+                                show_trade_type_list_divider={show_trade_type_list_divider}
+                                show_editing_divider={show_editing_divider}
+                                other_trade_types={other_trade_types}
+                                pinned_trade_types={pinned_trade_types}
+                            />
                         </React.Fragment>
                     ) : (
                         <Carousel
@@ -332,6 +316,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                             pages={action_sheet_content}
                             title={<Localize i18n_default_text='Trade types' />}
                             next_icon={LabelPairedPresentationScreenSmRegularIcon}
+                            onNextButtonClick={() => sendOpenGuideToAnalytics(contract_type, 'trade_type_page')}
                         />
                     )}
                 </ActionSheet.Portal>

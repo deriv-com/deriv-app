@@ -4,7 +4,6 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
 import { TAvailableMT5Account } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
@@ -52,8 +51,6 @@ const EnterPassword: React.FC<TProps> = ({
     const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
 
-    const isMT5 = platform === CFD_PLATFORMS.MT5;
-    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
@@ -81,18 +78,18 @@ const EnterPassword: React.FC<TProps> = ({
             <div className='wallets-enter-password__content'>
                 <Text align='start' className='wallets-enter-password__description' size={isDesktop ? 'sm' : 'md'}>
                     <Localize
-                        i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
+                        i18n_default_text='Enter your {{title}} password to add an {{accountTitle}} {{marketTypeTitle}} account'
                         values={{
-                            accountTitle:
-                                platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
-                                    ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
-                                    : title,
-                            marketTypeTitle,
+                            accountTitle: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                            marketTypeTitle: isVirtual
+                                ? `${marketTypeTitle} ${accountType.toLocaleLowerCase()}`
+                                : marketTypeTitle,
                             title,
                         }}
                     />
                 </Text>
                 <WalletPasswordFieldLazy
+                    hideValidation
                     label={localize('{{title}} password', { title })}
                     onChange={onPasswordChange}
                     password={password}
@@ -119,10 +116,10 @@ const EnterPassword: React.FC<TProps> = ({
                         textSize='sm'
                         variant='outlined'
                     >
-                        <Localize i18n_default_text='Forgot password?' />
+                        <Localize i18n_default_text='Forgot password' />
                     </Button>
                     <Button
-                        disabled={!password || isLoading || disableButton || !isTncChecked}
+                        disabled={!password || isLoading || !isTncChecked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

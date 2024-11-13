@@ -13,8 +13,8 @@ import { SentEmailContent } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
-import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
+import { validPasswordMT5 } from '../../../../utils/password-validation';
+import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import { TAvailableMT5Account } from '../../types';
 import { MT5AccountAdded } from '../MT5AccountAdded';
@@ -79,6 +79,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const marketType = account.market_type ?? 'synthetic';
     const platform = account.platform;
     const product = account.product;
+    const marketTypeTitle = getMarketTypeDetails(localize, product)[marketType].title;
 
     const isMT5PasswordNotSet = accountStatusData?.is_mt5_password_not_set;
     const { platform: mt5Platform, title } = PlatformDetails.mt5;
@@ -90,6 +91,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         createMT5AccountStatus === 'error' &&
         (createMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
             createMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat');
+    const hasCreateMT5AccountError = !updateMT5Password && createMT5AccountStatus === 'error';
+    const isPasswordError = createMT5AccountError?.error?.code === 'PasswordError';
+    const isPasswordResetError = createMT5AccountError?.error?.code === 'PasswordReset';
+    const isInputValidationError = createMT5AccountError?.error?.code === 'InputValidationFailed';
 
     const onSubmit = useCallback(async () => {
         // ====== Create MT5 Account ======
@@ -183,16 +188,28 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     );
 
     const renderTitle = useCallback(() => {
-        const accountAction = isMT5PasswordNotSet ? localize('Create a') : localize('Enter your');
-        const accountTitle = isVirtual ? localize('demo {{title}}', { title }) : title;
+        let modalTitle;
 
-        return updateMT5Password
-            ? localize('{{title}} latest password requirements', { title })
-            : localize('{{accountAction}} {{accountTitle}} password', {
-                  accountAction,
-                  accountTitle,
-              });
-    }, [isMT5PasswordNotSet, isVirtual, localize, title, updateMT5Password]);
+        if (updateMT5Password) {
+            modalTitle = localize('{{title}} latest password requirements', { title });
+        } else if (isMT5PasswordNotSet) {
+            modalTitle = isVirtual
+                ? localize('Create a demo {{title}} password', { title })
+                : localize('Create a {{title}} password', { title });
+        } else {
+            modalTitle = isVirtual
+                ? localize('Add an {{title}} {{marketTypeTitle}} demo account', {
+                      marketTypeTitle,
+                      title: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                  })
+                : localize('Add an {{title}} {{marketTypeTitle}} account', {
+                      marketTypeTitle,
+                      title: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                  });
+        }
+
+        return modalTitle;
+    }, [isMT5PasswordNotSet, isVirtual, localize, marketTypeTitle, title, updateMT5Password]);
 
     const renderFooter = useCallback(() => {
         if (isMT5PasswordNotSet)
@@ -221,11 +238,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
             <div className='wallets-mt5-password-modal__footer'>
                 <MT5PasswordModalFooter
                     disabled={
-                        !password ||
-                        createMT5AccountLoading ||
-                        tradingPlatformPasswordChangeLoading ||
-                        !validPassword(password) ||
-                        !isTncChecked
+                        !password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading || !isTncChecked
                     }
                     isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                     onPrimaryClick={onSubmit}
@@ -295,15 +308,24 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                 marketType={marketType}
                 modalTitle={
                     isVirtual
-                        ? localize('Enter your demo {{title}} password', { title })
-                        : localize('Enter your {{title}} password', { title })
+                        ? localize('Add an {{title}} {{marketTypeTitle}} demo account', {
+                              marketTypeTitle,
+                              title: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                          })
+                        : localize('Add an {{title}} {{marketTypeTitle}} account', {
+                              marketTypeTitle,
+                              title: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                          })
                 }
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
                 onSecondaryClick={() => sendEmailVerification()}
                 onTncChange={() => setIsTncChecked(prev => !prev)}
                 password={password}
-                passwordError={createMT5AccountError?.error?.code === 'PasswordError'}
+                passwordError={
+                    createMT5AccountError?.error?.code === 'PasswordError' ||
+                    createMT5AccountError?.error?.code === 'InputValidationFailed'
+                }
                 platform={mt5Platform}
                 product={product}
                 setPassword={setPassword}
@@ -321,14 +343,14 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         account,
         isTncChecked,
         isVirtual,
-        product,
         updateMT5Password,
         tradingPasswordChangeError,
         onSubmitPasswordChange,
         marketType,
         localize,
-        title,
+        marketTypeTitle,
         createMT5AccountError?.error?.code,
+        product,
         sendEmailVerification,
     ]);
 
@@ -358,18 +380,16 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
             />
         );
     }
-    if (
-        createMT5AccountStatus === 'error' &&
-        createMT5AccountError?.error?.code === 'PasswordReset' &&
-        !updateMT5Password
-    ) {
+
+    if (hasCreateMT5AccountError && isPasswordResetError) {
         return <PasswordLimitExceededModal onPrimaryClick={hide} onSecondaryClick={() => sendEmailVerification()} />;
     }
     if (
-        createMT5AccountStatus === 'error' &&
-        createMT5AccountError?.error?.code !== 'PasswordError' &&
-        !updateMT5Password
+        isMT5PasswordNotSet
+            ? hasCreateMT5AccountError && !isPasswordError
+            : hasCreateMT5AccountError && !isPasswordError && !isInputValidationError
     ) {
+        if (!createMT5AccountError?.error) return null;
         return <MT5ErrorModal error={createMT5AccountError?.error} onClickHandler={hide} />;
     }
 

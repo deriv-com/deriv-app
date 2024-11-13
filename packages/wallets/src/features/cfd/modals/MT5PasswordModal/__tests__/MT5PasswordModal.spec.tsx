@@ -231,7 +231,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard account')).toBeInTheDocument();
     });
 
     it('renders default content for demo account', () => {
@@ -242,7 +242,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your demo Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard demo account')).toBeInTheDocument();
     });
 
     it('renders WalletError for account creation errors', () => {
@@ -255,6 +255,20 @@ describe('MT5PasswordModal', () => {
         render(<MT5PasswordModal account={mockAccount} />);
 
         expect(screen.getByText('WalletError')).toBeInTheDocument();
+    });
+
+    it('returns null when createMT5AccountError is undefined', () => {
+        (useCreateMT5Account as jest.Mock).mockReturnValue({
+            error: undefined,
+            status: 'error',
+        });
+
+        const { container } = render(
+            //@ts-expect-error since this is a mock, we only need partial properties of the account
+            <MT5PasswordModal account={mockAccount} />
+        );
+
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('renders WalletError when email verification fails', () => {

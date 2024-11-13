@@ -50,6 +50,7 @@ export const validatePassword = (
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
+    hideValidation = false,
     label,
     mt5Policy = false,
     name = 'walletPasswordField',
@@ -67,10 +68,17 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [errorMessage, setErrorMessage] = useState('');
 
     const { score, validationErrorMessage } = useMemo(
-        () => validatePassword(password, mt5Policy, localize),
-        [password, mt5Policy, localize]
+        () =>
+            hideValidation ? { score: 0, validationErrorMessage: '' } : validatePassword(password, mt5Policy, localize),
+        [password, mt5Policy, localize, hideValidation]
     );
     const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
+    const getErrorMessage = () => {
+        if (hideValidation) {
+            return passwordError ? getPasswordErrorMessage(localize).PasswordError : '';
+        }
+        return isTouched && (serverErrorMessage || errorMessage);
+    };
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,18 +98,27 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     }, [isTouched]);
 
     useEffect(() => {
-        setShowErrorMessage(!!passwordError);
-        setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
-    }, [passwordError, validationErrorMessage, localize]);
+        if (!hideValidation) {
+            setShowErrorMessage(!!passwordError);
+            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
+        } else {
+            setShowErrorMessage(!!passwordError);
+            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : '');
+        }
+    }, [passwordError, validationErrorMessage, localize, hideValidation]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
-                errorMessage={isTouched && (serverErrorMessage || errorMessage)}
-                isInvalid={(passwordValidation && isTouched) || showErrorMessage || !!passwordError}
+                errorMessage={getErrorMessage()}
+                isInvalid={
+                    hideValidation
+                        ? !!passwordError
+                        : (passwordValidation && isTouched) || showErrorMessage || !!passwordError || false
+                }
                 label={label}
-                messageVariant={validationErrorMessage ? 'warning' : undefined}
+                messageVariant={!hideValidation && validationErrorMessage ? 'warning' : undefined}
                 name={name}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -112,7 +129,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />
-            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
+            {!hideValidation && !shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

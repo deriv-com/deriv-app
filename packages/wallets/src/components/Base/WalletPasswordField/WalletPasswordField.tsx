@@ -98,12 +98,12 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     }, [isTouched]);
 
     useEffect(() => {
-        if (!hideValidation) {
-            setShowErrorMessage(!!passwordError);
-            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
-        } else {
+        if (hideValidation) {
             setShowErrorMessage(!!passwordError);
             setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : '');
+        } else {
+            setShowErrorMessage(!!passwordError);
+            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
         }
     }, [passwordError, validationErrorMessage, localize, hideValidation]);
 
@@ -115,7 +115,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 isInvalid={
                     hideValidation
                         ? !!passwordError
-                        : (passwordValidation && isTouched) || showErrorMessage || !!passwordError || false
+                        : (passwordValidation && isTouched) || showErrorMessage || !!passwordError
                 }
                 label={label}
                 messageVariant={!hideValidation && validationErrorMessage ? 'warning' : undefined}

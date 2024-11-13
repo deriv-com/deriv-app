@@ -41,6 +41,8 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         setIsDisabledRequestButton,
     } = useRequestPhoneNumberOTP();
     const {
+        is_global_sms_available,
+        is_global_whatsapp_available,
         available_carriers,
         formatted_countries_list,
         short_code_selected,
@@ -155,15 +157,15 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         !isCountryCodeDropdownEnabled ||
         (selectedCountryCode
             ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-              selectedCountryCode?.carriers.includes('sms')
-            : selected_country_list?.carriers.includes('sms'));
+              selectedCountryCode?.carriers.includes('sms') && is_global_sms_available
+            : selected_country_list?.carriers.includes('sms') && is_global_sms_available);
 
     const isCarrierSupportedForWhatsApp =
         !isCountryCodeDropdownEnabled ||
         (selectedCountryCode
             ? //@ts-expect-error carriers is not defined in TCountryCodes from quill-ui
-              selectedCountryCode?.carriers.includes('whatsapp')
-            : selected_country_list?.carriers.includes('whatsapp'));
+              selectedCountryCode?.carriers.includes('whatsapp') && is_global_whatsapp_available
+            : selected_country_list?.carriers.includes('whatsapp') && is_global_whatsapp_available);
 
     const getSMSButtonVariant = () => {
         if (!isCountryCodeDropdownEnabled) return 'secondary';

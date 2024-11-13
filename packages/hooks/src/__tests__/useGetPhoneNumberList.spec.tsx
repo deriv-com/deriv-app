@@ -1,9 +1,11 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+
 import { useQuery } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import useSettings from '../useSettings';
+import { renderHook } from '@testing-library/react-hooks';
+
 import useGetPhoneNumberList from '../useGetPhoneNumberList';
+import useSettings from '../useSettings';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -15,6 +17,7 @@ jest.mock('../useSettings');
 describe('useGetPhoneNumberList', () => {
     const mockPhoneSettings = {
         phone_settings: {
+            carriers: ['sms', 'whatsapp'],
             countries: [
                 {
                     display_name: 'Malaysia',
@@ -121,5 +124,57 @@ describe('useGetPhoneNumberList', () => {
             calling_country_code: '+60',
             carriers: ['sms', 'whatsapp'],
         });
+    });
+
+    it('should return true for is_global_sms_available', () => {
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_global_sms_available).toBe(true);
+    });
+
+    it('should return true for is_global_whatsapp_available', () => {
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_global_whatsapp_available).toBe(true);
+    });
+
+    it('should return false for is_global_sms_available when sms is not supported', () => {
+        (useQuery as jest.Mock).mockReturnValue({ data: { phone_settings: { carriers: ['whatsapp'] } } });
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_global_sms_available).toBe(false);
+    });
+
+    it('should return false for is_global_whatsapp_available when whatsapp is not supported', () => {
+        (useQuery as jest.Mock).mockReturnValue({ data: { phone_settings: { carriers: ['sms'] } } });
+
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_global_whatsapp_available).toBe(false);
+    });
+
+    it('should return true for is_carriers_supported', () => {
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_carriers_supported).toBe(true);
+    });
+
+    it('should return false for is_carriers_supported when carriers is empty', () => {
+        (useQuery as jest.Mock).mockReturnValue({ data: { phone_settings: { carriers: [] } } });
+        const { result } = renderHook(() => useGetPhoneNumberList(), {
+            wrapper,
+        });
+
+        expect(result.current.is_carriers_supported).toBe(false);
     });
 });

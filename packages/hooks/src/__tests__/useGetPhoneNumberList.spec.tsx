@@ -79,12 +79,14 @@ describe('useGetPhoneNumberList', () => {
                 text: 'Malaysia (+60)',
                 value: '+60',
                 id: '+60_MY',
+                carriers: ['sms', 'whatsapp'],
                 disabled: false,
             },
             {
                 text: 'Brazil (+55)',
                 value: '+55',
                 id: '+55_BR',
+                carriers: ['whatsapp'],
                 disabled: false,
             },
         ]);

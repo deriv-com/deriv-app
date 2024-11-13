@@ -15,6 +15,7 @@ export const getPersonalDetailsInitialValues = (
     states_list: StatesList,
     is_virtual?: boolean,
     selected_phone_code?: string,
+    is_carriers_supported?: boolean,
     isCountryCodeDropdownEnabled?: string | boolean
 ): PersonalDetailsValueTypes => {
     const virtualAccountInitialValues: PersonalDetailsValueTypes = {
@@ -31,6 +32,7 @@ export const getPersonalDetailsInitialValues = (
         address_postcode: account_settings.address_postcode ?? '',
         address_state: '',
         ...(isCountryCodeDropdownEnabled && { calling_country_code: selected_phone_code }),
+        ...(isCountryCodeDropdownEnabled && { is_carriers_available: is_carriers_supported }),
         date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,

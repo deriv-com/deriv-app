@@ -76,8 +76,11 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         has_error_1 && (error_field_1 === 'amount' || error_field_1 === 'stake') ? message_1 : '';
     const proposal_error_message_2 =
         has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
+    const has_both_errors = has_error_1 && has_error_2;
     const proposal_error_message =
-        proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
+        contract_types[1] && has_both_errors
+            ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
+            : (!(contract_types[1] && !has_both_errors) && proposal_error_message_1) || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
     E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
@@ -88,7 +91,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         is_max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
             : 0;
-    const { payout, stake } = validation_params[contract_types[0]] ?? {};
+    const { payout, stake } = (validation_params[contract_types[0]] || validation_params[contract_types[1]]) ?? {};
     const { max: max_payout = error_max_payout } = payout ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
     const error_payout_1 = proposal_error_message_1
@@ -99,14 +102,12 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         : 0;
     const first_contract_payout = payout_1 || error_payout_1;
     const second_contract_payout = payout_2 || error_payout_2;
-    const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
     const main_error_message =
-        (validation_error_text && error_payout_1 > error_payout_2
+        (proposal_error_message && error_payout_1 > error_payout_2
             ? proposal_error_message_2
-            : proposal_error_message_1) || validation_error_text;
-    const has_both_errors = has_error_1 && has_error_2;
+            : proposal_error_message_1) || proposal_error_message;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = has_both_errors ? two_contracts_error : validation_error_text;
+    const stake_error = (has_both_errors ? two_contracts_error : !contract_types[1] && proposal_error_message) || '';
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,

@@ -8,9 +8,10 @@ import './CompareAccountsHeader.scss';
 type TCompareAccountsHeader = {
     isDemo: boolean;
     isEuRegion: boolean;
+    isLoading: boolean;
 };
 
-const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) => {
+const CompareAccountsHeader = ({ isDemo, isEuRegion, isLoading }: TCompareAccountsHeader) => {
     const history = useHistory();
     const { localize } = useTranslations();
 
@@ -32,7 +33,7 @@ const CompareAccountsHeader = ({ isDemo, isEuRegion }: TCompareAccountsHeader) =
         <div className='wallets-compare-accounts-header'>
             <div className='wallets-compare-accounts-header__title'>
                 <Text size='xl' weight='bold'>
-                    {headerText}
+                    {isLoading ? '' : headerText}
                 </Text>
             </div>
             <LegacyClose2pxIcon

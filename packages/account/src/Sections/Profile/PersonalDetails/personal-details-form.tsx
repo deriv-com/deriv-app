@@ -300,12 +300,15 @@ const PersonalDetailsForm = observer(() => {
 
     const is_tin_auto_set = Boolean(account_settings?.tin_skipped);
 
+    const is_employment_status_tin_mandatory = Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
+
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(
         is_virtual,
         is_svg,
         tin_validation_config,
         is_tin_auto_set,
-        account_settings?.immutable_fields
+        account_settings?.immutable_fields,
+        is_employment_status_tin_mandatory
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {

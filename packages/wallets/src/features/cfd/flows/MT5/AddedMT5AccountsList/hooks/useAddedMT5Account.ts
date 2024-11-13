@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTradingPlatformStatus } from '@deriv/api-v2';
+import { useIsEuRegion, useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import type { THooks } from '../../../../../../types';
 import { ClientVerificationStatusBadge } from '../../../../components';
@@ -53,9 +53,11 @@ const useAddedMT5Account = (account: TAddedMT5Account) => {
     // @ts-expect-error The enabled property exists, but the api-types are invalid
     const isAccountDisabled = 'rights' in account && !account.rights.enabled;
 
+    const { data: isEuRegion } = useIsEuRegion();
+
     const accountDetails = useMemo(
-        () => getMarketTypeDetails(localize, account.product)[account.market_type ?? MARKET_TYPE.ALL],
-        [account.market_type, account.product, localize]
+        () => getMarketTypeDetails(localize, account.product, isEuRegion)[account.market_type ?? MARKET_TYPE.ALL],
+        [account.market_type, account.product, localize, isEuRegion]
     );
 
     const { getPlatformStatus } = useTradingPlatformStatus();

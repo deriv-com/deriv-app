@@ -20,6 +20,9 @@ jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
     useCtraderServiceToken: jest.fn(),
     useDxtradeAccountsList: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
 }));
 
 jest.mock('@deriv-com/ui', () => ({

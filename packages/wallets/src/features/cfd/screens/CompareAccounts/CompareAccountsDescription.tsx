@@ -73,39 +73,6 @@ const CompareAccountsDescription = ({
                     </Text>
                 </div>
             )}
-            {!isDemo && !isEuRegion && (
-                <React.Fragment>
-                    <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size={isTablet ? 'md' : 'sm'} weight='bold'>
-                            {jurisdictionData.counterparty_company}
-                        </Text>
-                        <Text align='center' as='p' size='2xs'>
-                            {jurisdictionData.counterparty_company_description}
-                        </Text>
-                    </div>
-                    <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size={isTablet ? 'xs' : 'sm'} weight='bold'>
-                            {jurisdictionData.jurisdiction}
-                        </Text>
-                        <Text align='center' as='p' size='2xs'>
-                            {jurisdictionData.jurisdiction_description}
-                        </Text>
-                    </div>
-                    <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size={isTablet ? 'xs' : 'sm'} weight='bold'>
-                            {jurisdictionData.regulator}
-                        </Text>
-                        {jurisdictionData.regulator_license && (
-                            <Text align='center' as='p' size='2xs'>
-                                {jurisdictionData.regulator_license}
-                            </Text>
-                        )}
-                        <Text align='center' as='p' size='2xs'>
-                            {jurisdictionData.regulator_description}
-                        </Text>
-                    </div>
-                </React.Fragment>
-            )}
         </div>
     );
 };

@@ -63,9 +63,6 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/cashier/dist/cashier/public'),
             to: 'cashier/public',
-            transform(_content, transform_path) {
-                return transform_path.split('node_modules/@deriv/cashier/dist/')[1];
-            },
         },
         {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/trader/dist/trader'),

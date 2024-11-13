@@ -226,27 +226,26 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
     const show_trade_type_list_divider = !!other_trade_types[0]?.items?.length;
     const show_editing_divider = trade_types_array.length !== pinned_trade_types[0]?.items?.length;
+    const trade_type_content_props = {
+        handleCustomizeTradeTypes,
+        handleRemovePinnedClick,
+        handleOnDrag,
+        handleOnTradeTypeSelect,
+        handleAddPinnedClick,
+        is_editing,
+        is_dark_mode_on,
+        isTradeTypeSelected,
+        savePinnedToLocalStorage,
+        show_trade_type_list_divider,
+        show_editing_divider,
+        other_trade_types,
+        pinned_trade_types,
+    };
 
     const action_sheet_content = [
         {
             id: 1,
-            component: (
-                <TradeTypesContent
-                    handleCustomizeTradeTypes={handleCustomizeTradeTypes}
-                    handleRemovePinnedClick={handleRemovePinnedClick}
-                    handleOnDrag={handleOnDrag}
-                    handleOnTradeTypeSelect={handleOnTradeTypeSelect}
-                    handleAddPinnedClick={handleAddPinnedClick}
-                    is_editing={is_editing}
-                    is_dark_mode_on={is_dark_mode_on}
-                    isTradeTypeSelected={isTradeTypeSelected}
-                    savePinnedToLocalStorage={savePinnedToLocalStorage}
-                    show_trade_type_list_divider={show_trade_type_list_divider}
-                    show_editing_divider={show_editing_divider}
-                    other_trade_types={other_trade_types}
-                    pinned_trade_types={pinned_trade_types}
-                />
-            ),
+            component: <TradeTypesContent {...trade_type_content_props} />,
         },
         {
             id: 2,
@@ -294,21 +293,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                                     </div>
                                 }
                             />
-                            <TradeTypesContent
-                                handleCustomizeTradeTypes={handleCustomizeTradeTypes}
-                                handleRemovePinnedClick={handleRemovePinnedClick}
-                                handleOnDrag={handleOnDrag}
-                                handleOnTradeTypeSelect={handleOnTradeTypeSelect}
-                                handleAddPinnedClick={handleAddPinnedClick}
-                                is_editing={is_editing}
-                                is_dark_mode_on={is_dark_mode_on}
-                                isTradeTypeSelected={isTradeTypeSelected}
-                                savePinnedToLocalStorage={savePinnedToLocalStorage}
-                                show_trade_type_list_divider={show_trade_type_list_divider}
-                                show_editing_divider={show_editing_divider}
-                                other_trade_types={other_trade_types}
-                                pinned_trade_types={pinned_trade_types}
-                            />
+                            <TradeTypesContent {...trade_type_content_props} />
                         </React.Fragment>
                     ) : (
                         <Carousel

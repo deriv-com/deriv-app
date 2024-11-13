@@ -38,6 +38,17 @@ const GuideDescriptionModal = ({
         clickAndKeyEventHandler(() => setIsVideoPlayerOpened(!is_video_player_opened), e);
     };
 
+    const guide_content_props = {
+        contract_list,
+        onChipSelect,
+        onTermClick,
+        selected_contract_type,
+        show_guide_for_selected_contract,
+        show_description_in_a_modal,
+        toggleVideoPlayer,
+        video_src,
+    };
+
     React.useEffect(() => {
         if (modal_ref.current) is_video_player_opened ? modal_ref.current.showModal() : modal_ref.current.close();
     }, [is_video_player_opened]);
@@ -55,16 +66,7 @@ const GuideDescriptionModal = ({
                                     <Localize i18n_default_text='Trade types' />
                                 )}
                             </Heading.H4>
-                            <GuideContent
-                                contract_list={contract_list}
-                                onChipSelect={onChipSelect}
-                                onTermClick={onTermClick}
-                                selected_contract_type={selected_contract_type}
-                                show_guide_for_selected_contract={show_guide_for_selected_contract}
-                                show_description_in_a_modal={show_description_in_a_modal}
-                                toggleVideoPlayer={toggleVideoPlayer}
-                                video_src={video_src}
-                            />
+                            <GuideContent {...guide_content_props} />
                         </ActionSheet.Content>
                         <ActionSheet.Footer
                             alignment='vertical'
@@ -78,16 +80,7 @@ const GuideDescriptionModal = ({
                 </ActionSheet.Root>
             ) : (
                 <div className='guide__wrapper__content--separate'>
-                    <GuideContent
-                        contract_list={contract_list}
-                        onChipSelect={onChipSelect}
-                        onTermClick={onTermClick}
-                        selected_contract_type={selected_contract_type}
-                        show_guide_for_selected_contract={show_guide_for_selected_contract}
-                        show_description_in_a_modal={show_description_in_a_modal}
-                        toggleVideoPlayer={toggleVideoPlayer}
-                        video_src={video_src}
-                    />
+                    <GuideContent {...guide_content_props} />
                 </div>
             )}
             {is_video_player_opened && (

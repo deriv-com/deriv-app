@@ -34,6 +34,7 @@ jest.mock('@deriv/components', () => ({
     initSurvicate: () => <div>script...</div>,
 }));
 
+
 jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 

@@ -419,10 +419,10 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
         ],
     },
-    ACCUMULATORS_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_martingale_with_tick_count_take_profit',
+    ACCUMULATORS_MARTINGALE: {
+        name: 'accumulators_martingale',
         label: localize('Martingale'),
-        rs_strategy_name: `accumulators_martingale_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_MARTINGALE`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -442,10 +442,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_dalembert_with_tick_count_take_profit',
+    ACCUMULATORS_DALEMBERT: {
+        name: 'accumulators_dalembert',
         label: localize('D’Alembert'),
-        rs_strategy_name: `accumulators_dalembert_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_DALEMBERT`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -465,10 +465,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_martingale_on_stat_reset_with_tick_count_take_profit',
+    ACCUMULATORS_MARTINGALE_ON_STAT_RESET: {
+        name: 'accumulators_martingale_on_stat_reset',
         label: localize('Martingale on Stat Reset'),
-        rs_strategy_name: `accumulators_martingale_on_stat_reset_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_MARTINGALE_ON_STAT_RESET`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -488,10 +488,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_dalembert_on_stat_reset_with_tick_count_take_profit',
+    ACCUMULATORS_DALEMBERT_ON_STAT_RESET: {
+        name: 'accumulators_dalembert_on_stat_reset',
         label: localize("D'Alembert on Stat Reset"),
-        rs_strategy_name: `accumulators_dalembert_on_stat_reset_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_DALEMBERT_ON_STAT_RESET`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -511,10 +511,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_REVERSE_MARTINGALE_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_reverse_martingale_with_tick_count_take_profit',
+    ACCUMULATORS_REVERSE_MARTINGALE: {
+        name: 'accumulators_reverse_martingale',
         label: localize('Reverse Martingale'),
-        rs_strategy_name: `accumulators_reverse_martingale_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_REVERSE_MARTINGALE`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -534,10 +534,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit',
+    ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET: {
+        name: 'accumulators_reverse_martingale_on_stat_reset',
         label: localize('Reverse Martingale on Stat Reset'),
-        rs_strategy_name: `accumulators_reverse_martingale_on_stat_reset_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -557,10 +557,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_REVERSE_DALEMBERT_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_reverse_dalembert_with_tick_count_take_profit',
+    ACCUMULATORS_REVERSE_DALEMBERT: {
+        name: 'accumulators_reverse_dalembert',
         label: localize("Reverse D'Alembert"),
-        rs_strategy_name: `accumulators_reverse_dalembert_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_REVERSE_DALEMBERT`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],
@@ -580,10 +580,10 @@ export const STRATEGIES: TStrategies = {
             ],
         ],
     },
-    ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET_WITH_TICK_COUNT_TAKE_PROFIT: {
-        name: 'accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit',
+    ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET: {
+        name: 'accumulators_reverse_dalembert_on_stat_reset',
         label: localize("Reverse D'Alembert on Stat Reset"),
-        rs_strategy_name: `accumulators_reverse_dalembert_on_stat_reset_with_tick_count_take_profit`,
+        rs_strategy_name: `ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET`,
         description: [],
         fields: [
             [LABEL_SYMBOL, SYMBOL, LABEL_STAKE, STAKE, GROWTH_RATE, GROWTH_RATE_VALUE],

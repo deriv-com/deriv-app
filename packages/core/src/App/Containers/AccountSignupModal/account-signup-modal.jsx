@@ -58,6 +58,29 @@ const AccountSignup = ({
     React.useEffect(() => {
         // eslint-disable-next-line no-console
 
+        cacheTrackEvents.trackConsoleErrors(errorMessage => {
+            if (errorMessage) {
+                cacheTrackEvents.loadEvent([
+                    {
+                        event: {
+                            name: 'ce_virtual_signup_form',
+                            properties: {
+                                action: 'signup_flow_error',
+                                form_name: is_mobile
+                                    ? 'virtual_signup_web_mobile_default'
+                                    : 'virtual_signup_web_desktop_default',
+                                error_message: localize(errorMessage),
+                                screen_name: 'country_selection_screen',
+                            },
+                        },
+                        cache: true,
+                    },
+                ]);
+            }
+
+            // console.log('Captured error message:', errorMessage);
+        });
+
         cacheTrackEvents.loadEvent([
             {
                 event: {
@@ -96,6 +119,7 @@ const AccountSignup = ({
         });
         // need to modify data from ab testing platform to reach translation and tracking needs
         const fetchQuestionnarieData = () => {
+            console.error('Test error message without an Error object');
             let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive') || 'inactive';
             const default_ab_value = ab_value;
             ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
@@ -144,7 +168,7 @@ const AccountSignup = ({
             Analytics.trackEvent('ce_virtual_signup_form', {
                 action: 'signup_flow_error',
                 form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                error_message: error,
+                error_message: localize(error),
             });
         } else {
             setIsFromSignupAccount(true);

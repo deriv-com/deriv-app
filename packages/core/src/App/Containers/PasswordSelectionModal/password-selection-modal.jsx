@@ -29,6 +29,29 @@ const PasswordSelectionModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
+            cacheTrackEvents.trackConsoleErrors(errorMessage => {
+                if (errorMessage) {
+                    cacheTrackEvents.loadEvent([
+                        {
+                            event: {
+                                name: 'ce_virtual_signup_form',
+                                properties: {
+                                    action: 'signup_flow_error',
+                                    form_name: is_mobile
+                                        ? 'virtual_signup_web_mobile_default'
+                                        : 'virtual_signup_web_desktop_default',
+                                    error_message: localize(errorMessage),
+                                    screen_name: 'password_screen',
+                                },
+                            },
+                            cache: true,
+                        },
+                    ]);
+                }
+
+                // console.log('Captured error message:', errorMessage);
+            });
+
             cacheTrackEvents.loadEvent([
                 {
                     event: {
@@ -45,6 +68,7 @@ const PasswordSelectionModal = observer(
         }, [is_mobile]);
 
         return (
+            console.error('Test error message without an Error object');
             <div className='account-signup__password-selection'>
                 <Text
                     as='p'

@@ -23,7 +23,8 @@ import './WalletPasswordField.scss';
 export const validatePassword = (
     password: string,
     mt5Policy: boolean,
-    localize: ReturnType<typeof useTranslations>['localize']
+    localize: ReturnType<typeof useTranslations>['localize'],
+    hideWarning?: boolean
 ) => {
     const score = mt5Policy ? calculateScoreMT5(password) : calculateScoreCFD(password);
     let validationErrorMessage = '';
@@ -38,7 +39,7 @@ export const validatePassword = (
         } else {
             cfdSchema(localize).validateSync(password);
         }
-        validationErrorMessage = getWarningMessages(localize)[feedback.warning as passwordKeys] ?? '';
+        validationErrorMessage = hideWarning ? '' : getWarningMessages(localize)[feedback.warning as passwordKeys];
     } catch (err) {
         if (err instanceof ValidationError) {
             validationErrorMessage = err?.message;
@@ -50,7 +51,7 @@ export const validatePassword = (
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
-    hideValidation = false,
+    hideWarning,
     label,
     mt5Policy = false,
     name = 'walletPasswordField',
@@ -68,17 +69,10 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [errorMessage, setErrorMessage] = useState('');
 
     const { score, validationErrorMessage } = useMemo(
-        () =>
-            hideValidation ? { score: 0, validationErrorMessage: '' } : validatePassword(password, mt5Policy, localize),
-        [password, mt5Policy, localize, hideValidation]
+        () => validatePassword(password, mt5Policy, localize, hideWarning),
+        [hideWarning, password, mt5Policy, localize]
     );
     const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
-    const getErrorMessage = () => {
-        if (hideValidation) {
-            return passwordError ? getPasswordErrorMessage(localize).PasswordError : '';
-        }
-        return isTouched && (serverErrorMessage || errorMessage);
-    };
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,27 +92,18 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     }, [isTouched]);
 
     useEffect(() => {
-        if (hideValidation) {
-            setShowErrorMessage(!!passwordError);
-            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : '');
-        } else {
-            setShowErrorMessage(!!passwordError);
-            setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
-        }
-    }, [passwordError, validationErrorMessage, localize, hideValidation]);
+        setShowErrorMessage(!!passwordError);
+        setErrorMessage(passwordError ? getPasswordErrorMessage(localize).PasswordError : validationErrorMessage);
+    }, [passwordError, validationErrorMessage, localize]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
-                errorMessage={getErrorMessage()}
-                isInvalid={
-                    hideValidation
-                        ? !!passwordError
-                        : (passwordValidation && isTouched) || showErrorMessage || !!passwordError
-                }
+                errorMessage={(isTouched || passwordError) && (serverErrorMessage || errorMessage)}
+                isInvalid={(passwordValidation && isTouched) || showErrorMessage || !!passwordError}
                 label={label}
-                messageVariant={!hideValidation && validationErrorMessage ? 'warning' : undefined}
+                messageVariant={validationErrorMessage ? 'warning' : undefined}
                 name={name}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -129,7 +114,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />
-            {!hideValidation && !shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
+            {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>
     );
 };

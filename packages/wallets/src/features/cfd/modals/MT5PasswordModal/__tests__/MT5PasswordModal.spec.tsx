@@ -257,20 +257,6 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('WalletError')).toBeInTheDocument();
     });
 
-    it('returns null when createMT5AccountError is undefined', () => {
-        (useCreateMT5Account as jest.Mock).mockReturnValue({
-            error: undefined,
-            status: 'error',
-        });
-
-        const { container } = render(
-            //@ts-expect-error since this is a mock, we only need partial properties of the account
-            <MT5PasswordModal account={mockAccount} />
-        );
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('renders WalletError when email verification fails', () => {
         (useVerifyEmail as jest.Mock).mockReturnValue({
             error: { error: { message: 'Error' } },

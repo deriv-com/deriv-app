@@ -3,7 +3,7 @@ import { Loader } from '@deriv-com/ui';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 
 export interface WalletPasswordFieldProps extends WalletTextFieldProps {
-    hideValidation?: boolean;
+    hideWarning?: boolean;
     mt5Policy?: boolean; // This prop is used to utilize the new password validation for MT5.
     password: string;
     passwordError?: boolean;

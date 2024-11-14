@@ -174,6 +174,9 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                                             className={classNames('qs__form__field__list__item', {
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
+                                            onClick={() => {
+                                                handleChange(item?.value);
+                                            }}
                                             onChange={() => {
                                                 handleChange(item?.value);
                                             }}

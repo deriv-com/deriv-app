@@ -2,11 +2,11 @@ import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import { localize } from '@deriv-com/translations';
 
-const temptPhoneNumberValidation = /^[0-9]{5,15}$/;
+const tempPhoneNumberValidation = /^[0-9]{5,15}$/;
 
 const phoneNumberSchema = (isCountryCodeDropdownEnabled: boolean) =>
     Yup.string().matches(
-        isCountryCodeDropdownEnabled ? temptPhoneNumberValidation : ValidationConstants.patterns.phoneNumber,
+        isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : ValidationConstants.patterns.phoneNumber,
         localize('Enter a valid phone number.')
     );
 

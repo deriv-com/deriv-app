@@ -43,7 +43,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const {
         is_global_sms_available,
         is_global_whatsapp_available,
-        available_carriers,
+        no_of_available_carriers,
         formatted_countries_list,
         short_code_selected,
         selected_phone_code,
@@ -57,7 +57,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
     const { next_phone_otp_request_timer, is_phone_otp_timer_loading } = usePhoneNumberVerificationSetTimer(true);
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
-    const only_1_carrier_supported = available_carriers === 1;
+    const only_1_carrier_supported = no_of_available_carriers === 1;
 
     useEffect(() => {
         if (show_confirm_phone_number) {

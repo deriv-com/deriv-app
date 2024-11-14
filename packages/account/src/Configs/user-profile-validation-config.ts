@@ -41,7 +41,7 @@ Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message, isCoun
     });
 });
 
-const temptPhoneNumberValidation = /^[0-9]{5,15}$/;
+const tempPhoneNumberValidation = /^[0-9]{5,15}$/;
 
 const makeTinOptional = ({
     is_mf,
@@ -219,7 +219,7 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isC
                 isCountryCodeDropdownEnabled
             )
             .matches(
-                isCountryCodeDropdownEnabled ? temptPhoneNumberValidation : phoneNumber,
+                isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : phoneNumber,
                 localize('Please enter a valid phone number (e.g. +15417541234).')
             ),
         ...(isCountryCodeDropdownEnabled && {

@@ -4,7 +4,7 @@ import initStore from 'App/init-store';
 import type { TCoreStores } from '@deriv/stores/types';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
 import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
@@ -41,10 +41,14 @@ const App = ({ passthrough }: Apptypes) => {
     }, []);
 
     React.useEffect(() => {
-        if (!window.location.pathname.startsWith('/contract')) {
+        if (
+            !window.location.pathname.startsWith('/contract') &&
+            !window.location.pathname.includes('/dtrader/positions')
+        ) {
             sendDtraderV2OpenToAnalytics();
         }
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.location.pathname]);
 
     return (
         <TraderProviders store={root_store}>

@@ -14,7 +14,7 @@ const useGetPhoneNumberList = () => {
         options: { enabled: is_authorize },
     });
 
-    const available_carriers = data?.phone_settings?.carriers && data?.phone_settings?.carriers.length;
+    const no_of_available_carriers = data?.phone_settings?.carriers && data?.phone_settings?.carriers.length;
 
     const is_global_sms_available = data?.phone_settings?.carriers?.includes('sms');
 
@@ -71,7 +71,7 @@ const useGetPhoneNumberList = () => {
     return {
         is_global_sms_available,
         is_global_whatsapp_available,
-        available_carriers,
+        no_of_available_carriers,
         is_carriers_supported,
         formatted_countries_list_for_core,
         formatted_countries_list,

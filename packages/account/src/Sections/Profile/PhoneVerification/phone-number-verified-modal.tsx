@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { useHistory } from 'react-router-dom';
+
+import { useGrowthbookGetFeatureValue, usePhoneVerificationAnalytics } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv/stores';
-import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv/shared';
 
 type TPhoneNumberVerifiedModal = {
     should_show_phone_number_verified_modal: boolean;
@@ -22,6 +23,9 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
 
         should_route_back_to_previous ? history.push(previous_route) : history.push(routes.traders_hub);
     };
+    const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
 
     const { isMobile } = useDevice();
     const {
@@ -59,8 +63,10 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
                 <div className='phone-verification__verified-modal--contents'>
                     <div className='phone-verification__verified-modal--contents__phone-number-container'>
                         <div className='phone-verification__verified-modal--contents__phone-number-container__phone-number'>
-                            {/* @ts-expect-error will remove once solved */}
-                            {`${account_settings?.calling_country_code}${account_settings?.phone}`}
+                            {isCountryCodeDropdownEnabled
+                                ? //@ts-expect-error account_settings.calling_country_code is not defined in GetSettings type
+                                  `${account_settings?.calling_country_code}${account_settings?.phone}`
+                                : `${account_settings?.phone}`}
                         </div>
                         &nbsp;
                         <Text>

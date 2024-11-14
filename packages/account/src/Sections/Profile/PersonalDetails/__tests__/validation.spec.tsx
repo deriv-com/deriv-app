@@ -110,6 +110,7 @@ describe('getPersonalDetailsInitialValues', () => {
             mock_state_list,
             false,
             '60',
+            true,
             isCountryCodeDropdownEnabled
         );
         expect(initial_values.first_name).toBe('John');

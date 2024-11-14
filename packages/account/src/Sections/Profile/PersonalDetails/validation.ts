@@ -95,6 +95,8 @@ export const makeSettingsRequest = (
     if (is_virtual && settings.email_consent) return { email_consent: settings.email_consent };
     const request = settings;
 
+    //@ts-expect-error is_carriers_available is not defined in GetSettings type
+    if (request.is_carriers_available) delete request.is_carriers_available;
     if (request.residence) delete request.residence;
     if (request.first_name) {
         request.first_name = request.first_name.trim();

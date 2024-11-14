@@ -115,45 +115,15 @@ export default class GoogleDriveStore {
 
     verifyGoogleDriveAccessToken = async () => {
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        if (expiry_time) {
-            const current_epoch_time = Math.floor(Date.now() / 1000);
-            if (current_epoch_time > Number(expiry_time)) {
-                try {
-                    // Remove any old tokens from localStorage
-                    localStorage.removeItem('google_access_token_expiry');
-                    localStorage.removeItem('google_access_token');
-                    // Make the token request
-                    const tokenRequest = this.client.requestAccessToken({ prompt: '' });
-
-                    const waitForToken = new Promise((resolve, reject) => {
-                        const interval = setInterval(() => {
-                            const token = localStorage.getItem('google_access_token');
-                            if (token) {
-                                clearInterval(interval);
-                                resolve(token);
-                            }
-                        }, 10); // Check every 10ms
-
-                        setTimeout(() => {
-                            clearInterval(interval); // Clear the interval after timeout
-                            reject(new Error('Token not found within timeout.'));
-                        }, 10000);
-                    });
-                    await tokenRequest;
-                    // Wait for the token to appear in localStorage
-                    await waitForToken;
-
-                    return 'verified';
-                } catch (error) {
-                    this.signOut();
-                    this.setGoogleDriveTokenValid(false);
-                    localStorage.removeItem('google_access_token_expiry');
-                    botNotification(notification_message.google_drive_error, undefined, {
-                        closeButton: false,
-                    });
-                    return 'not_verified';
-                }
-            }
+        if (!expiry_time) return 'not_verified';
+        const current_epoch_time = Math.floor(Date.now() / 1000);
+        if (current_epoch_time > Number(expiry_time)) {
+            this.signOut();
+            this.setGoogleDriveTokenValid(false);
+            localStorage.removeItem('google_access_token_expiry');
+            localStorage.removeItem('google_access_token');
+            botNotification(notification_message.google_drive_error, undefined, { closeButton: false });
+            return 'not_verified';
         }
         return 'verified';
     };

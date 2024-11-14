@@ -5,7 +5,7 @@ import type { TCoreStores } from '@deriv/stores/types';
 import { routes } from '@deriv/shared';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';

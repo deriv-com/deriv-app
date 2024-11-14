@@ -40,7 +40,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 <Text size='sm'>
                     <Localize i18n_default_text='Trade types' />
                 </Text>
-                {!!changedOptions.length && <Text>{changedOptions.length}</Text>}
+                {!!changedOptions.length && <Text>({changedOptions.length})</Text>}
             </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

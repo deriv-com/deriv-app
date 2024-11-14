@@ -191,6 +191,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                     formatted_countries_list &&
                     !isLoading && (
                         <InputPhoneNumber
+                            showSearchBar
                             countryCodes={formatted_countries_list}
                             codeLabel={localize('Code')}
                             shortCode={selectedCountryCode?.short_code || short_code_selected}

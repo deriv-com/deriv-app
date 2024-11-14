@@ -465,7 +465,7 @@
                 <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2">martingale:profitThreshold</field>
               </block>
             </value>
-            <value name="B" strategy_value="profit">
+            <value name="B">
               <block type="logic_null" id="[R@rhEZMD*U(Q~m#KCMh"></block>
             </value>
           </block>
@@ -473,7 +473,7 @@
         <statement name="DO0">
           <block type="variables_set" id="{}-XA:3=]2W.Aq|zIiP(">
             <field name="VAR" id="*p5|Lkk9Q^ZuPBQ-48g2">martingale:profitThreshold</field>
-            <value name="VALUE">
+            <value name="VALUE" strategy_value="profit">
               <shadow type="math_number" id=")LH%,ON4KG6!Tgj)[Zkk">
                 <field name="NUM">5000</field>
               </shadow>

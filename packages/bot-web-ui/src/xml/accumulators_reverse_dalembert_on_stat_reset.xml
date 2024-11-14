@@ -72,8 +72,8 @@
             </value>
             <next>
               <block type="variables_set" id="{1+n32AGU]3`2N+$@-D;">
-                <field name="VAR" id="_ry@=Pn~?k:OMsm69^mj" strategy_value="max_stake">maxStake</field>
-                <value name="VALUE">
+                <field name="VAR" id="_ry@=Pn~?k:OMsm69^mj">maxStake</field>
+                <value name="VALUE" strategy_value="max_stake">
                   <block type="math_number" id="v{NTT:eda8z$4ljl_#,7">
                     <field name="NUM">1000</field>
                   </block>

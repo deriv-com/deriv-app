@@ -9,7 +9,7 @@ import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
-
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import QuestionnaireModal from '../QuestionnaireModal';
@@ -34,11 +34,17 @@ const AccountSignup = ({
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
+    const isCountryScreenLoggedOnceRef = React.useRef(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
     const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
     const [ab_questionnaire, setABQuestionnaire] = React.useState();
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
+
+    const [is_signup_flow_error] = useGrowthbookGetFeatureValue({
+        featureFlag: 'signup_flow_error',
+        defaultValue: false,
+    });
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -57,27 +63,6 @@ const AccountSignup = ({
     // didMount lifecycle hook
     React.useEffect(() => {
         // eslint-disable-next-line no-console
-
-        cacheTrackEvents.trackConsoleErrors(errorMessage => {
-            if (errorMessage) {
-                cacheTrackEvents.loadEvent([
-                    {
-                        event: {
-                            name: 'ce_virtual_signup_form',
-                            properties: {
-                                action: 'signup_flow_error',
-                                form_name: is_mobile
-                                    ? 'virtual_signup_web_mobile_default'
-                                    : 'virtual_signup_web_desktop_default',
-                                error_message: localize(errorMessage),
-                                screen_name: 'country_selection_screen',
-                            },
-                        },
-                        cache: true,
-                    },
-                ]);
-            }
-        });
 
         cacheTrackEvents.loadEvent([
             {
@@ -133,6 +118,56 @@ const AccountSignup = ({
         };
         setABQuestionnaire(fetchQuestionnarieData());
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (is_signup_flow_error) {
+            cacheTrackEvents.trackConsoleErrors(errorMessage => {
+                if (errorMessage) {
+                    const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';
+
+                    // Check and set the logging state using the ref
+                    if (screen_name === 'country_selection_screen' && !isCountryScreenLoggedOnceRef.current) {
+                        cacheTrackEvents.loadEvent([
+                            {
+                                event: {
+                                    name: 'ce_virtual_signup_form',
+                                    properties: {
+                                        action: 'signup_flow_error',
+                                        form_name: is_mobile
+                                            ? 'virtual_signup_web_mobile_default'
+                                            : 'virtual_signup_web_desktop_default',
+                                        error_message: localize(errorMessage),
+                                        screen_name,
+                                    },
+                                },
+                                cache: true,
+                            },
+                        ]);
+
+                        // Update both the ref and state
+                        isCountryScreenLoggedOnceRef.current = true;
+                    } else if (screen_name === 'password_screen_opened') {
+                        cacheTrackEvents.loadEvent([
+                            {
+                                event: {
+                                    name: 'ce_virtual_signup_form',
+                                    properties: {
+                                        action: 'signup_flow_error',
+                                        form_name: is_mobile
+                                            ? 'virtual_signup_web_mobile_default'
+                                            : 'virtual_signup_web_desktop_default',
+                                        error_message: localize(errorMessage),
+                                        screen_name,
+                                    },
+                                },
+                                cache: true,
+                            },
+                        ]);
+                    }
+                }
+            });
+        }
+    }, [is_password_modal]);
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 

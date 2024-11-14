@@ -13,7 +13,7 @@ import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 
 export const ACCOUNT_ICONS = {
     [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
-    [MARKET_TYPE.FINANCIAL]: <AccountsDmt5FinancialIcon iconSize='lg' />,
+    [MARKET_TYPE.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
     [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
     [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,

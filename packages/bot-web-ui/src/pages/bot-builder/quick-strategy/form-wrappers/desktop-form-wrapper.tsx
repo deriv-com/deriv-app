@@ -5,15 +5,15 @@ import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsEditStrategyEvent } from '../../../../../analytics/rudderstack-quick-strategy';
-import { STRATEGIES } from '../../config';
-import { TFormData, TFormValues } from '../../types';
-import StrategyTabContent from '../strategy-tab-content';
-import useQsSubmitHandler from '../useQsSubmitHandler';
+import { rudderStackSendQsEditStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
+import { STRATEGIES } from '../config';
+import { TFormData, TFormValues } from '../types';
+import StrategyTabContent from './strategy-tab-content';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import QSStepper from './qs-stepper';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
-import '../../quick-strategy.scss';
+import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
     children: React.ReactNode;

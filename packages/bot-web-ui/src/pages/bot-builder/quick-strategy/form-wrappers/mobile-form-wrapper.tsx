@@ -5,15 +5,15 @@ import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsRunStrategyEvent } from '../../../../../analytics/rudderstack-quick-strategy';
-import { STRATEGIES } from '../../config';
-import { TFormValues } from '../../types';
-import StrategyTabContent from '../strategy-tab-content';
-import useQsSubmitHandler from '../useQsSubmitHandler';
+import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
+import { STRATEGIES } from '../config';
+import { TFormValues } from '../types';
+import StrategyTabContent from './strategy-tab-content';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import QSStepper from './qs-stepper';
 import StrategyTemplatePicker from './strategy-template-picker';
 import { QsSteps } from './trade-constants';
-import '../../quick-strategy.scss';
+import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;

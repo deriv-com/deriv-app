@@ -7,14 +7,14 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
-import DesktopFormWrapper from './form-wrappers/upgraded-qs-v2/desktop-form-wrapper';
-import MobileFormWrapper from './form-wrappers/upgraded-qs-v2/mobile-form-wrapper';
+import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
+import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData, TFormValues } from './types';
 import './quick-strategy.scss';
-import { QsSteps } from './form-wrappers/upgraded-qs-v2/trade-constants';
+import { QsSteps } from './form-wrappers/trade-constants';
 
 type TFormikWrapper = {
     children: React.ReactNode;

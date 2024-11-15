@@ -1,12 +1,14 @@
 import * as Yup from 'yup';
-import { formatDate, getLocation, toMoment } from '@deriv/shared';
+
+import { TinValidations } from '@deriv/api/types';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
+import { formatDate, getLocation, toMoment } from '@deriv/shared';
+
 import {
     getAddressDetailValidationSchema,
-    getPersonalDetailsBaseValidationSchema,
     getEmploymentAndTaxValidationSchema,
+    getPersonalDetailsBaseValidationSchema,
 } from 'Configs/user-profile-validation-config';
-import { TinValidations } from '@deriv/api/types';
 import { PersonalDetailsValueTypes } from 'Types';
 
 export const getPersonalDetailsInitialValues = (
@@ -31,7 +33,10 @@ export const getPersonalDetailsInitialValues = (
         address_line_2: account_settings.address_line_2 ?? '',
         address_postcode: account_settings.address_postcode ?? '',
         address_state: '',
-        ...(isCountryCodeDropdownEnabled && { calling_country_code: selected_phone_code }),
+        ...(isCountryCodeDropdownEnabled && {
+            //@ts-expect-error calling_country_code is not defined in GetSettings type
+            calling_country_code: account_settings.calling_country_code || selected_phone_code,
+        }),
         ...(isCountryCodeDropdownEnabled && { is_carriers_available: is_carriers_supported }),
         date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
@@ -96,7 +101,7 @@ export const makeSettingsRequest = (
     const request = settings;
 
     //@ts-expect-error is_carriers_available is not defined in GetSettings type
-    if (request.is_carriers_available) delete request.is_carriers_available;
+    delete request.is_carriers_available;
     if (request.residence) delete request.residence;
     if (request.first_name) {
         request.first_name = request.first_name.trim();

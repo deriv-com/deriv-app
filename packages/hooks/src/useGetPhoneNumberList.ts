@@ -1,6 +1,8 @@
+import { useCallback } from 'react';
+
 import { useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import { useCallback } from 'react';
+
 import useSettings from './useSettings';
 
 const useGetPhoneNumberList = () => {
@@ -10,7 +12,11 @@ const useGetPhoneNumberList = () => {
         website_status: { clients_country },
         is_authorize,
     } = client;
-    const { data, isLoading: isPhoneSettingLoading } = useQuery('phone_settings', {
+    const {
+        data,
+        isLoading: isPhoneSettingLoading,
+        refetch,
+    } = useQuery('phone_settings', {
         options: { enabled: is_authorize },
     });
 
@@ -69,6 +75,7 @@ const useGetPhoneNumberList = () => {
     const short_code_selected = getShortCodeSelected() || clients_country;
 
     return {
+        updatePhoneSettings: refetch,
         is_global_sms_available,
         is_global_whatsapp_available,
         no_of_available_carriers,

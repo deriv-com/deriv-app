@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -7,7 +7,9 @@ import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal }
 import AvailableMT5AccountsList from '../AvailableMT5AccountsList';
 
 jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
+    useIsEuRegion: jest.fn(),
     useMT5AccountsList: jest.fn(),
     useTradingPlatformStatus: jest.fn(),
 }));
@@ -39,6 +41,9 @@ describe('AvailableMT5AccountsList', () => {
         (useModal as jest.Mock).mockReturnValue({
             setModalState: mockSetModalState,
             show: mockShow,
+        });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
         });
     });
 

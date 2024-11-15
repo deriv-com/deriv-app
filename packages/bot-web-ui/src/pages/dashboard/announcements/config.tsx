@@ -184,6 +184,14 @@ export const BUTTON_ACTION_TYPE = {
 
 export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
     {
+        id: 'UPDATED_QUICK_STRATEGY_MODAL_ANNOUNCE',
+        icon: IconAnnounce,
+        title: localize('Updated: Quick Strategy Modal'),
+        message: localize("We've imporved the Quick Strategy (QS) modal."),
+        date: '18 November 2024 00:00 UTC',
+        actionText: '',
+    },
+    {
         id: 'MOVING_STRATEGIES_ANNOUNCE',
         icon: IconAnnounce,
         title: localize('Moving strategies to Deriv Bot'),

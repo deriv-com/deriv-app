@@ -5,13 +5,10 @@ import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
-import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
-import DesktopFormWrapperV2 from './form-wrappers/upgraded-qs-v2/desktop-form-wrapper';
-import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
-import MobileFormWrapperV2 from './form-wrappers/upgraded-qs-v2/mobile-form-wrapper';
+import DesktopFormWrapper from './form-wrappers/upgraded-qs-v2/desktop-form-wrapper';
+import MobileFormWrapper from './form-wrappers/upgraded-qs-v2/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
@@ -205,7 +202,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 });
 
 const QuickStrategy = observer(() => {
-    const { is_next_qs_enabled } = useFeatureFlags();
     const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
     const { is_desktop } = ui;
@@ -239,56 +235,38 @@ const QuickStrategy = observer(() => {
                 <LossThresholdWarningDialog />
                 {is_desktop ? (
                     <Modal className='modal--strategy' is_open={is_open} width='72rem'>
-                        {is_next_qs_enabled ? (
-                            <DesktopFormWrapperV2
-                                onClickClose={handleClose}
-                                setCurrentStep={setCurrentStep}
-                                current_step={current_step}
-                                selected_trade_type={selected_trade_type}
-                                setSelectedTradeType={setSelectedTradeType}
-                            >
-                                <Form />
-                            </DesktopFormWrapperV2>
-                        ) : (
-                            <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
-                                <Form />
-                            </DesktopFormWrapper>
-                        )}
+                        <DesktopFormWrapper
+                            onClickClose={handleClose}
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
+                            <Form />
+                        </DesktopFormWrapper>
                     </Modal>
                 ) : (
                     <MobileFullPageModal
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
                         header={
-                            is_next_qs_enabled ? (
-                                <Text size='xs' weight='bold'>
-                                    {localize(
-                                        `Step ${
-                                            current_step === QsSteps.StrategyCompleted ? 2 : 1
-                                        }/2: Choose your strategy`
-                                    )}
-                                </Text>
-                            ) : (
-                                localize('Quick Strategy')
-                            )
+                            <Text size='xs' weight='bold'>
+                                {localize(
+                                    `Step ${current_step === QsSteps.StrategyCompleted ? 2 : 1}/2: Choose your strategy`
+                                )}
+                            </Text>
                         }
                         onClickClose={handleClose}
                         height_offset='8rem'
                     >
-                        {is_next_qs_enabled ? (
-                            <MobileFormWrapperV2
-                                setCurrentStep={setCurrentStep}
-                                current_step={current_step}
-                                selected_trade_type={selected_trade_type}
-                                setSelectedTradeType={setSelectedTradeType}
-                            >
-                                <Form />
-                            </MobileFormWrapperV2>
-                        ) : (
-                            <MobileFormWrapper active_tab_ref={active_tab_ref}>
-                                <Form />
-                            </MobileFormWrapper>
-                        )}
+                        <MobileFormWrapper
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
+                            <Form />
+                        </MobileFormWrapper>
                     </MobileFullPageModal>
                 )}
             </FormikForm>

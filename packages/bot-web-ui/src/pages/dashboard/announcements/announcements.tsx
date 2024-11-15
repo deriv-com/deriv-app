@@ -28,7 +28,8 @@ type TAnnouncements = {
 const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const {
         load_modal: { toggleLoadModal },
-        dashboard: { showVideoDialog },
+        dashboard: { showVideoDialog, setActiveTab },
+        quick_strategy: { setFormVisibility },
     } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
@@ -43,18 +44,28 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         localStorage?.setItem('bot-announcements', JSON.stringify(updated_local_storage_data));
     };
 
-    const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
-        setSelectedAnnouncement(announcement);
-        setIsAnnounceDialogOpen(true);
-        setIsOpenAnnounceList(prev => !prev);
-        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
-
+    const updateLocalStorage = (announce_id: string) => {
         let data: Record<string, boolean> | null = null;
         data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
 
         storeDataInLocalStorage({ ...data, [announce_id]: false });
         const temp_notifications = updateNotifications();
         setReadAnnouncementsMap(temp_notifications);
+    };
+
+    const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
+        setSelectedAnnouncement(announcement);
+        setIsAnnounceDialogOpen(true);
+        setIsOpenAnnounceList(prev => !prev);
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
+        updateLocalStorage(announce_id);
+    };
+
+    const handlePrimaryAction = () => {
+        setActiveTab(1);
+        setFormVisibility(true);
+        updateLocalStorage('UPDATED_QUICK_STRATEGY_MODAL_ANNOUNCE');
+        rudderStackSendAnnouncementClickEvent({ announcement_name: localize('Updated: Quick Strategy Modal') });
     };
 
     const handleRedirect = (url: string) => () => {
@@ -73,12 +84,16 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             if (data && Object.hasOwn(data, item.id)) {
                 is_not_read = data[item.id];
             }
+            const is_quick_strategy_announcement = item.id === 'UPDATED_QUICK_STRATEGY_MODAL_ANNOUNCE';
+            const buttonAction = is_quick_strategy_announcement
+                ? handlePrimaryAction
+                : performButtonAction(item, modalButtonAction, handleRedirect);
             tmp_notifications.push({
                 key: item.id,
                 icon: <item.icon announce={is_not_read} />,
                 title: <TitleAnnounce title={item.title} announce={is_not_read} />,
                 message: <MessageAnnounce message={item.message} date={item.date} announce={is_not_read} />,
-                buttonAction: performButtonAction(item, modalButtonAction, handleRedirect),
+                buttonAction,
                 actionText: item.actionText,
             });
             temp_localstorage_data[item.id] = is_not_read;

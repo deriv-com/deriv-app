@@ -119,50 +119,36 @@ const AccountSignup = ({
         setABQuestionnaire(fetchQuestionnarieData());
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const trackSignupErrorEvent = (action, errorMessage, screen_name) => {
+        const form_name = is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default';
+        cacheTrackEvents.loadEvent([
+            {
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action,
+                        form_name,
+                        error_message: localize(errorMessage),
+                        screen_name,
+                    },
+                },
+                cache: true,
+            },
+        ]);
+    };
+
     React.useEffect(() => {
         if (is_signup_flow_error) {
             cacheTrackEvents.trackConsoleErrors(errorMessage => {
                 if (errorMessage) {
                     const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';
-
                     // Check and set the logging state using the ref
                     if (screen_name === 'country_selection_screen' && !isCountryScreenLoggedOnceRef.current) {
-                        cacheTrackEvents.loadEvent([
-                            {
-                                event: {
-                                    name: 'ce_virtual_signup_form',
-                                    properties: {
-                                        action: 'signup_flow_error',
-                                        form_name: is_mobile
-                                            ? 'virtual_signup_web_mobile_default'
-                                            : 'virtual_signup_web_desktop_default',
-                                        error_message: localize(errorMessage),
-                                        screen_name,
-                                    },
-                                },
-                                cache: true,
-                            },
-                        ]);
-
+                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
                         // Update both the ref and state
                         isCountryScreenLoggedOnceRef.current = true;
                     } else if (screen_name === 'password_screen_opened') {
-                        cacheTrackEvents.loadEvent([
-                            {
-                                event: {
-                                    name: 'ce_virtual_signup_form',
-                                    properties: {
-                                        action: 'signup_flow_error',
-                                        form_name: is_mobile
-                                            ? 'virtual_signup_web_mobile_default'
-                                            : 'virtual_signup_web_desktop_default',
-                                        error_message: localize(errorMessage),
-                                        screen_name,
-                                    },
-                                },
-                                cache: true,
-                            },
-                        ]);
+                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
                     }
                 }
             });

@@ -674,7 +674,8 @@
 }
 
 .sell_conditions {
-    &__take_profit {
+    &__take_profit,
+    &__tick_count {
         margin-bottom: 0.8rem;
     }
 }

@@ -36,10 +36,8 @@ const usePhoneNumberVerificationSessionTimer = () => {
                 const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
                 if (isMounted()) {
-                    if (next_request > 0) {
+                    if (next_request >= 0) {
                         setSessionTimer(next_request);
-                    } else {
-                        setSessionTimer(0);
                     }
                 }
             }

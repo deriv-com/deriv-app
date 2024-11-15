@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
@@ -38,7 +38,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         validation_params,
     } = useTraderStore();
     const {
-        client: { is_logged_in },
+        client: { is_logged_in, currency: client_currency },
     } = useStore();
     const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
@@ -52,6 +52,16 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const default_stake = is_crypto
         ? Number(v2_params_initial_values.stake)
         : available_contract_types?.[contract_type]?.config?.default_stake;
+
+    useEffect(() => {
+        if (client_currency !== currency) {
+            onChange({ target: { name: 'currency', value: client_currency } });
+            if (!isCryptocurrency(client_currency ?? '')) {
+                onChange({ target: { name: 'amount', value: default_stake } });
+                setV2ParamsInitialValues({ value: default_stake as number, name: 'stake' });
+            }
+        }
+    }, [client_currency]);
 
     const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);

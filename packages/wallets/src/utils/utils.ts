@@ -12,3 +12,9 @@ export const defineViewportHeight = () => {
     const viewportHeight = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--wallets-vh', `${viewportHeight}px`);
 };
+
+export const defineSwitcherWidth = (realWidth: number, demoWidth: number) => {
+    document.documentElement.style.setProperty('--wallets-real-width', `${realWidth}px`);
+    document.documentElement.style.setProperty('--wallets-demo-width', `${demoWidth}px`);
+    document.documentElement.style.setProperty('--wallets-switcher-width', `${demoWidth + realWidth + 16}px`);
+};

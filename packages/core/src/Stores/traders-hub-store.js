@@ -468,7 +468,7 @@ export default class TradersHubStore extends BaseStore {
 
         const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {
             const { product, is_default_jurisdiction, linkable_landing_companies } = item;
-            if (this.is_demo) {
+            if (this.is_demo || (this.no_CR_account && !this.is_eu_user)) {
                 if (
                     is_default_jurisdiction === 'true' ||
                     (acc[product] && acc[product].some(i => i.is_default_jurisdiction === 'true'))

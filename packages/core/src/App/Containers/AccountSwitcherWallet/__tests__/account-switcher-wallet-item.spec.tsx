@@ -68,10 +68,10 @@ describe('AccountSwitcherWalletItem', () => {
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });
 
-    it('calls closeAccountsDialog when clicked', async () => {
+    it('calls closeAccountsDialog when clicked', () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(props.closeAccountsDialog).toHaveBeenCalled();
     });
 
@@ -79,7 +79,7 @@ describe('AccountSwitcherWalletItem', () => {
         const switchAccount = jest.fn();
         const store = mockStore({ client: { switchAccount, loginid: 'CR008' } });
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).toHaveBeenCalledWith('CR007');
         expect(props.closeAccountsDialog).toHaveBeenCalled();
     });
@@ -88,7 +88,7 @@ describe('AccountSwitcherWalletItem', () => {
         const switchAccount = jest.fn();
         const store = mockStore({ client: { switchAccount, loginid: 'CR007' } });
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).not.toHaveBeenCalled();
         expect(props.closeAccountsDialog).toHaveBeenCalled();
     });

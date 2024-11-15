@@ -35,7 +35,7 @@ describe('AccountInfoWallets component', () => {
         },
     };
 
-    it('should show "disabled_message" when "is_disabled" property is "true"', async () => {
+    it('should show "disabled_message" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
             client: {
                 accounts: {
@@ -64,7 +64,7 @@ describe('AccountInfoWallets component', () => {
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const popover = screen.getByTestId('dt_popover_wrapper');
-        await userEvent.hover(popover);
+        userEvent.hover(popover);
         const disabled_message = screen.getByText(/test disabled message/i);
         expect(disabled_message).toBeInTheDocument();
     });
@@ -108,7 +108,7 @@ describe('AccountInfoWallets component', () => {
         expect(div_element).not.toHaveClass('acc-info--show');
     });
 
-    it('can not "toggleDialog" when "is_disabled" property is "true"', async () => {
+    it('can not "toggleDialog" when "is_disabled" property is "true"', () => {
         const mock = mockStore({
             client: {
                 accounts: {
@@ -134,7 +134,7 @@ describe('AccountInfoWallets component', () => {
         render(<AccountInfoWallets is_dialog_on={false} toggleDialog={toggleDialog} />, { wrapper: wrapper(mock) });
 
         const div_element = screen.getByTestId('dt_acc_info');
-        await userEvent.click(div_element);
+        userEvent.click(div_element);
         expect(toggleDialog).toHaveBeenCalledTimes(0);
     });
 

@@ -95,12 +95,14 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     };
 
     const logoutHandler = async () => {
-        await setIsForcedToExitPnv(true);
         // for DBot we need to logout first and only after this redirect to TH
         if (window.location.pathname.startsWith(routes.bot)) {
             await logoutClient();
             history.push(routes.traders_hub);
         } else {
+            if (window.location.pathname.startsWith(routes.phone_verification)) {
+                await setIsForcedToExitPnv(true);
+            }
             history.push(routes.traders_hub);
             await logoutClient();
         }

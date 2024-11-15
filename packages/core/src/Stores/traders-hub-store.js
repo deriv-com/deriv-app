@@ -491,12 +491,21 @@ export default class TradersHubStore extends BaseStore {
             return acc;
         }, {});
 
-        const getFilteredAccounts = () =>
-            this.root_store.client.is_logged_in
-                ? getMT5Accounts.filter(account =>
-                      Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
-                  )
-                : getMT5Accounts;
+        const getFilteredAccounts = () => {
+            if (this.is_low_risk_cr_eu_real) {
+                const existing_account = this.root_store.client.mt5_login_list.filter(
+                    account => account.landing_company_short === this.root_store.client.landing_company_shortcode
+                );
+                return existing_account.length
+                    ? getMT5Accounts.filter(account => account.product === existing_account[0].product)
+                    : [];
+            } else if (this.root_store.client.is_logged_in) {
+                return getMT5Accounts.filter(account =>
+                    Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
+                );
+            }
+            return getMT5Accounts;
+        };
 
         const all_available_accounts = [...getCFDAvailableAccount(), ...getFilteredAccounts()];
         this.available_cfd_accounts = all_available_accounts.map(account => {
@@ -902,14 +911,20 @@ export default class TradersHubStore extends BaseStore {
         );
         const { mt5_login_list } = await WS.authorized.mt5LoginList();
         const current_account = mt5_login_list?.filter(
-            account => account.landing_company_short === jurisdiction_selected_shortcode && account.product === product
+            account =>
+                account.landing_company_short === jurisdiction_selected_shortcode &&
+                account.product === product &&
+                account.account_type === this.selected_account_type
         );
 
         if (current_account.length) {
             this.setSelectedJurisdictionKYCStatus(current_account[0]?.client_kyc_status ?? {});
         } else {
             const selected_mt5_account = trading_platform_available_accounts?.filter(
-                account => account.shortcode === jurisdiction_selected_shortcode && account.product === product
+                account =>
+                    account.shortcode === jurisdiction_selected_shortcode &&
+                    account.product === product &&
+                    account.is_default_jurisdiction === 'true'
             );
             if (selected_mt5_account.length) {
                 this.setSelectedJurisdictionKYCStatus(selected_mt5_account[0]?.client_kyc_status ?? {});

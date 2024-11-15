@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Text, Tooltip, useDevice } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { getJurisdictionDescription } from './compareAccountsConfig';
@@ -63,7 +63,7 @@ const CompareAccountsDescription = ({
                                 tooltipOffset={20}
                                 tooltipPosition='top'
                             >
-                                <InfoIcon />
+                                <LegacyInfo1pxIcon width={16} />
                             </Tooltip>
                         )}
                     </div>

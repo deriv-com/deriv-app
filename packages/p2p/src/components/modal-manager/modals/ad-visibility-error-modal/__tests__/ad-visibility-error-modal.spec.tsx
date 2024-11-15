@@ -1,6 +1,10 @@
 import React from 'react';
+
+import { Chat } from '@deriv/utils';
 import { render, screen } from '@testing-library/react';
+
 import { api_error_codes } from 'Constants/api-error-codes';
+
 import AdVisibilityErrorModal from '../ad-visibility-error-modal';
 
 const mock_modal_manager_context = {
@@ -42,6 +46,16 @@ describe('<AdVisibilityErrorModal/>', () => {
     afterAll(() => {
         document.body.removeChild(modal_root_el);
     });
+
+    beforeEach(() => {
+        // Spy on the Chat.open method directly
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks(); // Restore all mocks after each test
+    });
+
     it('should render ad exceeds balance error', () => {
         render(<AdVisibilityErrorModal error_code={api_error_codes.AD_EXCEEDS_BALANCE} />);
 
@@ -63,8 +77,7 @@ describe('<AdVisibilityErrorModal/>', () => {
         const live_chat_text = screen.getByText(/live chat/i);
         expect(live_chat_text).toBeInTheDocument();
         live_chat_text.click();
-        expect(window.LiveChatWidget.call).toHaveBeenCalledTimes(1);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 
     it('should render default error message', () => {

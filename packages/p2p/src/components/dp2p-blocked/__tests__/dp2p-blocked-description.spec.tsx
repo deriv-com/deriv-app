@@ -1,7 +1,11 @@
 import React from 'react';
+
+import { Chat } from '@deriv/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { useStores } from 'Stores/index';
+
 import Dp2pBlockedDescription from '../dp2p-blocked-description';
 
 jest.mock('Stores', () => ({
@@ -9,14 +13,15 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(),
 }));
 
-window.LiveChatWidget = {
-    call: jest.fn(),
-    get: jest.fn(),
-    init: jest.fn(),
-    on: jest.fn(),
-};
-
 describe('<Dp2pBlockedDescription />', () => {
+    beforeEach(() => {
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
     it('it should return `P2P transactions are locked. This feature is not available for payment agents.`', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
@@ -43,7 +48,7 @@ describe('<Dp2pBlockedDescription />', () => {
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
     });
 
-    it('it should return `Please use live chat to contact our Customer Support team for help.` and open live chat when clicking on the `live chat`', () => {
+    it('it should return `Please use live chat to contact our Customer Support team for help.` and open live chat when clicking on the `live chat`', async () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_p2p_blocked_for_pa: false,
@@ -58,8 +63,7 @@ describe('<Dp2pBlockedDescription />', () => {
         const live_chat_text = screen.getByText(/live chat/i);
         expect(live_chat_text).toBeInTheDocument();
 
-        userEvent.click(live_chat_text);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledTimes(1);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        await userEvent.click(live_chat_text);
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 });

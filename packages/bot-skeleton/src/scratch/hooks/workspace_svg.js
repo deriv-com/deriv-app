@@ -80,6 +80,14 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
     const block = Blockly.Xml.domToBlock(block_node, flyout.getFlyout().targetWorkspace);
     const top_blocks = this.getTopBlocks(true);
 
+    if (config.single_instance_blocks.includes(block.type)) {
+        this.getAllBlocks().forEach(ws_block => {
+            if (ws_block.type === block.type && ws_block.id !== block.id) {
+                ws_block.dispose();
+            }
+        });
+    }
+
     if (top_blocks.length) {
         const last_block = top_blocks[top_blocks.length - 1];
         const last_block_xy = last_block.getRelativeToSurfaceXY();

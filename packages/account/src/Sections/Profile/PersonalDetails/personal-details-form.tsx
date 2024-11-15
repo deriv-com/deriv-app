@@ -105,6 +105,7 @@ const PersonalDetailsForm = observer(() => {
         formatted_countries_list_for_core,
         selected_phone_code,
         is_carriers_supported,
+        updatePhoneSettings,
     } = useGetPhoneNumberList();
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
@@ -205,6 +206,7 @@ const PersonalDetailsForm = observer(() => {
                 return;
             }
             // Fetches the status of the account after update
+            updatePhoneSettings();
             updateAccountStatus();
             refreshNotifications();
             setIsBtnLoading(false);
@@ -529,13 +531,18 @@ const PersonalDetailsForm = observer(() => {
                                                             );
                                                             const is_sms_carrier_available =
                                                                 //@ts-expect-error carriers is not defined in TListItem type
+                                                                country_list.carriers &&
+                                                                //@ts-expect-error carriers is not defined in TListItem type
                                                                 (country_list.carriers as string[]).includes('sms') &&
                                                                 is_global_sms_available;
                                                             const is_whatsapp_carrier_available =
                                                                 //@ts-expect-error carriers is not defined in TListItem type
+                                                                country_list.carriers &&
+                                                                //@ts-expect-error carriers is not defined in TListItem type
                                                                 (country_list.carriers as string[]).includes(
                                                                     'whatsapp'
-                                                                ) && is_global_whatsapp_available;
+                                                                ) &&
+                                                                is_global_whatsapp_available;
                                                             setFieldValue(
                                                                 'is_carriers_available',
                                                                 is_sms_carrier_available ||
@@ -583,14 +590,15 @@ const PersonalDetailsForm = observer(() => {
                                                         data-testid='dt_phone'
                                                     />
                                                 </div>
-                                                {/* @ts-expect-error is_carriers_available is not defined in GetSettings type */}
-                                                {isPhoneNumberVerificationEnabled && values.is_carriers_available && (
+                                                {isPhoneNumberVerificationEnabled && (
                                                     <VerifyButton
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||
                                                             !isValid ||
                                                             !stripped_phone_number ||
-                                                            is_email_otp_timer_loading
+                                                            is_email_otp_timer_loading ||
+                                                            //@ts-expect-error is_carriers_available is not defined in GetSettings type
+                                                            !values.is_carriers_available
                                                         }
                                                         // @ts-expect-error This needs to fixed in VerifyButton component
                                                         values={values}

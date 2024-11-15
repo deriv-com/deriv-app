@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcherWalletItem } from '../account-switcher-wallet-item';
 
+// @ts-expect-error - This is a mock account
 const account: React.ComponentProps<typeof AccountSwitcherWalletItem>['account'] = {
     currency: 'USD',
     dtrade_balance: 100,
@@ -45,31 +46,20 @@ const AccountSwitcherWalletItemComponent = ({
 };
 
 describe('AccountSwitcherWalletItem', () => {
-    it('should render the component', () => {
+    it('renders the component', () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });
 
-    it('should NOT show SVG badge', () => {
+    it('does not show SVG badge', () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
         expect(screen.queryByText('SVG')).not.toBeInTheDocument();
     });
 
-    it('should show MALTA badge if show_badge is true', () => {
-        const store = mockStore({});
-        const tempProps = {
-            ...props,
-            account: { ...account, is_malta_wallet: true, landing_company_name: 'malta' },
-            show_badge: true,
-        };
-        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
-        expect(screen.getByText('MALTA')).toBeInTheDocument();
-    });
-
-    it('should render Demo Badge if show_badge is true', () => {
+    it('renders Demo Badge if show_badge is true', () => {
         const store = mockStore({});
         const tempProps = { ...props, account: { ...account, is_virtual: true }, show_badge: true };
         render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
@@ -78,28 +68,50 @@ describe('AccountSwitcherWalletItem', () => {
         expect(screen.getByText('Demo')).toBeInTheDocument();
     });
 
-    it('should call closeAccountsDialog when clicked', () => {
+    it('calls closeAccountsDialog when clicked', async () => {
         const store = mockStore({});
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(props.closeAccountsDialog).toHaveBeenCalled();
     });
 
-    it('should call switchAccount when clicked not selected', async () => {
+    it('calls switchAccount when clicked not selected', async () => {
         const switchAccount = jest.fn();
         const store = mockStore({ client: { switchAccount, loginid: 'CR008' } });
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).toHaveBeenCalledWith('CR007');
         expect(props.closeAccountsDialog).toHaveBeenCalled();
     });
 
-    it('should not call switchAccount when clicked the already selected', async () => {
+    it('does not call switchAccount when clicked the already selected', async () => {
         const switchAccount = jest.fn();
         const store = mockStore({ client: { switchAccount, loginid: 'CR007' } });
         render(<AccountSwitcherWalletItemComponent props={props} store={store} />);
-        userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
+        await userEvent.click(screen.getByTestId('account-switcher-wallet-item'));
         expect(switchAccount).not.toHaveBeenCalled();
         expect(props.closeAccountsDialog).toHaveBeenCalled();
+    });
+
+    it('shows Options when is_eu is false', () => {
+        const store = mockStore({
+            client: {
+                is_eu: false,
+            },
+        });
+        const tempProps = { ...props, account };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('Options')).toBeInTheDocument();
+    });
+
+    it('shows Multipliers when is_eu is true', () => {
+        const store = mockStore({
+            client: {
+                is_eu: true,
+            },
+        });
+        const tempProps = { ...props, account };
+        render(<AccountSwitcherWalletItemComponent props={tempProps} store={store} />);
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
     });
 });

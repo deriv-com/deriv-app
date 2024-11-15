@@ -38,7 +38,8 @@ const CompareAccountsDescription = ({
     return (
         <div
             className={classNames('wallets-compare-accounts-text-container', {
-                'wallets-compare-accounts-text-container--demo': isDemo,
+                'wallets-compare-accounts-text-container--demo': isDemo && !isEuRegion,
+                'wallets-compare-accounts-text-container--eu': isEuRegion,
             })}
         >
             <div className='wallets-compare-accounts-text-container__separator'>
@@ -72,7 +73,7 @@ const CompareAccountsDescription = ({
                     </Text>
                 </div>
             )}
-            {!isDemo && (
+            {!isDemo && !isEuRegion && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
                         <Text align='center' as='h1' size={isTablet ? 'md' : 'sm'} weight='bold'>

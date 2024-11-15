@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIsEuRegion } from '@deriv/api-v2';
 import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text, Tooltip } from '@deriv-com/ui';
@@ -20,10 +21,18 @@ type TCompareAccountsTitleIcon = {
 const getAccountIcon = (
     platform: TPlatforms.All,
     marketType: TMarketType,
-    product?: THooks.AvailableMT5Accounts['product']
+    product?: THooks.AvailableMT5Accounts['product'],
+    isEuRegion?: boolean
 ) => {
     if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
         return ACCOUNT_ICONS[platform];
+    }
+    if (isEuRegion && marketType === MARKET_TYPE.FINANCIAL) {
+        return ACCOUNT_ICONS[marketType].Eu;
+    }
+
+    if (marketType === MARKET_TYPE.FINANCIAL) {
+        return ACCOUNT_ICONS[marketType].NonEU;
     }
     return (
         (product === PRODUCT.ZEROSPREAD && ACCOUNT_ICONS[product]) ||
@@ -65,12 +74,13 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
 
 const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, shortCode }: TCompareAccountsTitleIcon) => {
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
     const marketTypeShortCode: TMarketWithShortCode =
         platform === CFD_PLATFORMS.MT5 && marketType === MARKET_TYPE.ALL
             ? `${marketType}_${product}_${shortCode}`
             : `${marketType}_${shortCode}`;
 
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType, product);
+    const jurisdictionCardIcon = getAccountIcon(platform, marketType, product, isEuRegion);
 
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER

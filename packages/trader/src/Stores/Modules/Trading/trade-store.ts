@@ -622,7 +622,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => this.is_equal,
             () => {
-                this.onAllowEqualsChange();
+                this.contract_type?.includes(TRADE_TYPES.RISE_FALL) && this.onAllowEqualsChange();
             }
         );
         reaction(
@@ -1374,7 +1374,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;

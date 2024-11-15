@@ -76,6 +76,7 @@ import {
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
 import { safeParse } from '@deriv/utils';
 import { sendDtraderPurchaseToAnalytics } from '../../../Analytics';
+import throttle from 'lodash.throttle';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -346,7 +347,7 @@ export default class TradeStore extends BaseStore {
             this.is_chart_loading = status;
         });
     }); // no time is needed here, the only goal is to put the call into macrotasks queue
-    debouncedProposal = debounce(this.requestProposal, 500);
+    throttleProposal = throttle(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
     is_purchasing_contract = false;
 
@@ -1070,7 +1071,7 @@ export default class TradeStore extends BaseStore {
         if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback, true);
     }
 
-    onPurchase = debounce(this.processPurchase, 300);
+    onPurchase = throttle(this.processPurchase, 300);
 
     processPurchase(
         proposal_id: string,
@@ -1183,7 +1184,7 @@ export default class TradeStore extends BaseStore {
                             this.forgetAllProposal();
                             this.purchase_info = response;
                             this.proposal_requests = {};
-                            this.debouncedProposal();
+                            this.throttleProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
                             if (this.root_store.ui.is_mobile) {
@@ -1374,7 +1375,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
@@ -1423,7 +1424,7 @@ export default class TradeStore extends BaseStore {
             if (/\b(contract_type|currency)\b/.test(Object.keys(new_state) as unknown as string)) {
                 this.validateAllProperties();
             }
-            this.debouncedProposal();
+            this.throttleProposal();
         }
     }
 
@@ -1647,7 +1648,7 @@ export default class TradeStore extends BaseStore {
                 this.refresh();
 
                 if (this.is_trade_component_mounted) {
-                    this.debouncedProposal();
+                    this.throttleProposal();
                 }
                 return;
             }
@@ -1802,7 +1803,7 @@ export default class TradeStore extends BaseStore {
         await this.setContractTypes();
         this.is_trade_enabled = true;
         this.is_trade_enabled_v2 = true;
-        this.debouncedProposal();
+        this.throttleProposal();
     }
 
     clientInitListener() {
@@ -1885,7 +1886,7 @@ export default class TradeStore extends BaseStore {
 
         await this.processNewValuesAsync({ currency: new_currency }, true, { currency: this.currency }, false);
         this.refresh();
-        this.debouncedProposal();
+        this.throttleProposal();
     }
 
     onUnmount() {

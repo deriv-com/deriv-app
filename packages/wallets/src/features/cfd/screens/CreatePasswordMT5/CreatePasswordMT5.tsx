@@ -72,6 +72,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
             {isDesktop && (
                 <div className='wallets-create-password-mt5__footer'>
                     <Button
+                        data-testid='dt_create_password_mt5_button'
                         disabled={!password || isLoading || disableButton || !isTncChecked}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}

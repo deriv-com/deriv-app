@@ -16,6 +16,8 @@ import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
+import { useFeatureFlags } from '@deriv/hooks';
+import { V2_QS_STRATEGIES } from '../utils';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -29,6 +31,11 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const { selected_strategy, setSelectedStrategy } = quick_strategy;
     const { handleSubmit } = useQsSubmitHandler();
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+
+    const { is_next_qs_enabled } = useFeatureFlags();
+    if (!is_next_qs_enabled) {
+        V2_QS_STRATEGIES.forEach(key => delete STRATEGIES[key]);
+    }
 
     React.useEffect(() => {
         validateForm();

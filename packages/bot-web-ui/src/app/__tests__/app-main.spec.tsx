@@ -1,3 +1,4 @@
+import { initSurvicate, initSurvicateCalled } from '../../public-path';
 import React from 'react';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
@@ -28,8 +29,36 @@ jest.mock('@deriv/deriv-charts', () => ({
 }));
 
 jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading...</div>,
+    initSurvicate: () => <div>script...</div>,
 }));
+
+
+jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
+
+jest.mock('Components/bot-notification-messages', () => ({
+    __esModule: true,
+    default: () => <div>BotNotificationMessages</div>,
+}));
+
+jest.mock('../../pages/main', () => ({
+    __esModule: true,
+    default: () => <div>Dashboard</div>,
+}));
+
+jest.mock('../../pages/bot-builder', () => ({
+    __esModule: true,
+    default: () => <div>BotBuilder</div>,
+}));
+
+const mockDOM = `
+  <div id="dbot-survicate">
+    <div id="survicate-box" style="display: block;"></div>
+  </div>
+`;
+document.body.innerHTML = mockDOM;
 
 describe('App', () => {
     //mock for blockly
@@ -49,5 +78,11 @@ describe('App', () => {
             />
         );
         expect(container).toBeInTheDocument();
+    });
+
+    it('check survicate script appended', () => {
+        initSurvicate();
+
+        expect(initSurvicateCalled).toBe(true);
     });
 });

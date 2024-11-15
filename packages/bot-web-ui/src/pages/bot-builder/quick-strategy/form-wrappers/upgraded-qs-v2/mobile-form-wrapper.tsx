@@ -92,7 +92,11 @@ const MobileFormWrapper = observer(
                                         </div>
                                         <div className='qs__selected-options__item'>
                                             <Text size='xs'>{localize('Strategy')}</Text>
-                                            <Text size='xs' weight='bold'>
+                                            <Text
+                                                className='qs__selected-options__item__description'
+                                                size='xs'
+                                                weight='bold'
+                                            >
                                                 {selected_startegy_label}
                                             </Text>
                                         </div>

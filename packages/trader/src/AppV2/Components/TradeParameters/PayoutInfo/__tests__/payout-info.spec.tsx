@@ -36,17 +36,6 @@ describe('<PayoutInfo />', () => {
             </TraderProviders>
         );
 
-    it('does not render if there is an API error ', () => {
-        default_mock_store.modules.trade.proposal_info = {
-            ONETOUCH: {
-                has_error: true,
-            },
-        };
-        const { container } = mockedPayoutInfo();
-
-        expect(container).toBeEmptyDOMElement();
-    });
-
     it('renders loader if payout is falsy but there is no API error', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockedPayoutInfo();

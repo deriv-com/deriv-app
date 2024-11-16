@@ -1,17 +1,14 @@
-import { action, makeObservable, observable, reaction } from 'mobx';
-
+import { action, observable, makeObservable } from 'mobx';
+import ErrorStore from './error-store';
 import { PaymentAgentListResponse } from '@deriv/api-types';
-
 import {
-    TPaymentAgentTransferConfirm,
-    TPaymentAgentTransferReceipt,
     TPaymentAgentTransferRequest,
-    TRootStore,
+    TPaymentAgentTransferReceipt,
+    TPaymentAgentTransferConfirm,
     TTransferLimit,
     TWebSocket,
+    TRootStore,
 } from '../types';
-
-import ErrorStore from './error-store';
 
 export default class PaymentAgentTransferStore {
     constructor(
@@ -92,29 +89,17 @@ export default class PaymentAgentTransferStore {
     }
 
     async onMountPaymentAgentTransfer() {
-        const { client, modules } = this.root_store;
-        const { general_store, payment_agent } = modules.cashier;
+        const { general_store, payment_agent } = this.root_store.modules.cashier;
 
         general_store.setLoading(true);
         this.onRemount = () => this.onMountPaymentAgentTransfer;
         await general_store.onMountCommon();
-
-        const updateTransferLimits = async () => {
+        if (!this.transfer_limit.min_withdrawal) {
             const response = await payment_agent.getPaymentAgentList();
             const current_payment_agent = await this.getCurrentPaymentAgent(response);
             this.setMinMaxPaymentAgentTransfer(current_payment_agent);
-        };
-
-        if (!this.transfer_limit.min_withdrawal) {
-            await updateTransferLimits();
         }
-
         general_store.setLoading(false);
-
-        reaction(
-            () => client?.loginid,
-            () => updateTransferLimits()
-        );
     }
 
     requestTryPaymentAgentTransfer = async ({

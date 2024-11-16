@@ -1,16 +1,13 @@
 import React from 'react';
-import { Router } from 'react-router';
-import { BrowserHistory, createBrowserHistory } from 'history';
-
-import { APIProvider } from '@deriv/api';
-import { routes } from '@deriv/shared';
-import { mockStore, P2PSettingsProvider } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
-
+import { BrowserHistory, createBrowserHistory } from 'history';
+import { Router } from 'react-router';
 import getRoutesConfig from 'Constants/routes-config';
-
-import CashierProviders from '../../../cashier-providers';
 import Cashier from '../cashier';
+import { P2PSettingsProvider, mockStore } from '@deriv/stores';
+import CashierProviders from '../../../cashier-providers';
+import { routes } from '@deriv/shared';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

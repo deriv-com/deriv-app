@@ -123,7 +123,7 @@ describe('<DesktopFormWrapper />', () => {
         expect(onClickClose).toBeCalled();
     });
 
-    it('should change the selected strategy', async () => {
+    it('should change qs modal view on strategy click', async () => {
         mock_DBot_store?.quick_strategy.setSelectedStrategy(quick_strategy_content[0].qs_name);
         render(
             <DesktopFormWrapper
@@ -148,7 +148,7 @@ describe('<DesktopFormWrapper />', () => {
         expect(run_button).toBeInTheDocument();
     });
 
-    it('should submit the form on edit', async () => {
+    it('should submit the form on click of load', async () => {
         render(
             <DesktopFormWrapper
                 onClickClose={onClickClose}

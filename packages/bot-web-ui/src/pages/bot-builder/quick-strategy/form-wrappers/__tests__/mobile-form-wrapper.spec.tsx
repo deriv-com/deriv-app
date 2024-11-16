@@ -73,7 +73,7 @@ describe('<MobileFormWrapper />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should selected strategy', async () => {
+    it('should select martingale strategy', async () => {
         mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
             <MobileFromWrapper
@@ -90,7 +90,6 @@ describe('<MobileFormWrapper />', () => {
         );
         const strategy = screen.getByText(STRATEGIES.MARTINGALE.label);
         await userEvent.click(strategy);
-
         const run_button = screen.getByText('Run');
         expect(run_button).toBeInTheDocument();
     });
@@ -113,28 +112,6 @@ describe('<MobileFormWrapper />', () => {
         );
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: /Run/i });
-        await userEvent.click(submit_button);
-        await waitFor(() => expect(mock_onSubmit).toBeCalled());
-    });
-
-    it('should submit the form', async () => {
-        render(
-            <MobileFromWrapper
-                current_step={1}
-                setCurrentStep={jest.fn()}
-                selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
-            >
-                <div>
-                    <textarea />
-                </div>
-            </MobileFromWrapper>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
-        const submit_button = screen.getByRole('button', { name: 'Run' });
         await userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });

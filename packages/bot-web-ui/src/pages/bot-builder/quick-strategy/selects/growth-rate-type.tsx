@@ -32,7 +32,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
     const { is_desktop } = ui;
     const [list, setList] = React.useState<TDropdownItems[]>([]);
     const { quick_strategy, ws } = useDBotStore();
-    const { setValue } = quick_strategy;
+    const { setValue, setAdditionalData } = quick_strategy;
     const { setFieldValue, values, setFieldError, errors } = useFormikContext<TFormData>();
 
     const prev_proposal_payload = React.useRef<TProposalRequest | null>(null);
@@ -92,7 +92,7 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
             let max_error = '';
             ref_max_payout.current = response?.proposal?.validation_params?.max_payout;
             const current_tick_count = Number(values.tick_count);
-
+            setAdditionalData({ max_payout: ref_max_payout.current, max_ticks });
             if (!isNaN(current_tick_count) && current_tick_count > max_ticks) {
                 max_error = `Maximum tick count is: ${max_ticks}`;
                 setFieldError('tick_count', max_error);
@@ -174,6 +174,9 @@ const GrowthRateSelect: React.FC<TContractTypes> = observer(({ name }) => {
                                             className={classNames('qs__form__field__list__item', {
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
+                                            onClick={() => {
+                                                handleChange(item?.value);
+                                            }}
                                             onChange={() => {
                                                 handleChange(item?.value);
                                             }}

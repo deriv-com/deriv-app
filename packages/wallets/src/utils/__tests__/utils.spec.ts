@@ -1,4 +1,4 @@
-import { defineViewportHeight, isServerError } from '../utils';
+import { defineSwitcherWidth, defineViewportHeight, isServerError } from '../utils';
 import '@testing-library/jest-dom';
 
 describe('Wallets Utils', () => {
@@ -36,6 +36,29 @@ describe('Wallets Utils', () => {
         test('sets --wallets-vh property', () => {
             defineViewportHeight();
             expect(CSSStyleDeclaration.prototype.setProperty).toHaveBeenCalledWith('--wallets-vh', '10px');
+        });
+    });
+
+    describe('defineSwitcherWidth', () => {
+        const originalSetProperty = CSSStyleDeclaration.prototype.setProperty;
+
+        beforeEach(() => {
+            CSSStyleDeclaration.prototype.setProperty = jest.fn();
+        });
+
+        afterEach(() => {
+            CSSStyleDeclaration.prototype.setProperty = originalSetProperty;
+        });
+
+        test('sets --wallets-real-width, --wallets-demo-width, and --wallets-switcher-width properties', () => {
+            const realWidth = 100;
+            const demoWidth = 80;
+
+            defineSwitcherWidth(realWidth, demoWidth);
+
+            expect(CSSStyleDeclaration.prototype.setProperty).toHaveBeenCalledWith('--wallets-real-width', '100px');
+            expect(CSSStyleDeclaration.prototype.setProperty).toHaveBeenCalledWith('--wallets-demo-width', '80px');
+            expect(CSSStyleDeclaration.prototype.setProperty).toHaveBeenCalledWith('--wallets-switcher-width', '196px');
         });
     });
 });

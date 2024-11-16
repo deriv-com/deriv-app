@@ -118,6 +118,6 @@ export type TProductForMarketDetails =
 
 export type TTranslations = ReturnType<typeof useTranslations>;
 
-export type TLanguageType = 'AR' | 'EN' | 'FR';
+export type TLanguageType = 'AR' | 'EN' | 'FR' | 'RU';
 
 export type TProductDetails = { max_leverage: string; min_spread: string };

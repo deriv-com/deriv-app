@@ -1,62 +1,41 @@
 import React from 'react';
-import classNames from 'classnames';
 import { useTranslations } from '@deriv-com/translations';
 import { Text, Tooltip, useDevice } from '@deriv-com/ui';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS } from '../../constants';
-import { getJurisdictionDescription } from './compareAccountsConfig';
-import { MARKET_TYPE_SHORTCODE } from './constants';
+import { THooks, TProductDetails } from '../../../../types';
+import { MT5_PRODUCT } from './constants';
 import './CompareAccountsDescription.scss';
 
 type TCompareAccountsDescription = {
-    isDemo: boolean;
     isEuRegion: boolean;
-    marketType: THooks.AvailableMT5Accounts['market_type'];
-    platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
-    shortCode: THooks.AvailableMT5Accounts['shortcode'];
+    productDetails?: TProductDetails;
 };
 
-const CompareAccountsDescription = ({
-    isDemo,
-    isEuRegion,
-    marketType,
-    platform,
-    product,
-    shortCode,
-}: TCompareAccountsDescription) => {
+const CompareAccountsDescription = ({ isEuRegion, product, productDetails }: TCompareAccountsDescription) => {
     const { localize } = useTranslations();
     const { isTablet } = useDevice();
 
-    const marketTypeShortCode =
-        platform === CFD_PLATFORMS.MT5 && marketType === 'all'
-            ? `${marketType}_${product}_${shortCode}`
-            : marketType?.concat('_', shortCode ?? '');
-    const jurisdictionData = getJurisdictionDescription(localize, marketTypeShortCode ?? '');
+    const leverage = localize('Up to {{leverage}}', { leverage: productDetails?.max_leverage ?? '1:1000' });
+    const spread = localize('{{spread}} pips', { spread: productDetails?.min_spread ?? '0.5' });
 
     return (
-        <div
-            className={classNames('wallets-compare-accounts-text-container', {
-                'wallets-compare-accounts-text-container--demo': isDemo && !isEuRegion,
-                'wallets-compare-accounts-text-container--eu': isEuRegion,
-            })}
-        >
+        <div className='wallets-compare-accounts-text-container'>
             <div className='wallets-compare-accounts-text-container__separator'>
                 <Text align='center' as='h1' size={isTablet ? 'md' : 'xl'} weight='bold'>
-                    {jurisdictionData.leverage}
+                    {leverage}
                 </Text>
                 <Text align='center' as='p' size='2xs'>
-                    {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
+                    {!isEuRegion ? localize('Maximum leverage') : localize('Leverage')}
                 </Text>
             </div>
             {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
                     <div className='wallets-compare-accounts-title__separator'>
                         <Text align='center' as='h1' size={isTablet ? 'md' : 'xl'} weight='bold'>
-                            {jurisdictionData.spread}
+                            {spread}
                         </Text>
-                        {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
+                        {product === MT5_PRODUCT.ZERO_SPREAD && (
                             <Tooltip
                                 as='div'
                                 data-testid='wallets-compare-accounts-text-container__tooltip'
@@ -69,7 +48,7 @@ const CompareAccountsDescription = ({
                         )}
                     </div>
                     <Text align='center' as='p' size='2xs'>
-                        {jurisdictionData.spread_description}
+                        {localize('Spreads from')}
                     </Text>
                 </div>
             )}

@@ -1,56 +1,111 @@
-import { localize } from '@deriv-com/translations';
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../../constants';
+import { CFD_PLATFORMS } from '../../../constants';
 import { getHighlightedIconLabel, getPlatformType } from '../compareAccountsConfig';
-import { JURISDICTION } from '../constants';
 
 describe('compareAccountsConfig', () => {
     describe('getHighlightedIconLabel', () => {
-        it('returns correct labels for synthetic market type', () => {
-            const result = getHighlightedIconLabel(CFD_PLATFORMS.MT5, false, localize, MARKET_TYPE.SYNTHETIC, 'SVG');
-            expect(result).toHaveLength(9);
-            expect(result[0].text).toBe('Forex: standard');
+        const mockLocalize = (text: string) => text;
+        const defaultValues = {
+            isEuRegion: false,
+            localize: mockLocalize,
+            platform: CFD_PLATFORMS.MT5,
+        };
+
+        describe('returns correct labels for different Forex instruments', () => {
+            it('returns correct labels for Forex: standard/micro', () => {
+                const result = getHighlightedIconLabel({
+                    ...defaultValues,
+                    instruments: ['Forex: standard/micro'],
+                });
+
+                expect(result[0]).toEqual({
+                    highlighted: true,
+                    icon: 'Forex',
+                    text: 'Forex: standard/micro',
+                });
+            });
+
+            it('returns correct labels for Forex: standard/exotic', () => {
+                const result = getHighlightedIconLabel({
+                    ...defaultValues,
+                    instruments: ['Forex: standard/exotic'],
+                });
+
+                expect(result[0]).toEqual({
+                    highlighted: true,
+                    icon: 'Forex',
+                    text: 'Forex: standard/exotic',
+                });
+            });
+
+            it('returns correct labels for Forex: standard', () => {
+                const result = getHighlightedIconLabel({
+                    ...defaultValues,
+                    instruments: ['Forex: standard'],
+                });
+
+                expect(result[0]).toEqual({
+                    highlighted: true,
+                    icon: 'Forex',
+                    text: 'Forex: standard',
+                });
+            });
+
+            it('returns correct labels for default Forex case', () => {
+                const result = getHighlightedIconLabel({
+                    ...defaultValues,
+                    instruments: ['Forex'],
+                });
+
+                expect(result[0]).toEqual({
+                    highlighted: true,
+                    icon: 'Forex',
+                    text: 'Forex',
+                });
+            });
         });
 
-        it('returns correct labels for EU region', () => {
-            const result = getHighlightedIconLabel(CFD_PLATFORMS.MT5, true, localize, MARKET_TYPE.SYNTHETIC, 'SVG');
-            expect(result).toHaveLength(9);
-            expect(result[0].text).toBe('Forex');
+        it('returns correct labels and highlights for MT5', () => {
+            const result = getHighlightedIconLabel({
+                ...defaultValues,
+                instruments: ['Stocks', 'Cryptocurrencies'],
+            });
+
+            expect(result[1]).toEqual({
+                highlighted: true,
+                icon: 'Stocks',
+                text: 'Stocks',
+            });
+            expect(result[4]).toEqual({
+                highlighted: true,
+                icon: 'Cryptocurrencies',
+                text: 'Cryptocurrencies',
+            });
         });
 
-        it('returns correct labels for financial market type with LABUAN jurisdiction', () => {
-            const result = getHighlightedIconLabel(
-                CFD_PLATFORMS.MT5,
-                false,
-                localize,
-                MARKET_TYPE.FINANCIAL,
-                JURISDICTION.LABUAN
-            );
-            expect(result).toHaveLength(9);
-            expect(result[0].text).toBe('Forex: standard/exotic');
+        it('returns correct labels and highlights for cTrader', () => {
+            const result = getHighlightedIconLabel({
+                ...defaultValues,
+                platform: CFD_PLATFORMS.CTRADER,
+            });
+
+            result.forEach(item => {
+                expect(item.highlighted).toBe(true);
+            });
+            expect(result[0].text).toBe('Forex: major/minor');
         });
 
-        it('returns correct labels for financial market type with MALTAINVEST jurisdiction', () => {
-            const result = getHighlightedIconLabel(
-                CFD_PLATFORMS.MT5,
-                false,
-                localize,
-                MARKET_TYPE.FINANCIAL,
-                JURISDICTION.MALTAINVEST
-            );
-            expect(result).toHaveLength(6);
-            expect(result[5].isAsterisk).toBe(true);
-        });
+        it('adds asterisk for synthetic indices in EU region', () => {
+            const result = getHighlightedIconLabel({
+                ...defaultValues,
+                isEuRegion: true,
+            });
 
-        it('returns correct labels for ALL market type with MT5 platform', () => {
-            const result = getHighlightedIconLabel(CFD_PLATFORMS.MT5, false, localize, MARKET_TYPE.ALL, 'SVG');
-            expect(result).toHaveLength(9);
-            expect(result[6].text).toBe('Synthetics indices');
-        });
-
-        it('returns correct labels for ALL market type with non-MT5 platform', () => {
-            const result = getHighlightedIconLabel(CFD_PLATFORMS.CTRADER, false, localize, MARKET_TYPE.ALL, 'SVG');
-            expect(result).toHaveLength(9);
-            expect(result[6].text).toBe('Synthetic indices');
+            expect(result[6]).toEqual({
+                highlighted: false,
+                icon: 'Synthetics',
+                isAsterisk: true,
+                text: 'Synthetic indices',
+            });
         });
     });
 

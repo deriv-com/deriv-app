@@ -169,7 +169,7 @@ describe('<DesktopFormWrapper />', () => {
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
     });
 
-    it('should submit the form', async () => {
+    it('should submit the form on click of run', async () => {
         render(
             <DesktopFormWrapper
                 onClickClose={onClickClose}

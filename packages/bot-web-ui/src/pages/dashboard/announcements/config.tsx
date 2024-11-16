@@ -1,10 +1,11 @@
 import React from 'react';
-import { OpenLiveChatLink } from '@deriv/components';
+import { OpenLiveChatLink, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import { handleOnConfirmAccumulator } from './utils/accumulator-helper-functions';
 import { IconAnnounce } from './announcement-components';
+import { getUrlBase } from '@deriv/shared';
 
 export type TContentItem = {
     id: number;
@@ -21,6 +22,8 @@ export type TAnnounce = {
     content?: TContentItem[];
     numbered_content?: TContentItem[];
     plain_text?: TContentItem[];
+    media?: Array<string>;
+    unordered_list?: TContentItem[];
 };
 
 export type TAnnouncement = {
@@ -32,9 +35,57 @@ export type TAnnouncement = {
     url_redirect?: string;
     should_not_be_cancel?: boolean;
     should_toggle_modal?: boolean;
+    should_handle_primary_action?: boolean;
 };
 
 export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
+    UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE: {
+        announcement: {
+            id: 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE',
+            main_title: localize('Updates: Quick strategy modal'),
+            confirm_button_text: localize('Explore now'),
+            base_classname: 'announcement-dialog',
+            media: [getUrlBase('/public/videos/dbot-new-look-QS-and-accumulators-addition.gif')],
+            title: [
+                <Text key={0} as='div' align='left' size='xs' color='prominent' className='announcement-dialog__title'>
+                    <Localize i18n_default_text="We've improved the Quick strategy (QS) modal for a better trading experience." />
+                </Text>,
+                <Localize key={1} i18n_default_text='<0>What’s new:</0>' components={[<div key={0} />]} />,
+            ],
+            unordered_list: [
+                {
+                    id: 0,
+                    text: (
+                        <Localize
+                            i18n_default_text='<0>A revamped design</0> for improved functionality.'
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                },
+                {
+                    id: 1,
+                    text: (
+                        <Localize
+                            i18n_default_text='<0>Support for multiple trade types </0> with a filter to find strategies by preference.'
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                },
+                {
+                    id: 2,
+                    text: (
+                        <Localize
+                            i18n_default_text='<0>Integration of Accumulators Options</0> for direct strategy application within the QS modal.'
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                },
+            ],
+        },
+        should_not_be_cancel: true,
+        should_handle_primary_action: true,
+    },
+
     MOVING_STRATEGIES_ANNOUNCE: {
         announcement: {
             id: 'MOVING_STRATEGIES_ANNOUNCE',
@@ -184,11 +235,12 @@ export const BUTTON_ACTION_TYPE = {
 
 export const BOT_ANNOUNCEMENTS_LIST: TAnnouncementItem[] = [
     {
-        id: 'UPDATED_QUICK_STRATEGY_MODAL_ANNOUNCE',
+        id: 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE',
         icon: IconAnnounce,
         title: localize('Updated: Quick Strategy Modal'),
-        message: localize("We've improved the Quick Strategy (QS) modal."),
+        message: localize("We've improved the Quick strategy (QS) modal for a better trading experience."),
         date: '18 November 2024 00:00 UTC',
+        buttonAction: BUTTON_ACTION_TYPE.MODAL_BUTTON_ACTION,
         actionText: '',
     },
     {

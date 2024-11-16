@@ -33,6 +33,8 @@ const AnnouncementDialog = ({
         content,
         numbered_content,
         plain_text,
+        unordered_list,
+        media,
     } = announcement;
     return (
         <Dialog
@@ -59,6 +61,13 @@ const AnnouncementDialog = ({
                     <IconAnnounceModal announce_id={id} />
                 </div>
                 <div className={`${base_classname}__body-main-content`}>
+                    {Array.isArray(media) && (
+                        <>
+                            {media.map((src, index) => (
+                                <img key={index} src={src} alt={src} />
+                            ))}
+                        </>
+                    )}
                     <Text as='p' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
                     </Text>
@@ -75,6 +84,17 @@ const AnnouncementDialog = ({
                                 </div>
                             );
                         })}
+                    {Array.isArray(unordered_list) && (
+                        <ul className={`${base_classname}__unordered_list`} key={0}>
+                            {unordered_list.map((content_item: TContentItem) => (
+                                <li key={content_item?.id}>
+                                    <Text as='p' line_height='l' size='xs'>
+                                        {content_item?.text}
+                                    </Text>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     {Array.isArray(numbered_content) && (
                         <ol className={`${base_classname}__body-item--numbered`}>
                             {numbered_content.map((content: TContentItem) => (

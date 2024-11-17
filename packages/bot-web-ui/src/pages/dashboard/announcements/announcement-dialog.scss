@@ -102,6 +102,10 @@
         flex-direction: column;
         gap: 1rem;
         padding: 2.4rem;
+
+        @include mobile-or-tablet-screen {
+            padding: 1.6rem;
+        }
     }
 
     &__body-item {

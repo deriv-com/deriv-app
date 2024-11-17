@@ -60,14 +60,14 @@ const AnnouncementDialog = ({
                 <div className={`${base_classname}__body-icon--${id.toLowerCase()}`}>
                     <IconAnnounceModal announce_id={id} />
                 </div>
+                {Array.isArray(media) && (
+                    <>
+                        {media.map((src, index) => (
+                            <img className={`${base_classname}__image`} key={index} src={src} alt={src} />
+                        ))}
+                    </>
+                )}
                 <div className={`${base_classname}__body-main-content`}>
-                    {Array.isArray(media) && (
-                        <>
-                            {media.map((src, index) => (
-                                <img key={index} src={src} alt={src} />
-                            ))}
-                        </>
-                    )}
                     <Text as='p' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
                     </Text>

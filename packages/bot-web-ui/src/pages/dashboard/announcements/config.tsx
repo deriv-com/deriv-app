@@ -47,7 +47,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             base_classname: 'announcement-dialog',
             media: [getUrlBase('/public/videos/dbot-new-look-QS-and-accumulators-addition.gif')],
             title: [
-                <Text key={0} as='div' align='left' size='xs' color='prominent' className='announcement-dialog__title'>
+                <Text key={0} as='div' align='left' size='xs' className='announcement-dialog__title'>
                     <Localize i18n_default_text="We've improved the Quick strategy (QS) modal for a better trading experience." />
                 </Text>,
                 <Localize key={1} i18n_default_text='<0>What’s new:</0>' components={[<div key={0} />]} />,

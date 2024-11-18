@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Button } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';

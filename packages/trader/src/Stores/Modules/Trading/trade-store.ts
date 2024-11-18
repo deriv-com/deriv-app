@@ -1645,7 +1645,6 @@ export default class TradeStore extends BaseStore {
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
             // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the existing subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
             if (response.error.code === 'AlreadySubscribed') {
-                this.refresh();
 
                 if (this.is_trade_component_mounted) {
                     this.throttleProposal();

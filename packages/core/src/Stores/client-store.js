@@ -33,6 +33,7 @@ import {
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
+import { getCountry } from '@deriv/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
@@ -81,6 +82,7 @@ export default class ClientStore extends BaseStore {
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_client_store_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
@@ -105,7 +107,7 @@ export default class ClientStore extends BaseStore {
     ctrader_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
-    statement = [];
+    statement = {};
     obj_total_balance = {
         amount_real: undefined,
         amount_mt5: undefined,
@@ -118,6 +120,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        phone_number_verification: '',
         trading_platform_mt5_password_reset: '',
         trading_platform_dxtrade_password_reset: '',
         request_email: '',
@@ -143,7 +146,6 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
-    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -161,11 +163,13 @@ export default class ClientStore extends BaseStore {
     is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
+    is_phone_number_verification_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
     subscriptions = {};
     exchange_rates = {};
+    client_kyc_status = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -203,6 +207,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
@@ -230,7 +235,6 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
-            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -240,6 +244,7 @@ export default class ClientStore extends BaseStore {
             wallet_migration_state: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
+            is_phone_number_verification_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -253,6 +258,7 @@ export default class ClientStore extends BaseStore {
             upgradeable_currencies: computed,
             current_currency_type: computed,
             available_crypto_currencies: computed,
+            available_onramp_currencies: computed,
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
@@ -272,7 +278,6 @@ export default class ClientStore extends BaseStore {
             is_identity_verification_needed: computed,
             is_poa_expired: computed,
             real_account_creation_unlock_date: computed,
-            is_tnc_needed: computed,
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
@@ -359,7 +364,9 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
+            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
+            setIsClientStoreInitialized: action.bound,
             cleanUp: action.bound,
             logout: action.bound,
             setLogout: action.bound,
@@ -410,6 +417,7 @@ export default class ClientStore extends BaseStore {
             startWalletMigration: action.bound,
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
+            setIsPhoneNumberVerificationEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -426,6 +434,8 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            setClientKYCStatus: action.bound,
+            client_kyc_status: observable,
         });
 
         reaction(
@@ -606,6 +616,15 @@ export default class ClientStore extends BaseStore {
         return this.upgradeable_currencies.filter(acc => !values.includes(acc.value) && acc.type === 'crypto');
     }
 
+    get available_onramp_currencies() {
+        return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
+            if (values.platform.ramp.length > 0) {
+                currencies.push(currency);
+            }
+            return currencies;
+        }, []);
+    }
+
     get has_fiat() {
         return Object.values(this.accounts).some(
             item =>
@@ -719,14 +738,6 @@ export default class ClientStore extends BaseStore {
     get real_account_creation_unlock_date() {
         const { cooling_off_expiration_date } = this.account_settings;
         return cooling_off_expiration_date;
-    }
-
-    get is_tnc_needed() {
-        if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings || {};
-        const { terms_conditions_version } = this.website_status || {};
-
-        return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
 
     get is_social_signup() {
@@ -1181,6 +1192,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
         localStorage.setItem('active_user_id', this.user_id);
+        localStorage.setItem(storage_key, JSON.stringify(this.accounts));
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
@@ -1289,6 +1301,9 @@ export default class ClientStore extends BaseStore {
         const is_samoa_account = this.root_store.ui.real_account_signup_target === 'samoa';
         let currency = '';
         form_values.residence = this.residence;
+        if (!form_values.tax_residence) {
+            form_values.tax_residence = this.residence;
+        }
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
@@ -1392,7 +1407,6 @@ export default class ClientStore extends BaseStore {
         if (this.accounts && this.accounts[this.loginid]) {
             return this.accounts[this.loginid].email;
         }
-
         return '';
     }
 
@@ -1467,10 +1481,6 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnboarding key after page refresh
-        /** will be removed later when header for the wallets is created) */
-        localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1670,6 +1680,7 @@ export default class ClientStore extends BaseStore {
             window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
         );
 
+        this.setIsClientStoreInitialized();
         return true;
     }
 
@@ -1777,7 +1788,7 @@ export default class ClientStore extends BaseStore {
         const broker = LocalStore?.get('active_loginid')
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
-        setTimeout(() => {
+        setTimeout(async () => {
             const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
@@ -1786,13 +1797,15 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                country: await getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
                 domain: window.location.hostname,
+                url: window.location.href,
             };
+
             if (this.user_id) analytics_config.user_id = this.user_id;
             Analytics.setAttributes(analytics_config);
         }, 4);
@@ -1819,7 +1832,7 @@ export default class ClientStore extends BaseStore {
     }
 
     broadcastAccountChangeAfterAuthorize() {
-        return BinarySocket.wait('authorize').then(() => {
+        return BinarySocket?.wait('authorize')?.then(() => {
             this.broadcastAccountChange();
         });
     }
@@ -1870,7 +1883,7 @@ export default class ClientStore extends BaseStore {
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();
-            await BinarySocket.wait('authorize');
+            await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
             await BinarySocket.authorize(this.getToken());
@@ -1982,6 +1995,10 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    setIsClientStoreInitialized() {
+        this.is_client_store_initialized = true;
+    }
+
     setAccountSettings(settings) {
         const is_equal_settings = JSON.stringify(settings) === JSON.stringify(this.account_settings);
         if (!is_equal_settings) {
@@ -1998,6 +2015,15 @@ export default class ClientStore extends BaseStore {
         const account_status_response = await WS.authorized.getAccountStatus();
         if (!account_status_response.error) {
             this.setAccountStatus(account_status_response.get_account_status);
+        }
+    }
+
+    async updateMT5AccountDetails() {
+        if (this.is_logged_in) {
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized
+                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
+                .then(this.responseTradingPlatformAvailableAccounts);
         }
     }
 
@@ -2041,6 +2067,7 @@ export default class ClientStore extends BaseStore {
     async logout() {
         // makes sure to clear the cached traders-hub data when logging out
         localStorage.removeItem('traders_hub_store');
+        localStorage.removeItem('trade_store');
 
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
@@ -2242,10 +2269,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
@@ -2324,7 +2353,7 @@ export default class ClientStore extends BaseStore {
 
     async onSetCitizen(citizen) {
         if (!citizen) return;
-        WS.setSettings({
+        WS.authorized.setSettings({
             set_settings: 1,
             citizen,
         });
@@ -2450,6 +2479,7 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
+
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
@@ -2742,6 +2772,10 @@ export default class ClientStore extends BaseStore {
         this.is_passkey_supported = is_passkey_supported;
     }
 
+    setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
+        this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
+    }
+
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {
         this.should_show_passkey_notification = should_show_passkey_notification;
     }
@@ -2908,6 +2942,12 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_account_to_be_closed_by_residence() {
-        return this.account_time_of_closure && this.residence && this.residence === 'sn';
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        );
+    }
+
+    setClientKYCStatus(client_kyc_status) {
+        this.client_kyc_status = client_kyc_status;
     }
 }

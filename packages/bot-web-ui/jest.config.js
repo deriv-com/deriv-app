@@ -12,6 +12,7 @@ module.exports = {
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
     },
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
     globals: {

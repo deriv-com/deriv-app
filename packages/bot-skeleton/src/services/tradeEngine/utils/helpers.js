@@ -135,7 +135,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
     const max_delay = 15;
     const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
 
-    const { error = {}, msg_type = '' } = error_obj;
+    const { error = {}, msg_type = '', echo_req = {} } = error_obj;
     const { code = '', message = '' } = error;
     let message_to_print = '';
 
@@ -147,7 +147,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                     {
                         message_type: error.msg_type,
                         delay: next_delay_in_seconds,
-                        request: error.echo_req.req_id,
+                        request: echo_req?.req_id,
                     }
                 );
 
@@ -216,7 +216,9 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'OpenPositionLimitExceeded',
     ];
     updateErrorMessage(error);
-    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.error.code);
+    const is_ignorable_error = errors_to_ignore
+        .concat(default_errors_to_ignore)
+        .includes(error?.error?.code ?? error?.name);
 
     return !is_ignorable_error;
 };
@@ -236,17 +238,20 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     return;
                 }
                 recoverFn(
-                    error.error.code,
+                    error?.error?.code ?? error?.name,
                     () =>
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];
 
-                            const timeout = setTimeout(() => {
-                                const global_timeouts = getGlobalTimeouts();
-                                delete global_timeouts[timeout];
-                                globalObserver.setState(global_timeouts);
-                                recoverResolve();
-                            }, getBackoffDelayInMs(error, delay_index));
+                            const timeout = setTimeout(
+                                () => {
+                                    const global_timeouts = getGlobalTimeouts();
+                                    delete global_timeouts[timeout];
+                                    globalObserver.setState(global_timeouts);
+                                    recoverResolve();
+                                },
+                                getBackoffDelayInMs(error, delay_index)
+                            );
 
                             const global_timeouts = getGlobalTimeouts();
                             const cancellable_timeouts = ['buy'];

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv-com/translations';
-import { Text, Tooltip } from '@deriv-com/ui';
+import { useTranslations } from '@deriv-com/translations';
+import { Text, Tooltip, useDevice } from '@deriv-com/ui';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
@@ -26,20 +26,24 @@ const CompareAccountsDescription = ({
     product,
     shortCode,
 }: TCompareAccountsDescription) => {
+    const { localize } = useTranslations();
+    const { isTablet } = useDevice();
+
     const marketTypeShortCode =
         platform === CFD_PLATFORMS.MT5 && marketType === 'all'
             ? `${marketType}_${product}_${shortCode}`
             : marketType?.concat('_', shortCode ?? '');
-    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
+    const jurisdictionData = getJurisdictionDescription(localize, marketTypeShortCode ?? '');
 
     return (
         <div
             className={classNames('wallets-compare-accounts-text-container', {
-                'wallets-compare-accounts-text-container--demo': isDemo,
+                'wallets-compare-accounts-text-container--demo': isDemo && !isEuRegion,
+                'wallets-compare-accounts-text-container--eu': isEuRegion,
             })}
         >
             <div className='wallets-compare-accounts-text-container__separator'>
-                <Text align='center' as='h1' size='xl' weight='bold'>
+                <Text align='center' as='h1' size={isTablet ? 'md' : 'xl'} weight='bold'>
                     {jurisdictionData.leverage}
                 </Text>
                 <Text align='center' as='p' size='2xs'>
@@ -49,7 +53,7 @@ const CompareAccountsDescription = ({
             {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
                     <div className='wallets-compare-accounts-title__separator'>
-                        <Text align='center' as='h1' size='xl' weight='bold'>
+                        <Text align='center' as='h1' size={isTablet ? 'md' : 'xl'} weight='bold'>
                             {jurisdictionData.spread}
                         </Text>
                         {marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
@@ -69,10 +73,10 @@ const CompareAccountsDescription = ({
                     </Text>
                 </div>
             )}
-            {!isDemo && (
+            {!isDemo && !isEuRegion && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size={isTablet ? 'md' : 'sm'} weight='bold'>
                             {jurisdictionData.counterparty_company}
                         </Text>
                         <Text align='center' as='p' size='2xs'>
@@ -80,7 +84,7 @@ const CompareAccountsDescription = ({
                         </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size={isTablet ? 'xs' : 'sm'} weight='bold'>
                             {jurisdictionData.jurisdiction}
                         </Text>
                         <Text align='center' as='p' size='2xs'>
@@ -88,7 +92,7 @@ const CompareAccountsDescription = ({
                         </Text>
                     </div>
                     <div className='wallets-compare-accounts-text-container__separator'>
-                        <Text align='center' as='h1' size='sm' weight='bold'>
+                        <Text align='center' as='h1' size={isTablet ? 'xs' : 'sm'} weight='bold'>
                             {jurisdictionData.regulator}
                         </Text>
                         {jurisdictionData.regulator_license && (

@@ -42,6 +42,12 @@
         }
     }
 
+    &__left-content {
+        @include mobile-or-tablet-screen {
+            display: none;
+        }
+    }
+
     &__right-content {
         height: fit-content;
         display: flex;
@@ -54,10 +60,11 @@
 
         .wallets-transaction-status {
             margin-top: -2.4rem;
-            margin-right: 2.4rem;
+            margin-inline-end: 2.4rem;
 
             @include mobile-or-tablet-screen {
-                margin: 0;
+                margin-inline-end: 0;
+                margin-top: 0;
             }
         }
     }

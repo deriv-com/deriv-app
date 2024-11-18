@@ -1,5 +1,6 @@
 import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { getAppId, getSocketURL } from '@deriv/shared';
+import { getInitialLanguage } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TSocketRequestPayload, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
 import { hashObject } from './utils';
@@ -35,7 +36,7 @@ type APIContextData = {
 const getWebSocketURL = () => {
     const endpoint = getSocketURL();
     const app_id = getAppId();
-    const language = localStorage.getItem('i18n_language');
+    const language = getInitialLanguage();
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
 };
 
@@ -84,6 +85,9 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const isOpenRef = useRef<boolean>(false);
     const wsClientRef = useRef<WSClient>(new WSClient());
 
+    const language = getInitialLanguage();
+    const [prevLanguage, setPrevLanguage] = useState<string>(language);
+
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -124,13 +128,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
             }
         );
     }
-
-    useEffect(() => {
-        return () => {
-            connectionRef.current?.close();
-            reactQueryRef.current?.clear();
-        };
-    }, []);
 
     const setOnReconnected = useCallback((onReconnected: () => void) => {
         onReconnectedRef.current = onReconnected;
@@ -182,7 +179,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 });
             }
 
-            connectionRef.current?.close();
+            wsClientRef.current?.close();
+            reactQueryRef.current?.clear();
         };
     }, []);
 
@@ -217,6 +215,15 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
         return () => clearTimeout(reconnectTimerId);
     }, [reconnect]);
+
+    // reconnects to latest WS url for new language only when language changes
+    useEffect(() => {
+        if (prevLanguage !== language) {
+            setReconnect(true);
+            setPrevLanguage(language);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [language]);
 
     return (
         <APIContext.Provider

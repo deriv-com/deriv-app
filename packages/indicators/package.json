@@ -3,12 +3,12 @@
     "version": "1.0.0",
     "description": "Deriv Indicators",
     "author": "Deriv",
-    "homepage": "https://github.com/binary-com/deriv-app#readme",
+    "homepage": "https://github.com/deriv-com/deriv-app#readme",
     "license": "Apache-2.0",
     "main": "src/index.js",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/binary-com/deriv-app.git"
+        "url": "git+https://github.com/deriv-com/deriv-app.git"
     },
     "engines": {
         "node": "18.x"
@@ -29,18 +29,18 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
+        "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/preset-env": "^7.12.11",
-        "@babel/preset-react": "^7.16.7",
-        "ts-jest": "^26.4.2",
-        "eslint-config-airbnb-base": "^14.2.1",
+        "@babel/eslint-parser": "^7.25.1",
+        "@babel/preset-env": "^7.25.4",
+        "@babel/preset-react": "^7.24.7",
+        "ts-jest": "^29.2.5",
+        "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-binary": "^1.0.2",
         "eslint-config-prettier": "^7.2.0",
         "eslint-plugin-import": "^2.23.4",
-        "eslint-plugin-prettier": "^3.3.1"
+        "eslint-plugin-prettier": "^5.2.1"
     },
     "dependencies": {
         "@deriv/shared": "^1.0.0",

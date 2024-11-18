@@ -5,38 +5,36 @@ import { WalletLink } from '../../../../components';
 
 type TDepositLockedDescProps = {
     askFixDetails?: boolean;
-    clientTncStatus?: string | null;
     excludedUntil?: Date;
     financialInformationNotComplete?: boolean;
-    isMFAccount: boolean;
+    hasAttemptedPOA?: boolean;
+    hasAttemptedPOI?: boolean;
+    isMFAccount?: boolean;
+    isTNCNeeded?: boolean;
     poaNeedsVerification?: boolean;
-    poaStatus: string;
     poiNeedsVerification?: boolean;
-    poiStatus: string;
     selfExclusion?: boolean;
     tradingExperienceNotComplete?: boolean;
     unwelcomeStatus?: boolean;
-    websiteTncVersion?: string;
 };
 
 const getDepositLockedDesc = ({
     askFixDetails,
-    clientTncStatus,
     excludedUntil,
     financialInformationNotComplete,
+    hasAttemptedPOA,
+    hasAttemptedPOI,
     isMFAccount,
+    isTNCNeeded,
     poaNeedsVerification,
-    poaStatus,
     poiNeedsVerification,
-    poiStatus,
     selfExclusion,
     tradingExperienceNotComplete,
     unwelcomeStatus,
-    websiteTncVersion,
 }: TDepositLockedDescProps) => {
     let description = null;
 
-    if (poiNeedsVerification && poiStatus !== 'none') {
+    if (poiNeedsVerification && hasAttemptedPOI) {
         description = (
             <Text align='center'>
                 <Localize
@@ -45,7 +43,7 @@ const getDepositLockedDesc = ({
                 />
             </Text>
         );
-    } else if (poaNeedsVerification && poaStatus !== 'none') {
+    } else if (poaNeedsVerification && hasAttemptedPOA) {
         description = (
             <Text align='center'>
                 <Localize
@@ -54,7 +52,7 @@ const getDepositLockedDesc = ({
                 />
             </Text>
         );
-    } else if (clientTncStatus !== websiteTncVersion) {
+    } else if (isTNCNeeded) {
         description = (
             <Text align='center'>
                 <Localize
@@ -89,7 +87,7 @@ const getDepositLockedDesc = ({
                         <button
                             className='wallets-link wallets-link__variant--bold'
                             key={0}
-                            onClick={() => window.LC_API.open_chat_window()}
+                            onClick={() => window.LiveChatWidget?.call('maximize')}
                         />,
                     ]}
                     i18n_default_text='You have reached the withdrawal limit. You have chosen to exclude yourself from trading on our website until {{excludedUntil}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via <0>live chat</0>.'
@@ -111,7 +109,7 @@ const getDepositLockedDesc = ({
                         <button
                             className='wallets-link wallets-link__variant--bold'
                             key={0}
-                            onClick={() => window.LC_API.open_chat_window()}
+                            onClick={() => window.LiveChatWidget?.call('maximize')}
                         />,
                     ]}
                     i18n_default_text='Please contact us via <0>live chat</0>.'

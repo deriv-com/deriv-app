@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { useDebounceCallback } from 'usehooks-ts';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text } from '@deriv-com/ui';
-import { WalletClipboard } from '../../../../../../components';
+import { FormatUtils } from '@deriv-com/utils';
+import { WalletClipboard, WalletMoney } from '../../../../../../components';
 import { THooks } from '../../../../../../types';
-import parseCryptoLongcode from '../../../../../../utils/parse-crypto-longcode';
 import { getTransactionLabels } from '../../constants';
 import { TransactionsCompletedRowAccountDetails, TransactionsCompletedRowTransferAccountDetails } from './components';
 import './TransactionsCompletedRow.scss';
@@ -34,7 +34,7 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
 }) => {
     const { action_type: actionType, longcode = '', transaction_id: transactionId } = transaction;
     const { account_type: accountType = '', currency = 'USD', is_virtual: isVirtual } = wallet;
-    const { addressHash, blockchainHash, splitLongcode } = parseCryptoLongcode(longcode);
+    const { addressHash, blockchainHash, splitLongcode } = FormatUtils.parseCryptoLongcode(longcode);
     let descriptions = [longcode];
 
     if (addressHash || blockchainHash) {
@@ -97,8 +97,7 @@ const TransactionsCompletedRowContent: React.FC<TTransactionsCompletedRowContent
                     size='xs'
                     weight='bold'
                 >
-                    {transaction.amount && transaction.amount > 0 ? '+' : ''}
-                    {transaction.display_amount}
+                    <WalletMoney amount={transaction.amount} currency={currency} hasSign />
                 </Text>
                 <Text color='primary' size='2xs'>
                     <Localize
@@ -121,12 +120,12 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
-    const displayWalletName = `${displayCurrency} Wallet`;
+    const displayWalletName = localize('{{currency}} Wallet', { currency: displayCurrency });
     const displayNonTransferActionType =
         wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
-            ? getTransactionLabels().reset_balance
+            ? getTransactionLabels(localize).reset_balance
             : //@ts-expect-error we only need partial action types
-              getTransactionLabels()[transaction.action_type];
+              getTransactionLabels(localize)[transaction.action_type];
     const displayTransferActionType =
         transaction.from?.loginid === wallet?.loginid ? localize('Transfer to') : localize('Transfer from');
 

@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv/api-v2';
-import { useTranslations } from '@deriv-com/translations';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { WalletMarketCurrencyIcon, WalletSuccess } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
@@ -36,20 +36,21 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const { data } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
     const isDemo = data?.is_virtual;
 
     const isDxtradeOrCtrader =
         marketType === MARKET_TYPE.ALL &&
         (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
-    let marketTypeTitle = localize('Options');
+    let marketTypeTitle = isEuRegion ? localize('Multipliers') : localize('Options');
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
         if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
-            marketTypeTitle = getMarketTypeDetails(product)[marketType].title;
+            marketTypeTitle = getMarketTypeDetails(localize, product)[marketType].title;
         }
     }
 
@@ -92,7 +93,10 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     {platformTitlePrefix} {marketTypeTitle} {!isDemo && landingCompanyName}
                                 </Text>
                                 <Text color='primary' size='2xs'>
-                                    {data?.currency} Wallet
+                                    <Localize
+                                        i18n_default_text='{{currency}} Wallet'
+                                        values={{ currency: data?.currency }}
+                                    />
                                 </Text>
                                 {!displayBalance ? (
                                     <div

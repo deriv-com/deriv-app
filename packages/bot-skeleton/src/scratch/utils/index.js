@@ -658,14 +658,12 @@ const download_option = {
 };
 
 export const excludeOptionFromContextMenu = (menu, exclude_items) => {
-    if (exclude_items && exclude_items.length > 0) {
-        for (let i = menu.length - 1; i >= 0; i--) {
-            const menu_text = localize(menu[i].text);
-            if (exclude_items.includes(menu_text)) {
-                menu.splice(i, 1);
-            } else {
-                menu[i].text = menu_text;
-            }
+    for (let i = 0; i <= menu.length - 1; i++) {
+        const menu_text = localize(menu[i].text);
+        if (exclude_items.includes(menu_text)) {
+            menu.splice(i, 1);
+        } else {
+            menu[i].text = menu_text;
         }
     }
 };
@@ -683,11 +681,8 @@ const all_context_menu_options = [
     localize('Download Block'),
 ];
 
-// Need for later
-// const deleteLocaleText = localize("Delete");
-// const blocksLocaleText = localize("Blocks");
-// const deleteBlocksLocaleText = localize("Delete Blocks");
-// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+const deleteBlocksLocaleText = localize('Delete Block');
+const deleteAllBlocksLocaleText = localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
     const include_items = [...common_included_items, ...add_new_items];
@@ -700,9 +695,29 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
     });
 
     for (let i = 0; i < menu.length; i++) {
-        const localized_text = localize(menu[i].text);
-        if (all_context_menu_options.includes(localized_text)) {
-            menu[i].text = localized_text;
+        const menu_text = menu[i].text.toLowerCase();
+        if (menu_text.includes('delete')) {
+            if (menu_text.includes('block') && !menu_text.includes('blocks')) {
+                menu[i].text = deleteBlocksLocaleText;
+            } else {
+                menu[i].text = deleteAllBlocksLocaleText;
+            }
+        } else {
+            const localized_text = localize(menu[i].text);
+            if (all_context_menu_options.includes(localized_text)) {
+                menu[i].text = localized_text;
+            }
         }
+    }
+};
+
+export const evaluateExpression = value => {
+    if (!value) return 'invalid_input';
+    try {
+        // eslint-disable-next-line no-new-func
+        const result = new Function(`return ${value.trim()}`)();
+        return isNaN(result) ? 'invalid_input' : result;
+    } catch (e) {
+        return 'invalid_input';
     }
 };

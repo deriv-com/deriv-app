@@ -1,5 +1,11 @@
 import React from 'react';
-import { useCtraderAccountsList, useDxtradeAccountsList, useSortedMT5Accounts } from '@deriv/api-v2';
+import {
+    useCtraderAccountsList,
+    useDxtradeAccountsList,
+    useIsEuRegion,
+    useLandingCompany,
+    useSortedMT5Accounts,
+} from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import {
     AddedCTraderAccountsList,
@@ -9,6 +15,7 @@ import {
     AvailableDxtradeAccountsList,
     AvailableMT5AccountsList,
 } from '../../flows';
+import { TAddedMT5Account, TAvailableMT5Account } from '../../types';
 import './CFDPlatformsListAccounts.scss';
 
 const CFDPlatformsListAccounts: React.FC = () => {
@@ -27,12 +34,20 @@ const CFDPlatformsListAccounts: React.FC = () => {
         isFetchedAfterMount: isDxtradeFetchedAfterMount,
         isLoading: isDxtradeLoading,
     } = useDxtradeAccountsList();
+    const { data: landingCompany, isLoading: isLandingCompanyLoading } = useLandingCompany();
+    const { data: isEuRegion } = useIsEuRegion();
 
-    const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading;
+    const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading || isLandingCompanyLoading;
     const isFetchedAfterMount = isMT5FetchedAfterMount || isCtraderFetchedAfterMount || isDxtradeFetchedAfterMount;
 
     const hasCTraderAccount = !!ctraderAccountsList?.length;
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
+
+    const financialRestrictedCountry =
+        landingCompany?.financial_company?.shortcode === 'svg' && !landingCompany?.gaming_company;
+    const cfdRestrictedCountry =
+        landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
+    const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
     if (isLoading || !isFetchedAfterMount) {
         return (
@@ -48,14 +63,26 @@ const CFDPlatformsListAccounts: React.FC = () => {
         <div className='wallets-cfd-list-accounts__content'>
             {mt5AccountsList?.map((account, index) => {
                 if (account.is_added)
-                    return <AddedMT5AccountsList account={account} key={`added-mt5-list${account.loginid}-${index}`} />;
+                    return (
+                        <AddedMT5AccountsList
+                            account={account as TAddedMT5Account}
+                            key={`added-mt5-list${(account as TAddedMT5Account).loginid}-${index}`}
+                        />
+                    );
 
                 return (
-                    <AvailableMT5AccountsList account={account} key={`available-mt5-list${account.name}-${index}`} />
+                    <AvailableMT5AccountsList
+                        account={account as TAvailableMT5Account}
+                        key={`available-mt5-list${account.name}-${index}`}
+                    />
                 );
             })}
-            {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-            {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+            {!isRestricted && !isEuRegion && (
+                <>
+                    {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
+                    {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+                </>
+            )}
         </div>
     );
 };

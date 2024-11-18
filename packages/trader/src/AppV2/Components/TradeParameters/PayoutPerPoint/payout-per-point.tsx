@@ -11,16 +11,14 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import PayoutPerPointWheel from './payout-per-point-wheel';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TPayoutPerPointProps = {
-    is_minimized?: boolean;
-};
-
-const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
+const PayoutPerPoint = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         barrier_1,
         currency,
+        is_market_closed,
         payout_choices,
         payout_per_point,
         setPayoutPerPoint,
@@ -65,6 +63,8 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
+    const onClose = React.useCallback(() => setIsOpen(false), []);
+
     React.useEffect(() => {
         const initial_payout_per_point = v2_params_initial_values?.payout_per_point;
         if (initial_payout_per_point && payout_per_point !== initial_payout_per_point) {
@@ -83,6 +83,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     return (
         <React.Fragment>
             <TextField
+                disabled={is_market_closed}
                 className={classname}
                 label={
                     <Localize
@@ -95,7 +96,13 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                 variant='fill'
                 value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

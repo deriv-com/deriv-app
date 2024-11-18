@@ -72,27 +72,30 @@ const AccumulatorStats = observer(() => {
     }
     return (
         <div>
-            <div className='accumulators-stats'>
-                <div className='accumulators-stats__container'>
+            <div className='accumulators-stats-v2'>
+                <div className='accumulators-stats-v2__container'>
                     <button
-                        className='accumulators-stats__container__heading'
+                        className='accumulators-stats-v2__container__heading'
                         onClick={() => setIsOpenDescription(true)}
                     >
                         <Text size='sm'>
                             <Localize i18n_default_text='Stats' />
                         </Text>
                     </button>
-                    <div className='accumulators-stats__container__divider' />
-                    <div className='accumulators-stats__container__stats'>
+                    <div className='accumulators-stats-v2__container__divider' />
+                    <div className='accumulators-stats-v2__container__stats'>
                         <StatsRow
                             rows={[...rows[0], ...(rows[1] || [])]}
                             animation_class={animation_class}
                             is_moving_transaction={is_moving_transaction}
-                            className='accumulators-stats__container__stats'
+                            className='accumulators-stats-v2__container__stats'
                         />
                     </div>
-                    <button className='accumulators-stats__container__expand' onClick={() => setIsOpen(true)}>
-                        <LabelPairedChevronUpSmBoldIcon data-testid='expand-stats-icon' />
+                    <button className='accumulators-stats-v2__container__expand' onClick={() => setIsOpen(true)}>
+                        <LabelPairedChevronUpSmBoldIcon
+                            data-testid='expand-stats-icon'
+                            fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                        />
                     </button>
                 </div>
             </div>

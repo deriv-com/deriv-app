@@ -26,6 +26,8 @@ import { Loading } from '@deriv/components';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';
+import ForwardStartingBanner from 'AppV2/Components/ForwardStartingBanner';
+import ContractDetailsHeader from 'AppV2/Components/ContractDetailsHeader';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
@@ -77,15 +79,15 @@ const ContractDetails = observer(() => {
     }
     return (
         <>
+            <ContractDetailsHeader />
             <div
                 className={classNames('contract-details', {
                     'contract-details--two-buttons': shouldShowSell && showCancelButton,
                     'contract-details--one-button': shouldShowSell && !showCancelButton,
                 })}
             >
-                <div className='contract-card-wrapper'>
-                    <ContractCard contractInfo={contract_info} serverTime={server_time} currency={currency} />
-                </div>
+                <ForwardStartingBanner contract_info={contract_info} server_time={server_time} />
+                <ContractCard contractInfo={contract_info} serverTime={server_time} currency={currency} />
                 <ContractDetailsChart />
                 <DealCancellation />
                 {showRiskManagement && (
@@ -98,7 +100,7 @@ const ContractDetails = observer(() => {
                 <PayoutInfo contract_info={contract_info} />
                 <EntryExitDetails contract_info={contract_info} />
                 {isTpHistoryVisible && update_history.length > 0 && (
-                    <TakeProfitHistory history={update_history} currency={currency} />
+                    <TakeProfitHistory history={update_history} currency={currency} is_multiplier={isMultiplier} />
                 )}
             </div>
             {shouldShowSell && <ContractDetailsFooter contract_info={contract_info} />}

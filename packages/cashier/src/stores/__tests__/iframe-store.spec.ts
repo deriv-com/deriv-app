@@ -8,6 +8,11 @@ configure({ safeDescriptors: false });
 let iframe_store: IframeStore, root_store: TRootStore;
 
 beforeEach(() => {
+    jest.useFakeTimers({ legacyFakeTimers: true });
+    jest.spyOn(global, 'setInterval');
+    jest.spyOn(global, 'clearInterval');
+    jest.spyOn(global, 'setTimeout');
+    jest.spyOn(global, 'clearTimeout');
     root_store = mockStore({
         client: {
             setVerificationCode: jest.fn(),
@@ -46,7 +51,7 @@ describe('IframeStore', () => {
     });
 
     it('should clear timeout cashier url', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
 
         iframe_store.timeout_session = 999;
         iframe_store.clearTimeoutCashierUrl();
@@ -56,7 +61,7 @@ describe('IframeStore', () => {
     });
 
     it('should set timeout cashier url', () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
 
         const spyClearTimeoutCashierUrl = jest.spyOn(iframe_store, 'clearTimeoutCashierUrl');
         const spySetSessionTimeout = jest.spyOn(iframe_store, 'setSessionTimeout');
@@ -118,7 +123,7 @@ describe('IframeStore', () => {
 
         const spyOnIframeLoaded = jest.spyOn(iframe_store, 'onIframeLoaded');
 
-        spyOnIframeLoaded({ origin: 'cashier' });
+        spyOnIframeLoaded({ origin: 'https://cashier.deriv.com' });
         expect(iframe_store.iframe_height).toBe(window.innerHeight - 190);
     });
 
@@ -133,7 +138,7 @@ describe('IframeStore', () => {
 
         const spyOnIframeLoaded = jest.spyOn(iframe_store, 'onIframeLoaded');
 
-        spyOnIframeLoaded({ origin: 'cashier' });
+        spyOnIframeLoaded({ origin: 'https://cashier.deriv.com' });
         expect(iframe_store.iframe_height).toBe(window.innerHeight - 100);
     });
 });

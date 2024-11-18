@@ -24,7 +24,10 @@ import ErrorStore from './error-store';
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(
+        public WS: TWebSocket,
+        public root_store: TRootStore
+    ) {
         makeObservable(this, {
             accounts_list: observable,
             error: observable,
@@ -393,6 +396,7 @@ export default class AccountTransferStore {
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
                           product: account.product,
+                          shortcode: account.landing_company_short,
                       })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
                     : `${cfd_text_display} ${
                           getCFDAccountDisplay({
@@ -401,6 +405,7 @@ export default class AccountTransferStore {
                               platform: account.account_type,
                               is_eu: this.root_store.client.is_eu,
                               is_transfer_form: true,
+                              product: account.product,
                           }) || ''
                       }`;
             const account_text_display = is_cfd

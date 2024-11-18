@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Skeleton } from '@deriv-com/quill-ui';
 import { getUrlBase } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { ASPECT_RATIO } from 'AppV2/Utils/layout-utils';
 
 type TOnboardingVideoProps = {
     type: 'trade_page' | 'positions_page';
@@ -21,7 +22,7 @@ const OnboardingVideo = ({ type }: TOnboardingVideoProps) => {
 
     return (
         <div className={clsx('guide__player__wrapper', is_loading && 'guide__player__wrapper--is-loading')}>
-            {is_loading && <Skeleton.Square height={218.5} />}
+            {is_loading && <Skeleton.Square height={`calc(100vw * ${ASPECT_RATIO})`} />}
             <video
                 autoPlay
                 className='guide__player'

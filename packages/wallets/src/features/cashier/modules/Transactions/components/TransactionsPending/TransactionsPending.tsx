@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
 import { useCryptoTransactions } from '@deriv/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsTable } from '../TransactionsTable';
@@ -32,7 +32,12 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
             <TransactionsTable
                 columns={[
                     {
-                        accessorFn: row => moment.unix(row.submit_date).format('DD MMM YYYY'),
+                        accessorFn: row =>
+                            FormatUtils.getFormattedDateString(row.submit_date, {
+                                dateOptions: { day: '2-digit', month: 'short', year: 'numeric' },
+                                format: 'DD MMM YYYY',
+                                unix: true,
+                            }),
                         accessorKey: 'date',
                         header: 'Date',
                     },
@@ -42,7 +47,12 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
                 rowGroupRender={transaction => (
                     <div className='wallets-transactions-pending__group-title'>
                         <Text color='primary' size='2xs'>
-                            {transaction.submit_date && moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                            {transaction.submit_date &&
+                                FormatUtils.getFormattedDateString(transaction.submit_date, {
+                                    dateOptions: { day: '2-digit', month: 'short', year: 'numeric' },
+                                    format: 'DD MMM YYYY',
+                                    unix: true,
+                                })}
                         </Text>
                     </div>
                 )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv-com/translations';
+import { Localize, localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../types';
 
@@ -34,11 +34,13 @@ const WalletsAddMoreCardContent: React.FC<TProps> = ({ currency }) => {
     const walletDescriptionMapper = getWalletDescriptionMapper();
     return (
         <div className='wallets-add-more__content'>
-            <Text size='md' weight='bold'>
-                {currency} Wallet
+            <Text align='start' size='md' weight='bold'>
+                <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />
             </Text>
 
-            <Text size='sm'>{walletDescriptionMapper[currency as keyof typeof walletDescriptionMapper]}</Text>
+            <Text align='start' size='sm'>
+                {walletDescriptionMapper[currency as keyof typeof walletDescriptionMapper]}
+            </Text>
         </div>
     );
 };

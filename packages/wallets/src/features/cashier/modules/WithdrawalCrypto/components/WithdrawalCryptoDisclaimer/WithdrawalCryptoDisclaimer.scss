@@ -8,11 +8,10 @@
 
     @include mobile-or-tablet-screen {
         max-width: 100%;
-        max-height: 10.6rem;
     }
 
     &__items {
         list-style: disc;
-        margin-left: 1.4rem;
+        margin-inline-start: 1.4rem;
     }
 }

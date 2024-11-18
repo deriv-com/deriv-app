@@ -12,6 +12,7 @@ import {
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
     ApiToken,
+    GetSettings,
 } from '@deriv/api-types';
 import {
     AUTH_STATUS_CODES,
@@ -20,6 +21,7 @@ import {
     Platforms,
     TRADING_PLATFORM_STATUS,
 } from '@deriv/shared';
+import { TinValidations } from '@deriv/api/types';
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
 
@@ -115,6 +117,7 @@ export type TPOIStatus = {
     redirect_button?: React.ReactElement;
     is_from_external?: boolean;
     is_manual_upload?: boolean;
+    service?: string;
 };
 
 export type TConfirmPersonalDetailsForm = Pick<
@@ -214,17 +217,20 @@ export type TAccounts = {
     title?: string;
 };
 
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+
 type TPendingAccountDetails = {
     balance?: number;
     currency?: string;
     display_login?: string;
     positions?: number;
     withdrawals?: number;
+    product?: TProduct;
 };
 
 export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
 export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
-export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
+export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string; product?: TProduct };
 export type TDetailsOfCtraderAccount = DetailsOfEachMT5Loginid & {
     display_balance?: string;
     platform?: string;
@@ -324,3 +330,65 @@ export type TListItem = {
      */
     value?: string;
 };
+
+export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
+    date_of_birth?: string;
+    tax_identification_confirm?: boolean;
+    tin_skipped?: 0 | 1;
+};
+
+export type TEmployeeDetailsTinValidationConfig = {
+    tin_config: TinValidations;
+    is_mf?: boolean;
+    is_real?: boolean;
+    is_tin_auto_set?: boolean;
+    is_duplicate_account?: boolean;
+    is_employment_status_tin_mandatory?: boolean;
+};
+
+type ReqRule = ['req', React.ReactNode];
+
+type LengthRule = ['length', React.ReactNode, { min: number; max: number }];
+
+type RegularRule = ['regular', React.ReactNode, { regex: RegExp }];
+
+type CustomValidator = (
+    value: string,
+    /**
+     * The options passed to the validation function
+     */
+    options: Record<string, unknown>,
+    /**
+     * The values of all fields in the form
+     */
+    values: Record<string, unknown>
+) => React.ReactNode;
+
+type CustomRule = [CustomValidator, React.ReactNode];
+
+type Rule = ReqRule | LengthRule | RegularRule | CustomRule;
+
+export type TGetField = {
+    label: React.ReactNode;
+    /**
+     * The type of the input field (e.g. 'text', 'password', 'select', etc.)
+     */
+    type?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    placeholder?: string;
+    /**
+     * The list of items for the dropdown or select
+     */
+    list_items?: TListItem[];
+    /**
+     * The validation rules for the input field (e.g. 'req', 'length', 'regular', etc.)
+     */
+    rules?: Array<Rule>;
+};
+
+export type TPOAFormState = Record<
+    'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form',
+    boolean
+>;

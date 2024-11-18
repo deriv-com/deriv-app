@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { getTruncatedString } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
+import { WalletCurrencyCard, WalletMoney } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
+import useIsRtl from '../../../../../../hooks/useIsRtl';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import {
@@ -24,11 +25,12 @@ type TProps = {
 };
 
 const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
-    const { data } = useActiveWalletAccount();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
-    const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
+    const displayCode = useMemo(() => activeWallet?.currency_config?.display_code || 'USD', [activeWallet]);
     const modal = useModal();
+    const isRtl = useIsRtl();
     const formattedTransactionHash = transaction.transaction_hash
         ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
         : localize('Pending');
@@ -37,6 +39,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
         : localize('NA');
     const formattedConfirmations = getFormattedConfirmations(transaction.confirmations, transaction.status_code);
     const statusDescription = getStatusDescription(transaction.transaction_type, transaction.status_code);
+    const tooltipAlignment = isRtl ? 'left' : 'right';
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -92,13 +95,17 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
             <Divider color='var(--border-divider)' />
             <div className='wallets-transactions-pending-row'>
                 <div className='wallets-transactions-pending-row__wallet-info'>
-                    <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />
+                    <WalletCurrencyCard
+                        currency={activeWallet?.currency || 'USD'}
+                        isDemo={activeWallet?.is_virtual}
+                        size='md'
+                    />
                     <div className='wallets-transactions-pending-row__column'>
-                        <Text color='primary' size='xs'>
-                            {getTransactionLabels()[transaction.transaction_type]}
+                        <Text align='start' color='primary' size='xs'>
+                            {getTransactionLabels(localize)[transaction.transaction_type]}
                         </Text>
-                        <Text color='general' size='xs' weight='bold'>
-                            {displayCode} Wallet
+                        <Text align='start' color='general' size='xs' weight='bold'>
+                            <Localize i18n_default_text='{{currency}} Wallet' values={{ currency: displayCode }} />
                         </Text>
                     </div>
                 </div>
@@ -110,7 +117,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                 ? {
                                       link: transaction.transaction_url,
                                       text: localize('View transaction hash on Blockchain'),
-                                      tooltipAlignment: 'right',
+                                      tooltipAlignment,
                                   }
                                 : undefined
                         }
@@ -122,7 +129,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         hint={{
                             link: transaction.address_url,
                             text: localize('View address on Blockchain'),
-                            tooltipAlignment: 'right',
+                            tooltipAlignment,
                         }}
                         name={localize('Address')}
                         value={formattedAddressHash}
@@ -136,14 +143,25 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         <React.Fragment>
                             <TransactionsPendingRowField
                                 name={localize('Amount')}
-                                value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`}
+                                value={
+                                    <WalletMoney
+                                        amount={
+                                            transaction.is_deposit ? transaction.amount : -(transaction.amount || 0)
+                                        }
+                                        currency={activeWallet?.currency}
+                                        hasSign
+                                    />
+                                }
                                 valueTextProps={{
                                     color: transaction.is_deposit ? 'success' : 'red',
                                 }}
                             />
                             <TransactionsPendingRowField
                                 name={localize('Date')}
-                                value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                                value={FormatUtils.getFormattedDateString(transaction.submit_date, {
+                                    dateOptions: { day: '2-digit', month: 'short', year: 'numeric' },
+                                    unix: true,
+                                })}
                                 valueTextProps={{
                                     color: 'general',
                                 }}
@@ -153,10 +171,10 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-time': isDesktop }}
                         name={localize('Time')}
-                        value={moment
-                            .unix(transaction.submit_date)
-                            .utc()
-                            .format(isDesktop ? 'DD MMM YYYY HH:mm:ss [GMT]' : 'HH:mm:ss [GMT]')}
+                        value={`${
+                            isDesktop &&
+                            `${FormatUtils.getFormattedDateString(transaction.submit_date, { unix: true })} `
+                        }${FormatUtils.getFormattedTimeString(transaction.submit_date, true)}`}
                         valueTextProps={{
                             color: 'general',
                             size: isDesktop ? '2xs' : 'xs',
@@ -166,13 +184,16 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     {isDesktop && (
                         <div className='wallets-transactions-pending-row__transaction-amount'>
                             <Text
-                                align='right'
+                                align='end'
                                 color={transaction.is_deposit ? 'success' : 'red'}
                                 size='sm'
                                 weight='bold'
                             >
-                                {transaction.is_deposit ? '+' : '-'}
-                                {transaction.formatted_amount}
+                                <WalletMoney
+                                    amount={transaction.is_deposit ? transaction.amount : -(transaction.amount || 0)}
+                                    currency={activeWallet?.currency}
+                                    hasSign
+                                />
                             </Text>
                         </div>
                     )}
@@ -185,7 +206,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                         hideTooltip={!isDesktop}
                         onClick={onMobileStatusClick}
                         tooltipContent={statusDescription}
-                        tooltipPosition='left'
+                        tooltipPosition={isRtl ? 'right' : 'left'}
                     >
                         <div
                             className={classNames(
@@ -195,7 +216,7 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                                     .replace('_', '-')}`
                             )}
                         />
-                        <Text color='general' size='sm'>
+                        <Text align='start' color='general' size='sm'>
                             {getStatusName(transaction.status_code)}
                         </Text>
                     </Tooltip>

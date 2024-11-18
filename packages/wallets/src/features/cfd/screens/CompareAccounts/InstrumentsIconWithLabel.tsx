@@ -11,7 +11,7 @@ type TInstrumentsIcon = {
 };
 
 const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
-    const { isDesktop } = useDevice();
+    const { isDesktop, isTablet } = useDevice();
 
     return (
         <div
@@ -23,7 +23,13 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInst
         >
             {getInstrumentsIcons(!isDesktop)[icon]}
             <div className='wallets-compare-accounts-trading-instruments__text'>
-                <Text align='left' as='p' lineHeight='xs' size='xs' weight={isDesktop ? 'bold' : 'normal'}>
+                <Text
+                    align='start'
+                    as='p'
+                    lineHeight='xs'
+                    size={isTablet ? '2xs' : 'xs'}
+                    weight={isDesktop ? 'bold' : 'normal'}
+                >
                     {text}
                 </Text>
             </div>

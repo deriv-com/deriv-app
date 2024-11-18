@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -22,14 +22,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
     const { localize } = useTranslations();
 
-    const {
-        USDExchangeRates,
-        activeWallet,
-        activeWalletExchangeRates,
-        preferredLanguage,
-        refetchAccountLimits,
-        refetchExchangeRates,
-    } = useTransfer();
+    const { USDExchangeRates, activeWallet, activeWalletExchangeRates, refetchAccountLimits, refetchExchangeRates } =
+        useTransfer();
 
     const refetchExchangeRatesAndLimits = useCallback(() => {
         refetchAccountLimits();
@@ -44,6 +38,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
+    const prevTimerVisible = useRef(isTimerVisible);
     const isMaxBtnVisible = isFromAmountField && activeWallet?.account_type === 'crypto';
 
     const amountValue = isFromAmountField ? fromAmount : toAmount;
@@ -102,6 +97,19 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             toAccount?.currencyConfig?.fractional_digits,
         ]
     );
+
+    // Refetch exchange rates and limits when the target account (toAccount) changes or the timer becomes visible
+    useEffect(() => {
+        const shouldRefetchExchangeRatesAndLimits =
+            (!isSameCurrency && !isFromAmountField && toAccount?.currency && !prevTimerVisible.current) ||
+            isTimerVisible;
+
+        if (shouldRefetchExchangeRatesAndLimits) {
+            refetchExchangeRatesAndLimits();
+        }
+
+        prevTimerVisible.current = isTimerVisible;
+    }, [isFromAmountField, isSameCurrency, isTimerVisible, refetchExchangeRatesAndLimits, toAccount?.currency]);
 
     useEffect(() => {
         if (debouncedAmountValue && !isSameCurrency) {
@@ -189,7 +197,6 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 fractionDigits={fractionDigits}
                 isError={values.isError}
                 label={amountLabel}
-                locale={preferredLanguage}
                 maxDigits={maxDigits}
                 onBlur={onBlurHandler}
                 onChange={onChangeHandler}
@@ -198,7 +205,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             />
             {isTimerVisible && (
                 <div className='wallets-transfer-form-amount-input__timer'>
-                    <Timer key={toAmount} onComplete={onTimerCompleteHandler} />
+                    <Timer onComplete={onTimerCompleteHandler} />
                 </div>
             )}
             {isMaxBtnVisible && (

@@ -16,16 +16,15 @@ const AccumulatorStatsModal = ({
         <ActionSheet.Portal shouldCloseOnDrag>
             <div className='stats-sheet'>
                 <div className='stats-sheet__title'>
-                    <Text size='lg' bold>
+                    <Text size='lg' bold color='quill-typography__color--prominent'>
                         <Localize i18n_default_text='Stats' />
                     </Text>
                 </div>
-                <div className='stats-sheet__caption'>
-                    <Text>
-                        <Localize i18n_default_text='History of tick counts' />
-                    </Text>
-                </div>
-
+                <Text>
+                    <Localize i18n_default_text='History of tick counts' />
+                </Text>
+            </div>
+            <ActionSheet.Content>
                 <div className='stats-sheet__stats'>
                     <StatsRow
                         rows={rows[0]}
@@ -43,7 +42,7 @@ const AccumulatorStatsModal = ({
                         ))}
                     </div>
                 ))}
-            </div>
+            </ActionSheet.Content>
         </ActionSheet.Portal>
     );
 };

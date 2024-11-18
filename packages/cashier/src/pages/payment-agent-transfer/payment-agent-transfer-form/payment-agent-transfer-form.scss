@@ -1,6 +1,10 @@
 .payment-agent-transfer-form {
     width: 100%;
 
+    .dc-input__field {
+        text-align: start;
+    }
+
     &__container {
         padding: 0 13.2rem;
         gap: 2.4rem;
@@ -35,7 +39,7 @@
                     height: 9.8rem;
                 }
                 &__field[type='textarea'] {
-                    height: 8.6rem;
+                    padding-top: 1rem;
                 }
             }
         }
@@ -53,9 +57,6 @@
                     }
                     &__container {
                         height: 12.1rem;
-                    }
-                    &__field[type='textarea'] {
-                        padding-top: 1rem;
                     }
                 }
             }

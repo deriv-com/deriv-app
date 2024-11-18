@@ -1,0 +1,63 @@
+import React, { useMemo } from 'react';
+import { useIsEuRegion, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useTranslations } from '@deriv-com/translations';
+import { ClientVerificationStatusBadge } from '../../../../components';
+import { getMarketTypeDetails, MARKET_TYPE, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../constants';
+import { TAddedMT5Account } from '../../../../types';
+
+type TBadgeVariations = Partial<React.ComponentProps<typeof ClientVerificationStatusBadge>['variant']> | undefined;
+
+const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariations => {
+    switch (status) {
+        case MT5_ACCOUNT_STATUS.POA_FAILED:
+        case MT5_ACCOUNT_STATUS.PROOF_FAILED:
+            return 'failed';
+        case MT5_ACCOUNT_STATUS.VERIFICATION_PENDING:
+        case MT5_ACCOUNT_STATUS.POA_PENDING:
+            return 'in_review';
+        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.POA_REQUIRED:
+            return 'needs_verification';
+        default:
+    }
+};
+
+const useAddedMT5Account = (account: TAddedMT5Account) => {
+    const { localize } = useTranslations();
+
+    // @ts-expect-error The enabled property exists, but the api-types are invalid
+    const isAccountDisabled = !account.rights?.enabled;
+
+    const { data: isEuRegion } = useIsEuRegion();
+
+    const accountDetails = useMemo(
+        () => getMarketTypeDetails(localize, account.product, isEuRegion)[account.market_type ?? MARKET_TYPE.ALL],
+        [account.market_type, account.product, localize, isEuRegion]
+    );
+
+    const { getPlatformStatus } = useTradingPlatformStatus();
+    const platformStatus = getPlatformStatus(account.platform);
+    const kycStatus = getClientKycStatus(account.status);
+
+    const isServerMaintenance =
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
+        account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+
+    const showPlatformStatus =
+        account.status === MT5_ACCOUNT_STATUS.UNAVAILABLE ||
+        account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
+        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
+
+    const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE;
+
+    return {
+        accountDetails,
+        isAccountDisabled,
+        isServerMaintenance,
+        kycStatus,
+        showMT5TradeModal,
+        showPlatformStatus,
+    };
+};
+
+export default useAddedMT5Account;

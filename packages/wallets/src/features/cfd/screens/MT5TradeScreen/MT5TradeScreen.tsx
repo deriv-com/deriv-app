@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
@@ -8,6 +8,7 @@ import { WalletBadge, WalletListCardBadge } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
+import { TAddedMT5Account } from '../../types';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
 import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
@@ -15,7 +16,7 @@ import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 
 type MT5TradeScreenProps = {
-    mt5Account?: THooks.MT5AccountsList;
+    mt5Account?: TAddedMT5Account;
 };
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
@@ -26,6 +27,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const mt5Platform = CFD_PLATFORMS.MT5;
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
@@ -35,9 +37,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(mt5Account?.product)[
-        marketType ?? 'all'
-    ];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(
+        localize,
+        mt5Account?.product,
+        isEuRegion
+    )[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -89,6 +93,15 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
+    const shouldShowBadge =
+        !activeWalletData?.is_virtual &&
+        details &&
+        'product' in details &&
+        //@ts-expect-error needs backend type
+        details.product !== 'stp' &&
+        details.landing_company_name !== 'labuan' &&
+        !isEuRegion;
+
     const migrationMessage = useMemo(() => {
         if (platform === mt5Platform && !activeWalletData?.is_virtual) {
             switch (
@@ -101,7 +114,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             type='outlined'
                             variant='warning'
                         >
-                            <Text color='warning' size='2xs' weight='bold'>
+                            <Text align='start' color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='No new positions' />
                             </Text>
                         </InlineMessage>
@@ -113,7 +126,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             type='outlined'
                             variant='warning'
                         >
-                            <Text color='warning' size='2xs' weight='bold'>
+                            <Text align='start' color='warning' size='2xs' weight='bold'>
                                 <Localize i18n_default_text='Account closed' />
                             </Text>
                         </InlineMessage>
@@ -134,15 +147,15 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                         <div className='wallets-mt5-trade-screen__description-details'>
                             <div className='wallets-mt5-trade-screen__label'>
-                                <Text lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                <Text align='start' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
                                 </Text>
-                                {!activeWalletData?.is_virtual && (
+                                {shouldShowBadge && (
                                     <WalletBadge>{details?.landing_company_short?.toUpperCase()}</WalletBadge>
                                 )}
                                 {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
-                            <Text color='less-prominent' size='xs'>
+                            <Text align='start' color='less-prominent' size='xs'>
                                 {platform !== ctraderPlatform && loginId}
                             </Text>
                         </div>
@@ -190,7 +203,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     {getModalState('platform') === ctraderPlatform && (
                         <MT5TradeDetailsItem
                             value={localize(
-                                ' Use your Deriv account email and password to login into the cTrader platform.'
+                                'Use your Deriv account email and password to login into the cTrader platform.'
                             )}
                             variant='info'
                         />
@@ -199,9 +212,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
                 <div className='wallets-mt5-trade-screen__content-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
-                    <Text color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
+                    <Text
+                        align='start'
+                        className='wallets-mt5-trade-screen__content-text'
+                        color='less-prominent'
+                        size={isDesktop ? '2xs' : 'xs'}
+                    >
                         {
-                            getServiceMaintenanceMessages()[
+                            getServiceMaintenanceMessages(localize)[
                                 (platform as keyof ReturnType<typeof getServiceMaintenanceMessages>) ??
                                     PlatformDetails.mt5.platform
                             ]

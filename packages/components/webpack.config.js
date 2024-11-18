@@ -24,8 +24,11 @@ module.exports = function () {
             minimize: true,
         },
         devServer: {
-            publicPath: '/dist/',
+            static: {
+                publicPath: '/dist/',
+            },
         },
+
         module: {
             rules: [
                 {
@@ -76,7 +79,6 @@ module.exports = function () {
                 classnames: 'classnames',
                 'react-div-100vh': 'react-div-100vh',
                 'framer-motion': 'framer-motion',
-                'babel-polyfill': 'babel-polyfill',
                 'prop-types': 'prop-types',
                 'react-transition-group': 'react-transition-group',
                 react: 'react',

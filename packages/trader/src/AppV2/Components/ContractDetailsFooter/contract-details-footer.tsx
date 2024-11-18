@@ -34,15 +34,15 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_multiplier = isMultiplierContract(contract_type);
 
-    const cardLabels = getCardLabelsV2();
+    const card_labels = getCardLabelsV2();
     const formatted_bid_price = FormatUtils.formatMoney(bid_price || 0, {
         currency: currency as 'USD', // currency types mismatched between utils and shared
     });
-    const bidDetails = !is_valid_to_cancel ? `${formatted_bid_price} ${currency}` : '';
-    const label = `${cardLabels.CLOSE} ${bidDetails}`;
-
-    const buttonProps: ButtonProps = {
-        color: 'black',
+    const is_close_button_disabled = Number(profit) < 0 && is_valid_to_cancel;
+    const bid_details = is_close_button_disabled ? '' : `${formatted_bid_price} ${currency}`;
+    const label = `${card_labels.CLOSE} ${bid_details}`;
+    const button_props: ButtonProps = {
+        color: 'black-white',
         size: 'lg',
         fullWidth: true,
     };
@@ -51,50 +51,54 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
         <div className='contract-details-footer--container'>
             {is_multiplier ? (
                 <>
-                    <Button
-                        label={label}
-                        isLoading={is_sell_requested}
-                        isOpaque
-                        disabled={Number(profit) < 0 && is_valid_to_cancel}
-                        onClick={() => onClickSell(contract_id)}
-                        {...buttonProps}
-                    />
-                    {is_valid_to_cancel && (
+                    <span className='contract-details-footer-button__wrapper'>
                         <Button
-                            onClick={() => onClickCancel(contract_id)}
-                            label={
-                                <>
-                                    {cardLabels.CANCEL}{' '}
-                                    <RemainingTime
-                                        as='span'
-                                        end_time={cancellation_date_expiry}
-                                        format='mm:ss'
-                                        className='color'
-                                        getCardLabels={getCardLabelsV2}
-                                        start_time={server_time}
-                                    />
-                                </>
-                            }
-                            disabled={Number(profit) >= 0}
-                            isOpaque
-                            variant='secondary'
-                            {...buttonProps}
+                            label={label}
+                            isLoading={is_sell_requested}
+                            disabled={is_close_button_disabled}
+                            onClick={() => onClickSell(contract_id)}
+                            {...button_props}
                         />
+                    </span>
+                    {is_valid_to_cancel && (
+                        <span className='contract-details-footer-button__wrapper'>
+                            <Button
+                                onClick={() => onClickCancel(contract_id)}
+                                label={
+                                    <>
+                                        {card_labels.CANCEL}{' '}
+                                        <RemainingTime
+                                            as='span'
+                                            end_time={cancellation_date_expiry}
+                                            format='mm:ss'
+                                            getCardLabels={getCardLabelsV2}
+                                            start_time={server_time}
+                                        />
+                                    </>
+                                }
+                                disabled={Number(profit) >= 0}
+                                variant='secondary'
+                                {...button_props}
+                            />
+                        </span>
                     )}
                 </>
             ) : (
-                <Button
-                    label={
-                        is_valid_to_sell
-                            ? `${cardLabels.CLOSE} ${formatted_bid_price} ${currency}`
-                            : cardLabels.RESALE_NOT_OFFERED
-                    }
-                    isLoading={is_sell_requested && is_valid_to_sell}
-                    isOpaque
-                    onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
-                    disabled={!is_valid_to_sell}
-                    {...buttonProps}
-                />
+                <span className='contract-details-footer-button__wrapper'>
+                    <Button
+                        label={
+                            is_valid_to_sell
+                                ? `${card_labels.CLOSE} ${formatted_bid_price} ${currency}`
+                                : card_labels.RESALE_NOT_OFFERED
+                        }
+                        isLoading={is_sell_requested && is_valid_to_sell}
+                        isOpaque
+                        onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}
+                        disabled={!is_valid_to_sell}
+                        variant='primary'
+                        {...button_props}
+                    />
+                </span>
             )}
         </div>
     );

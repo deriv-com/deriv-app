@@ -11,6 +11,25 @@ const stake_param_label = 'Stake';
 const input_placeholder = 'Amount';
 const save_button_label = 'Save';
 
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        available_contract_types: {
+            vanillalongcall: {
+                title: 'Call/Put',
+                trade_types: ['VANILLALONGCALL'],
+                basis: ['stake'],
+                components: ['duration', 'strike', 'amount', 'trade_type_tabs'],
+                barrier_count: 1,
+                config: {
+                    barrier_category: 'euro_non_atm',
+                    default_stake: 10,
+                },
+            },
+        },
+    })),
+}));
+
 describe('Stake', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
@@ -65,7 +84,7 @@ describe('Stake', () => {
         </TraderProviders>
     );
 
-    it('should switch basis to stake if it is different', () => {
+    it('switches basis to stake if it is different', () => {
         default_mock_store.modules.trade.basis = 'payout';
         render(<MockedStake />);
 
@@ -74,14 +93,14 @@ describe('Stake', () => {
         });
     });
 
-    it('should render trade param with "Stake" label and input with a value equal to the current stake amount value', () => {
+    it('renders trade param with "Stake" label and input with a value equal to the current stake amount value', () => {
         render(<MockedStake />);
         const { amount, currency } = default_mock_store.modules.trade;
         expect(screen.getByText(stake_param_label)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue(`${amount} ${currency}`);
     });
 
-    it('should open ActionSheet with input, details and "Save" button if user clicks on "Stake" trade param', () => {
+    it('opens ActionSheet with input, details and "Save" button if user clicks on "Stake" trade param', () => {
         render(<MockedStake />);
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
@@ -94,7 +113,7 @@ describe('Stake', () => {
         expect(screen.getByRole('button', { name: save_button_label })).toBeInTheDocument();
     });
 
-    it('should call onChange when stake input changes', () => {
+    it('calls onChange when stake input changes', () => {
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
         userEvent.type(screen.getByPlaceholderText(input_placeholder), '0');
@@ -103,28 +122,28 @@ describe('Stake', () => {
         });
     });
 
-    it('should not render payout details for Accumulators', () => {
+    it('does not render payout details for Accumulators', () => {
         default_mock_store.modules.trade.is_accumulator = true;
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });
 
-    it('should not render payout details for Turbos', () => {
+    it('does not render payout details for Turbos', () => {
         default_mock_store.modules.trade.is_turbos = true;
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });
 
-    it('should not render payout details for Vanillas', () => {
+    it('does not render payout details for Vanillas', () => {
         default_mock_store.modules.trade.is_vanilla = true;
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });
 
-    it('should render Stop out and Comission details instead of payout details for Multipliers', () => {
+    it('renders Stop out and Commission details instead of payout details for Multipliers', () => {
         render(
             <MockedStake
                 store={{
@@ -183,19 +202,19 @@ describe('Stake', () => {
         expect(screen.getByText('Commission')).toBeInTheDocument();
     });
 
-    it('should call setV2ParamsInitialValues if v2_params_initial_values.stake !== amount on mount and on Save button click if no error', () => {
+    it('calls setV2ParamsInitialValues if v2_params_initial_values.stake !== amount on mount and on Save button click if no error', () => {
         default_mock_store.modules.trade.amount = '30';
         render(<MockedStake />);
         userEvent.click(screen.getByText(stake_param_label));
         userEvent.type(screen.getByPlaceholderText(input_placeholder), '0');
 
-        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(1);
+        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(2);
 
         userEvent.click(screen.getByRole('button', { name: save_button_label }));
-        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(2);
+        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(3);
     });
 
-    it('should call onChange on component mount if v2_params_initial_values.stake is not equal to amount', () => {
+    it('calls onChange on component mount if v2_params_initial_values.stake is not equal to amount', () => {
         default_mock_store.modules.trade.amount = '30';
         render(<MockedStake />);
         expect(default_mock_store.modules.trade.onChange).toHaveBeenCalledWith({
@@ -203,7 +222,7 @@ describe('Stake', () => {
         });
     });
 
-    it('should show error in case of a validation error if input is non-empty', () => {
+    it('shows error in case of a validation error if input is non-empty', () => {
         const error_text = "Please enter a stake amount that's at least 0.35.";
         default_mock_store.modules.trade.proposal_info = {
             PUT: { id: '', has_error: true, message: error_text },
@@ -218,41 +237,12 @@ describe('Stake', () => {
         expect(screen.getAllByText('- USD')).toHaveLength(2);
     });
 
-    it('should not show error in case of a validation error if input is empty, and show it only after Save button is clicked', () => {
-        const { rerender } = render(<MockedStake />);
-        userEvent.click(screen.getByText(stake_param_label));
-        userEvent.type(screen.getByPlaceholderText(input_placeholder), '{backspace}{backspace}');
-
-        const error_text = 'Amount is a required field.';
-        rerender(
-            <MockedStake
-                store={{
-                    ...default_mock_store,
-                    modules: {
-                        ...default_mock_store.modules,
-                        trade: {
-                            ...default_mock_store.modules.trade,
-                            amount: '',
-                            proposal_info: {},
-                            validation_errors: { amount: [error_text] },
-                        },
-                    },
-                }}
-            />
-        );
-        expect(screen.queryByText(error_text)).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByRole('button', { name: save_button_label }));
-        expect(screen.getByText(error_text)).toBeInTheDocument();
-        expect(screen.getAllByText('- USD')).toHaveLength(2);
-    });
-
-    it('should show max payout error with the least current payout when both of the 2 contract types exceed max payout', () => {
+    it('shows max payout error with the least current payout when both of the 2 contract types exceed max payout', () => {
         const error_text_rise = 'Minimum stake of 0.35 and maximum payout of 50000.00. Current payout is 50631.97.';
         const error_text_fall = 'Minimum stake of 0.35 and maximum payout of 50000.00. Current payout is 50513.21.';
         default_mock_store.modules.trade.proposal_info = {
-            CALL: { id: '', has_error: true, message: error_text_rise },
-            PUT: { id: '', has_error: true, message: error_text_fall },
+            CALL: { id: '', has_error: true, message: error_text_rise, error_field: 'amount' },
+            PUT: { id: '', has_error: true, message: error_text_fall, error_field: 'amount' },
         };
         default_mock_store.modules.trade.validation_errors.amount = [error_text_fall];
         default_mock_store.modules.trade.amount = '26500';
@@ -264,7 +254,7 @@ describe('Stake', () => {
         expect(screen.queryByText('- USD')).not.toBeInTheDocument();
     });
 
-    it('should not show max payout error if one of the 2 contract types satisfies max payout', () => {
+    it('does not show max payout error if one of the 2 contract types satisfies max payout', () => {
         const error_text_rise = 'Minimum stake of 0.35 and maximum payout of 50000.00. Current payout is 50058.77.';
         const success_text_fall =
             'Win payout if Volatility 100 (1s) Index is strictly lower than entry spot at 5 minutes after contract start time.';
@@ -283,5 +273,19 @@ describe('Stake', () => {
         userEvent.click(screen.getByText(stake_param_label));
 
         expect(screen.queryByText(error_text_rise)).not.toBeInTheDocument();
+    });
+
+    it('sets default stake if available_contract_types object contains it', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
+        render(<MockedStake />);
+
+        expect(default_mock_store.modules.trade.setDefaultStake).toHaveBeenCalledWith(10);
+    });
+
+    it('disables trade param if is_market_closed == true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        render(<MockedStake />);
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
     });
 });

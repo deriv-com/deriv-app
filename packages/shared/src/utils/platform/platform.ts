@@ -1,3 +1,4 @@
+import { Analytics } from '@deriv-com/analytics';
 import { getPlatformSettings } from '../brand';
 import { routes } from '../routes';
 
@@ -43,6 +44,8 @@ export const isDXtrade = () =>
 export const isNavigationFromDerivGO = () => window.sessionStorage.getItem('config.platform') === 'derivgo';
 
 export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.platform') === 'dp2p';
+
+export const isNavigationFromP2PV2 = () => window.sessionStorage.getItem('config.platform') === 'p2p-v2';
 
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
@@ -97,6 +100,7 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
         return { name: platform_name.DXtrade, route: routes.dxtrade };
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
+    if (isNavigationFromP2PV2()) return { name: 'P2P', ref: 'p2p_v2', route: routes.cashier_p2p };
     if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
         return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
@@ -164,7 +168,10 @@ export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistor
 };
 
 export const isDtraderV2Enabled = (is_mobile: boolean) => {
-    const is_dtrader_v2 = JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2;
+    const dtrader_v2_enabled_growthbook = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
+    const is_dtrader_v2 =
+        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 ||
+        dtrader_v2_enabled_growthbook;
 
     return (
         is_dtrader_v2 &&

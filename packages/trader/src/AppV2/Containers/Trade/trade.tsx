@@ -19,23 +19,25 @@ import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
+import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
         client: { is_logged_in },
+        ui: { is_dark_mode_on },
     } = useStore();
     const {
         active_symbols,
         contract_type,
         has_cancellation,
-        symbol,
         is_accumulator,
         is_market_closed,
-        onMount,
         onChange,
+        onMount,
         onUnmount,
+        symbol,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -54,7 +56,11 @@ const Trade = observer(() => {
     );
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        (
+            e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+            subform_name: string,
+            trade_type_count: number
+        ) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {
@@ -62,8 +68,9 @@ const Trade = observer(() => {
                     value,
                 },
             });
+            sendSelectedTradeTypeToAnalytics(value || '', subform_name, symbol, trade_type_count);
         },
-        [trade_types, onChange]
+        [trade_types, onChange, symbol]
     );
 
     const onScroll = React.useCallback(() => {
@@ -90,6 +97,7 @@ const Trade = observer(() => {
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
                             trade_types={trade_types}
+                            is_dark_mode_on={is_dark_mode_on}
                         />
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
@@ -98,7 +106,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         <div className='trade__chart-tooltip'>
                             <section
-                                className='trade__chart'
+                                className={clsx('trade__chart', { 'trade__chart--with-borderRadius': !is_accumulator })}
                                 style={{
                                     height: getChartHeight({ is_accumulator, symbol, has_cancellation, contract_type }),
                                 }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
@@ -9,16 +9,19 @@ import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = ['IcCashierBanxa'];
 
 const CashierOnboardingOnrampCard: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { available_onramp_currencies, account_list } = client;
     const { general_store } = useCashierStore();
     const { openRealAccountSignup, shouldNavigateAfterChooseCrypto, is_dark_mode_on } = ui;
     const { setDepositTarget } = general_store;
-    const has_crypto_account = useHasCryptoCurrency();
     const currency_config = useCurrentCurrencyConfig();
+    const has_onramp_accounts = account_list.some(
+        account => account.title && available_onramp_currencies.includes(account.title)
+    );
 
     const onClick = () => {
         setDepositTarget('/cashier/on-ramp');
-        if (currency_config?.is_crypto || has_crypto_account) {
+        if (has_onramp_accounts) {
             openRealAccountSignup('choose');
             shouldNavigateAfterChooseCrypto('/cashier/on-ramp');
         } else {

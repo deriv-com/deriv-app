@@ -1,7 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useNotifications } from '@deriv-com/quill-ui';
@@ -14,21 +13,27 @@ import {
     isAccumulatorContract,
     isOpen,
     isValidToSell,
+    MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
+import { useMFAccountStatus } from '@deriv/hooks';
 import PurchaseButtonContent from './purchase-button-content';
 import { getTradeTypeTabsList } from 'AppV2/Utils/trade-params-utils';
 import { StandaloneStopwatchRegularIcon } from '@deriv/quill-icons';
 import { CSSTransition } from 'react-transition-group';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { usePrevious } from '@deriv/components';
+import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
+import { sendDtraderV2PurchaseToAnalytics } from '../../../Analytics';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
     const {
-        contract_replay: { is_market_closed },
-        portfolio: { all_positions, onClickSell },
+        portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
+        common: { services_error },
+        ui: { is_mf_verification_pending_modal_visible, setIsMFVericationPendingModal },
     } = useStore();
     const {
         contract_type,
@@ -43,6 +48,7 @@ const PurchaseButton = observer(() => {
         is_vanilla_fx,
         is_vanilla,
         proposal_info,
+        purchase_info,
         onPurchaseV2,
         symbol,
         trade_type_tab,
@@ -50,6 +56,14 @@ const PurchaseButton = observer(() => {
     } = useTraderStore();
 
     const [is_sell_button_visible, setIsSellButtonVisibile] = React.useState(is_accumulator && has_open_accu_contract);
+    const [animation_duration, setAnimationDuration] = React.useState(450);
+    const prev_has_open_accu_contract = usePrevious(
+        !!open_accu_contract &&
+            !!active_positions.find(
+                ({ contract_info, type }) => isAccumulatorContract(type) && contract_info.underlying === symbol
+            )
+    );
+    const mf_account_status = useMFAccountStatus();
 
     /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
     const hasError = (info: TTradeStore['proposal_info'][string]) => {
@@ -86,7 +100,7 @@ const PurchaseButton = observer(() => {
     const current_stake =
         (is_valid_to_sell && active_accu_contract && getIndicativePrice(active_accu_contract.contract_info)) || null;
     const cardLabels = getCardLabelsV2();
-
+    const is_modal_error = checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
     const is_accu_sell_disabled = !is_valid_to_sell || active_accu_contract?.is_sell_requested;
 
     const getButtonType = (index: number, trade_type: string) => {
@@ -95,8 +109,9 @@ const PurchaseButton = observer(() => {
         return button_index ? 'sell' : 'purchase';
     };
 
-    const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0]) =>
-        addBanner({
+    const addNotificationBannerCallback = (params: Parameters<typeof addBanner>[0], contract_id: number) => {
+        sendDtraderV2PurchaseToAnalytics(contract_type, symbol, contract_id);
+        return addBanner({
             icon: (
                 <StandaloneStopwatchRegularIcon
                     iconSize='sm'
@@ -106,22 +121,27 @@ const PurchaseButton = observer(() => {
             ),
             ...params,
         });
+    };
 
     React.useEffect(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
 
     React.useEffect(() => {
-        if (is_accumulator) {
-            setIsSellButtonVisibile(has_open_accu_contract);
-        }
+        const is_animated =
+            (!prev_has_open_accu_contract && has_open_accu_contract) ||
+            (prev_has_open_accu_contract && !has_open_accu_contract && is_accumulator);
+        setAnimationDuration(is_animated ? 450 : 0);
+
+        setIsSellButtonVisibile(is_accumulator ? has_open_accu_contract : false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_accumulator, has_open_accu_contract]);
 
     return (
         <React.Fragment>
             <CSSTransition
                 in={!is_sell_button_visible}
-                timeout={450}
+                timeout={animation_duration}
                 classNames='slide'
                 key='purchase-button'
                 unmountOnExit
@@ -136,28 +156,8 @@ const PurchaseButton = observer(() => {
                         const info = proposal_info?.[trade_type] || {};
                         const is_single_button = contract_types.length === 1;
                         const is_loading = loading_button_index === index;
-                        const is_disabled = !is_trade_enabled_v2 || info.has_error;
-
-                        const getErrorMessage = () => {
-                            if (['amount', 'stake'].includes(info.error_field ?? '')) {
-                                return <Localize i18n_default_text='Invalid stake' />;
-                            }
-
-                            /* TODO: stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
-                            E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
-                            const float_number_search_regex = /\d+(\.\d+)?/g;
-                            const is_max_payout_exceeded =
-                                info.has_error && info.message?.match(float_number_search_regex)?.length === 3;
-
-                            if (is_max_payout_exceeded) {
-                                return <Localize i18n_default_text='Exceeds max payout' />;
-                            }
-
-                            const api_error = info.has_error && !is_market_closed && !!info.message ? info.message : '';
-                            return api_error;
-                        };
-
-                        const error_message = getErrorMessage();
+                        const is_disabled =
+                            !is_trade_enabled_v2 || info.has_error || (!!purchase_info.error && !is_modal_error);
 
                         return (
                             <React.Fragment key={trade_type}>
@@ -178,14 +178,17 @@ const PurchaseButton = observer(() => {
                                     isOpaque
                                     disabled={is_disabled && !is_loading}
                                     onClick={() => {
-                                        setLoadingButtonIndex(index);
-                                        onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
+                                        if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
+                                            setIsMFVericationPendingModal(true);
+                                        } else {
+                                            setLoadingButtonIndex(index);
+                                            onPurchaseV2(trade_type, isMobile, addNotificationBannerCallback);
+                                        }
                                     }}
                                 >
                                     {!is_loading && (
                                         <PurchaseButtonContent
                                             {...purchase_button_content_props}
-                                            error={error_message}
                                             has_no_button_content={has_no_button_content}
                                             info={info}
                                             is_reverse={!!index}
@@ -199,7 +202,7 @@ const PurchaseButton = observer(() => {
             </CSSTransition>
             <CSSTransition
                 in={is_sell_button_visible}
-                timeout={450}
+                timeout={animation_duration}
                 classNames='slide'
                 key='sell-button'
                 unmountOnExit
@@ -207,7 +210,7 @@ const PurchaseButton = observer(() => {
             >
                 <div className='purchase-button__wrapper'>
                     <Button
-                        color='black'
+                        color='black-white'
                         size='lg'
                         label={
                             is_accu_sell_disabled

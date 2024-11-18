@@ -6,8 +6,10 @@ import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
+// import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -21,6 +23,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
     const { isDesktop, isMobile } = useDevice();
+    const location = useLocation();
 
     const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
@@ -39,7 +42,9 @@ const AppContents = observer(({ children }) => {
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
 
-    const location = useLocation();
+    const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled',
+    });
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
@@ -47,7 +52,10 @@ const AppContents = observer(({ children }) => {
     }, []);
 
     React.useEffect(() => {
-        Analytics.pageView(window.location.href);
+        Analytics.pageView(window.location.href, {
+            loggedIn: is_logged_in,
+            device_type: isMobile ? 'mobile' : 'desktop',
+        });
         // react-hooks/exhaustive-deps
     }, [window.location.href]);
 
@@ -111,6 +119,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
+                'app-contents--is-dtrader-v2': dtrader_v2_enabled,
             })}
             ref={scroll_ref}
         >

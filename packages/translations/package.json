@@ -8,7 +8,7 @@
     "private": true,
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/binary-com/deriv-app.git"
+        "url": "git+https://github.com/deriv-com/deriv-app.git"
     },
     "engines": {
         "node": "18.x"
@@ -27,7 +27,7 @@
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\""
     },
     "bugs": {
-        "url": "https://github.com/binary-com/deriv-app/issues"
+        "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "dependencies": {
         "commander": "^3.0.2",
@@ -39,8 +39,8 @@
         "react-i18next": "^11.11.0"
     },
     "devDependencies": {
-        "@babel/eslint-parser": "^7.17.0",
-        "@babel/preset-react": "^7.16.7",
+    "@babel/eslint-parser": "^7.25.1",
+        "@babel/preset-react": "^7.24.7",
         "cross-env": "^5.2.0",
         "@xmldom/xmldom": "^0.8.4"
     }

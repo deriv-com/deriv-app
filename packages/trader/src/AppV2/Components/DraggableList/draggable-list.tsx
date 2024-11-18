@@ -1,8 +1,6 @@
 import React from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult, DragStart } from 'react-beautiful-dnd';
-import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
-import { Localize } from '@deriv/translations';
 
 export type TDraggableListItem = {
     id: string;
@@ -40,7 +38,6 @@ const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconC
     const handleOnDragStart = (start: DragStart) => setDraggedItemId(start.draggableId);
 
     React.useEffect(() => setCategoryList(categories), [categories]);
-
     return (
         <DragDropContext onDragEnd={handleOnDragEnd} onDragStart={handleOnDragStart}>
             {category_list.map(category => (
@@ -63,7 +60,6 @@ const DraggableCategory: React.FC<{
     onAction?: () => void;
 }> = ({ category, draggedItemId, onRightIconClick, onAction }) => (
     <div className='draggable-list-category'>
-        <DraggableCategoryHeader title={category.title} button_title={category.button_title} onAction={onAction} />
         <Droppable droppableId={category.id}>
             {provided => (
                 <div
@@ -83,50 +79,38 @@ const DraggableCategory: React.FC<{
     </div>
 );
 
-const DraggableCategoryHeader: React.FC<{
-    title?: string;
-    button_title?: string;
-    onAction?: () => void;
-}> = ({ title, button_title, onAction }) => (
-    <div className='draggable-list-category-header'>
-        <Text size='sm' bold className='draggable-list-category-header-title'>
-            {title}
-        </Text>
-        {onAction && (
-            <Text size='sm' bold underlined className='draggable-list-category-header-button' onClick={onAction}>
-                {button_title || <Localize i18n_default_text='Done' />}
-            </Text>
-        )}
-    </div>
-);
-
 const DraggableCategoryItems: React.FC<{
     items: TDraggableListItem[];
     draggedItemId: string | null;
     onRightIconClick: (item: TDraggableListItem) => void;
-}> = ({ items, draggedItemId, onRightIconClick }) => (
-    <>
-        {items.map((item, index) => (
-            <Draggable key={item.id} draggableId={item.id} index={index}>
-                {provided => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className='draggable-list-category__item'
-                    >
-                        <DraggableListItem
-                            title={item.title}
-                            onRightIconClick={() => onRightIconClick(item)}
-                            active={draggedItemId === item.id}
-                            disabled={items.length === 1}
-                        />
-                    </div>
-                )}
-            </Draggable>
-        ))}
-    </>
-);
+}> = ({ items, draggedItemId, onRightIconClick }) => {
+    return (
+        <>
+            {items.map(
+                (item, index) =>
+                    item.id && (
+                        <Draggable key={item.id} draggableId={item.id} index={index}>
+                            {provided => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className='draggable-list-category__item'
+                                >
+                                    <DraggableListItem
+                                        title={item.title}
+                                        onRightIconClick={() => onRightIconClick(item)}
+                                        active={draggedItemId === item.id}
+                                        disabled={items.length === 1}
+                                    />
+                                </div>
+                            )}
+                        </Draggable>
+                    )
+            )}
+        </>
+    );
+};
 
 const updateCategoriesWithDragResult = (
     category_list: TDraggableListCategory[],

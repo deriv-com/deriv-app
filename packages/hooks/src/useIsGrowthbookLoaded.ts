@@ -4,10 +4,12 @@ import { useRemoteConfig } from '@deriv/api';
 
 const useIsGrowthbookIsLoaded = () => {
     const [isGBLoaded, setIsGBLoaded] = useState(false);
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
+    const [isGBAvailable, setisGBAvailable] = useState<boolean>(true);
 
     useEffect(() => {
         let analytics_interval: NodeJS.Timeout;
+
         if (data?.marketing_growthbook) {
             let checksCounter = 0;
             analytics_interval = setInterval(() => {
@@ -15,6 +17,7 @@ const useIsGrowthbookIsLoaded = () => {
                 if (checksCounter > 20) {
                     // If the analytics instance is not available after 10 seconds, clear the interval
                     clearInterval(analytics_interval);
+                    setisGBAvailable(false);
                     return;
                 }
                 checksCounter += 1;
@@ -23,13 +26,15 @@ const useIsGrowthbookIsLoaded = () => {
                     clearInterval(analytics_interval);
                 }
             }, 500);
+        } else {
+            setisGBAvailable(false);
         }
         return () => {
             clearInterval(analytics_interval);
         };
     }, [data.marketing_growthbook]);
 
-    return isGBLoaded;
+    return { isGBLoaded, isGBAvailable };
 };
 
 export default useIsGrowthbookIsLoaded;

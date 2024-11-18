@@ -11,11 +11,11 @@ jest.mock('@deriv/shared', () => ({
 
 describe('TakeProfitHistory component', () => {
     const mockHistory: TContractStore['contract_update_history'] = [
-        { order_date: 1672531200, display_name: 'Test Item 1', order_amount: '100' }, // 2023-01-01
-        { order_date: 1672617600, display_name: 'Test Item 2', order_amount: '200' }, // 2023-01-02
-        { order_date: 1672704000, display_name: 'Test Item 3', order_amount: '300' }, // 2023-01-03
-        { order_date: 1672790400, display_name: 'Test Item 4', order_amount: '400' }, // 2023-01-04
-        { order_date: 1672876800, display_name: 'Test Item 5', order_amount: '500' }, // 2023-01-05
+        { order_date: 1672531200, display_name: 'Test Item 1', order_amount: '100', order_type: 'take_profit' }, // 2023-01-01
+        { order_date: 1672617600, display_name: 'Test Item 2', order_amount: '200', order_type: 'take_profit' }, // 2023-01-02
+        { order_date: 1672704000, display_name: 'Test Item 3', order_amount: '300', order_type: 'take_profit' }, // 2023-01-03
+        { order_date: 1672790400, display_name: 'Test Item 4', order_amount: '400', order_type: 'stop_loss' }, // 2023-01-04
+        { order_date: 1672876800, display_name: 'Test Item 5', order_amount: '500', order_type: 'take_profit' }, // 2023-01-05
     ];
 
     beforeEach(() => {
@@ -24,9 +24,19 @@ describe('TakeProfitHistory component', () => {
         (formatMoney as jest.Mock).mockImplementation((currency, amount) => `${amount}`);
     });
 
-    it('renders without crashing', () => {
-        render(<TakeProfitHistory />);
+    it('does not render without if history was not passed', () => {
+        const { container } = render(<TakeProfitHistory />);
+        expect(container).toBeEmptyDOMElement();
+    });
+
+    it('renders correct History title for both TP and Sl if is_multiplier === true', () => {
+        render(<TakeProfitHistory history={mockHistory.slice(0, 4)} is_multiplier={true} />);
         expect(screen.getByText('TP & SL history')).toBeInTheDocument();
+    });
+
+    it('renders correct History title for TP if is_multiplier !== true ', () => {
+        render(<TakeProfitHistory history={mockHistory.slice(0, 3)} />);
+        expect(screen.getByText('TP history')).toBeInTheDocument();
     });
 
     it('renders the correct number of history items', () => {

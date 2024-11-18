@@ -4,10 +4,10 @@ module.exports = {
     ...baseConfigForPackages,
     preset: 'ts-jest',
     moduleNameMapper: {
-        '\\.css$': '<rootDir>/../../__mocks__/styleMock.js',
-        '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
+        '\\.(s(c|a)ss|css|less)$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
         '@deriv-com/translations': '<rootDir>/../../__mocks__/translation.mock.js',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
         '^Assets/(.*)$': '<rootDir>/src/Assets/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
@@ -21,7 +21,7 @@ module.exports = {
         '^Sections$': '<rootDir>/src/Sections/index.js',
     },
     transform: {
-        '^.+\\.(ts|tsx)?$': ['ts-jest', { isolatedModules: true, babelConfig: true }],
+        '^.+\\.(ts|tsx)?$': ['ts-jest', { isolatedModules: true }],
         '^.+\\.(js|jsx)$': 'babel-jest',
     },
 };

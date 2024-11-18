@@ -1,5 +1,5 @@
 import { Redirect } from 'react-router-dom';
-import { UNSUPPORTED_LANGUAGES, routes } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES, WALLETS_UNSUPPORTED_LANGUAGES, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, getAllowedLanguages } from '@deriv-com/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
@@ -9,12 +9,12 @@ import { useDevice } from '@deriv-com/ui';
 const LanguageSettings = observer(() => {
     const { client, common } = useStore();
     const { switchLanguage, currentLang, localize } = useTranslations();
-    const { has_wallet } = client;
     // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
     const { changeSelectedLanguage } = common;
+    const { has_wallet } = client;
     const { isDesktop } = useDevice();
 
-    if (!isDesktop || has_wallet) {
+    if (!isDesktop) {
         return <Redirect to={routes.traders_hub} />;
     }
 
@@ -25,7 +25,10 @@ const LanguageSettings = observer(() => {
         switchLanguage(language_key);
     };
 
-    const allowed_languages: Record<string, string> = getAllowedLanguages(UNSUPPORTED_LANGUAGES);
+    const allowed_languages: Record<string, string> = getAllowedLanguages(
+        has_wallet ? WALLETS_UNSUPPORTED_LANGUAGES : UNSUPPORTED_LANGUAGES
+    );
+
     return (
         <div className='settings-language'>
             <FormSubHeader title={localize('Select language')} />

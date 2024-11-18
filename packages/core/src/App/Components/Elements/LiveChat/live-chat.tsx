@@ -45,7 +45,8 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const isFreshchatEnabledButNotReady =
         (enable_freshworks_live_chat && !chat?.is_ready) || (enable_intercom && !chat?.is_ready);
 
-    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !enable_freshworks_live_chat;
+    const isNeitherChatNorLiveChatAvailable =
+        !is_livechat_available && !enable_freshworks_live_chat && !enable_intercom;
 
     if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
         return null;

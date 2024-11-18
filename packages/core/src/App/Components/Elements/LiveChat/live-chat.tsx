@@ -1,10 +1,13 @@
-import { Popover, Icon, Text } from '@deriv/components';
-import { useDevice } from '@deriv-com/ui';
-import { Localize } from '@deriv/translations';
+import { Icon, Popover, Text } from '@deriv/components';
 import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
-import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
+import { useDevice } from '@deriv-com/ui';
+
+import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
+
+import useIntercom from './use-intercom';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { client } = useStore();
@@ -17,13 +20,29 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const freshChat = useFreshChat(token);
 
+    const intercom = useIntercom({
+        userData: {
+            id: '12345',
+            name: 'John Doe',
+            email: 'john.doe@example.com',
+            createdAt: Math.floor(Date.now() / 1000),
+        },
+    });
+
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
     });
 
-    const chat = enable_freshworks_live_chat ? freshChat : null;
+    const [enable_intercom] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_intercom',
+    });
 
-    const isFreshchatEnabledButNotReady = enable_freshworks_live_chat && !chat?.isReady;
+    // eslint-disable-next-line no-nested-ternary
+    const chat = enable_freshworks_live_chat ? freshChat : enable_intercom ? intercom : null;
+
+    const isFreshchatEnabledButNotReady =
+        (enable_freshworks_live_chat && !chat?.is_ready) || (enable_intercom && !chat?.is_ready);
+
     const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !enable_freshworks_live_chat;
 
     if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {

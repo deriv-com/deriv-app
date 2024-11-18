@@ -40,6 +40,11 @@ declare global {
         FreshChat: {
             initialize: (config: FreshChatConfig) => void;
         };
+        DerivInterCom: {
+            initialize: (config: IntercomConfig) => void;
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Intercom: any;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Analytics: any;
         GrowthbookFeatures: { [key: string]: boolean };
@@ -50,6 +55,18 @@ declare global {
         token: string | null;
         locale?: string;
         hideButton?: boolean;
+    }
+
+    interface IntercomUserData {
+        app_id: string;
+        user_id?: string;
+        name?: string;
+        email?: string;
+        created_at?: number;
+    }
+    interface IntercomConfig {
+        userData?: interface;
+        hideLauncher?: boolean;
     }
     interface Navigator {
         connection?: NetworkInformation;

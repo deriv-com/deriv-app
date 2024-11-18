@@ -5,11 +5,32 @@ import getFeatureFlag from './getFeatureFlag';
 
 const Chat = {
     isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
+    isIntercom: async () => getFeatureFlag('enable_intercom'),
+
     open: async () => {
-        (await Chat.isFreshChat()) ? window.fcWidget?.open() : window.LiveChatWidget?.call('maximize');
+        const isFreshChat = await Chat.isFreshChat();
+        const isIntercom = await Chat.isIntercom();
+
+        if (isFreshChat) {
+            window.fcWidget?.open();
+        } else if (isIntercom) {
+            window.Intercom('show');
+        } else {
+            window.LiveChatWidget?.call('maximize');
+        }
     },
+
     close: async () => {
-        (await Chat.isFreshChat()) ? window.fcWidget?.close() : window.LiveChatWidget?.call('hide');
+        const isFreshChat = await Chat.isFreshChat();
+        const isIntercom = await Chat.isIntercom();
+
+        if (isFreshChat) {
+            window.fcWidget?.close();
+        } else if (isIntercom) {
+            window.Intercom('hide');
+        } else {
+            window.LiveChatWidget?.call('hide');
+        }
     },
 };
 

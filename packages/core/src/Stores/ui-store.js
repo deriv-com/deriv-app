@@ -1,10 +1,13 @@
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
-import { isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { isMobile, isProduction, isTouchDevice, OS_Tradershub, routes } from '@deriv/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 
 import BaseStore from './base-store';
+import Cookies from 'js-cookie';
+import { URLConstants } from '@deriv-com/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 const store_name = 'ui_store';
 
@@ -641,6 +644,34 @@ export default class UIStore extends BaseStore {
     }
 
     openRealAccountSignup(target) {
+        // redirect to OS Tradershub if feature is enabled
+        const redirect_to_os = Analytics?.getFeatureValue('trigger_real_account_creation_os', false);
+        if (redirect_to_os) {
+            const loginid = this.root_store.client.loginid;
+            const auth_token = this.root_store.client.accounts[loginid].token;
+            const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+
+            Cookies.set(
+                'os_auth_token',
+                {
+                    loginid: auth_token,
+                },
+                { domain: URLConstants.baseDomain, expires }
+            );
+
+            const params = new URLSearchParams({
+                action: 'real-account-signup',
+                target,
+            });
+            const base_url = isProduction
+                ? OS_Tradershub.OS_TRADERSHUB_PRODUCTION
+                : OS_Tradershub.OS_TRADERSHUB_STAGING;
+
+            const redirectURL = new URL(`${base_url}/redirect`);
+            redirectURL.search = params.toString();
+
+            return (window.location.href = redirectURL.toString());
+        }
         if (target) {
             this.is_real_acc_signup_on = true;
             this.real_account_signup_target = target;

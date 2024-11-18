@@ -128,7 +128,7 @@ const AccountSignup = ({
                     properties: {
                         action,
                         form_name,
-                        error_message: localize(errorMessage),
+                        error_message: errorMessage,
                         screen_name,
                     },
                 },

@@ -41,7 +41,7 @@ const AccountSignup = ({
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
 
-    const [is_signup_flow_error] = useGrowthbookGetFeatureValue({
+    const [is_tracking_signup_errors] = useGrowthbookGetFeatureValue({
         featureFlag: 'signup_flow_error',
         defaultValue: false,
     });
@@ -138,7 +138,7 @@ const AccountSignup = ({
     };
 
     React.useEffect(() => {
-        if (is_signup_flow_error) {
+        if (is_tracking_signup_errors) {
             cacheTrackEvents.trackConsoleErrors(errorMessage => {
                 if (errorMessage) {
                     const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';

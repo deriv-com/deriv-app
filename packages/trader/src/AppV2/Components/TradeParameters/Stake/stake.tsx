@@ -40,7 +40,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         client: { is_logged_in, currency: client_currency },
     } = useStore();
-    const { addSnackbar } = useSnackbar();
+    const { addSnackbar, removeSnackbar, queue } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
     const [is_focused, setIsFocused] = React.useState(false);
     const [should_show_error, setShouldShowError] = React.useState(true);
@@ -136,8 +136,10 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                     marginBottom: is_logged_in ? '48px' : '-8px',
                     width: 'calc(100% - var(--core-spacing-800)',
                 },
-            });
+                'data-custom': 'stake_error',
+            } as Parameters<typeof addSnackbar>[0]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stake_error]);
 
     React.useEffect(() => {
@@ -231,6 +233,14 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
 
     const onClose = React.useCallback(
         (is_saved = false) => {
+            const show_error = should_show_error && stake_error;
+            if (!show_error) {
+                queue.forEach(item => {
+                    if (item?.['data-custom' as keyof Parameters<typeof addSnackbar>[0]['status']] === 'stake_error') {
+                        removeSnackbar(item?.id ?? '');
+                    }
+                });
+            }
             if (is_open) {
                 if (!is_saved) {
                     onChange({ target: { name: 'amount', value: v2_params_initial_values.stake } });
@@ -242,7 +252,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [is_open, v2_params_initial_values.stake, amount]
+        [is_open, v2_params_initial_values.stake, amount, should_show_error, stake_error]
     );
 
     return (

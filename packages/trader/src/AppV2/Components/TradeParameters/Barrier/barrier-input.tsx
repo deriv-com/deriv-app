@@ -29,6 +29,7 @@ const BarrierInput = observer(
         const { barrier_1, onChange, validation_errors, tick_data, setV2ParamsInitialValues } = useTraderStore();
         const [option, setOption] = React.useState(0);
         const [should_show_error, setShouldShowError] = React.useState(false);
+        const [previous_value, setPreviousValue] = React.useState(barrier_1);
         const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
@@ -69,12 +70,16 @@ const BarrierInput = observer(
 
         const handleChipSelect = (index: number) => {
             setOption(index);
-            let newValue = barrier_1.replace(/^[+-]/, '');
+            const current_value = barrier_1.replace(/^[+-]/, '');
+            let newValue = previous_value.replace(/^[+-]/, '');
 
             if (index === 0) {
                 newValue = `+${newValue}`;
             } else if (index === 1) {
                 newValue = `-${newValue}`;
+            } else if (index === 2) {
+                newValue = '';
+                setPreviousValue(current_value);
             }
 
             if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
@@ -92,6 +97,7 @@ const BarrierInput = observer(
             if (option === 1) value = `-${value}`;
             onChange({ target: { name: 'barrier_1', value } });
             setV2ParamsInitialValues({ name: 'barrier_1', value });
+            setPreviousValue(value);
         };
 
         return (
@@ -119,6 +125,7 @@ const BarrierInput = observer(
                                     name='barrier_1'
                                     noStatusIcon
                                     status={show_hidden_error ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     value={barrier_1}
                                     allowDecimals
                                     decimals={pip_size}
@@ -145,6 +152,7 @@ const BarrierInput = observer(
                                     inputMode='decimal'
                                     allowSign={false}
                                     status={show_hidden_error ? 'error' : 'neutral'}
+                                    shouldRound={false}
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
                                     regex={/[^0-9.,]/g}

@@ -138,7 +138,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />;
 
-    const show_badge = linked_wallet.is_malta_wallet || linked_wallet.is_virtual;
+    const show_badge = linked_wallet.is_virtual;
 
     return (
         <div className='acc-info__wrapper'>

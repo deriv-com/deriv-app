@@ -208,10 +208,10 @@ describe('Stake', () => {
         userEvent.click(screen.getByText(stake_param_label));
         userEvent.type(screen.getByPlaceholderText(input_placeholder), '0');
 
-        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(1);
+        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(2);
 
         userEvent.click(screen.getByRole('button', { name: save_button_label }));
-        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(2);
+        expect(default_mock_store.modules.trade.setV2ParamsInitialValues).toHaveBeenCalledTimes(3);
     });
 
     it('calls onChange on component mount if v2_params_initial_values.stake is not equal to amount', () => {

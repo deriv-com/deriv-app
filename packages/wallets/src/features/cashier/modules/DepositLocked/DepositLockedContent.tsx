@@ -7,12 +7,12 @@ type TDepositLockedDescProps = {
     askFixDetails?: boolean;
     excludedUntil?: Date;
     financialInformationNotComplete?: boolean;
-    isMFAccount: boolean;
-    isTNCNeeded: boolean;
+    hasAttemptedPOA?: boolean;
+    hasAttemptedPOI?: boolean;
+    isMFAccount?: boolean;
+    isTNCNeeded?: boolean;
     poaNeedsVerification?: boolean;
-    poaStatus: string;
     poiNeedsVerification?: boolean;
-    poiStatus: string;
     selfExclusion?: boolean;
     tradingExperienceNotComplete?: boolean;
     unwelcomeStatus?: boolean;
@@ -22,19 +22,19 @@ const getDepositLockedDesc = ({
     askFixDetails,
     excludedUntil,
     financialInformationNotComplete,
+    hasAttemptedPOA,
+    hasAttemptedPOI,
     isMFAccount,
     isTNCNeeded,
     poaNeedsVerification,
-    poaStatus,
     poiNeedsVerification,
-    poiStatus,
     selfExclusion,
     tradingExperienceNotComplete,
     unwelcomeStatus,
 }: TDepositLockedDescProps) => {
     let description = null;
 
-    if (poiNeedsVerification && poiStatus !== 'none') {
+    if (poiNeedsVerification && hasAttemptedPOI) {
         description = (
             <Text align='center'>
                 <Localize
@@ -43,7 +43,7 @@ const getDepositLockedDesc = ({
                 />
             </Text>
         );
-    } else if (poaNeedsVerification && poaStatus !== 'none') {
+    } else if (poaNeedsVerification && hasAttemptedPOA) {
         description = (
             <Text align='center'>
                 <Localize

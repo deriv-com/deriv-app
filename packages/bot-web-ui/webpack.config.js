@@ -29,8 +29,10 @@ module.exports = function (env) {
             publicPath: base,
         },
         devServer: {
-            publicPath: '/dist/',
-            disableHostCheck: true,
+            static: {
+                publicPath: '/dist/',
+            },
+            allowedHosts: 'all',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
@@ -131,7 +133,12 @@ module.exports = function (env) {
             }),
             new StyleLintPlugin({ fix: true }),
             new CopyWebpackPlugin({
-                patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'bot/media' }],
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, '../../', 'node_modules/@deriv/bot-skeleton/dist/media'),
+                        to: 'bot/media',
+                    },
+                ],
             }),
             new SpriteLoaderPlugin(),
         ],
@@ -148,7 +155,7 @@ module.exports = function (env) {
                 'mobx-react': 'mobx-react',
                 'react-dom': 'react-dom',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
-                '@deriv-com/analytics': `@deriv-com/analytics`,
+                '@deriv-com/analytics': '@deriv-com/analytics',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

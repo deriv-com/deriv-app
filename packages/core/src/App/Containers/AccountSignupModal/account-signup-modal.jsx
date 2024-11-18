@@ -186,7 +186,7 @@ const AccountSignup = ({
             Analytics.trackEvent('ce_virtual_signup_form', {
                 action: 'signup_flow_error',
                 form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                error_message: localize(error),
+                error_message: error,
             });
         } else {
             setIsFromSignupAccount(true);

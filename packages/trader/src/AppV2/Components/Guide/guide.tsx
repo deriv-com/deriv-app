@@ -68,6 +68,7 @@ const Guide = observer(
 
         React.useEffect(() => {
             setIsDescriptionOpened(is_description_opened);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [is_open_by_default]);
 
         return (
@@ -77,10 +78,7 @@ const Guide = observer(
                         color={is_dark_mode_on ? 'white' : 'black'}
                         icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
                         onClick={() => {
-                            sendOpenGuideToAnalytics(
-                                contract_type,
-                                show_guide_for_selected_contract ? 'main_trade_page' : 'trade_type_page'
-                            );
+                            sendOpenGuideToAnalytics(contract_type, 'main_trade_page');
                             setIsDescriptionOpened(true);
                         }}
                         variant={has_label ? 'secondary' : 'tertiary'}

@@ -6,7 +6,6 @@ import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 import { useTraderStore } from 'Stores/useTraderStores';
-import BottomNav from 'AppV2/Components/BottomNav';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
 import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/TradeParameters';
@@ -22,8 +21,8 @@ import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 
 const Trade = observer(() => {
-    const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
+    const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const {
         client: { is_logged_in },
         ui: { is_dark_mode_on },
@@ -89,10 +88,10 @@ const Trade = observer(() => {
     }, []);
 
     return (
-        <BottomNav onScroll={onScroll}>
+        <div className='trade' onScroll={onScroll}>
             {symbols.length && trade_types.length ? (
                 <React.Fragment>
-                    <div className='trade'>
+                    <div className='trade-container'>
                         <TradeTypes
                             contract_type={contract_type}
                             onTradeTypeSelect={onTradeTypeSelect}
@@ -104,9 +103,11 @@ const Trade = observer(() => {
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>
-                        <div className='trade__chart-tooltip'>
+                        <div className='trade-container__chart-tooltip'>
                             <section
-                                className={clsx('trade__chart', { 'trade__chart--with-borderRadius': !is_accumulator })}
+                                className={clsx('trade-container__chart', {
+                                    'trade-container__chart--with-borderRadius': !is_accumulator,
+                                })}
                                 style={{
                                     height: getChartHeight({ is_accumulator, symbol, has_cancellation, contract_type }),
                                 }}
@@ -117,7 +118,11 @@ const Trade = observer(() => {
                         </div>
                         {is_accumulator && <AccumulatorStats />}
                     </div>
-                    <div className={clsx('trade__parameter', { 'trade__parameter--with-button': !is_market_closed })}>
+                    <div
+                        className={clsx('trade-container__parameter', {
+                            'trade-container__parameter--with-button': !is_market_closed,
+                        })}
+                    >
                         <TradeParametersContainer is_minimized_visible={is_minimized_params_visible} is_minimized>
                             <TradeParameters is_minimized />
                         </TradeParametersContainer>
@@ -130,7 +135,7 @@ const Trade = observer(() => {
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
-        </BottomNav>
+        </div>
     );
 });
 

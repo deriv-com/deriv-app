@@ -4,13 +4,13 @@ import initStore from 'App/init-store';
 import type { TCoreStores } from '@deriv/stores/types';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
 import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
-import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
+import Layout from './Layout';
 
 type Apptypes = {
     passthrough: {
@@ -53,7 +53,7 @@ const App = ({ passthrough }: Apptypes) => {
                     <NotificationsProvider>
                         <SnackbarProvider>
                             <Notifications />
-                            <Router />
+                            <Layout />
                             <ServicesErrorSnackbar />
                         </SnackbarProvider>
                     </NotificationsProvider>

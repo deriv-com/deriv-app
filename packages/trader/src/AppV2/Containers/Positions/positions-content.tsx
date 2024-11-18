@@ -8,7 +8,7 @@ import { ContractCardList, ContractCardsSections } from 'AppV2/Components/Contra
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
 import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
-import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
+import { TReportsStore, useReportsStore } from '@deriv/reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
 
@@ -124,11 +124,11 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         return <Loading.DTraderV2 is_positions is_closed_tab={isClosedTab} />;
     return (
         <div
-            className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
+            className={`positions-page-container__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
             onScroll={isClosedTab ? onScroll : undefined}
         >
             {!hasNoPositions && (
-                <div className='positions-page__filter__wrapper'>
+                <div className='positions-page-container__filter__wrapper'>
                     {isClosedTab ? (
                         <TimeFilter
                             timeFilter={timeFilter}

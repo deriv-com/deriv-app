@@ -1071,7 +1071,7 @@ export default class TradeStore extends BaseStore {
         if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback, true);
     }
 
-    onPurchase = throttle(this.processPurchase, 300);
+    onPurchase = throttle(this.processPurchase, 500);
 
     processPurchase(
         proposal_id: string,

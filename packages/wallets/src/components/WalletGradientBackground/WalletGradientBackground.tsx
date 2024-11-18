@@ -37,7 +37,7 @@ const WalletGradientBackground: React.FC<TProps> = ({
 
     const IconWrapper = () => (
         <div className='wallets-gradient__icon-pattern'>
-            {[...Array(device === 'desktop' ? 160 : 60)].map((_, index) => (
+            {[...Array(device === 'desktop' ? 100 : 60)].map((_, index) => (
                 <PaymentMethodDerivDemoWhiteIcon
                     className='wallets-gradient__icon'
                     data-testid='dt_wallet_gradient_icon'

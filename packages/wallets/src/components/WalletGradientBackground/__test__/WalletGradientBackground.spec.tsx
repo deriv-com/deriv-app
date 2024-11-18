@@ -65,7 +65,7 @@ describe('WalletGradientBackground', () => {
         render(
             <WalletGradientBackground {...defaultProps} device='desktop' isDemo={true} theme='light' type='header' />
         );
-        expect(screen.getAllByTestId('dt_wallet_gradient_icon')).toHaveLength(160);
+        expect(screen.getAllByTestId('dt_wallet_gradient_icon')).toHaveLength(100);
     });
 
     it('renders IconWrapper for mobile demo header with correct length', () => {

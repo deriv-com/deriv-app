@@ -96,6 +96,9 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
         block.moveBy(last_block_xy.x, y);
     }
 
+    flyout.setIsSearchFlyout(false);
+    flyout.setVisibility(false);
+
     // Call svgResize to avoid glitching workspace.
     Blockly.svgResize(block.workspace);
     // kept this commented since it is making a glitching issue,

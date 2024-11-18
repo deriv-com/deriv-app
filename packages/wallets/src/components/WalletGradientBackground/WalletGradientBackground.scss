@@ -29,6 +29,32 @@
         }
     }
 
+    &__icon-pattern {
+        display: grid;
+        grid-row-gap: 1.5rem;
+        grid-template-columns: repeat(40, 1fr);
+        position: absolute;
+        overflow: hidden;
+        inset: 0;
+
+        @include mobile {
+            grid-row-gap: 1rem;
+            grid-template-columns: repeat(20, 1fr);
+        }
+
+        @include tablet-screen {
+            --wallets-gradient-icon-gap: 0.5rem;
+            grid-row-gap: calc(-1 * var(--wallets-gradient-icon-gap));
+            grid-template-columns: repeat(20, 1fr);
+        }
+    }
+
+    &__icon {
+        opacity: 0.24;
+        mix-blend-mode: overlay;
+        transform: rotate(-31deg);
+    }
+
     &[class*='desktop-header'],
     &[class*='mobile-header'] {
         border-radius: unset;
@@ -934,23 +960,6 @@
                         )
                         #fbdddd;
                 }
-            }
-        }
-        &-desktop-header-light,
-        &-mobile-header-light,
-        &-mobile-card-light {
-            &:before {
-                content: '';
-                display: block;
-                position: absolute;
-                inset: 0;
-                width: 100%;
-                height: 100%;
-                background-image: url('../../public/images/wallet-demo-bg-light.svg');
-                background-repeat: repeat;
-                background-size: 7rem;
-                mix-blend-mode: overlay;
-                opacity: 0.24;
             }
         }
     }

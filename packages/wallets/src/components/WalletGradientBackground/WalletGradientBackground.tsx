@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { PaymentMethodDerivDemoWhiteIcon } from '@deriv/quill-icons';
 import { THooks } from '../../types';
 import './WalletGradientBackground.scss';
 
@@ -34,6 +35,19 @@ const WalletGradientBackground: React.FC<TProps> = ({
         return `wallets-gradient--${gradientCurrencyClassName}-${device}-${type}-${theme}`;
     };
 
+    const IconWrapper = () => (
+        <div className='wallets-gradient__icon-pattern'>
+            {[...Array(device === 'desktop' ? 160 : 60)].map((_, index) => (
+                <PaymentMethodDerivDemoWhiteIcon
+                    className='wallets-gradient__icon'
+                    data-testid='dt_wallet_gradient_icon'
+                    key={index}
+                    width={70}
+                />
+            ))}
+        </div>
+    );
+
     return (
         <div
             className={classNames(`wallets-gradient ${getClassName()}`, {
@@ -41,6 +55,9 @@ const WalletGradientBackground: React.FC<TProps> = ({
             })}
             data-testid='dt_wallet_gradient_background'
         >
+            {isDemo && theme === 'light' && (type === 'header' || (device === 'mobile' && type === 'card')) && (
+                <IconWrapper />
+            )}
             {hasShine && !isDemo && <span className='wallets-gradient__shine' data-testid='dt_wallet_gradient_shine' />}
             <div className='wallets-gradient__content'>{children}</div>
         </div>

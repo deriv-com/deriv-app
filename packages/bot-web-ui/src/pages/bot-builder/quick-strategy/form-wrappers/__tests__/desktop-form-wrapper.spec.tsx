@@ -85,9 +85,9 @@ describe('<DesktopFormWrapper />', () => {
             <DesktopFormWrapper
                 onClickClose={onClickClose}
                 current_step={0}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
                 selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
             >
                 <div>test</div>
             </DesktopFormWrapper>,
@@ -104,9 +104,9 @@ describe('<DesktopFormWrapper />', () => {
             <DesktopFormWrapper
                 onClickClose={onClickClose}
                 current_step={0}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
                 selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
             >
                 <div>test</div>
             </DesktopFormWrapper>,
@@ -129,9 +129,9 @@ describe('<DesktopFormWrapper />', () => {
             <DesktopFormWrapper
                 onClickClose={onClickClose}
                 current_step={1}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
                 selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
             >
                 <div>test</div>
             </DesktopFormWrapper>,
@@ -153,9 +153,9 @@ describe('<DesktopFormWrapper />', () => {
             <DesktopFormWrapper
                 onClickClose={onClickClose}
                 current_step={1}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
                 selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
             >
                 <div>test</div>
             </DesktopFormWrapper>,
@@ -174,9 +174,9 @@ describe('<DesktopFormWrapper />', () => {
             <DesktopFormWrapper
                 onClickClose={onClickClose}
                 current_step={1}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
                 selected_trade_type='trade_type'
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
             >
                 <div>
                     <textarea />

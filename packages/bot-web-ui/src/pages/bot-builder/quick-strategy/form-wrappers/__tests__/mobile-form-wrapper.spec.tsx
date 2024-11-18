@@ -59,9 +59,9 @@ describe('<MobileFormWrapper />', () => {
         const { container } = render(
             <MobileFromWrapper
                 selected_trade_type=''
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
                 current_step={0}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
             >
                 <div>test</div>
             </MobileFromWrapper>,
@@ -78,9 +78,9 @@ describe('<MobileFormWrapper />', () => {
         render(
             <MobileFromWrapper
                 selected_trade_type=''
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
                 current_step={1}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
             >
                 <div>test</div>
             </MobileFromWrapper>,
@@ -98,9 +98,9 @@ describe('<MobileFormWrapper />', () => {
         render(
             <MobileFromWrapper
                 selected_trade_type=''
-                setSelectedTradeType={jest.fn()}
+                setSelectedTradeType={jest.fn}
                 current_step={1}
-                setCurrentStep={jest.fn()}
+                setCurrentStep={jest.fn}
             >
                 <div>
                     <textarea />

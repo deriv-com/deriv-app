@@ -35,7 +35,6 @@ export type TAnnouncement = {
     url_redirect?: string;
     should_not_be_cancel?: boolean;
     should_toggle_modal?: boolean;
-    should_handle_primary_action?: boolean;
 };
 
 export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
@@ -83,7 +82,8 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             ],
         },
         should_not_be_cancel: true,
-        should_handle_primary_action: true,
+        should_toggle_modal: true,
+        switch_tab_on_confirm: DBOT_TABS.BOT_BUILDER,
     },
 
     MOVING_STRATEGIES_ANNOUNCE: {

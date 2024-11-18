@@ -52,13 +52,6 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         setReadAnnouncementsMap(temp_notifications);
     };
 
-    const handlePrimaryAction = () => {
-        setActiveTab(1);
-        setFormVisibility(true);
-        updateLocalStorage('UPDATED_QUICK_STRATEGY_MODAL_ANNOUNCE');
-        rudderStackSendAnnouncementClickEvent({ announcement_name: localize('Updated: Quick Strategy Modal') });
-    };
-
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
@@ -142,10 +135,11 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             handleTabChange(selected_announcement.switch_tab_on_confirm);
         }
         if (selected_announcement?.should_toggle_modal) {
-            toggleLoadModal();
-        }
-        if (selected_announcement?.should_handle_primary_action) {
-            handlePrimaryAction();
+            if (selected_announcement?.announcement.id === 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE') {
+                setFormVisibility(true);
+            } else {
+                toggleLoadModal();
+            }
         }
         selected_announcement?.onConfirm?.();
         setSelectedAnnouncement(null);

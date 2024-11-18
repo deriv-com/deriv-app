@@ -15,7 +15,7 @@ describe('SideNoteFAQ', () => {
     it('should render faq regarding deposit', () => {
         render(<SideNoteFAQ transaction_type='deposit' />, { wrapper });
 
-        expect(screen.getByText("Why can't I see deposited funds in my Deriv account?")).toBeInTheDocument();
+        expect(screen.getByText('Why can’t I see the funds deposited in my Deriv account?')).toBeInTheDocument();
         expect(screen.getByText('What do I do if I have reached my deposit limit?')).toBeInTheDocument();
         expect(screen.getByText('Why is my card/e-wallet not working?')).toBeInTheDocument();
         expect(screen.getByText("Can I use someone else's payment method?")).toBeInTheDocument();

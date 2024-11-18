@@ -3,6 +3,7 @@ export const WALLET_MIGRATION_VIDEO_TRANSLATIONS = {
     EN: '25df7df0d0af48090b086cd6f103d8f3',
     // ES: 'ef6e04a732ebf193106e62c4d9307637', TODO: Uncomment this when Spanish translations are ready
     FR: 'e444c765e24eaad80dcb1549d1018c0f',
+    RU: '932be9817e60bdaae87d657d609b38d2',
     // TODO: Add translations for other languages
 } as const;
 

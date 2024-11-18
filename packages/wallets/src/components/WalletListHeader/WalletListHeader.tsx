@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
-import { Localize } from '@deriv-com/translations';
-import { Text, useDevice } from '@deriv-com/ui';
+import { getInitialLanguage, Localize } from '@deriv-com/translations';
+import { Text } from '@deriv-com/ui';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { defineSwitcherWidth } from '../../utils/utils';
 import './WalletListHeader.scss';
 
 const WalletListHeader: React.FC = () => {
-    const { isDesktop } = useDevice();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
+    const demoTextRef = useRef<HTMLDivElement>(null);
+    const realTextRef = useRef<HTMLDivElement>(null);
+    const language = getInitialLanguage();
 
     const demoAccount = wallets?.find(wallet => wallet.is_virtual)?.loginid;
     const firstRealAccount = wallets?.find(wallet => !wallet.is_virtual && !wallet.is_disabled)?.loginid;
@@ -18,6 +21,26 @@ const WalletListHeader: React.FC = () => {
     const shouldShowSwitcher = (demoAccount && firstRealAccount) || !hasAnyActiveRealWallets;
     const isDemo = activeWallet?.is_virtual;
     const [isChecked, setIsChecked] = useState(!isDemo);
+
+    useEffect(() => {
+        const updateWidths = () => {
+            if (demoTextRef.current && realTextRef.current) {
+                const demoWidth = demoTextRef.current.offsetWidth;
+                const realWidth = realTextRef.current.offsetWidth;
+                defineSwitcherWidth(realWidth, demoWidth);
+            }
+        };
+
+        updateWidths();
+
+        const resizeObserver = new ResizeObserver(updateWidths);
+        resizeObserver.observe(demoTextRef.current as Element);
+        resizeObserver.observe(realTextRef.current as Element);
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [language]);
 
     const handleToggle = () => {
         setIsChecked(prev => !prev);
@@ -32,8 +55,6 @@ const WalletListHeader: React.FC = () => {
         setIsChecked(!isDemo);
     }, [isDemo]);
 
-    if (!isDesktop) return null;
-
     return (
         <div className='wallets-list-header'>
             <Text align='start' size='xl' weight='bold'>
@@ -42,7 +63,7 @@ const WalletListHeader: React.FC = () => {
             {shouldShowSwitcher && (
                 <div className='wallets-list-header__switcher-container'>
                     <div className='wallets-list-header__label'>
-                        <div className='wallets-list-header__label-item'>
+                        <div className='wallets-list-header__label-item' ref={demoTextRef}>
                             <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Demo' />
                             </Text>
@@ -52,6 +73,7 @@ const WalletListHeader: React.FC = () => {
                                 'wallets-list-header__label-item--disabled': !hasAnyActiveRealWallets,
                             })}
                             data-testid='dt_wallets_list_header__label_item_real'
+                            ref={realTextRef}
                         >
                             <Text align='start' size='sm'>
                                 <Localize i18n_default_text='Real' />

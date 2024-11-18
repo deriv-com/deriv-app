@@ -24,7 +24,7 @@ const WalletsListingRoute: React.FC = () => {
 
     return (
         <div className='wallets-listing-route'>
-            <WalletListHeader />
+            {isDesktop && <WalletListHeader />}
             {isDesktop ? (
                 <React.Suspense fallback={<WalletsCardLoader />}>
                     <LazyDesktopWalletsList />

@@ -34,6 +34,7 @@ const AccountSignup = ({
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
+    const isPasswordModalRef = React.useRef(false);
     const isCountryScreenLoggedOnceRef = React.useRef(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
     const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
@@ -138,32 +139,31 @@ const AccountSignup = ({
     };
 
     React.useEffect(() => {
+        isPasswordModalRef.current = is_password_modal; // Sync ref with state
+    }, [is_password_modal]);
+
+    React.useEffect(() => {
         if (is_tracking_signup_errors) {
-            cacheTrackEvents.trackConsoleErrors(
-                errorMessage => {
-                    if (errorMessage) {
-                        const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';
-                        // Check and set the logging state using the ref
-                        if (screen_name === 'country_selection_screen') {
-                            if (
-                                !isCountryScreenLoggedOnceRef.current ||
-                                isCountryScreenLoggedOnceRef.current !== errorMessage
-                            ) {
-                                trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
-
-                                // Update the ref to store the current error message
-                                isCountryScreenLoggedOnceRef.current = errorMessage;
-                            }
-                        } else if (screen_name === 'password_screen_opened') {
+            cacheTrackEvents.trackConsoleErrors(errorMessage => {
+                if (errorMessage) {
+                    const screen_name = !isPasswordModalRef.current
+                        ? 'country_selection_screen'
+                        : 'password_screen_opened';
+                    if (screen_name === 'country_selection_screen') {
+                        if (
+                            !isCountryScreenLoggedOnceRef.current ||
+                            isCountryScreenLoggedOnceRef.current !== errorMessage
+                        ) {
                             trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+                            isCountryScreenLoggedOnceRef.current = errorMessage;
                         }
+                    } else if (screen_name === 'password_screen_opened') {
+                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
                     }
-                },
-
-                [is_password_modal]
-            );
+                }
+            });
         }
-    });
+    }, []);
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 

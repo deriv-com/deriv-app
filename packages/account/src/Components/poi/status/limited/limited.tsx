@@ -10,7 +10,7 @@ export const POILimited = () => (
         text={
             <Localize
                 i18n_default_text='Please contact us via <0>live chat</0>.'
-                components={[<span key={0} className='link link--orange' onClick={() => Chat.open()} />]}
+                components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
             />
         }
         icon={<Icon icon='IcPoiFailed' size={128} />}

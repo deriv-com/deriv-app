@@ -50,7 +50,7 @@ const Message = ({ code, message, details }) => {
                 <p>
                     <Localize
                         i18n_default_text='Your details match an existing account. If you need help, contact us via <0>live chat</0>.'
-                        components={[<span className='chat-inline' key={0} onClick={() => Chat.open()} />]}
+                        components={[<span className='chat-inline' key={0} onClick={Chat.open} />]}
                     />
                 </p>
             );

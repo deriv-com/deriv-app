@@ -37,7 +37,7 @@ const WalletsDisabledAccountsBanner: FC<TProps> = ({ disabledAccounts }) => {
                                 aria-label={localize('Contact live chat')}
                                 className='wallets-link wallets-link__variant--dark'
                                 key={0}
-                                onClick={() => Chat.open()}
+                                onClick={Chat.open}
                             />,
                         ]}
                         i18n_default_text='Your {{currencies}} {{accountType}} {{verb}} disabled. Contact us via <0>live chat</0> for details.'

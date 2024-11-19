@@ -11,7 +11,7 @@ type TOpenLiveChatLink = {
 };
 
 const OpenLiveChatLink = ({ children, text_size, className }: React.PropsWithChildren<TOpenLiveChatLink>) => (
-    <button type='button' className={clsx('open-livechat__link', className)} onClick={() => Chat.open()}>
+    <button type='button' className={clsx('open-livechat__link', className)} onClick={Chat.open}>
         <Text size={text_size || 'xs'} weight='bold' color='brand-red-coral'>
             {children || <Localize i18n_default_text='live chat' />}
         </Text>

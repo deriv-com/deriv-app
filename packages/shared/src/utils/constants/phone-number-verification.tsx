@@ -12,7 +12,7 @@ export const getCarriers = () =>
     ({
         SMS: localize('SMS'),
         WHATSAPP: localize('WhatsApp'),
-    } as const);
+    }) as const;
 
 export const shouldShowPhoneVerificationNotification = (nextAttemptTimestamp: number, current_time: dayjs.Dayjs) => {
     const request_in_milliseconds = dayjs(nextAttemptTimestamp * 1000);
@@ -32,11 +32,7 @@ export const getUseRequestPhoneNumberOTPErrorMessage = (
                 <Localize
                     i18n_default_text='Number already exists in our system. Enter a new one or contact us via <0>live chat</0> for help.'
                     components={[
-                        <span
-                            key={0}
-                            className='phone-verification__card--inputfield__livechat'
-                            onClick={() => Chat.open()}
-                        />,
+                        <span key={0} className='phone-verification__card--inputfield__livechat' onClick={Chat.open} />,
                     ]}
                 />
             );

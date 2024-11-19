@@ -362,7 +362,7 @@ const CFDPersonalDetailsForm = ({
                                                         <span
                                                             key={0}
                                                             className='link link--orange'
-                                                            onClick={() => Chat.open()}
+                                                            onClick={Chat.open}
                                                         />,
                                                     ]}
                                                 />

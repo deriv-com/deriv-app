@@ -142,11 +142,7 @@ const getCashierLockedDesc = ({
             <Text align='center'>
                 <Localize
                     components={[
-                        <button
-                            className='wallets-link wallets-link__variant--bold'
-                            key={0}
-                            onClick={() => Chat.open()}
-                        />,
+                        <button className='wallets-link wallets-link__variant--bold' key={0} onClick={Chat.open} />,
                     ]}
                     i18n_default_text='Please contact us via <0>live chat</0> to enable deposits and withdrawals again.'
                 />

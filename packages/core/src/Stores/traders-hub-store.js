@@ -492,15 +492,14 @@ export default class TradersHubStore extends BaseStore {
         }, {});
 
         const getFilteredAccounts = () => {
-            // if (this.content_flag === ContentFlag.LOW_RISK_CR_EU) {
-            //     const existing_account = this.root_store.client.mt5_login_list.filter(
-            //         account => account.landing_company_short === this.root_store.client.landing_company_shortcode
-            //     );
-            //     return existing_account.length
-            //         ? getMT5Accounts.filter(account => account.product === existing_account[0].product)
-            //         : [];
-            // } else
-            if (this.root_store.client.is_logged_in) {
+            if (this.content_flag === ContentFlag.LOW_RISK_CR_EU) {
+                const existing_account = this.root_store.client.mt5_login_list.filter(
+                    account => account.landing_company_short === this.root_store.client.landing_company_shortcode
+                );
+                return existing_account.length
+                    ? getMT5Accounts.filter(account => account.product === existing_account[0].product)
+                    : [];
+            } else if (this.root_store.client.is_logged_in) {
                 return getMT5Accounts.filter(account =>
                     Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
                 );

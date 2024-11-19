@@ -1,12 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useWalletMigration } from '@deriv/hooks';
-import { makeLazyLoader, moduleLoader } from '@deriv/shared';
-import { Loading } from '@deriv/components';
-import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
-import { useStores } from 'Stores';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
+import { Loading } from '@deriv/components';
+import { useWalletMigration } from '@deriv/hooks';
+import { makeLazyLoader, moduleLoader } from '@deriv/shared';
+
+import { useStores } from 'Stores';
+
+import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 
 const VerificationDocsListModal = makeLazyLoader(
     () =>
@@ -45,6 +48,12 @@ const WalletsMigrationFailed = makeLazyLoader(
 
 const WalletsUpgradeModal = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_wallets-upgrade-modal" */ './wallets-upgrade-modal')),
+    () => <Loading />
+)();
+
+const WalletsEUUpgradeModal = makeLazyLoader(
+    () =>
+        moduleLoader(() => import(/* webpackChunkName: "modal_wallets-upgrade-modal" */ './wallets-eu-upgrade-modal')),
     () => <Loading />
 )();
 
@@ -175,7 +184,14 @@ const ModalManager = () => {
     const { is_eligible, is_in_progress } = useWalletMigration();
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
+    const {
+        is_logged_in,
+        is_eu,
+        is_eu_country,
+        is_populating_mt5_account_list,
+        verification_code,
+        is_trading_experience_incomplete,
+    } = client;
     const { platform } = common;
     const {
         current_list,
@@ -203,6 +219,7 @@ const ModalManager = () => {
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
+        should_show_assessment_complete_modal,
     } = ui;
     const {
         is_demo,
@@ -277,6 +294,12 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
+    const should_show_wallets_non_eu_upgrade_modal =
+        !is_eu && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
+
+    const should_show_wallets_eu_upgrade_modal =
+        is_eu && !is_trading_experience_incomplete && !should_show_assessment_complete_modal && is_eligible;
+
     return (
         <React.Fragment>
             {is_server_maintenance_modal_visible && <CFDServerMaintenanceModal />}
@@ -331,7 +354,8 @@ const ModalManager = () => {
             {is_verification_docs_list_modal_visible && <VerificationDocsListModal />}
             <React.Fragment>
                 {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
+                {should_show_wallets_non_eu_upgrade_modal && <WalletsUpgradeModal />}
+                {should_show_wallets_eu_upgrade_modal && <WalletsEUUpgradeModal />}
             </React.Fragment>
             {is_setup_real_account_or_go_to_demo_modal_visible && <SetupRealAccountOrGoToDemoModal />}
         </React.Fragment>

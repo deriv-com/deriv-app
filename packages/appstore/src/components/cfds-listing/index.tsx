@@ -557,7 +557,9 @@ const CFDsListing = observer(() => {
                 </Fragment>
             )}
         </ListingContainer>
-    ) : null;
+    ) : (
+        <React.Fragment />
+    );
 });
 
 export default CFDsListing;

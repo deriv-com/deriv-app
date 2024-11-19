@@ -59,6 +59,6 @@ export const ACCOUNT_VERIFICATION_STATUSES = {
 
 export const ACCOUNT_VERIFICATION_BADGE_STATUS = {
     FAILED: 'failed',
+    IN_REVIEW: 'in_review',
     NEEDS_VERIFICATION: 'needs_verification',
-    PENDING: 'pending',
 } as const;

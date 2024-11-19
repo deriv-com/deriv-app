@@ -33,15 +33,14 @@ const useWalletsMFAccountStatus = () => {
     const needPoiResubmission = !poiByOnfidoOrManualNotSubmitted && needPoiSubmission;
 
     const mfAccountStatus = useMemo(() => {
+        if (needPoiResubmission || needPoaResubmission) {
+            return ACCOUNT_VERIFICATION_BADGE_STATUS.FAILED;
+        }
         if (poaNotSubmitted || poiByOnfidoOrManualNotSubmitted) {
             return ACCOUNT_VERIFICATION_BADGE_STATUS.NEEDS_VERIFICATION;
         }
         if (poiByOnfidoOrManualPending || poaPending) {
-            return ACCOUNT_VERIFICATION_BADGE_STATUS.PENDING;
-        }
-
-        if (needPoiResubmission || needPoaResubmission) {
-            return ACCOUNT_VERIFICATION_BADGE_STATUS.FAILED;
+            return ACCOUNT_VERIFICATION_BADGE_STATUS.IN_REVIEW;
         }
     }, [
         needPoaResubmission,

@@ -1,35 +1,14 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import {
-    LabelPairedCircleExclamationCaptionBoldIcon,
-    LabelPairedClockThreeCaptionBoldIcon,
-    LabelPairedTriangleExclamationCaptionBoldIcon,
-    LabelPairedTriangleExclamationSmBoldIcon,
-} from '@deriv/quill-icons';
+import { LabelPairedTriangleExclamationSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
 import { Badge, Text, useDevice } from '@deriv-com/ui';
-import './WalletStatusBadge.scss';
 
 const statusConfig = {
     disabled: {
         color: 'danger-secondary',
         icon: <LabelPairedTriangleExclamationSmBoldIcon fill='var(--du-badge-danger-secondary, #c40000)' />,
         text: <Localize i18n_default_text='Disabled' />,
-    },
-    failed: {
-        color: 'danger-secondary',
-        icon: <LabelPairedTriangleExclamationCaptionBoldIcon fill='#C40000' />,
-        text: <Localize i18n_default_text='Failed' />,
-    },
-    needs_verification: {
-        color: 'blue-secondary',
-        icon: <LabelPairedCircleExclamationCaptionBoldIcon fill='#0777C4' />,
-        text: <Localize i18n_default_text='Needs verification' />,
-    },
-    pending: {
-        color: 'warning-secondary',
-        icon: <LabelPairedClockThreeCaptionBoldIcon fill='#C47D00' />,
-        text: <Localize i18n_default_text='In review' />,
     },
 } as const;
 

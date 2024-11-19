@@ -9,6 +9,7 @@ import { Text, useDevice } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletsMFAccountStatus from '../../hooks/useWalletsMFAccountStatus';
 import { THooks } from '../../types';
+import { ClientVerificationStatusBadge } from '../ClientVerificationBadge';
 import { ClientVerificationModal } from '../ClientVerificationModal';
 import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
@@ -41,7 +42,7 @@ const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountBut
 
     if (mfAccountStatus && isMFAccountAdded && clientKycStatus) {
         return (
-            <WalletStatusBadge
+            <ClientVerificationStatusBadge
                 onClick={() =>
                     show(
                         <ClientVerificationModal
@@ -52,8 +53,7 @@ const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountBut
                         />
                     )
                 }
-                status={mfAccountStatus}
-                variant='contained'
+                variant={mfAccountStatus}
             />
         );
     }

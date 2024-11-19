@@ -165,7 +165,7 @@ const TradingAppCard = ({
         MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
     ].includes(mt5_acc_auth_status);
 
-    const platform_name = is_account_being_created ? name : sub_title ?? name;
+    const platform_name = is_account_being_created ? name : (sub_title ?? name);
 
     const is_existing_real_ctrader_account =
         platform === CFD_PLATFORMS.CTRADER && is_real && action_type === 'multi-action';
@@ -216,7 +216,7 @@ const TradingAppCard = ({
                         >
                             {name}
                         </Text>
-                        {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
+                        {is_new && name === CFD_PRODUCTS_TITLE.GOLD && (
                             <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
                                 <Localize i18n_default_text='NEW' />
                             </Text>

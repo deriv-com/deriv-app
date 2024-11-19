@@ -32,6 +32,7 @@ export const CFD_text: { [key: string]: string } = {
 export const CFD_PRODUCTS_TITLE = {
     ZEROSPREAD: 'Zero Spread',
     SWAPFREE: 'Swap-Free',
+    GOLD: 'Gold',
 } as const;
 
 export const getMT5Title = (account_type: string) => {
@@ -490,7 +491,7 @@ export const mt5_community_url =
 
 export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
 
-export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
+export const getFormattedJurisdictionCode = (jurisdiction_code?: (typeof Jurisdiction)[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
@@ -516,7 +517,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdic
 };
 
 export const getFormattedJurisdictionMarketTypes = (
-    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+    jurisdiction_market_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
 ) => {
     let formatted_market_type = '';
 
@@ -535,8 +536,8 @@ export const getFormattedJurisdictionMarketTypes = (
 };
 
 type TGetMT5AccountTitle = {
-    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
-    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
+    account_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: (typeof Jurisdiction)[keyof typeof Jurisdiction];
 };
 
 //returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu

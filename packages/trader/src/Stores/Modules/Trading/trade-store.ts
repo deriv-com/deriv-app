@@ -1227,7 +1227,6 @@ export default class TradeStore extends BaseStore {
                                 return;
                             }
                         }
-                        this.forgetAllProposal();
                         this.purchase_info = response;
                         this.enablePurchase();
                         this.is_purchasing_contract = false;
@@ -1523,9 +1522,9 @@ export default class TradeStore extends BaseStore {
         this.root_store.ui.resetPurchaseStates();
     }
 
-    forgetAllProposal() {
+    async forgetAllProposal() {
         const length = Object.keys(this.proposal_requests).length;
-        if (length > 0) WS.forgetAll('proposal');
+        if (length > 0) await WS.forgetAll('proposal');
     }
 
     setMarketStatus(status: boolean) {

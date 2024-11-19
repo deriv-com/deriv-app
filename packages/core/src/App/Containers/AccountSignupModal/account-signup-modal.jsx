@@ -139,21 +139,31 @@ const AccountSignup = ({
 
     React.useEffect(() => {
         if (is_tracking_signup_errors) {
-            cacheTrackEvents.trackConsoleErrors(errorMessage => {
-                if (errorMessage) {
-                    const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';
-                    // Check and set the logging state using the ref
-                    if (screen_name === 'country_selection_screen' && !isCountryScreenLoggedOnceRef.current) {
-                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
-                        // Update both the ref and state
-                        isCountryScreenLoggedOnceRef.current = true;
-                    } else if (screen_name === 'password_screen_opened') {
-                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+            cacheTrackEvents.trackConsoleErrors(
+                errorMessage => {
+                    if (errorMessage) {
+                        const screen_name = !is_password_modal ? 'country_selection_screen' : 'password_screen_opened';
+                        // Check and set the logging state using the ref
+                        if (screen_name === 'country_selection_screen') {
+                            if (
+                                !isCountryScreenLoggedOnceRef.current ||
+                                isCountryScreenLoggedOnceRef.current !== errorMessage
+                            ) {
+                                trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+
+                                // Update the ref to store the current error message
+                                isCountryScreenLoggedOnceRef.current = errorMessage;
+                            }
+                        } else if (screen_name === 'password_screen_opened') {
+                            trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+                        }
                     }
-                }
-            });
+                },
+
+                [is_password_modal]
+            );
         }
-    }, [is_password_modal]);
+    });
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 

@@ -1,8 +1,13 @@
 import React, { ComponentProps } from 'react';
-import classNames from 'classnames';
 import { LabelPairedTriangleExclamationSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
-import { Badge, Text, useDevice } from '@deriv-com/ui';
+import { Badge } from '@deriv-com/ui';
+
+type TStatus = 'disabled';
+
+type TProps = Omit<ComponentProps<typeof Badge>, 'children'> & {
+    status: TStatus;
+};
 
 const statusConfig = {
     disabled: {
@@ -12,16 +17,8 @@ const statusConfig = {
     },
 } as const;
 
-type TStatus = keyof typeof statusConfig;
-
-type TProps = Omit<ComponentProps<typeof Badge>, 'children'> & {
-    onClick?: () => void;
-    status: TStatus;
-};
-
 const WalletStatusBadge: React.FC<TProps> = ({
     badgeSize = 'sm',
-    onClick,
     padding = 'loose',
     rounded = 'sm',
     status,
@@ -29,32 +26,19 @@ const WalletStatusBadge: React.FC<TProps> = ({
     variant = 'bordered',
     ...rest
 }) => {
-    const { isDesktop } = useDevice();
-
     return (
         <Badge
             badgeSize={badgeSize}
             color={statusConfig[status].color}
             isBold
             leftIcon={statusConfig[status].icon}
-            onClick={() => onClick?.()}
             padding={padding}
             rounded={rounded}
             textSize={textSize}
             variant={variant}
             {...rest}
         >
-            {status === 'disabled' ? (
-                statusConfig[status].text
-            ) : (
-                <Text
-                    className={classNames({ 'wallets-status-badge--underlined': !!onClick })}
-                    size={isDesktop ? 'xs' : 'sm'}
-                    weight='bold'
-                >
-                    {statusConfig[status].text}
-                </Text>
-            )}
+            {statusConfig[status].text}
         </Badge>
     );
 };

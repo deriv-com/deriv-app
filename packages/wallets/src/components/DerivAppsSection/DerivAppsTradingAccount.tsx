@@ -20,20 +20,18 @@ import { WalletStatusBadge } from '../WalletStatusBadge';
 
 type TDerivAppsTradingAccountButtonContent = {
     activeTradingAccount: THooks.TActiveLinkedToTradingAccount;
-    isDemo?: boolean;
     isEuRegion: boolean;
     mfAccountStatusDetails?: ReturnType<typeof useWalletsMFAccountStatus>['data'];
 };
 
 const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountButtonContent> = ({
     activeTradingAccount,
-    isDemo,
     isEuRegion,
     mfAccountStatusDetails,
 }) => {
     const history = useHistory();
     const { show } = useModal();
-    const { is_disabled: isAccountDisabled, loginid } = activeTradingAccount ?? {};
+    const { is_disabled: isAccountDisabled, is_virtual: isDemo, loginid } = activeTradingAccount ?? {};
     const {
         client_kyc_status: clientKycStatus,
         is_added: isMFAccountAdded,
@@ -165,7 +163,6 @@ const DerivAppsTradingAccount = () => {
                         ) : (
                             <DerivAppsTradingAccountButtonContent
                                 activeTradingAccount={activeLinkedToTradingAccount}
-                                isDemo={activeWallet?.is_virtual}
                                 isEuRegion={isEuRegion}
                                 mfAccountStatusDetails={mfAccountStatusDetails}
                             />

@@ -10,6 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
+import useIsOnScreenKeyboardOpen from './keybord-hook';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
@@ -47,6 +48,12 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
+    const input_id = 'stake_input';
+    const should_scroll = useIsOnScreenKeyboardOpen(input_id);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 220, behavior: 'smooth' });
+    }, [should_scroll]);
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
     const default_stake = is_crypto
@@ -290,6 +297,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
                             variant='fill'
+                            id={input_id}
                         />
                         <StakeDetails
                             commission={commission}

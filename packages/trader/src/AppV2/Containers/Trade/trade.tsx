@@ -101,6 +101,8 @@ const Trade = observer(() => {
                         />
                         <MarketSelector />
                         {isDigitTradeType(contract_type) && <CurrentSpot />}
+                        <div> window.innerHeight {window.innerHeight}</div>
+                        <div>window.screen.height {window.screen.height}</div>
                         <TradeParametersContainer>
                             <TradeParameters />
                         </TradeParametersContainer>

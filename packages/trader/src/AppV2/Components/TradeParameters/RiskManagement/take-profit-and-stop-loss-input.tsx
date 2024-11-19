@@ -9,6 +9,7 @@ import { Localize, localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import useIsVirtualKeyboardOpen from '../Stake/keybord-hook';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
@@ -196,6 +197,13 @@ const TakeProfitAndStopLossInput = ({
         onActionSheetClose();
     };
 
+    // scroll the page when virtual keyboard pop up
+    const should_scroll = useIsVirtualKeyboardOpen(type);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
+    }, [should_scroll]);
+
     React.useEffect(() => {
         setFEErrorText(initial_error_text ?? '');
         updateParentRef({
@@ -236,6 +244,7 @@ const TakeProfitAndStopLossInput = ({
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
                     inputMode='decimal'
+                    id={type}
                     message={is_enabled && (fe_error_text || error_text || input_message)}
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}

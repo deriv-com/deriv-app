@@ -48,13 +48,6 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const { available_contract_types } = useContractsForCompany();
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
-    const input_id = 'stake_input';
-    const should_scroll = useIsVirtualKeyboardOpen(input_id);
-
-    React.useEffect(() => {
-        if (should_scroll) window?.scrollTo({ top: 220, behavior: 'smooth' });
-    }, [should_scroll]);
-
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
     const default_stake = is_crypto
@@ -132,6 +125,14 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    // scroll the page when virtual keyboard pop up
+    const input_id = 'stake_input';
+    const should_scroll = useIsVirtualKeyboardOpen(input_id);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
+    }, [should_scroll]);
 
     React.useEffect(() => {
         if (stake_error && !is_minimized && !is_open) {
@@ -276,11 +277,6 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>
-                        <p>
-                            <span> window.innerHeight {window.innerHeight}</span>
-                            <span>window.screen.height {window.screen.height}</span>
-                            <span> should_scroll {should_scroll ? 'HI, scrolling' : 'No scrolling :('}</span>
-                        </p>
                         <TextFieldWithSteppers
                             allowDecimals
                             allowSign={false}

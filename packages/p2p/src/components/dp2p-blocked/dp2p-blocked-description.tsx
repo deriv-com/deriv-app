@@ -5,7 +5,6 @@ import { Text } from '@deriv/components';
 
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores/index'; //remove index when store migration to ts is done
-import { Chat } from '@deriv/utils';
 
 const Dp2pBlockedDescription = () => {
     const { general_store } = useStores();
@@ -31,7 +30,13 @@ const Dp2pBlockedDescription = () => {
         return (
             <Localize
                 i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
-                components={[<span key={0} className='link link--orange' onClick={() => Chat.open()} />]}
+                components={[
+                    <span
+                        key={0}
+                        className='link link--orange'
+                        onClick={() => window.LiveChatWidget?.call('maximize')}
+                    />,
+                ]}
             />
         );
     };

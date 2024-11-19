@@ -1,11 +1,22 @@
 import React from 'react';
+
 import { useRemoteConfig } from '@deriv/api';
-import { useDevice } from '@deriv-com/ui';
+import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat, useOauth2 } from '@deriv/hooks';
+import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { ThemeProvider } from '@deriv-com/quill-ui';
+import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
+
 import P2PIFrame from 'Modules/P2PIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
+
+import initDatadog from '../Utils/Datadog';
+import initHotjar from '../Utils/Hotjar';
+
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -13,13 +24,6 @@ import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
-import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
-import initDatadog from '../Utils/Datadog';
-import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat, useOauth2 } from '@deriv/hooks';
-import { useTranslations } from '@deriv-com/translations';
-import initHotjar from '../Utils/Hotjar';
-import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
@@ -124,10 +128,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         is_wallets_unsupported_language,
     ]);
 
+    const isCallBackPage = window.location.pathname.includes('callback');
+
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
-            <Header />
+            {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
                     {/* TODO: [trader-remove-client-base] */}

@@ -74,6 +74,9 @@ module.exports = function (env) {
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
         },
+        externals: {
+            '@deriv-com/quill-ui': '@deriv-com/quill-ui',
+        },
         plugins: plugins({
             base,
             is_test_env: false,

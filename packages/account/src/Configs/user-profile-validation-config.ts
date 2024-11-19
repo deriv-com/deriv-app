@@ -52,10 +52,10 @@ const makeTinOptional = ({
     const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
     if (is_real) {
         // Students and unemployed are not required to provide TIN to have a regulated MT5 jurisdiction
-        if (is_tin_auto_set && !is_employment_status_tin_mandatory && !is_pj_country) {
+        if (is_tin_auto_set && !(is_employment_status_tin_mandatory && is_pj_country)) {
             return true;
         }
-        return check_if_tin_skipped || (!is_employment_status_tin_mandatory && !is_pj_country);
+        return check_if_tin_skipped || !(is_employment_status_tin_mandatory && is_pj_country);
     }
     // Check For Virtual account
     if (is_mf) {

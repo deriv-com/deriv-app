@@ -1,4 +1,4 @@
-import { Analytics, TEvents } from '@deriv-com/analytics';
+import { TEvents } from '@deriv-com/analytics';
 import { ACTION, form_name } from './constants';
 import { cacheTrackEvents } from '@deriv/shared';
 

@@ -1,4 +1,4 @@
-import { Analytics, TEvents } from '@deriv-com/analytics';
+import { TEvents } from '@deriv-com/analytics';
 import { ACTION, form_name, TFormStrategy } from './constants';
 import { getRsStrategyType } from './utils';
 import { cacheTrackEvents } from '@deriv/shared';

@@ -12,6 +12,7 @@ import {
     getTradeParameterData,
     rudderstack_text_error,
 } from '../utils';
+import { cacheTrackEvents } from '@deriv/shared';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -142,12 +143,12 @@ describe('utils', () => {
         expect(result).toBe('old');
     });
 
-    it('should call Analytics.trackEvent with the correct parameters', () => {
+    it('should call cacheTrackEvents.loadEvent with the correct parameters', () => {
         const load_strategy = { load_strategy_tab: 'local' };
 
         rudderStackSendSwitchLoadStrategyTabEvent(load_strategy);
 
-        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+        expect(cacheTrackEvents.loadEvent).toHaveBeenCalledWith('ce_bot_form', {
             action: ACTION.SWITCH_LOAD_STRATEGY_TAB,
             form_name: 'ce_bot_form',
             load_strategy_tab: load_strategy.load_strategy_tab,
@@ -156,7 +157,7 @@ describe('utils', () => {
         });
     });
 
-    it('should call Analytics.trackEvent with correct parameters for upload strategy completed event', () => {
+    it('should call cacheTrackEvents.loadEvent with correct parameters for upload strategy completed event', () => {
         const upload_parameters = {
             upload_provider: 'my_computer',
             upload_id: '12345',
@@ -165,7 +166,7 @@ describe('utils', () => {
 
         rudderStackSendUploadStrategyCompletedEvent(upload_parameters);
 
-        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+        expect(cacheTrackEvents.loadEvent).toHaveBeenCalledWith('ce_bot_form', {
             action: ACTION.UPLOAD_STRATEGY_COMPLETED,
             form_name: 'ce_bot_form',
             subform_name: 'load_strategy',
@@ -176,20 +177,20 @@ describe('utils', () => {
         });
     });
 
-    it('should call Analytics.trackEvent with correct parameters for Google Drive connect event', () => {
+    it('should call cacheTrackEvents.loadEvent with correct parameters for Google Drive connect event', () => {
         rudderStackSendGoogleDriveConnectEvent();
 
-        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+        expect(cacheTrackEvents.loadEvent).toHaveBeenCalledWith('ce_bot_form', {
             action: ACTION.GOOGLE_DRIVE_CONNECT,
             form_name: 'ce_bot_form',
             subpage_name: 'bot_builder',
         });
     });
 
-    it('should call Analytics.trackEvent with correct parameters for Google Drive disconnect event', () => {
+    it('should call cacheTrackEvents.loadEvent with correct parameters for Google Drive disconnect event', () => {
         rudderStackSendGoogleDriveDisconnectEvent();
 
-        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_bot_form', {
+        expect(cacheTrackEvents.loadEvent).toHaveBeenCalledWith('ce_bot_form', {
             action: ACTION.GOOGLE_DRIVE_DISCONNECT,
             form_name: 'ce_bot_form',
             subpage_name: 'bot_builder',

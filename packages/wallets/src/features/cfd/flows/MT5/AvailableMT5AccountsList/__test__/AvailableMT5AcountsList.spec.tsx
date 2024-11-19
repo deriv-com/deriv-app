@@ -15,11 +15,6 @@ jest.mock('@deriv/api-v2', () => ({
     useTradingPlatformStatus: jest.fn(),
 }));
 
-jest.mock('../../../../flows/ClientVerification/ClientVerification', () => ({
-    ...jest.requireActual('../../../../flows/ClientVerification/ClientVerification'),
-    ClientVerification: jest.fn(() => <div>ClientVerification</div>),
-}));
-
 jest.mock('../../../../../../components/ModalProvider', () => ({
     useModal: jest.fn(),
 }));

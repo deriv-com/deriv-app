@@ -102,7 +102,7 @@ const PersonalDetailsForm = observer(() => {
     const {
         is_global_sms_available,
         is_global_whatsapp_available,
-        formatted_countries_list_for_core,
+        legacy_core_countries_list,
         selected_phone_code,
         is_carriers_supported,
         updatePhoneSettings,
@@ -521,7 +521,7 @@ const PersonalDetailsForm = observer(() => {
                                                     <FormSelectField
                                                         label={localize('Code*')}
                                                         name='calling_country_code'
-                                                        list_items={formatted_countries_list_for_core}
+                                                        list_items={legacy_core_countries_list}
                                                         is_country_code_dropdown
                                                         onItemSelection={country_list => {
                                                             setFieldValue(

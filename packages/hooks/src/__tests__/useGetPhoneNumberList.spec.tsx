@@ -74,7 +74,7 @@ describe('useGetPhoneNumberList', () => {
             wrapper,
         });
 
-        expect(result.current.formatted_countries_list_for_core).toEqual([
+        expect(result.current.legacy_core_countries_list).toEqual([
             {
                 text: 'Malaysia (+60)',
                 value: '+60',

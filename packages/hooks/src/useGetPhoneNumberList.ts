@@ -59,7 +59,7 @@ const useGetPhoneNumberList = () => {
         carriers: country.carriers,
     }));
 
-    const formatted_countries_list_for_core = countries?.map(country => ({
+    const legacy_core_countries_list = countries?.map(country => ({
         text: `${country.display_name} (${country.calling_country_code})`,
         value: country.calling_country_code,
         id: `${country.calling_country_code}_${country.country_code}`,
@@ -80,7 +80,7 @@ const useGetPhoneNumberList = () => {
         is_global_whatsapp_available,
         no_of_available_carriers,
         is_carriers_supported,
-        formatted_countries_list_for_core,
+        legacy_core_countries_list,
         formatted_countries_list,
         short_code_selected,
         selected_phone_code,

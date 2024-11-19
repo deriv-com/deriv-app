@@ -41,11 +41,13 @@ const cacheTrackEvents = {
             }
         });
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    isReady: (): any => {
+
+    isReady: (): boolean => {
         if (typeof Analytics === 'undefined' || Analytics === null) {
             return false;
         }
+        const instances = Analytics?.getInstances();
+        return !!instances?.tracking;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseCookies: (cookieName: string): any => {

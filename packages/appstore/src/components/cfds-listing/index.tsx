@@ -193,9 +193,13 @@ const CFDsListing = observer(() => {
     const is_cfd_accounts_supported =
         combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
 
-    const is_mt5_list_loading = !is_landing_company_loaded || is_populating_mt5_account_list || is_switching;
+    const is_mt5_list_loaded = is_landing_company_loaded && !is_populating_mt5_account_list && !is_switching;
 
-    return is_cfd_accounts_supported ? (
+    if (is_mt5_list_loaded && !is_cfd_accounts_supported) {
+        return null;
+    }
+
+    return (
         <ListingContainer
             title={
                 isDesktop && (
@@ -217,7 +221,7 @@ const CFDsListing = observer(() => {
                 </Text>
             </div>
             {has_svg_accounts_to_migrate && is_landing_company_loaded && <MigrationBanner />}
-            {!is_mt5_list_loading && combined_cfd_mt5_accounts.length ? (
+            {is_mt5_list_loaded && combined_cfd_mt5_accounts.length ? (
                 <React.Fragment>
                     {/* MT5 */}
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -557,7 +561,7 @@ const CFDsListing = observer(() => {
                 </Fragment>
             )}
         </ListingContainer>
-    ) : null;
+    );
 });
 
 export default CFDsListing;

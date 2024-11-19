@@ -2,7 +2,7 @@ import React from 'react';
 
 type TWindow = Window & { height?: number; scale?: number };
 
-const useIsOnScreenKeyboardOpen = (target_id: string) => {
+const useIsVirtualKeyboardOpen = (target_id: string) => {
     const [is_focus, setIsFocus] = React.useState(false);
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -39,4 +39,4 @@ const useIsOnScreenKeyboardOpen = (target_id: string) => {
     return is_focus && is_open;
 };
 
-export default useIsOnScreenKeyboardOpen;
+export default useIsVirtualKeyboardOpen;

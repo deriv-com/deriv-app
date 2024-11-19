@@ -10,7 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
-import useIsOnScreenKeyboardOpen from './keybord-hook';
+import useIsVirtualKeyboardOpen from './keybord-hook';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
@@ -49,11 +49,12 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
     const input_id = 'stake_input';
-    const should_scroll = useIsOnScreenKeyboardOpen(input_id);
+    const should_scroll = useIsVirtualKeyboardOpen(input_id);
 
     React.useEffect(() => {
         if (should_scroll) window?.scrollTo({ top: 220, behavior: 'smooth' });
     }, [should_scroll]);
+
     // default_stake resetting data
     const is_crypto = isCryptocurrency(currency ?? '');
     const default_stake = is_crypto
@@ -278,6 +279,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                         <p>
                             <span> window.innerHeight {window.innerHeight}</span>
                             <span>window.screen.height {window.screen.height}</span>
+                            <span> should_scroll {should_scroll ? 'HI, scrolling' : 'No scrolling :('}</span>
                         </p>
                         <TextFieldWithSteppers
                             allowDecimals

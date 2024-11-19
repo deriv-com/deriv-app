@@ -28,7 +28,7 @@ type TAnnouncements = {
 const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
     const {
         load_modal: { toggleLoadModal },
-        dashboard: { showVideoDialog, setActiveTab },
+        dashboard: { showVideoDialog },
         quick_strategy: { setFormVisibility },
     } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
@@ -134,12 +134,11 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
         }
-        if (selected_announcement?.should_toggle_modal) {
-            if (selected_announcement?.announcement.id === 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE') {
-                setFormVisibility(true);
-            } else {
-                toggleLoadModal();
-            }
+        if (selected_announcement?.should_toggle_qs_modal) {
+            setFormVisibility(true);
+        }
+        if (selected_announcement?.should_toggle_load_modal) {
+            toggleLoadModal();
         }
         selected_announcement?.onConfirm?.();
         setSelectedAnnouncement(null);

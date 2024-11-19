@@ -34,7 +34,8 @@ export type TAnnouncement = {
     onCancel?: () => void;
     url_redirect?: string;
     should_not_be_cancel?: boolean;
-    should_toggle_modal?: boolean;
+    should_toggle_load_modal?: boolean;
+    should_toggle_qs_modal?: boolean;
 };
 
 export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
@@ -82,8 +83,8 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             ],
         },
         should_not_be_cancel: true,
-        should_toggle_modal: true,
         switch_tab_on_confirm: DBOT_TABS.BOT_BUILDER,
+        should_toggle_qs_modal: true,
     },
 
     MOVING_STRATEGIES_ANNOUNCE: {
@@ -125,7 +126,7 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             ],
         },
         should_not_be_cancel: true,
-        should_toggle_modal: true,
+        should_toggle_load_modal: true,
         switch_tab_on_confirm: DBOT_TABS.BOT_BUILDER,
         onConfirm: () => {
             rudderStackSendOpenEvent({

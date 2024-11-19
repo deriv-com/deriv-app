@@ -141,9 +141,11 @@ const AccountSignup = ({
     React.useEffect(() => {
         isPasswordModalRef.current = is_password_modal; // Sync ref with state
     }, [is_password_modal]);
-
+    console.log('is_tracking_signup_errors-outside', is_tracking_signup_errors);
     React.useEffect(() => {
+        console.log('is_tracking_signup_errors-useeffect', is_tracking_signup_errors);
         if (is_tracking_signup_errors) {
+            console.log('is_tracking_signup_errors-inside-if', is_tracking_signup_errors);
             cacheTrackEvents.trackConsoleErrors(errorMessage => {
                 if (errorMessage) {
                     const screen_name = !isPasswordModalRef.current

@@ -33,6 +33,7 @@ import {
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
+import { getCountry } from '@deriv/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
@@ -145,7 +146,6 @@ export default class ClientStore extends BaseStore {
 
     mt5_trading_servers = [];
     dxtrade_trading_servers = [];
-    is_cfd_poi_completed = false;
 
     cfd_score = 0;
 
@@ -169,6 +169,7 @@ export default class ClientStore extends BaseStore {
 
     subscriptions = {};
     exchange_rates = {};
+    client_kyc_status = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -234,7 +235,6 @@ export default class ClientStore extends BaseStore {
             financial_assessment: observable,
             mt5_trading_servers: observable,
             dxtrade_trading_servers: observable,
-            is_cfd_poi_completed: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
@@ -364,6 +364,7 @@ export default class ClientStore extends BaseStore {
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
             updateAccountStatus: action.bound,
+            updateMT5AccountDetails: action.bound,
             setInitialized: action.bound,
             setIsClientStoreInitialized: action.bound,
             cleanUp: action.bound,
@@ -433,6 +434,8 @@ export default class ClientStore extends BaseStore {
             setTradersHubTracking: action.bound,
             account_time_of_closure: computed,
             is_account_to_be_closed_by_residence: computed,
+            setClientKYCStatus: action.bound,
+            client_kyc_status: observable,
         });
 
         reaction(
@@ -1189,6 +1192,7 @@ export default class ClientStore extends BaseStore {
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.user_id = response.authorize.user_id;
         localStorage.setItem('active_user_id', this.user_id);
+        localStorage.setItem(storage_key, JSON.stringify(this.accounts));
         this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
         this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
@@ -1403,7 +1407,6 @@ export default class ClientStore extends BaseStore {
         if (this.accounts && this.accounts[this.loginid]) {
             return this.accounts[this.loginid].email;
         }
-
         return '';
     }
 
@@ -1478,10 +1481,6 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnboarding key after page refresh
-        /** will be removed later when header for the wallets is created) */
-        localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1789,7 +1788,7 @@ export default class ClientStore extends BaseStore {
         const broker = LocalStore?.get('active_loginid')
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
-        setTimeout(() => {
+        setTimeout(async () => {
             const analytics_config = {
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 residence_country: this.residence,
@@ -1798,7 +1797,7 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                country: await getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
@@ -2019,6 +2018,15 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    async updateMT5AccountDetails() {
+        if (this.is_logged_in) {
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized
+                .tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5)
+                .then(this.responseTradingPlatformAvailableAccounts);
+        }
+    }
+
     setInitialized(is_initialized) {
         this.initialized_broadcast = is_initialized;
     }
@@ -2059,6 +2067,7 @@ export default class ClientStore extends BaseStore {
     async logout() {
         // makes sure to clear the cached traders-hub data when logging out
         localStorage.removeItem('traders_hub_store');
+        localStorage.removeItem('trade_store');
 
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
@@ -2470,6 +2479,7 @@ export default class ClientStore extends BaseStore {
                     /^(MT[DR]?)/i,
                     ''
                 );
+
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
@@ -2932,6 +2942,12 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_account_to_be_closed_by_residence() {
-        return this.account_time_of_closure && this.residence && this.residence === 'sn';
+        return this.account_status?.account_closure?.find(
+            item => item?.status_codes?.includes('residence_closure') && item?.type === 'residence'
+        );
+    }
+
+    setClientKYCStatus(client_kyc_status) {
+        this.client_kyc_status = client_kyc_status;
     }
 }

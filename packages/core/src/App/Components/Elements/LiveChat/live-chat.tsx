@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
 import { observer, useStore } from '@deriv/stores';
+import { Chat } from '@deriv/utils';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { client } = useStore();
@@ -22,7 +23,12 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const chat = enable_freshworks_live_chat ? freshChat : null;
 
-    if ((enable_freshworks_live_chat && !chat?.isReady) || !is_livechat_available) return null;
+    const isFreshchatEnabledButNotReady = enable_freshworks_live_chat && !chat?.isReady;
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !enable_freshworks_live_chat;
+
+    if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
+        return null;
+    }
 
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
@@ -33,7 +39,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     }, 10);
 
     const liveChatClickHandler = () => {
-        enable_freshworks_live_chat ? freshChat.widget.open() : window.LiveChatWidget?.call('maximize');
+        Chat.open();
     };
 
     if (isDesktop)

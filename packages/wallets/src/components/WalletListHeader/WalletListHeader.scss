@@ -21,9 +21,14 @@
         pointer-events: none;
 
         &-item {
-            width: 5.6rem;
             display: flex;
             justify-content: center;
+            padding-inline-start: 1.2rem;
+            padding-inline-end: 0.8rem;
+
+            &--disabled {
+                opacity: 0.7;
+            }
         }
     }
 
@@ -32,7 +37,7 @@
         grid-row: 1;
         position: relative;
         display: flex;
-        width: 12rem;
+        width: var(--wallets-switcher-width);
         height: 4rem;
         margin: 0 1.6rem;
         background-color: var(--header-footer-bg-color, #0000000a);
@@ -49,11 +54,17 @@
                 position: absolute;
                 content: '';
                 height: 3.2rem;
-                width: 11.2rem;
+                inset-inline: 0.4rem;
                 background-color: var(--button-toggle-secondary, #d6dadb);
                 opacity: unset;
                 border-radius: 0.4rem;
                 margin: 0.4rem;
+            }
+        }
+        &--disabled:hover {
+            cursor: not-allowed;
+            &:before {
+                background-color: transparent;
             }
         }
     }
@@ -67,7 +78,7 @@
             position: absolute;
             content: '';
             height: 3.2rem;
-            width: 5.6rem;
+            width: calc(var(--wallets-demo-width) + 0.4rem);
             background-color: var(--system-dark-1-prominent-text, #fff);
             transition: 0.2s;
             border-radius: 0.4rem;
@@ -77,15 +88,16 @@
 }
 
 .wallets-list-header__switcher-input:checked + .wallets-list-header__slider:before {
-    -webkit-transform: translateX(6rem);
-    -ms-transform: translateX(6rem);
-    transform: translateX(6rem);
-    margin-left: 0;
+    -webkit-transform: translateX(var(--wallets-demo-width));
+    -ms-transform: translateX(var(--wallets-demo-width));
+    transform: translateX(var(--wallets-demo-width));
+    width: calc(var(--wallets-real-width) + 0.8rem);
+    margin-inline-start: 0.4rem;
 
     @include rtl {
-        -webkit-transform: translateX(-6rem);
-        -ms-transform: translateX(-6rem);
-        transform: translateX(-6rem);
-        margin: 0.4rem 0;
+        -webkit-transform: translateX(calc(var(--wallets-demo-width) * -1));
+        -ms-transform: translateX(calc(var(--wallets-demo-width) * -1));
+        transform: translateX(calc(var(--wallets-demo-width) * -1));
+        margin-inline: 0.4rem;
     }
 }

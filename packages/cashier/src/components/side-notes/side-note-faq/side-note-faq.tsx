@@ -14,15 +14,15 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     const { isMobile } = useDevice();
     const { is_eu } = client;
 
-    const onClickHandler = () => window.LiveChatWidget.call('maximize');
+    const onClickHandler = () => window.LiveChatWidget?.call('maximize');
 
     const deposit_faq_list = useMemo(() => {
         return [
             {
-                header: localize("Why can't I see deposited funds in my Deriv account?"),
+                header: localize('Why can’t I see the funds deposited in my Deriv account?'),
                 content: (
                     <Localize
-                        i18n_default_text="We process your deposits internally within 24 hours (depending on internal checks and your payment method). If you don't see your funds reflected after this time, please contact us via <0>live chat</0> with proof of your transaction, including the amount, date, and time."
+                        i18n_default_text='We process deposits immediately. If your funds don’t appear in your account within 24 hours, contact us via <0>live chat</0>. Provide the transaction details, including the amount, date, and time, so we can assist you quickly.'
                         components={[
                             <span key={0} className='link' onClick={onClickHandler} onKeyDown={onClickHandler} />,
                         ]}

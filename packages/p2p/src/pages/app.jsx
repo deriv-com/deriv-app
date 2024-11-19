@@ -175,7 +175,7 @@ const App = () => {
     // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
     React.useEffect(() => {
         if (/\/p2p$/.test(location.pathname) || location.pathname === '/cashier/p2p/') {
-            history.push(routes.p2p_buy_sell);
+            history.replace(routes.p2p_buy_sell);
             general_store.setActiveIndex(0);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -308,7 +308,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
+    if (!isGBLoaded || is_logging_in || general_store.is_loading || is_p2p_standalone_enabled) {
         return <Loading className='p2p__loading' />;
     }
 

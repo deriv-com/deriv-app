@@ -13,6 +13,14 @@ import React from 'react';
 import { createProposalRequestForContract } from 'Stores/Modules/Trading/Helpers/proposal';
 import { TTradeStore } from 'Types';
 
+export const DURATION_UNIT = {
+    DAYS: 'd',
+    TICKS: 't',
+    MINUTES: 'm',
+    HOURS: 'h',
+    SECONDS: 's',
+};
+
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
         duration: true,
@@ -288,25 +296,6 @@ export const getOptionPerUnit = (
             end: Math.min(10, tick?.max),
             label: <Localize i18n_default_text='tick' />,
         },
-        h: () => {
-            const hour_start = Math.max(1, Math.floor(intraday?.min / 3600));
-            const hour_end = Math.min(24, Math.floor(intraday?.max / 3600));
-
-            const hour_options = generateOptions(hour_start, hour_end, <Localize i18n_default_text='h' />);
-
-            const minute_start = 0;
-
-            let minute_end = 0;
-            if (intraday?.max % 3600 !== 0) {
-                minute_end = Math.floor((intraday?.max % 3600) / 60);
-            } else if (intraday?.max >= 86400) {
-                minute_end = 59;
-            }
-
-            const minute_options = generateOptions(minute_start, minute_end, <Localize i18n_default_text='min' />);
-
-            return [hour_options, minute_options];
-        },
     };
 
     const config = unitConfig[unit];
@@ -325,6 +314,7 @@ export const getOptionPerUnit = (
 
 export const getSmallestDuration = (
     obj: { [x: string]: { min: number; max: number } | { min: number } },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     durationUnits: any[]
 ) => {
     const keysPriority = ['tick', 'intraday', 'daily'];

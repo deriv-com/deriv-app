@@ -16,7 +16,7 @@ const WalletsMigrationFailed = observer(() => {
     };
 
     const handleLivechatButtonClick = () => {
-        window.LiveChatWidget.call('maximize');
+        window.LiveChatWidget?.call('maximize');
         setWalletsMigrationFailedPopup(false);
     };
 

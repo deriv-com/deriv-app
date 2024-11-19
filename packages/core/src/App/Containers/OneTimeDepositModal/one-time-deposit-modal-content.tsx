@@ -9,7 +9,7 @@ import DepositCrypto from '@deriv/cashier/src/modules/deposit-crypto/components/
 export const OneTimeDepositModalContent = ({ is_crypto_provider = false }: { is_crypto_provider?: boolean }) => {
     const { isDesktop } = useDevice();
 
-    const onLiveChatClick = () => window.LiveChatWidget.call('maximize');
+    const onLiveChatClick = () => window.LiveChatWidget?.call('maximize');
 
     return (
         <div

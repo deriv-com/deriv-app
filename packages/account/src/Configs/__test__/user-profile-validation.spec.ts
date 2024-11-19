@@ -19,6 +19,7 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
             account_opening_reason: 'Investment',
             date_of_birth: '1990-01-01',
             place_of_birth: 'Germany',
+            citizen: 'Germany',
         };
 
         expect(validation_schema.isValidSync(valid_values)).toBeTruthy();

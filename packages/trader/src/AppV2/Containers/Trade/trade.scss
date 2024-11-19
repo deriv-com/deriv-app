@@ -45,6 +45,7 @@
         }
     }
     &__chart {
+        direction: ltr;
         border-top-left-radius: var(--core-borderRadius-400);
         border-top-right-radius: var(--core-borderRadius-400);
         overflow: hidden;
@@ -68,5 +69,13 @@
         &--with-button {
             min-height: 13.6rem;
         }
+    }
+}
+.trade-types-dialog {
+    &__title {
+        margin: var(--core-spacing-1200) var(--core-spacing-50);
+    }
+    &__content {
+        padding-top: var(--core-spacing-50);
     }
 }

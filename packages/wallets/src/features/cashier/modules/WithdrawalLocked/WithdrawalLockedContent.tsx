@@ -5,10 +5,9 @@ import { WalletLink } from '../../../../components';
 
 type TWithdrawalLimitReachedDescProps = {
     askFinancialRiskApproval?: boolean;
+    isVerified?: boolean;
     poaNeedsVerification?: boolean;
-    poaStatus: string;
     poiNeedsVerification?: boolean;
-    poiStatus: string;
 };
 
 type TWithdrawalLockedDescProps = {
@@ -21,14 +20,13 @@ type TWithdrawalLockedDescProps = {
 
 export const getWithdrawalLimitReachedDesc = ({
     askFinancialRiskApproval,
+    isVerified,
     poaNeedsVerification,
-    poaStatus,
     poiNeedsVerification,
-    poiStatus,
 }: TWithdrawalLimitReachedDescProps) => {
     let description = null;
 
-    if (poiNeedsVerification || poaNeedsVerification || poaStatus !== 'verified' || poiStatus !== 'verified') {
+    if (poiNeedsVerification || poaNeedsVerification || !isVerified) {
         description = (
             <Text align='center'>
                 <Localize
@@ -101,7 +99,7 @@ const getWithdrawalLockedDesc = ({
                         <button
                             className='wallets-link wallets-link__variant--bold'
                             key={0}
-                            onClick={() => window.LiveChatWidget.call('maximize')}
+                            onClick={() => window.LiveChatWidget?.call('maximize')}
                         />,
                     ]}
                     i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
-import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
-import { useIsMounted } from '@deriv/shared';
+import { getFeatureFlag } from '@deriv/utils';
 
 interface UseGrowthbookGetFeatureValueArgs<T> {
     featureFlag: string;
@@ -13,27 +12,23 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
     defaultValue,
 }: UseGrowthbookGetFeatureValueArgs<T>) => {
     const resolvedDefaultValue: T = defaultValue !== undefined ? defaultValue : (false as T);
-    const [featureFlagValue, setFeatureFlagValue] = useState(
-        Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
-    );
-    const isGBLoaded = useIsGrowthbookIsLoaded();
-    const isMounted = useIsMounted();
+    const [featureFlagValue, setFeatureFlagValue] = useState<boolean>(false);
+    const [isGBLoaded, setIsGBLoaded] = useState(false);
+
+    // Required for debugging Growthbook, this will be removed after this is added in the Analytics directly.
+    if (typeof window !== 'undefined') {
+        window.Analytics = Analytics;
+    }
 
     useEffect(() => {
-        if (isGBLoaded) {
-            if (Analytics?.getInstances()?.ab) {
-                const setFeatureValue = () => {
-                    const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
-                    if (isMounted()) setFeatureFlagValue(value);
-                };
-                setFeatureValue();
-                Analytics?.getInstances()?.ab?.GrowthBook?.setRenderer(() => {
-                    // this will be called whenever the feature flag value changes and acts as a event listener
-                    setFeatureValue();
-                });
-            }
-        }
-    }, [isGBLoaded, resolvedDefaultValue, featureFlag, isMounted]);
+        const fetchFeatureFlag = async () => {
+            const is_enabled = await getFeatureFlag(featureFlag, resolvedDefaultValue);
+            setFeatureFlagValue(is_enabled);
+            setIsGBLoaded(true);
+        };
+
+        fetchFeatureFlag();
+    }, []);
 
     return [featureFlagValue, isGBLoaded];
 };

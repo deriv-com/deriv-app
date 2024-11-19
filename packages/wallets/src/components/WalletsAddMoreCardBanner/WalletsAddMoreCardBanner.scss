@@ -21,10 +21,9 @@
     }
 
     &__success-footer {
-        width: 24rem;
+        width: 100%;
 
         @include mobile-or-tablet-screen {
-            width: 100%;
             max-width: 60rem;
             margin: 0 auto;
         }

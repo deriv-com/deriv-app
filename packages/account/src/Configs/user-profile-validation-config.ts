@@ -2,7 +2,6 @@ import { localize } from '@deriv-com/translations';
 import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import dayjs from 'dayjs';
-import { TinValidations } from '@deriv/api/types';
 import { TEmployeeDetailsTinValidationConfig } from '../Types';
 
 const {
@@ -25,6 +24,7 @@ type TINDepdendents = {
      * This flag indicates that tin was skipped before and was set by BE
      */
     is_tin_auto_set?: boolean;
+    is_employment_status_tin_mandatory?: boolean;
 };
 
 Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
@@ -38,10 +38,20 @@ Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
     });
 });
 
-const makeTinOptional = ({ is_mf, is_real, tin_skipped, is_tin_auto_set }: TINDepdendents) => {
+const makeTinOptional = ({
+    is_mf,
+    is_real,
+    tin_skipped,
+    is_tin_auto_set,
+    is_employment_status_tin_mandatory,
+}: TINDepdendents) => {
     const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
     if (is_real) {
-        return check_if_tin_skipped;
+        // Students and unemployed are not required to provide TIN to have a regulated MT5 jurisdiction
+        if (is_tin_auto_set && is_employment_status_tin_mandatory) {
+            return true;
+        }
+        return check_if_tin_skipped || !is_employment_status_tin_mandatory;
     }
     // Check For Virtual account
     if (is_mf) {
@@ -55,9 +65,15 @@ export const getEmploymentAndTaxValidationSchema = ({
     is_mf = false,
     is_real = false,
     is_tin_auto_set = false,
+    is_duplicate_account = false,
+    is_employment_status_tin_mandatory = false,
 }: TEmployeeDetailsTinValidationConfig) => {
     return Yup.object({
-        employment_status: Yup.string().required(localize('Employment status is required.')),
+        employment_status: Yup.string().when('is_employment_status_tin_mandatory', {
+            is: () => is_employment_status_tin_mandatory,
+            then: Yup.string().required(localize('Employment status is required.')),
+            otherwise: Yup.string().notRequired(),
+        }),
         tax_residence: Yup.string().when('is_mf', {
             is: () => is_mf,
             then: Yup.string().required(localize('Tax residence is required.')),
@@ -66,13 +82,20 @@ export const getEmploymentAndTaxValidationSchema = ({
         tin_skipped: Yup.number().oneOf([0, 1]).default(0),
         tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
             is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
-                tax_identification_number && tax_residence && !tin_skipped,
+                tax_identification_number && tax_residence && !tin_skipped && !is_duplicate_account,
             then: Yup.bool().required().oneOf([true]),
             otherwise: Yup.bool().notRequired(),
         }),
         tax_identification_number: Yup.string()
             .when(['tin_skipped'], {
-                is: (tin_skipped: boolean) => makeTinOptional({ is_mf, is_real, tin_skipped, is_tin_auto_set }),
+                is: (tin_skipped: boolean) =>
+                    makeTinOptional({
+                        is_mf,
+                        is_real,
+                        tin_skipped,
+                        is_tin_auto_set,
+                        is_employment_status_tin_mandatory,
+                    }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),
             })
@@ -185,8 +208,10 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
             .validatePhoneNumberLength(localize('You should enter 9-20 numbers.'))
             .matches(phoneNumber, localize('Please enter a valid phone number (e.g. +15417541234).')),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
-        citizen: Yup.string().when({
-            is: () => broker_code === 'maltainvest',
-            then: Yup.string().required(localize('Citizenship is required.')),
-        }),
+        citizen: broker_code
+            ? Yup.string().when({
+                  is: () => broker_code === 'maltainvest',
+                  then: Yup.string().required(localize('Citizenship is required.')),
+              })
+            : Yup.string().required(localize('Citizenship is required.')),
     });

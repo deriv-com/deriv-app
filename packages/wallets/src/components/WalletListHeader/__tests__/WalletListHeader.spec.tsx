@@ -1,22 +1,18 @@
 import React from 'react';
-import { useDevice } from '@deriv-com/ui';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { defineSwitcherWidth } from '../../../utils/utils';
 import WalletListHeader from '../WalletListHeader';
-import '@testing-library/jest-dom';
-
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({})),
-}));
 
 jest.mock('@deriv/api-v2', () => ({
-    useActiveWalletAccount: () => ({ data: { is_virtual: false, loginid: 'real1' } }),
-    useWalletAccountsList: () => ({
+    useActiveWalletAccount: jest.fn(() => ({ data: { is_virtual: false, loginid: 'real1' } })),
+    useWalletAccountsList: jest.fn(() => ({
         data: [
             { is_virtual: false, loginid: 'real1' },
             { is_virtual: true, loginid: 'demo123' },
         ],
-    }),
+    })),
 }));
 
 const mockSwitchWalletAccount = jest.fn();
@@ -26,16 +22,25 @@ jest.mock('../../../hooks/useWalletAccountSwitcher', () => ({
     default: jest.fn(() => mockSwitchWalletAccount),
 }));
 
+jest.mock('../../../utils/utils', () => ({
+    ...jest.requireActual('../../../utils/utils'),
+    defineSwitcherWidth: jest.fn(),
+}));
+
 describe('WalletListHeader', () => {
-    beforeEach(() => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+    beforeAll(() => {
+        global.ResizeObserver = class {
+            observe = () => jest.fn();
+            unobserve = () => jest.fn();
+            disconnect = () => jest.fn();
+        };
     });
 
     afterAll(() => {
         jest.clearAllMocks();
     });
 
-    it('should render header correctly', () => {
+    it('renders header content correctly', () => {
         render(<WalletListHeader />);
 
         expect(screen.getByText("Trader's Hub")).toBeInTheDocument();
@@ -43,18 +48,49 @@ describe('WalletListHeader', () => {
         expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
-    it('should be checked if the real account is active', () => {
+    it('checks the checkbox if the real account is active', () => {
         render(<WalletListHeader />);
 
         const checkbox = screen.getByRole('checkbox');
         expect(checkbox).toBeChecked();
     });
 
-    it('should toggle accounts on checkbox change', () => {
+    it('toggles accounts on checkbox change', () => {
         render(<WalletListHeader />);
 
         const checkbox = screen.getByRole('checkbox');
-        fireEvent.click(checkbox);
+        userEvent.click(checkbox);
         expect(mockSwitchWalletAccount).toHaveBeenCalledWith('demo123');
+    });
+
+    it('toggles to the first real account when the demo account is active', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true, loginid: 'demo123' } });
+        render(<WalletListHeader />);
+
+        const checkbox = screen.getByRole('checkbox');
+        expect(checkbox).not.toBeChecked();
+        userEvent.click(checkbox);
+
+        expect(mockSwitchWalletAccount).toHaveBeenCalledWith('real1');
+    });
+
+    it('calls defineSwitcherWidth on language change', () => {
+        render(<WalletListHeader />);
+
+        expect(defineSwitcherWidth).toHaveBeenCalled();
+    });
+
+    it('renders the switcher with the correct class when all the real wallets are disabled', () => {
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [
+                { is_disabled: true, is_virtual: false, loginid: 'real1' },
+                { is_virtual: true, loginid: 'demo123' },
+            ],
+        });
+
+        render(<WalletListHeader />);
+
+        const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
+        expect(switcher).toHaveClass('wallets-list-header__label-item--disabled');
     });
 });

@@ -62,6 +62,10 @@ const EmploymentTaxInfo = observer(
             tin_config: tin_validation_config,
             is_mf: is_eu,
             is_real: !client.is_virtual,
+            is_duplicate_account:
+                client.account_settings.immutable_fields?.includes('tax_identification_number') ||
+                client.account_settings.immutable_fields?.includes('tax_residence'),
+            is_employment_status_tin_mandatory: true, // Override the value to true as we need to make Employment status mandatory for Real account creation
         });
 
         const handleCancel = (values: FormikValues) => {

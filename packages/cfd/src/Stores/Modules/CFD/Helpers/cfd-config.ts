@@ -1,4 +1,4 @@
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction, PRODUCT } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TProducts } from 'Components/props.types';
 
@@ -109,10 +109,12 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
         leverage: 500,
         short_title: localize('Standard'),
     };
+    const financial_title = product === PRODUCT.STP ? localize('Financial STP') : localize('Financial');
+
     const financial_config = {
         account_type: 'financial',
         leverage: 1000,
-        short_title: is_eu ? localize('Deriv CFDs') : localize('Financial'),
+        short_title: is_eu ? localize('Deriv CFDs') : financial_title,
     };
     const financial_stp_config = {
         account_type: 'financial_stp',
@@ -241,7 +243,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Deriv CFDs') : localize('Financial'),
+                title: is_eu ? localize('Deriv CFDs') : financial_title,
                 short_title: financial_config.short_title,
             },
             financial_svg: {

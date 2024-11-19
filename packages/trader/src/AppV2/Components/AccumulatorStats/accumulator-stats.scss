@@ -34,7 +34,7 @@
     }
 }
 
-.accumulators-stats {
+.accumulators-stats-v2 {
     background: var(--semantic-color-slate-solid-surface-frame-low);
     padding: var(--core-spacing-400);
     margin-top: calc(var(--core-spacing-600) * -1);
@@ -117,19 +117,20 @@
 
 .accumulator-stats-sheet-wrapper {
     .stats-sheet {
-        max-height: 100dvh;
-        overflow-y: auto;
-        padding: var(--core-spacing-800);
-        text-align: center;
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        display: flex;
+        flex-direction: column;
+        gap: var(--core-spacing-400);
+        align-items: center;
+        justify-content: center;
         .slide-right {
             @include accumulator-slide-to-next;
         }
 
         &__title {
-            margin-bottom: var(--core-spacing-1200);
-        }
-        &__caption {
-            margin-bottom: var(--core-spacing-1200);
+            height: var(--core-spacing-2400);
+            align-items: center;
+            display: flex;
         }
         &__moving {
             display: flex;

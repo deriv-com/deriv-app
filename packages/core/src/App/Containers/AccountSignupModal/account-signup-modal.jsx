@@ -144,9 +144,10 @@ const AccountSignup = ({
     console.log('is_tracking_signup_errors-outside', is_tracking_signup_errors);
     React.useEffect(() => {
         console.log('is_tracking_signup_errors-useeffect', is_tracking_signup_errors);
-        if (is_tracking_signup_errors) {
-            console.log('is_tracking_signup_errors-inside-if', is_tracking_signup_errors);
-            cacheTrackEvents.trackConsoleErrors(errorMessage => {
+        // if (is_tracking_signup_errors) {
+        console.log('is_tracking_signup_errors-inside-if', is_tracking_signup_errors);
+        cacheTrackEvents.trackConsoleErrors(errorMessage => {
+            if (is_tracking_signup_errors) {
                 if (errorMessage) {
                     const screen_name = !isPasswordModalRef.current
                         ? 'country_selection_screen'
@@ -163,8 +164,8 @@ const AccountSignup = ({
                         trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
                     }
                 }
-            });
-        }
+            }
+        });
     }, []);
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);

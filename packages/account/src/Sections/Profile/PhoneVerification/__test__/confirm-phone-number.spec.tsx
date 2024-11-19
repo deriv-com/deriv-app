@@ -212,7 +212,7 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByRole('button', { name: whatsapp_button_text })).toBeInTheDocument();
     });
 
-    it('should hide carriers if global sms is not available', async () => {
+    it('should hide sms carriers if global sms is not available', async () => {
         (useSettings as jest.Mock).mockReturnValue({
             data: { phone: '123456789', calling_country_code: '+60' },
         });

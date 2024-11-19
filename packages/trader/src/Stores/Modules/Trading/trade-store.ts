@@ -622,7 +622,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => this.is_equal,
             () => {
-                this.onAllowEqualsChange();
+                this.contract_type?.includes(TRADE_TYPES.RISE_FALL) && this.onAllowEqualsChange();
             }
         );
         reaction(

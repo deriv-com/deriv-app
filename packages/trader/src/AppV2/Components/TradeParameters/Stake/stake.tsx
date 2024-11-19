@@ -275,6 +275,10 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>
+                        <p>
+                            <span> window.innerHeight {window.innerHeight}</span>
+                            <span>window.screen.height {window.screen.height}</span>
+                        </p>
                         <TextFieldWithSteppers
                             allowDecimals
                             allowSign={false}

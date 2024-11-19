@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -7,14 +7,11 @@ import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal }
 import AvailableMT5AccountsList from '../AvailableMT5AccountsList';
 
 jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
+    useIsEuRegion: jest.fn(),
     useMT5AccountsList: jest.fn(),
     useTradingPlatformStatus: jest.fn(),
-}));
-
-jest.mock('../../../../flows/ClientVerification/ClientVerification', () => ({
-    ...jest.requireActual('../../../../flows/ClientVerification/ClientVerification'),
-    ClientVerification: jest.fn(() => <div>ClientVerification</div>),
 }));
 
 jest.mock('../../../../../../components/ModalProvider', () => ({
@@ -39,6 +36,9 @@ describe('AvailableMT5AccountsList', () => {
         (useModal as jest.Mock).mockReturnValue({
             setModalState: mockSetModalState,
             show: mockShow,
+        });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
         });
     });
 
@@ -132,7 +132,7 @@ describe('AvailableMT5AccountsList', () => {
         expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={true} />);
     });
 
-    it('shows MT5PasswordModal for non-regulated real accounts if client is verified', () => {
+    it('shows MT5PasswordModal for non-regulated real accounts if client is verified', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: undefined,
         });
@@ -140,13 +140,13 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={nonRegulatedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<MT5PasswordModal account={nonRegulatedAccount} />);
     });
 
-    it('shows ClientVerificationModal for regulated real accounts if client is unverified', () => {
+    it('shows ClientVerificationModal for regulated real accounts if client is unverified', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 is_virtual: false,
@@ -156,13 +156,13 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={regulatedUnverifiedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<ClientVerificationModal account={regulatedUnverifiedAccount} />);
     });
 
-    it('shows MT5PasswordModal for demo accounts for verified clients', () => {
+    it('shows MT5PasswordModal for demo accounts for verified clients', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 is_virtual: true,
@@ -172,7 +172,7 @@ describe('AvailableMT5AccountsList', () => {
         render(<AvailableMT5AccountsList account={regulatedVerifiedAccount} />);
 
         const button = screen.getByTestId('dt_wallets_trading_account_card');
-        userEvent.click(button);
+        await userEvent.click(button);
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         expect(mockShow).toHaveBeenCalledWith(<MT5PasswordModal account={regulatedVerifiedAccount} isVirtual={true} />);

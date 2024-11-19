@@ -1,11 +1,12 @@
 import React from 'react';
-import { useActiveWalletAccount, useCFDCompareAccounts } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCFDCompareAccounts, useIsEuRegion } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import CompareAccountsScreen from '../CompareAccountsScreen';
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useCFDCompareAccounts: jest.fn(),
+    useIsEuRegion: jest.fn(),
 }));
 
 jest.mock('../../../components', () => ({
@@ -47,6 +48,10 @@ describe('CompareAccountsScreen', () => {
             hasCTraderAccountAvailable: true,
             hasDxtradeAccountAvailable: true,
         });
+        (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+            data: false,
+            isLoading: false,
+        }));
     });
 
     it('renders default components correctly', () => {

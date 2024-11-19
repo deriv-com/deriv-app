@@ -20,7 +20,6 @@ export const WALLETS_UNSUPPORTED_LANGUAGES = [
     'KO',
     'PL',
     'PT',
-    'RU',
     'SI',
     'TH',
     'TR',

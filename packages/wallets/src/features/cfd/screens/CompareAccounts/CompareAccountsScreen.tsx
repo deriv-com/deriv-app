@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCFDCompareAccounts } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCFDCompareAccounts, useIsEuRegion } from '@deriv/api-v2';
 import useIsRtl from '../../../../hooks/useIsRtl';
 import { CompareAccountsCarousel } from '../../components';
 import CompareAccountsCard from './CompareAccountsCard';
@@ -9,24 +9,26 @@ import './CompareAccountsScreen.scss';
 const CompareAccountsScreen = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const isRtl = useIsRtl();
-    // Temporary false until we have useIsEuRegion() ready
-    const isEuRegion = false;
-    const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+    const { is_virtual: isDemo = false } = activeWallet || {};
 
-    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
+    const {
+        data: compareAccounts,
+        hasCTraderAccountAvailable,
+        hasDxtradeAccountAvailable,
+    } = useCFDCompareAccounts(isEuRegion);
 
     const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;
 
     return (
         <div className='wallets-compare-accounts'>
-            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
+            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} isLoading={isEuRegionLoading} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel isRtl={isRtl}>
                     {mt5Accounts?.map((item, index) => (
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             key={`compare-accounts-${item?.product}-${index}`}
                             marketType={item?.market_type}
                             platform={item?.platform}
@@ -39,7 +41,6 @@ const CompareAccountsScreen = () => {
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             marketType={ctraderAccount.market_type}
                             platform={ctraderAccount.platform}
                             shortCode={ctraderAccount.shortcode}
@@ -50,7 +51,6 @@ const CompareAccountsScreen = () => {
                         <CompareAccountsCard
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
                             marketType={dxtradeAccount.market_type}
                             platform={dxtradeAccount.platform}
                             shortCode={dxtradeAccount.shortcode}

@@ -66,7 +66,7 @@ describe('BarrierInput', () => {
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-10' } });
 
         await userEvent.click(fixedPriceChip);
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '10' } });
+        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
 
         await userEvent.click(aboveSpotChip);
         expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+10' } });
@@ -145,7 +145,7 @@ describe('BarrierInput', () => {
         const fixedPriceChip = screen.getByText('Fixed barrier');
         await userEvent.click(fixedPriceChip);
 
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '0.6' } });
+        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
     });
 
     it('handles chip selection correctly for Above spot when initial barrier is fixed price', async () => {

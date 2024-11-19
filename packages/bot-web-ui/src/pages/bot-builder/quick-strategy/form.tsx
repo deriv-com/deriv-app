@@ -23,8 +23,7 @@ const QuickStrategyForm = observer(() => {
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_desktop } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max } = quick_strategy;
-
+    const { current_duration_min_max, additional_data } = quick_strategy;
     const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(values?.boolean_max_stake ?? false);
 
     React.useEffect(() => {
@@ -160,7 +159,12 @@ const QuickStrategyForm = observer(() => {
                                     return null;
                                 }
                                 return (
-                                    <QSInputLabel key={key} label={field.label} description={field.description || ''} />
+                                    <QSInputLabel
+                                        key={key}
+                                        label={field.label}
+                                        description={field.description ?? ''}
+                                        additional_data={additional_data}
+                                    />
                                 );
                             }
                             case 'checkbox':

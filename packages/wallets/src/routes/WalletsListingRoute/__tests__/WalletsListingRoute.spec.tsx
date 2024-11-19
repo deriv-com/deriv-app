@@ -70,7 +70,7 @@ describe('WalletsListingRoute', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletsListingRoute />, { wrapper });
-        expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
+        expect(screen.queryByText('WalletListHeader')).not.toBeInTheDocument();
         expect(screen.queryByText('DesktopWalletsList')).not.toBeInTheDocument();
         expect(await screen.findByText('WalletsCarousel')).toBeInTheDocument();
     });

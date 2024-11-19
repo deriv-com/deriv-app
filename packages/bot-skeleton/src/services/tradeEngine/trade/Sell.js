@@ -78,7 +78,7 @@ export default Engine =>
                             ).then(proposal_open_contract_response => {
                                 const { proposal_open_contract } = proposal_open_contract_response;
 
-                                if (proposal_open_contract.status !== 'sold') {
+                                if (!proposal_open_contract.is_sold) {
                                     return Promise.reject(sell_error);
                                 }
 
@@ -98,9 +98,9 @@ export default Engine =>
 
                 // Restart buy/sell on error is enabled, don't recover from sell error.
                 if (!this.options.timeMachineEnabled) {
-                    return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore).then(sell_response =>
-                        onContractSold(sell_response)
-                    );
+                    return doUntilDone(sellContractAndGetContractInfo, errors_to_ignore)
+                        .then(sell_response => onContractSold(sell_response))
+                        .catch(error => error);
                 }
 
                 // If above checkbox not checked, try to recover from sell error.

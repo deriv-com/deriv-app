@@ -7,6 +7,11 @@
     justify-content: center;
     gap: var(--core-spacing-800);
 
+    @include desktop-screen {
+        justify-content: unset;
+        margin-left: 0.8rem;
+    }
+
     &__title {
         display: flex;
         align-items: center;

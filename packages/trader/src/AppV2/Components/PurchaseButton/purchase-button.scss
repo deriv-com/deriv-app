@@ -50,6 +50,12 @@
         width: 100%;
         z-index: 2; // chart has z-index: 1, it should not push purchase buttons down
         bottom: var(--core-spacing-2800);
+
+        @include desktop-screen {
+            position: unset;
+            padding: unset;
+        }
+
         &__un-auth {
             bottom: var(--core-spacing-50);
         }

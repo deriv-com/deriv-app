@@ -10,7 +10,7 @@ import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
-import Layout from './Layout';
+import Layouts from './Layouts';
 
 type Apptypes = {
     passthrough: {
@@ -53,7 +53,7 @@ const App = ({ passthrough }: Apptypes) => {
                     <NotificationsProvider>
                         <SnackbarProvider>
                             <Notifications />
-                            <Layout />
+                            <Layouts />
                             <ServicesErrorSnackbar />
                         </SnackbarProvider>
                     </NotificationsProvider>

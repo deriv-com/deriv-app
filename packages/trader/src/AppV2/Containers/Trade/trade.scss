@@ -5,12 +5,35 @@
     scrollbar-width: none;
     height: calc(100vh - 9.6rem);
 
+    @include desktop-screen {
+        height: calc(100vh - 8.4rem);
+    }
+
+    &__logout {
+        height: calc(100vh - 5.6rem);
+
+        @include desktop-screen {
+            height: calc(100vh - 8.4rem);
+        }
+    }
+
     &-container {
         display: flex;
         flex-direction: column;
         background-color: var(--semantic-color-slate-solid-surface-frame-mid);
         padding: 0 var(--core-spacing-400) var(--core-spacing-400);
         gap: var(--core-spacing-400);
+
+        @include desktop-screen {
+            height: 100%;
+        }
+
+        &--grid {
+            display: grid;
+            grid-template-columns: 75% 25%;
+            position: relative;
+            height: 100%;
+        }
 
         &__trade-types {
             position: relative;

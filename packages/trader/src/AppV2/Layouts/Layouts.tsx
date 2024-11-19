@@ -8,13 +8,13 @@ import {
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/quill-ui';
-import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
+import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import BottomNav from 'AppV2/Components/BottomNav';
-import Router from './Routes/router';
+import Router from '../Routes/router';
 
-const Layout = observer(() => {
+const Layouts = observer(() => {
     const { portfolio, client } = useStore();
     const { is_logged_in } = client;
     const { active_positions_count } = portfolio;
@@ -70,12 +70,14 @@ const Layout = observer(() => {
         },
     ];
 
+    const should_show_bottomnav = isMobile && is_logged_in && !window.location.pathname.startsWith('/contract');
+
     return (
-        <React.Fragment>
+        <div>
             <Router />
-            {isMobile && is_logged_in && <BottomNav bottomNavItems={bottomNavItems} />}
-        </React.Fragment>
+            {should_show_bottomnav && <BottomNav bottomNavItems={bottomNavItems} />}
+        </div>
     );
 });
 
-export default Layout;
+export default Layouts;

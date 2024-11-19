@@ -5,6 +5,13 @@
 
     &__container {
         padding: 0 var(--core-spacing-800);
+
+        @include desktop-screen {
+            position: absolute;
+            z-index: 99;
+            padding: var(--core-spacing-800);
+            background: var(--core-color-solid-slate-50);
+        }
     }
     &-info {
         display: flex;

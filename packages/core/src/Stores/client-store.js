@@ -436,6 +436,7 @@ export default class ClientStore extends BaseStore {
             is_account_to_be_closed_by_residence: computed,
             setClientKYCStatus: action.bound,
             client_kyc_status: observable,
+            should_show_trustpilot_notification: computed,
         });
 
         reaction(
@@ -2949,5 +2950,9 @@ export default class ClientStore extends BaseStore {
 
     setClientKYCStatus(client_kyc_status) {
         this.client_kyc_status = client_kyc_status;
+    }
+
+    get should_show_trustpilot_notification() {
+        return this.account_status?.status?.includes('customer_review_eligible');
     }
 }

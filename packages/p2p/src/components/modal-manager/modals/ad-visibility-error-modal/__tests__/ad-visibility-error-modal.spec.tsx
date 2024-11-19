@@ -1,9 +1,6 @@
 import React from 'react';
-
 import { render, screen } from '@testing-library/react';
-
 import { api_error_codes } from 'Constants/api-error-codes';
-
 import AdVisibilityErrorModal from '../ad-visibility-error-modal';
 
 const mock_modal_manager_context = {

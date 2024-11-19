@@ -14,11 +14,7 @@ const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
                 <Localize
                     i18n_default_text='To change your account currency, contact us via <0>live chat</0>.'
                     components={[
-                        is_from_derivgo ? (
-                            <span />
-                        ) : (
-                            <a key={0} className='link link--orange' onClick={() => Chat.open()} />
-                        ),
+                        is_from_derivgo ? <span /> : <a key={0} className='link link--orange' onClick={Chat.open} />,
                     ]}
                 />
             }

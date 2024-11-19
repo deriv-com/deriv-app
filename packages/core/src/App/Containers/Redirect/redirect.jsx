@@ -296,13 +296,6 @@ const Redirect = observer(() => {
             openLivechat();
             break;
         }
-        case 'redirect': {
-            history.push({
-                pathname: url_params.get('redirect_to'),
-            });
-            redirected_to_route = true;
-            break;
-        }
         default:
             break;
     }

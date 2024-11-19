@@ -6,13 +6,13 @@ import {
 } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-import { TradingAccountCard } from '../../../../../components';
+import { ClientVerificationModal, TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
+import { TAvailableMT5Account } from '../../../../../types';
+import { getClientVerification } from '../../../../../utils';
 import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
-import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
-import { TAvailableMT5Account } from '../../../types';
-import { getClientVerification } from '../../../utils';
+import { MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
 type TProps = {

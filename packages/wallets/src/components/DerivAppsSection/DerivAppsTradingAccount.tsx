@@ -7,22 +7,107 @@ import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
+import useWalletsMFAccountStatus from '../../hooks/useWalletsMFAccountStatus';
+import { THooks } from '../../types';
+import { ClientVerificationModal } from '../ClientVerificationModal';
+import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletDisabledAccountModal } from '../WalletDisabledAccountModal';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 import { WalletStatusBadge } from '../WalletStatusBadge';
 
+type TDerivAppsTradingAccountButtonContent = {
+    activeTradingAccount: THooks.TActiveLinkedToTradingAccount;
+    mfAccountStatusDetails?: ReturnType<typeof useWalletsMFAccountStatus>['data'];
+};
+
+const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountButtonContent> = ({
+    activeTradingAccount,
+    mfAccountStatusDetails,
+}) => {
+    const history = useHistory();
+    const { show } = useModal();
+    const { is_disabled: isAccountDisabled, loginid } = activeTradingAccount ?? {};
+    const {
+        client_kyc_status: clientKycStatus,
+        is_added: isMFAccountAdded,
+        mfAccountStatus,
+    } = mfAccountStatusDetails ?? {};
+
+    if (isAccountDisabled) {
+        return <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />;
+    }
+
+    if (mfAccountStatus && isMFAccountAdded && clientKycStatus) {
+        return (
+            <WalletStatusBadge
+                onClick={() =>
+                    show(
+                        <ClientVerificationModal
+                            account={{
+                                client_kyc_status: clientKycStatus,
+                                is_added: isMFAccountAdded,
+                            }}
+                        />
+                    )
+                }
+                status={mfAccountStatus}
+                variant='contained'
+            />
+        );
+    }
+
+    return (
+        <button
+            className='wallets-deriv-apps-section__button'
+            data-testid='dt_deriv-apps-trading-account-transfer-button'
+            onClick={() => {
+                history.push('/wallet/account-transfer', {
+                    toAccountLoginId: loginid,
+                });
+            }}
+        >
+            <LabelPairedArrowUpArrowDownSmBoldIcon />
+        </button>
+    );
+};
+
+const AccountBalance: React.FC<{ activeTradingAccount: THooks.TActiveLinkedToTradingAccount }> = ({
+    activeTradingAccount,
+}) => {
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const balance = balanceData?.[activeTradingAccount?.loginid ?? '']?.balance;
+
+    return isBalanceLoading ? (
+        <div
+            className='wallets-skeleton wallets-deriv-apps-balance-loader'
+            data-testid='dt_deriv-apps-balance-loader'
+        />
+    ) : (
+        <Text align='start' size='sm' weight='bold'>
+            {displayMoney(balance, activeTradingAccount?.currency_config?.display_code, {
+                fractional_digits: activeTradingAccount?.currency_config?.fractional_digits,
+            })}
+        </Text>
+    );
+};
+
 const DerivAppsTradingAccount = () => {
     const [shouldShowDisabledAccountModal, setShouldShowDisabledAccountModal] = useState(false);
     const { localize } = useTranslations();
     const { isDesktop } = useDevice();
-    const history = useHistory();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
-    const { data: isEuRegion } = useIsEuRegion();
-    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
-    const balance = balanceData?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance;
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+    const { data: mfAccountStatusDetails, isLoading: isMFAccountLoading } = useWalletsMFAccountStatus();
+
+    const isLoading = isEuRegionLoading || isMFAccountLoading;
+
+    const shouldHideBalance =
+        isLoading ||
+        (isEuRegion && mfAccountStatusDetails.mfAccountStatus) ||
+        activeLinkedToTradingAccount?.is_disabled;
 
     return (
         <>
@@ -59,37 +144,25 @@ const DerivAppsTradingAccount = () => {
                             </Text>
                             {activeWallet?.is_virtual && <WalletListCardBadge />}
                         </div>
-                        {isBalanceLoading ? (
-                            <div
-                                className='wallets-skeleton wallets-deriv-apps-balance-loader'
-                                data-testid='dt_deriv-apps-balance-loader'
-                            />
-                        ) : (
-                            <Text align='start' size='sm' weight='bold'>
-                                {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
-                                    fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                                })}
-                            </Text>
+                        {shouldHideBalance ? null : (
+                            <AccountBalance activeTradingAccount={activeLinkedToTradingAccount} />
                         )}
+
                         <Text align='start' color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
                             {activeLinkedToTradingAccount?.loginid}
                         </Text>
                     </TradingAccountCard.Content>
                     <TradingAccountCard.Button>
-                        {activeLinkedToTradingAccount?.is_disabled ? (
-                            <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />
+                        {isLoading ? (
+                            <div
+                                className='wallets-skeleton wallets-deriv-apps-button-content-loader'
+                                data-testid='dt_deriv-apps-button-content-loader'
+                            />
                         ) : (
-                            <button
-                                className='wallets-deriv-apps-section__button'
-                                data-testid='dt_deriv-apps-trading-account-transfer-button'
-                                onClick={() => {
-                                    history.push('/wallet/account-transfer', {
-                                        toAccountLoginId: activeLinkedToTradingAccount?.loginid,
-                                    });
-                                }}
-                            >
-                                <LabelPairedArrowUpArrowDownSmBoldIcon />
-                            </button>
+                            <DerivAppsTradingAccountButtonContent
+                                activeTradingAccount={activeLinkedToTradingAccount}
+                                mfAccountStatusDetails={mfAccountStatusDetails}
+                            />
                         )}
                     </TradingAccountCard.Button>
                 </TradingAccountCard.Section>

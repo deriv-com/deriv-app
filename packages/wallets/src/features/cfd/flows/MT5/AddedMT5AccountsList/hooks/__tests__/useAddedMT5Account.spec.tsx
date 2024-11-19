@@ -3,8 +3,8 @@ import { APIProvider, useTradingPlatformStatus } from '@deriv/api-v2';
 import { cleanup } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
+import { TAddedMT5Account } from '../../../../../../../types';
 import { getMarketTypeDetails } from '../../../../../constants';
-import { TAddedMT5Account } from '../../../../../types';
 import useAddedMT5Account from '../useAddedMT5Account';
 
 jest.mock('@deriv/api-v2', () => ({

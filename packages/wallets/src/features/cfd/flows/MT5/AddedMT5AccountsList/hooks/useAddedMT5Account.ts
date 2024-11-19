@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion, useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
-import { ClientVerificationStatusBadge } from '../../../../components';
+import { ClientVerificationStatusBadge } from '../../../../../../components';
+import { TAddedMT5Account } from '../../../../../../types';
 import { getMarketTypeDetails, MARKET_TYPE, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../constants';
-import { TAddedMT5Account } from '../../../../types';
 
 type TBadgeVariations = Partial<React.ComponentProps<typeof ClientVerificationStatusBadge>['variant']> | undefined;
 
@@ -48,7 +48,7 @@ const useAddedMT5Account = (account: TAddedMT5Account) => {
         account.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE ||
         platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE;
 
-    const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE;
+    const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE && !kycStatus;
 
     return {
         accountDetails,

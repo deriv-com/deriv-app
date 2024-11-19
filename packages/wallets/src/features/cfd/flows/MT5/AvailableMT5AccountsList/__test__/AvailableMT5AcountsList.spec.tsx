@@ -2,8 +2,9 @@ import React from 'react';
 import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ClientVerificationModal } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
-import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../../modals';
+import { MT5PasswordModal, TradingPlatformStatusModal } from '../../../../modals';
 import AvailableMT5AccountsList from '../AvailableMT5AccountsList';
 
 jest.mock('@deriv/api-v2', () => ({

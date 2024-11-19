@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
-import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
+import { TAvailableMT5Account, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
-import { TAvailableMT5Account } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './EnterPassword.scss';
 
@@ -51,6 +50,7 @@ const EnterPassword: React.FC<TProps> = ({
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const isMT5 = platform === CFD_PLATFORMS.MT5;
     const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
@@ -59,7 +59,7 @@ const EnterPassword: React.FC<TProps> = ({
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform
             ? accountType
-            : getMarketTypeDetails(localize, product)[marketType].title;
+            : getMarketTypeDetails(localize, product, isEuRegion)[marketType].title;
     const passwordErrorHints = localize(
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }

@@ -89,7 +89,7 @@ describe('<DocumentsList />', () => {
         );
 
         const poiTile = screen.getByText('Proof of identity');
-        userEvent.click(poiTile);
+        await userEvent.click(poiTile);
 
         await waitFor(() => {
             expect(mockHistoryPush).toBeCalledWith('/account/proof-of-identity');
@@ -109,7 +109,7 @@ describe('<DocumentsList />', () => {
         );
 
         const poaTile = screen.getByText('Proof of address');
-        userEvent.click(poaTile);
+        await userEvent.click(poaTile);
 
         await waitFor(() => {
             expect(mockHistoryPush).toBeCalledWith('/account/proof-of-address');
@@ -130,7 +130,7 @@ describe('<DocumentsList />', () => {
         );
 
         const additionalInfoTile = screen.getByText('Additional information');
-        userEvent.click(additionalInfoTile);
+        await userEvent.click(additionalInfoTile);
 
         await waitFor(() => {
             expect(mockHistoryPush).toBeCalledWith('/account/personal-details');

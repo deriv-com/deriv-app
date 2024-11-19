@@ -464,6 +464,15 @@ export default class TradersHubStore extends BaseStore {
                 icon: 'ZeroSpread',
                 availability: 'Non-EU',
             },
+            {
+                name: localize('Gold'),
+                description: localize('CFDs on precious metals'),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'financial',
+                product: 'gold',
+                icon: 'Gold',
+                availability: 'Non-EU',
+            },
         ];
 
         const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {

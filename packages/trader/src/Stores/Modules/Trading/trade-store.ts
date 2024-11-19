@@ -1088,150 +1088,152 @@ export default class TradeStore extends BaseStore {
                 this.is_purchasing_contract = true;
             });
             const is_tick_contract = this.duration_unit === 't';
-            processPurchase(proposal_id, price).then(
-                action((response: TResponse<Buy, BuyContractResponse, 'buy'>) => {
-                    if (!this.is_trade_component_mounted) {
-                        this.enablePurchase();
-                        this.is_purchasing_contract = false;
-                        return;
-                    }
-
-                    const last_digit = +this.last_digit;
-                    if (response.error) {
-                        // using javascript to disable purchase-buttons manually to compensate for mobx lag
-                        this.disablePurchaseButtons();
-                        // invalidToken error will handle in socket-general.js
-                        if (response.error.code !== 'InvalidToken') {
-                            this.root_store.common.setServicesError(
-                                {
-                                    type: response.msg_type,
-                                    ...response.error,
-                                },
-                                this.is_dtrader_v2_enabled
-                            );
-
-                            // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
-                            if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
-                                setTimeout(() => {
-                                    this.clearPurchaseInfo();
-                                    this.requestProposal();
-                                }, 3500);
-                            }
-                        }
-                    } else if (response.buy) {
-                        if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
-                            throw new Error('Proposal ID does not match.');
-                        }
-                        const contract_data: TContractDataForGTM = {
-                            ...this.proposal_requests[type],
-                            ...this.proposal_info[type],
-                            buy_price: response.buy.buy_price,
-                        };
-                        const { contract_id, longcode, start_time } = response.buy;
-
-                        // toggle smartcharts to contract mode
-                        if (contract_id) {
-                            const shortcode = response.buy.shortcode;
-                            const { category, underlying } = extractInfoFromShortcode(shortcode);
-                            const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
-                            const is_multiplier = isMultiplierContract(category);
-                            const contract_type = category?.toUpperCase();
-                            const is_call = category.toUpperCase() === CONTRACT_TYPES.CALL;
-                            const is_put = category.toUpperCase() === CONTRACT_TYPES.PUT;
-                            const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
-                            let higher_lower_contact = CONTRACT_TYPES.LOWER.toLowerCase();
-                            let rise_fall_contract = CONTRACT_TYPES.FALL.toLowerCase();
-                            if (is_call) {
-                                higher_lower_contact = CONTRACT_TYPES.HIGHER.toLowerCase();
-                                rise_fall_contract = CONTRACT_TYPES.RISE.toLowerCase();
-                            }
-                            const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
-
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            if ((window as any).hj) {
-                                const event_string = `placed_${is_call || is_put ? call_put_contract : category}_trade`;
-                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                (window as any).hj('event', event_string);
-                            }
-
-                            this.root_store.contract_trade.addContract({
-                                contract_id,
-                                start_time,
-                                longcode,
-                                underlying,
-                                barrier: is_digit_contract ? last_digit : null,
-                                contract_type,
-                                is_tick_contract,
-                            });
-                            this.root_store.portfolio.onBuyResponse({
-                                contract_id,
-                                longcode,
-                                contract_type,
-                            });
-                            // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
-                            // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
-                            // and then set the chart view to the start_time
-                            // draw the start time line and show longcode then mount contract
-                            // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
-                            if (!is_dtrader_v2) {
-                                sendDtraderPurchaseToAnalytics(contract_type, this.symbol, contract_id);
-                            }
-
-                            if (!isMobile) {
-                                this.root_store.ui.openPositionsDrawer();
-                            }
-                            this.proposal_info = {};
-                            this.forgetAllProposal();
-                            this.purchase_info = response;
-                            this.proposal_requests = {};
-                            this.throttleProposal();
-                            this.clearLimitOrderBarriers();
-                            this.pushPurchaseDataToGtm(contract_data);
-                            if (this.root_store.ui.is_mobile) {
-                                const shortcode = response.buy.shortcode;
-                                const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
-                                const contract_id = response.buy.contract_id;
-                                const currency = getCurrencyDisplayCode(this.root_store.client.currency);
-                                const formatted_stake = `${getCardLabelsV2().STAKE}: ${formatMoney(
-                                    currency,
-                                    response.buy.buy_price,
-                                    true,
-                                    0,
-                                    0
-                                )} ${currency}`;
-                                const trade_type = extracted_info_from_shortcode.category;
-
-                                if (window.location.pathname === routes.trade)
-                                    callback?.(
-                                        {
-                                            message: getTradeNotificationMessage(shortcode),
-                                            redirectTo: getContractPath(contract_id),
-                                            title: formatted_stake,
-                                        },
-                                        contract_id
-                                    );
-
-                                this.root_store.notifications.addTradeNotification({
-                                    buy_price: is_multiplier ? this.amount : response.buy.buy_price,
-                                    contract_id,
-                                    contract_type: trade_type,
-                                    currency,
-                                    purchase_time: response.buy.purchase_time,
-                                    shortcode,
-                                    status: 'open',
-                                });
-                            }
-
+            setTimeout(() => {
+                processPurchase(proposal_id, price).then(
+                    action((response: TResponse<Buy, BuyContractResponse, 'buy'>) => {
+                        if (!this.is_trade_component_mounted) {
+                            this.enablePurchase();
                             this.is_purchasing_contract = false;
                             return;
                         }
-                    }
-                    this.forgetAllProposal();
-                    this.purchase_info = response;
-                    this.enablePurchase();
-                    this.is_purchasing_contract = false;
-                })
-            );
+
+                        const last_digit = +this.last_digit;
+                        if (response.error) {
+                            // using javascript to disable purchase-buttons manually to compensate for mobx lag
+                            this.disablePurchaseButtons();
+                            // invalidToken error will handle in socket-general.js
+                            if (response.error.code !== 'InvalidToken') {
+                                this.root_store.common.setServicesError(
+                                    {
+                                        type: response.msg_type,
+                                        ...response.error,
+                                    },
+                                    this.is_dtrader_v2_enabled
+                                );
+
+                                // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
+                                if (isMobile && this.root_store.common?.services_error?.type === 'buy') {
+                                    setTimeout(() => {
+                                        this.clearPurchaseInfo();
+                                        this.requestProposal();
+                                    }, 3500);
+                                }
+                            }
+                        } else if (response.buy) {
+                            if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
+                                throw new Error('Proposal ID does not match.');
+                            }
+                            const contract_data: TContractDataForGTM = {
+                                ...this.proposal_requests[type],
+                                ...this.proposal_info[type],
+                                buy_price: response.buy.buy_price,
+                            };
+                            const { contract_id, longcode, start_time } = response.buy;
+
+                            // toggle smartcharts to contract mode
+                            if (contract_id) {
+                                const shortcode = response.buy.shortcode;
+                                const { category, underlying } = extractInfoFromShortcode(shortcode);
+                                const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
+                                const is_multiplier = isMultiplierContract(category);
+                                const contract_type = category?.toUpperCase();
+                                const is_call = category.toUpperCase() === CONTRACT_TYPES.CALL;
+                                const is_put = category.toUpperCase() === CONTRACT_TYPES.PUT;
+                                const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
+                                let higher_lower_contact = CONTRACT_TYPES.LOWER.toLowerCase();
+                                let rise_fall_contract = CONTRACT_TYPES.FALL.toLowerCase();
+                                if (is_call) {
+                                    higher_lower_contact = CONTRACT_TYPES.HIGHER.toLowerCase();
+                                    rise_fall_contract = CONTRACT_TYPES.RISE.toLowerCase();
+                                }
+                                const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
+
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                if ((window as any).hj) {
+                                    const event_string = `placed_${is_call || is_put ? call_put_contract : category}_trade`;
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    (window as any).hj('event', event_string);
+                                }
+
+                                this.root_store.contract_trade.addContract({
+                                    contract_id,
+                                    start_time,
+                                    longcode,
+                                    underlying,
+                                    barrier: is_digit_contract ? last_digit : null,
+                                    contract_type,
+                                    is_tick_contract,
+                                });
+                                this.root_store.portfolio.onBuyResponse({
+                                    contract_id,
+                                    longcode,
+                                    contract_type,
+                                });
+                                // NOTE: changing chart granularity and chart_type has to be done in a different render cycle
+                                // so we have to set chart granularity to zero, and change the chart_type to 'mountain' first,
+                                // and then set the chart view to the start_time
+                                // draw the start time line and show longcode then mount contract
+                                // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
+                                if (!is_dtrader_v2) {
+                                    sendDtraderPurchaseToAnalytics(contract_type, this.symbol, contract_id);
+                                }
+
+                                if (!isMobile) {
+                                    this.root_store.ui.openPositionsDrawer();
+                                }
+                                this.proposal_info = {};
+                                this.forgetAllProposal();
+                                this.purchase_info = response;
+                                this.proposal_requests = {};
+                                this.throttleProposal();
+                                this.clearLimitOrderBarriers();
+                                this.pushPurchaseDataToGtm(contract_data);
+                                if (this.root_store.ui.is_mobile) {
+                                    const shortcode = response.buy.shortcode;
+                                    const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
+                                    const contract_id = response.buy.contract_id;
+                                    const currency = getCurrencyDisplayCode(this.root_store.client.currency);
+                                    const formatted_stake = `${getCardLabelsV2().STAKE}: ${formatMoney(
+                                        currency,
+                                        response.buy.buy_price,
+                                        true,
+                                        0,
+                                        0
+                                    )} ${currency}`;
+                                    const trade_type = extracted_info_from_shortcode.category;
+
+                                    if (window.location.pathname === routes.trade)
+                                        callback?.(
+                                            {
+                                                message: getTradeNotificationMessage(shortcode),
+                                                redirectTo: getContractPath(contract_id),
+                                                title: formatted_stake,
+                                            },
+                                            contract_id
+                                        );
+
+                                    this.root_store.notifications.addTradeNotification({
+                                        buy_price: is_multiplier ? this.amount : response.buy.buy_price,
+                                        contract_id,
+                                        contract_type: trade_type,
+                                        currency,
+                                        purchase_time: response.buy.purchase_time,
+                                        shortcode,
+                                        status: 'open',
+                                    });
+                                }
+
+                                this.is_purchasing_contract = false;
+                                return;
+                            }
+                        }
+                        this.forgetAllProposal();
+                        this.purchase_info = response;
+                        this.enablePurchase();
+                        this.is_purchasing_contract = false;
+                    })
+                );
+            }, 0);
         }
     }
 
@@ -1645,6 +1647,7 @@ export default class TradeStore extends BaseStore {
             // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
             // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the existing subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
             if (response.error.code === 'AlreadySubscribed') {
+                this.refresh();
 
                 if (this.is_trade_component_mounted) {
                     this.throttleProposal();

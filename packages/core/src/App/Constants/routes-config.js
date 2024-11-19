@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
 import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
@@ -7,8 +8,8 @@ import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
-const CFDCompareAccounts = React.lazy(() =>
-    import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
+const CFDCompareAccounts = React.lazy(
+    () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
 );
 
 // Error Routes

@@ -12,8 +12,8 @@ jest.mock('react-router-dom', () => ({
     })),
 }));
 
-jest.mock('../../../../../components', () => ({
-    ...jest.requireActual('../../../../../components'),
+jest.mock('../../../../ClientVerificationBadge', () => ({
+    ...jest.requireActual('../../../../ClientVerificationBadge'),
     ClientVerificationStatusBadge: jest.fn(({ variant }) => variant),
 }));
 

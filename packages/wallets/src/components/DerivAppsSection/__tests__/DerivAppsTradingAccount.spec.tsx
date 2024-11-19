@@ -45,6 +45,14 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
         isLoading: false,
     }))
 );
+jest.mock('../../../hooks/useWalletsMFAccountStatus', () =>
+    jest.fn(() => ({
+        data: {
+            client_kyc_status: { status: 'none' },
+        },
+        isLoading: false,
+    }))
+);
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

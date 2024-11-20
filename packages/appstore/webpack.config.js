@@ -45,6 +45,7 @@ const default_plugins = [
     new Dotenv(),
     new DefinePlugin({
         'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
+        'process.env.REMOTE_CONFIG_URL': JSON.stringify(process.env.REMOTE_CONFIG_URL),
     }),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
@@ -208,7 +209,7 @@ module.exports = function (env) {
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
-                '@deriv-com/analytics': `@deriv-com/analytics`,
+                '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv-com/translations': '@deriv-com/translations',
             },
         ],

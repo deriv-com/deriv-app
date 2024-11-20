@@ -203,8 +203,8 @@ export const ContractType = (() => {
             case 'Put':
                 stored_barriers_data =
                     v2_params_initial_values?.strike &&
-                    (isDtraderV2MobileEnabled(root_store.ui.is_mobile) ||
-                        isDtraderV2DesktopEnabled(root_store.ui.is_desktop))
+                    (isDtraderV2MobileEnabled(root_store?.ui.is_mobile) ||
+                        isDtraderV2DesktopEnabled(root_store?.ui.is_desktop))
                         ? ({
                               ...strike_price_choices,
                               barrier: v2_params_initial_values.strike,

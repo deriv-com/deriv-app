@@ -30,7 +30,7 @@
 
         &--grid {
             display: grid;
-            grid-template-columns: 75% 25%;
+            grid-template-columns: 1fr minmax(0, 320px);
             position: relative;
             height: 100%;
         }

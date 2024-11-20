@@ -91,6 +91,7 @@ const TradeMobile = observer(() => {
                 trade__logout: !is_logged_in,
             })}
             onScroll={onScroll}
+            data-testid='dt_trade-mobile'
         >
             {symbols.length && trade_types.length ? (
                 <React.Fragment>

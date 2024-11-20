@@ -1,14 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
-import Trade from '../trade';
-import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { Router } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
+import TradeMobile from '../trade-mobile';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -63,7 +62,7 @@ jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     })),
 }));
 
-describe('Trade', () => {
+describe('TradeMobile', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
     const history = createMemoryHistory();
@@ -113,13 +112,13 @@ describe('Trade', () => {
         localStorage.clear();
     });
 
-    const mockTrade = () => {
+    const mockTradeMobile = () => {
         return (
             <Router history={history}>
                 <TraderProviders store={default_mock_store}>
                     <ReportsStoreProvider>
                         <ModulesProvider store={default_mock_store}>
-                            <Trade />
+                            <TradeMobile />
                         </ModulesProvider>
                     </ReportsStoreProvider>
                 </TraderProviders>
@@ -127,73 +126,62 @@ describe('Trade', () => {
         );
     };
 
-    it('should not render the ActionSheet when there is no error', () => {
-        render(mockTrade());
+    it('should render loader if there is no active_symbols or contract_types_list', () => {
+        default_mock_store = mockStore({});
+        render(mockTradeMobile());
 
-        expect(screen.queryByText('Insufficient balance')).not.toBeInTheDocument();
-        expect(screen.queryByText('Start trading with us')).not.toBeInTheDocument();
+        expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
-    it('should display insufficient balance message when services_error is InsufficientBalance', () => {
-        default_mock_store.common.services_error = {
-            code: 'InsufficientBalance',
-            message: 'You do not have enough balance.',
-        };
-        render(mockTrade());
-        expect(screen.getByText('Insufficient balance')).toBeInTheDocument();
-        expect(screen.getByText('You do not have enough balance.')).toBeInTheDocument();
+    it('should render trading page with all necessary components', () => {
+        render(mockTradeMobile());
+
+        expect(screen.queryByTestId('dt_trade_loader')).not.toBeInTheDocument();
+        expect(screen.queryByText('Current Spot')).not.toBeInTheDocument();
+        expect(screen.queryByText('AccumulatorStats')).not.toBeInTheDocument();
+
+        expect(screen.getByText('Trade Types Selection')).toBeInTheDocument();
+        expect(screen.getByText('MarketSelector')).toBeInTheDocument();
+        expect(screen.getAllByText('Trade Parameters')).toHaveLength(2);
+        expect(screen.getByText('Chart')).toBeInTheDocument();
+        expect(screen.getByText('Purchase Button')).toBeInTheDocument();
+        expect(screen.getByText('OnboardingGuide')).toBeInTheDocument();
     });
 
-    it('should display authorization required message when services_error is AuthorizationRequired', () => {
-        default_mock_store.common.services_error = {
-            code: 'AuthorizationRequired',
-            message: 'You need to log in to place a trade',
-            type: 'buy',
-        };
-        render(mockTrade());
-        expect(screen.getByText('Start trading with us')).toBeInTheDocument();
-        expect(screen.getByText('Log in or create a free account to place a trade.')).toBeInTheDocument();
+    it('should render Current Spot  component if it is digit contract type', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.EVEN_ODD;
+        render(mockTradeMobile());
+
+        expect(screen.getByText('Current Spot')).toBeInTheDocument();
     });
 
-    it('should call history.push to deposit when Deposit now button is clicked', async () => {
-        default_mock_store.common.services_error = {
-            code: 'InsufficientBalance',
-            message: 'You do not have enough balance.',
-        };
-        render(mockTrade());
+    it('should render AccumulatorStats if is_accumulator === true', () => {
+        default_mock_store.modules.trade.is_accumulator = true;
+        render(mockTradeMobile());
 
-        const depositButton = screen.getByText('Deposit now');
-        await userEvent.click(depositButton);
-        expect(history.location.pathname).toBe('/cashier/deposit');
+        expect(screen.getByText('AccumulatorStats')).toBeInTheDocument();
     });
 
-    it('should handle login when Login button is clicked', async () => {
-        default_mock_store.common.services_error = {
-            code: 'AuthorizationRequired',
-            message: 'You need to log in to place a trade',
-            type: 'buy',
-        };
+    it('should call state setter when user scrolls', () => {
+        const spySetIsMinimizedParamsVisible = jest.spyOn(React, 'useState');
+        render(mockTradeMobile());
 
-        render(mockTrade());
+        fireEvent.scroll(screen.getByTestId('dt_trade-mobile'));
 
-        const loginButton = screen.getByText('Login');
-        await userEvent.click(loginButton);
-
-        expect(redirectToLogin).toHaveBeenCalled();
+        expect(spySetIsMinimizedParamsVisible).toBeCalled();
     });
 
-    it('should handle sign-up when Create free account button is clicked', async () => {
-        default_mock_store.common.services_error = {
-            code: 'AuthorizationRequired',
-            message: 'You need to log in to place a trade',
-            type: 'buy',
-        };
+    it('should not render OnboardingGuide if localStorage flag is equal to true', () => {
+        const field = { trade_page: true };
+        localStorage.setItem(localStorage_key, JSON.stringify(field));
+        render(mockTradeMobile());
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
+    });
 
-        render(mockTrade());
+    it('should not render OnboardingGuide if client is not logged in', () => {
+        default_mock_store.client.is_logged_in = false;
+        render(mockTradeMobile());
 
-        const signupButton = screen.getByText('Create free account');
-        await userEvent.click(signupButton);
-
-        expect(redirectToSignUp).toHaveBeenCalled();
+        expect(screen.queryByText('OnboardingGuide')).not.toBeInTheDocument();
     });
 });

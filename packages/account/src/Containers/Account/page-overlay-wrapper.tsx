@@ -25,7 +25,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { logout } = client;
-    const { is_from_derivgo } = common;
+    const { is_from_derivgo, is_from_tradershub_v2 } = common;
     const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
@@ -44,12 +44,16 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     }));
 
     const onClickClose = React.useCallback(() => {
+        if (is_from_tradershub_v2) {
+            window.location.href = 'https://p2p.deriv.com/';
+            return;
+        }
         if (location.pathname === shared_routes.passkeys) {
             passkeysMenuCloseActionEventTrack();
         }
 
         history.push(shared_routes.traders_hub);
-    }, [history]);
+    }, [history, is_from_tradershub_v2, passkeysMenuCloseActionEventTrack]);
 
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });

@@ -38,11 +38,14 @@ const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountBut
         mfAccountStatus,
     } = mfAccountStatusDetails ?? {};
 
+    const shouldShowVerificationStatus =
+        isEuRegion && !isDemo && mfAccountStatus && isMFAccountAdded && clientKycStatus;
+
     if (isAccountDisabled) {
         return <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />;
     }
 
-    if (isEuRegion && !isDemo && mfAccountStatus && isMFAccountAdded && clientKycStatus) {
+    if (shouldShowVerificationStatus) {
         return (
             <ClientVerificationStatusBadge
                 onClick={() =>

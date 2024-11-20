@@ -133,7 +133,6 @@ const AccountSignup = ({
                         screen_name,
                     },
                 },
-                cache: true,
             },
         ]);
     };
@@ -149,6 +148,7 @@ const AccountSignup = ({
                     const screen_name = !isPasswordModalRef.current
                         ? 'country_selection_screen'
                         : 'password_screen_opened';
+
                     if (screen_name === 'country_selection_screen') {
                         if (
                             !isCountryScreenLoggedOnceRef.current ||

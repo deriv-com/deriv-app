@@ -15,6 +15,7 @@ import {
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
+import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
@@ -34,7 +35,7 @@ const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize'
 
 const getMarketTypeDetailsDescription = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
 ) => {
     if (isEuRegion && product !== 'stp') {
@@ -45,10 +46,17 @@ const getMarketTypeDetailsDescription = (
         return localize('Direct access to market prices');
     }
 
+    if (product === 'gold') {
+        return localize('CFDs on precious metals');
+    }
+
     return localize('CFDs on financial instruments');
 };
 
-const getMarketTypeDetailsTitle = (product?: THooks.AvailableMT5Accounts['product'] | 'stp', isEuRegion?: boolean) => {
+const getMarketTypeDetailsTitle = (
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
+    isEuRegion?: boolean
+) => {
     if (isEuRegion && product !== 'stp') {
         return 'CFDs';
     }
@@ -57,24 +65,36 @@ const getMarketTypeDetailsTitle = (product?: THooks.AvailableMT5Accounts['produc
         return 'Financial STP';
     }
 
+    if (product === 'gold') {
+        return 'Gold';
+    }
+
     return 'Financial';
 };
 
 export const getMarketTypeDetails = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
-) =>
-    ({
+) => {
+    const getIcon = () => {
+        if (isEuRegion) {
+            return <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />;
+        }
+        return product === 'gold' ? (
+            // TODO: replace with icon from quill-icons
+            <AccountsDmt5GoldIcon height={48} width={48} />
+        ) : (
+            <AccountsDmt5FinancialIcon height={48} width={48} />
+        );
+    };
+
+    return {
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
             availability: 'All',
             description: getMarketTypeDetailsDescription(localize, product, isEuRegion),
-            icon: isEuRegion ? (
-                <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
-            ) : (
-                <AccountsDmt5FinancialIcon height={48} width={48} />
-            ),
+            icon: getIcon(),
             title: getMarketTypeDetailsTitle(product, isEuRegion),
         },
         synthetic: {
@@ -83,7 +103,8 @@ export const getMarketTypeDetails = (
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const);
+    } as const;
+};
 
 export const PlatformDetails = {
     ctrader: {
@@ -158,7 +179,7 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },
-    } as const);
+    }) as const;
 
 export const PlatformToLabelIconMapper = {
     ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
@@ -176,7 +197,7 @@ export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTra
         mt5: localize(
             'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.'
         ),
-    } as const);
+    }) as const;
 
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',
@@ -214,6 +235,7 @@ export const JURISDICTION = {
 export const PRODUCT = {
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
+    GOLD: 'gold',
     SWAPFREE: 'swap_free',
     ZEROSPREAD: 'zero_spread',
 } as const;

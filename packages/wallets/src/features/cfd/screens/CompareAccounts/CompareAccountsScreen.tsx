@@ -25,17 +25,20 @@ const CompareAccountsScreen = () => {
             <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} isLoading={isEuRegionLoading} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel isRtl={isRtl}>
-                    {mt5Accounts?.map((item, index) => (
-                        <CompareAccountsCard
-                            isDemo={isDemo}
-                            isEuRegion={isEuRegion}
-                            key={`compare-accounts-${item?.product}-${index}`}
-                            marketType={item?.market_type}
-                            platform={item?.platform}
-                            product={item?.product}
-                            shortCode={item?.shortcode}
-                        />
-                    ))}
+                    {mt5Accounts
+                        //@ts-expect-error needs backend type
+                        ?.filter(item => item.product !== 'gold')
+                        .map((item, index) => (
+                            <CompareAccountsCard
+                                isDemo={isDemo}
+                                isEuRegion={isEuRegion}
+                                key={`compare-accounts-${item?.product}-${index}`}
+                                marketType={item?.market_type}
+                                platform={item?.platform}
+                                product={item?.product}
+                                shortCode={item?.shortcode}
+                            />
+                        ))}
                     {/* Renders cTrader data */}
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CompareAccountsCard

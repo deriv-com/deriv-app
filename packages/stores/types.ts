@@ -28,7 +28,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
+import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'

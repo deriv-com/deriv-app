@@ -347,6 +347,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
             getExchangeRate: jest.fn(),
+            is_from_tradershub_v2: false,
         },
         ui: {
             advanced_duration_unit: 't',

@@ -29,7 +29,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     //     },
     // });
 
-    const intercom = useIntercom({});
+    const intercom = useIntercom({ token });
 
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',

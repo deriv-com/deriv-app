@@ -56,16 +56,8 @@ declare global {
         locale?: string;
         hideButton?: boolean;
     }
-
-    interface IntercomUserData {
-        app_id: string;
-        user_id?: string;
-        name?: string;
-        email?: string;
-        created_at?: number;
-    }
     interface IntercomConfig {
-        userData?: interface;
+        token: string | null;
         hideLauncher?: boolean;
     }
     interface Navigator {

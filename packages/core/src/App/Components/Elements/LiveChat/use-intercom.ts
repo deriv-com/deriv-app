@@ -3,8 +3,8 @@ import { useScript } from 'usehooks-ts';
 
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
-const useIntercom = ({ userData, hideLauncher }: IntercomConfig) => {
-    const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.0.js';
+const useIntercom = ({ token, hideLauncher }: IntercomConfig) => {
+    const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
     const [should_load_script, setShouldLoadScript] = useState(false);
     const scriptStatus = useScript(should_load_script ? intercom_script : null);
 
@@ -32,7 +32,7 @@ const useIntercom = ({ userData, hideLauncher }: IntercomConfig) => {
 
         const initIntercom = async () => {
             window.DerivInterCom.initialize({
-                userData,
+                token,
                 hideLauncher,
             });
 

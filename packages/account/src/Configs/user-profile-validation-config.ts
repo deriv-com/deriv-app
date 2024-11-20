@@ -27,7 +27,7 @@ type TINDepdendents = {
      */
     is_tin_auto_set?: boolean;
     is_employment_status_tin_mandatory?: boolean;
-    is_pj_country?: boolean;
+    is_required_for_tax_residence?: boolean;
 };
 
 Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
@@ -47,15 +47,15 @@ const makeTinOptional = ({
     tin_skipped,
     is_tin_auto_set,
     is_employment_status_tin_mandatory,
-    is_pj_country,
+    is_required_for_tax_residence,
 }: TINDepdendents) => {
     const check_if_tin_skipped = tin_skipped && !is_tin_auto_set;
     if (is_real) {
         // Students and unemployed are not required to provide TIN to have a regulated MT5 jurisdiction
-        if (is_tin_auto_set && !(is_employment_status_tin_mandatory && is_pj_country)) {
+        if (is_tin_auto_set && !(is_employment_status_tin_mandatory && is_required_for_tax_residence)) {
             return true;
         }
-        return check_if_tin_skipped || !(is_employment_status_tin_mandatory && is_pj_country);
+        return check_if_tin_skipped || !(is_employment_status_tin_mandatory && is_required_for_tax_residence);
     }
     // Check For Virtual account
     if (is_mf) {
@@ -99,7 +99,7 @@ export const getEmploymentAndTaxValidationSchema = ({
                         tin_skipped,
                         is_tin_auto_set,
                         is_employment_status_tin_mandatory,
-                        is_pj_country: Boolean(tin_config?.is_tin_mandatory),
+                        is_required_for_tax_residence: Boolean(tin_config?.is_tin_mandatory),
                     }),
                 then: Yup.string().notRequired(),
                 otherwise: Yup.string().required(localize('Tax identification number is required.')),

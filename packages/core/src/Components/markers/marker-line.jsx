@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
+import { BARRIER_COLORS } from '@deriv/shared';
 
 const MarkerLine = ({ label, line_style, marker_config, status }) => {
     // TODO: Find a more elegant solution
@@ -13,7 +14,7 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
                 <Icon
                     icon='IcContractExitTimeCircle'
                     className='chart-marker-line__icon'
-                    custom_color={status === 'lost' ? '#e6190e' : '#008832'}
+                    custom_color={status === 'lost' ? BARRIER_COLORS.RED : BARRIER_COLORS.GREEN}
                     size={24}
                 />
             )}

@@ -8,6 +8,7 @@ import Financial from './ic-appstore-financial.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
 import ZeroSpread from './ic-appstore-zero-spread.svg';
 import Standard from './ic-appstore-standard.svg';
+import Gold from './ic-appstore-gold.svg';
 
 export interface IconProps<T> {
     icon: T;
@@ -25,6 +26,7 @@ export const PlatformIcons = {
     DerivX,
     ZeroSpread,
     Standard,
+    Gold,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

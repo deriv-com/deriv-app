@@ -90,7 +90,7 @@ const AccountBalance: React.FC<{ activeTradingAccount: THooks.TActiveLinkedToTra
             data-testid='dt_deriv-apps-balance-loader'
         />
     ) : (
-        <Text align='start' size='sm' weight='bold'>
+        <Text align='start' data-testid='dt_wallets_deriv_apps_balance' size='sm' weight='bold'>
             <WalletMoney amount={balance} currency={activeTradingAccount?.currency_config?.display_code} />
         </Text>
     );

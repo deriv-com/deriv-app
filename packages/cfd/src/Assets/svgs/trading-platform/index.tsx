@@ -5,10 +5,10 @@ import CTrader from './ic-appstore-ctrader.svg';
 import DerivX from './ic-appstore-deriv-x.svg';
 import Derived from './ic-appstore-derived.svg';
 import Financial from './ic-appstore-financial.svg';
+import Gold from './ic-appstore-gold.svg';
+import Standard from './ic-appstore-standard.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
 import ZeroSpread from './ic-appstore-zero-spread.svg';
-import Standard from './ic-appstore-standard.svg';
-import Gold from './ic-appstore-gold.svg';
 
 export interface IconProps<T> {
     icon: T;

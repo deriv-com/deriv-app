@@ -72,6 +72,7 @@ const DMT5TradeModal = observer(
                 return 'SwapFree';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
                 return 'ZeroSpread';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL && product === PRODUCT.GOLD) return 'Gold';
             return 'Financial';
         };
 
@@ -88,6 +89,8 @@ const DMT5TradeModal = observer(
                     return 'BVI';
                 case Jurisdiction.VANUATU:
                     return 'Vanuatu';
+                case Jurisdiction.MAURITIUS:
+                    return 'Dml';
                 default:
                     return null;
             }

@@ -4,6 +4,7 @@ export const Jurisdiction = Object.freeze({
     VANUATU: 'vanuatu',
     LABUAN: 'labuan',
     MALTA_INVEST: 'maltainvest',
+    MAURITIUS: 'dml',
 });
 
 export const Platforms = Object.freeze({

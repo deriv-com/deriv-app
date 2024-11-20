@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { STRATEGIES } from '../../config';
+import { STRATEGIES } from '../config';
 
 export enum QsSteps {
     StrategySelect,

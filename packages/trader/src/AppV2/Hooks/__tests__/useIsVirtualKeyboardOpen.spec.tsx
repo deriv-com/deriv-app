@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import useIsVirtualKeyboardOpen from '../useIsVirtualKeyboardOpen';
 
 describe('useIsVirtualKeyboardOpen', () => {
-    it('should return false if the field received focus, but the resize event was not triggered', async () => {
+    it('returns false if the field received focus, but the resize event was not triggered', async () => {
         render(<input type='number' />);
         const { result } = renderHook(() => useIsVirtualKeyboardOpen('test'));
 

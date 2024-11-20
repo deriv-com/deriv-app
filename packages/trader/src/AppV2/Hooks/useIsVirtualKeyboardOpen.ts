@@ -6,6 +6,7 @@ const useIsVirtualKeyboardOpen = (target_id: string) => {
     const [is_focus, setIsFocus] = React.useState(false);
     const [is_open, setIsOpen] = React.useState(false);
 
+    // A ratio of available screen space to all space, which corresponds with opened virtual keyboard
     const RATIO = 0.75;
 
     React.useEffect(() => {

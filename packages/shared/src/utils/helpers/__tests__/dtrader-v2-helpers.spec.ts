@@ -1,4 +1,3 @@
-import { describe, beforeEach, afterEach, it, expect } from '@jest/globals';
 import { routes } from '../../routes';
 import {
     getPositionsV2TabIndexFromURL,

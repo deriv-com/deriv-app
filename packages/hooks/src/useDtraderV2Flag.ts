@@ -24,7 +24,7 @@ const useDtraderV2Flag = () => {
             setDtraderV2EnabledDesktop(is_dtrader_v2_desktop);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_mobile, is_growthbook_loaded]);
+    }, [is_mobile, is_growthbook_loaded, is_desktop]);
 
     return { dtrader_v2_enabled_mobile, dtrader_v2_enabled_desktop, load_dtrader_module };
 };

@@ -46,7 +46,7 @@ const AppContents = observer(({ children }) => {
         featureFlag: 'dtrader_v2_enabled',
     });
     const [dtrader_v2_enabled_desktop] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_desktop',
+        featureFlag: 'dtrader_v2_enabled_desktop',
     });
 
     React.useEffect(() => {

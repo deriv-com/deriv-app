@@ -231,7 +231,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard account')).toBeInTheDocument();
     });
 
     it('renders default content for demo account', () => {
@@ -242,7 +242,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your demo Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard demo account')).toBeInTheDocument();
     });
 
     it('renders WalletError for account creation errors', () => {

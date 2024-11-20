@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
-import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
@@ -16,6 +15,7 @@ import { TradingAccountCard } from '../TradingAccountCard';
 import { WalletDisabledAccountModal } from '../WalletDisabledAccountModal';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
+import { WalletMoney } from '../WalletMoney';
 import { WalletStatusBadge } from '../WalletStatusBadge';
 
 type TDerivAppsTradingAccountButtonContent = {
@@ -91,9 +91,7 @@ const AccountBalance: React.FC<{ activeTradingAccount: THooks.TActiveLinkedToTra
         />
     ) : (
         <Text align='start' size='sm' weight='bold'>
-            {displayMoney(balance, activeTradingAccount?.currency_config?.display_code, {
-                fractional_digits: activeTradingAccount?.currency_config?.fractional_digits,
-            })}
+            <WalletMoney amount={balance} currency={activeTradingAccount?.currency_config?.display_code} />
         </Text>
     );
 };
@@ -111,7 +109,7 @@ const DerivAppsTradingAccount = () => {
 
     const shouldHideBalance =
         isLoading ||
-        (isEuRegion && mfAccountStatusDetails.mfAccountStatus) ||
+        (isEuRegion && !activeLinkedToTradingAccount?.is_virtual && mfAccountStatusDetails.mfAccountStatus) ||
         activeLinkedToTradingAccount?.is_disabled;
 
     return (

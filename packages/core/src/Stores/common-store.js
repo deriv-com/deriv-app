@@ -39,6 +39,7 @@ export default class CommonStore extends BaseStore {
             has_error: observable,
             init: action.bound,
             is_from_derivgo: computed,
+            is_from_tradershub_v2: computed,
             is_language_changing: observable,
             is_network_online: observable,
             is_socket_opened: observable,
@@ -174,6 +175,10 @@ export default class CommonStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get is_from_outside_cashier() {
         return !window.location.pathname.startsWith(routes.cashier);
+    }
+
+    get is_from_tradershub_v2() {
+        return platforms[this.platform]?.platform_name === platforms.tradershub_v2.platform_name;
     }
 
     setInitialRouteHistoryItem(location) {

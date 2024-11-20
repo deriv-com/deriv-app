@@ -44,7 +44,7 @@ const AccountSignup = ({
 
     const [is_tracking_signup_errors] = useGrowthbookGetFeatureValue({
         featureFlag: 'signup_flow_error',
-        defaultValue: false,
+        defaultValue: true,
     });
 
     const checkResidenceIsBrazil = selected_country =>

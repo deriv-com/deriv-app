@@ -2,15 +2,15 @@ import React from 'react';
 import type { TWebSocket } from 'Types';
 import initStore from 'App/init-store';
 import type { TCoreStores } from '@deriv/stores/types';
-import ModulesProvider from 'Stores/Providers/modules-providers';
-import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
 import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
+import ModulesProvider from 'Stores/Providers/modules-providers';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
-import { sendDtraderV2OpenToAnalytics } from '../Analytics';
 import Layouts from './Layouts';
+import TraderProviders from '../trader-providers';
+import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import { sendDtraderV2OpenToAnalytics } from '../Analytics';
 
 type Apptypes = {
     passthrough: {

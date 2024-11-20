@@ -1,12 +1,12 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
-import TraderProviders from '../../../../trader-providers';
-import ModulesProvider from 'Stores/Providers/modules-providers';
-import { TRADE_TYPES } from '@deriv/shared';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
+import ModulesProvider from 'Stores/Providers/modules-providers';
+import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import TraderProviders from '../../../../trader-providers';
 import TradeMobile from '../trade-mobile';
 
 const mock_contract_data = {

@@ -180,10 +180,10 @@ export const isDtraderV2MobileEnabled = (is_mobile: boolean) => {
 };
 
 export const isDtraderV2DesktopEnabled = (is_desktop: boolean) => {
-    const dtrader_v2_desktop_gb = Analytics?.getFeatureValue('dtrader_v2_desktop', false);
+    const dtrader_v2_enabled_desktop_gb = Analytics?.getFeatureValue('dtrader_v2_enabled_desktop', false);
     const is_dtrader_v2_desktop =
         JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2_desktop ||
-        dtrader_v2_desktop_gb;
+        dtrader_v2_enabled_desktop_gb;
 
     return (
         is_dtrader_v2_desktop &&

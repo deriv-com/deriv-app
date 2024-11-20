@@ -492,7 +492,7 @@ export default class TradersHubStore extends BaseStore {
         }, {});
 
         const getFilteredAccounts = () => {
-            if (this.is_low_risk_cr_eu_real) {
+            if (this.content_flag === ContentFlag.LOW_RISK_CR_EU) {
                 const existing_account = this.root_store.client.mt5_login_list.filter(
                     account => account.landing_company_short === this.root_store.client.landing_company_shortcode
                 );

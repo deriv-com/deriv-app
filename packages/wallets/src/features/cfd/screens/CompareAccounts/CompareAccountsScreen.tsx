@@ -28,8 +28,10 @@ const CompareAccountsScreen = () => {
                 <CompareAccountsCarousel isRtl={isRtl}>
                     {/* Renders MT5 data */}
                     {mt5Accounts
-                        //@ts-expect-error needs backend type
-                        ?.filter(mt5Account => mt5Account.is_default_jurisdiction === 'true')
+                        ?.filter(
+                            //@ts-expect-error needs backend type
+                            mt5Account => mt5Account.is_default_jurisdiction === 'true' && mt5Account.product !== 'gold'
+                        )
                         .map((item, index) => (
                             <CompareAccountsCard
                                 account={item}

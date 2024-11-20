@@ -53,21 +53,14 @@ const TakeProfitAndStopLossInput = ({
         trade_types,
         trade_type_tab,
         onChangeMultiple,
-        proposal_info,
         validation_params,
-        validation_errors,
     } = trade_store;
 
     const is_take_profit_input = type === 'take_profit';
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     // For tracking errors, that are coming from proposal for take profit and stop loss
-    const { message } = useTradeParamError({
-        proposal_info,
-        contract_type: contract_types[0],
-        validation_errors,
-        trade_params: [type],
-    });
+    const { message } = useTradeParamError({ trade_params: [type] });
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);

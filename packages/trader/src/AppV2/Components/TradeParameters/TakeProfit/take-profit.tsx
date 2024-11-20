@@ -11,30 +11,10 @@ import TakeProfitAndStopLossInput from '../RiskManagement/take-profit-and-stop-l
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { TTradeParametersProps } from '../trade-parameters';
 import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
-import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
-    const {
-        currency,
-        contract_type,
-        has_open_accu_contract,
-        has_take_profit,
-        is_market_closed,
-        take_profit,
-        trade_types,
-        trade_type_tab,
-        proposal_info,
-        validation_errors,
-    } = useTraderStore();
-    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-
-    const { is_error_matching_trade_param: has_error } = useTradeParamError({
-        proposal_info,
-        contract_type: contract_types[0],
-        validation_errors,
-        trade_params: ['take_profit'],
-    });
-
+    const { currency, has_open_accu_contract, has_take_profit, is_market_closed, take_profit } = useTraderStore();
+    const { is_error_matching_trade_param: has_error } = useTradeParamError({ trade_params: ['take_profit'] });
     const [is_open, setIsOpen] = React.useState(false);
 
     const onActionSheetClose = React.useCallback(() => setIsOpen(false), []);

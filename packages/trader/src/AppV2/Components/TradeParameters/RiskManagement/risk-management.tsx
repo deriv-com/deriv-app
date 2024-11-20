@@ -12,7 +12,6 @@ import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 import { TTradeParametersProps } from '../trade-parameters';
-import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
 
 const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
@@ -27,19 +26,9 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
         is_market_closed,
         take_profit,
         stop_loss,
-        proposal_info,
-        validation_errors,
-        trade_types,
-        contract_type,
-        trade_type_tab,
     } = useTraderStore();
 
-    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-
     const { is_error_matching_trade_param: has_error } = useTradeParamError({
-        proposal_info,
-        contract_type: contract_types[0],
-        validation_errors,
         trade_params: ['stop_loss', 'take_profit'],
     });
 

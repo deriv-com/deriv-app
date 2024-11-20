@@ -1,24 +1,18 @@
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 export type TTradeParams = 'take_profit' | 'stop_loss';
 
-const useTradeParamError = ({
-    contract_type,
-    proposal_info,
-    trade_params,
-    validation_errors,
-}: {
-    contract_type: string;
-    proposal_info: ReturnType<typeof useTraderStore>['proposal_info'];
-    trade_params: TTradeParams[];
-    validation_errors: ReturnType<typeof useTraderStore>['validation_errors'];
-}) => {
+const useTradeParamError = ({ trade_params }: { trade_params: TTradeParams[] }) => {
+    const { contract_type, proposal_info, validation_errors, trade_type_tab, trade_types } = useTraderStore();
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+
     const {
         has_error: proposal_has_error,
         error_field: proposal_error_field,
         message: proposal_error_message,
-    } = proposal_info?.[contract_type] ?? {};
+    } = proposal_info?.[contract_types[0]] ?? {};
 
     const checkErrorForParam = (param: TTradeParams) => {
         const validation_has_error = validation_errors?.[param]?.length > 0;

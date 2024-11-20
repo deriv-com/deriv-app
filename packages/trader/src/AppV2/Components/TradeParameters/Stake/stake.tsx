@@ -314,6 +314,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             onAction: () => {
                                 if (!stake_error) {
                                     onClose(true);
+                                    onChange({ target: { name: 'amount', value: amount } });
                                 } else {
                                     setShouldShowError(true);
                                 }

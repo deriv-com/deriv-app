@@ -6,7 +6,7 @@ import TradeMobile from './trade-mobile';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
 
-const Trade = observer(() => {
+const Trade = () => {
     const { isMobile } = useDevice();
 
     return (
@@ -16,6 +16,6 @@ const Trade = observer(() => {
             <ClosedMarketMessage />
         </React.Fragment>
     );
-});
+};
 
 export default Trade;

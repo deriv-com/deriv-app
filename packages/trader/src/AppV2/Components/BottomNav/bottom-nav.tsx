@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
 import { useHistory, useLocation } from 'react-router';
 import { routes } from '@deriv/shared';
 import { Navigation } from '@deriv-com/quill-ui';
@@ -16,7 +15,7 @@ type BottomNavProps = {
     bottomNavItems?: BottomNavObject[];
 };
 
-const BottomNav = observer(({ bottomNavItems }: BottomNavProps) => {
+const BottomNav = ({ bottomNavItems }: BottomNavProps) => {
     const history = useHistory();
     const location = useLocation();
 
@@ -26,7 +25,7 @@ const BottomNav = observer(({ bottomNavItems }: BottomNavProps) => {
 
     const handleSelect = (index: number) => {
         setSelectedIndex(index);
-        bottomNavItems && history.push(bottomNavItems[index].path);
+        bottomNavItems?.length && history.push(bottomNavItems[index].path);
     };
 
     return (
@@ -49,6 +48,6 @@ const BottomNav = observer(({ bottomNavItems }: BottomNavProps) => {
             ))}
         </Navigation.Bottom>
     );
-});
+};
 
 export default BottomNav;

@@ -25,7 +25,7 @@ export const MT5PasswordModalFooter = ({ disabled, isLoading, onPrimaryClick, on
                 textSize='sm'
                 variant='outlined'
             >
-                <Localize i18n_default_text='Forgot password?' />
+                <Localize i18n_default_text='Forgot password' />
             </Button>
             <Button
                 disabled={disabled}

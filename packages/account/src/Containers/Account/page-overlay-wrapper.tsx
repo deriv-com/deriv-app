@@ -45,7 +45,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
 
     const onClickClose = React.useCallback(() => {
         if (is_from_tradershub_v2) {
-            window.location.href = 'https://staging-hub.deriv.com/tradershub/cfds';
+            window.location.href = 'https://p2p.deriv.com/';
             return;
         }
         if (location.pathname === shared_routes.passkeys) {

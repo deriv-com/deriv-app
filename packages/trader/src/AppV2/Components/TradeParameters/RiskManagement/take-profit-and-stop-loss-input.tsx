@@ -9,6 +9,8 @@ import { Localize, localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
+import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
@@ -51,10 +53,21 @@ const TakeProfitAndStopLossInput = ({
         trade_types,
         trade_type_tab,
         onChangeMultiple,
+        proposal_info,
         validation_params,
+        validation_errors,
     } = trade_store;
 
     const is_take_profit_input = type === 'take_profit';
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+
+    // For tracking errors, that are coming from proposal for take profit and stop loss
+    const { message } = useTradeParamError({
+        proposal_info,
+        contract_type: contract_types[0],
+        validation_errors,
+        trade_params: [type],
+    });
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);
@@ -63,14 +76,13 @@ const TakeProfitAndStopLossInput = ({
     const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
     const [error_text, setErrorText] = React.useState('');
-    const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? '');
+    const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? message ?? '');
 
     // Refs for handling focusing and bluring input
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
@@ -94,9 +106,24 @@ const TakeProfitAndStopLossInput = ({
         trade_type: Object.keys(trade_types)[0],
     });
 
+    // We need to exclude tp in case if type === sl and vise versa in limit order to validate them independently
+    const proposal_req_without_extra_rm = {
+        ...proposal_req,
+        limit_order: {
+            ...(is_take_profit_input
+                ? { take_profit: is_enabled ? new_input_value : '' }
+                : { stop_loss: is_enabled ? new_input_value : '' }),
+        },
+    };
+
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
-        ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
-        proposal_req,
+        [
+            'proposal',
+            ...Object.entries(new_values).flat().join('-'),
+            Object.keys(trade_types)[0],
+            JSON.stringify(proposal_req),
+        ],
+        proposal_req_without_extra_rm,
         {
             enabled: is_enabled,
         }
@@ -139,15 +166,25 @@ const TakeProfitAndStopLossInput = ({
 
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
-            const { error } = response;
+            const { error, proposal } = response;
 
             const new_error = error?.message ?? '';
-            setErrorText(new_error);
+            const is_error_field_match = error?.details?.field === type;
+            setErrorText(is_error_field_match ? new_error : '');
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-                new_value: new_error,
+                new_value: is_error_field_match ? new_error : '',
             });
 
+            // Recovery for min and max allowed values in case of error
+            if (!info.min_value || !info.max_value) {
+                const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
+                setInfo(info =>
+                    (info.min_value !== min && min) || (info.max_value !== max && max)
+                        ? { min_value: min, max_value: max }
+                        : info
+                );
+            }
             is_api_response_received_ref.current = true;
         };
 

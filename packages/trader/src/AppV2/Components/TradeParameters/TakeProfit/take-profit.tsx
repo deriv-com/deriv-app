@@ -26,11 +26,11 @@ const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
         proposal_info,
         validation_errors,
     } = useTraderStore();
-    const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     const { is_error_matching_trade_param: has_error } = useTradeParamError({
         proposal_info,
-        contract_type: contract_type_object[0],
+        contract_type: contract_types[0],
         validation_errors,
         trade_params: ['take_profit'],
     });

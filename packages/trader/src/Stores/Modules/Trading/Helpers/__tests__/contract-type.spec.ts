@@ -304,8 +304,6 @@ describe('ContractType.getContractValues', () => {
         const symbol = '1HZ100V';
         trade_store.contract_type = 'vanillalongcall';
         trade_store.v2_params_initial_values = { strike: '+1.80' };
-        // trade_store.root_store.ui.is_mobile = true;
-        // trade_store.root_store.ui.is_desktop = true;
         await ContractType.buildContractTypesConfig(symbol);
 
         const result = ContractType.getContractValues(trade_store);

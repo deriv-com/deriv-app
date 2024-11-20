@@ -10,7 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
-import useIsVirtualKeyboardOpen from './keybord-hook';
+import useIsVirtualKeyboardOpen from 'AppV2/Hooks/useIsVirtualKeyboardOpen';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
@@ -126,9 +126,9 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         second_contract_payout,
     });
 
-    // scroll the page when virtual keyboard pop up
+    // scroll the page when a virtual keyboard pop up
     const input_id = 'stake_input';
-    const should_scroll = useIsVirtualKeyboardOpen(input_id);
+    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
 
     React.useEffect(() => {
         if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });

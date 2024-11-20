@@ -9,7 +9,7 @@ import { Localize, localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
-import useIsVirtualKeyboardOpen from '../Stake/keybord-hook';
+import useIsVirtualKeyboardOpen from 'AppV2/Hooks/useIsVirtualKeyboardOpen';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
@@ -197,8 +197,8 @@ const TakeProfitAndStopLossInput = ({
         onActionSheetClose();
     };
 
-    // scroll the page when virtual keyboard pop up
-    const should_scroll = useIsVirtualKeyboardOpen(type);
+    // scroll the page when a virtual keyboard pop up
+    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(type);
 
     React.useEffect(() => {
         if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });

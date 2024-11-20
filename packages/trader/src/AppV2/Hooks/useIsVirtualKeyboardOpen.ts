@@ -36,7 +36,7 @@ const useIsVirtualKeyboardOpen = (target_id: string) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return is_focus && is_open;
+    return { is_key_board_visible: is_focus && is_open };
 };
 
 export default useIsVirtualKeyboardOpen;

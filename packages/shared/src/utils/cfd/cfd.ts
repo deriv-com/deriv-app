@@ -45,7 +45,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp';
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp' | 'gold';
 export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
@@ -67,6 +67,7 @@ export const PRODUCT = {
     STP: 'stp',
     FINANCIAL: 'financial',
     STANDARD: 'standard',
+    GOLD: 'gold',
 } as const;
 
 // * mt5_login_list returns these:
@@ -140,6 +141,8 @@ export const getCFDAccountKey = ({
                 default:
                     return 'financial_demo';
             }
+        } else if (product === PRODUCT.GOLD) {
+            return 'gold';
         }
     }
     return undefined;

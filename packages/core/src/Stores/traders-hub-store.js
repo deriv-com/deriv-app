@@ -645,7 +645,7 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-                if (product === PRODUCT.STP) {
+                if (product === PRODUCT.STP || product === PRODUCT.GOLD) {
                     return key.startsWith(`${platform}.${selected_account_type}.${product}`);
                 } else if (
                     platform === CFD_PLATFORMS.MT5 &&

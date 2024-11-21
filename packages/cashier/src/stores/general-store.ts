@@ -85,7 +85,7 @@ export default class GeneralStore extends BaseStore {
     get is_crypto_provider(): boolean {
         const { currency, website_status } = this.root_store.client;
         //@ts-expect-error we need to update the api-types version
-        return !!website_status?.currencies_config[currency].platform.cashier.includes('crypto');
+        return website_status?.currencies_config[currency].platform.cashier.includes('crypto');
     }
 
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {

@@ -64,7 +64,6 @@ const PersonalDetailsForm = observer(() => {
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    // const isCountryCodeDropdownEnabled = false;
     const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });

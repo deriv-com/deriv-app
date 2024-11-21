@@ -178,7 +178,7 @@ export default class CommonStore extends BaseStore {
     }
 
     get is_from_tradershub_v2() {
-        return platforms[this.platform]?.platform_name === platforms.tradershub_v2.platform_name;
+        return platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name;
     }
 
     setInitialRouteHistoryItem(location) {

@@ -18,6 +18,7 @@ export const DBVI_COMPANY_NAMES = {
     vanuatu: { tnc_url: 'tnc/general-terms.pdf' },
     labuan: { tnc_url: 'tnc/deriv-(fx)-ltd.pdf' },
     svg: { tnc_url: '' },
+    dml: { tnc_url: 'tnc/deriv-mauritius-ltd.pdf' },
 } as const;
 
 export const JURISDICTION_MARKET_TYPES = {

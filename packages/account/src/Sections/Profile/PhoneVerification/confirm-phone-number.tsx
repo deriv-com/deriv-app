@@ -177,6 +177,11 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
         return isCarrierSupportedForWhatsApp ? 'black-white' : 'coral';
     };
 
+    const getSmsButtonTextColor = () => {
+        if (!isCountryCodeDropdownEnabled) return 'black';
+        return isCarrierSupportedForWhatsApp ? 'black' : 'white';
+    };
+
     return (
         <Fragment>
             <Text bold>
@@ -197,6 +202,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                             shortCode={selectedCountryCode?.short_code || short_code_selected}
                             onCodeChange={handleOnChangeCountryCode}
                             value={phone_number}
+                            showFlags={false}
                             label={localize('Phone number')}
                             onChange={handleOnChangePhoneNumber}
                             status={error_message ? 'error' : 'neutral'}
@@ -235,7 +241,7 @@ const ConfirmPhoneNumber = observer(({ show_confirm_phone_number, setOtpVerifica
                             is_phone_otp_timer_loading
                         }
                     >
-                        <Text bold>
+                        <Text color={getSmsButtonTextColor()} bold>
                             <Localize i18n_default_text='Get code via SMS' />
                         </Text>
                     </Button>

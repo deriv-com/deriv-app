@@ -64,6 +64,7 @@ const PersonalDetailsForm = observer(() => {
     const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    // const isCountryCodeDropdownEnabled = false;
     const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
@@ -104,7 +105,7 @@ const PersonalDetailsForm = observer(() => {
         is_global_whatsapp_available,
         legacy_core_countries_list,
         selected_phone_code,
-        is_carriers_supported,
+        selected_country_list,
         updatePhoneSettings,
     } = useGetPhoneNumberList();
 
@@ -154,6 +155,20 @@ const PersonalDetailsForm = observer(() => {
             init();
         }
     }, [invalidate, is_language_changing]);
+
+    const checkForInitialCarriersSupported = () => {
+        const is_sms_carrier_available =
+            selected_country_list?.carriers &&
+            (selected_country_list?.carriers as string[]).includes('sms') &&
+            is_global_sms_available;
+
+        const is_whatsapp_carrier_available =
+            selected_country_list?.carriers &&
+            (selected_country_list?.carriers as string[]).includes('whatsapp') &&
+            is_global_whatsapp_available;
+
+        return is_sms_carrier_available || is_whatsapp_carrier_available;
+    };
 
     const hintMessage = () => {
         if (isPhoneNumberVerificationEnabled) {
@@ -356,7 +371,7 @@ const PersonalDetailsForm = observer(() => {
         states_list,
         is_virtual,
         selected_phone_code,
-        is_carriers_supported,
+        checkForInitialCarriersSupported(),
         isCountryCodeDropdownEnabled
     );
 
@@ -597,8 +612,9 @@ const PersonalDetailsForm = observer(() => {
                                                             !isValid ||
                                                             !stripped_phone_number ||
                                                             is_email_otp_timer_loading ||
-                                                            //@ts-expect-error is_carriers_available is not defined in GetSettings type
-                                                            !values.is_carriers_available
+                                                            (isCountryCodeDropdownEnabled &&
+                                                                //@ts-expect-error is_carriers_available is not defined in GetSettings type
+                                                                !values.is_carriers_available)
                                                         }
                                                         // @ts-expect-error This needs to fixed in VerifyButton component
                                                         values={values}

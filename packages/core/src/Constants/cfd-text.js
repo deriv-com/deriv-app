@@ -21,4 +21,5 @@ export const CFD_TEXT = {
     all_zero_spread_demo: () => localize('Zero Spread Demo'),
     all_swap_free_svg: () => localize('Swap-Free SVG'),
     all_zero_spread_bvi: () => localize('Zero Spread BVI'),
+    gold: () => localize('Gold'),
 };

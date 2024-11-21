@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import WheelPickerMobile, { getTargetIndex } from '../wheel-picker-mobile';
 
 jest.mock('react-swipeable', () => ({

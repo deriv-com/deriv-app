@@ -7,6 +7,7 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import MobileFromWrapper from '../mobile-form-wrapper';
+import { STRATEGIES } from '../../config';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -56,7 +57,12 @@ describe('<MobileFormWrapper />', () => {
 
     it('renders the MobileFormWrapper component', () => {
         const { container } = render(
-            <MobileFromWrapper>
+            <MobileFromWrapper
+                selected_trade_type=''
+                setSelectedTradeType={jest.fn}
+                current_step={0}
+                setCurrentStep={jest.fn}
+            >
                 <div>test</div>
             </MobileFromWrapper>,
             {
@@ -67,24 +73,35 @@ describe('<MobileFormWrapper />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should change the selected strategy', () => {
+    it('should select martingale strategy', async () => {
         mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
         render(
-            <MobileFromWrapper>
+            <MobileFromWrapper
+                selected_trade_type=''
+                setSelectedTradeType={jest.fn}
+                current_step={1}
+                setCurrentStep={jest.fn}
+            >
                 <div>test</div>
             </MobileFromWrapper>,
             {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
-        userEvent.selectOptions(screen.getByRole('combobox'), ['D_ALEMBERT']);
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
+        const strategy = screen.getByText(STRATEGIES.MARTINGALE.label);
+        await userEvent.click(strategy);
+        const run_button = screen.getByText('Run');
+        expect(run_button).toBeInTheDocument();
     });
 
     it('should submit the form', async () => {
         render(
-            <MobileFromWrapper>
+            <MobileFromWrapper
+                selected_trade_type=''
+                setSelectedTradeType={jest.fn}
+                current_step={1}
+                setCurrentStep={jest.fn}
+            >
                 <div>
                     <textarea />
                 </div>
@@ -95,26 +112,7 @@ describe('<MobileFormWrapper />', () => {
         );
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
         const submit_button = screen.getByRole('button', { name: /Run/i });
-        userEvent.click(submit_button);
+        await userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
-    });
-
-    it('should handle the event at the FormTabs component and make the tab bold', async () => {
-        const { container } = render(
-            <MobileFromWrapper>
-                <div>test</div>
-            </MobileFromWrapper>,
-            {
-                wrapper,
-            }
-        );
-
-        const disabled_tab = screen.getByText('Learn more');
-        await waitFor(async () => {
-            userEvent.type(disabled_tab, '{enter}');
-        });
-
-        expect(container).toBeInTheDocument();
-        expect(disabled_tab).toHaveStyle('--text-weight: var(--text-weight-bold)');
     });
 });

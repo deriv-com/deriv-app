@@ -193,8 +193,29 @@ jest.mock('../config', () => ({
         STRATEGY_1_3_2_6: {
             label: '1-3-2-6',
         },
+        ACCUMULATORS_DALEMBERT_ON_STAT_RESET: {
+            label: 'Accumulators D’Alembert on stat reset with tick count take profit',
+        },
         ACCUMULATORS_DALEMBERT: {
-            label: 'Accumulators D’Alembert',
+            label: 'Accumulators D’Alembert with tick count take profit',
+        },
+        ACCUMULATORS_MARTINGALE: {
+            label: 'Accumulators Martingale with tick count take profit',
+        },
+        ACCUMULATORS_MARTINGALE_ON_STAT_RESET: {
+            label: 'Accumulators Martingale on stat reset with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_DALEMBERT: {
+            label: 'Accumulators Reverse D’Alembert with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_MARTINGALE: {
+            label: 'Accumulators Reverse Martingale with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET: {
+            label: 'Accumulators Reverse Martingale on stat reset with tick count take profit',
+        },
+        ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET: {
+            label: 'Accumulators Reverse D’Alembert on stat reset with tick count take profit',
         },
     },
 }));
@@ -231,18 +252,6 @@ describe('<QuickStrategy />', () => {
         });
     });
 
-    it('It should submit the form', async () => {
-        render(<QuickStrategy />, {
-            wrapper,
-        });
-
-        await waitFor(() => {
-            userEvent.click(screen.getByTestId('qs-run-button'));
-        });
-
-        expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
-    });
-
     it('It should close the form on close button click', async () => {
         render(<QuickStrategy />, {
             wrapper,
@@ -252,8 +261,8 @@ describe('<QuickStrategy />', () => {
 
         expect(close_button).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(close_button);
+        await waitFor(async () => {
+            await userEvent.click(close_button);
         });
 
         expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();

@@ -1,7 +1,7 @@
 .announcement-dialog {
     .dc-dialog {
         &__dialog {
-            max-width: none;
+            max-width: calc(440px - 4.8rem);
             max-height: none;
             padding: 0;
 
@@ -27,8 +27,7 @@
         }
 
         &__content {
-            padding: 2.4rem;
-            max-width: 44rem;
+            max-width: unset;
             margin-bottom: 0.5rem;
 
             .open-livechat {
@@ -102,6 +101,11 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        padding: 2.4rem;
+
+        @include mobile-or-tablet-screen {
+            padding: 1.6rem;
+        }
     }
 
     &__body-item {
@@ -122,7 +126,19 @@
         }
     }
 
+    &__image {
+        min-height: 16rem;
+        padding-top: 1.6rem;
+    }
+
+    &__unordered_list {
+        color: var(--text-prominent);
+        list-style: disc;
+        padding: 0 1.6rem;
+    }
+
     &__title {
+        margin-bottom: 1rem;
         &--accumulator_announce {
             text-align: center;
         }

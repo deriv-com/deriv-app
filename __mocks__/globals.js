@@ -20,12 +20,6 @@ jest.mock('@deriv-com/analytics', () => ({
     },
 }));
 
-// default breakpoint to desktop
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    useDevice: () => ({ isDesktop: true }),
-}));
-
 Object.defineProperty(window, 'matchMedia', {
     writable: true,
     value: jest.fn().mockImplementation(query => ({

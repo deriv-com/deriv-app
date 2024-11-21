@@ -2,7 +2,7 @@ import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
-export type TTradeParams = 'take_profit' | 'stop_loss';
+export type TTradeParams = 'take_profit' | 'stop_loss' | 'date_start';
 
 const useTradeParamError = ({ trade_params }: { trade_params: TTradeParams[] }) => {
     const { contract_type, proposal_info, validation_errors, trade_type_tab, trade_types } = useTraderStore();

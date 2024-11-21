@@ -226,10 +226,6 @@ const TakeProfitAndStopLossInput = ({
 
     React.useEffect(() => {
         setFEErrorText(initial_error_text ?? '');
-        updateParentRef({
-            field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-            new_value: initial_error_text ?? '',
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initial_error_text]);
 

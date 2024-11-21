@@ -100,14 +100,12 @@ const TakeProfitAndStopLossInput = ({
     });
 
     // We need to exclude tp in case if type === sl and vise versa in limit order to validate them independently
-    const proposal_req_without_extra_rm = {
-        ...proposal_req,
-        limit_order: {
-            ...(is_take_profit_input
-                ? { take_profit: is_enabled ? new_input_value : '' }
-                : { stop_loss: is_enabled ? new_input_value : '' }),
-        },
-    };
+    if (is_take_profit_input && proposal_req.limit_order?.stop_loss) {
+        delete proposal_req.limit_order.stop_loss;
+    }
+    if (!is_take_profit_input && proposal_req.limit_order?.take_profit) {
+        delete proposal_req.limit_order.take_profit;
+    }
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         [
@@ -116,7 +114,7 @@ const TakeProfitAndStopLossInput = ({
             Object.keys(trade_types)[0],
             JSON.stringify(proposal_req),
         ],
-        proposal_req_without_extra_rm,
+        proposal_req,
         {
             enabled: is_enabled,
         }
@@ -162,7 +160,7 @@ const TakeProfitAndStopLossInput = ({
             const { error, proposal } = response;
 
             const new_error = error?.message ?? '';
-            const is_error_field_match = error?.details?.field === type;
+            const is_error_field_match = error?.details?.field === type || !error?.details?.field;
             setErrorText(is_error_field_match ? new_error : '');
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',

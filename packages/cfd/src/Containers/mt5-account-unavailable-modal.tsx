@@ -15,13 +15,13 @@ const MT5AccountUnavailableModal = observer(() => {
         <Modal
             className='cfd-password-modal'
             is_open={is_account_unavailable_modal_visible}
-            title={localize('Account unavailable')}
+            title={localize('Account temporarily unavailable')}
             toggleModal={() => setAccountUnavailableModal(false)}
             has_close_icon
             width={isDesktop ? '440px' : '328px'}
         >
             <Modal.Body>
-                <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
+                <Localize i18n_default_text='Check back in a few minutes by refreshing the page.' />
             </Modal.Body>
             <Modal.Footer>
                 <Button type='button' onClick={() => setAccountUnavailableModal(false)} secondary medium>

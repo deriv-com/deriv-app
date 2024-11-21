@@ -13,10 +13,10 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ isSe
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
-    const title = isServerMaintenance ? localize('Server Maintenance') : localize('Account Unavailable');
+    const title = isServerMaintenance ? localize('Server Maintenance') : localize('Account temporarily unavailable');
     const content = isServerMaintenance
         ? localize('We’re currently performing server maintenance. Service may be affected.')
-        : localize('The server is temporarily unavailable for this account. We’re working to resolve this.');
+        : localize('Check back in a few minutes by refreshing the page.');
 
     return (
         <div className='wallets-server-maintenance'>

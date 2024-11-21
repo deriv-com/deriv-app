@@ -3,7 +3,7 @@ import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks, TWalletLandingCompanyName } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
-import { getAccountName, getLandingCompanyNameOfMT5Account, getMarketType } from '../../../helpers';
+import { getAccountName, getLandingCompanyNameOfMT5Account } from '../../../helpers';
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */
 const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[]) => {
@@ -21,7 +21,7 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
                 accountType: account.account_type,
                 displayCurrencyCode: currencyConfig?.display_code,
                 landingCompanyName: activeWallet?.landing_company_name as TWalletLandingCompanyName,
-                mt5MarketType: getMarketType(account.mt5_group),
+                mt5MarketType: account.market_type,
                 product: account.product,
             });
             const displayBalance = displayMoney(Number(account.balance), currencyConfig?.display_code, {

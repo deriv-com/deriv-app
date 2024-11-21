@@ -37,8 +37,8 @@ const WalletGradientBackground: React.FC<TProps> = ({
 
     const IconWrapper = () => (
         <div className='wallets-gradient__icon-pattern'>
-            {/* Array value represents the max number of visible icons for different screen sizes
-            4 rows of 25 icons for desktop, 3 rows of 20 icons for mobile/tablet */}
+            {/* Array value represents the max number of visible icons for different screen sizes */}
+            {/* 4 rows of 25 icons for desktop, 3 rows of 20 icons for mobile/tablet */}
             {[...Array(device === 'desktop' ? 100 : 60)].map((_, index) => (
                 <PaymentMethodDerivDemoWhiteIcon
                     className='wallets-gradient__icon'

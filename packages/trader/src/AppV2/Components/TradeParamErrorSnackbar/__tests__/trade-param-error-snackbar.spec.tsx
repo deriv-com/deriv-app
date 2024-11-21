@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { useSnackbar } from '@deriv-com/quill-ui';
 import TraderProviders from '../../../../trader-providers';

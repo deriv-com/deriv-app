@@ -17,10 +17,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     redirectToLogin: jest.fn(),
-}));
-jest.mock('AppV2/Hooks/useSignupTrigger', () => ({
-    ...jest.requireActual('AppV2/Hooks/useSignupTrigger'),
-    useSignupTrigger: jest.fn(() => ({ handleSignup: jest.fn() })),
+    redirectToSignUp: jest.fn(),
 }));
 
 describe('ServiceErrorSheet', () => {

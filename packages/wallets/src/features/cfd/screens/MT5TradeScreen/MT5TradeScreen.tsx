@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
@@ -27,6 +27,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const mt5Platform = CFD_PLATFORMS.MT5;
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
@@ -36,9 +37,11 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const platform = getModalState('platform') ?? mt5Platform;
 
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
-    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(localize, mt5Account?.product)[
-        marketType ?? 'all'
-    ];
+    const { icon: marketTypeIcon, title: marketTypeTitle } = getMarketTypeDetails(
+        localize,
+        mt5Account?.product,
+        isEuRegion
+    )[marketType ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -96,7 +99,8 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         'product' in details &&
         //@ts-expect-error needs backend type
         details.product !== 'stp' &&
-        details.landing_company_name !== 'labuan';
+        details.landing_company_name !== 'labuan' &&
+        !isEuRegion;
 
     const migrationMessage = useMemo(() => {
         if (platform === mt5Platform && !activeWalletData?.is_virtual) {

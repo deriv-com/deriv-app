@@ -5,19 +5,16 @@ import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
-import DesktopFormWrapperV2 from './form-wrappers/upgraded-qs-v2/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
-import MobileFormWrapperV2 from './form-wrappers/upgraded-qs-v2/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData, TFormValues } from './types';
 import './quick-strategy.scss';
-import { QsSteps } from './form-wrappers/upgraded-qs-v2/trade-constants';
+import { QsSteps } from './form-wrappers/trade-constants';
 
 type TFormikWrapper = {
     children: React.ReactNode;
@@ -76,8 +73,14 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
             action: data?.action ?? 'RUN',
             max_stake: data?.max_stake ?? 10,
-            boolean_max_stake: data?.boolean_max_stake || false,
+            boolean_max_stake: data?.boolean_max_stake ?? false,
             last_digit_prediction: data?.last_digit_prediction ?? 1,
+            growth_rate: data?.growth_rate ?? '0.01',
+            tick_count: data?.tick_count ?? 0,
+            take_profit: data?.take_profit ?? 0,
+            boolean_tick_count: data?.boolean_tick_count ?? false,
+            max_payout: data?.max_payout ?? 0,
+            max_ticks: data?.max_ticks ?? 0,
         };
         return initial_value;
     };
@@ -93,13 +96,15 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getErrors = (formikData: TFormData) => {
+    const updateSchema = (formikData: TFormData) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
-            group.forEach(field => {
+            group.forEach(async field => {
                 if (field?.validation?.length && field?.name) {
                     if (field.validation.includes('number')) {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
                         let min = 0;
                         let max = 10;
@@ -178,7 +183,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        getErrors(form_data);
+        updateSchema(form_data);
         localStorage?.setItem('qs-fields', JSON.stringify(form_data));
         return form_data;
     };
@@ -188,7 +193,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             initialValues={getInitialValue()}
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
-            validate={values => getErrors(values)}
+            validate={values => updateSchema(values)}
             validateOnChange={false}
         >
             {children}
@@ -197,7 +202,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 });
 
 const QuickStrategy = observer(() => {
-    const { is_next_qs_enabled } = useFeatureFlags();
     const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
     const { is_desktop } = ui;
@@ -231,56 +235,38 @@ const QuickStrategy = observer(() => {
                 <LossThresholdWarningDialog />
                 {is_desktop ? (
                     <Modal className='modal--strategy' is_open={is_open} width='72rem'>
-                        {is_next_qs_enabled ? (
-                            <DesktopFormWrapperV2
-                                onClickClose={handleClose}
-                                setCurrentStep={setCurrentStep}
-                                current_step={current_step}
-                                selected_trade_type={selected_trade_type}
-                                setSelectedTradeType={setSelectedTradeType}
-                            >
-                                <Form />
-                            </DesktopFormWrapperV2>
-                        ) : (
-                            <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
-                                <Form />
-                            </DesktopFormWrapper>
-                        )}
+                        <DesktopFormWrapper
+                            onClickClose={handleClose}
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
+                            <Form />
+                        </DesktopFormWrapper>
                     </Modal>
                 ) : (
                     <MobileFullPageModal
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
                         header={
-                            is_next_qs_enabled ? (
-                                <Text size='xs' weight='bold'>
-                                    {localize(
-                                        `Step ${
-                                            current_step === QsSteps.StrategyCompleted ? 2 : 1
-                                        }/2: Choose your strategy`
-                                    )}
-                                </Text>
-                            ) : (
-                                localize('Quick Strategy')
-                            )
+                            <Text size='xs' weight='bold'>
+                                {localize(
+                                    `Step ${current_step === QsSteps.StrategyCompleted ? 2 : 1}/2: Choose your strategy`
+                                )}
+                            </Text>
                         }
                         onClickClose={handleClose}
                         height_offset='8rem'
                     >
-                        {is_next_qs_enabled ? (
-                            <MobileFormWrapperV2
-                                setCurrentStep={setCurrentStep}
-                                current_step={current_step}
-                                selected_trade_type={selected_trade_type}
-                                setSelectedTradeType={setSelectedTradeType}
-                            >
-                                <Form />
-                            </MobileFormWrapperV2>
-                        ) : (
-                            <MobileFormWrapper active_tab_ref={active_tab_ref}>
-                                <Form />
-                            </MobileFormWrapper>
-                        )}
+                        <MobileFormWrapper
+                            setCurrentStep={setCurrentStep}
+                            current_step={current_step}
+                            selected_trade_type={selected_trade_type}
+                            setSelectedTradeType={setSelectedTradeType}
+                        >
+                            <Form />
+                        </MobileFormWrapper>
                     </MobileFullPageModal>
                 )}
             </FormikForm>

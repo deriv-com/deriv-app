@@ -480,7 +480,7 @@ export default class UIStore extends BaseStore {
         this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
-    setIsForcedToExitPnv(is_forced_to_exit_pnv) {
+    async setIsForcedToExitPnv(is_forced_to_exit_pnv) {
         this.is_forced_to_exit_pnv = is_forced_to_exit_pnv;
     }
 

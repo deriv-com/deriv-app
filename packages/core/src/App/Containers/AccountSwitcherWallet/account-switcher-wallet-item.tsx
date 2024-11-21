@@ -30,7 +30,7 @@ export const AccountSwitcherWalletItem = observer(
 
         const {
             ui: { is_dark_mode_on },
-            client: { switchAccount, loginid: active_loginid },
+            client: { switchAccount, loginid: active_loginid, is_eu },
         } = useStore();
 
         const theme = is_dark_mode_on ? 'dark' : 'light';
@@ -70,7 +70,11 @@ export const AccountSwitcherWalletItem = observer(
                 </div>
                 <div className='acc-switcher-wallet-item__content'>
                     <Text size='xxxs'>
-                        <Localize i18n_default_text='Options' />
+                        {is_eu ? (
+                            <Localize i18n_default_text='Multipliers' />
+                        ) : (
+                            <Localize i18n_default_text='Options' />
+                        )}
                     </Text>
                     <Text size='xxxs'>
                         {is_virtual ? (

@@ -39,7 +39,7 @@ const Digit = ({ digit, digit_stats = [], is_active, is_disabled, is_max, is_min
                     {display_percentage}%
                 </CaptionText>
             ) : (
-                <Skeleton.Square width={36} height={18} rounded />
+                <Skeleton.Square width={36} height={12} rounded />
             )}
         </div>
     );

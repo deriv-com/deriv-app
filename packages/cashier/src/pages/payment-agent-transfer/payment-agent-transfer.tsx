@@ -14,7 +14,7 @@ import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
-    const { balance, is_virtual } = client;
+    const { balance, is_virtual, is_switching } = client;
     const { general_store, payment_agent_transfer } = useCashierStore();
     const { is_loading } = general_store;
     const is_cashier_locked = useCashierLocked();
@@ -45,7 +45,7 @@ const PaymentAgentTransfer = observer(() => {
             </PageContainer>
         );
     }
-    if (is_loading) {
+    if (is_loading || is_switching) {
         return (
             <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <Loading className='cashier__loader' is_fullscreen={false} />

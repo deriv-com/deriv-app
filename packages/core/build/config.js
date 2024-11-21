@@ -8,15 +8,15 @@ const gitRevisionPlugin = new GitRevisionPlugin();
 const copyConfig = base => {
     const patterns = [
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/css/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/bot-web-ui/dist/bot/css/'),
             to: 'bot/css/',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/bot-web-ui/dist/bot/media/'),
             to: 'media',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/bot-web-ui/dist/bot/js/'),
             to: 'bot/js/',
         },
         {
@@ -36,59 +36,56 @@ const copyConfig = base => {
             to: 'bot/assets',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/account/dist/account/css/'),
             to: 'account/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/cashier/dist/cashier/js/'),
             to: 'cashier/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/cashier/dist/cashier/css/'),
             to: 'cashier/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/js/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/p2p/dist/p2p/js/'),
             to: 'p2p/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/p2p/dist/p2p/css/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/p2p/dist/p2p/css/'),
             to: 'p2p/css',
             noErrorOnMissing: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/cashier/dist/cashier/public'),
             to: 'cashier/public',
-            transformPath(context) {
-                return context.split('node_modules/@deriv/cashier/dist/')[1];
-            },
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/reports/dist/reports/js/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/reports/dist/reports/js/'),
             to: 'reports/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/reports/dist/reports/css/'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/reports/dist/reports/css/'),
             to: 'reports/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cfd/dist/cfd'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/cfd/dist/cfd'),
             to: 'cfd',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/appstore/dist/appstore'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/appstore/dist/appstore'),
             to: 'appstore',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/wallets/dist/wallets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/wallets/dist/wallets'),
             to: 'wallets',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
@@ -141,7 +138,7 @@ const copyConfig = base => {
         },
         { from: path.resolve(__dirname, '../src/public/images/app/header/'), to: 'public/images/app/header/' },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/components/lib/icon/sprites'),
             to: 'public/sprites',
             toType: 'dir',
         },

@@ -32,12 +32,12 @@ const Trade = observer(() => {
         active_symbols,
         contract_type,
         has_cancellation,
-        symbol,
         is_accumulator,
         is_market_closed,
-        onMount,
         onChange,
+        onMount,
         onUnmount,
+        symbol,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {

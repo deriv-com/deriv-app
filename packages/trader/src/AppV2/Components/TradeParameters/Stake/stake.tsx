@@ -98,7 +98,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         is_max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
             : 0;
-    const { payout, stake } = validation_params[contract_types[0]] ?? {};
+    const { payout, stake } = validation_params[contract_types[0]] ?? validation_params[contract_types[1]] ?? {};
     const { max: max_payout = error_max_payout } = payout ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
     const error_payout_1 = proposal_error_message_1

@@ -60,6 +60,8 @@ const DMT5TradeModal = observer(
                     return 'Zero Spread';
                 case PRODUCT.STP:
                     return 'Financial STP';
+                case PRODUCT.GOLD:
+                    return 'Gold';
                 default:
                     return show_eu_related_content ? 'CFDs' : 'Financial';
             }

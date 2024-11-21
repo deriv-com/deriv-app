@@ -1342,11 +1342,6 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
-                if (this.is_dtrader_v2_enabled)
-                    this.setV2ParamsInitialValues({
-                        value: obj_new_values.amount ?? '',
-                        name: 'stake',
-                    });
             }
             this.currency = obj_new_values.currency ?? '';
         }
@@ -1373,10 +1368,6 @@ export default class TradeStore extends BaseStore {
             if (has_symbol_changed || has_contract_type_changed) {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
-                this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
-                    name: 'stake',
-                });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
             }
             if (has_contract_type_changed) {

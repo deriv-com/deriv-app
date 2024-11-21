@@ -28,7 +28,8 @@ const useContractsForCompany = () => {
     const [contract_types_list, setContractTypesList] = React.useState<TContractTypesList | []>([]);
 
     const [trade_types, setTradeTypes] = React.useState<TContractType[]>([]);
-    const { contract_type, onChange, setContractTypesListV2, processContractsForV2, symbol } = useTraderStore();
+    const { contract_type, onChange, setContractTypesListV2, setDefaultStake, processContractsForV2, symbol } =
+        useTraderStore();
     const { client } = useStore();
     const { loginid, is_switching, landing_company_shortcode } = client;
     const prev_landing_company_shortcode_ref = React.useRef(landing_company_shortcode);
@@ -151,7 +152,7 @@ const useContractsForCompany = () => {
                             ? 'euro_atm'
                             : (contract.barrier_category as TConfig['barrier_category']);
                     config.default_stake = contract.default_stake;
-
+                    if (type === contract_type) setDefaultStake(contract.default_stake);
                     available_contract_types[type].config = config;
                 });
 

@@ -5,8 +5,8 @@ import { routes } from '@deriv/shared';
 import { Navigation } from '@deriv-com/quill-ui';
 
 type BottomNavObject = {
-    icon: React.JSX.Element;
-    activeIcon: React.JSX.Element;
+    icon: React.ReactNode;
+    activeIcon: React.ReactNode;
     label: React.JSX.Element;
     path: string;
 };

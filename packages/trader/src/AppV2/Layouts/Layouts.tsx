@@ -20,7 +20,26 @@ const Layouts = observer(() => {
     const { active_positions_count } = portfolio;
     const { isMobile } = useDevice();
 
-    const bottomNavItems = [
+    const getIconWithBadge = (icon: React.ReactNode, active_positions_count: number) => {
+        if (active_positions_count > 0) {
+            return (
+                <Badge
+                    variant='notification'
+                    position='top-right'
+                    label={active_positions_count.toString()}
+                    color='danger'
+                    size='sm'
+                    contentSize='sm'
+                    className='bottom-nav-item__position-badge'
+                >
+                    {icon}
+                </Badge>
+            );
+        }
+        return icon;
+    };
+
+    const bottom_nav_items = [
         {
             icon: <StandaloneChartAreaRegularIcon iconSize='sm' />,
             activeIcon: <StandaloneChartAreaFillIcon iconSize='sm' />,
@@ -28,38 +47,8 @@ const Layouts = observer(() => {
             path: routes.trade,
         },
         {
-            icon:
-                active_positions_count > 0 ? (
-                    <Badge
-                        variant='notification'
-                        position='top-right'
-                        label={active_positions_count.toString()}
-                        color='danger'
-                        size='sm'
-                        contentSize='sm'
-                        className='bottom-nav-item__position-badge'
-                    >
-                        <StandaloneClockThreeRegularIcon iconSize='sm' />
-                    </Badge>
-                ) : (
-                    <StandaloneClockThreeRegularIcon iconSize='sm' />
-                ),
-            activeIcon:
-                active_positions_count > 0 ? (
-                    <Badge
-                        variant='notification'
-                        position='top-right'
-                        label={active_positions_count.toString()}
-                        color='danger'
-                        size='sm'
-                        contentSize='sm'
-                        className='bottom-nav-item__position-badge'
-                    >
-                        <StandaloneClockThreeFillIcon iconSize='sm' />
-                    </Badge>
-                ) : (
-                    <StandaloneClockThreeFillIcon iconSize='sm' />
-                ),
+            icon: getIconWithBadge(<StandaloneClockThreeRegularIcon iconSize='sm' />, active_positions_count),
+            activeIcon: getIconWithBadge(<StandaloneClockThreeFillIcon iconSize='sm' />, active_positions_count),
             label: (
                 <React.Fragment>
                     <span className='user-guide__anchor' />
@@ -75,7 +64,7 @@ const Layouts = observer(() => {
     return (
         <div>
             <Router />
-            {should_show_bottomnav && <BottomNav bottomNavItems={bottomNavItems} />}
+            {should_show_bottomnav && <BottomNav bottomNavItems={bottom_nav_items} />}
         </div>
     );
 });

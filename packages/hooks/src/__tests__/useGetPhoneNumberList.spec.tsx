@@ -55,16 +55,16 @@ describe('useGetPhoneNumberList', () => {
 
         expect(result.current.formatted_countries_list).toEqual([
             {
-                name: 'Malaysia',
-                short_code: 'MY',
-                phone_code: '+60',
-                carriers: ['sms', 'whatsapp'],
-            },
-            {
                 name: 'Brazil',
                 short_code: 'BR',
                 phone_code: '+55',
                 carriers: ['whatsapp'],
+            },
+            {
+                name: 'Malaysia',
+                short_code: 'MY',
+                phone_code: '+60',
+                carriers: ['sms', 'whatsapp'],
             },
         ]);
     });
@@ -76,17 +76,17 @@ describe('useGetPhoneNumberList', () => {
 
         expect(result.current.legacy_core_countries_list).toEqual([
             {
-                text: 'Malaysia (+60)',
-                value: '+60',
-                id: '+60_MY',
-                carriers: ['sms', 'whatsapp'],
-                disabled: false,
-            },
-            {
                 text: 'Brazil (+55)',
                 value: '+55',
                 id: '+55_BR',
                 carriers: ['whatsapp'],
+                disabled: false,
+            },
+            {
+                text: 'Malaysia (+60)',
+                value: '+60',
+                id: '+60_MY',
+                carriers: ['sms', 'whatsapp'],
                 disabled: false,
             },
         ]);

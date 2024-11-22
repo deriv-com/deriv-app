@@ -10,7 +10,7 @@ import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
 import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
-import { TReportsStore, useReportsStore } from '@deriv/reports/src/Stores/useReportsStores';
+import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 
 type TPositionsContentProps = Omit<TEmptyPositionsProps, 'noMatchesFound'> & {
     hasButtonsDemo?: boolean;

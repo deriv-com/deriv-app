@@ -2,7 +2,6 @@ import React from 'react';
 import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import TransactionsCompletedDemoResetBalance from '../TransactionsCompletedDemoResetBalance';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),

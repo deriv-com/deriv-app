@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveLinkedToTradingAccount, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -27,6 +27,10 @@ jest.mock('@deriv/api-v2', () => ({
     })),
     useActiveWalletAccount: jest.fn(() => ({
         data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },
+    })),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+        isLoading: false,
     })),
 }));
 
@@ -106,5 +110,24 @@ describe('DerivAppsTradingAccount', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith('/wallet/account-transfer', {
             toAccountLoginId: 'CRW1',
         });
+    });
+    it('shows Options tab when is_eu is false', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: false,
+        });
+        render(<DerivAppsTradingAccount />, { wrapper });
+        expect(screen.getByText('Options')).toBeInTheDocument();
+    });
+
+    it('shows Multipliers tab when is_eu is true', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: true,
+            isLoading: false,
+        });
+        render(<DerivAppsTradingAccount />, { wrapper });
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
     });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
-import { PlatformDetails } from '../../../../constants';
+import { MT5_ACCOUNT_STATUS, PlatformDetails } from '../../../../constants';
 import AddedMT5AccountsList from '../AddedMT5AccountsList';
 import { useAddedMT5Account } from '../hooks';
 
@@ -88,17 +88,11 @@ const mockUseAddedMT5AccountData = {
         ),
         title: 'Financial',
     },
-    isServerMaintenance: false,
-    showClientVerificationModal: false,
+    hasDisabledPlatformStatus: false,
     showMT5TradeModal: true,
-    showPlatformStatus: false,
 };
 
-const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
-    <>
-        <ModalProvider>{children}</ModalProvider>
-    </>
-);
+const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => <ModalProvider>{children}</ModalProvider>;
 
 describe('AddedMT5AccountsList', () => {
     // const mockShow = jest.fn();
@@ -136,7 +130,7 @@ describe('AddedMT5AccountsList', () => {
         expect(badge).toBeInTheDocument();
         expect(mockPropsFn).toBeCalledWith('mockKycStatus');
 
-        userEvent.click(badge);
+        await userEvent.click(badge);
 
         await waitFor(() => {
             expect(screen.getByText('ClientVerificationModal')).toBeInTheDocument();
@@ -146,9 +140,8 @@ describe('AddedMT5AccountsList', () => {
     it('shows the disabled badge when the account MT5 account is disabled', () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
+            hasDisabledPlatformStatus: true,
             isAccountDisabled: true,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
@@ -166,7 +159,7 @@ describe('AddedMT5AccountsList', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
+        await userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
 
         await waitFor(() => {
             expect(screen.getByText('MT5TradeModal')).toBeInTheDocument();
@@ -181,19 +174,19 @@ describe('AddedMT5AccountsList', () => {
     it('shows TradingPlatformStatusModal when platform is under maintenance', async () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
+            hasDisabledPlatformStatus: true,
+            platformStatus: MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
+        await userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
 
         await waitFor(() => {
             expect(screen.getByText('TradingPlatformStatusModal')).toBeInTheDocument();
             expect(mockPropsFn).toBeCalledWith({
-                isServerMaintenance: true,
+                status: 'under_maintenance',
             });
         });
     });
@@ -201,16 +194,15 @@ describe('AddedMT5AccountsList', () => {
     it('shows the WalletDisabledAccountModal when a disabled account MT5 account is clicked', async () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
+            hasDisabledPlatformStatus: true,
             isAccountDisabled: true,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
         render(<AddedMT5AccountsList account={mockAccount} />, { wrapper });
 
-        await waitFor(() => {
-            userEvent.click(screen.getByText('WalletStatusBadge'));
+        await waitFor(async () => {
+            await userEvent.click(screen.getByText('WalletStatusBadge'));
         });
 
         await waitFor(() => {

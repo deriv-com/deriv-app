@@ -1,14 +1,15 @@
 import React from 'react';
 import { ModalWrapper } from '../../../../components/Base';
+import { DISABLED_PLATFORM_STATUSES } from '../../constants';
 import { TradingPlatformStatus } from '../../screens';
 
 type TradingPlatformStatusModalProps = {
-    isServerMaintenance?: boolean;
+    status: typeof DISABLED_PLATFORM_STATUSES[number];
 };
 
-const TradingPlatformStatusModal: React.FC<TradingPlatformStatusModalProps> = ({ isServerMaintenance = false }) => (
+const TradingPlatformStatusModal: React.FC<TradingPlatformStatusModalProps> = ({ status }) => (
     <ModalWrapper>
-        <TradingPlatformStatus isServerMaintenance={isServerMaintenance} />
+        <TradingPlatformStatus status={status} />
     </ModalWrapper>
 );
 

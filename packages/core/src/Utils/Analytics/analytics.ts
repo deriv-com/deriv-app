@@ -48,6 +48,7 @@ const cacheTrackEvents = {
         const instances = Analytics?.getInstances();
         return !!instances?.tracking;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseCookies: (cookieName: string): any => {
         const cookies: { [key: string]: string } = document.cookie
             .split('; ')
@@ -89,6 +90,7 @@ const cacheTrackEvents = {
         return event;
     },
     track: (originalEvent: Event, cache?: boolean) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const event: any = cacheTrackEvents.processEvent(originalEvent);
         if (cacheTrackEvents.isReady() && !cache) {
             Analytics?.trackEvent(event.name, event.properties);

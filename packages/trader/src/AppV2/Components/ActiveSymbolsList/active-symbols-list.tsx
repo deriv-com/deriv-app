@@ -13,7 +13,7 @@ type TActiveSymbolsList = {
 };
 
 const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
-    const { setTickData, symbol, contract_type } = useTraderStore();
+    const { setTickData, setDigitStats, symbol, contract_type } = useTraderStore();
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(symbol);
     const [searchValue, setSearchValue] = useState('');
@@ -23,7 +23,8 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     useEffect(() => {
         setSelectedSymbol(symbol);
         setTickData(null);
-    }, [setTickData, symbol]);
+        setDigitStats([]);
+    }, [setDigitStats, setTickData, symbol]);
 
     return (
         <React.Fragment>

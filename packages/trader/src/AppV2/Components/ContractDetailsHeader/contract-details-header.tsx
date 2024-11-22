@@ -24,7 +24,7 @@ const ContractDetailsHeader = observer(() => {
             <React.Suspense fallback={<div />}>
                 <IconButton
                     variant='tertiary'
-                    icon={<LabelPairedArrowLeftSmBoldIcon height='22px' width='13px' data-testid='arrow' />}
+                    icon={<LabelPairedArrowLeftSmBoldIcon height='22px' width='13px' data-testid='arrow' key='arrow' />}
                     className='arrow'
                     color='black-white'
                     onClick={handleBack}

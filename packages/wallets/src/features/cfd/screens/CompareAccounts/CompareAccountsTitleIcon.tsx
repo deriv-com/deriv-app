@@ -1,8 +1,8 @@
 import React from 'react';
 import { useIsEuRegion } from '@deriv/api-v2';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text, Tooltip } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
 import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
@@ -106,7 +106,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, short
                             tooltipContent={labuanJurisdictionMessage}
                             tooltipPosition='bottom-start'
                         >
-                            <InfoIcon />
+                            <LegacyInfo1pxIcon width={16} />
                         </Tooltip>
                     )}
                 </div>

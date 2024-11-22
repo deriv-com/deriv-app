@@ -1,7 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { DBVI_COMPANY_NAMES } from '@deriv/shared';
 import { useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 
 type CfdPasswordModalInfoProps = {

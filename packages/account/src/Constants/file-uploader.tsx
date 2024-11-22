@@ -25,7 +25,7 @@ export const getFileUploaderDescriptions = (page: string, is_eu?: boolean): TFil
     const proof_of_address_descriptions = {
         title: (
             <Localize
-                i18n_default_text='We accept only the following documents as proof of address. The document must be issued within the last {{expiry_in_months}} months and include your full name and address:'
+                i18n_default_text='Upload an original (unaltered) document that clearly shows your name and address, issued within the past {{expiry_in_months}} months. We accept:'
                 values={{ expiry_in_months: is_eu ? 6 : 12 }}
             />
         ),

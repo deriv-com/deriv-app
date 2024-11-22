@@ -57,7 +57,14 @@ const TradersHub = observer(() => {
     } = client;
 
     const { is_eu_demo, is_eu_real } = useContentFlag();
-    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
+    const {
+        selected_platform_type,
+        setTogglePlatformType,
+        is_eu_user,
+        combined_cfd_mt5_accounts,
+        available_ctrader_accounts,
+        available_dxtrade_accounts,
+    } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
@@ -95,9 +102,12 @@ const TradersHub = observer(() => {
         setTogglePlatformType(event.target.value);
     };
     if (!is_logged_in) return null;
+    const is_cfd_accounts_supported =
+        combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
+    const should_show_cfd_section = !!(is_mt5_allowed && is_cfd_accounts_supported);
 
     const getOrderedPlatformSections = () => {
-        if (is_mt5_allowed) {
+        if (should_show_cfd_section) {
             return (
                 <OrderedPlatformSections
                     is_cfd_visible={selected_platform_type === 'cfd'}
@@ -111,13 +121,13 @@ const TradersHub = observer(() => {
     const desktopContent = !is_landing_company_loaded ? (
         <OrderedPlatformSections />
     ) : (
-        <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
+        <OrderedPlatformSections is_cfd_visible={should_show_cfd_section} />
     );
 
     const mobileTabletContent = (
         <React.Fragment>
             {is_landing_company_loaded ? (
-                is_mt5_allowed && (
+                should_show_cfd_section && (
                     <ButtonToggle
                         buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                         className='traders-hub__button-toggle'
@@ -131,7 +141,7 @@ const TradersHub = observer(() => {
             ) : (
                 <ButtonToggleLoader />
             )}
-            {is_landing_company_loaded && !is_mt5_allowed && (
+            {is_landing_company_loaded && !should_show_cfd_section && (
                 <div className='traders-hub--mt5-not-allowed'>
                     <Text size='s' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Multipliers' />
@@ -151,8 +161,8 @@ const TradersHub = observer(() => {
                 <div
                     id='traders-hub'
                     className={classNames('traders-hub', {
-                        'traders-hub--eu-user': is_eu_user && is_mt5_allowed,
-                        'traders-hub--eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
+                        'traders-hub--eu-user': is_eu_user && should_show_cfd_section,
+                        'traders-hub--eu-user-without-mt5': is_eu_user && !should_show_cfd_section,
                     })}
                     ref={traders_hub_ref}
                 >

@@ -1,14 +1,13 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
-import TraderProviders from '../../../../trader-providers';
-import ModulesProvider from 'Stores/Providers/modules-providers';
-import Trade from '../trade';
-import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
 import { Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
+import { render, screen } from '@testing-library/react';
+import { mockStore } from '@deriv/stores';
+import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import ModulesProvider from 'Stores/Providers/modules-providers';
+import TraderProviders from '../../../../trader-providers';
+import Trade from '../trade';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -117,11 +116,9 @@ describe('Trade', () => {
         return (
             <Router history={history}>
                 <TraderProviders store={default_mock_store}>
-                    <ReportsStoreProvider>
-                        <ModulesProvider store={default_mock_store}>
-                            <Trade />
-                        </ModulesProvider>
-                    </ReportsStoreProvider>
+                    <ModulesProvider store={default_mock_store}>
+                        <Trade />
+                    </ModulesProvider>
                 </TraderProviders>
             </Router>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';

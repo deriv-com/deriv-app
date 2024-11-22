@@ -138,12 +138,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
 
     React.useEffect(() => {
-        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled) {
+        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && is_client_store_initialized) {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled]);
+    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled, is_client_store_initialized]);
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>

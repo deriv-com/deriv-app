@@ -133,7 +133,10 @@ const WalletListCardDropdown = () => {
                                         <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
                                         <div className='wallets-listcard-dropdown__list-content'>
                                             <Text align='start' size='2xs'>
-                                                {wallet.currency} Wallet
+                                                <Localize
+                                                    i18n_default_text='{{currency}} Wallet'
+                                                    values={{ currency: wallet.currency }}
+                                                />
                                             </Text>
                                             {isBalanceLoading ? (
                                                 <div

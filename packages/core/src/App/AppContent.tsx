@@ -1,9 +1,11 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 
 import { useRemoteConfig } from '@deriv/api';
 import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat, useOauth2 } from '@deriv/hooks';
 import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -129,6 +131,19 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     ]);
 
     const isCallBackPage = window.location.pathname.includes('callback');
+
+    const isLoggedInCookie = Cookies.get('logged_state') === 'true';
+
+    const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+
+    React.useEffect(() => {
+        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled) {
+            requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
+        }
+    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled]);
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>

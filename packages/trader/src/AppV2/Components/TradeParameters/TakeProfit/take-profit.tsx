@@ -10,11 +10,11 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TakeProfitAndStopLossInput from '../RiskManagement/take-profit-and-stop-loss-input';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { TTradeParametersProps } from '../trade-parameters';
-import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 
 const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
     const { currency, has_open_accu_contract, has_take_profit, is_market_closed, take_profit } = useTraderStore();
-    const { is_error_matching_trade_param: has_error } = useTradeParamError({ trade_params: ['take_profit'] });
+    const { is_error_matching_field: has_error } = useTradeError({ error_fields: ['take_profit'] });
     const [is_open, setIsOpen] = React.useState(false);
 
     const onActionSheetClose = React.useCallback(() => setIsOpen(false), []);

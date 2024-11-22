@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { useSnackbar } from '@deriv-com/quill-ui';
 import TraderProviders from '../../../../trader-providers';
-import TradeParamErrorSnackbar from '../trade-param-error-snackbar';
+import TradeErrorSnackbar from '../trade-error-snackbar';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 
 jest.mock('@deriv-com/quill-ui', () => ({
@@ -11,9 +11,9 @@ jest.mock('@deriv-com/quill-ui', () => ({
     useSnackbar: jest.fn(),
 }));
 
-describe('TradeParamErrorSnackbar', () => {
+describe('TradeErrorSnackbar', () => {
     let default_mock_store: ReturnType<typeof mockStore>,
-        default_mock_props: React.ComponentProps<typeof TradeParamErrorSnackbar>;
+        default_mock_props: React.ComponentProps<typeof TradeErrorSnackbar>;
     let mockAddSnackbar = jest.fn();
 
     beforeEach(() => {
@@ -50,33 +50,33 @@ describe('TradeParamErrorSnackbar', () => {
                 },
             },
         });
-        default_mock_props = { trade_params: ['take_profit', 'stop_loss'], should_show_snackbar: true };
+        default_mock_props = { error_fields: ['take_profit', 'stop_loss'], should_show_snackbar: true };
         mockAddSnackbar = jest.fn();
         (useSnackbar as jest.Mock).mockReturnValue({ addSnackbar: mockAddSnackbar });
     });
 
-    const mockTradeParamErrorSnackbar = () => {
+    const mockTradeErrorSnackbar = () => {
         return (
             <TraderProviders store={default_mock_store}>
-                <TradeParamErrorSnackbar {...default_mock_props} />
+                <TradeErrorSnackbar {...default_mock_props} />
             </TraderProviders>
         );
     };
 
-    it('calls useSnackbar if error field in proposal matches the passed trade_params', () => {
-        render(mockTradeParamErrorSnackbar());
+    it('calls useSnackbar if error field in proposal matches the passed error_fields', () => {
+        render(mockTradeErrorSnackbar());
 
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
-    it('calls useSnackbar if error field in proposal matches the passed trade_params even if user is log out', () => {
+    it('calls useSnackbar if error field in proposal matches the passed error_fields even if user is log out', () => {
         default_mock_store.client.is_logged_in = false;
-        render(mockTradeParamErrorSnackbar());
+        render(mockTradeErrorSnackbar());
 
         expect(mockAddSnackbar).toHaveBeenCalled();
     });
 
-    it('does not call useSnackbar if error field in proposal does not matches the passed trade_params', () => {
+    it('does not call useSnackbar if error field in proposal does not matches the passed error_fields', () => {
         default_mock_store.modules.trade.proposal_info = {
             TURBOSLONG: {
                 has_error: true,
@@ -86,7 +86,7 @@ describe('TradeParamErrorSnackbar', () => {
                 message: 'Enter an amount equal to or lower than 1701.11.',
             },
         };
-        render(mockTradeParamErrorSnackbar());
+        render(mockTradeErrorSnackbar());
 
         expect(mockAddSnackbar).not.toHaveBeenCalled();
     });

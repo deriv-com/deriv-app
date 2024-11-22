@@ -9,7 +9,7 @@ import { Localize, localize } from '@deriv/translations';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
-import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 
 type TTakeProfitAndStopLossInputProps = {
@@ -60,7 +60,7 @@ const TakeProfitAndStopLossInput = ({
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     // For tracking errors, that are coming from proposal for take profit and stop loss
-    const { message } = useTradeParamError({ trade_params: [type] });
+    const { message } = useTradeError({ error_fields: [type] });
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);

@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useTradeParamError from '../useTradeParamError';
+import useTradeError from '../useTradeError';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../trader-providers';
-import { CONTRACT_TYPES, TRADE_TYPES, WS } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 
-describe('useTradeParamError', () => {
+describe('useTradeError', () => {
     let mocked_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
@@ -50,25 +50,25 @@ describe('useTradeParamError', () => {
         return <TraderProviders store={mocked_store}>{children}</TraderProviders>;
     };
 
-    it('returns "true" if error field is matching the passed trade_params and an error message from proposal', () => {
-        const { result } = renderHook(() => useTradeParamError({ trade_params: ['take_profit'] }), {
+    it('returns "true" if error field is matching the passed error_fields and an error message from proposal', () => {
+        const { result } = renderHook(() => useTradeError({ error_fields: ['take_profit'] }), {
             wrapper,
         });
 
-        expect(result.current.is_error_matching_trade_param).toBeTruthy();
+        expect(result.current.is_error_matching_field).toBeTruthy();
         expect(result.current.message).toBe(mocked_store.modules.trade.proposal_info.TURBOSLONG.message);
     });
 
-    it('returns "true" if error field is matching at least one item from the passed trade_params and an error message from proposal', () => {
-        const { result } = renderHook(() => useTradeParamError({ trade_params: ['take_profit', 'stop_loss'] }), {
+    it('returns "true" if error field is matching at least one item from the passed error_fields and an error message from proposal', () => {
+        const { result } = renderHook(() => useTradeError({ error_fields: ['take_profit', 'stop_loss'] }), {
             wrapper,
         });
 
-        expect(result.current.is_error_matching_trade_param).toBeTruthy();
+        expect(result.current.is_error_matching_field).toBeTruthy();
         expect(result.current.message).toBe(mocked_store.modules.trade.proposal_info.TURBOSLONG.message);
     });
 
-    it('returns "true" if validation_errors field for the passed trade_params contains error and an error message from it (in case if proposal was empty)', () => {
+    it('returns "true" if validation_errors field for the passed error_fields contains error and an error message from it (in case if proposal was empty)', () => {
         mocked_store.modules.trade.proposal_info = undefined;
         mocked_store.modules.trade.validation_errors = {
             stop_loss: [],
@@ -82,21 +82,21 @@ describe('useTradeParamError', () => {
             expiry_date: [],
             expiry_time: [],
         };
-        const { result } = renderHook(() => useTradeParamError({ trade_params: ['take_profit'] }), {
+        const { result } = renderHook(() => useTradeError({ error_fields: ['take_profit'] }), {
             wrapper,
         });
 
-        expect(result.current.is_error_matching_trade_param).toBeTruthy();
+        expect(result.current.is_error_matching_field).toBeTruthy();
         expect(result.current.message).toBe(mocked_store.modules.trade.validation_errors.take_profit[0]);
     });
 
-    it('returns "false" if error field is not matching at least one item from the passed trade_params and an empty error message', () => {
+    it('returns "false" if error field is not matching at least one item from the passed error_fields and an empty error message', () => {
         mocked_store.modules.trade.proposal_info.TURBOSLONG.error_field = 'stake';
-        const { result } = renderHook(() => useTradeParamError({ trade_params: ['take_profit', 'stop_loss'] }), {
+        const { result } = renderHook(() => useTradeError({ error_fields: ['take_profit', 'stop_loss'] }), {
             wrapper,
         });
 
-        expect(result.current.is_error_matching_trade_param).toBeFalsy();
+        expect(result.current.is_error_matching_field).toBeFalsy();
         expect(result.current.message).toBe('');
     });
 
@@ -105,11 +105,11 @@ describe('useTradeParamError', () => {
             has_error: false,
             has_error_details: false,
         };
-        const { result } = renderHook(() => useTradeParamError({ trade_params: ['stop_loss'] }), {
+        const { result } = renderHook(() => useTradeError({ error_fields: ['stop_loss'] }), {
             wrapper,
         });
 
-        expect(result.current.is_error_matching_trade_param).toBeFalsy();
+        expect(result.current.is_error_matching_field).toBeFalsy();
         expect(result.current.message).toBe('');
     });
 });

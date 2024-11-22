@@ -12,7 +12,7 @@ import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 import { TTradeParametersProps } from '../trade-parameters';
-import useTradeParamError from 'AppV2/Hooks/useTradeParamError';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 
 const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -28,8 +28,8 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
         stop_loss,
     } = useTraderStore();
 
-    const { is_error_matching_trade_param: has_error } = useTradeParamError({
-        trade_params: ['stop_loss', 'take_profit'],
+    const { is_error_matching_field: has_error } = useTradeError({
+        error_fields: ['stop_loss', 'take_profit'],
     });
 
     const closeActionSheet = React.useCallback(() => setIsOpen(false), []);

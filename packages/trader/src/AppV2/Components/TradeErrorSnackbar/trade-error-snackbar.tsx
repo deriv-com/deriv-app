@@ -1,16 +1,16 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { SnackbarController, useSnackbar } from '@deriv-com/quill-ui';
-import useTradeParamError, { TTradeParams } from '../../Hooks/useTradeParamError';
+import useTradeError, { TErrorFields } from '../../Hooks/useTradeError';
 
-const TradeParamErrorSnackbar = observer(
-    ({ trade_params, should_show_snackbar }: { trade_params: TTradeParams[]; should_show_snackbar?: boolean }) => {
+const TradeErrorSnackbar = observer(
+    ({ error_fields, should_show_snackbar }: { error_fields: TErrorFields[]; should_show_snackbar?: boolean }) => {
         const {
             client: { is_logged_in },
         } = useStore();
         const { addSnackbar } = useSnackbar();
-        const { is_error_matching_trade_param: has_error, message } = useTradeParamError({
-            trade_params, // array with trade params, for which we will track errors. They should match error_field
+        const { is_error_matching_field: has_error, message } = useTradeError({
+            error_fields, // array with BE error_fields, for which we will track errors.
         });
 
         React.useEffect(() => {
@@ -33,4 +33,4 @@ const TradeParamErrorSnackbar = observer(
     }
 );
 
-export default TradeParamErrorSnackbar;
+export default TradeErrorSnackbar;

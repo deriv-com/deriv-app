@@ -176,7 +176,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
                                 users_phone_number: isCountryCodeDropdownEnabled
                                     ? //@ts-expect-error account_settings.calling_country_code is not defined in GetSettings type
-                                      `${account_settings?.calling_country_code}${account_settings?.phone}`
+                                      `+${account_settings?.calling_country_code}${account_settings?.phone}`
                                     : `${account_settings?.phone}`,
                             }}
                             components={[

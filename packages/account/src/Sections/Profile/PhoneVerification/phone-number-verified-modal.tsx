@@ -65,7 +65,7 @@ const PhoneNumberVerifiedModal = observer(({ should_show_phone_number_verified_m
                         <div className='phone-verification__verified-modal--contents__phone-number-container__phone-number'>
                             {isCountryCodeDropdownEnabled
                                 ? //@ts-expect-error account_settings.calling_country_code is not defined in GetSettings type
-                                  `${account_settings?.calling_country_code}${account_settings?.phone}`
+                                  `+${account_settings?.calling_country_code}${account_settings?.phone}`
                                 : `${account_settings?.phone}`}
                         </div>
                         &nbsp;

@@ -12,6 +12,9 @@ import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
+import { TTradeStore } from 'Types';
+
+type TOnProposalResponse = TTradeStore['onProposalResponse'];
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const trade_store = useTraderStore();
@@ -38,7 +41,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     } = trade_store;
 
     const [is_open, setIsOpen] = React.useState(false);
-    const [new_input_value, setNewInputValue] = React.useState(amount);
+    const [input_value, setInputValue] = React.useState(amount);
     const [stake_error, setStakeError] = React.useState('');
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
@@ -109,23 +112,56 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         max_stake,
         min_stake,
     });
-    console.log('trade_types', trade_types);
-    console.log('contract_types', contract_types);
 
-    // const new_values = { name: 'amount', value: new_input_value };
-    // const proposal_req = getProposalRequestObject({
-    //     new_values,
-    //     trade_store,
-    //     trade_type: Object.keys(trade_types)[0],
-    // });
+    // TODO: Rise/Fall equal??? There is a logic in onChange func for it
 
-    // const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
-    //     ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
-    //     proposal_req,
-    //     {
-    //         enabled: is_enabled,
-    //     }
-    // );
+    // Parallel proposal without subscription
+    const new_values = { amount: input_value };
+    // For Rise/Fall and all Digits we should do 2 proposal requests
+    const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
+
+    const proposal_req = getProposalRequestObject({
+        new_values,
+        trade_store,
+        trade_type: contract_types[0],
+    });
+    // console.log('proposal_req', proposal_req);
+
+    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        // ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
+        ['proposal', ...Object.entries(new_values).flat().join('-'), JSON.stringify(proposal_req)],
+        proposal_req,
+        {
+            enabled: is_open,
+        }
+    );
+
+    React.useEffect(() => {
+        const onProposalResponse: TOnProposalResponse = response => {
+            const { error, proposal } = response;
+            // console.log('response', response);
+            const new_error = error?.message ?? '';
+            // const is_error_field_match = error?.details?.field === type || !error?.details?.field;
+            // setErrorText(is_error_field_match ? new_error : '');
+            // updateParentRef({
+            //     field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
+            //     new_value: is_error_field_match ? new_error : '',
+            // });
+
+            // // Recovery for min and max allowed values in case of error
+            // if (!info.min_value || !info.max_value) {
+            //     const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
+            //     setInfo(info =>
+            //         (info.min_value !== min && min) || (info.max_value !== max && max)
+            //             ? { min_value: min, max_value: max }
+            //             : info
+            //     );
+            // }
+            is_api_response_received_ref.current = true;
+        };
+
+        if (response) onProposalResponse(response);
+    }, [response]);
 
     const onClose = React.useCallback(() => setIsOpen(false), []);
 
@@ -143,19 +179,21 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         );
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = Number(e.target.value);
+        // console.log('e.target.value', e.target.value);
+        // TODO: empty string?
+        const new_value = Number(e.target.value);
         // TODO: check if we need to replace not allowed signers
         // let value = String(e.target.value);
         // if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
         // If a new value is equal to a previous one, then we won't send API request
-        const is_equal = value === new_input_value;
+        const is_equal = new_value === input_value;
         is_api_response_received_ref.current = is_equal;
         if (is_equal) return;
-        console.log('value', value);
+        // console.log('value', new_value);
 
         // setFEErrorText('');
-        setNewInputValue(value);
+        setInputValue(new_value);
     };
 
     const onSave = () => {
@@ -163,36 +201,9 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         if (!is_api_response_received_ref.current) return;
         // TODO: Check for errors
         // TODO: call onChange if there will be no errors
-        console.log('Saved!');
+        // console.log('Saved!');
         onClose();
     };
-
-    // React.useEffect(() => {
-    //     const onProposalResponse: TOnProposalResponse = response => {
-    //         const { error, proposal } = response;
-
-    //         const new_error = error?.message ?? '';
-    //         const is_error_field_match = error?.details?.field === type || !error?.details?.field;
-    //         setErrorText(is_error_field_match ? new_error : '');
-    //         updateParentRef({
-    //             field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-    //             new_value: is_error_field_match ? new_error : '',
-    //         });
-
-    //         // Recovery for min and max allowed values in case of error
-    //         if (!info.min_value || !info.max_value) {
-    //             const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
-    //             setInfo(info =>
-    //                 (info.min_value !== min && min) || (info.max_value !== max && max)
-    //                     ? { min_value: min, max_value: max }
-    //                     : info
-    //             );
-    //         }
-    //         is_api_response_received_ref.current = true;
-    //     };
-
-    //     if (response) onProposalResponse(response);
-    // }, [response]);
 
     React.useEffect(() => {
         if (!is_open) return;
@@ -245,7 +256,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             decimals={getDecimalPlaces(currency)}
                             inputMode='decimal'
                             message={getInputMessage()}
-                            minusDisabled={Number(new_input_value) - 1 <= 0}
+                            minusDisabled={Number(input_value) - 1 <= 0}
                             name='amount'
                             noStatusIcon
                             onChange={onInputChange}
@@ -255,7 +266,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             shouldRound={false}
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
-                            value={new_input_value}
+                            value={input_value}
                             variant='fill'
                         />
                         <StakeDetails

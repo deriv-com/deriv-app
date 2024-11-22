@@ -47,3 +47,11 @@ export const getOptionsAndMultipliersContent = (
         title: 'Deriv GO',
     },
 ];
+
+export const LANDING_COMPANIES = Object.freeze({
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTAINVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+});

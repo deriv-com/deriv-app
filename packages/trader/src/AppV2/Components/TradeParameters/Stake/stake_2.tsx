@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { useStore } from '@deriv/stores';
-import { ActionSheet, TextField, TextFieldWithSteppers, useSnackbar } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
-import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces, isCryptocurrency } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
-import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
@@ -33,7 +31,6 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         onChange,
         proposal_info,
         stop_out,
-        symbol,
         trade_type_tab,
         trade_types,
         validation_errors,
@@ -41,8 +38,9 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     } = trade_store;
 
     const [is_open, setIsOpen] = React.useState(false);
-    const [input_value, setInputValue] = React.useState(amount);
+    const [input_value, setInputValue] = React.useState<number | string>(amount);
     const [stake_error, setStakeError] = React.useState('');
+    const [fe_stake_error, setFEStakeError] = React.useState('');
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
@@ -117,7 +115,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
 
     // Parallel proposal without subscription
     const new_values = { amount: input_value };
-    // For Rise/Fall and all Digits we should do 2 proposal requests
+    // TODO: For Rise/Fall and all Digits we should do 2 proposal requests
     const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
 
     const proposal_req = getProposalRequestObject({
@@ -129,7 +127,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         // ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
-        ['proposal', ...Object.entries(new_values).flat().join('-'), JSON.stringify(proposal_req)],
+        ['proposal', `${input_value}`, JSON.stringify(proposal_req)],
         proposal_req,
         {
             enabled: is_open,
@@ -139,14 +137,16 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
             const { error, proposal } = response;
-            // console.log('response', response);
+            // In case if the value is empty we are showing custom error text from FE (in onSave function)
+            if (input_value === '') {
+                setStakeError('');
+                is_api_response_received_ref.current = true;
+                return;
+            }
             const new_error = error?.message ?? '';
-            // const is_error_field_match = error?.details?.field === type || !error?.details?.field;
-            // setErrorText(is_error_field_match ? new_error : '');
-            // updateParentRef({
-            //     field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-            //     new_value: is_error_field_match ? new_error : '',
-            // });
+            const is_error_field_match =
+                ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
+            setStakeError(is_error_field_match ? new_error : '');
 
             // // Recovery for min and max allowed values in case of error
             // if (!info.min_value || !info.max_value) {
@@ -179,29 +179,29 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         );
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // console.log('e.target.value', e.target.value);
-        // TODO: empty string?
-        const new_value = Number(e.target.value);
-        // TODO: check if we need to replace not allowed signers
-        // let value = String(e.target.value);
-        // if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
-
+        const new_value = e.target.value;
         // If a new value is equal to a previous one, then we won't send API request
-        const is_equal = new_value === input_value;
+        const is_equal = new_value === String(input_value);
         is_api_response_received_ref.current = is_equal;
         if (is_equal) return;
-        // console.log('value', new_value);
 
-        // setFEErrorText('');
-        setInputValue(new_value);
+        setStakeError('');
+        setFEStakeError('');
+        // Check for preventing cases when empty string converted to number will be equal 0
+        const is_empty = new_value === '';
+        setInputValue(is_empty ? new_value : Number(new_value));
     };
 
     const onSave = () => {
-        // Prevent from saving if user clicks before BE validation
-        if (!is_api_response_received_ref.current) return;
-        // TODO: Check for errors
-        // TODO: call onChange if there will be no errors
-        // console.log('Saved!');
+        // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
+        if (!is_api_response_received_ref.current || stake_error) return;
+        // Check, tht value is not empty
+        if (input_value === '') {
+            setFEStakeError(localize('Amount is a required field.'));
+            return;
+        }
+        // Setting new stake value to the store and send it in streaming proposal
+        onChange({ target: { name: 'amount', value: input_value } });
         onClose();
     };
 
@@ -235,7 +235,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 onClick={() => setIsOpen(true)}
                 value={`${amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                status={stake_error ? 'error' : 'neutral'}
+                // status={stake_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}
@@ -255,14 +255,14 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             data-testid='dt_input_with_steppers'
                             decimals={getDecimalPlaces(currency)}
                             inputMode='decimal'
-                            message={getInputMessage()}
+                            message={fe_stake_error || stake_error || getInputMessage()}
                             minusDisabled={Number(input_value) - 1 <= 0}
                             name='amount'
                             noStatusIcon
                             onChange={onInputChange}
                             placeholder={localize('Amount')}
                             regex={/[^0-9.,]/g}
-                            status={stake_error ? 'error' : 'neutral'}
+                            status={fe_stake_error || stake_error ? 'error' : 'neutral'}
                             shouldRound={false}
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}

@@ -62,7 +62,7 @@ const FormSelectField: FC<TFormSelectField> = ({
                             placeholder={placeholder}
                             required={required}
                             data-lpignore='true'
-                            autoComplete='off' // prevent chrome autocomplete
+                            autoComplete='new-password' // 'off' sometimes doesn't work, have to use new-password to prevent chrome autocomplete
                             error={touched ? error : undefined}
                             // @ts-expect-error This needs to fixed in AutoComplete component
                             onItemSelection={onItemSelection ?? onSelect(field.name, setFieldValue)}

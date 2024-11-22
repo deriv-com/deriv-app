@@ -197,6 +197,7 @@ const AccountSignup = ({
                 action: 'signup_flow_error',
                 form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
                 error_message: error,
+                screen_name: 'password_screen_opened',
             });
         } else {
             setIsFromSignupAccount(true);

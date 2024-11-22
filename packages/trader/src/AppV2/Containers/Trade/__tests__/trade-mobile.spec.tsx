@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TRADE_TYPES } from '@deriv/shared';
 import ModulesProvider from 'Stores/Providers/modules-providers';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
 import TradeMobile from '../trade-mobile';
 

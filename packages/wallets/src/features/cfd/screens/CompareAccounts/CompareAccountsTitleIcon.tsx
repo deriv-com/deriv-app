@@ -1,7 +1,7 @@
 import React from 'react';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import { Divider, Text, Tooltip } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { ACCOUNT_ICONS, MT5_PRODUCT } from './constants';
@@ -118,7 +118,7 @@ const CompareAccountsTitleIcon = ({ isDemo, isEuRegion, platform, product }: TCo
                             tooltipContent={labuanJurisdictionMessage}
                             tooltipPosition='bottom-start'
                         >
-                            <InfoIcon />
+                            <LegacyInfo1pxIcon width={16} />
                         </Tooltip>
                     )}
                 </div>

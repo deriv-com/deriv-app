@@ -1,7 +1,7 @@
 import React from 'react';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Text, Tooltip, useDevice } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TProductDetails } from '../../../../types';
 import { MT5_PRODUCT } from './constants';
 import './CompareAccountsDescription.scss';
@@ -43,7 +43,7 @@ const CompareAccountsDescription = ({ isEuRegion, product, productDetails }: TCo
                                 tooltipOffset={20}
                                 tooltipPosition='top'
                             >
-                                <InfoIcon />
+                                <LegacyInfo1pxIcon width={16} />
                             </Tooltip>
                         )}
                     </div>

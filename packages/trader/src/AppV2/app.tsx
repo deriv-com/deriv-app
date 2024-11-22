@@ -10,7 +10,7 @@ import Notifications from './Containers/Notifications';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
 import Layouts from './Layouts';
 import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '@deriv/reports/src/Stores/useReportsStores';
+import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
 
 type Apptypes = {

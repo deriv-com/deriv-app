@@ -7,7 +7,6 @@ import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
 import { useModulesStore } from 'Stores/useModulesStores';
 import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
-import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
 import { useHistory } from 'react-router-dom';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
@@ -62,11 +61,11 @@ const Positions = observer(() => {
     }, []);
 
     return (
-        <BottomNav>
-            <div className='positions-page'>
+        <div className='positions-page'>
+            <div className='positions-page-container'>
                 <Tab.Container
                     contentStyle='fill'
-                    className='positions-page__tabs'
+                    className='positions-page-container__tabs'
                     size='md'
                     selectedTabIndex={activeTab}
                     onChangeTab={onChangeTab}
@@ -76,7 +75,7 @@ const Positions = observer(() => {
                             <Tab.Trigger key={id}>{title}</Tab.Trigger>
                         ))}
                     </Tab.List>
-                    <Tab.Content className='positions-page__tabs-content'>
+                    <Tab.Content className='positions-page-container__tabs-content'>
                         {tabs.map(({ id, content }) => (
                             <Tab.Panel key={id}>{content}</Tab.Panel>
                         ))}
@@ -86,7 +85,7 @@ const Positions = observer(() => {
             {!guide_dtrader_v2?.positions_page && is_logged_in && (
                 <OnboardingGuide type='positions_page' callback={() => setHasButtonsDemo(true)} />
             )}
-        </BottomNav>
+        </div>
     );
 });
 

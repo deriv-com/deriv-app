@@ -1,52 +1,60 @@
 $TABS_HEIGHT: var(--core-size-2400);
 
 .positions-page {
-    height: 100%;
-    background-color: var(--semantic-color-slate-solid-surface-frame-mid);
-    position: relative;
+    flex: 1;
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    height: calc(100vh - 9.6rem);
 
-    .tab-list--container {
-        display: block;
-        justify-content: unset;
-        background-color: var(--semantic-color-slate-solid-surface-frame-low);
-        height: $TABS_HEIGHT;
-
-        button {
-            width: 50%;
-            padding: 1.05rem 0;
-        }
-    }
-    &__tabs {
+    &-container {
         height: 100%;
+        background-color: var(--semantic-color-slate-solid-surface-frame-mid);
+        position: relative;
 
-        &-content {
-            height: calc(100% - $TABS_HEIGHT);
-            overflow-y: hidden;
+        .tab-list--container {
+            display: block;
+            justify-content: unset;
+            background-color: var(--semantic-color-slate-solid-surface-frame-low);
+            height: $TABS_HEIGHT;
 
-            & > div {
-                height: 100%;
+            button {
+                width: 50%;
+                padding: 1.05rem 0;
+            }
+        }
+        &__tabs {
+            height: 100%;
 
-                .positions-page {
-                    &__open,
-                    &__closed {
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        overflow-y: scroll;
+            &-content {
+                height: calc(100% - $TABS_HEIGHT);
+                overflow-y: hidden;
 
-                        .load-more-spinner {
+                & > div {
+                    height: 100%;
+
+                    .positions-page-container {
+                        &__open,
+                        &__closed {
+                            height: 100%;
                             display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            width: 100%;
-                            padding: var(--core-spacing-1000) 0;
+                            flex-direction: column;
+                            overflow-y: scroll;
 
-                            svg {
-                                animation: spin var(--motion-duration-deliberate) linear infinite;
+                            .load-more-spinner {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                width: 100%;
+                                padding: var(--core-spacing-1000) 0;
 
-                                @keyframes spin {
-                                    to {
-                                        -webkit-transform: rotate(360deg);
+                                svg {
+                                    animation: spin var(--motion-duration-deliberate) linear infinite;
+
+                                    @keyframes spin {
+                                        to {
+                                            -webkit-transform: rotate(360deg);
+                                        }
                                     }
                                 }
                             }
@@ -55,30 +63,30 @@ $TABS_HEIGHT: var(--core-size-2400);
                 }
             }
         }
-    }
-    &__filter {
-        &__wrapper {
-            padding: var(--core-spacing-400);
-            display: flex;
-            gap: var(--core-spacing-400);
-            overflow-x: auto;
-            min-height: var(--core-spacing-2400);
-            white-space: nowrap;
+        &__filter {
+            &__wrapper {
+                padding: var(--core-spacing-400);
+                display: flex;
+                gap: var(--core-spacing-400);
+                overflow-x: auto;
+                min-height: var(--core-spacing-2400);
+                white-space: nowrap;
 
-            -ms-overflow-style: none; /* Internet Explorer 10+ */
-            scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* Internet Explorer 10+ */
+                scrollbar-width: none; /* Firefox */
 
-            &::-webkit-scrollbar {
-                display: none; /* Safari and Chrome */
-            }
+                &::-webkit-scrollbar {
+                    display: none; /* Safari and Chrome */
+                }
 
-            .quill-chip {
-                display: inline-flex;
+                .quill-chip {
+                    display: inline-flex;
+                }
             }
         }
-    }
-    .initial-loader {
-        height: 100%;
+        .initial-loader {
+            height: 100%;
+        }
     }
 }
 

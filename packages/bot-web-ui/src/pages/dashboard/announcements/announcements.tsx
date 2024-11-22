@@ -56,7 +56,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
-        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.event_title });
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.event_name });
         updateLocalStorage(announce_id);
     };
 
@@ -113,7 +113,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnCancel = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.event_title,
+            announcement_name: selected_announcement?.announcement.event_name,
             announcement_action: selected_announcement?.announcement.cancel_button_text,
         });
         if (selected_announcement?.switch_tab_on_cancel) {
@@ -128,7 +128,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnConfirm = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.event_title,
+            announcement_name: selected_announcement?.announcement.event_name,
             announcement_action: selected_announcement?.announcement.confirm_button_text,
         });
         if (selected_announcement?.switch_tab_on_confirm) {

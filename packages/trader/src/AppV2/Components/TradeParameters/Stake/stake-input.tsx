@@ -113,20 +113,31 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     // TODO: Rise/Fall equal??? There is a logic in onChange func for it
 
     // Parallel proposal without subscription
+    // TODO: replace with state
+    const new_values_ref = React.useRef<Record<string, unknown>>({ amount: input_value });
+
     const new_values = { amount: input_value };
     // TODO: For Rise/Fall and all Digits we should do 2 proposal requests
     const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
 
     const proposal_req = getProposalRequestObject({
+        // new_values: new_values_ref.current,
         new_values,
         trade_store,
         trade_type: contract_types[0],
     });
     // console.log('proposal_req', proposal_req);
+    // console.log('contract_types', contract_types);
 
     const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         // ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
-        ['proposal', `${input_value}`, JSON.stringify(proposal_req)],
+        [
+            'proposal',
+            // ...Object.entries(new_values_ref.current).flat().join('-'),
+            `${input_value}`,
+            JSON.stringify(proposal_req),
+            contract_types.join('-'),
+        ],
         proposal_req,
         {
             enabled: is_open,
@@ -136,11 +147,50 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
             const { error, proposal } = response;
+            // console.log('response', response);
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (input_value === '') {
                 setStakeError('');
                 is_api_response_received_ref.current = true;
                 return;
+            }
+            // Vanilla and Turbos
+            // if (this.is_vanilla && response.error.details?.barrier_choices) {
+            //     const { barrier_choices, max_stake, min_stake } = response.error.details;
+
+            //     this.setStakeBoundary(contract_type, min_stake, max_stake);
+            //     this.setBarrierChoices(barrier_choices as string[]);
+            //     if (!this.barrier_choices.includes(this.barrier_1)) {
+            //         // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
+            //         // The new list is set and the mid value is assigned
+            //         const index = Math.floor(this.barrier_choices.length / 2);
+            //         this.barrier_1 = this.barrier_choices[index];
+            //         this.onChange({
+            //             target: {
+            //                 name: 'barrier_1',
+            //                 value: this.barrier_1,
+            //             },
+            //         });
+            //     }
+            // }
+            if (is_turbos && error?.details?.payout_per_point_choices) {
+                const { payout_per_point_choices } = error.details;
+                const payoutIndex = Math.floor(payout_per_point_choices.length / 2);
+                // new_values_ref.current = {
+                //     ...new_values_ref.current,
+                //     payout_per_point: payout_per_point_choices[payoutIndex],
+                // };
+                is_api_response_received_ref.current = true;
+                return;
+                // this.setPayoutChoices(payout_per_point_choices.map(item => String(item)));
+                // this.setStakeBoundary(contract_type, min_stake, max_stake);
+                // this.onChange({
+                //     target: {
+                //         name: 'payout_per_point',
+                //         value: String(payout_per_point_choices[payoutIndex]),
+                //     },
+                // });
+                // this.barrier_1 = String(this.getTurbosChartBarrier(response));
             }
             const new_error = error?.message ?? '';
             const is_error_field_match =
@@ -190,6 +240,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     };
 
     const onSave = () => {
+        // console.log('is_api_response_received_ref.current', is_api_response_received_ref.current);
         // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
         if (!is_api_response_received_ref.current || stake_error) return;
         // Check, tht value is not empty
@@ -223,7 +274,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     return (
         <React.Fragment>
-            <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
             <ActionSheet.Content className='stake-content'>
                 <TextFieldWithSteppers
                     allowDecimals

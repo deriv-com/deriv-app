@@ -28,7 +28,7 @@ const useGetPhoneNumberList = () => {
 
     const is_carriers_supported = data?.phone_settings?.carriers && data.phone_settings.carriers.length > 0;
 
-    const countries = data?.phone_settings?.countries;
+    const countries = data?.phone_settings?.countries.sort((a, b) => a.display_name.localeCompare(b.display_name));
 
     const getSelectedPhoneCode = useCallback(() => {
         const country = countries?.find(c => c.country_code.toLowerCase() === clients_country);

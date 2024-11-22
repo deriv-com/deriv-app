@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
+
+import { TinValidations } from '@deriv/api/types';
+import { Checkbox, useOnClickOutside } from '@deriv/components';
+import { useResidenceList } from '@deriv/hooks';
+import { getLegalEntityName } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import {
     EmploymentStatusField,
     TaxIdentificationNumberField,
     TaxResidenceField,
 } from '../../Components/forms/form-fields';
 import { isFieldImmutable } from '../../Helpers/utils';
-import { Checkbox, useOnClickOutside } from '@deriv/components';
-import { Localize } from '@deriv-com/translations';
-import { getLegalEntityName } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
-import { useResidenceList } from '@deriv/hooks';
+
 import './employment-tax-details-container.scss';
-import { TinValidations } from '@deriv/api/types';
-import { observer, useStore } from '@deriv/stores';
 
 type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
@@ -41,7 +44,7 @@ const EmploymentTaxDetailsContainer = observer(
 
         const { is_virtual, account_settings, account_status } = client;
 
-        const { tin_employment_status_bypass } = tin_validation_config;
+        const { tin_employment_status_bypass, is_tin_mandatory } = tin_validation_config;
 
         const is_employment_status_mandatory = is_virtual
             ? true
@@ -196,7 +199,10 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tin_popover_open={is_tin_popover_open}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                        required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
+                        required={
+                            (should_display_long_message && !values.tin_skipped) ||
+                            (is_tin_required && is_tin_mandatory)
+                        }
                         fieldFocused={
                             should_focus_fields &&
                             values.employment_status &&

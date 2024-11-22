@@ -87,6 +87,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 
             const params = new URLSearchParams({
                 action: 'real-account-signup',
+                currency: currency ?? '',
                 target: LANDING_COMPANIES.MALTAINVEST,
             });
             const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;

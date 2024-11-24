@@ -86,6 +86,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             header={<Localize i18n_default_text='Settings' />}
             onClickClose={onClickClose}
             is_from_app={is_from_derivgo}
+            is_from_tradershub_os={is_from_tradershub_os}
         >
             <VerticalTab
                 is_floating

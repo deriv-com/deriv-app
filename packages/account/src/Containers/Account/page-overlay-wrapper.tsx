@@ -95,7 +95,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 list={subroutes as RouteItems}
                 list_groups={list_groups}
                 extra_content={<TradingHubLogout handleOnLogout={onClickLogout} />}
-                is_sidebar_enabled={isDesktop && !is_from_tradershub_os}
+                is_sidebar_enabled={isDesktop}
             />
         </PageOverlay>
     );

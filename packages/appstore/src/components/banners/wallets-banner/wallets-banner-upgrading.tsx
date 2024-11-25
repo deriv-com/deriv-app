@@ -4,6 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
+import { cacheTrackEvents } from '@deriv/shared';
 
 const WalletsBannerUpgrading = observer(() => {
     const { traders_hub, common } = useStore();
@@ -30,13 +31,20 @@ const WalletsBannerUpgrading = observer(() => {
     }
 
     React.useEffect(() => {
-        Analytics.trackEvent('ce_tradershub_banner', {
-            action: 'open',
-            form_name: 'ce_tradershub_banner',
-            account_mode: is_demo ? 'demo' : 'real',
-            banner_name: 'setting_up_wallets_step_2',
-            banner_type: 'without_url',
-        });
+        cacheTrackEvents.loadEvent([
+            {
+                event: {
+                    name: 'ce_tradershub_banner',
+                    properties: {
+                        action: 'open',
+                        form_name: 'ce_tradershub_banner',
+                        account_mode: is_demo ? 'demo' : 'real',
+                        banner_name: 'setting_up_wallets_step_2',
+                        banner_type: 'without_url',
+                    },
+                },
+            },
+        ]);
     }, [is_demo]);
 
     return (

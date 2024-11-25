@@ -109,7 +109,18 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
         leverage: 500,
         short_title: localize('Standard'),
     };
-    const financial_title = product === PRODUCT.STP ? localize('Financial STP') : localize('Financial');
+
+    let financial_title;
+    switch (product) {
+        case PRODUCT.STP:
+            financial_title = localize('Financial STP');
+            break;
+        case PRODUCT.GOLD:
+            financial_title = localize('Gold');
+            break;
+        default:
+            financial_title = localize('Financial');
+    }
 
     const financial_config = {
         account_type: 'financial',

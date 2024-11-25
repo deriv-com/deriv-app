@@ -63,6 +63,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         toggleSetCurrencyModal,
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
+        setIsForcedToExitPnv,
     } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -99,6 +100,11 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             await logoutClient();
             history.push(routes.traders_hub);
         } else {
+            if (window.location.pathname.startsWith(routes.phone_verification)) {
+                setIsForcedToExitPnv(true);
+                // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+                await new Promise(resolve => setTimeout(resolve, 0));
+            }
             history.push(routes.traders_hub);
             await logoutClient();
         }

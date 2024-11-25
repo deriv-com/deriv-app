@@ -6,7 +6,7 @@ This repository contains the various platforms of the Deriv application.
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
-[![Coverage Status](https://coveralls.io/repos/github/binary-com/deriv-app/badge.svg?branch=master)](https://coveralls.io/github/binary-com/deriv-app?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/deriv-com/deriv-app/badge.svg?branch=master)](https://coveralls.io/github/deriv-com/deriv-app?branch=master)
 
 **In this document**:
 

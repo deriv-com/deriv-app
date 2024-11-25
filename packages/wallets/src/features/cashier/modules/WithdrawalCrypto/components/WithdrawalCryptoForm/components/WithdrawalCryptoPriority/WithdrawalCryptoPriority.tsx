@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Checkbox, Tooltip } from '@deriv-com/ui';
 import { WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
-import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeInfo';
 import './WithdrawalCryptoPriority.scss';
@@ -66,7 +66,7 @@ const WithdrawalCryptoPriority = () => {
                     )}
                     tooltipPosition='top'
                 >
-                    <InfoIcon />
+                    <LegacyInfo1pxIcon width={16} />
                 </Tooltip>
             </div>
             {isLoadingCryptoEstimationFee && <WalletsPriorityCryptoWithdrawLoader />}

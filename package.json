@@ -96,6 +96,7 @@
         "test": "f () { npm run test:stylelint  && npm run test:eslint-all && npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:ci": "f () { npm run test:stylelint  && npm run test:eslint-all ;}; f",
+        "test:shard": "jest --all --shard=${SHARD_INDEX}/${SHARD_COUNT} --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",

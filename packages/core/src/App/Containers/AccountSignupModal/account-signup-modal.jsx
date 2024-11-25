@@ -9,7 +9,7 @@ import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
-
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import QuestionnaireModal from '../QuestionnaireModal';
@@ -33,11 +33,18 @@ const AccountSignup = ({
     const history_value = React.useRef();
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
+    const isPasswordModalRef = React.useRef(false);
+    const isCountryScreenLoggedOnceRef = React.useRef(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
     const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
     const [ab_questionnaire, setABQuestionnaire] = React.useState();
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
+
+    const [is_tracking_signup_errors] = useGrowthbookGetFeatureValue({
+        featureFlag: 'signup_flow_error',
+        defaultValue: true,
+    });
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -112,6 +119,51 @@ const AccountSignup = ({
         setABQuestionnaire(fetchQuestionnarieData());
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const trackSignupErrorEvent = (action, errorMessage, screen_name) => {
+        const form_name = is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default';
+        cacheTrackEvents.loadEvent([
+            {
+                event: {
+                    name: 'ce_virtual_signup_form',
+                    properties: {
+                        action,
+                        form_name,
+                        error_message: errorMessage,
+                        screen_name,
+                    },
+                },
+            },
+        ]);
+    };
+
+    React.useEffect(() => {
+        isPasswordModalRef.current = is_password_modal; // Sync ref with state
+    }, [is_password_modal]);
+
+    React.useEffect(() => {
+        cacheTrackEvents.trackConsoleErrors(errorMessage => {
+            if (is_tracking_signup_errors) {
+                if (errorMessage) {
+                    const screen_name = !isPasswordModalRef.current
+                        ? 'country_selection_screen'
+                        : 'password_screen_opened';
+
+                    if (screen_name === 'country_selection_screen') {
+                        if (
+                            !isCountryScreenLoggedOnceRef.current ||
+                            isCountryScreenLoggedOnceRef.current !== errorMessage
+                        ) {
+                            trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+                            isCountryScreenLoggedOnceRef.current = errorMessage;
+                        }
+                    } else if (screen_name === 'password_screen_opened') {
+                        trackSignupErrorEvent('signup_flow_error', errorMessage, screen_name);
+                    }
+                }
+            }
+        });
+    }, [is_tracking_signup_errors]);
+
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
 
     const indexOfSelection = selected_country =>
@@ -144,6 +196,7 @@ const AccountSignup = ({
                 action: 'signup_flow_error',
                 form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
                 error_message: error,
+                screen_name: 'password_screen_opened',
             });
         } else {
             setIsFromSignupAccount(true);

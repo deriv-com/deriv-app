@@ -13,6 +13,8 @@ import GTM from 'Utils/gtm';
 import { helpers } from 'Utils/store-helpers';
 import { TDbot } from 'Types';
 import RootStore from './root-store';
+import { config } from '@deriv/bot-skeleton/src/constants/config';
+import { getSelectedTradeTypeCategory } from '@deriv/bot-skeleton/src/scratch/utils';
 
 export type TContractState = {
     buy?: Buy;
@@ -614,8 +616,17 @@ export default class RunPanelStore {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError = (data: { error: any }) => {
-        // data.error for API errors, data for code errors
         const error = data.error || data;
+        if (error.code === 'OpenPositionLimitExceeded' && error.message) {
+            const { TRADE_TYPE_CATEGORY_NAMES } = config;
+            const trade_type_category = getSelectedTradeTypeCategory();
+            const tradeTypeName =
+                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] || '';
+
+            if (tradeTypeName) {
+                error.message += ` Trade type: ${tradeTypeName}`;
+            }
+        }
         if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = ErrorTypes.UNRECOVERABLE_ERRORS;

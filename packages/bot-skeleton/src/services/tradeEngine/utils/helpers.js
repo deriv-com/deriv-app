@@ -213,7 +213,6 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'RateLimit',
         'DisconnectError',
         'MarketIsClosed',
-        'OpenPositionLimitExceeded',
     ];
     updateErrorMessage(error);
     const is_ignorable_error = errors_to_ignore

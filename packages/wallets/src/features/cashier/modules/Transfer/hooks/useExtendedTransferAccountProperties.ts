@@ -1,14 +1,18 @@
 import { useMemo } from 'react';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig, useTradingPlatformStatus } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks, TWalletLandingCompanyName } from '../../../../../types';
+import { CFD_PLATFORMS } from '../../../../cfd/constants';
 import { PlatformDetails } from '../../../constants';
 import { getAccountName, getLandingCompanyNameOfMT5Account } from '../../../helpers';
+
+type TCFDPlatform = Exclude<typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS], 'CFDs'>;
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */
 const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[]) => {
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { getPlatformStatus } = useTradingPlatformStatus();
 
     const isLoading = isCurrencyConfigLoading || isActiveWalletLoading;
 
@@ -31,6 +35,11 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
                 account.account_type === PlatformDetails.mt5.name
                     ? getLandingCompanyNameOfMT5Account(account.mt5_group)
                     : (activeWallet?.landing_company_name as TWalletLandingCompanyName);
+            const isCFDAccount =
+                account?.account_category === 'trading' &&
+                [CFD_PLATFORMS.CTRADER, CFD_PLATFORMS.DXTRADE, CFD_PLATFORMS.MT5].includes(
+                    account?.account_type as TCFDPlatform
+                );
 
             return {
                 ...account,
@@ -38,6 +47,9 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
                 currencyConfig,
                 displayBalance,
                 landingCompanyName,
+                ...(isCFDAccount && {
+                    platformStatus: getPlatformStatus(account.account_type ?? ''),
+                }),
             } as const;
         });
 
@@ -45,7 +57,7 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
         const walletAccounts = updatedAccounts?.filter(account => account.account_category === 'wallet') || [];
 
         return { tradingAccounts, walletAccounts };
-    }, [accounts, activeWallet?.landing_company_name, getConfig]);
+    }, [accounts, activeWallet?.landing_company_name, getConfig, getPlatformStatus]);
 
     const modifiedActiveWallet = useMemo(() => {
         return extendedTransferAccounts.walletAccounts.find(account => account.loginid === activeWallet?.loginid);

@@ -616,6 +616,7 @@ export default class RunPanelStore {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError = (data: { error: any }) => {
+        // data.error for API errors, data for code errors
         const error = data.error || data;
         if (error.code === 'OpenPositionLimitExceeded' && error.message) {
             const { TRADE_TYPE_CATEGORY_NAMES } = config;

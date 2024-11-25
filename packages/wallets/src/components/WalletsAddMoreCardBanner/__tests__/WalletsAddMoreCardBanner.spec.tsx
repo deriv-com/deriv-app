@@ -23,7 +23,7 @@ type TWalletAddedSuccess = {
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
-        data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'VRW1' },
+        data: { loginid: 'CRW1' },
     })),
     useCreateWallet: jest.fn(),
     useIsEuRegion: jest.fn(() => ({
@@ -52,8 +52,8 @@ jest.mock('@deriv/utils', () => ({
 jest.mock('../../../helpers/urls', () => ({
     isProduction: jest.fn(),
     OUT_SYSTEMS_TRADERSHUB: {
-        PRODUCTION: `https://hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest`,
-        STAGING: `https://staging-hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest`,
+        PRODUCTION: 'https://hub.deriv.com/tradershub',
+        STAGING: 'https://staging-hub.deriv.com/tradershub',
     },
 }));
 
@@ -273,8 +273,7 @@ describe('WalletsAddMoreCardBanner', () => {
 
         const originalWindowLocation = window;
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: { href: '', reload: jest.fn() },
+            value: { href: '' },
         });
 
         render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
@@ -286,8 +285,6 @@ describe('WalletsAddMoreCardBanner', () => {
         );
 
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
             value: originalWindowLocation,
         });
     });

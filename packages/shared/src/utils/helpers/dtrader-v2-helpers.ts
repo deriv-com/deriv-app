@@ -40,6 +40,10 @@ export const isDTraderV2 = () => {
     );
 };
 
+export const redirectToDTraderStandalone = () => {
+    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.redirect_to_dtrader_standalone;
+};
+
 export const getTradeNotificationMessage = (shortcode: string) => {
     const extracted_info_from_shortcode = extractInfoFromShortcode(shortcode);
     const symbol = getMarketName(extracted_info_from_shortcode.underlying);

@@ -1,7 +1,6 @@
 import { Analytics } from '@deriv-com/analytics';
 import { getPlatformSettings } from '../brand';
 import { routes } from '../routes';
-import { tradershub_os_url } from '../config/platform-config';
 
 type TRoutingHistory = {
     action: string;
@@ -107,7 +106,6 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
         return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
-    if (isNavigationFromTradersHubOS()) return { name: 'TradersHub', route: tradershub_os_url };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

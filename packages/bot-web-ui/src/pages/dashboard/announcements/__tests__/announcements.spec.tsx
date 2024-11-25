@@ -50,7 +50,7 @@ describe('Announcements', () => {
 
         await waitFor(async () => {
             // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notification_button = container.querySelectorAll('.notification__button')[2];
+            const notification_button = container.querySelectorAll('.notification__button')[3];
 
             expect(notification_button).toBeInTheDocument();
 
@@ -77,7 +77,7 @@ describe('Announcements', () => {
 
         await waitFor(async () => {
             // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
-            const notification_button = container.querySelectorAll('.notification__button')[2];
+            const notification_button = container.querySelectorAll('.notification__button')[3];
 
             expect(notification_button).toBeInTheDocument();
 

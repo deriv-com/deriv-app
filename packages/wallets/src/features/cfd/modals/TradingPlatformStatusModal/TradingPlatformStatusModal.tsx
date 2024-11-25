@@ -4,7 +4,7 @@ import { DISABLED_PLATFORM_STATUSES } from '../../constants';
 import { TradingPlatformStatus } from '../../screens';
 
 type TradingPlatformStatusModalProps = {
-    status: typeof DISABLED_PLATFORM_STATUSES[number];
+    status: (typeof DISABLED_PLATFORM_STATUSES)[number];
 };
 
 const TradingPlatformStatusModal: React.FC<TradingPlatformStatusModalProps> = ({ status }) => (

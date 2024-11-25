@@ -103,7 +103,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             let primary_routes = [];
 
             if (is_trading_hub_category) {
-                primary_routes = has_wallet ? [routes.reports, routes.account] : [routes.account, routes.cashier];
+                primary_routes = has_wallet
+                    ? [routes.reports, routes.account]
+                    : [routes.reports, routes.account, routes.cashier];
             } else {
                 primary_routes = has_wallet
                     ? [routes.reports, routes.account]

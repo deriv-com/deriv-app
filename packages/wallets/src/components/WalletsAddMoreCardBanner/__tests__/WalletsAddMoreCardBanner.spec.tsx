@@ -300,7 +300,7 @@ describe('WalletsAddMoreCardBanner', () => {
 
         const originalWindowLocation = window;
         Object.defineProperty(window, 'location', {
-            value: { href: '', reload: jest.fn() },
+            value: { href: '' },
         });
 
         render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });

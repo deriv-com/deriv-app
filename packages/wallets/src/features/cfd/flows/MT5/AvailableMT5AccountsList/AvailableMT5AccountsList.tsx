@@ -11,7 +11,13 @@ import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
 import { TAvailableMT5Account } from '../../../../../types';
 import { getClientVerification } from '../../../../../utils';
-import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
+import {
+    getMarketTypeDetails,
+    MARKET_TYPE,
+    MT5_ACCOUNT_STATUS,
+    PRODUCT,
+    TRADING_PLATFORM_STATUS,
+} from '../../../constants';
 import { MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import './AvailableMT5AccountsList.scss';
 
@@ -36,13 +42,13 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { hasClientKycStatus } = getClientVerification(account);
 
     const onButtonClick = useCallback(() => {
-        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
+        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal status={MT5_ACCOUNT_STATUS.UNAVAILABLE} />);
 
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return show(<TradingPlatformStatusModal isServerMaintenance />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.MAINTENANCE} />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return show(<TradingPlatformStatusModal />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.UNAVAILABLE} />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
                 if (!isVirtual && hasClientKycStatus) {

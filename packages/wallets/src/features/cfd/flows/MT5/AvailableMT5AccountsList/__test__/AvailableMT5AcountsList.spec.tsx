@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ClientVerificationModal } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
+import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../constants';
 import { MT5PasswordModal, TradingPlatformStatusModal } from '../../../../modals';
 import AvailableMT5AccountsList from '../AvailableMT5AccountsList';
 
@@ -104,7 +105,7 @@ describe('AvailableMT5AccountsList', () => {
         const button = screen.getByTestId('dt_wallets_trading_account_card');
         await userEvent.click(button);
 
-        expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={false} />);
+        expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal status={MT5_ACCOUNT_STATUS.UNAVAILABLE} />);
     });
 
     it('shows TradingPlatformStatusModal when there is an unavailable platform', async () => {
@@ -117,7 +118,9 @@ describe('AvailableMT5AccountsList', () => {
         const button = screen.getByTestId('dt_wallets_trading_account_card');
         await userEvent.click(button);
 
-        expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal />);
+        expect(mockShow).toHaveBeenCalledWith(
+            <TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.UNAVAILABLE} />
+        );
     });
 
     it('shows TradingPlatformStatusModal with isServerMaintenance when platform status is maintenance', async () => {
@@ -130,7 +133,9 @@ describe('AvailableMT5AccountsList', () => {
         const button = screen.getByTestId('dt_wallets_trading_account_card');
         await userEvent.click(button);
 
-        expect(mockShow).toHaveBeenCalledWith(<TradingPlatformStatusModal isServerMaintenance={true} />);
+        expect(mockShow).toHaveBeenCalledWith(
+            <TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.MAINTENANCE} />
+        );
     });
 
     it('shows MT5PasswordModal for non-regulated real accounts if client is verified', async () => {

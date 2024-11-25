@@ -300,7 +300,6 @@ describe('WalletsAddMoreCardBanner', () => {
 
         const originalWindowLocation = window;
         Object.defineProperty(window, 'location', {
-            configurable: true,
             value: { href: '', reload: jest.fn() },
         });
 
@@ -313,8 +312,6 @@ describe('WalletsAddMoreCardBanner', () => {
         );
 
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
             value: originalWindowLocation,
         });
     });

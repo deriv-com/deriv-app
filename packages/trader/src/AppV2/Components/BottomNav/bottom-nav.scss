@@ -1,23 +1,14 @@
 $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
 
 .bottom-nav {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+    position: fixed;
+    bottom: 0;
+    height: $BOTTOM_NAV_HEIGHT;
+    width: 100%;
+    padding: var(--core-spacing-200);
+    border-top: 1px solid var(--component-navigationBar-border-color);
+    z-index: 30;
 
-    &-container {
-        padding: var(--core-spacing-200);
-        width: 100%;
-        border-top: 1px solid var(--component-navigationBar-border-color);
-        height: $BOTTOM_NAV_HEIGHT;
-        z-index: 30;
-    }
-    &-selection {
-        flex: 1;
-        overflow: auto;
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
     &-item {
         font-size: var(--core-fontSize-50);
 

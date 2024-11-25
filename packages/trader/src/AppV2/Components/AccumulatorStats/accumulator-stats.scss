@@ -40,6 +40,11 @@
     margin-top: calc(var(--core-spacing-600) * -1);
     border-bottom-left-radius: var(--core-borderRadius-400);
     border-bottom-right-radius: var(--core-borderRadius-400);
+
+    @include desktop-screen {
+        margin-top: unset;
+    }
+
     &__container {
         display: flex;
         justify-content: space-between;

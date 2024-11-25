@@ -19,6 +19,10 @@
             inset-inline-start: 0;
             inset-inline-end: 0;
 
+            @include desktop-screen {
+                position: unset;
+            }
+
             &--enter-from-top {
                 animation: enter-from-top var(--motion-duration-snappy) ease-out;
             }
@@ -30,6 +34,10 @@
             align-items: flex-end;
             width: 100%;
             height: 100%;
+
+            @include desktop-screen {
+                padding: unset;
+            }
         }
         &__last-digit {
             width: var(--core-size-800);

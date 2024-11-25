@@ -3,14 +3,14 @@ import type { TWebSocket } from 'Types';
 import initStore from 'App/init-store';
 import type { TCoreStores } from '@deriv/stores/types';
 import { routes } from '@deriv/shared';
-import ModulesProvider from 'Stores/Providers/modules-providers';
-import TraderProviders from '../trader-providers';
-import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import { NotificationsProvider, SnackbarProvider } from '@deriv-com/quill-ui';
+import ModulesProvider from 'Stores/Providers/modules-providers';
 import 'Sass/app.scss';
 import Notifications from './Containers/Notifications';
-import Router from './Routes/router';
 import ServicesErrorSnackbar from './Components/ServicesErrorSnackbar';
+import Layouts from './Layouts';
+import TraderProviders from '../trader-providers';
+import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import { sendDtraderV2OpenToAnalytics } from '../Analytics';
 
 type Apptypes = {
@@ -55,7 +55,7 @@ const App = ({ passthrough }: Apptypes) => {
                     <NotificationsProvider>
                         <SnackbarProvider>
                             <Notifications />
-                            <Router />
+                            <Layouts />
                             <ServicesErrorSnackbar />
                         </SnackbarProvider>
                     </NotificationsProvider>

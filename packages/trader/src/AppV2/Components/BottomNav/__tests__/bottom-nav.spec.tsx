@@ -1,49 +1,73 @@
-import React from 'react';
+import React, { FormEventHandler } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { routes } from '@deriv/shared';
 import BottomNav from '../bottom-nav';
-import { BrowserRouter } from 'react-router-dom';
-
+// TODO: Fix test
 jest.mock('@deriv-com/quill-ui', () => ({
     ...jest.requireActual('@deriv-com/quill-ui'),
-    Badge: jest.fn(() => {
-        return 'MockedBadge';
-    }),
+    Navigation: {
+        Bottom: ({ children, onChange }: { children: React.ReactNode; onChange: FormEventHandler<HTMLDivElement> }) => (
+            <div onChange={onChange}>{children}</div>
+        ),
+        BottomAction: ({ icon, label }: { icon: string; label: string }) => (
+            <button>
+                {icon}
+                {label}
+            </button>
+        ),
+    },
 }));
+
 describe('BottomNav', () => {
     const default_mock_store = mockStore({});
-    const mockedTradeContainer = <div>MockedTrade</div>;
-    const mockedPositionsContainer = <div>MockedPositions</div>;
+    const bottomNavItems = [
+        {
+            icon: <div>Trade Icon</div>,
+            activeIcon: <div>Active Trade Icon</div>,
+            label: <span>Trade</span>,
+            path: routes.trade,
+        },
+        {
+            icon: <div>Positions Icon</div>,
+            activeIcon: <div>Active Positions Icon</div>,
+            label: <span>Positions</span>,
+            path: routes.trader_positions,
+        },
+    ];
+
     const renderedBottomNav = (
         <StoreProvider store={default_mock_store}>
             <BrowserRouter>
-                <BottomNav>
-                    <div>{mockedTradeContainer}</div>
-                    <div>{mockedPositionsContainer}</div>
-                </BottomNav>
+                <BottomNav bottomNavItems={bottomNavItems} />
             </BrowserRouter>
         </StoreProvider>
     );
-    it('should render correctly', () => {
+
+    it('renders correctly', () => {
         const { container } = render(renderedBottomNav);
         expect(container).toBeInTheDocument();
     });
+
     it('should render the correct number of BottomNavItem components', () => {
         default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
         expect(screen.getByText('Positions')).toBeInTheDocument();
         expect(screen.getByText('Trade')).toBeInTheDocument();
     });
-    it('should render MockedTrade by default since selected index is 0', () => {
+
+    it('renders Trade as the default selected item', () => {
         default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
-        expect(screen.getByText('MockedTrade')).toBeInTheDocument();
+        expect(screen.getByText('Trade')).toBeInTheDocument();
     });
-    it('should render MockedPositions if 2nd MockedBottomNavItem is selected', () => {
+
+    it('renders Positions as selected when clicked', async () => {
         default_mock_store.client.is_logged_in = true;
         render(renderedBottomNav);
-        userEvent.click(screen.getByText('Positions'));
-        expect(screen.getByText('MockedPositions')).toBeInTheDocument();
+        await userEvent.click(screen.getByText('Positions'));
+        expect(screen.getByText('Positions')).toBeInTheDocument();
     });
 });

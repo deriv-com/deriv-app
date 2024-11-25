@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon';
 import Button from '../button';
 import { localize } from '@deriv/translations';
+import { platforms } from '@deriv/shared';
 
 type TPageOverlay = {
     header?: React.ReactNode;
@@ -34,13 +35,17 @@ const PageOverlay = ({
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
 
+    const onClickTraderHub = () => {
+        window.location.href = platforms.tradershub_os.url ?? '';
+    };
+
     const RedirectionComponent = () => {
         if (is_from_tradershub_os) {
             return (
                 <Button
                     className='dc-page-overlay__header-redirect'
                     has_effect
-                    onClick={onClickClose}
+                    onClick={onClickTraderHub}
                     text={localize(`Back to Trader's Hub`)}
                     primary
                 />

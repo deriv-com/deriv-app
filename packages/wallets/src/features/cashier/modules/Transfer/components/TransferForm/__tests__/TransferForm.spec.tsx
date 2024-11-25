@@ -65,6 +65,7 @@ describe('<TransferForm />', () => {
     it('should test that transfer button is disabled when fromAmount is 0', async () => {
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: jest.fn(),
         });
@@ -88,6 +89,7 @@ describe('<TransferForm />', () => {
     it('should test that transfer button is disabled when toAmount is 0', async () => {
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: jest.fn(),
         });
@@ -122,6 +124,7 @@ describe('<TransferForm />', () => {
 
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: dummyRequest,
         });

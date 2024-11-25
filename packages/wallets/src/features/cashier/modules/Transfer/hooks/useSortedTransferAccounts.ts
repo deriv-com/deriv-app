@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { MT5MarketTypeDetails, PlatformDetails } from '../../../constants';
-import { getMarketType } from '../../../helpers';
 import { TAccount, TAccountsList } from '../types';
 
 const useSortedTransferAccounts = (accounts: TAccountsList) => {
@@ -69,8 +68,8 @@ const sortTradingAccounts = (a: TAccount, b: TAccount) => {
 
     // For mt5 accounts, compare market types
     if (typeA === PlatformDetails.mt5.name) {
-        const marketTypeA = getMarketType(a.mt5_group);
-        const marketTypeB = getMarketType(b.mt5_group);
+        const marketTypeA = a.market_type;
+        const marketTypeB = b.market_type;
 
         if (
             marketTypeOrder[marketTypeA ?? MT5MarketTypeDetails.all.name] !==

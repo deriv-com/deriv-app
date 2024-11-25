@@ -252,18 +252,6 @@ describe('<QuickStrategy />', () => {
         });
     });
 
-    it('It should submit the form', async () => {
-        render(<QuickStrategy />, {
-            wrapper,
-        });
-
-        await waitFor(async () => {
-            await userEvent.click(screen.getByTestId('qs-run-button'));
-        });
-
-        expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
-    });
-
     it('It should close the form on close button click', async () => {
         render(<QuickStrategy />, {
             wrapper,

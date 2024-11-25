@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { DerivLightUnreadEmailNotificationIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { ActionScreen, Button } from '@deriv-com/ui';
-import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 
 type TProps = {
@@ -39,7 +39,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                         className='wallets-withdrawal-verification-sent__icon'
                         data-testid='dt_withdrawal_verification_sent_icon'
                     >
-                        <EmailSent />
+                        <DerivLightUnreadEmailNotificationIcon width={102} />
                     </div>
                 }
                 title={<Localize i18n_default_text="We've sent you an email." />}

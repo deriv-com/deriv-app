@@ -3,6 +3,8 @@ import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon';
+import Button from '../button';
+import { localize } from '@deriv/translations';
 
 type TPageOverlay = {
     header?: React.ReactNode;
@@ -14,6 +16,7 @@ type TPageOverlay = {
     header_classname?: string;
     has_return_icon?: boolean;
     onReturn?: () => void;
+    is_from_tradershub_os?: boolean;
 };
 
 const PageOverlay = ({
@@ -27,8 +30,34 @@ const PageOverlay = ({
     header_classname,
     has_return_icon,
     onReturn,
+    is_from_tradershub_os = false,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
+
+    const RedirectionComponent = () => {
+        if (is_from_tradershub_os) {
+            return (
+                <Button
+                    className='dc-page-overlay__header-redirect'
+                    has_effect
+                    onClick={() => {
+                        window.location.href = 'https://hub.deriv.com/tradershub/cfds';
+                    }}
+                    text={localize(`Back to Trader's Hub`)}
+                    primary
+                />
+            );
+        }
+        return (
+            <div
+                data-testid='dt_page_overlay_header_close'
+                className='dc-page-overlay__header-close'
+                onClick={(onClickClose as unknown as MouseEventHandler<HTMLDivElement>) || window.history.back}
+            >
+                <Icon icon='IcCross' />
+            </div>
+        );
+    };
 
     const el_page_overlay = (
         <div
@@ -47,18 +76,7 @@ const PageOverlay = ({
                             )}
                             {header}
                         </div>
-                        {!is_from_app && (
-                            <div
-                                data-testid='dt_page_overlay_header_close'
-                                className='dc-page-overlay__header-close'
-                                onClick={
-                                    (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) ||
-                                    window.history.back
-                                }
-                            >
-                                <Icon icon='IcCross' />
-                            </div>
-                        )}
+                        {!is_from_app && <RedirectionComponent />}
                     </div>
                 </div>
             )}

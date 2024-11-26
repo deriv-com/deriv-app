@@ -1,19 +1,27 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
-import { localize, Localize } from '@deriv/translations';
+
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import StakeDetails from './stake-details';
+import { Localize, localize } from '@deriv/translations';
+import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
+
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';
+
+import StakeDetails from './stake-details';
 
 type TOnProposalResponse = TTradeStore['onProposalResponse'];
 type TStakeInput = {
     onClose: () => void;
     is_open?: boolean;
+};
+type TNewValues = {
+    amount?: string | number;
+    payout_per_point?: string | number;
+    barrier_1?: string | number;
 };
 
 const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
@@ -23,6 +31,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         commission,
         contract_type,
         currency,
+        barrier_1,
         has_stop_loss,
         is_accumulator,
         is_multiplier,
@@ -37,13 +46,14 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         validation_params,
     } = trade_store;
 
-    const [input_value, setInputValue] = React.useState<number | string>(amount);
+    const [proposal_request_values, setNewValues] = React.useState<TNewValues>({ amount }); // contains information for creating proposal request: stake (amount), payout_per_point for Turbos and barrier_1 for Vanillas
     const [stake_error, setStakeError] = React.useState('');
     const [fe_stake_error, setFEStakeError] = React.useState('');
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     // For handling cases when user clicks on Save btn before we got response from API
+    // TODO can we use is_fetching from hook?
     const is_api_response_received_ref = React.useRef(false);
 
     // First contract type data:
@@ -113,28 +123,20 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     // TODO: Rise/Fall equal??? There is a logic in onChange func for it
 
     // Parallel proposal without subscription
-    // TODO: replace with state
-    const new_values_ref = React.useRef<Record<string, unknown>>({ amount: input_value });
-
-    const new_values = { amount: input_value };
     // TODO: For Rise/Fall and all Digits we should do 2 proposal requests
     const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
 
     const proposal_req = getProposalRequestObject({
-        // new_values: new_values_ref.current,
-        new_values,
+        new_values: proposal_request_values,
         trade_store,
         trade_type: contract_types[0],
     });
     // console.log('proposal_req', proposal_req);
-    // console.log('contract_types', contract_types);
-
-    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
-        // ['proposal', ...Object.entries(new_values).flat().join('-'), Object.keys(trade_types)[0]],
+    const { data: response, is_fetching } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         [
             'proposal',
-            // ...Object.entries(new_values_ref.current).flat().join('-'),
-            `${input_value}`,
+            ...Object.entries(proposal_request_values).flat().join('-'),
+            `${proposal_request_values?.amount}`,
             JSON.stringify(proposal_req),
             contract_types.join('-'),
         ],
@@ -149,49 +151,30 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             const { error, proposal } = response;
             // console.log('response', response);
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
-            if (input_value === '') {
+            if (proposal_request_values.amount === '') {
                 setStakeError('');
                 is_api_response_received_ref.current = true;
                 return;
             }
-            // Vanilla and Turbos
-            // if (this.is_vanilla && response.error.details?.barrier_choices) {
-            //     const { barrier_choices, max_stake, min_stake } = response.error.details;
-
-            //     this.setStakeBoundary(contract_type, min_stake, max_stake);
-            //     this.setBarrierChoices(barrier_choices as string[]);
-            //     if (!this.barrier_choices.includes(this.barrier_1)) {
-            //         // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
-            //         // The new list is set and the mid value is assigned
-            //         const index = Math.floor(this.barrier_choices.length / 2);
-            //         this.barrier_1 = this.barrier_choices[index];
-            //         this.onChange({
-            //             target: {
-            //                 name: 'barrier_1',
-            //                 value: this.barrier_1,
-            //             },
-            //         });
-            //     }
-            // }
+            // Edge cases for Vanilla and Turbos
+            if (is_vanilla && error?.details?.barrier_choices) {
+                const { barrier_choices } = error.details;
+                if (!barrier_choices?.includes(barrier_1)) {
+                    const index = Math.floor(barrier_choices.length / 2);
+                    setNewValues(prev => ({ ...prev, barrier_1: barrier_choices[index] as string }));
+                    return;
+                }
+            }
+            // Sometimes the initial payout_per_point doesn't match with current payout_per_point_choices received from API.
+            // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
+            // This is the same logic as in trade-store
             if (is_turbos && error?.details?.payout_per_point_choices) {
                 const { payout_per_point_choices } = error.details;
-                const payoutIndex = Math.floor(payout_per_point_choices.length / 2);
-                // new_values_ref.current = {
-                //     ...new_values_ref.current,
-                //     payout_per_point: payout_per_point_choices[payoutIndex],
-                // };
-                is_api_response_received_ref.current = true;
+                const index = Math.floor(payout_per_point_choices.length / 2);
+                setNewValues(prev => ({ ...prev, payout_per_point: payout_per_point_choices[index] }));
                 return;
-                // this.setPayoutChoices(payout_per_point_choices.map(item => String(item)));
-                // this.setStakeBoundary(contract_type, min_stake, max_stake);
-                // this.onChange({
-                //     target: {
-                //         name: 'payout_per_point',
-                //         value: String(payout_per_point_choices[payoutIndex]),
-                //     },
-                // });
-                // this.barrier_1 = String(this.getTurbosChartBarrier(response));
             }
+
             const new_error = error?.message ?? '';
             const is_error_field_match =
                 ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
@@ -228,28 +211,27 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const new_value = e.target.value;
         // If a new value is equal to a previous one, then we won't send API request
-        const is_equal = new_value === String(input_value);
+        const is_equal = new_value === String(proposal_request_values.amount);
         is_api_response_received_ref.current = is_equal;
         if (is_equal) return;
 
-        setStakeError('');
+        // setStakeError('');
         setFEStakeError('');
-        // Check for preventing cases when empty string converted to number will be equal 0
-        const is_empty = new_value === '';
-        setInputValue(is_empty ? new_value : Number(new_value));
+        setNewValues(prev => ({ ...prev, amount: new_value }));
     };
 
     const onSave = () => {
+        // console.log('is_fetching', is_fetching);
         // console.log('is_api_response_received_ref.current', is_api_response_received_ref.current);
         // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
         if (!is_api_response_received_ref.current || stake_error) return;
-        // Check, tht value is not empty
-        if (input_value === '') {
+        if (proposal_request_values.amount === '') {
             setFEStakeError(localize('Amount is a required field.'));
             return;
         }
+
         // Setting new stake value to the store and send it in streaming proposal
-        onChange({ target: { name: 'amount', value: input_value } });
+        onChange({ target: { name: 'amount', value: proposal_request_values.amount } });
         onClose();
     };
 
@@ -284,7 +266,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     decimals={getDecimalPlaces(currency)}
                     inputMode='decimal'
                     message={fe_stake_error || stake_error || getInputMessage()}
-                    minusDisabled={Number(input_value) - 1 <= 0}
+                    minusDisabled={Number(proposal_request_values.amount) - 1 <= 0}
                     name='amount'
                     noStatusIcon
                     onChange={onInputChange}
@@ -294,7 +276,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     shouldRound={false}
                     textAlignment='center'
                     unitLeft={getCurrencyDisplayCode(currency)}
-                    value={input_value}
+                    value={proposal_request_values.amount}
                     variant='fill'
                 />
                 <StakeDetails

@@ -1,4 +1,6 @@
 .player {
+    position: unset !important;
+
     &__wrapper {
         position: relative;
     }
@@ -8,7 +10,7 @@
         top: 0;
         height: 100%;
         width: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.72);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -22,6 +24,12 @@
 
         &__icon {
             margin: 0;
+            &-close {
+                position: fixed;
+                top: 0;
+                right: 0;
+                padding: 1.6rem;
+            }
         }
     }
 
@@ -57,14 +65,14 @@
             margin: 0.8rem 0;
             cursor: pointer;
 
-            &:before {
-                content: '';
-                display: block;
-                height: 2rem;
-                width: 100%;
-                position: absolute;
-                bottom: 67%;
-            }
+            // &:before {
+            //     content: '';
+            //     display: block;
+            //     height: 2rem;
+            //     width: 100%;
+            //     position: absolute;
+            //     bottom: 67%;
+            // }
 
             &__filled {
                 position: relative;
@@ -90,6 +98,20 @@
             height: 3.6rem;
             padding-bottom: 0.4rem;
 
+            &--v2 {
+                display: flex;
+                flex-direction: column;
+                height: 3.6rem;
+                padding-bottom: 0.4rem;
+
+                .controls__right--v2 {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    gap: 0.8rem;
+                }
+            }
+
             &--blocked {
                 pointer-events: none;
             }
@@ -101,6 +123,10 @@
 
         &__time-wrapper {
             margin: 0 1.6rem;
+
+            &--v2 {
+                margin: 0;
+            }
         }
 
         &__button {
@@ -156,7 +182,9 @@
                 background-color: var(--general-main-2);
                 box-shadow: 0 0.8rem 1.6rem 0 var(--shadow-menu);
                 transform: translateY(0);
-                transition: transform 0.25s ease, opacity 0.25s linear;
+                transition:
+                    transform 0.25s ease,
+                    opacity 0.25s linear;
                 opacity: 0;
 
                 &--enter,
@@ -290,7 +318,7 @@
         .dc-list,
         .dc-themed-scrollbars {
             @include mobile {
-                height: 13.2rem;
+                max-height: 100vh !important;
             }
         }
     }

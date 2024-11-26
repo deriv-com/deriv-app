@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 import { useIsRtl } from '@deriv/hooks';
-import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
+import { isDTraderV2, isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import throttle from 'lodash.throttle';
 import { useDebounceCallback } from 'usehooks-ts';
 import VideoOverlay from './video-overlay';
@@ -13,6 +13,7 @@ type TVideoPlayerProps = {
     data_testid?: string;
     height?: string;
     is_mobile?: boolean;
+    is_v2?: boolean;
     increased_drag_area?: boolean;
     muted?: boolean;
     src: string;
@@ -29,6 +30,7 @@ const VideoPlayer = ({
     data_testid,
     height,
     is_mobile,
+    is_v2,
     increased_drag_area,
     muted = false,
     src,
@@ -286,14 +288,16 @@ const VideoPlayer = ({
         >
             <Stream
                 autoplay={should_autoplay && !is_dragging.current}
-                height={height ?? (is_mobile ? '184.5px' : '270px')}
+                // height={height ?? (is_mobile ? '184.5px' : '270px')}
+                // height='100%'
+                className={classNames('', { player: is_v2 })}
+                width='100%'
                 letterboxColor='transparent'
                 muted={is_muted}
                 preload='auto'
-                responsive={false}
+                // responsive={false}
                 src={src}
                 streamRef={video_ref}
-                width='100%'
                 onEnded={onEnded}
                 onPlay={() => setIsPlaying(true)}
                 onLoadedMetaData={onLoadedMetaData}
@@ -304,8 +308,9 @@ const VideoPlayer = ({
             />
             <VideoOverlay
                 onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
-                is_ended={is_ended.current}
+                is_ended={is_ended.current || (is_v2 && show_controls)}
                 is_mobile={is_mobile}
+                is_v2={is_v2}
             />
             <VideoControls
                 block_controls={is_dragging.current}
@@ -317,6 +322,7 @@ const VideoPlayer = ({
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}
+                is_v2={isDTraderV2()}
                 increased_drag_area={increased_drag_area}
                 onRewind={onRewind}
                 onVolumeChange={setVolume}

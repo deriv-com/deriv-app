@@ -6,6 +6,7 @@ import { clickAndKeyEventHandler } from '@deriv/shared';
 import { getDescriptionVideoIds } from 'AppV2/Utils/contract-description-utils';
 import TradeDescription from './Description/trade-description';
 import VideoPreview from './Description/video-preview';
+import ReactDOM from 'react-dom';
 
 type TGuideDescriptionModal = {
     contract_list: { tradeType: React.ReactNode; id: string }[];
@@ -16,6 +17,41 @@ type TGuideDescriptionModal = {
     onTermClick: (term: string) => void;
     selected_contract_type: string;
     show_guide_for_selected_contract?: boolean;
+};
+
+const PortalModal = ({
+    isOpen,
+    onClose,
+    children,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+}) => {
+    // React.useEffect(() => {
+    //     if (isOpen) {
+    //         document.body.style.overflow = 'hidden';
+    //     }
+
+    //     return () => {
+    //         document.body.style.overflow = 'unset';
+    //     };
+    // }, [isOpen]);
+
+    if (!isOpen) return null;
+
+    return ReactDOM.createPortal(
+        <div className='modal-player' aria-modal='true'>
+            <div
+                className='modal-player__something'
+                onClick={e => e.stopPropagation()}
+                onKeyDown={e => e.stopPropagation()}
+            >
+                {children}
+            </div>
+        </div>,
+        document.body
+    );
 };
 
 const GuideDescriptionModal = ({
@@ -85,14 +121,30 @@ const GuideDescriptionModal = ({
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-            {is_video_player_opened && (
-                <dialog
-                    ref={modal_ref}
-                    onClick={toggleVideoPlayer}
-                    onKeyDown={toggleVideoPlayer}
-                    className='modal-player'
-                >
-                    <div onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
+            {/* {is_video_player_opened && (
+                // <dialog
+                //     ref={modal_ref}
+                //     onClick={toggleVideoPlayer}
+                //     onKeyDown={toggleVideoPlayer}
+                //     className='modal-player'
+                // >
+                //     <div onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
+                //         <VideoPlayer
+                //             className='modal-player__wrapper'
+                //             data_testid='dt_video_player'
+                //             height='180px'
+                //             is_mobile
+                //             increased_drag_area
+                //             src={video_src}
+                //         />
+                //     </div>
+                // </dialog>
+                <div className='modal-player__overlay' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
+                    <div
+                        className='modal-player'
+                        onClick={e => e.stopPropagation()}
+                        onKeyDown={e => e.stopPropagation()}
+                    >
                         <VideoPlayer
                             className='modal-player__wrapper'
                             data_testid='dt_video_player'
@@ -102,8 +154,19 @@ const GuideDescriptionModal = ({
                             src={video_src}
                         />
                     </div>
-                </dialog>
-            )}
+                </div>
+            )} */}
+            <PortalModal isOpen={is_video_player_opened} onClose={toggleVideoPlayer}>
+                <VideoPlayer
+                    className='modal-player__wrapper'
+                    data_testid='dt_video_player'
+                    // height='180px'
+                    is_v2
+                    is_mobile
+                    increased_drag_area
+                    src={video_src}
+                />
+            </PortalModal>
         </React.Fragment>
     );
 };

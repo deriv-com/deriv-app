@@ -28,7 +28,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 type TRoutes =
     | '/404'
@@ -105,15 +105,15 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp' | 'gold';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 // TODO: Remove this type once the API types are updated
 
 type TClientKyCStatus = {
-    poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
-    poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    poi_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
+    poa_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
     valid_tin?: 0 | 1;
     required_tin?: 0 | 1;
 };
@@ -805,7 +805,7 @@ type TUiStore = {
                       position?: string;
                       Component?: React.FunctionComponent;
                       has_right_separator?: boolean;
-                  }
+                  },
               ]
             | []
     ) => void;

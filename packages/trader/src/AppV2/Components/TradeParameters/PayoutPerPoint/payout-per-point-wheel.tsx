@@ -49,6 +49,7 @@ const PayoutPerPointWheel = observer(
             [
                 'proposal',
                 ...Object.entries(new_values).flat().join('-'),
+                `${barrier}`,
                 Object.keys(trade_types)[0],
                 JSON.stringify(proposal_req),
             ],

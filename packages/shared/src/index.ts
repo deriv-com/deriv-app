@@ -37,3 +37,4 @@ export * from './utils/constants';
 export * from './utils/loader-handler';
 export * from './utils/types';
 export * from './helpers';
+export { default as cacheTrackEvents } from './utils/analytics/analytics';

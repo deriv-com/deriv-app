@@ -119,7 +119,7 @@ export type TProductForMarketDetails =
 
 export type TTranslations = ReturnType<typeof useTranslations>;
 
-export type TLanguageType = 'AR' | 'EN' | 'FR' | 'RU';
+export type TLanguageType = 'AR' | 'EN' | 'ES' | 'FR' | 'RU';
 
 /* eslint-disable camelcase */
 /*

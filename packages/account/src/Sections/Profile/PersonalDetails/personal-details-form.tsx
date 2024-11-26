@@ -531,47 +531,49 @@ const PersonalDetailsForm = observer(() => {
                                                         is_phone_number_verified,
                                                 })}
                                             >
-                                                {isCountryCodeDropdownEnabled && (
-                                                    <FormSelectField
-                                                        label={localize('Code*')}
-                                                        name='calling_country_code'
-                                                        list_items={legacy_core_countries_list}
-                                                        is_country_code_dropdown
-                                                        onItemSelection={country_list => {
-                                                            setFieldValue(
-                                                                'calling_country_code',
-                                                                country_list.value,
-                                                                true
-                                                            );
-                                                            const is_sms_carrier_available =
-                                                                //@ts-expect-error carriers is not defined in TListItem type
-                                                                country_list.carriers &&
-                                                                //@ts-expect-error carriers is not defined in TListItem type
-                                                                (country_list.carriers as string[]).includes('sms') &&
-                                                                is_global_sms_available;
-                                                            const is_whatsapp_carrier_available =
-                                                                //@ts-expect-error carriers is not defined in TListItem type
-                                                                country_list.carriers &&
-                                                                //@ts-expect-error carriers is not defined in TListItem type
-                                                                (country_list.carriers as string[]).includes(
-                                                                    'whatsapp'
-                                                                ) &&
-                                                                is_global_whatsapp_available;
-                                                            setFieldValue(
-                                                                'is_carriers_available',
-                                                                is_sms_carrier_available ||
-                                                                    is_whatsapp_carrier_available,
-                                                                true
-                                                            );
-                                                        }}
-                                                        disabled={
-                                                            isFieldDisabled('calling_country_code') ||
-                                                            !!next_email_otp_request_timer ||
-                                                            is_email_otp_timer_loading
-                                                        }
-                                                    />
-                                                )}
                                                 <div className='account-form__fieldset--phone_input'>
+                                                    {isCountryCodeDropdownEnabled && (
+                                                        <FormSelectField
+                                                            label={localize('Code*')}
+                                                            name='calling_country_code'
+                                                            list_items={legacy_core_countries_list}
+                                                            is_country_code_dropdown
+                                                            onItemSelection={country_list => {
+                                                                setFieldValue(
+                                                                    'calling_country_code',
+                                                                    country_list.value,
+                                                                    true
+                                                                );
+                                                                const is_sms_carrier_available =
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    country_list.carriers &&
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    (country_list.carriers as string[]).includes(
+                                                                        'sms'
+                                                                    ) &&
+                                                                    is_global_sms_available;
+                                                                const is_whatsapp_carrier_available =
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    country_list.carriers &&
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    (country_list.carriers as string[]).includes(
+                                                                        'whatsapp'
+                                                                    ) &&
+                                                                    is_global_whatsapp_available;
+                                                                setFieldValue(
+                                                                    'is_carriers_available',
+                                                                    is_sms_carrier_available ||
+                                                                        is_whatsapp_carrier_available,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            disabled={
+                                                                isFieldDisabled('calling_country_code') ||
+                                                                !!next_email_otp_request_timer ||
+                                                                is_email_otp_timer_loading
+                                                            }
+                                                        />
+                                                    )}
                                                     <Input
                                                         data-lpignore='true'
                                                         type='text'

@@ -411,9 +411,34 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 &_input {
                     width: 100%;
+                    display: flex;
+                    direction: ltr;
+
+                    .dc-autocomplete__field {
+                        .dc-input__container {
+                            @include rtl {
+                                border-radius: 0;
+                            }
+                        }
+                    }
 
                     .dc-input__container {
                         border-radius: 0;
+
+                        @include rtl {
+                            border-top-right-radius: $BORDER_RADIUS;
+                            border-bottom-right-radius: $BORDER_RADIUS;
+                        }
+
+                        & > input {
+                            text-align: start;
+                        }
+                    }
+
+                    .dc-dropdown-list {
+                        @include rtl {
+                            direction: rtl;
+                        }
                     }
                 }
             }
@@ -1085,7 +1110,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     background-color: var(--general-main-2);
                     margin-bottom: 1rem;
                     padding: 1rem;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
+                    box-shadow:
+                        0 0 20px rgba(0, 0, 0, 0.05),
+                        0 16px 20px rgba(0, 0, 0, 0.05);
                     border-radius: 0.4rem;
                 }
 

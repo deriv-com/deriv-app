@@ -337,11 +337,15 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
     const gaming_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
     );
+    const gold_demo_accounts = available_accounts.filter(
+        item => item.market_type === MARKET_TYPE.FINANCIAL && item.product === PRODUCT.GOLD
+    );
     return [
         ...gaming_demo_accounts,
         ...financial_demo_accounts,
         ...swap_free_demo_accounts,
         ...zero_spread_demo_accounts,
+        ...gold_demo_accounts,
     ];
 };
 const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {

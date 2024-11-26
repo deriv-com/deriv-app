@@ -33,8 +33,8 @@
     "license": "ISC",
     "dependencies": {
         "@deriv-com/ui": "1.36.4",
-        "@deriv-com/analytics": "1.26.2",
-        "@deriv-com/utils": "^0.0.36",
+        "@deriv-com/analytics": "1.27.0",
+        "@deriv-com/utils": "^0.0.39",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",

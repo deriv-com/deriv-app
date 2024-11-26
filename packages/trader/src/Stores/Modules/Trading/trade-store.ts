@@ -932,10 +932,16 @@ export default class TradeStore extends BaseStore {
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
         if (
-            name == 'contract_type' &&
+            name === 'contract_type' &&
             ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
         ) {
             this.prev_contract_type = this.contract_type;
+        }
+
+        // reset stop loss after trade type was changed
+        if (name === 'contract_type' && this.has_stop_loss) {
+            this.has_stop_loss = false;
+            this.stop_loss = '';
         }
 
         if (name === 'symbol' && value) {

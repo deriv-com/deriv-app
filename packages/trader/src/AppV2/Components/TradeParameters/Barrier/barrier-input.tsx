@@ -181,6 +181,11 @@ const BarrierInput = observer(
                         onAction: () => {
                             if (validation_errors.barrier_1.length === 0) {
                                 onClose(true);
+
+                                // This is a workaround to re-trigger any validation errors that were hidden behind the action sheet
+                                handleOnChange({
+                                    target: { name: 'barrier_1', value: barrier_1.replace(/[+-]/g, '') },
+                                });
                             } else {
                                 setShouldShowError(true);
                             }

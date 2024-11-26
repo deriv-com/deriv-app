@@ -622,7 +622,7 @@ export default class RunPanelStore {
             const { TRADE_TYPE_CATEGORY_NAMES } = config;
             const trade_type_category = getSelectedTradeTypeCategory();
             const tradeTypeName =
-                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] || '';
+                TRADE_TYPE_CATEGORY_NAMES?.[trade_type_category as keyof typeof TRADE_TYPE_CATEGORY_NAMES] ?? '';
 
             if (tradeTypeName) {
                 error.message += ` Trade type: ${tradeTypeName}`;

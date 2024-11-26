@@ -47,7 +47,7 @@ export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
 export const getSelectedTradeTypeCategory = (workspace = Blockly.derivWorkspace) => {
     const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST');
-    return selected_trade_type || '';
+    return selected_trade_type ?? '';
 };
 
 export const matchTranslateAttribute = translateString => {

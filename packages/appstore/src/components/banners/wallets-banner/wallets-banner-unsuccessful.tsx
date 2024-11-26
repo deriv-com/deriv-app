@@ -4,18 +4,26 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
+import { cacheTrackEvents } from '@deriv/shared';
 
 const trackAnalyticsEvent = (
     action: TEvents['ce_tradershub_banner']['action'],
     account_mode: TEvents['ce_tradershub_banner']['account_mode']
 ) => {
-    Analytics.trackEvent('ce_tradershub_banner', {
-        action,
-        form_name: 'ce_tradershub_banner',
-        account_mode,
-        banner_name: 'setup_unsuccessful_wallets_step_3_2',
-        banner_type: 'with_cta',
-    });
+    cacheTrackEvents.loadEvent([
+        {
+            event: {
+                name: 'ce_tradershub_banner',
+                properties: {
+                    action,
+                    form_name: 'ce_tradershub_banner',
+                    account_mode,
+                    banner_name: 'setup_unsuccessful_wallets_step_3_2',
+                    banner_type: 'with_cta',
+                },
+            },
+        },
+    ]);
 };
 
 const WalletsBannerUnsuccessful = observer(() => {

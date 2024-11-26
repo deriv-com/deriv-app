@@ -53,8 +53,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     // For handling cases when user clicks on Save btn before we got response from API
-    // TODO can we use is_fetching from hook?
-    const is_api_response_received_ref = React.useRef(false);
+    // const is_api_response_received_ref = React.useRef(false);
 
     // First contract type data:
     const {
@@ -153,7 +152,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (proposal_request_values.amount === '') {
                 setStakeError('');
-                is_api_response_received_ref.current = true;
+                // is_api_response_received_ref.current = true;
                 return;
             }
             // Edge cases for Vanilla and Turbos
@@ -168,7 +167,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             // Sometimes the initial payout_per_point doesn't match with current payout_per_point_choices received from API.
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
             // This is the same logic as in trade-store
-            if (is_turbos && error?.details?.payout_per_point_choices) {
+            if (is_turbos && error?.details?.payout_per_point_choices && error?.details?.field === 'payout_per_point') {
                 const { payout_per_point_choices } = error.details;
                 const index = Math.floor(payout_per_point_choices.length / 2);
                 setNewValues(prev => ({ ...prev, payout_per_point: payout_per_point_choices[index] }));
@@ -181,7 +180,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             setStakeError(is_error_field_match ? new_error : '');
 
             // // Recovery for min and max allowed values in case of error
-            // if (!info.min_value || !info.max_value) {
+            // if (!details.min_stake || !details.max_stake) {
             //     const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
             //     setInfo(info =>
             //         (info.min_value !== min && min) || (info.max_value !== max && max)
@@ -189,10 +188,12 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             //             : info
             //     );
             // }
-            is_api_response_received_ref.current = true;
+
+            // is_api_response_received_ref.current = true;
         };
 
         if (response) onProposalResponse(response);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response]);
 
     const getInputMessage = () =>
@@ -212,7 +213,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         const new_value = e.target.value;
         // If a new value is equal to a previous one, then we won't send API request
         const is_equal = new_value === String(proposal_request_values.amount);
-        is_api_response_received_ref.current = is_equal;
+        // is_api_response_received_ref.current = is_equal;
         if (is_equal) return;
 
         // setStakeError('');
@@ -222,9 +223,10 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const onSave = () => {
         // console.log('is_fetching', is_fetching);
-        // console.log('is_api_response_received_ref.current', is_api_response_received_ref.current);
+        // console.log('!is_api_response_received_ref.current', !is_api_response_received_ref.current);
         // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
-        if (!is_api_response_received_ref.current || stake_error) return;
+        // if (!is_api_response_received_ref.current || stake_error) return;
+        if (stake_error) return;
         if (proposal_request_values.amount === '') {
             setFEStakeError(localize('Amount is a required field.'));
             return;

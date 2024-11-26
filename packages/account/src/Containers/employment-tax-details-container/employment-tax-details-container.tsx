@@ -1,19 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
+
+import { TinValidations } from '@deriv/api/types';
+import { Checkbox, useOnClickOutside } from '@deriv/components';
+import { useResidenceList } from '@deriv/hooks';
+import { getLegalEntityName } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import {
     EmploymentStatusField,
     TaxIdentificationNumberField,
     TaxResidenceField,
 } from '../../Components/forms/form-fields';
 import { isFieldImmutable } from '../../Helpers/utils';
-import { Checkbox, useOnClickOutside } from '@deriv/components';
-import { Localize } from '@deriv-com/translations';
-import { getLegalEntityName } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
-import { useResidenceList } from '@deriv/hooks';
+
 import './employment-tax-details-container.scss';
-import { TinValidations } from '@deriv/api/types';
-import { observer, useStore } from '@deriv/stores';
 
 type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
@@ -39,11 +42,19 @@ const EmploymentTaxDetailsContainer = observer(
         const { data: residence_list } = useResidenceList();
         const { client } = useStore();
 
-        const { is_virtual, account_settings } = client;
+        const { is_virtual, account_settings, account_status } = client;
 
-        const { tin_employment_status_bypass } = tin_validation_config;
+        const { tin_employment_status_bypass, is_tin_mandatory } = tin_validation_config;
 
-        const is_tin_required = !is_virtual && !tin_employment_status_bypass?.includes(values.employment_status);
+        const is_employment_status_mandatory = is_virtual
+            ? true
+            : Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
+
+        const is_tin_required =
+            !is_virtual &&
+            values.employment_status &&
+            !tin_employment_status_bypass?.includes(values.employment_status) &&
+            is_employment_status_mandatory;
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
         const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
@@ -132,15 +143,11 @@ const EmploymentTaxDetailsContainer = observer(
 
         const isFieldDisabled = (field_name: string) => isFieldImmutable(field_name, editable_fields);
 
-        // [TODO] - This should come from BE
-        const should_disable_employment_status =
-            isFieldDisabled('employment_status') || Boolean(is_virtual && client.account_settings.employment_status);
-
         return (
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
-                    required
-                    is_disabled={should_disable_employment_status}
+                    required={is_employment_status_mandatory}
+                    is_disabled={isFieldDisabled('employment_status')}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
                 />
 
@@ -192,7 +199,10 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tin_popover_open={is_tin_popover_open}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                        required={(should_display_long_message && !values.tin_skipped) || is_tin_required}
+                        required={
+                            (should_display_long_message && !values.tin_skipped) ||
+                            (is_tin_required && is_tin_mandatory)
+                        }
                         fieldFocused={
                             should_focus_fields &&
                             values.employment_status &&

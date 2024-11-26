@@ -19,6 +19,8 @@ import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
+import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
+import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -31,12 +33,12 @@ const Trade = observer(() => {
         active_symbols,
         contract_type,
         has_cancellation,
-        symbol,
         is_accumulator,
         is_market_closed,
-        onMount,
         onChange,
+        onMount,
         onUnmount,
+        symbol,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -55,7 +57,11 @@ const Trade = observer(() => {
     );
 
     const onTradeTypeSelect = React.useCallback(
-        (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        (
+            e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+            subform_name: string,
+            trade_type_count: number
+        ) => {
             const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
             onChange({
                 target: {
@@ -63,8 +69,9 @@ const Trade = observer(() => {
                     value,
                 },
             });
+            sendSelectedTradeTypeToAnalytics(value || '', subform_name, symbol, trade_type_count);
         },
-        [trade_types, onChange]
+        [trade_types, onChange, symbol]
     );
 
     const onScroll = React.useCallback(() => {
@@ -124,6 +131,7 @@ const Trade = observer(() => {
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
+            <TradeErrorSnackbar error_fields={['stop_loss', 'take_profit', 'date_start']} should_show_snackbar />
         </BottomNav>
     );
 });

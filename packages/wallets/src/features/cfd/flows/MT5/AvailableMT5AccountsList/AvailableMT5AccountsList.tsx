@@ -1,25 +1,28 @@
-import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
+import React, { useCallback } from 'react';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
-import { THooks } from '../../../../../types';
-import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
-import { JurisdictionModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import {
+    getMarketTypeDetails,
+    MARKET_TYPE,
+    MT5_ACCOUNT_STATUS,
+    PRODUCT,
+    TRADING_PLATFORM_STATUS,
+} from '../../../constants';
+import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
+import { TAvailableMT5Account } from '../../../types';
+import { getClientVerification } from '../../../utils';
 import './AvailableMT5AccountsList.scss';
 
-const LazyVerification = lazy(
-    () => import(/* webpackChunkName: "wallets-client-verification" */ '../../ClientVerification/ClientVerification')
-);
-
 type TProps = {
-    account: THooks.AvailableMT5Accounts;
+    account: TAvailableMT5Account;
 };
 
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
@@ -28,82 +31,42 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();
     const isRtl = useIsRtl();
     const { setModalState, show } = useModal();
-    const { description, title } = getMarketTypeDetails(localize, account.product)[
+    const { data: isEuRegion } = useIsEuRegion();
+    const { availability, description, icon, title } = getMarketTypeDetails(localize, account.product, isEuRegion)[
         account.market_type || MARKET_TYPE.ALL
     ];
-    const [showMt5PasswordModal, setShowMt5PasswordModal] = useState(false);
     const { data: mt5Accounts } = useMT5AccountsList();
     const platformStatus = getPlatformStatus(account.platform);
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
+    const isVirtual = activeWallet?.is_virtual;
+    const { hasClientKycStatus } = getClientVerification(account);
 
     const onButtonClick = useCallback(() => {
-        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
+        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal status={MT5_ACCOUNT_STATUS.UNAVAILABLE} />);
 
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return show(<TradingPlatformStatusModal isServerMaintenance />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.MAINTENANCE} />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return show(<TradingPlatformStatusModal />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.UNAVAILABLE} />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
-                if (activeWallet?.is_virtual || account.product === PRODUCT.SWAPFREE) {
-                    show(
-                        <MT5PasswordModal
-                            isVirtual={activeWallet?.is_virtual}
-                            marketType={account?.market_type || 'synthetic'}
-                            platform={account.platform}
-                            product={account.product}
-                        />
-                    );
-                } else if (account.product === PRODUCT.ZEROSPREAD) {
-                    show(
-                        <Suspense fallback={<Loader />}>
-                            <LazyVerification
-                                onCompletion={() => {
-                                    setShowMt5PasswordModal(true);
-                                }}
-                                selectedJurisdiction={account.shortcode}
-                            />
-                        </Suspense>
-                    );
+                if (!isVirtual && hasClientKycStatus) {
+                    show(<ClientVerificationModal account={account} />);
                 } else {
-                    show(<JurisdictionModal />);
+                    show(<MT5PasswordModal account={account} isVirtual={isVirtual} />);
                 }
                 setModalState('marketType', account.market_type);
                 setModalState('selectedJurisdiction', account.shortcode);
                 break;
         }
-    }, [
-        hasUnavailableAccount,
-        show,
-        platformStatus,
-        account.platform,
-        account.market_type,
-        account.product,
-        account.shortcode,
-        activeWallet?.is_virtual,
-        setModalState,
-    ]);
+    }, [hasUnavailableAccount, show, platformStatus, isVirtual, hasClientKycStatus, setModalState, account]);
 
-    useEffect(() => {
-        if (showMt5PasswordModal) {
-            show(
-                <MT5PasswordModal
-                    isVirtual={activeWallet?.is_virtual}
-                    marketType={account?.market_type || 'all'}
-                    platform={account.platform}
-                    product={account.product}
-                />
-            );
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showMt5PasswordModal]);
+    if (isEuRegion && availability === 'Non-EU') return null;
 
     return (
         <TradingAccountCard onClick={onButtonClick}>
-            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
-                {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-            </TradingAccountCard.Icon>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>{icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content className='wallets-available-mt5__details'>
                     <div className='wallets-available-mt5__title'>

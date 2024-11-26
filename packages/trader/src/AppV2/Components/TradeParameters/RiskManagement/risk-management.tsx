@@ -11,12 +11,10 @@ import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
+import { TTradeParametersProps } from '../trade-parameters';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 
-type TRiskManagementProps = {
-    is_minimized?: boolean;
-};
-
-const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
+const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
     const {
         cancellation_range_list,
@@ -25,9 +23,14 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         has_cancellation,
         has_take_profit,
         has_stop_loss,
+        is_market_closed,
         take_profit,
         stop_loss,
     } = useTraderStore();
+
+    const { is_error_matching_field: has_error } = useTradeError({
+        error_fields: ['stop_loss', 'take_profit'],
+    });
 
     const closeActionSheet = React.useCallback(() => setIsOpen(false), []);
     const getRiskManagementText = () => {
@@ -73,9 +76,10 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
         <React.Fragment>
             <TextField
                 className={classname}
+                disabled={is_market_closed}
                 label={
                     <Localize
-                        i18n_default_text='Risk Management'
+                        i18n_default_text='Risk management'
                         key={`risk-management${is_minimized ? '-minimized' : ''}`}
                     />
                 }
@@ -83,6 +87,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                 readOnly
                 value={getRiskManagementText()}
                 variant='fill'
+                status={has_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}
@@ -99,7 +104,7 @@ const RiskManagement = observer(({ is_minimized }: TRiskManagementProps) => {
                         )}
                         header={CarouselHeader}
                         pages={action_sheet_content}
-                        title={<Localize i18n_default_text='Risk Management' />}
+                        title={<Localize i18n_default_text='Risk management' />}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

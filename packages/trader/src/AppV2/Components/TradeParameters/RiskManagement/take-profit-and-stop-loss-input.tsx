@@ -1,29 +1,22 @@
 import React from 'react';
 import clsx from 'clsx';
-import debounce from 'lodash.debounce';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
-import {
-    CONTRACT_TYPES,
-    getCurrencyDisplayCode,
-    getDecimalPlaces,
-    isCryptocurrency,
-    useIsMounted,
-    WS,
-} from '@deriv/shared';
-import { focusAndOpenKeyboard } from 'AppV2/Utils/trade-params-utils';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { focusAndOpenKeyboard, getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { ActionSheet, CaptionText, Text, ToggleSwitch, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
-import { previewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { TTradeStore } from 'Types';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 
 type TTakeProfitAndStopLossInputProps = {
     classname?: string;
     has_save_button?: boolean;
     has_actionsheet_wrapper?: boolean;
-    initial_error_text?: string;
+    initial_error_text?: React.ReactNode;
     onActionSheetClose: () => void;
     parent_ref?: React.MutableRefObject<{
         has_take_profit?: boolean;
@@ -36,6 +29,7 @@ type TTakeProfitAndStopLossInputProps = {
     parent_is_api_response_received_ref?: React.MutableRefObject<boolean>;
     type?: 'take_profit' | 'stop_loss';
 };
+type TOnProposalResponse = TTradeStore['onProposalResponse'];
 
 const TakeProfitAndStopLossInput = ({
     classname,
@@ -54,7 +48,6 @@ const TakeProfitAndStopLossInput = ({
         has_take_profit,
         has_stop_loss,
         is_accumulator,
-        is_multiplier,
         take_profit,
         stop_loss,
         trade_types,
@@ -62,9 +55,12 @@ const TakeProfitAndStopLossInput = ({
         onChangeMultiple,
         validation_params,
     } = trade_store;
-    const isMounted = useIsMounted();
 
     const is_take_profit_input = type === 'take_profit';
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+
+    // For tracking errors, that are coming from proposal for take profit and stop loss
+    const { message } = useTradeError({ error_fields: [type] });
 
     // For handling cases when user clicks on Save btn before we got response from API
     const is_api_response_received = React.useRef(false);
@@ -73,27 +69,59 @@ const TakeProfitAndStopLossInput = ({
     const [is_enabled, setIsEnabled] = React.useState(is_take_profit_input ? has_take_profit : has_stop_loss);
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
     const [error_text, setErrorText] = React.useState('');
-    const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? '');
+    const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? message ?? '');
 
     // Refs for handling focusing and bluring input
     const input_ref = React.useRef<HTMLInputElement>(null);
     const focused_input_ref = React.useRef<HTMLInputElement>(null);
     const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const decimals = getDecimalPlaces(currency);
     const currency_display_code = getCurrencyDisplayCode(currency);
     const Component = has_actionsheet_wrapper ? ActionSheet.Content : 'div';
-    const is_crypto_currency = isCryptocurrency(currency);
-    const should_set_validation_params = is_multiplier && is_enabled && !new_input_value && !is_crypto_currency;
 
     const min_value = validation_params[contract_types[0]]?.[type]?.min;
     const max_value = validation_params[contract_types[0]]?.[type]?.max;
     // Storing data from validation params (proposal) in state in case if we got a validation error from API and proposal stop streaming
     const [info, setInfo] = React.useState<Record<string, string | undefined>>({ min_value, max_value });
 
+    const new_values = {
+        ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
+        has_cancellation: false,
+        ...(is_take_profit_input
+            ? { take_profit: is_enabled ? new_input_value : '' }
+            : { stop_loss: is_enabled ? new_input_value : '' }),
+    };
+
+    const proposal_req = getProposalRequestObject({
+        new_values,
+        trade_store,
+        trade_type: Object.keys(trade_types)[0],
+    });
+
+    // We need to exclude tp in case if type === sl and vise versa in limit order to validate them independently
+    if (is_take_profit_input && proposal_req.limit_order?.stop_loss) {
+        delete proposal_req.limit_order.stop_loss;
+    }
+    if (!is_take_profit_input && proposal_req.limit_order?.take_profit) {
+        delete proposal_req.limit_order.take_profit;
+    }
+
+    const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        [
+            'proposal',
+            ...Object.entries(new_values).flat().join('-'),
+            Object.keys(trade_types)[0],
+            JSON.stringify(proposal_req),
+        ],
+        proposal_req,
+        {
+            enabled: is_enabled,
+        }
+    );
+
     const input_message =
-        info.min_value && info.max_value && is_enabled ? (
+        info.min_value && info.max_value ? (
             <Localize
                 i18n_default_text='Acceptable range: {{min_value}} to {{max_value}} {{currency}}'
                 values={{
@@ -106,7 +134,7 @@ const TakeProfitAndStopLossInput = ({
             ''
         );
 
-    const updateParentRef = ({ field_name, new_value }: { field_name: string; new_value: string | boolean }) => {
+    const updateParentRef = ({ field_name, new_value }: { field_name: string; new_value: React.ReactNode }) => {
         if (!parent_ref?.current || !field_name) return;
         parent_ref.current = { ...parent_ref.current, [field_name]: new_value };
     };
@@ -127,85 +155,41 @@ const TakeProfitAndStopLossInput = ({
         }
     };
 
-    // We are using requestPreviewProposal in useEffect in order to validate both fields independently
     React.useEffect(() => {
-        if (!is_enabled) return;
-
-        const onProposalResponse: TTradeStore['onProposalResponse'] = response => {
-            const { proposal, echo_req, error, subscription } = response;
-            // For multipliers we got 2 responses (Up and Down); the 2d one is not needed as it will be difficult to clean it when user clicks on Save btn
-            if (echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.DOWN) {
-                if (subscription?.id) WS.forget(subscription.id);
-                is_api_response_received_ref.current = true;
-                return;
-            }
+        const onProposalResponse: TOnProposalResponse = response => {
+            const { error, proposal } = response;
 
             const new_error = error?.message ?? '';
-            if (error?.message && subscription?.id) WS.forget(subscription.id);
-            setErrorText(new_error);
+            const is_error_field_match = error?.details?.field === type || !error?.details?.field;
+            setErrorText(is_error_field_match ? new_error : '');
             updateParentRef({
                 field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-                new_value: new_error,
+                new_value: is_error_field_match ? new_error : '',
             });
 
-            /* For Multipliers, validation parameters come in proposal response only if TP or SL are switched on and their value is not empty.
-            Here we set them into the state in order to show further even if we got a validation error from API.*/
-            if (
-                isMounted() &&
-                proposal &&
-                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
-                (echo_req?.limit_order?.take_profit || echo_req?.limit_order?.stop_loss)
-            ) {
-                const { validation_params } = proposal as ExpandedProposal;
-                setInfo(info => {
-                    if (
-                        (info.min_value !== validation_params?.[type]?.min && validation_params?.[type]?.min) ||
-                        (info.max_value !== validation_params?.[type]?.max && validation_params?.[type]?.max)
-                    ) {
-                        return {
-                            min_value: validation_params?.[type]?.min,
-                            max_value: validation_params?.[type]?.max,
-                        };
-                    }
-                    return info;
-                });
+            // Recovery for min and max allowed values in case of error
+            if (!info.min_value || !info.max_value) {
+                const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
+                setInfo(info =>
+                    (info.min_value !== min && min) || (info.max_value !== max && max)
+                        ? { min_value: min, max_value: max }
+                        : info
+                );
             }
             is_api_response_received_ref.current = true;
         };
 
-        /* In order to get validation params for Multipliers when TP and SL are empty, 
-            we send '1' first, get validation params and set them into the state.*/
-        const input_value = should_set_validation_params ? '1' : new_input_value;
-        const dispose = debounce(
-            previewProposal(
-                trade_store,
-                onProposalResponse,
-                {
-                    ...(is_take_profit_input ? { has_take_profit: is_enabled } : { has_stop_loss: is_enabled }),
-                    has_cancellation: false,
-                    ...(is_take_profit_input
-                        ? { take_profit: is_enabled ? input_value : '' }
-                        : { stop_loss: is_enabled ? input_value : '' }),
-                },
-                true
-            ),
-            700,
-            { leading: true }
-        );
-
-        return () => {
-            dispose?.();
-            clearTimeout(focus_timeout.current);
-        };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_enabled, new_input_value]);
+        if (response) onProposalResponse(response);
+    }, [is_enabled, response]);
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        is_api_response_received_ref.current = false;
         let value = String(e.target.value);
         if (value.length > 1) value = /^[0-]+$/.test(value) ? '0' : value.replace(/^0*/, '').replace(/^\./, '0.');
 
+        // If new value is equal to previous one, then we won't send API request
+        const is_equal = value === new_input_value;
+        is_api_response_received_ref.current = is_equal;
+        if (is_equal) return;
         setFEErrorText('');
         setNewInputValue(value);
         updateParentRef({ field_name: type, new_value: value });
@@ -216,7 +200,7 @@ const TakeProfitAndStopLossInput = ({
         if (!is_api_response_received_ref.current && is_enabled) return;
 
         if (error_text && is_enabled) return;
-        if (new_input_value === '' && is_enabled) {
+        if (!new_input_value && is_enabled) {
             setFEErrorText(
                 is_take_profit_input
                     ? localize('Please enter a take profit amount.')
@@ -242,10 +226,6 @@ const TakeProfitAndStopLossInput = ({
 
     React.useEffect(() => {
         setFEErrorText(initial_error_text ?? '');
-        updateParentRef({
-            field_name: is_take_profit_input ? 'tp_error_text' : 'sl_error_text',
-            new_value: initial_error_text ?? '',
-        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initial_error_text]);
 
@@ -256,6 +236,8 @@ const TakeProfitAndStopLossInput = ({
                 : info
         );
     }, [min_value, max_value]);
+
+    React.useEffect(() => () => clearTimeout(focus_timeout.current), []);
 
     return (
         <React.Fragment>
@@ -278,15 +260,16 @@ const TakeProfitAndStopLossInput = ({
                     decimals={decimals}
                     data-testid={is_take_profit_input ? 'dt_tp_input' : 'dt_sl_input'}
                     inputMode='decimal'
-                    message={fe_error_text || error_text || input_message}
+                    message={is_enabled && (fe_error_text || error_text || input_message)}
                     minusDisabled={Number(new_input_value) - 1 <= 0}
                     name={type}
                     noStatusIcon
-                    onChange={debounce(onInputChange, 300)}
+                    onChange={onInputChange}
                     placeholder={localize('Amount')}
                     ref={input_ref}
                     regex={/[^0-9.,]/g}
                     status={fe_error_text || error_text ? 'error' : 'neutral'}
+                    shouldRound={false}
                     textAlignment='center'
                     unitLeft={currency_display_code}
                     variant='fill'

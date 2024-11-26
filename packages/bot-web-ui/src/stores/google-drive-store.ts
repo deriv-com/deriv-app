@@ -104,6 +104,7 @@ export default class GoogleDriveStore {
                     this.setIsAuthorized(true);
                     localStorage.setItem('google_access_token', response.access_token);
                     this.setGoogleDriveTokenExpiry(response?.expires_in);
+                    this.setGoogleDriveTokenValid(true);
                 }
             },
         });
@@ -115,22 +116,15 @@ export default class GoogleDriveStore {
 
     verifyGoogleDriveAccessToken = async () => {
         const expiry_time = localStorage?.getItem('google_access_token_expiry');
-        if (expiry_time) {
-            const current_epoch_time = Math.floor(Date.now() / 1000);
-            if (current_epoch_time > Number(expiry_time)) {
-                try {
-                    //request new access token if invalid
-                    await this.client.requestAccessToken({ prompt: '' });
-                } catch (error) {
-                    this.signOut();
-                    this.setGoogleDriveTokenValid(false);
-                    localStorage.removeItem('google_access_token_expiry');
-                    botNotification(notification_message.google_drive_error, undefined, {
-                        closeButton: false,
-                    });
-                    return 'not_verified';
-                }
-            }
+        if (!expiry_time) return 'not_verified';
+        const current_epoch_time = Math.floor(Date.now() / 1000);
+        if (current_epoch_time > Number(expiry_time)) {
+            this.signOut();
+            this.setGoogleDriveTokenValid(false);
+            localStorage.removeItem('google_access_token_expiry');
+            localStorage.removeItem('google_access_token');
+            botNotification(notification_message.google_drive_error, undefined, { closeButton: false });
+            return 'not_verified';
         }
         return 'verified';
     };
@@ -144,8 +138,10 @@ export default class GoogleDriveStore {
     async signOut() {
         if (this.access_token) {
             await window?.gapi?.client?.setToken({ access_token: '' });
-            await window?.google?.accounts?.oauth2?.revoke(this.access_token);
-            localStorage?.removeItem('google_access_token');
+            if (localStorage.getItem('google_access_token')) {
+                await window?.google?.accounts?.oauth2?.revoke(this.access_token);
+                localStorage?.removeItem('google_access_token');
+            }
             this.access_token = '';
         }
         this.setIsAuthorized(false);
@@ -179,7 +175,6 @@ export default class GoogleDriveStore {
     async loadFile() {
         if (!this.is_google_drive_token_valid) return;
         await this.signIn();
-
         if (this.access_token) gapi.client.setToken({ access_token: this.access_token });
         try {
             await gapi.client.drive.files.list({

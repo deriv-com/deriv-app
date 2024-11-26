@@ -1407,7 +1407,6 @@ export default class ClientStore extends BaseStore {
         if (this.accounts && this.accounts[this.loginid]) {
             return this.accounts[this.loginid].email;
         }
-
         return '';
     }
 
@@ -2068,6 +2067,7 @@ export default class ClientStore extends BaseStore {
     async logout() {
         // makes sure to clear the cached traders-hub data when logging out
         localStorage.removeItem('traders_hub_store');
+        localStorage.removeItem('trade_store');
 
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
@@ -2216,18 +2216,6 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
-
-            if (is_social_signup_provider) {
-                const { get_account_status } = await WS.authorized.getAccountStatus();
-
-                Analytics.trackEvent('ce_virtual_signup_form', {
-                    action: 'signup_continued',
-                    signup_provider: get_account_status?.social_identity_provider,
-                    form_name: this.root_store?.ui?.is_mobile
-                        ? 'virtual_signup_web_mobile_default'
-                        : 'virtual_signup_web_desktop_default',
-                });
-            }
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account

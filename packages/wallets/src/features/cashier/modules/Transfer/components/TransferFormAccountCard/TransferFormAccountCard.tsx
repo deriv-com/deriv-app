@@ -5,22 +5,20 @@ import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletListCardBadge, WalletMarketCurrencyIcon } from '../../../../../../components';
 import { TPlatforms } from '../../../../../../types';
 import { PlatformStatusBadge } from '../../../../../cfd/components/PlatformStatusBadge';
-import { TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
+import { DISABLED_PLATFORM_STATUSES } from '../../../../../cfd/constants';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
 type TProps = {
     account?: TAccount;
+    hasPlatformStatus: (account: TAccount) => boolean;
     type?: 'input' | 'modal';
 };
 
-const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
+const TransferFormAccountCard: React.FC<TProps> = ({ account, hasPlatformStatus, type = 'modal' }) => {
     const { isDesktop } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
-
-    const hasPlatformStatus =
-        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE || TRADING_PLATFORM_STATUS.MAINTENANCE;
 
     return (
         <div
@@ -55,23 +53,26 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                 <Text as='p' size={isInput ? '2xs' : 'sm'} weight='bold'>
                     {account?.accountName}
                 </Text>
-                <Text size={isInput ? '2xs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='Balance: {{balance}}'
-                        values={{
-                            balance: account?.displayBalance,
-                        }}
+                {!hasPlatformStatus(account) && (
+                    <Text size={isInput ? '2xs' : 'xs'}>
+                        <Localize
+                            i18n_default_text='Balance: {{balance}}'
+                            values={{
+                                balance: account?.displayBalance,
+                            }}
+                        />
+                    </Text>
+                )}
+                {isModal && hasPlatformStatus(account) && (
+                    <PlatformStatusBadge
+                        badgeSize='sm'
+                        className='wallets-transfer-form-account-card--badge'
+                        status={
+                            (account?.status || account?.platformStatus) as typeof DISABLED_PLATFORM_STATUSES[number]
+                        }
                     />
-                </Text>
+                )}
             </div>
-
-            {account?.status && hasPlatformStatus && (
-                <PlatformStatusBadge
-                    badgeSize='sm'
-                    cashierAccount={account}
-                    className='wallets-transfer-form-account-card--badge'
-                />
-            )}
 
             {isModal && !!account?.demo_account && (
                 <div className='wallets-transfer-form-account-card__modal-badge'>

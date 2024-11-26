@@ -16,6 +16,7 @@ const AccountList = ({
     is_disabled,
     is_virtual,
     is_eu,
+    product,
     loginid,
     market_type,
     redirectAccount,
@@ -57,6 +58,7 @@ const AccountList = ({
                                 sub_account_type={sub_account_type}
                                 has_error={has_error}
                                 platform={platform}
+                                product={product}
                                 is_dark_mode_on={is_dark_mode_on}
                                 shortcode={shortcode}
                                 should_show_server_name={should_show_server_name}
@@ -132,12 +134,13 @@ const AccountDisplay = ({
     sub_account_type,
     platform,
     server,
+    product,
     is_dark_mode_on,
     is_eu,
     shortcode,
     should_show_server_name,
 }) => {
-    const account_title = getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode });
+    const account_title = getCFDAccountDisplay({ market_type, sub_account_type, platform, is_eu, shortcode, product });
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     const getServerName = React.useCallback(account => {
         if (account) {

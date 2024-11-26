@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider, useWalletAccountsList } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useActiveWalletAccount, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
@@ -7,6 +7,8 @@ import WalletsListingRoute from '../WalletsListingRoute';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn(() => ({ data: { is_virtual: false } })),
+    useIsEuRegion: jest.fn(() => ({ data: true })),
     useWalletAccountsList: jest.fn(),
 }));
 
@@ -19,6 +21,7 @@ jest.mock('../../../components', () => ({
     ...jest.requireActual('../../../components'),
     WalletListHeader: () => <div>WalletListHeader</div>,
     WalletsAddMoreCarousel: () => <div>WalletsAddMoreCarousel</div>,
+    WalletsDisclaimerBanner: () => <div>WalletsDisclaimerBanner</div>,
     WalletTourGuide: () => <div>WalletTourGuide</div>,
 }));
 
@@ -67,24 +70,31 @@ describe('WalletsListingRoute', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletsListingRoute />, { wrapper });
-        expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
+        expect(screen.queryByText('WalletListHeader')).not.toBeInTheDocument();
         expect(screen.queryByText('DesktopWalletsList')).not.toBeInTheDocument();
         expect(await screen.findByText('WalletsCarousel')).toBeInTheDocument();
     });
 
-    it('hides the wallet add more carousel if a user has no enabled real accounts', () => {
+    it('hides the wallet add more carousel if a user has added a wallet', () => {
         (useWalletAccountsList as jest.Mock).mockReturnValue({
-            data: [
-                {
-                    currency: 'USD',
-                    currency_config: { fractional_digits: 2 },
-                    is_disabled: true,
-                    is_virtual: false,
-                    loginid: 'CR1',
-                },
-            ],
+            data: [{ is_added: true }],
         });
         render(<WalletsListingRoute />, { wrapper });
         expect(screen.queryByText('WalletsAddMoreCarousel')).not.toBeInTheDocument();
+    });
+
+    it('displays the wallet disclaimer banner if the user is in the EU region and has a non-virtual wallet', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true, isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
+        render(<WalletsListingRoute />, { wrapper });
+        expect(screen.getByText('WalletsDisclaimerBanner')).toBeInTheDocument();
+    });
+
+    it('does not display the wallet disclaimer banner if the user is in the EU region and the active wallet is a virtual wallet', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true, isMobile: false });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
+        render(<WalletsListingRoute />, { wrapper });
+        expect(screen.queryByText('WalletsDisclaimerBanner')).not.toBeInTheDocument();
     });
 });

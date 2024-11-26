@@ -41,6 +41,7 @@ import {
     getContractPath,
     routes,
     isDtraderV2Enabled,
+    cacheTrackEvents,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -75,6 +76,7 @@ import {
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
 import { safeParse } from '@deriv/utils';
+import { sendDtraderPurchaseToAnalytics } from '../../../Analytics';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -141,7 +143,7 @@ export type TChartLayout = {
             symbol: string;
             symbolObject: ActiveSymbols[number];
             timeUnit: string;
-        }
+        },
     ];
     timeUnit: string;
     volumeUnderlay: boolean;
@@ -206,7 +208,6 @@ type TValidationParams = ReturnType<typeof getProposalInfo>['validation_params']
 
 const store_name = 'trade_store';
 const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {}; // blame amin.m
-const ANALYTICS_DURATIONS = ['ticks', 'seconds', 'minutes', 'hours', 'days'];
 
 export default class TradeStore extends BaseStore {
     // Control values
@@ -622,7 +623,7 @@ export default class TradeStore extends BaseStore {
         reaction(
             () => this.is_equal,
             () => {
-                this.onAllowEqualsChange();
+                this.contract_type?.includes(TRADE_TYPES.RISE_FALL) && this.onAllowEqualsChange();
             }
         );
         reaction(
@@ -931,10 +932,16 @@ export default class TradeStore extends BaseStore {
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
         if (
-            name == 'contract_type' &&
+            name === 'contract_type' &&
             ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
         ) {
             this.prev_contract_type = this.contract_type;
+        }
+
+        // reset stop loss after trade type was changed
+        if (name === 'contract_type' && this.has_stop_loss) {
+            this.has_stop_loss = false;
+            this.stop_loss = '';
         }
 
         if (name === 'symbol' && value) {
@@ -1058,7 +1065,7 @@ export default class TradeStore extends BaseStore {
     async onPurchaseV2(
         trade_type: string,
         isMobile: boolean,
-        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+        callback?: (params: { message: string; redirectTo: string; title: string }, contract_id: number) => void
     ) {
         await when(() => {
             const proposal_info_keys = Object.keys(this.proposal_info);
@@ -1067,7 +1074,7 @@ export default class TradeStore extends BaseStore {
         });
 
         const info = this.proposal_info?.[trade_type];
-        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback);
+        if (info) this.onPurchase(info.id, info.stake, trade_type, isMobile, callback, true);
     }
 
     onPurchase = debounce(this.processPurchase, 300);
@@ -1077,7 +1084,8 @@ export default class TradeStore extends BaseStore {
         price: string | number,
         type: string,
         isMobile: boolean,
-        callback?: (params: { message: string; redirectTo: string; title: string }) => void
+        callback?: (params: { message: string; redirectTo: string; title: string }, contract_id: number) => void,
+        is_dtrader_v2?: boolean
     ) {
         if (!this.is_purchase_enabled) return;
         if (proposal_id) {
@@ -1145,8 +1153,10 @@ export default class TradeStore extends BaseStore {
                             }
                             const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
 
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             if ((window as any).hj) {
                                 const event_string = `placed_${is_call || is_put ? call_put_contract : category}_trade`;
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 (window as any).hj('event', event_string);
                             }
 
@@ -1169,6 +1179,10 @@ export default class TradeStore extends BaseStore {
                             // and then set the chart view to the start_time
                             // draw the start time line and show longcode then mount contract
                             // this.root_store.modules.contract_trade.drawContractStartTime(start_time, longcode, contract_id);
+                            if (!is_dtrader_v2) {
+                                sendDtraderPurchaseToAnalytics(contract_type, this.symbol, contract_id);
+                            }
+
                             if (!isMobile) {
                                 this.root_store.ui.openPositionsDrawer();
                             }
@@ -1194,11 +1208,14 @@ export default class TradeStore extends BaseStore {
                                 const trade_type = extracted_info_from_shortcode.category;
 
                                 if (window.location.pathname === routes.trade)
-                                    callback?.({
-                                        message: getTradeNotificationMessage(shortcode),
-                                        redirectTo: getContractPath(contract_id),
-                                        title: formatted_stake,
-                                    });
+                                    callback?.(
+                                        {
+                                            message: getTradeNotificationMessage(shortcode),
+                                            redirectTo: getContractPath(contract_id),
+                                            title: formatted_stake,
+                                        },
+                                        contract_id
+                                    );
 
                                 this.root_store.notifications.addTradeNotification({
                                     buy_price: is_multiplier ? this.amount : response.buy.buy_price,
@@ -1364,7 +1381,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
@@ -1936,6 +1953,10 @@ export default class TradeStore extends BaseStore {
     wsSubscribe = (req: TicksHistoryRequest, callback: (response: TTicksHistoryResponse) => void) => {
         const passthrough_callback = (...args: [TTicksHistoryResponse]) => {
             callback(...args);
+            if ('ohlc' in args[0] && this.root_store.contract_trade.granularity !== 0) {
+                const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
+                if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
+            }
             if (this.is_accumulator) {
                 let current_spot_data = {};
                 if ('tick' in args[0]) {
@@ -2026,11 +2047,18 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            Analytics.trackEvent(event_type, {
-                ...data,
-                action: data.action as TEvents['ce_indicators_types_form']['action'],
-                form_name: 'default',
-            });
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: event_type,
+                        properties: {
+                            ...data,
+                            action: data.action as TEvents['ce_indicators_types_form']['action'],
+                            form_name: 'default',
+                        },
+                    },
+                },
+            ]);
         }
     }
 

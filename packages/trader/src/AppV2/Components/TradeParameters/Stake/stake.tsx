@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useStore } from '@deriv/stores';
@@ -9,12 +9,9 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TStakeProps = {
-    is_minimized?: boolean;
-};
-
-const Stake = observer(({ is_minimized }: TStakeProps) => {
+const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         amount,
         basis,
@@ -27,6 +24,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_multiplier,
         is_turbos,
         is_vanilla,
+        is_market_closed,
         onChange,
         proposal_info,
         setDefaultStake,
@@ -40,7 +38,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         validation_params,
     } = useTraderStore();
     const {
-        client: { is_logged_in },
+        client: { is_logged_in, currency: client_currency },
     } = useStore();
     const { addSnackbar } = useSnackbar();
     const [is_open, setIsOpen] = React.useState(false);
@@ -54,6 +52,16 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     const default_stake = is_crypto
         ? Number(v2_params_initial_values.stake)
         : available_contract_types?.[contract_type]?.config?.default_stake;
+
+    useEffect(() => {
+        if (client_currency !== currency) {
+            onChange({ target: { name: 'currency', value: client_currency } });
+            if (!isCryptocurrency(client_currency ?? '')) {
+                onChange({ target: { name: 'amount', value: default_stake } });
+                setV2ParamsInitialValues({ value: default_stake as number, name: 'stake' });
+            }
+        }
+    }, [client_currency]);
 
     const displayed_error = React.useRef(false);
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
@@ -78,8 +86,14 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         has_error_1 && (error_field_1 === 'amount' || error_field_1 === 'stake') ? message_1 : '';
     const proposal_error_message_2 =
         has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
-    const proposal_error_message =
-        proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0];
+    const has_both_errors = has_error_1 && has_error_2;
+    const proposal_error_with_two_contract = contract_types[1] && has_both_errors;
+
+    const proposal_error_with_one_contract = !(contract_types[1] && !has_both_errors) && proposal_error_message_1;
+
+    const proposal_error_message = proposal_error_with_two_contract
+        ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
+        : proposal_error_with_one_contract || validation_errors?.amount?.[0];
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
     E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
@@ -90,7 +104,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         is_max_payout_exceeded && proposal_error_message
             ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
             : 0;
-    const { payout, stake } = validation_params[contract_types[0]] ?? {};
+    const { payout, stake } = (validation_params[contract_types[0]] || validation_params[contract_types[1]]) ?? {};
     const { max: max_payout = error_max_payout } = payout ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
     const error_payout_1 = proposal_error_message_1
@@ -101,14 +115,15 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
         : 0;
     const first_contract_payout = payout_1 || error_payout_1;
     const second_contract_payout = payout_2 || error_payout_2;
-    const validation_error_text = contract_types[1] ? validation_errors?.amount[0] : proposal_error_message;
     const main_error_message =
-        (validation_error_text && error_payout_1 > error_payout_2
+        (proposal_error_message && error_payout_1 > error_payout_2
             ? proposal_error_message_2
-            : proposal_error_message_1) || validation_error_text;
-    const has_both_errors = has_error_1 && has_error_2;
+            : proposal_error_message_1) || proposal_error_message;
     const two_contracts_error = has_both_errors || amount.toString() === '' ? main_error_message : '';
-    const stake_error = has_both_errors ? two_contracts_error : validation_error_text;
+    const stake_error =
+        (has_both_errors
+            ? two_contracts_error
+            : (!contract_types[1] || amount.toString() === '') && proposal_error_message) || '';
     const [details, setDetails] = React.useState({
         first_contract_payout,
         max_payout,
@@ -240,6 +255,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
     return (
         <>
             <TextField
+                disabled={has_open_accu_contract || is_market_closed}
                 variant='fill'
                 readOnly
                 label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
@@ -248,7 +264,6 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                 value={`${v2_params_initial_values?.stake ?? amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={stake_error && !is_open ? 'error' : undefined}
-                disabled={has_open_accu_contract}
             />
             <ActionSheet.Root
                 isOpen={is_open}
@@ -277,6 +292,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             ref={stake_ref}
                             regex={/[^0-9.,]/g}
                             status={should_show_error && stake_error ? 'error' : 'neutral'}
+                            shouldRound={false}
                             textAlignment='center'
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
@@ -305,6 +321,7 @@ const Stake = observer(({ is_minimized }: TStakeProps) => {
                             onAction: () => {
                                 if (!stake_error) {
                                     onClose(true);
+                                    onChange({ target: { name: 'amount', value: amount } });
                                 } else {
                                     setShouldShowError(true);
                                 }

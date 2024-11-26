@@ -60,6 +60,7 @@ export const SERVICE_ERROR = {
     AUTHORIZATION_REQUIRED: 'AuthorizationRequired',
     PLEASE_AUTHENTICATE: 'PleaseAuthenticate',
     PENDING_VERIFICATION: 'PendingVerification',
+    COMPANY_WIDE_LIMIT_EXCEEDED: 'CompanyWideLimitExceeded',
 };
 
 export const checkIsServiceModalError = ({

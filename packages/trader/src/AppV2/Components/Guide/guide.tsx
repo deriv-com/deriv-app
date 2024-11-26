@@ -1,13 +1,18 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/quill-ui';
+
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { Localize } from '@deriv/translations';
+import { Button, Text } from '@deriv-com/quill-ui';
+
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import { sendOpenGuideToAnalytics } from '../../../Analytics';
+
 import GuideDefinitionModal from './guide-definition-modal';
 import GuideDescriptionModal from './guide-description-modal';
-import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 
 type TGuide = {
     has_label?: boolean;
@@ -60,7 +65,13 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
             <Button
                 color={is_dark_mode_on ? 'white' : 'black'}
                 icon={<LabelPairedPresentationScreenSmRegularIcon key='guide-button-icon' />}
-                onClick={() => setIsDescriptionOpened(true)}
+                onClick={() => {
+                    sendOpenGuideToAnalytics(
+                        contract_type,
+                        show_guide_for_selected_contract ? 'main_trade_page' : 'trade_type_page'
+                    );
+                    setIsDescriptionOpened(true);
+                }}
                 variant={has_label ? 'secondary' : 'tertiary'}
                 key={current_language}
             >
@@ -74,7 +85,11 @@ const Guide = observer(({ has_label, show_guide_for_selected_contract }: TGuide)
                 contract_list={ordered_contract_list}
                 is_dark_mode_on={is_dark_mode_on}
                 is_open={is_description_opened}
-                onChipSelect={onChipSelect}
+                onChipSelect={(id: string) => {
+                    const selected_trade_type = ordered_contract_list.find(item => item.id === id);
+                    sendOpenGuideToAnalytics(selected_trade_type?.for?.[0] ?? '', 'trade_type_page');
+                    onChipSelect(id);
+                }}
                 onClose={onClose}
                 onTermClick={setSelectedTerm}
                 selected_contract_type={selected_contract_type}

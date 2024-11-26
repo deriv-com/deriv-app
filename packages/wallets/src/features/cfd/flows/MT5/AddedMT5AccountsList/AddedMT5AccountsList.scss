@@ -6,7 +6,8 @@
         }
         @include desktop {
             &:hover {
-                background: none;
+                /* stylelint-disable-next-line declaration-no-important */
+                background: none !important; // to override background
             }
         }
     }
@@ -86,11 +87,6 @@
 
     &__icon {
         width: fit-content;
-        color: var(--status-warning, #ffad3a);
-        &--badge {
-            border: 1px solid var(--status-warning, #ffad3a);
-            border-radius: 1rem;
-        }
         &--pending {
             opacity: 0.5;
         }

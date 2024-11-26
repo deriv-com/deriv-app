@@ -45,25 +45,20 @@ describe('<WalletsErrorMT5InvestorPassword />', () => {
         expect(screen.getByText('Reset mocked password'));
         expect(screen.getByText('Password saved'));
         expect(screen.getByText('Your investor password has been changed.'));
-        expect(screen.getByRole('button', { name: 'Ok' }));
+        expect(screen.getByRole('button', { name: 'OK' }));
     });
 
     it('should render content if isInvestorPassword is false', () => {
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
-        expect(screen.getByText('Manage mocked password'));
         expect(screen.getByText('Success'));
-        expect(
-            screen.getByText(
-                'You have a new mocked password to log in to your mocked accounts on the web and mobile apps.'
-            )
-        );
-        expect(screen.getByRole('button', { name: 'Done' }));
+        expect(screen.getByText('You can log in to all your mocked accounts with your new password.'));
+        expect(screen.getByRole('button', { name: 'OK' }));
     });
 
-    it('should execute function onClick when button is clicked', () => {
+    it('should execute function onClick when button is clicked', async () => {
         render(<WalletSuccessResetMT5Password {...props} />, { wrapper });
-        expect(screen.getByRole('button', { name: 'Done' }));
-        userEvent.click(screen.getByRole('button', { name: 'Done' }));
+        expect(screen.getByRole('button', { name: 'OK' }));
+        await userEvent.click(screen.getByRole('button', { name: 'OK' }));
         expect(props.onClick).toBeCalled();
     });
 

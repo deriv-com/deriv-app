@@ -8,16 +8,14 @@ import Carousel from 'AppV2/Components/Carousel';
 import BarrierDescription from './barrier-description';
 import BarrierInput from './barrier-input';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TDurationProps = {
-    is_minimized?: boolean;
-};
-
-const Barrier = observer(({ is_minimized }: TDurationProps) => {
+const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         barrier_1,
         onChange,
         duration_unit,
+        is_market_closed,
         setV2ParamsInitialValues,
         v2_params_initial_values,
         validation_errors,
@@ -46,12 +44,6 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [initialBarrierValue, is_open]
     );
-
-    React.useEffect(() => {
-        if (v2_params_initial_values.barrier_1?.toString() !== barrier_1) {
-            setV2ParamsInitialValues({ value: barrier_1, name: 'barrier_1' });
-        }
-    }, [barrier_1]);
 
     React.useEffect(() => {
         const has_error = proposal_info?.[trade_type_tab]?.has_error;
@@ -91,13 +83,14 @@ const Barrier = observer(({ is_minimized }: TDurationProps) => {
     return (
         <>
             <TextField
+                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                disabled={is_market_closed}
                 variant='fill'
                 readOnly
                 noStatusIcon
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
                 value={v2_params_initial_values.barrier_1 || barrier_1}
                 onClick={() => setIsOpen(true)}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
                 status={has_error && !is_open ? 'error' : undefined}
             />
             <ActionSheet.Root

@@ -6,7 +6,7 @@ import { WalletResetBalance } from '../../flows/WalletResetBalance';
 import { WalletTransactions } from '../../flows/WalletTransactions';
 import { WalletTransfer } from '../../flows/WalletTransfer';
 import { WalletWithdrawal } from '../../flows/WalletWithdrawal';
-import { CashierLocked, DepositLocked, WithdrawalLocked } from '../../modules';
+import { CashierLocked, DepositLocked, TransferLocked, WithdrawalLocked } from '../../modules';
 
 const WalletCashierContent = () => {
     const history = useHistory();
@@ -45,8 +45,10 @@ const WalletCashierContent = () => {
 
     if (isTransfer)
         return (
-            <CashierLocked>
-                <WalletTransfer />
+            <CashierLocked module='transfer'>
+                <TransferLocked>
+                    <WalletTransfer />
+                </TransferLocked>
             </CashierLocked>
         );
 

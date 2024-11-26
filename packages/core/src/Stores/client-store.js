@@ -32,8 +32,7 @@ import {
     getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { URLConstants } from '@deriv-com/utils';
-import { getCountry } from '@deriv/utils';
+import { URLConstants, CountryUtils } from '@deriv-com/utils';
 
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
@@ -174,7 +173,6 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
-
         makeObservable(this, {
             exchange_rates: observable,
             loginid: observable,
@@ -1797,7 +1795,7 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: await getCountry(),
+                country: await CountryUtils.getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,

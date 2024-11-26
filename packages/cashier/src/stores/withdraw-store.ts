@@ -174,7 +174,7 @@ export default class WithdrawStore {
     async onMountWithdraw(verification_code?: string) {
         const { client, modules } = this.root_store;
         const active_container = modules.cashier?.general_store.active_container;
-        const is_crypto = modules.cashier?.general_store.is_crypto;
+        const is_crypto_provider = modules.cashier?.general_store.is_crypto_provider;
         const onMountCommon = modules.cashier?.general_store.onMountCommon;
         const setLoading = modules.cashier?.general_store.setLoading;
         const setOnRemount = modules.cashier?.general_store.setOnRemount;
@@ -231,7 +231,7 @@ export default class WithdrawStore {
 
                 client.setVerificationCode('', container);
             }
-        } else if (is_crypto) {
+        } else if (is_crypto_provider) {
             setLoading(false);
         } else {
             await checkIframeLoaded();
@@ -306,7 +306,7 @@ export default class WithdrawStore {
         const remainder = client.account_limits?.remainder;
         this.setMaxWithdrawAmount(Number(remainder));
 
-        const fractional_digit = Math.pow(10, -getDecimalPlaces(client.currency));
+        const fractional_digit = 10 ** -getDecimalPlaces(client.currency);
         const min_withdrawal = getMinWithdrawal(client.currency);
         const is_limit_reached = !!(
             typeof remainder !== 'undefined' &&
@@ -350,7 +350,7 @@ export default class WithdrawStore {
 
         const min_withdraw_amount =
             currency === 'XRP'
-                ? Math.pow(10, -getDecimalPlaces(client.currency))
+                ? 10 ** -getDecimalPlaces(client.currency)
                 : Number(this.crypto_config?.currencies_config?.[currency]?.minimum_withdrawal);
         const max_withdraw_amount =
             Number(this.max_withdraw_amount) > Number(balance) ? Number(balance) : Number(this.max_withdraw_amount);

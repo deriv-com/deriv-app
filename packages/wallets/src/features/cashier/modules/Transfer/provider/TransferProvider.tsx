@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useAccountLimits, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api-v2';
 import type { THooks } from '../../../../../types';
+import { DISABLED_PLATFORM_STATUSES } from '../../../../cfd/constants';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 import type { TInitialTransferFormValues } from '../types';
 
@@ -19,6 +20,7 @@ export type TTransferContext = {
     activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
     activeWalletExchangeRates?: THooks.ExchangeRate;
     error: ReturnType<typeof useTransferBetweenAccounts>['error'];
+    hasPlatformStatus: (account: TInitialTransferFormValues['fromAccount']) => boolean;
     isLoading: boolean;
     receipt?: TReceipt;
     refetchAccountLimits: ReturnType<typeof useAccountLimits>['refetch'];
@@ -50,6 +52,11 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
     } = useExtendedTransferAccountProperties(data?.accounts ?? transferAccounts);
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
+
+    const hasPlatformStatus = (account: TInitialTransferFormValues['fromAccount']) =>
+        DISABLED_PLATFORM_STATUSES.includes(
+            (account?.status || account?.platformStatus) as (typeof DISABLED_PLATFORM_STATUSES)[number]
+        );
 
     const { data: accountLimits, refetch: refetchAccountLimits } = useAccountLimits();
 
@@ -124,6 +131,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 activeWallet,
                 activeWalletExchangeRates,
                 error,
+                hasPlatformStatus,
                 isLoading,
                 receipt,
                 refetchAccountLimits,

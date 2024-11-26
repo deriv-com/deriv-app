@@ -6,7 +6,7 @@ import { DISABLED_PLATFORM_STATUSES, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS
 import './TradingPlatformStatus.scss';
 
 type TradingPlatformStatusModalProps = {
-    status: typeof DISABLED_PLATFORM_STATUSES[number];
+    status: (typeof DISABLED_PLATFORM_STATUSES)[number];
 };
 
 const getContentConfig = (localize: ReturnType<typeof useTranslations>['localize']) => {

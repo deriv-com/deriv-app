@@ -351,9 +351,10 @@ export default class NotificationStore extends BaseStore {
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
-        const has_trustpilot = LocalStore.getObject('marked_notifications').includes(
-            this.client_notifications.trustpilot?.key
-        );
+        const marked_notifications = LocalStore.getObject('marked_notifications');
+        const has_trustpilot = Array.isArray(marked_notifications)
+            ? marked_notifications.includes(this.client_notifications?.trustpilot?.key) 
+            : false;
         const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
             account_settings?.phone_number_verification?.next_email_attempt,
             current_time

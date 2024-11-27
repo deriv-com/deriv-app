@@ -75,7 +75,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const proposal_error_message_2 =
         has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
 
-    // TODO: Can we replace it with os_fetching?
+    // TODO: Can we replace it with is_fetching_1 and is_fetching_2?
     const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
 
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
@@ -123,32 +123,51 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     // TODO: Rise/Fall equal??? There is a logic in onChange func for it
 
     // Parallel proposal without subscription
-    // TODO: For Rise/Fall and all Digits we should do 2 proposal requests
+    // For Rise/Fall and all Digits we should do 2 proposal requests
     const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
 
-    const proposal_req = getProposalRequestObject({
+    const proposal_req_1 = getProposalRequestObject({
         new_values: proposal_request_values,
         trade_store,
         trade_type: contract_types[0],
     });
-    const { data: response, is_fetching } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+    const { data: response_1, is_fetching: is_fetching_1 } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         [
             'proposal',
             ...Object.entries(proposal_request_values).flat().join('-'),
             `${proposal_request_values?.amount}`,
-            JSON.stringify(proposal_req),
+            JSON.stringify(proposal_req_1),
             contract_types.join('-'),
         ],
-        proposal_req,
+        proposal_req_1,
         {
             enabled: is_open,
+        }
+    );
+
+    const proposal_req_2 = getProposalRequestObject({
+        new_values: proposal_request_values,
+        trade_store,
+        trade_type: contract_types[1],
+    });
+    const { data: response_2, is_fetching: is_fetching_2 } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+        [
+            'proposal',
+            ...Object.entries(proposal_request_values).flat().join('-'),
+            `${proposal_request_values?.amount}`,
+            JSON.stringify(proposal_req_2),
+            contract_types.join('-'),
+        ],
+        proposal_req_2,
+        {
+            enabled: is_open && should_send_multiple_proposals,
         }
     );
 
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
             const { error, proposal } = response;
-            // console.log('response', response);
+            // console.log('response_1', response);
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (proposal_request_values.amount === '') {
                 setStakeError('');
@@ -208,9 +227,56 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             }
         };
 
-        if (response) onProposalResponse(response);
+        if (response_1) onProposalResponse(response_1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [response]);
+    }, [response_1]);
+
+    React.useEffect(() => {
+        const onProposalResponse: TOnProposalResponse = response => {
+            const { error, proposal } = response;
+            // console.log('response_2', response);
+            // In case if the value is empty we are showing custom error text from FE (in onSave function)
+            // if (proposal_request_values.amount === '') {
+            //     setStakeError('');
+            //     return;
+            // }
+
+            // Setting proposal error
+            // const new_error = error?.message ?? '';
+            // const is_error_field_match =
+            //     ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
+            // setStakeError(is_error_field_match ? new_error : '');
+
+            // Recovery for min and max allowed values in case of error
+            // if ((!details.min_stake || !details.max_stake) && error?.details) {
+            //     const { max_stake, min_stake } = error.details;
+
+            //     if (max_stake && min_stake)
+            //         setDetails(prev => ({
+            //             ...prev,
+            //             max_stake,
+            //             min_stake,
+            //         }));
+            // }
+
+            // TODO: set proposal whole response?
+            // Setting stake details from new proposal response
+            // if (proposal) {
+            //     const { commission, limit_order, validation_params } = proposal as ExpandedProposal;
+            //     const { max, min } = validation_params?.stake ?? {};
+            //     const { order_amount } = limit_order?.stop_out ?? {};
+
+            //     const new_stake_details_values = {
+            //         ...(is_multiplier && commission && order_amount ? { commission, stop_out: order_amount } : {}),
+            //         ...(details.max_stake || details.min_stake ? {} : { max_stake: max, min_stake: min }),
+            //     };
+
+            //     setDetails(prev => ({ ...prev, ...new_stake_details_values }));
+            // }
+        };
+
+        if (response_2) onProposalResponse(response_2);
+    }, [response_2]);
 
     const getInputMessage = () =>
         !!details.min_stake &&
@@ -237,7 +303,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const onSave = () => {
         // Prevent from saving if user clicks before we get theAPI response or if we get an error in response or the field is empty
-        if (is_fetching || stake_error) return;
+        if (is_fetching_1 || (should_send_multiple_proposals && is_fetching_2) || stake_error) return;
         if (proposal_request_values.amount === '') {
             setFEStakeError(localize('Amount is a required field.'));
             return;

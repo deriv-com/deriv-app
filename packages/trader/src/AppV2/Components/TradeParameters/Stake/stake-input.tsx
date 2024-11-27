@@ -369,7 +369,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     is_multiplier={is_multiplier}
                     is_max_payout_exceeded={is_max_payout_exceeded}
                     should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
-                    stake_error={!proposal_request_values.amount || !!stake_error}
+                    stake_error={!proposal_request_values.amount || stake_error}
                 />
             </ActionSheet.Content>
             <ActionSheet.Footer

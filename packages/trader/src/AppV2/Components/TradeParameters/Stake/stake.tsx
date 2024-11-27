@@ -299,7 +299,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             variant='fill'
                         />
                         <StakeDetails
-                            commission={commission}
+                            // commission={commission}
                             contract_type={contract_type}
                             contract_types={contract_types}
                             currency={currency}
@@ -310,7 +310,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             is_max_payout_exceeded={is_max_payout_exceeded}
                             should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
                             stake_error={stake_error}
-                            stop_out={stop_out}
+                            // stop_out={stop_out}
                         />
                     </ActionSheet.Content>
                     <ActionSheet.Footer

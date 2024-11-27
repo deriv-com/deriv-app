@@ -21,7 +21,7 @@ type TStakeDetailsProps = Pick<TTradeStore, 'contract_type' | 'currency' | 'has_
     is_loading_proposal: boolean;
     is_max_payout_exceeded: boolean;
     should_show_payout_details: boolean;
-    stake_error: boolean;
+    stake_error: string | boolean;
 };
 
 const StakeDetails = ({

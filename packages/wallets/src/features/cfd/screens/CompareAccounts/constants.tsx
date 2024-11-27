@@ -6,7 +6,7 @@ import {
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
+    PartnersProductBrandLightDerivCtraderLogoIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
@@ -16,7 +16,7 @@ export const ACCOUNT_ICONS = {
     [MARKET_TYPE.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
     [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
-    [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
+    [CFD_PLATFORMS.CTRADER]: <PartnersProductBrandLightDerivCtraderLogoIcon height={48} width={48} />,
     [PRODUCT.ZEROSPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
     default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;

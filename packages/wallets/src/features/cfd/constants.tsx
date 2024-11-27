@@ -7,12 +7,12 @@ import {
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    DerivProductDerivXBrandDarkWordmarkIcon,
+    DerivProductBrandDarkDerivXWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
     LabelPairedWindowsXlIcon,
-    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
-    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    PartnersProductBrandDarkDerivCtraderWordmarkIcon,
+    PartnersProductBrandLightDerivMt5LogoWordmarkIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import { THooks, TPlatforms } from '../../types';
@@ -83,7 +83,7 @@ export const getMarketTypeDetails = (
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const);
+    }) as const;
 
 export const PlatformDetails = {
     ctrader: {
@@ -147,7 +147,7 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
             title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
-            icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
+            icon: <PartnersProductBrandLightDerivMt5LogoWordmarkIcon height={32} width={32} />,
             link: whiteLabelLinks.webtrader_url,
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
@@ -158,11 +158,11 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },
-    } as const);
+    }) as const;
 
 export const PlatformToLabelIconMapper = {
-    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
-    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
+    ctrader: <PartnersProductBrandDarkDerivCtraderWordmarkIcon height={8} width={58} />,
+    dxtrade: <DerivProductBrandDarkDerivXWordmarkIcon height={10} width={35} />,
 } as const;
 
 export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTranslations>['localize']) =>
@@ -176,7 +176,7 @@ export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTra
         mt5: localize(
             'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.'
         ),
-    } as const);
+    }) as const;
 
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',

@@ -1,18 +1,24 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+
 import { getCurrencyDisplayCode } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+
+import useTradeError from 'AppV2/Hooks/useTradeError';
 import { useTraderStore } from 'Stores/useTraderStores';
+
 import { TTradeParametersProps } from '../trade-parameters';
+
 import StakeInput from './stake-input';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const { amount, currency, has_open_accu_contract, is_market_closed } = useTraderStore();
+    const { is_error_matching_field: has_error } = useTradeError({ error_fields: ['stake', 'amount'] });
 
     const [is_open, setIsOpen] = React.useState(false);
-    // TODO: add hook for errors
+
     const onClose = React.useCallback(() => setIsOpen(false), []);
 
     return (
@@ -26,7 +32,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 onClick={() => setIsOpen(true)}
                 value={`${amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                // status={stake_error ? 'error' : 'neutral'}
+                status={has_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}

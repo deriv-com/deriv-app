@@ -8,6 +8,7 @@ import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';
 
@@ -179,15 +180,18 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                 ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
             setStakeError(is_error_field_match ? new_error : '');
 
-            // // Recovery for min and max allowed values in case of error
-            // if (!details.min_stake || !details.max_stake) {
-            //     const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
-            //     setInfo(info =>
-            //         (info.min_value !== min && min) || (info.max_value !== max && max)
-            //             ? { min_value: min, max_value: max }
-            //             : info
-            //     );
-            // }
+            // Recovery for min and max allowed values in case of error
+            if (!details.min_stake || !details.max_stake) {
+                // console.log('contract_types', contract_types);
+                // const { min, max } = (proposal as ExpandedProposal)?.validation_params?.[type] ?? {};
+                // setInfo(info =>
+                //     (info.min_value !== min && min) || (info.max_value !== max && max)
+                //         ? { min_value: min, max_value: max }
+                //         : info
+                // );
+                const { max_stake, min_stake } = error?.details || {};
+                if (max_stake && min_stake) setDetails(prev => ({ ...prev, max_stake, min_stake }));
+            }
 
             // is_api_response_received_ref.current = true;
         };
@@ -226,7 +230,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         // console.log('!is_api_response_received_ref.current', !is_api_response_received_ref.current);
         // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
         // if (!is_api_response_received_ref.current || stake_error) return;
-        if (stake_error) return;
+        if (is_fetching || stake_error) return;
         if (proposal_request_values.amount === '') {
             setFEStakeError(localize('Amount is a required field.'));
             return;

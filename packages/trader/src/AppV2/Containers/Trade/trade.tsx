@@ -131,7 +131,10 @@ const Trade = observer(() => {
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
-            <TradeErrorSnackbar error_fields={['stop_loss', 'take_profit', 'date_start']} should_show_snackbar />
+            <TradeErrorSnackbar
+                error_fields={['stop_loss', 'take_profit', 'date_start', 'stake', 'amount']}
+                should_show_snackbar
+            />
         </BottomNav>
     );
 });

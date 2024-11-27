@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { getUrlBase, Jurisdiction, cacheTrackEvents } from '@deriv/shared';
+import { getUrlBase, Jurisdiction } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { Localize } from '@deriv/translations';
 import { Text, Button } from '@deriv/components';
@@ -14,34 +14,20 @@ const RealAccountCreationBanner = observer(() => {
     const device = !isDesktop ? 'mobile' : 'desktop';
 
     const handleClick = () => {
-        cacheTrackEvents.loadEvent([
-            {
-                event: {
-                    name: 'ce_tradershub_banner',
-                    properties: {
-                        action: 'click_cta',
-                        banner_name: 'real_account_cta',
-                        banner_type: 'with_cta',
-                    },
-                },
-            },
-        ]);
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'click_cta',
+            banner_name: 'real_account_cta',
+            banner_type: 'with_cta',
+        });
         openRealAccountSignup(Jurisdiction.SVG);
     };
 
     useEffect(() => {
-        cacheTrackEvents.loadEvent([
-            {
-                event: {
-                    name: 'ce_tradershub_banner',
-                    properties: {
-                        action: 'open',
-                        banner_name: 'real_account_cta',
-                        banner_type: 'with_cta',
-                    },
-                },
-            },
-        ]);
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'open',
+            banner_name: 'real_account_cta',
+            banner_type: 'with_cta',
+        });
     }, []);
 
     return (

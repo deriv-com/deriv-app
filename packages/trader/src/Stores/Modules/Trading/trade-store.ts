@@ -41,7 +41,6 @@ import {
     getContractPath,
     routes,
     isDtraderV2Enabled,
-    cacheTrackEvents,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -2038,18 +2037,11 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            cacheTrackEvents.loadEvent([
-                {
-                    event: {
-                        name: event_type,
-                        properties: {
-                            ...data,
-                            action: data.action as TEvents['ce_indicators_types_form']['action'],
-                            form_name: 'default',
-                        },
-                    },
-                },
-            ]);
+            Analytics.trackEvent(event_type, {
+                ...data,
+                action: data.action as TEvents['ce_indicators_types_form']['action'],
+                form_name: 'default',
+            });
         }
     }
 

@@ -1,6 +1,6 @@
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
-import { getDomainName } from '../brand';
+import { getDomainName } from '@deriv/shared';
 
 interface Payload {
     type: string;

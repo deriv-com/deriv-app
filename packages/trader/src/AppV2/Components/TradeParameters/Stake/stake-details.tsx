@@ -1,14 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv-com/quill-ui';
+
 import { formatMoney, getCurrencyDisplayCode, getTradeTypeName, TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { Text } from '@deriv-com/quill-ui';
+
 import { TTradeStore } from 'Types';
 
-type TStakeDetailsProps = Pick<
-    TTradeStore,
-    'commission' | 'contract_type' | 'currency' | 'has_stop_loss' | 'is_multiplier' | 'stop_out'
-> & {
+type TStakeDetailsProps = Pick<TTradeStore, 'contract_type' | 'currency' | 'has_stop_loss' | 'is_multiplier'> & {
     contract_types: string[];
     details: {
         first_contract_payout: number;
@@ -16,6 +15,8 @@ type TStakeDetailsProps = Pick<
         max_stake: string | number;
         min_stake: string | number;
         second_contract_payout: number;
+        commission?: string | number;
+        stop_out?: number;
     };
     is_loading_proposal: boolean;
     is_max_payout_exceeded: boolean;
@@ -24,7 +25,6 @@ type TStakeDetailsProps = Pick<
 };
 
 const StakeDetails = ({
-    commission,
     contract_type,
     contract_types,
     currency,
@@ -35,7 +35,6 @@ const StakeDetails = ({
     is_max_payout_exceeded,
     should_show_payout_details,
     stake_error,
-    stop_out,
 }: TStakeDetailsProps) => {
     const [displayed_values, setDisplayedValues] = React.useState({
         max_payout: '',
@@ -59,10 +58,10 @@ const StakeDetails = ({
             stop_out: stop_out_value,
             max_payout,
         } = displayed_values;
-        const new_commission = getDisplayedValue(Math.abs(Number(commission)), commission_value);
+        const new_commission = getDisplayedValue(Math.abs(Number(details.commission)), commission_value);
         const new_payout_1 = getDisplayedValue(details.first_contract_payout, first_contract_payout);
         const new_payout_2 = getDisplayedValue(details.second_contract_payout, second_contract_payout);
-        const new_stop_out = getDisplayedValue(Math.abs(Number(stop_out)), stop_out_value);
+        const new_stop_out = getDisplayedValue(Math.abs(Number(details.stop_out)), stop_out_value);
         const new_max_payout = getDisplayedValue(details.max_payout, max_payout);
 
         if (
@@ -80,16 +79,7 @@ const StakeDetails = ({
                 max_payout: new_max_payout,
             });
         }
-    }, [
-        commission,
-        currency,
-        details,
-        displayed_values,
-        is_loading_proposal,
-        is_max_payout_exceeded,
-        stake_error,
-        stop_out,
-    ]);
+    }, [currency, details, displayed_values, is_loading_proposal, is_max_payout_exceeded, stake_error]);
 
     const payout_title = <Localize i18n_default_text='Payout' />;
     const content = [

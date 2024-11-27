@@ -24,10 +24,6 @@ type TNewValues = {
     payout_per_point?: string | number;
     barrier_1?: string | number;
 };
-type TStakeDetails = {
-    commission?: string | number;
-    stop_out?: number;
-};
 
 const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const trade_store = useTraderStore();
@@ -54,7 +50,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const [proposal_request_values, setNewValues] = React.useState<TNewValues>({ amount }); // contains information for creating proposal request: stake (amount), payout_per_point for Turbos and barrier_1 for Vanillas
     const [stake_error, setStakeError] = React.useState('');
     const [fe_stake_error, setFEStakeError] = React.useState('');
-    const [stake_details, setStakeDetails] = React.useState<TStakeDetails>({ commission, stop_out });
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
@@ -80,6 +75,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const proposal_error_message_2 =
         has_error_2 && (error_field_2 === 'amount' || error_field_2 === 'stake') ? message_2 : '';
 
+    // TODO: Can we replace it with os_fetching?
     const is_loading_proposal = !has_error_1 && !has_error_2 && (!id_1 || (!!contract_types[1] && !id_2));
 
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
@@ -120,6 +116,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         max_payout,
         max_stake,
         min_stake,
+        commission,
+        stop_out,
     });
 
     // TODO: Rise/Fall equal??? There is a logic in onChange func for it
@@ -133,7 +131,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         trade_store,
         trade_type: contract_types[0],
     });
-    // console.log('proposal_req', proposal_req);
     const { data: response, is_fetching } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
         [
             'proposal',
@@ -155,9 +152,9 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (proposal_request_values.amount === '') {
                 setStakeError('');
-                setStakeDetails({});
                 return;
             }
+
             // Edge cases for Vanilla and Turbos
             if (is_vanilla && error?.details?.barrier_choices) {
                 const { barrier_choices } = error.details;
@@ -182,33 +179,32 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             const is_error_field_match =
                 ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
             setStakeError(is_error_field_match ? new_error : '');
-            if (is_error_field_match) setStakeDetails({});
 
             // Recovery for min and max allowed values in case of error
-            if (!details.min_stake || !details.max_stake) {
-                const { max_stake: max_stake_error, min_stake: min_stake_error } = error?.details || {};
-                const { max: max_stake_proposal, min: min_stake_proposal } =
-                    (proposal as ExpandedProposal)?.validation_params?.stake || {};
+            if ((!details.min_stake || !details.max_stake) && error?.details) {
+                const { max_stake, min_stake } = error.details;
 
-                const new_max_stake = max_stake_error ?? max_stake_proposal;
-                const new_min_stake = min_stake_error ?? min_stake_proposal;
-
-                if (new_max_stake && new_min_stake)
+                if (max_stake && min_stake)
                     setDetails(prev => ({
                         ...prev,
-                        max_stake: new_max_stake,
-                        min_stake: new_min_stake,
+                        max_stake,
+                        min_stake,
                     }));
             }
 
             // TODO: set proposal whole response?
-
             // Setting stake details from new proposal response
-            if (proposal && is_multiplier) {
-                const { commission, limit_order } = proposal;
+            if (proposal) {
+                const { commission, limit_order, validation_params } = proposal as ExpandedProposal;
+                const { max, min } = validation_params?.stake ?? {};
                 const { order_amount } = limit_order?.stop_out ?? {};
 
-                if (commission && order_amount) setStakeDetails({ commission, stop_out: order_amount });
+                const new_stake_details_values = {
+                    ...(is_multiplier && commission && order_amount ? { commission, stop_out: order_amount } : {}),
+                    ...(details.max_stake || details.min_stake ? {} : { max_stake: max, min_stake: min }),
+                };
+
+                setDetails(prev => ({ ...prev, ...new_stake_details_values }));
             }
         };
 
@@ -240,7 +236,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     };
 
     const onSave = () => {
-        // Prevent from saving if user clicks before we get theAPI response or if we get an error in response
+        // Prevent from saving if user clicks before we get theAPI response or if we get an error in response or the field is empty
         if (is_fetching || stake_error) return;
         if (proposal_request_values.amount === '') {
             setFEStakeError(localize('Amount is a required field.'));
@@ -252,24 +248,25 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         onClose();
     };
 
-    React.useEffect(() => {
-        if (!is_open) return;
-        if (
-            (details.first_contract_payout !== first_contract_payout && first_contract_payout) ||
-            (details.max_payout !== max_payout && max_payout) ||
-            (details.max_stake !== max_stake && max_stake) ||
-            (details.min_stake !== min_stake && min_stake) ||
-            (details.second_contract_payout !== second_contract_payout && second_contract_payout)
-        ) {
-            setDetails({
-                first_contract_payout,
-                max_payout,
-                max_stake,
-                min_stake,
-                second_contract_payout,
-            });
-        }
-    }, [details, is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
+    // TODO: do we need it now?
+    // React.useEffect(() => {
+    //     if (!is_open) return;
+    //     if (
+    //         (details.first_contract_payout !== first_contract_payout && first_contract_payout) ||
+    //         (details.max_payout !== max_payout && max_payout) ||
+    //         (details.max_stake !== max_stake && max_stake) ||
+    //         (details.min_stake !== min_stake && min_stake) ||
+    //         (details.second_contract_payout !== second_contract_payout && second_contract_payout)
+    //     ) {
+    //         setDetails({
+    //             first_contract_payout,
+    //             max_payout,
+    //             max_stake,
+    //             min_stake,
+    //             second_contract_payout,
+    //         });
+    //     }
+    // }, [details, is_open, max_payout, max_stake, min_stake, first_contract_payout, second_contract_payout]);
 
     return (
         <React.Fragment>
@@ -297,7 +294,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     variant='fill'
                 />
                 <StakeDetails
-                    commission={stake_details.commission}
                     contract_type={contract_type}
                     contract_types={contract_types}
                     currency={currency}
@@ -308,7 +304,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     is_max_payout_exceeded={is_max_payout_exceeded}
                     should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
                     stake_error={!proposal_request_values.amount || !!stake_error}
-                    stop_out={stake_details.stop_out}
                 />
             </ActionSheet.Content>
             <ActionSheet.Footer

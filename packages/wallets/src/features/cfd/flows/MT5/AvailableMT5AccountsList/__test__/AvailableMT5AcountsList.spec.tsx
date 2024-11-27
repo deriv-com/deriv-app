@@ -122,6 +122,7 @@ describe('AvailableMT5AccountsList', () => {
         );
     });
 
+
     it('shows TradingPlatformStatusModal with isServerMaintenance when platform status is maintenance', async () => {
         (useTradingPlatformStatus as jest.Mock).mockReturnValue({
             getPlatformStatus: jest.fn(() => 'maintenance'),

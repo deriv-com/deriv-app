@@ -6,7 +6,7 @@ import { CFD_PLATFORMS } from '../../../../cfd/constants';
 import { PlatformDetails } from '../../../constants';
 import { getAccountName, getLandingCompanyNameOfMT5Account } from '../../../helpers';
 
-type TCFDPlatform = Exclude<(typeof CFD_PLATFORMS)[keyof typeof CFD_PLATFORMS], 'CFDs'>;
+type TCFDPlatform = Exclude<typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS], 'CFDs'>;
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */
 const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[]) => {

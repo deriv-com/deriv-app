@@ -55,7 +55,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
 
     const hasPlatformStatus = (account: TInitialTransferFormValues['fromAccount']) =>
         DISABLED_PLATFORM_STATUSES.includes(
-            (account?.status || account?.platformStatus) as (typeof DISABLED_PLATFORM_STATUSES)[number]
+            (account?.status || account?.platformStatus) as typeof DISABLED_PLATFORM_STATUSES[number]
         );
 
     const { data: accountLimits, refetch: refetchAccountLimits } = useAccountLimits();

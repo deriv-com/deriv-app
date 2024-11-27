@@ -19,7 +19,7 @@ import './AddedMT5AccountsList.scss';
 
 type TProps = { account: TAddedMT5Account };
 
-type TDisabledPlatformStatus = (typeof DISABLED_PLATFORM_STATUSES)[number];
+type TDisabledPlatformStatus = typeof DISABLED_PLATFORM_STATUSES[number];
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();

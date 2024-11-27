@@ -15,7 +15,7 @@ import { TAddedMT5Account } from '../../../../types';
 
 type TBadgeVariations = Partial<React.ComponentProps<typeof ClientVerificationStatusBadge>['variant']> | undefined;
 type TPlatformStatus = THooks.TradingPlatformStatus[number]['status'];
-type TDisabledPlatformStatus = (typeof DISABLED_PLATFORM_STATUSES)[number];
+type TDisabledPlatformStatus = typeof DISABLED_PLATFORM_STATUSES[number];
 
 const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariations => {
     switch (status) {

@@ -68,7 +68,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, hasPlatformStatus,
                         badgeSize='sm'
                         className='wallets-transfer-form-account-card--badge'
                         status={
-                            (account?.status || account?.platformStatus) as (typeof DISABLED_PLATFORM_STATUSES)[number]
+                            (account?.status || account?.platformStatus) as typeof DISABLED_PLATFORM_STATUSES[number]
                         }
                     />
                 )}

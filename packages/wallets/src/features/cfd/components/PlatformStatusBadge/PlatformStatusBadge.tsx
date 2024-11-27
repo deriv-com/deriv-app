@@ -7,7 +7,7 @@ import { DISABLED_PLATFORM_STATUSES, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS
 type TProps = {
     badgeSize: ComponentProps<typeof Badge>['badgeSize'];
     className?: ComponentProps<typeof Badge>['className'];
-    status: (typeof DISABLED_PLATFORM_STATUSES)[number];
+    status: typeof DISABLED_PLATFORM_STATUSES[number];
 };
 
 const getBadgeText = (status: TProps['status'], localize: (key: string) => string) => {

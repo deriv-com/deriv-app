@@ -223,7 +223,7 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isC
                 localize('Please enter a valid phone number (e.g. +15417541234).')
             ),
         ...(isCountryCodeDropdownEnabled && {
-            calling_country_code: Yup.string().required(localize('Country code is required.')),
+            calling_country_code: Yup.string().required(localize('Code required.')),
         }),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
         citizen: broker_code

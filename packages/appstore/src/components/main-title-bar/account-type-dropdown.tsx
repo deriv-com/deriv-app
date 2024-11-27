@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Dropdown } from '@deriv/components';
+import { Analytics } from '@deriv-com/analytics';
 import { getAccountTypes } from 'Constants/platform-config';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { startPerformanceEventTimer, cacheTrackEvents } from '@deriv/shared';
+import { startPerformanceEventTimer } from '@deriv/shared';
 import { TAccountCategory } from 'Types';
 import './account-type-dropdown.scss';
 
@@ -38,18 +39,11 @@ const AccountTypeDropdown = observer(() => {
                     await selectAccountType(e.target.value);
                     await setPrevAccountType(e.target.value);
                     if (is_traders_dashboard_tracking_enabled) {
-                        cacheTrackEvents.loadEvent([
-                            {
-                                event: {
-                                    name: 'ce_tradershub_dashboard_form',
-                                    properties: {
-                                        action: 'switch_account_mode',
-                                        form_name: 'traders_hub_default',
-                                        account_mode: selected_account_type,
-                                    },
-                                },
-                            },
-                        ]);
+                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                            action: 'switch_account_mode',
+                            form_name: 'traders_hub_default',
+                            account_mode: selected_account_type,
+                        });
                     }
                 }}
             />

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
-import { ContentFlag, setPerformanceValue, cacheTrackEvents } from '@deriv/shared';
+import { ContentFlag, setPerformanceValue } from '@deriv/shared';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -10,6 +10,7 @@ import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
+import { Analytics } from '@deriv-com/analytics';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import OptionsDescription from 'Components/elements/options-description';
 
@@ -115,21 +116,12 @@ const OptionsAndMultipliersListing = observer(() => {
                     is_deriv_platform
                     onAction={() => {
                         if (is_traders_dashboard_tracking_enabled) {
-                            cacheTrackEvents.loadEvent([
-                                {
-                                    event: {
-                                        name: 'ce_tradershub_dashboard_form',
-                                        properties: {
-                                            action: 'account_open',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: is_demo
-                                                ? `${available_platform.name} Demo`
-                                                : available_platform.name,
-                                        },
-                                    },
-                                },
-                            ]);
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'account_open',
+                                form_name: 'traders_hub_default',
+                                account_mode: selected_account_type,
+                                account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
+                            });
                         }
                     }}
                     has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}

@@ -20,7 +20,7 @@ type TStakeDetailsProps = Pick<
     is_loading_proposal: boolean;
     is_max_payout_exceeded: boolean;
     should_show_payout_details: boolean;
-    stake_error: string;
+    stake_error: boolean;
 };
 
 const StakeDetails = ({

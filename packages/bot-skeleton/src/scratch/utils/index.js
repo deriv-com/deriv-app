@@ -43,11 +43,6 @@ export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
     if (selected_trade_type === 'accumulator') mandatory_tradeoptions_block = 'trade_definition_accumulator';
     return mandatory_tradeoptions_block;
 };
-export const getSelectedTradeTypeCategory = (workspace = Blockly.derivWorkspace) => {
-    const trade_type_block = workspace.getAllBlocks(true).find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST');
-    return selected_trade_type ?? '';
-};
 
 export const matchTranslateAttribute = translateString => {
     const match = translateString.match(/translate\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/);

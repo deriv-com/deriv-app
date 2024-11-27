@@ -1,7 +1,6 @@
 import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
-import { getSelectedTradeTypeCategory } from '../../../scratch/utils/index';
 import { observer as globalObserver } from '../../../utils/observer';
 
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
@@ -139,6 +138,10 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
     const { error = {}, msg_type = '', echo_req = {} } = error_obj;
     const { code = '', message = '' } = error;
     let message_to_print = '';
+    const trade_type_block = Blockly.derivWorkspace
+        .getAllBlocks(true)
+        .find(block => block.type === 'trade_definition_tradetype');
+    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST') || '';
 
     if (code) {
         switch (code) {
@@ -169,7 +172,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                     'You already have an open position for this contract type Trade Type: {{ trade_type }}, retrying in {{ delay }}s',
                     {
                         delay: next_delay_in_seconds,
-                        trade_type: getSelectedTradeTypeCategory(),
+                        trade_type: selected_trade_type,
                     }
                 );
                 break;

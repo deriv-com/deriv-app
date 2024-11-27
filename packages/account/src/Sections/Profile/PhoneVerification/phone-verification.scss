@@ -220,3 +220,22 @@
         }
     }
 }
+
+.action-sheet--content {
+    .quill-dropdown-item {
+        @include rtl {
+            text-align: right;
+        }
+    }
+
+    .phone-code-search {
+        @include rtl {
+            direction: rtl;
+            .quill-input-no-label__wrapper {
+                & > input {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}

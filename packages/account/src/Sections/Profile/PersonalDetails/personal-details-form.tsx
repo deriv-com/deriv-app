@@ -529,6 +529,8 @@ const PersonalDetailsForm = observer(() => {
                                                 className={clsx('account-form__fieldset--phone_container', {
                                                     'account-form__fieldset--phone_container--verified':
                                                         is_phone_number_verified,
+                                                    'account-form__fieldset--phone_container--with-1-field':
+                                                        !isCountryCodeDropdownEnabled,
                                                 })}
                                             >
                                                 <div className='account-form__fieldset--phone_input'>

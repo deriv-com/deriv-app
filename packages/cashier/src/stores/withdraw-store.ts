@@ -174,7 +174,7 @@ export default class WithdrawStore {
     async onMountWithdraw(verification_code?: string) {
         const { client, modules } = this.root_store;
         const active_container = modules.cashier?.general_store.active_container;
-        const is_crypto = modules.cashier?.general_store.is_crypto;
+        const is_crypto_provider = modules.cashier?.general_store.is_crypto_provider;
         const onMountCommon = modules.cashier?.general_store.onMountCommon;
         const setLoading = modules.cashier?.general_store.setLoading;
         const setOnRemount = modules.cashier?.general_store.setOnRemount;
@@ -231,7 +231,7 @@ export default class WithdrawStore {
 
                 client.setVerificationCode('', container);
             }
-        } else if (is_crypto) {
+        } else if (is_crypto_provider) {
             setLoading(false);
         } else {
             await checkIframeLoaded();

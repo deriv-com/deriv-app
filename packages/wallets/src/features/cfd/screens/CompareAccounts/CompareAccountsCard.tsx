@@ -1,8 +1,7 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-import { THooks, TPlatforms } from '../../../../types';
+import { THooks } from '../../../../types';
 import { PRODUCT } from '../../constants';
 import CompareAccountsDescription from './CompareAccountsDescription';
 import CompareAccountsPlatformLabel from './CompareAccountsPlatformLabel';
@@ -11,30 +10,25 @@ import InstrumentsLabelHighlighted from './InstrumentsLabelHighlighted';
 import './CompareAccountsCard.scss';
 
 type TCompareAccountsCard = {
+    account:
+        | NonNullable<THooks.CompareCFDAccounts['ctraderAccount']>
+        | NonNullable<THooks.CompareCFDAccounts['dxtradeAccount']>
+        | NonNullable<THooks.CompareCFDAccounts['mt5Accounts']>[number];
     isDemo: boolean;
     isEuRegion: boolean;
-    marketType: THooks.AvailableMT5Accounts['market_type'];
-    platform: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'];
-    shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsCard = ({
-    isDemo,
-    isEuRegion,
-    marketType,
-    platform,
-    product,
-    shortCode,
-}: TCompareAccountsCard) => {
+const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCard) => {
+    const product = account.platform === 'mt5' ? account.product : undefined;
+    //@ts-expect-error needs backend type
+    const productDetails = account.platform === 'mt5' ? account.product_details : undefined;
+    //@ts-expect-error needs backend type
+    const instruments = account.platform === 'mt5' ? account.instruments : undefined;
+
     return (
         <div>
-            <div
-                className={classNames('wallets-compare-accounts-card', {
-                    'wallets-compare-accounts-card--eu': isEuRegion,
-                })}
-            >
-                <CompareAccountsPlatformLabel platform={platform} />
+            <div className='wallets-compare-accounts-card'>
+                <CompareAccountsPlatformLabel platform={account.platform} />
                 {product === PRODUCT.ZEROSPREAD && (
                     <div className='wallets-compare-accounts-card__banner'>
                         <Text color='white' size='xs' weight='bold'>
@@ -44,26 +38,15 @@ const CompareAccountsCard = ({
                 )}
                 <CompareAccountsTitleIcon
                     isDemo={isDemo}
-                    marketType={marketType}
-                    platform={platform}
-                    product={product}
-                    shortCode={shortCode}
-                />
-                <CompareAccountsDescription
-                    isDemo={isDemo}
                     isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    platform={platform}
+                    platform={account.platform}
                     product={product}
-                    shortCode={shortCode}
                 />
+                <CompareAccountsDescription isEuRegion={isEuRegion} product={product} productDetails={productDetails} />
                 <InstrumentsLabelHighlighted
-                    isDemo={isDemo}
+                    instruments={instruments}
                     isEuRegion={isEuRegion}
-                    marketType={marketType}
-                    platform={platform}
-                    product={product}
-                    shortCode={shortCode}
+                    platform={account.platform}
                 />
                 {isEuRegion && (
                     <div className='wallets-compare-accounts-card__eu-clients'>

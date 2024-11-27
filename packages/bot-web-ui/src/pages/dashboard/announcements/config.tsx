@@ -25,6 +25,10 @@ export type TAnnounce = {
     media?: Array<string>;
     unordered_list?: TContentItem[];
     event_name: string;
+    event_action?: {
+        confirm_button_text?: string;
+        cancel_button_text?: string;
+    };
 };
 
 export type TAnnouncement = {
@@ -45,6 +49,9 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'UPDATES_QUICK_STRATEGY_MODAL_ANNOUNCE',
             main_title: localize('Updates: Quick strategy modal'),
             event_name: 'Updated: Quick Strategy Modal',
+            event_action: {
+                confirm_button_text: 'Explore now',
+            },
             confirm_button_text: localize('Explore now'),
             base_classname: 'announcement-dialog',
             media: [getUrlBase('/public/videos/dbot-new-look-QS-and-accumulators-addition.gif')],
@@ -94,6 +101,9 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'MOVING_STRATEGIES_ANNOUNCE',
             main_title: localize('Moving strategies to Deriv Bot'),
             event_name: 'Moving strategies to Deriv Bot',
+            event_action: {
+                confirm_button_text: 'Import strategy',
+            },
             confirm_button_text: localize('Import strategy'),
             base_classname: 'announcement-dialog',
             title: (
@@ -187,6 +197,10 @@ export const ANNOUNCEMENTS: Record<string, TAnnouncement> = {
             id: 'ACCUMULATOR_ANNOUNCE',
             main_title: localize('Accumulators now on Deriv Bot'),
             event_name: 'Accumulators is now on Deriv Bot',
+            event_action: {
+                confirm_button_text: 'Try now',
+                cancel_button_text: 'Learn more',
+            },
             confirm_button_text: localize('Try now'),
             cancel_button_text: localize('Learn more'),
             base_classname: 'announcement-dialog',

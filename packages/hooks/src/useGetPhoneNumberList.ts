@@ -3,12 +3,10 @@ import { useCallback } from 'react';
 import { useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
-import useSettings from './useSettings';
-
 const useGetPhoneNumberList = () => {
     const { client } = useStore();
-    const { data: account_settings, isLoading: isAccountSettingsLoading } = useSettings();
     const {
+        account_settings,
         website_status: { clients_country },
         is_authorize,
     } = client;
@@ -85,7 +83,7 @@ const useGetPhoneNumberList = () => {
         short_code_selected,
         selected_phone_code,
         selected_country_list,
-        isLoading: isAccountSettingsLoading || isPhoneSettingLoading,
+        isLoading: isPhoneSettingLoading,
     };
 };
 

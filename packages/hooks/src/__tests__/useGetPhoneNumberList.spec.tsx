@@ -5,14 +5,11 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useGetPhoneNumberList from '../useGetPhoneNumberList';
-import useSettings from '../useSettings';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useQuery: jest.fn(),
 }));
-
-jest.mock('../useSettings');
 
 describe('useGetPhoneNumberList', () => {
     const mockPhoneSettings = {
@@ -35,17 +32,19 @@ describe('useGetPhoneNumberList', () => {
         },
     };
 
-    const mock = mockStore({});
+    const mock = mockStore({
+        client: {
+            account_settings: {
+                //@ts-expect-error calling_country_code is not defined in AccountSettings type
+                calling_country_code: '+60',
+            },
+        },
+    });
 
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
     beforeEach(() => {
         (useQuery as jest.Mock).mockReturnValue({ data: mockPhoneSettings });
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                calling_country_code: '+60',
-            },
-        });
     });
 
     it('should return formatted countries list', () => {
@@ -93,11 +92,8 @@ describe('useGetPhoneNumberList', () => {
     });
 
     it('should return correct clients_country code if calling_country_code is empty', () => {
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                calling_country_code: '',
-            },
-        });
+        //@ts-expect-error calling_country_code is not defined in AccountSettings type
+        mock.client.account_settings.calling_country_code = '';
         mock.client.website_status.clients_country = 'br';
         const { result } = renderHook(() => useGetPhoneNumberList(), {
             wrapper,
@@ -112,7 +108,7 @@ describe('useGetPhoneNumberList', () => {
             wrapper,
         });
 
-        expect(result.current.short_code_selected).toBe('MY');
+        expect(result.current.short_code_selected).toBe('my');
     });
 
     it('should return correct selected country list', () => {

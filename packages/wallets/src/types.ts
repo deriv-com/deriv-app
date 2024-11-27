@@ -116,4 +116,24 @@ export type TProductForMarketDetails =
 
 export type TTranslations = ReturnType<typeof useTranslations>;
 
-export type TLanguageType = 'AR' | 'EN' | 'ES' | 'FR' | 'RU';
+export type TLanguageType =
+    | 'AR'
+    | 'BN'
+    | 'DE'
+    | 'EN'
+    | 'ES'
+    | 'FR'
+    | 'IT'
+    | 'KM'
+    | 'KO'
+    | 'PL'
+    | 'PT'
+    | 'RU'
+    | 'SI'
+    | 'SW'
+    | 'TH'
+    | 'TR'
+    | 'UZ'
+    | 'VI'
+    | 'ZH_CN'
+    | 'ZH_TW';

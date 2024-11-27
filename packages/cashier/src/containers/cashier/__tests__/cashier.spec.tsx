@@ -14,6 +14,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
+jest.mock('@deriv/p2p', () => jest.fn(() => <div>P2P</div>));
+
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),

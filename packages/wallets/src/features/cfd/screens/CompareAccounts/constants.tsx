@@ -9,10 +9,12 @@ import {
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
+import AccountsDmt5GoldIcon from '../../../../public/images/account-dmt5-gold-icon.svg';
 import { CFD_PLATFORMS } from '../../constants';
 
 export const MT5_PRODUCT = {
     FINANCIAL: 'financial',
+    GOLD: 'gold',
     STANDARD: 'standard',
     STP: 'stp',
     SWAP_FREE: 'swap_free',
@@ -26,6 +28,7 @@ export const ACCOUNT_ICONS = {
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
     [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
     [MT5_PRODUCT.ZERO_SPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
+    [MT5_PRODUCT.GOLD]: <AccountsDmt5GoldIcon height={48} width={48} />,
     default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;
 

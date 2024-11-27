@@ -20,16 +20,19 @@ type TCompareAccountsCard = {
 
 const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCard) => {
     const product = account.platform === 'mt5' ? account.product : undefined;
-    //@ts-expect-error needs backend type
+    //@ts-expect-error need update api-types
     const productDetails = account.platform === 'mt5' ? account.product_details : undefined;
-    //@ts-expect-error needs backend type
+    //@ts-expect-error need update api-types
     const instruments = account.platform === 'mt5' ? account.instruments : undefined;
+
+    //@ts-expect-error need update api-types
+    const isNewBadgeVisible = product === PRODUCT.ZEROSPREAD || product === PRODUCT.GOLD;
 
     return (
         <div>
             <div className='wallets-compare-accounts-card'>
                 <CompareAccountsPlatformLabel platform={account.platform} />
-                {product === PRODUCT.ZEROSPREAD && (
+                {isNewBadgeVisible && (
                     <div className='wallets-compare-accounts-card__banner'>
                         <Text color='white' size='xs' weight='bold'>
                             <Localize i18n_default_text='NEW' />

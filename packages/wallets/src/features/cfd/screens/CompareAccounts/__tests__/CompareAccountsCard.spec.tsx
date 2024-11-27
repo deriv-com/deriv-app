@@ -37,14 +37,24 @@ describe('CompareAccountsCard', () => {
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
     });
 
-    it('renders the new banner for Zero Spread platform', () => {
-        render(
+    it('renders the new banner for Zero Spread and Gold platforms', () => {
+        const { rerender } = render(
             <CompareAccountsCard
                 {...defaultProps}
                 //@ts-expect-error we only need partial types
                 account={{ ...defaultProps.account, product: PRODUCT.ZEROSPREAD }}
             />,
             { wrapper }
+        );
+
+        expect(screen.getByText('NEW')).toBeInTheDocument();
+
+        rerender(
+            <CompareAccountsCard
+                {...defaultProps}
+                //@ts-expect-error we only need partial types
+                account={{ ...defaultProps.account, product: PRODUCT.GOLD }}
+            />
         );
 
         expect(screen.getByText('NEW')).toBeInTheDocument();

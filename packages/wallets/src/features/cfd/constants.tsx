@@ -47,7 +47,7 @@ const getMarketTypeDetailsDescription = (
     }
 
     if (product === 'gold') {
-        return localize('CFDs on precious metals');
+        return localize('Trading opportunities on popular precious metals.');
     }
 
     return localize('CFDs on financial instruments');

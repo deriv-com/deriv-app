@@ -11,20 +11,20 @@ type TCompareAccountsTitleIcon = {
     isDemo: boolean;
     isEuRegion: boolean;
     platform: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp';
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp';
 };
 
 type TGetAccountIconValues = {
     isEuRegion: boolean;
     platform: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp';
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp';
 };
 
 type TGetAccountCardTitleValues = {
     isDemo?: boolean;
     isEuRegion: boolean;
     platform: TPlatforms.All;
-    product: THooks.AvailableMT5Accounts['product'] | TPlatforms.OtherAccounts | 'stp';
+    product: THooks.AvailableMT5Accounts['product'] | TPlatforms.OtherAccounts | 'gold' | 'stp';
 };
 
 const getAccountIcon = (values: TGetAccountIconValues) => {
@@ -49,6 +49,8 @@ const getAccountIcon = (values: TGetAccountIconValues) => {
                     return ACCOUNT_ICONS[MT5_PRODUCT.SWAP_FREE];
                 case MT5_PRODUCT.ZERO_SPREAD:
                     return ACCOUNT_ICONS[MT5_PRODUCT.ZERO_SPREAD];
+                case MT5_PRODUCT.GOLD:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.GOLD];
                 default:
                     return ACCOUNT_ICONS.default;
             }
@@ -87,6 +89,8 @@ const getAccountCardTitle = (values: TGetAccountCardTitleValues) => {
                 return isDemo ? localize('Swap-Free Demo') : localize('Swap-Free');
             case MT5_PRODUCT.ZERO_SPREAD:
                 return isDemo ? localize('Zero Spread Demo') : localize('Zero Spread');
+            case MT5_PRODUCT.GOLD:
+                return isDemo ? localize('Gold Demo') : localize('Gold');
             default:
                 return '';
         }

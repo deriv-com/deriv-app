@@ -1,11 +1,13 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+
 import { routes } from '@deriv/shared';
-import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import LanguageSettings from '../language-settings';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -26,7 +28,11 @@ jest.mock('@deriv-com/translations');
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    TranslationFlag: { EN: () => <div>Language 1 Flag</div>, VI: () => <div>Language 2 Flag</div> },
+    TranslationFlag: {
+        EN: () => <div>Language 1 Flag</div>,
+        ID: () => <div>Language 2 Flag</div>,
+        VI: () => <div>Language 3 Flag</div>,
+    },
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -81,19 +87,22 @@ describe('LanguageSettings', () => {
         expect(screen.getByText('Select language')).toBeInTheDocument();
 
         const lang_1 = screen.getByText('English');
-        const lang_2 = screen.queryByText('Tiếng Việt');
+        const lang_2 = screen.queryByText('Bahasa Indonesia');
+        const lang_3 = screen.queryByText('Tiếng Việt');
 
         expect(screen.getByText(/Language 1 Flag/)).toBeInTheDocument();
+        expect(screen.getByText(/Language 3 Flag/)).toBeInTheDocument();
         expect(screen.queryByText(/Language 2 Flag/)).not.toBeInTheDocument();
         expect(lang_1).toBeInTheDocument();
+        expect(lang_3).toBeInTheDocument();
         expect(lang_2).not.toBeInTheDocument();
     });
 
-    it('should trigger language change', () => {
+    it('should trigger language change', async () => {
         renderLanguageSettings();
 
         const lang_2 = screen.getByText('Tiếng Việt');
-        userEvent.click(lang_2);
+        await userEvent.click(lang_2);
 
         expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();
     });

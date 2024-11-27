@@ -45,10 +45,10 @@ const useTranslations = () => ({
 const localize = mockFn;
 
 const getAllowedLanguages = jest.fn(unsupported_languages => {
-    if (unsupported_languages.includes('VI')) {
-        return { EN: 'English' };
+    if (unsupported_languages.includes('ID')) {
+        return { EN: 'English', VI: 'Tiếng Việt' };
     }
-    return { EN: 'English', VI: 'Tiếng Việt' };
+    return { EN: 'English', ID: 'Bahasa Indonesia', VI: 'Tiếng Việt' };
 });
 
 const getInitialLanguage = jest.fn(() => 'EN');

@@ -96,6 +96,7 @@
         "test": "f () { npm run test:stylelint  && npm run test:eslint-all && npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:ci": "f () { npm run test:stylelint  && npm run test:eslint-all ;}; f",
+        "test:shard": "jest --all --shard=${SHARD_INDEX}/${SHARD_COUNT} --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
@@ -105,7 +106,7 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.24.7",
-        "@deriv-com/analytics": "1.26.1",
+        "@deriv-com/analytics": "1.26.2",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^29.7.0",

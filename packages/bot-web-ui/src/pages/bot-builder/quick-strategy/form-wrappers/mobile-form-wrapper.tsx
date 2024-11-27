@@ -1,126 +1,134 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import {
-    rudderStackSendQsRunStrategyEvent,
-    rudderStackSendQsSelectedTabEvent,
-} from '../../../../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../../../../analytics/utils';
+import { rudderStackSendQsRunStrategyEvent } from '../../../../analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
-import FormTabs from './form-tabs';
 import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
+import QSStepper from './qs-stepper';
+import StrategyTemplatePicker from './strategy-template-picker';
+import { QsSteps } from './trade-constants';
 import '../quick-strategy.scss';
-import { useFeatureFlags } from '@deriv/hooks';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
-    active_tab_ref?: React.MutableRefObject<HTMLDivElement | null>;
+    selected_trade_type: string;
+    setSelectedTradeType: (selected_trade_type: string) => void;
+    current_step: QsSteps;
+    setCurrentStep: (current_step: QsSteps) => void;
 };
 
-const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, active_tab_ref }) => {
-    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { isValid, validateForm, values } = useFormikContext<TFormValues>();
-    const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy } = quick_strategy;
-    const { handleSubmit } = useQsSubmitHandler();
-    const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+const MobileFormWrapper = observer(
+    ({ children, current_step, selected_trade_type, setCurrentStep, setSelectedTradeType }: TMobileFormWrapper) => {
+        const { isValid, validateForm, values } = useFormikContext<TFormValues>();
+        const { quick_strategy } = useDBotStore();
+        const { selected_strategy } = quick_strategy;
+        const { handleSubmit } = useQsSubmitHandler();
+        const selected_startegy_label = STRATEGIES[selected_strategy as keyof typeof STRATEGIES].label;
+        const is_verified_or_completed_step =
+            current_step === QsSteps.StrategyVerified || current_step === QsSteps.StrategyCompleted;
+        const is_selected_strategy_step = current_step === QsSteps.StrategySelect;
 
-    const { is_next_qs_enabled } = useFeatureFlags();
-    if (!is_next_qs_enabled) {
-        delete STRATEGIES.ACCUMULATORS_DALEMBERT;
-    }
-    React.useEffect(() => {
-        validateForm();
-    }, [selected_strategy, validateForm]);
+        React.useEffect(() => {
+            validateForm();
+        }, [selected_strategy, validateForm]);
 
-    const onChangeStrategy = (strategy: string) => {
-        setSelectedStrategy(strategy);
-        setActiveTab('TRADE_PARAMETERS');
-    };
+        const onRun = () => {
+            rudderStackSendQsRunStrategyEvent({
+                form_values: values,
+                selected_strategy,
+            });
+            handleSubmit();
+        };
 
-    const handleTabChange = (tab: string) => {
-        setActiveTab(tab);
-        rudderStackSendQsSelectedTabEvent({ quick_strategy_tab: getQsActiveTabString(tab) });
-    };
+        const onBack = () => {
+            setCurrentStep(QsSteps.StrategySelect);
+        };
 
-    const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            quick_strategy_tab: getQsActiveTabString(active_tab),
-        });
-        handleSubmit();
-    };
+        React.useEffect(() => {
+            if (isValid && current_step === QsSteps.StrategyVerified) {
+                setCurrentStep(QsSteps.StrategyCompleted);
+            }
+            if (!isValid && current_step === QsSteps.StrategyCompleted) {
+                setCurrentStep(QsSteps.StrategyVerified);
+            }
+        }, [isValid, current_step]);
 
-    const dropdown_list = Object.keys(STRATEGIES).map(key => ({
-        value: key,
-        text: STRATEGIES[key as keyof typeof STRATEGIES].label,
-        description: STRATEGIES[key as keyof typeof STRATEGIES].description,
-    }));
-
-    return (
-        <div className='qs'>
-            <div className='qs__body'>
-                <div className='qs__body__content'>
-                    <ThemedScrollbars
-                        className={classNames('qs__form__container', {
-                            'qs__form__container--no-footer': active_tab !== 'TRADE_PARAMETERS',
-                        })}
-                        autohide={false}
-                    >
-                        <div className='qs__body__content__title'>
-                            <div className='qs__body__content__description'>
-                                <Text size='xxs'>
-                                    {localize('Choose a template below and set your trade parameters.')}
-                                </Text>
-                            </div>
-                            <div className='qs__body__content__select'>
-                                <SelectNative
-                                    list_items={dropdown_list}
-                                    value={selected_strategy}
-                                    label={localize('Strategy')}
-                                    should_show_empty_option={false}
-                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                        onChangeStrategy(e.target.value);
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div ref={active_tab_ref}>
-                            <FormTabs
-                                active_tab={active_tab}
-                                onChange={handleTabChange}
-                                description={strategy?.description}
+        return (
+            <div className='qs'>
+                <div className='qs__body'>
+                    <div className='qs__body__content'>
+                        <ThemedScrollbars
+                            className={classNames('qs__form__container qs__form__container--no-footer', {
+                                'qs__form__container--template': is_selected_strategy_step,
+                            })}
+                            autohide={false}
+                        >
+                            <QSStepper
+                                setCurrentStep={setCurrentStep}
+                                current_step={current_step}
+                                isValid={isValid}
+                                is_mobile
                             />
-                        </div>
-                        <StrategyTabContent formfields={children} active_tab={active_tab} />
-                    </ThemedScrollbars>
-                    {active_tab === 'TRADE_PARAMETERS' && (
-                        <div className='qs__body__content__footer'>
-                            <Button
-                                primary
-                                data-testid='qs-run-button'
-                                type='submit'
-                                onClick={e => {
-                                    e.preventDefault();
-                                    onRun();
-                                }}
-                                disabled={!isValid}
-                            >
-                                {localize('Run')}
-                            </Button>
-                        </div>
-                    )}
+                            {is_selected_strategy_step && (
+                                <StrategyTemplatePicker
+                                    setSelectedTradeType={setSelectedTradeType}
+                                    setCurrentStep={setCurrentStep}
+                                />
+                            )}
+                            {is_verified_or_completed_step && (
+                                <>
+                                    <div className='qs__selected-options'>
+                                        <div className='qs__selected-options__item'>
+                                            <Text size='xs'>{localize('Trade type')}</Text>
+                                            <Text size='xs' weight='bold'>
+                                                {selected_trade_type}
+                                            </Text>
+                                        </div>
+                                        <div className='qs__selected-options__item'>
+                                            <Text size='xs'>{localize('Strategy')}</Text>
+                                            <Text
+                                                className='qs__selected-options__item__description'
+                                                size='xs'
+                                                weight='bold'
+                                            >
+                                                {selected_startegy_label}
+                                            </Text>
+                                        </div>
+                                    </div>
+                                    <StrategyTabContent formfields={children} active_tab={'TRADE_PARAMETERS'} />
+                                </>
+                            )}
+                        </ThemedScrollbars>
+                        {is_verified_or_completed_step && (
+                            <div className='qs__body__content__footer'>
+                                <Button secondary disabled={is_selected_strategy_step} onClick={onBack}>
+                                    {localize('Back')}
+                                </Button>
+                                <Button
+                                    primary
+                                    data-testid='qs-run-button'
+                                    type='submit'
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        onRun();
+                                    }}
+                                    disabled={!isValid}
+                                >
+                                    {localize('Run')}
+                                </Button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 export default MobileFormWrapper;

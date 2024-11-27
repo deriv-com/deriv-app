@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useActiveWalletAccount, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, useTradingPlatformStatus } from '@deriv/api-v2';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
@@ -9,7 +9,13 @@ import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../hooks/useIsRtl';
-import { getMarketTypeDetails, MARKET_TYPE, PRODUCT, TRADING_PLATFORM_STATUS } from '../../../constants';
+import {
+    getMarketTypeDetails,
+    MARKET_TYPE,
+    MT5_ACCOUNT_STATUS,
+    PRODUCT,
+    TRADING_PLATFORM_STATUS,
+} from '../../../constants';
 import { ClientVerificationModal, MT5PasswordModal, TradingPlatformStatusModal } from '../../../modals';
 import { TAvailableMT5Account } from '../../../types';
 import { getClientVerification } from '../../../utils';
@@ -25,7 +31,8 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();
     const isRtl = useIsRtl();
     const { setModalState, show } = useModal();
-    const { description, title } = getMarketTypeDetails(localize, account.product)[
+    const { data: isEuRegion } = useIsEuRegion();
+    const { availability, description, icon, title } = getMarketTypeDetails(localize, account.product, isEuRegion)[
         account.market_type || MARKET_TYPE.ALL
     ];
     const { data: mt5Accounts } = useMT5AccountsList();
@@ -35,13 +42,13 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { hasClientKycStatus } = getClientVerification(account);
 
     const onButtonClick = useCallback(() => {
-        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal isServerMaintenance={false} />);
+        if (hasUnavailableAccount) return show(<TradingPlatformStatusModal status={MT5_ACCOUNT_STATUS.UNAVAILABLE} />);
 
         switch (platformStatus) {
             case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return show(<TradingPlatformStatusModal isServerMaintenance />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.MAINTENANCE} />);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return show(<TradingPlatformStatusModal />);
+                return show(<TradingPlatformStatusModal status={TRADING_PLATFORM_STATUS.UNAVAILABLE} />);
             case TRADING_PLATFORM_STATUS.ACTIVE:
             default:
                 if (!isVirtual && hasClientKycStatus) {
@@ -55,11 +62,11 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
         }
     }, [hasUnavailableAccount, show, platformStatus, isVirtual, hasClientKycStatus, setModalState, account]);
 
+    if (isEuRegion && availability === 'Non-EU') return null;
+
     return (
         <TradingAccountCard onClick={onButtonClick}>
-            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>
-                {getMarketTypeDetails(localize, account.product)[account.market_type || MARKET_TYPE.ALL].icon}
-            </TradingAccountCard.Icon>
+            <TradingAccountCard.Icon className='wallets-available-mt5__icon'>{icon}</TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content className='wallets-available-mt5__details'>
                     <div className='wallets-available-mt5__title'>

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Text, Tooltip, useDevice } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { getJurisdictionDescription } from './compareAccountsConfig';
@@ -38,7 +38,8 @@ const CompareAccountsDescription = ({
     return (
         <div
             className={classNames('wallets-compare-accounts-text-container', {
-                'wallets-compare-accounts-text-container--demo': isDemo,
+                'wallets-compare-accounts-text-container--demo': isDemo && !isEuRegion,
+                'wallets-compare-accounts-text-container--eu': isEuRegion,
             })}
         >
             <div className='wallets-compare-accounts-text-container__separator'>
@@ -63,7 +64,7 @@ const CompareAccountsDescription = ({
                                 tooltipOffset={20}
                                 tooltipPosition='top'
                             >
-                                <InfoIcon />
+                                <LegacyInfo1pxIcon width={16} />
                             </Tooltip>
                         )}
                     </div>
@@ -72,7 +73,7 @@ const CompareAccountsDescription = ({
                     </Text>
                 </div>
             )}
-            {!isDemo && (
+            {!isDemo && !isEuRegion && (
                 <React.Fragment>
                     <div className='wallets-compare-accounts-text-container__separator'>
                         <Text align='center' as='h1' size={isTablet ? 'md' : 'sm'} weight='bold'>

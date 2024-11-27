@@ -1,4 +1,5 @@
 import { CFD_PLATFORMS } from '@deriv/shared';
+import { useCallback } from 'react';
 import useAuthorizedQuery from '../useAuthorizedQuery';
 import useQuery from '../useQuery';
 
@@ -24,14 +25,19 @@ const useTradingPlatformStatus = () => {
      * @param platform The platform identifier (e.g., 'ctrader', 'dxtrade', 'mt5').
      * @returns The status of the identified platform ('active', 'maintenance', 'unavailable').
      */
-    const getPlatformStatus = (platform: string) => {
-        const platformStatus =
-            platform === CFD_PLATFORMS.MT5 || platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
-                ? tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status
-                : undefined; // cashier may pass non-cfd platform (i.e. doughflow, p2p, paymentagent, etc) which doesn't have status property
+    const getPlatformStatus = useCallback(
+        (platform: string) => {
+            const platformStatus =
+                platform === CFD_PLATFORMS.MT5 ||
+                platform === CFD_PLATFORMS.DXTRADE ||
+                platform === CFD_PLATFORMS.CTRADER
+                    ? tradingPlatformStatusData?.find((status: TPlatformStatus) => status.platform === platform)?.status
+                    : undefined; // cashier may pass non-cfd platform (i.e. doughflow, p2p, paymentagent, etc) which doesn't have status property
 
-        return platformStatus;
-    };
+            return platformStatus;
+        },
+        [tradingPlatformStatusData]
+    );
 
     return {
         ...rest,

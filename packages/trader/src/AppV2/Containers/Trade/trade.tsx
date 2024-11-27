@@ -20,6 +20,7 @@ import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
+import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -32,12 +33,12 @@ const Trade = observer(() => {
         active_symbols,
         contract_type,
         has_cancellation,
-        symbol,
         is_accumulator,
         is_market_closed,
-        onMount,
         onChange,
+        onMount,
         onUnmount,
+        symbol,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -130,6 +131,7 @@ const Trade = observer(() => {
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
+            <TradeErrorSnackbar error_fields={['stop_loss', 'take_profit', 'date_start']} should_show_snackbar />
         </BottomNav>
     );
 });

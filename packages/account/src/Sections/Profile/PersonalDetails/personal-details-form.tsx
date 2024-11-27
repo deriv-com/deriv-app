@@ -61,10 +61,10 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
-    const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
-    const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
 
@@ -136,7 +136,12 @@ const PersonalDetailsForm = observer(() => {
         fetchAccountSettings();
     }, [fetchAccountSettings]);
 
-    const should_show_loader = is_loading_state_list || is_loading || is_loading_residence_list;
+    const should_show_loader =
+        is_loading_state_list ||
+        is_loading ||
+        is_loading_residence_list ||
+        !isPhoneNumberVerificationLoaded ||
+        !isCountryCodeLoaded;
 
     useEffect(() => {
         const init = async () => {

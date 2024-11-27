@@ -932,10 +932,16 @@ export default class TradeStore extends BaseStore {
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
         if (
-            name == 'contract_type' &&
+            name === 'contract_type' &&
             ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
         ) {
             this.prev_contract_type = this.contract_type;
+        }
+
+        // reset stop loss after trade type was changed
+        if (name === 'contract_type' && this.has_stop_loss) {
+            this.has_stop_loss = false;
+            this.stop_loss = '';
         }
 
         if (name === 'symbol' && value) {
@@ -1938,6 +1944,10 @@ export default class TradeStore extends BaseStore {
     wsSubscribe = (req: TicksHistoryRequest, callback: (response: TTicksHistoryResponse) => void) => {
         const passthrough_callback = (...args: [TTicksHistoryResponse]) => {
             callback(...args);
+            if ('ohlc' in args[0] && this.root_store.contract_trade.granularity !== 0) {
+                const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
+                if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
+            }
             if (this.is_accumulator) {
                 let current_spot_data = {};
                 if ('tick' in args[0]) {

@@ -191,6 +191,7 @@ const ModalManager = () => {
         is_populating_mt5_account_list,
         verification_code,
         is_trading_experience_incomplete,
+        is_virtual,
     } = client;
     const { platform } = common;
     const {
@@ -298,7 +299,10 @@ const ModalManager = () => {
         !is_eu && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
 
     const should_show_wallets_eu_upgrade_modal =
-        is_eu && !is_trading_experience_incomplete && !should_show_assessment_complete_modal && is_eligible;
+        is_eu &&
+        (is_virtual || !is_trading_experience_incomplete) &&
+        !should_show_assessment_complete_modal &&
+        is_eligible;
 
     return (
         <React.Fragment>

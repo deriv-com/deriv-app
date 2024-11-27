@@ -1,7 +1,7 @@
 import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
-import { getSelectedTradeTypeCategory } from '../utils';
+import { getSelectedTradeTypeCategory } from '../../../scratch/utils/index';
 import { observer as globalObserver } from '../../../utils/observer';
 
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>

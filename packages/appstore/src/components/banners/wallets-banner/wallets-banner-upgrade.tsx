@@ -4,26 +4,18 @@ import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-import { cacheTrackEvents } from '@deriv/shared';
 
 const trackAnalyticsEvent = (
     action: TEvents['ce_tradershub_banner']['action'],
     account_mode: TEvents['ce_tradershub_banner']['account_mode']
 ) => {
-    cacheTrackEvents.loadEvent([
-        {
-            event: {
-                name: 'ce_tradershub_banner',
-                properties: {
-                    action,
-                    form_name: 'ce_tradershub_banner',
-                    account_mode,
-                    banner_name: 'lets_go_wallets_step_1_2',
-                    banner_type: 'with_cta',
-                },
-            },
-        },
-    ]);
+    Analytics.trackEvent('ce_tradershub_banner', {
+        action,
+        form_name: 'ce_tradershub_banner',
+        account_mode,
+        banner_name: 'lets_go_wallets_step_1_2',
+        banner_type: 'with_cta',
+    });
 };
 
 type TProps = {

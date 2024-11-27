@@ -4,7 +4,6 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     checkServerMaintenance,
-    daysSince,
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
@@ -322,7 +321,6 @@ export default class NotificationStore extends BaseStore {
             account_list,
             account_settings,
             account_status,
-            account_open_date,
             accounts,
             isAccountOfType,
             is_eu,
@@ -353,8 +351,7 @@ export default class NotificationStore extends BaseStore {
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
-        const is_website_up = website_status.site_status === 'up';
-        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
+        const has_trustpilot = LocalStore.getObject('marked_notifications').includes(
             this.client_notifications.trustpilot?.key
         );
         const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
@@ -462,6 +459,10 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({
                     key: this.client_notifications.notify_account_is_to_be_closed_by_residence,
                 });
+            }
+
+            if (!has_trustpilot && this.root_store.client.should_show_trustpilot_notification) {
+                this.addNotificationMessage(this.client_notifications.trustpilot);
             }
 
             const client = accounts[loginid];
@@ -629,9 +630,6 @@ export default class NotificationStore extends BaseStore {
                         );
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p?.key });
-                }
-                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
-                    this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
                 has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
                 if (has_missing_required_field) {
@@ -845,7 +843,10 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     onClick: () => {
                         window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
-                        this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
+                        this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                        this.removeNotificationByKey({
+                            key: this.client_notifications.trustpilot.key,
+                        });
                         this.removeNotificationMessage({
                             key: this.client_notifications.trustpilot.key,
                             should_show_again: false,

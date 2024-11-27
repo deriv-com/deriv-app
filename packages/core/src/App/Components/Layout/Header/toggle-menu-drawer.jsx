@@ -36,6 +36,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
         setMobileLanguageMenuOpen,
+        setIsForcedToExitPnv,
     } = ui;
     const {
         account_status,
@@ -141,6 +142,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const handleLogout = React.useCallback(async () => {
         toggleDrawer();
+        if (window.location.pathname.startsWith(routes.phone_verification)) {
+            setIsForcedToExitPnv(true);
+            // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
         history.push(routes.traders_hub);
         await logoutClient();
     }, [history, logoutClient, toggleDrawer]);

@@ -320,6 +320,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_time_of_closure: undefined,
             is_account_to_be_closed_by_residence: false,
             statement: {},
+            should_show_trustpilot_notification: false,
         },
         common: {
             error: common_store_error,

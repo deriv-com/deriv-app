@@ -35,6 +35,10 @@ const Chat = {
             window.fcWidget?.user.clear();
         } else if (isIntercom && window.Intercom) {
             window.Intercom('shutdown');
+            window.DerivInterCom.initialize({
+                hideLauncher: true,
+                token: null,
+            });
         }
     },
 

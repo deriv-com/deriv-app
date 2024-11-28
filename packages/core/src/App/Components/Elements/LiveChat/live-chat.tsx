@@ -20,15 +20,6 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
     const freshChat = useFreshChat(token);
 
-    // const intercom = useIntercom({
-    //     userData: {
-    //         id: '12345',
-    //         name: 'John Doe',
-    //         email: 'john.doe@example.com',
-    //         createdAt: Math.floor(Date.now() / 1000),
-    //     },
-    // });
-
     const intercom = useIntercom({ token });
 
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({

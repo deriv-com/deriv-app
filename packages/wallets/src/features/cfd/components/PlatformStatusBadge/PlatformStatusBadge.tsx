@@ -1,48 +1,46 @@
 import React, { ComponentProps } from 'react';
-import { useTradingPlatformStatus } from '@deriv/api-v2';
-import { LegacyWarningIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationCaptionRegularIcon } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Badge, Text } from '@deriv-com/ui';
-import type { TAccount } from '../../../cashier/modules/Transfer/types';
-import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../constants';
-import { TAddedMT5Account } from '../../types';
+import { DISABLED_PLATFORM_STATUSES, MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../constants';
 
 type TProps = {
     badgeSize: ComponentProps<typeof Badge>['badgeSize'];
-    cashierAccount?: TAccount;
     className?: ComponentProps<typeof Badge>['className'];
-    mt5Account?: TAddedMT5Account;
+    status: typeof DISABLED_PLATFORM_STATUSES[number];
 };
 
-const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, cashierAccount, className, mt5Account }) => {
-    const { getPlatformStatus } = useTradingPlatformStatus();
-    const platformStatus = getPlatformStatus(cashierAccount?.account_type ?? mt5Account?.platform ?? '');
+const getBadgeText = (status: TProps['status'], localize: (key: string) => string) => {
+    switch (status) {
+        case TRADING_PLATFORM_STATUS.MAINTENANCE:
+        case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
+            return localize('Server maintenance');
+        case TRADING_PLATFORM_STATUS.UNAVAILABLE:
+        case MT5_ACCOUNT_STATUS.UNAVAILABLE:
+            return localize('Unavailable');
+        default:
+            return '';
+    }
+};
+
+const PlatformStatusBadge: React.FC<TProps> = ({ badgeSize, className, status }) => {
     const { localize } = useTranslations();
 
-    const isMaintenance =
-        platformStatus === TRADING_PLATFORM_STATUS.MAINTENANCE ||
-        [mt5Account?.status || cashierAccount?.status].includes(MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE);
-    const isUnavailable = [mt5Account?.status, cashierAccount?.status].includes(TRADING_PLATFORM_STATUS.UNAVAILABLE);
-
-    const getBadgeText = () => {
-        if (isMaintenance) return localize('Server maintenance');
-        if (isUnavailable) return localize('Unavailable');
-        return '';
-    };
+    if (!getBadgeText(status, localize)) return null;
 
     return (
         <Badge
             badgeSize={badgeSize}
             className={className}
-            color='warning'
+            color='warning-secondary'
             isBold
-            leftIcon={<LegacyWarningIcon iconSize='xs' />}
+            leftIcon={<LabelPairedCircleExclamationCaptionRegularIcon fill='#C47D00' />}
             padding='loose'
             rounded='sm'
             variant='bordered'
         >
-            <Text color='warning' lineHeight='2xl' size='2xs' weight='bold'>
-                <span style={{ color: 'var(--status-warning, #ffad3a)' }}>{getBadgeText()}</span>
+            <Text lineHeight='2xl' size='2xs' weight='bold'>
+                {getBadgeText(status, localize)}
             </Text>
         </Badge>
     );

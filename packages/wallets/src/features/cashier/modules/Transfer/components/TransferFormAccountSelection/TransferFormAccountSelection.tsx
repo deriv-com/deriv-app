@@ -12,6 +12,7 @@ type TProps = {
     accountsList: TAccountsList;
     activeWallet: TAccount;
     fromAccount?: TAccount;
+    hasPlatformStatus: (account: TAccount) => boolean;
     isFromAccountDropdown: boolean;
     label: string;
     onSelect: (value?: TAccount) => void;
@@ -30,6 +31,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
     accountsList,
     activeWallet,
     fromAccount,
+    hasPlatformStatus,
     isFromAccountDropdown,
     label,
     onSelect,
@@ -129,7 +131,10 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                                 modal.hide();
                                             }}
                                         >
-                                            <TransferFormAccountCard account={account} />
+                                            <TransferFormAccountCard
+                                                account={account}
+                                                hasPlatformStatus={hasPlatformStatus}
+                                            />
                                         </button>
                                     ))}
                                 </div>

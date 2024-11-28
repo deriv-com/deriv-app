@@ -5,7 +5,7 @@
     border: 1px solid var(--general-hover);
     border-radius: 2.4rem;
     margin: 0 1rem;
-    padding-bottom: 2rem;
+    padding-bottom: 2.4rem;
 
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
@@ -13,10 +13,7 @@
 
     @include mobile-or-tablet-screen {
         width: 18rem;
-        height: 66.6rem;
-        &--eu {
-            height: fit-content;
-        }
+        padding-bottom: 1.6rem;
     }
 
     &__eu-clients {

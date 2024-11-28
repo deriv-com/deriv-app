@@ -687,6 +687,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    should_show_trustpilot_notification: boolean;
 };
 
 type TCommonStoreError = {

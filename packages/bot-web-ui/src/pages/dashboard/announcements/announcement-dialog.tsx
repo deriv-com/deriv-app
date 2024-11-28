@@ -35,6 +35,7 @@ const AnnouncementDialog = ({
         plain_text,
         unordered_list,
         media,
+        event_name,
     } = announcement;
     return (
         <Dialog
@@ -51,7 +52,7 @@ const AnnouncementDialog = ({
                 setIsAnnounceDialogOpen(false);
                 rudderStackSendCloseEvent({
                     subform_name: 'announcements',
-                    announcement_name: main_title,
+                    announcement_name: event_name,
                 });
             }}
             className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}

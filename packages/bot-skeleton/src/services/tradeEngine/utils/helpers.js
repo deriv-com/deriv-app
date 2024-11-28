@@ -169,7 +169,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                 break;
             case 'OpenPositionLimitExceeded':
                 message_to_print = localize(
-                    'You already have an open position for this contract type Trade Type: {{ trade_type }}, retrying in {{ delay }}s',
+                    'You already have an open position for {{ trade_type }} contract type, retrying in {{ delay }}s',
                     {
                         delay: next_delay_in_seconds,
                         trade_type: selected_trade_type,

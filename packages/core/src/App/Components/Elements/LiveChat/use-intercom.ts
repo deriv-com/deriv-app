@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
-const useIntercom = (token: string | null, flag: boolean) => {
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+
+const useIntercom = (token: string | null) => {
     const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
-    const scriptStatus = useScript(flag ? intercom_script : null);
+    const [enable_intercom] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_intercom',
+    });
+    const scriptStatus = useScript(enable_intercom ? intercom_script : null);
 
     const [is_ready, setIsReady] = useState(false);
 
     useEffect(() => {
-        if (!flag || scriptStatus !== 'ready' || !window?.DerivInterCom) return;
+        if (!enable_intercom || scriptStatus !== 'ready' || !window?.DerivInterCom) return;
 
         let intervalId: NodeJS.Timeout;
 
@@ -19,7 +24,7 @@ const useIntercom = (token: string | null, flag: boolean) => {
             });
 
             intervalId = setInterval(() => {
-                if (window?.Intercom && !is_ready) {
+                if (window?.Intercom) {
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
@@ -29,11 +34,11 @@ const useIntercom = (token: string | null, flag: boolean) => {
         initIntercom();
 
         return () => {
-            if (intervalId) clearInterval(intervalId);
+            clearInterval(intervalId);
         };
-    }, [flag, is_ready, scriptStatus, token]);
+    }, [enable_intercom, scriptStatus, token]);
 
-    return { is_ready };
+    return { is_ready, flag: enable_intercom };
 };
 
 export default useIntercom;

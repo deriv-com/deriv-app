@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
-const useFreshChat = (token: string | null, flag: boolean) => {
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+
+const useFreshChat = (token: string | null) => {
     const freshchatScript = 'https://static.deriv.com/scripts/freshchat/v1.0.2.js';
-    const scriptStatus = useScript(flag ? freshchatScript : null);
+    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_freshworks_live_chat',
+    });
+    const scriptStatus = useScript(enable_freshworks_live_chat ? freshchatScript : null);
+
     const [is_ready, setis_ready] = useState(false);
 
     useEffect(() => {
-        if (!flag || scriptStatus !== 'ready' || !window.FreshChat || !window.fcSettings) {
+        if (!enable_freshworks_live_chat || scriptStatus !== 'ready' || !window.FreshChat || !window.fcSettings) {
             return;
         }
 
@@ -30,13 +36,11 @@ const useFreshChat = (token: string | null, flag: boolean) => {
         initializeFreshChat();
 
         return () => {
-            if (checkInterval) {
-                clearInterval(checkInterval);
-            }
+            clearInterval(checkInterval);
         };
-    }, [flag, is_ready, scriptStatus, token]);
+    }, [enable_freshworks_live_chat, scriptStatus, token]);
 
-    return { is_ready };
+    return { is_ready, flag: enable_freshworks_live_chat };
 };
 
 export default useFreshChat;

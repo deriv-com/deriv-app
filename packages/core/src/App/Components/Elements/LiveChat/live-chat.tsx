@@ -1,5 +1,5 @@
 import { Icon, Popover, Text } from '@deriv/components';
-import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
@@ -18,25 +18,15 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
-    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
-        featureFlag: 'enable_freshworks_live_chat',
-    });
-
-    const [enable_intercom] = useGrowthbookGetFeatureValue({
-        featureFlag: 'enable_intercom',
-    });
-
-    const freshChat = useFreshChat(token, enable_freshworks_live_chat);
-    const intercom = useIntercom(token, enable_intercom);
+    const freshChat = useFreshChat(token);
+    const intercom = useIntercom(token);
 
     // eslint-disable-next-line no-nested-ternary
-    const chat = enable_freshworks_live_chat ? freshChat : enable_intercom ? intercom : null;
+    const chat = freshChat.flag ? freshChat : intercom.flag ? intercom : null;
 
-    const isFreshchatEnabledButNotReady =
-        (enable_freshworks_live_chat && !chat?.is_ready) || (enable_intercom && !chat?.is_ready);
+    const isFreshchatEnabledButNotReady = (freshChat.flag && !chat?.is_ready) || (intercom.flag && !chat?.is_ready);
 
-    const isNeitherChatNorLiveChatAvailable =
-        !is_livechat_available && !enable_freshworks_live_chat && !enable_intercom;
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !freshChat.flag && !intercom.flag;
 
     if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
         return null;
@@ -45,7 +35,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
     setInterval(() => {
-        if (enable_freshworks_live_chat) {
+        if (freshChat.flag) {
             window.LiveChatWidget?.call('destroy');
         }
     }, 10);

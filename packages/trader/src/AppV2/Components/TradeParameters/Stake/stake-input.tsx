@@ -8,7 +8,7 @@ import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import { ExpandedProposal } from 'Stores/Modules/Trading/Helpers/proposal';
+import { ExpandedProposal, getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';
 
@@ -43,7 +43,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         stop_out,
         trade_type_tab,
         trade_types,
-        validation_errors,
+        // validation_errors,
         validation_params,
     } = trade_store;
 
@@ -53,12 +53,41 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
+    // TODO: move outside
+    const getPayoutInfo = (proposal_info: ReturnType<typeof getProposalInfo>) => {
+        // getting current payout
+        const { has_error, message = '', payout = 0, error_field } = proposal_info ?? {};
+        const float_number_search_regex = /\d+(\.\d+)?/g;
+        const proposal_error_message =
+            has_error && (error_field === 'amount' || error_field === 'stake') ? message : '';
+        /* TODO: stop using error text for getting the payout value, need API changes */
+        // Extracting the value of exceeded payout from error text
+        const error_payout = proposal_error_message
+            ? Number(proposal_error_message.match(float_number_search_regex)?.[2])
+            : 0;
+        const contract_payout = payout || error_payout;
+
+        // getting max allowed payout
+        const { payout: validation_payout } =
+            (proposal_info.validation_params || proposal_info.validation_params) ?? {};
+        const { max } = validation_payout ?? {};
+        /* TODO: stop using error text for getting the max payout value, need API changes */
+        // Extracting the value of max payout from error text
+        const error_max_payout =
+            has_error && (error_field === 'amount' || error_field === 'stake') && message
+                ? Number(message.match(float_number_search_regex)?.[1])
+                : 0;
+        const max_payout = max || error_max_payout;
+
+        return { contract_payout, max_payout, error: '' };
+    };
+
     // First contract type data:
     const {
         has_error: has_error_1,
         id: id_1,
         message: message_1 = '',
-        payout: payout_1 = 0,
+        // payout: payout_1 = 0,
         error_field: error_field_1,
     } = proposal_info[contract_types[0]] ?? {};
     const proposal_error_message_1 =
@@ -69,7 +98,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         has_error: has_error_2,
         id: id_2,
         message: message_2 = '',
-        payout: payout_2 = 0,
+        // payout: payout_2 = 0,
         error_field: error_field_2,
     } = proposal_info[contract_types[1]] ?? {};
     const proposal_error_message_2 =
@@ -81,33 +110,23 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     /* TODO: stop using Max payout from error text as a default max payout and stop using error text for is_max_payout_exceeded after validation_params are added to proposal API (both success & error response):
     E.g., for is_max_payout_exceeded, we have to temporarily check the error text: Max payout error always contains 3 numbers, the check will work for any languages: */
     const float_number_search_regex = /\d+(\.\d+)?/g;
-    // Extracting the value of exceeded payout 1 from error text
-    const error_payout_1 = proposal_error_message_1
-        ? Number(proposal_error_message_1.match(float_number_search_regex)?.[2])
-        : 0;
-    // Extracting the value of exceeded payout 2 from error text
-    const error_payout_2 = proposal_error_message_2
-        ? Number(proposal_error_message_2.match(float_number_search_regex)?.[2])
-        : 0;
     const is_max_payout_exceeded =
         proposal_error_message_1.match(float_number_search_regex)?.length === 3 ||
         proposal_error_message_2.match(float_number_search_regex)?.length === 3;
-    const has_both_errors = has_error_1 && has_error_2;
-    const proposal_error_with_two_contract = contract_types[1] && has_both_errors;
-    const proposal_error_with_one_contract = !(contract_types[1] && !has_both_errors) && proposal_error_message_1;
-    const proposal_error_message = proposal_error_with_two_contract
-        ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
-        : proposal_error_with_one_contract || validation_errors?.amount?.[0];
+    // const has_both_errors = has_error_1 && has_error_2;
+    // const proposal_error_with_two_contract = contract_types[1] && has_both_errors;
+    // const proposal_error_with_one_contract = !(contract_types[1] && !has_both_errors) && proposal_error_message_1;
+    // const proposal_error_message = proposal_error_with_two_contract
+    //     ? proposal_error_message_1 || proposal_error_message_2 || validation_errors?.amount?.[0]
+    //     : proposal_error_with_one_contract || validation_errors?.amount?.[0];
     // Extracting the value of max payout from error text
-    const error_max_payout =
-        is_max_payout_exceeded && proposal_error_message
-            ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
-            : 0;
-    const first_contract_payout = payout_1 || error_payout_1;
-    const second_contract_payout = payout_2 || error_payout_2;
-
-    const { payout, stake } = (validation_params[contract_types[0]] || validation_params[contract_types[1]]) ?? {};
-    const { max: max_payout = error_max_payout } = payout ?? {};
+    // const error_max_payout =
+    //     is_max_payout_exceeded && proposal_error_message
+    //         ? Number(proposal_error_message.match(float_number_search_regex)?.[1])
+    //         : 0;
+    const { contract_payout: first_contract_payout, max_payout } = getPayoutInfo(proposal_info[contract_types[0]]);
+    const { contract_payout: second_contract_payout } = getPayoutInfo(proposal_info[contract_types[1]]);
+    const { stake } = (validation_params[contract_types[0]] || validation_params[contract_types[1]]) ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
 
     const [details, setDetails] = React.useState({
@@ -193,37 +212,49 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                 return;
             }
 
+            // TODO: add condition for checking if there is two errors
             // Setting proposal error
             const new_error = error?.message ?? '';
             const is_error_field_match =
                 ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
             setStakeError(is_error_field_match ? new_error : '');
 
-            // Recovery for min and max allowed values in case of error
-            if ((!details.min_stake || !details.max_stake) && error?.details) {
-                const { max_stake, min_stake } = error.details;
-
-                if (max_stake && min_stake)
-                    setDetails(prev => ({
-                        ...prev,
-                        max_stake,
-                        min_stake,
-                    }));
-            }
-
-            // TODO: set proposal whole response?
-            // Setting stake details from new proposal response
-            if (proposal) {
-                const { commission, limit_order, validation_params } = proposal as ExpandedProposal;
-                const { max, min } = validation_params?.stake ?? {};
-                const { order_amount } = limit_order?.stop_out ?? {};
-
+            if (should_send_multiple_proposals) {
+                const new_proposal = getProposalInfo(trade_store, response_1 as Parameters<typeof getProposalInfo>[1]);
+                const { contract_payout, max_payout } = getPayoutInfo(new_proposal);
                 const new_stake_details_values = {
-                    ...(is_multiplier && commission && order_amount ? { commission, stop_out: order_amount } : {}),
-                    ...(details.max_stake || details.min_stake ? {} : { max_stake: max, min_stake: min }),
+                    ...(contract_payout ? { first_contract_payout: contract_payout } : {}),
+                    ...(max_payout ? { max_payout } : {}),
                 };
 
                 setDetails(prev => ({ ...prev, ...new_stake_details_values }));
+            } else {
+                // Recovery for min and max allowed values in case of error
+                if ((!details.min_stake || !details.max_stake) && error?.details) {
+                    const { max_stake, min_stake } = error.details;
+
+                    if (max_stake && min_stake)
+                        setDetails(prev => ({
+                            ...prev,
+                            max_stake,
+                            min_stake,
+                        }));
+                }
+
+                // TODO: set proposal whole response?
+                // Setting stake details from new proposal response
+                if (proposal) {
+                    const { commission, limit_order, validation_params } = proposal as ExpandedProposal;
+                    const { max, min } = validation_params?.stake ?? {};
+                    const { order_amount } = limit_order?.stop_out ?? {};
+
+                    const new_stake_details_values = {
+                        ...(is_multiplier && commission && order_amount ? { commission, stop_out: order_amount } : {}),
+                        ...(details.max_stake || details.min_stake ? {} : { max_stake: max, min_stake: min }),
+                    };
+
+                    setDetails(prev => ({ ...prev, ...new_stake_details_values }));
+                }
             }
         };
 
@@ -235,47 +266,21 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         const onProposalResponse: TOnProposalResponse = response => {
             const { error, proposal } = response;
             // console.log('response_2', response);
-            // In case if the value is empty we are showing custom error text from FE (in onSave function)
-            // if (proposal_request_values.amount === '') {
-            //     setStakeError('');
-            //     return;
-            // }
 
-            // Setting proposal error
-            // const new_error = error?.message ?? '';
-            // const is_error_field_match =
-            //     ['amount', 'stake'].includes(error?.details?.field ?? '') || !error?.details?.field;
-            // setStakeError(is_error_field_match ? new_error : '');
+            const new_proposal = getProposalInfo(trade_store, response_2 as Parameters<typeof getProposalInfo>[1]);
+            const { contract_payout, max_payout } = getPayoutInfo(new_proposal);
+            // console.log('getPayoutInfo(new_proposal) 2', getPayoutInfo(new_proposal));
 
-            // Recovery for min and max allowed values in case of error
-            // if ((!details.min_stake || !details.max_stake) && error?.details) {
-            //     const { max_stake, min_stake } = error.details;
+            const new_stake_details_values = {
+                ...(contract_payout ? { second_contract_payout: contract_payout } : {}),
+                ...(max_payout ? { max_payout } : {}),
+            };
 
-            //     if (max_stake && min_stake)
-            //         setDetails(prev => ({
-            //             ...prev,
-            //             max_stake,
-            //             min_stake,
-            //         }));
-            // }
-
-            // TODO: set proposal whole response?
-            // Setting stake details from new proposal response
-            // if (proposal) {
-            //     const { commission, limit_order, validation_params } = proposal as ExpandedProposal;
-            //     const { max, min } = validation_params?.stake ?? {};
-            //     const { order_amount } = limit_order?.stop_out ?? {};
-
-            //     const new_stake_details_values = {
-            //         ...(is_multiplier && commission && order_amount ? { commission, stop_out: order_amount } : {}),
-            //         ...(details.max_stake || details.min_stake ? {} : { max_stake: max, min_stake: min }),
-            //     };
-
-            //     setDetails(prev => ({ ...prev, ...new_stake_details_values }));
-            // }
+            setDetails(prev => ({ ...prev, ...new_stake_details_values }));
         };
 
         if (response_2) onProposalResponse(response_2);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response_2]);
 
     const getInputMessage = () =>

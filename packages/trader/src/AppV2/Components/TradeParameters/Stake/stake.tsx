@@ -307,9 +307,9 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             has_stop_loss={has_stop_loss}
                             is_loading_proposal={is_loading_proposal}
                             is_multiplier={is_multiplier}
-                            is_max_payout_exceeded={is_max_payout_exceeded}
+                            // is_max_payout_exceeded={is_max_payout_exceeded}
                             should_show_payout_details={!is_accumulator && !is_multiplier && !is_turbos && !is_vanilla}
-                            stake_error={stake_error}
+                            // stake_error={stake_error}
                             // stop_out={stop_out}
                         />
                     </ActionSheet.Content>

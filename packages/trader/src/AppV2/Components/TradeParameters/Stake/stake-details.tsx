@@ -10,18 +10,21 @@ import { TTradeStore } from 'Types';
 type TStakeDetailsProps = Pick<TTradeStore, 'contract_type' | 'currency' | 'has_stop_loss' | 'is_multiplier'> & {
     contract_types: string[];
     details: {
+        commission?: string | number;
+        error_1?: string;
+        error_2?: string;
         first_contract_payout: number;
+        is_first_payout_exceed?: boolean;
+        is_second_payout_exceed?: boolean;
         max_payout: string | number;
         max_stake: string | number;
         min_stake: string | number;
         second_contract_payout: number;
-        commission?: string | number;
         stop_out?: number;
     };
     is_loading_proposal: boolean;
-    is_max_payout_exceeded: boolean;
+    is_empty?: boolean;
     should_show_payout_details: boolean;
-    stake_error: string | boolean;
 };
 
 const StakeDetails = ({
@@ -32,21 +35,22 @@ const StakeDetails = ({
     has_stop_loss,
     is_loading_proposal,
     is_multiplier,
-    is_max_payout_exceeded,
+    is_empty,
     should_show_payout_details,
-    stake_error,
 }: TStakeDetailsProps) => {
     const [displayed_values, setDisplayedValues] = React.useState({
-        max_payout: '',
+        is_first_payout_exceed: false,
+        is_second_payout_exceed: false,
         commission: '',
         first_contract_payout: '',
+        max_payout: '',
         second_contract_payout: '',
         stop_out: '',
     });
 
     React.useEffect(() => {
         const getDisplayedValue = (new_value?: number | string, current_value?: string) => {
-            return ((current_value === '-' && is_loading_proposal) || stake_error) && !is_max_payout_exceeded
+            return (current_value === '-' && is_loading_proposal) || !new_value || is_empty
                 ? '-'
                 : formatMoney(currency, Number(new_value), true);
         };
@@ -54,6 +58,8 @@ const StakeDetails = ({
         const {
             commission: commission_value,
             first_contract_payout,
+            is_first_payout_exceed,
+            is_second_payout_exceed,
             second_contract_payout,
             stop_out: stop_out_value,
             max_payout,
@@ -67,6 +73,8 @@ const StakeDetails = ({
         if (
             commission_value !== new_commission ||
             first_contract_payout !== new_payout_1 ||
+            displayed_values.is_first_payout_exceed !== is_first_payout_exceed ||
+            displayed_values.is_second_payout_exceed !== is_second_payout_exceed ||
             second_contract_payout !== new_payout_2 ||
             stop_out_value !== new_stop_out ||
             max_payout !== new_max_payout
@@ -74,12 +82,14 @@ const StakeDetails = ({
             setDisplayedValues({
                 commission: new_commission,
                 first_contract_payout: new_payout_1,
+                is_first_payout_exceed,
+                is_second_payout_exceed,
                 second_contract_payout: new_payout_2,
                 stop_out: new_stop_out,
                 max_payout: new_max_payout,
             });
         }
-    }, [currency, details, displayed_values, is_loading_proposal, is_max_payout_exceeded, stake_error]);
+    }, [currency, details, displayed_values, is_loading_proposal, is_empty]);
 
     const payout_title = <Localize i18n_default_text='Payout' />;
     const content = [
@@ -104,7 +114,7 @@ const StakeDetails = ({
             }),
             is_displayed: !!contract_types.length && should_show_payout_details,
             label: payout_title,
-            has_error: details.first_contract_payout > +details.max_payout && is_max_payout_exceeded,
+            has_error: details.is_first_payout_exceed,
             value: displayed_values.first_contract_payout,
         },
         {
@@ -113,7 +123,7 @@ const StakeDetails = ({
             }),
             is_displayed: contract_types.length > 1 && should_show_payout_details,
             label: payout_title,
-            has_error: details.second_contract_payout > +details.max_payout && is_max_payout_exceeded,
+            has_error: details.is_second_payout_exceed,
             value: displayed_values.second_contract_payout,
         },
     ];

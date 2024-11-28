@@ -2,6 +2,7 @@ import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject 
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
+import { config } from '../../../constants';
 
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
@@ -142,6 +143,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
         .getAllBlocks(true)
         .find(block => block.type === 'trade_definition_tradetype');
     const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST') || '';
+    const { TRADE_TYPE_CATEGORY_NAMES } = config;
 
     if (code) {
         switch (code) {
@@ -172,7 +174,7 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                     'You already have an open position for {{ trade_type }} contract type, retrying in {{ delay }}s',
                     {
                         delay: next_delay_in_seconds,
-                        trade_type: selected_trade_type,
+                        trade_type: TRADE_TYPE_CATEGORY_NAMES?.[selected_trade_type] ?? '',
                     }
                 );
                 break;

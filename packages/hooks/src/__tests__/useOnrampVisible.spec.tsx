@@ -31,7 +31,7 @@ describe('useOnrampVisible', () => {
         expect(result.current).toBe(false);
     });
 
-    test('returns false if currency is not  set', () => {
+    test('returns false if currency is not set', () => {
         const mock = mockStore({
             client: {
                 currency: undefined,

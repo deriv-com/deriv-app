@@ -58,6 +58,15 @@
             }
         }
     }
+
+    &__responsive-header {
+        border-bottom: none;
+    }
+
+    &__responsive-footer {
+        padding: 1.6rem;
+        border-top: solid 2px var(--general-section-2);
+    }
 }
 
 .dc-modal__container_wallets-ready-to-enable-eu-modal {

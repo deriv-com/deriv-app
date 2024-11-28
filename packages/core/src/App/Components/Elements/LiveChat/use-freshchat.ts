@@ -1,45 +1,42 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-
-const useFreshChat = (token: string | null) => {
-    const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
+const useFreshChat = (token: string | null, flag: boolean) => {
+    const freshchatScript = 'https://static.deriv.com/scripts/freshchat/v1.0.2.js';
+    const scriptStatus = useScript(flag ? freshchatScript : null);
     const [is_ready, setis_ready] = useState(false);
-    const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'enable_freshworks_live_chat',
-    });
 
     useEffect(() => {
-        const checkFcWidget = (intervalId: NodeJS.Timeout) => {
-            if (typeof window !== 'undefined') {
-                if (window.fcWidget?.isInitialized() == true && !is_ready) {
+        if (!flag || scriptStatus !== 'ready' || !window.FreshChat || !window.fcSettings) {
+            return;
+        }
+
+        let checkInterval: NodeJS.Timeout;
+
+        const initializeFreshChat = () => {
+            window.FreshChat.initialize({
+                hideButton: true,
+                token,
+            });
+
+            checkInterval = setInterval(() => {
+                if (window?.fcWidget?.isInitialized()) {
                     setis_ready(true);
-                    clearInterval(intervalId);
+                    clearInterval(checkInterval);
                 }
-            }
+            }, 500);
         };
 
-        const initFreshChat = async () => {
-            if (scriptStatus === 'ready' && window.FreshChat && window.fcSettings) {
-                window.FreshChat.initialize({
-                    token,
-                    hideButton: true,
-                });
+        initializeFreshChat();
 
-                const intervalId = setInterval(() => checkFcWidget(intervalId), 500);
-
-                return () => clearInterval(intervalId);
+        return () => {
+            if (checkInterval) {
+                clearInterval(checkInterval);
             }
         };
+    }, [flag, is_ready, scriptStatus, token]);
 
-        enable_freshworks_live_chat && isGBLoaded && initFreshChat();
-    }, [enable_freshworks_live_chat, isGBLoaded, is_ready, scriptStatus, token]);
-
-    return {
-        is_ready,
-        widget: window.fcWidget,
-    };
+    return { is_ready };
 };
 
 export default useFreshChat;

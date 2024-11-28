@@ -18,18 +18,6 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const token = active_account ? active_account.token : null;
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
-    const freshChat = useFreshChat(token);
-
-    // const intercom = useIntercom({
-    //     userData: {
-    //         id: '12345',
-    //         name: 'John Doe',
-    //         email: 'john.doe@example.com',
-    //         createdAt: Math.floor(Date.now() / 1000),
-    //     },
-    // });
-
-    const intercom = useIntercom({ token });
 
     const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
@@ -38,6 +26,9 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const [enable_intercom] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_intercom',
     });
+
+    const freshChat = useFreshChat(token, enable_freshworks_live_chat);
+    const intercom = useIntercom(token, enable_intercom);
 
     // eslint-disable-next-line no-nested-ternary
     const chat = enable_freshworks_live_chat ? freshChat : enable_intercom ? intercom : null;

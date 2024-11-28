@@ -1,59 +1,39 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
 
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-
-const useIntercom = ({ token, hideLauncher }: IntercomConfig) => {
+const useIntercom = (token: string | null, flag: boolean) => {
     const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
-    const [should_load_script, setShouldLoadScript] = useState(false);
-    const scriptStatus = useScript(should_load_script ? intercom_script : null);
+    const scriptStatus = useScript(flag ? intercom_script : null);
 
     const [is_ready, setIsReady] = useState(false);
-    const [is_script_ready, setIsScriptReady] = useState(false);
-    const [enable_intercom, isGBLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'enable_intercom',
-    });
 
     useEffect(() => {
-        if (should_load_script && scriptStatus === 'ready') {
-            setIsScriptReady(true);
-        }
-    }, [scriptStatus]);
+        if (!flag || scriptStatus !== 'ready' || !window?.DerivInterCom) return;
 
-    useEffect(() => {
-        const checkIntercom = (intervalId: NodeJS.Timeout) => {
-            if (typeof window !== 'undefined') {
-                if (window.Intercom && !is_ready) {
+        let intervalId: NodeJS.Timeout;
+
+        const initIntercom = () => {
+            window.DerivInterCom.initialize({
+                hideLauncher: true,
+                token,
+            });
+
+            intervalId = setInterval(() => {
+                if (window?.Intercom && !is_ready) {
                     setIsReady(true);
                     clearInterval(intervalId);
                 }
-            }
+            }, 500);
         };
 
-        const initIntercom = async () => {
-            window.DerivInterCom.initialize({
-                token,
-                hideLauncher,
-            });
+        initIntercom();
 
-            const intervalId = setInterval(() => checkIntercom(intervalId), 500);
-
-            return () => clearInterval(intervalId);
+        return () => {
+            if (intervalId) clearInterval(intervalId);
         };
+    }, [flag, is_ready, scriptStatus, token]);
 
-        if (enable_intercom && isGBLoaded) {
-            setShouldLoadScript(true);
-
-            if (is_script_ready) {
-                initIntercom();
-            }
-        }
-    }, [enable_intercom, isGBLoaded, is_script_ready]);
-
-    return {
-        is_ready,
-        widget: window?.Intercom,
-    };
+    return { is_ready };
 };
 
 export default useIntercom;

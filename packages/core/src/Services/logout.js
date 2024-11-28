@@ -1,6 +1,9 @@
 import { removeCookies } from '@deriv/shared';
-import SocketCache from '_common/base/socket_cache';
+import { Chat } from '@deriv/utils';
+
 import WS from './ws-methods';
+
+import SocketCache from '_common/base/socket_cache';
 
 export const requestLogout = () => WS.logout().then(doLogout);
 
@@ -8,7 +11,7 @@ function endChat() {
     window.LC_API?.close_chat?.();
     window.LiveChatWidget?.call('hide');
     window.fcWidget?.close();
-    window.fcWidget?.user.clear();
+    Chat.clear();
 }
 
 const doLogout = response => {

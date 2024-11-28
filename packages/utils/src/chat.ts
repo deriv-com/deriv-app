@@ -7,6 +7,15 @@ const Chat = {
     isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
     isIntercom: async () => getFeatureFlag('enable_intercom'),
 
+    getFlags: async () => {
+        try {
+            const [isFreshChat, isIntercom] = await Promise.all([Chat.isFreshChat(), Chat.isIntercom()]);
+            return { isFreshChat, isIntercom };
+        } catch (_error) {
+            return { isFreshChat: false, isIntercom: false };
+        }
+    },
+
     open: async () => {
         const isFreshChat = await Chat.isFreshChat();
         const isIntercom = await Chat.isIntercom();
@@ -20,9 +29,17 @@ const Chat = {
         }
     },
 
+    clear: async () => {
+        const { isFreshChat, isIntercom } = await Chat.getFlags();
+        if (isFreshChat) {
+            window.fcWidget?.user.clear();
+        } else if (isIntercom && window.Intercom) {
+            window.Intercom('shutdown');
+        }
+    },
+
     close: async () => {
-        const isFreshChat = await Chat.isFreshChat();
-        const isIntercom = await Chat.isIntercom();
+        const { isFreshChat, isIntercom } = await Chat.getFlags();
 
         if (isFreshChat) {
             window.fcWidget?.close();

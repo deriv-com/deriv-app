@@ -27,6 +27,7 @@ declare global {
             isInitialized: () => boolean;
             user: {
                 setLocale(locale: string): void;
+                clear: () => void;
             };
         };
         fcWidgetMessengerConfig: {

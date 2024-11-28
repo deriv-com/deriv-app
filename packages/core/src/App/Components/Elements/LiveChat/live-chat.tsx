@@ -5,8 +5,7 @@ import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
 
-import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
-
+import useFreshChat from './use-freshchat';
 import useIntercom from './use-intercom';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {

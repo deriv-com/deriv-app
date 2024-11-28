@@ -9,6 +9,7 @@ import type {
     useAuthentication,
     useAuthorize,
     useAvailableMT5Accounts,
+    useCFDCompareAccounts,
     useCreateMT5Account,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -72,6 +73,7 @@ export namespace THooks {
     >[number];
     export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
     export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
+    export type CompareCFDAccounts = NonNullable<ReturnType<typeof useCFDCompareAccounts>['data']>;
     export type TActiveLinkedToTradingAccount = ReturnType<typeof useActiveLinkedToTradingAccount>['data'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
@@ -121,6 +123,7 @@ export type TTranslations = ReturnType<typeof useTranslations>;
 
 export type TLanguageType = 'AR' | 'EN' | 'ES' | 'FR' | 'RU';
 
+export type TProductDetails = { max_leverage: string; min_spread: string };
 /* eslint-disable camelcase */
 /*
     TODO: Remove these types once API types for client_kyc_status is available for mt5_login_list and trading_platform_available_accounts from BE

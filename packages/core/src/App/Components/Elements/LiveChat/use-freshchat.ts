@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useScript } from 'usehooks-ts';
+
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 const useFreshChat = (token: string | null) => {
     const scriptStatus = useScript('https://static.deriv.com/scripts/freshchat.js');
-    const [isReady, setIsReady] = useState(false);
+    const [is_ready, setis_ready] = useState(false);
     const [enable_freshworks_live_chat, isGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_freshworks_live_chat',
     });
@@ -12,8 +13,8 @@ const useFreshChat = (token: string | null) => {
     useEffect(() => {
         const checkFcWidget = (intervalId: NodeJS.Timeout) => {
             if (typeof window !== 'undefined') {
-                if (window.fcWidget?.isInitialized() == true && !isReady) {
-                    setIsReady(true);
+                if (window.fcWidget?.isInitialized() == true && !is_ready) {
+                    setis_ready(true);
                     clearInterval(intervalId);
                 }
             }
@@ -33,10 +34,10 @@ const useFreshChat = (token: string | null) => {
         };
 
         enable_freshworks_live_chat && isGBLoaded && initFreshChat();
-    }, [enable_freshworks_live_chat, isGBLoaded, isReady, scriptStatus, token]);
+    }, [enable_freshworks_live_chat, isGBLoaded, is_ready, scriptStatus, token]);
 
     return {
-        isReady,
+        is_ready,
         widget: window.fcWidget,
     };
 };

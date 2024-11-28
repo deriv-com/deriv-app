@@ -33,17 +33,14 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={<Localize i18n_default_text='Trade types' key='trade_types_label' />}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
             >
-                {!!changedOptions.length && (
-                    <Text>
-                        {/* Chip component throws a missing unique "key" prop error in quill-ui on test links, hence added a key */}
-                        <React.Fragment key='trade_types_count'>({changedOptions.length})</React.Fragment>
-                    </Text>
-                )}
+                <Text size='sm'>
+                    <Localize i18n_default_text='Trade types' />
+                </Text>
+                {!!changedOptions.length && <Text>({changedOptions.length})</Text>}
             </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left' expandable={false}>
                 <ActionSheet.Portal shouldCloseOnDrag>

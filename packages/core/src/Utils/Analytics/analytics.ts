@@ -162,5 +162,29 @@ const cacheTrackEvents = {
         });
         return cacheTrackEvents;
     },
+    trackConsoleErrors: (callback?: (errorMessage: string) => void): void => {
+        /* eslint no-console: ["error", { allow: ["warn", "error"] }] */
+        const originalConsoleError = console.error;
+
+        console.error = function (...args: unknown[]): void {
+            // Log the error to the console as usual
+            originalConsoleError.apply(console, args);
+
+            // Create a clean error message without __trackjs_state__
+            const errorMessage = args
+                .map(arg =>
+                    arg && typeof arg === 'object' && 'message' in arg
+                        ? (arg as Error).message
+                        : typeof arg === 'object'
+                        ? JSON.stringify(arg, (key, value) => (key.startsWith('__trackjs') ? undefined : value))
+                        : String(arg)
+                )
+                .join(' ');
+
+            if (typeof callback === 'function') {
+                callback(errorMessage);
+            }
+        };
+    },
 };
 export default cacheTrackEvents;

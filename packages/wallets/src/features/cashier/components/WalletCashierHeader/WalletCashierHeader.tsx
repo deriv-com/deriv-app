@@ -74,7 +74,7 @@ const getVirtualAccountTabs = () => {
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
@@ -92,7 +92,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     return (
         <WalletGradientBackground
             currency={activeWallet?.currency}
-            device={isMobile ? 'mobile' : 'desktop'}
+            device={isDesktop ? 'desktop' : 'mobile'}
             isDemo={isDemo}
             theme='light'
             type='header'

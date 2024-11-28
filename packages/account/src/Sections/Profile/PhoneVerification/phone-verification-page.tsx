@@ -41,13 +41,16 @@ const PhoneVerificationPage = observer(() => {
         is_authorize,
         is_virtual,
         setVerificationCode,
+        phone_settings,
     } = client;
+    const no_carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length === 0;
 
     useEffect(() => {
         if (
             (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
             is_virtual ||
-            is_phone_number_verified
+            is_phone_number_verified ||
+            no_carriers_supported
         ) {
             setIsForcedToExitPnv(true);
             history.push(routes.personal_details);

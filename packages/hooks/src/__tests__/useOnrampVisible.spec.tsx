@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
+
 import useOnrampVisible from '../useOnrampVisible';
 
 describe('useOnrampVisible', () => {
@@ -8,6 +10,31 @@ describe('useOnrampVisible', () => {
         const mock = mockStore({
             client: {
                 currency: 'USD',
+                is_virtual: false,
+                website_status: {
+                    currencies_config: {
+                        //@ts-expect-error we only need partial values
+                        USD: { platform: { cashier: ['doughflow'], ramp: [] } },
+                        //@ts-expect-error we only need partial values
+                        BTC: { platform: { cashier: ['crypto'], ramp: ['ramp'] } },
+                    },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useOnrampVisible(), { wrapper });
+
+        expect(result.current).toBe(false);
+    });
+
+    test('returns false if currency is not  set', () => {
+        const mock = mockStore({
+            client: {
+                currency: undefined,
                 is_virtual: false,
                 website_status: {
                     currencies_config: {

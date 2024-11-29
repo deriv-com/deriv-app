@@ -173,7 +173,7 @@ const getHeaderColor = (shortcode: string) => {
 const getDefaultJurisdictionDetails = (data: TModifiedTradingPlatformAvailableAccount) => {
     const leverage = `${data?.product_details?.max_leverage}`;
     const spread = `${data?.product_details?.min_spread} pips`;
-    // console.log('==>', leverage, spread);
+
     return {
         leverage,
         leverage_description: localize('Maximum leverage'),

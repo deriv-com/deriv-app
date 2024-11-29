@@ -22,8 +22,14 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
     const { localize } = useTranslations();
 
-    const { USDExchangeRates, activeWallet, activeWalletExchangeRates, refetchAccountLimits, refetchExchangeRates } =
-        useTransfer();
+    const {
+        USDExchangeRates,
+        activeWallet,
+        activeWalletExchangeRates,
+        hasPlatformStatus,
+        refetchAccountLimits,
+        refetchExchangeRates,
+    } = useTransfer();
 
     const refetchExchangeRatesAndLimits = useCallback(() => {
         refetchAccountLimits();
@@ -35,7 +41,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const hasFunds = Number(fromAccount?.balance) > 0;
     const isFromAmountField = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
-    const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
+    const isAmountInputDisabled =
+        !hasFunds || (fieldName === 'toAmount' && !toAccount) || [fromAccount, toAccount].some(hasPlatformStatus);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
     const prevTimerVisible = useRef(isTimerVisible);

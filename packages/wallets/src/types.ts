@@ -8,6 +8,7 @@ import type {
     useAuthentication,
     useAuthorize,
     useAvailableMT5Accounts,
+    useCFDCompareAccounts,
     useCreateMT5Account,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -70,6 +71,7 @@ export namespace THooks {
     >[number];
     export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
     export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
+    export type CompareCFDAccounts = NonNullable<ReturnType<typeof useCFDCompareAccounts>['data']>;
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {
@@ -116,4 +118,6 @@ export type TProductForMarketDetails =
 
 export type TTranslations = ReturnType<typeof useTranslations>;
 
-export type TLanguageType = 'AR' | 'EN' | 'FR' | 'RU';
+export type TLanguageType = 'AR' | 'EN' | 'ES' | 'FR' | 'RU';
+
+export type TProductDetails = { max_leverage: string; min_spread: string };

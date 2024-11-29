@@ -21,6 +21,7 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -34,11 +35,15 @@ const Trade = observer(() => {
         contract_type,
         has_cancellation,
         is_accumulator,
+        is_multiplier,
         is_market_closed,
         onChange,
         onMount,
         onUnmount,
         symbol,
+        proposal_info,
+        trade_types: trade_types_store,
+        trade_type_tab,
     } = useTraderStore();
     const { trade_types } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -46,6 +51,18 @@ const Trade = observer(() => {
         trade_page: false,
         positions_page: false,
     });
+
+    // For handling edge cases of snackbar:
+    const contract_types = getDisplayedContractTypes(trade_types_store, contract_type, trade_type_tab);
+    const errors_amount = contract_types.reduce((acc, item) => {
+        if (proposal_info?.[item]?.has_error) {
+            return acc + 1;
+        }
+        return acc;
+    }, 0);
+    // Showing snackbar for all cases, except when it is Rise/Fall or Digits and only one subtype has error
+    const should_show_snackbar =
+        contract_types.length === 1 || is_multiplier || errors_amount === contract_types.length;
 
     const symbols = React.useMemo(
         () =>
@@ -133,7 +150,7 @@ const Trade = observer(() => {
             <ClosedMarketMessage />
             <TradeErrorSnackbar
                 error_fields={['stop_loss', 'take_profit', 'date_start', 'stake', 'amount']}
-                should_show_snackbar
+                should_show_snackbar={should_show_snackbar}
             />
         </BottomNav>
     );

@@ -7,6 +7,7 @@ import { Localize } from '@deriv/translations';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 
 import useTradeError from 'AppV2/Hooks/useTradeError';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 import { TTradeParametersProps } from '../trade-parameters';
@@ -14,10 +15,31 @@ import { TTradeParametersProps } from '../trade-parameters';
 import StakeInput from './stake-input';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
-    const { amount, currency, has_open_accu_contract, is_market_closed } = useTraderStore();
+    const {
+        amount,
+        currency,
+        contract_type,
+        has_open_accu_contract,
+        is_market_closed,
+        is_multiplier,
+        trade_types,
+        trade_type_tab,
+        proposal_info,
+    } = useTraderStore();
     const { is_error_matching_field: has_error } = useTradeError({ error_fields: ['stake', 'amount'] });
 
     const [is_open, setIsOpen] = React.useState(false);
+
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const errors_amount = contract_types.reduce((acc, item) => {
+        if (proposal_info?.[item]?.has_error) {
+            return acc + 1;
+        }
+        return acc;
+    }, 0);
+    // Showing snackbar for all cases, except when it is Rise/Fall or Digits and only one subtype has error
+    const should_show_snackbar =
+        contract_types.length === 1 || is_multiplier || errors_amount === contract_types.length;
 
     const onClose = React.useCallback(() => setIsOpen(false), []);
 
@@ -32,7 +54,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 onClick={() => setIsOpen(true)}
                 value={`${amount} ${getCurrencyDisplayCode(currency)}`}
                 className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                status={has_error ? 'error' : 'neutral'}
+                status={has_error && should_show_snackbar ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}

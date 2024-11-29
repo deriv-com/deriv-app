@@ -43,7 +43,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         stop_out,
         trade_type_tab,
         trade_types,
-        // validation_errors,
         validation_params,
     } = trade_store;
 
@@ -107,12 +106,11 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         stop_out,
     });
 
-    // TODO: Rise/Fall equal??? There is a logic in onChange func for it
-
     // Parallel proposal without subscription
     // For Rise/Fall and all Digits we should do 2 proposal requests
     const should_send_multiple_proposals = contract_types.length > 1 && !is_multiplier;
     const has_both_errors = !!details.error_1 && !!details.error_2;
+    // Need for cases with Rise/Fall and Digits, when only one response contains error and we should allow to save the value
     const should_show_stake_error =
         !should_send_multiple_proposals || (should_send_multiple_proposals && has_both_errors);
 
@@ -159,7 +157,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
             const { error, proposal } = response;
-            // console.log('response_1', response);
+
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (proposal_request_values.amount === '') {
                 setStakeError('');
@@ -185,7 +183,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                 return;
             }
 
-            // TODO: add condition for checking if there is two errors
             // Setting proposal error
             const new_error = error?.message ?? '';
             const is_error_field_match =
@@ -239,9 +236,16 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     React.useEffect(() => {
         const onProposalResponse: TOnProposalResponse = response => {
-            // console.log('response_2', response);
+            const { error: proposal_error } = response;
+
             // In case if the value is empty we are showing custom error text from FE (in onSave function)
             if (proposal_request_values.amount === '') return;
+
+            // Setting proposal error
+            const new_error = proposal_error?.message ?? '';
+            const is_error_field_match =
+                ['amount', 'stake'].includes(proposal_error?.details?.field ?? '') || !proposal_error?.details?.field;
+            setStakeError(is_error_field_match ? new_error : '');
 
             const new_proposal = getProposalInfo(trade_store, response as Parameters<typeof getProposalInfo>[1]);
             const { contract_payout, max_payout, error } = getPayoutInfo(new_proposal);

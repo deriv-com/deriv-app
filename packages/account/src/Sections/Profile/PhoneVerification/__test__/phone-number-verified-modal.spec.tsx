@@ -5,6 +5,7 @@ import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { routes } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -19,6 +20,11 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: jest.fn(),
+}));
+
 describe('PhoneNumberVerifiedModal', () => {
     let modal_root_el: HTMLElement;
     const mock_store = mockStore({});
@@ -27,6 +33,7 @@ describe('PhoneNumberVerifiedModal', () => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue(false);
     });
 
     afterAll(() => {

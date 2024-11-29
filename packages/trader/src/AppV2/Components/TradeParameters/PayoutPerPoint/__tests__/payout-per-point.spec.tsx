@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
@@ -24,12 +24,25 @@ jest.mock('@deriv-com/quill-ui', () => ({
     )),
 }));
 
-jest.mock('lodash.debounce', () =>
-    jest.fn(fn => {
-        fn.cancel = () => null;
-        return fn;
-    })
-);
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        send: jest.fn(),
+        authorized: {
+            send: jest.fn(),
+        },
+    },
+}));
+jest.mock('AppV2/Hooks/useDtraderQuery', () => ({
+    ...jest.requireActual('AppV2/Hooks/useDtraderQuery'),
+    useDtraderQuery: jest.fn(() => ({
+        data: {
+            proposal: { barrier_spot_distance: '+5.37' },
+            echo_req: { contract_type: 'TURBOSSHORT' },
+            error: {},
+        },
+    })),
+}));
 
 describe('PayoutPerPoint', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -44,6 +57,9 @@ describe('PayoutPerPoint', () => {
                         payout_choices: ['6', '5', '4', '3', '2', '1'],
                         currency: 'USD',
                         payout_per_point: '3',
+                        trade_types: {
+                            TURBOSSHORT: 'Turbos Short',
+                        },
                     },
                 },
             }))
@@ -81,12 +97,12 @@ describe('PayoutPerPoint', () => {
         expect(screen.getByRole('textbox')).toBeDisabled();
     });
 
-    it('opens ActionSheet with WheelPicker component, barrier information, "Save" button and text content with definition if user clicks on trade param', () => {
+    it('opens ActionSheet with WheelPicker component, barrier information, "Save" button and text content with definition if user clicks on trade param', async () => {
         mockPayoutPerPoint();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByText(payout_per_point_label));
+        await userEvent.click(screen.getByText(payout_per_point_label));
 
         expect(screen.getByTestId('dt-actionsheet-overlay')).toBeInTheDocument();
         expect(screen.getByText('WheelPicker')).toBeInTheDocument();
@@ -100,39 +116,35 @@ describe('PayoutPerPoint', () => {
         ).toBeInTheDocument();
     });
 
-    it('does not render barrier information if barrier is not defined', () => {
+    it('does not render barrier information if barrier is not defined', async () => {
         default_mock_store.modules.trade.barrier_1 = undefined;
         mockPayoutPerPoint();
 
-        userEvent.click(screen.getByText(payout_per_point_label));
+        await userEvent.click(screen.getByText(payout_per_point_label));
 
         expect(screen.getByText('Barrier')).toBeInTheDocument();
         expect(screen.queryByText('+1.80')).not.toBeInTheDocument();
     });
 
-    it('applies specific className if innerHeight is <= 640px', () => {
+    it('applies specific className if innerHeight is <= 640px', async () => {
         const original_height = window.innerHeight;
         window.innerHeight = 640;
         mockPayoutPerPoint();
 
-        userEvent.click(screen.getByText(payout_per_point_label));
+        await userEvent.click(screen.getByText(payout_per_point_label));
 
         expect(screen.getByTestId('dt_carousel')).toHaveClass('payout-per-point__carousel--small');
         window.innerHeight = original_height;
     });
 
-    it('calls setPayoutPerPoint function if user changes selected value', async () => {
-        jest.useFakeTimers();
+    it('calls setPayoutPerPoint function if user saved new selected value', async () => {
         mockPayoutPerPoint();
 
         const new_selected_value = default_mock_store.modules.trade.payout_choices[1];
-        userEvent.click(screen.getByText(payout_per_point_label));
-        userEvent.click(screen.getByText(new_selected_value));
-        userEvent.click(screen.getByText('Save'));
-
-        await waitFor(() => jest.advanceTimersByTime(200));
+        await userEvent.click(screen.getByText(payout_per_point_label));
+        await userEvent.click(screen.getByText(new_selected_value));
+        await userEvent.click(screen.getByText('Save'));
 
         expect(default_mock_store.modules.trade.setPayoutPerPoint).toBeCalled();
-        jest.useRealTimers();
     });
 });

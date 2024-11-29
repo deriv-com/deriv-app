@@ -101,7 +101,9 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             history.push(routes.traders_hub);
         } else {
             if (window.location.pathname.startsWith(routes.phone_verification)) {
-                await setIsForcedToExitPnv(true);
+                setIsForcedToExitPnv(true);
+                // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+                await new Promise(resolve => setTimeout(resolve, 0));
             }
             history.push(routes.traders_hub);
             await logoutClient();

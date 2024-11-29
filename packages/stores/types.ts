@@ -112,8 +112,8 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 // TODO: Remove this type once the API types are updated
 
 type TClientKyCStatus = {
-    poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
-    poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    poi_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
+    poa_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
     valid_tin?: 0 | 1;
     required_tin?: 0 | 1;
 };
@@ -565,6 +565,24 @@ export type TClientStore = {
     };
     website_status: WebsiteStatus;
     email: string;
+    phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    };
+    setPhoneSettings: (phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    }) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     updateMT5AccountDetails: () => Promise<void>;
@@ -664,6 +682,8 @@ export type TClientStore = {
     setIsPasskeySupported: (value: boolean) => void;
     is_phone_number_verification_enabled: boolean;
     setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
+    is_country_code_dropdown_enabled: boolean;
+    setIsCountryCodeDropdownEnabled: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
@@ -687,6 +707,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    should_show_trustpilot_notification: boolean;
 };
 
 type TCommonStoreError = {
@@ -713,6 +734,7 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_from_tradershub_os: boolean;
     is_from_outside_cashier: boolean;
     is_network_online: boolean;
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
@@ -805,7 +827,7 @@ type TUiStore = {
                       position?: string;
                       Component?: React.FunctionComponent;
                       has_right_separator?: boolean;
-                  }
+                  },
               ]
             | []
     ) => void;

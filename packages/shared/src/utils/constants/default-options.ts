@@ -12,7 +12,6 @@ export const WALLETS_UNSUPPORTED_LANGUAGES = [
     ...UNSUPPORTED_LANGUAGES,
     'BN',
     'DE',
-    'ES',
     'ID',
     'IT',
     'SW',

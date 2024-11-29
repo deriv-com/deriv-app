@@ -103,6 +103,29 @@
                     cursor: pointer;
                 }
             }
+
+            .quill-phone-input__container {
+                @include rtl {
+                    direction: ltr;
+                }
+
+                .quill-dropdown-item {
+                    @include rtl {
+                        text-align: right;
+                    }
+                }
+
+                .phone-code-search {
+                    @include rtl {
+                        direction: rtl;
+                        .quill-input-no-label__wrapper {
+                            & > input {
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         &--buttons_container {
@@ -110,6 +133,7 @@
             display: flex;
             gap: 1.6rem;
             margin-top: 0.8rem;
+            justify-content: center;
 
             @include tablet-screen {
                 margin-bottom: 29rem;
@@ -121,6 +145,19 @@
 
             @include mobile {
                 flex-direction: column-reverse;
+            }
+
+            &--with-1-carrier {
+                @include desktop {
+                    .quill-button {
+                        width: 27.6rem;
+                    }
+                }
+                @include tablet-screen {
+                    .quill-button {
+                        width: 27.6rem;
+                    }
+                }
             }
         }
 
@@ -179,6 +216,25 @@
 
             .dc-input {
                 width: 100%;
+            }
+        }
+    }
+}
+
+.action-sheet--content {
+    .quill-dropdown-item {
+        @include rtl {
+            text-align: right;
+        }
+    }
+
+    .phone-code-search {
+        @include rtl {
+            direction: rtl;
+            .quill-input-no-label__wrapper {
+                & > input {
+                    text-align: right;
+                }
             }
         }
     }

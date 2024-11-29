@@ -206,6 +206,18 @@ const mock = (): TStores & { is_mock: boolean } => {
                 document_status: '',
                 identity_status: '',
             },
+            phone_settings: {
+                carriers: [],
+                countries: [
+                    {
+                        calling_country_code: '',
+                        carriers: [],
+                        country_code: '',
+                        display_name: '',
+                    },
+                ],
+            },
+            setPhoneSettings: jest.fn(),
             mt5_login_list: [],
             logout: jest.fn(),
             should_allow_authentication: false,

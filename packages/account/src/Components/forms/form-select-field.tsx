@@ -7,6 +7,7 @@ import { useDevice } from '@deriv-com/ui';
 type TFormSelectField = TGetField & {
     onItemSelection?: (item: TListItem) => void;
     list_height?: string;
+    is_country_code_dropdown?: boolean;
 };
 
 type TSetFieldValue = (
@@ -24,6 +25,7 @@ const FormSelectField: FC<TFormSelectField> = ({
     onItemSelection,
     placeholder,
     list_height,
+    is_country_code_dropdown = false,
 }) => {
     const { isDesktop } = useDevice();
     const onSelect =
@@ -47,6 +49,7 @@ const FormSelectField: FC<TFormSelectField> = ({
                             disabled={disabled}
                             error={touched ? error : undefined}
                             use_text
+                            is_country_code_dropdown={is_country_code_dropdown}
                             data-testid={`dt_${field.name}`}
                         />
                     ) : (
@@ -59,7 +62,7 @@ const FormSelectField: FC<TFormSelectField> = ({
                             placeholder={placeholder}
                             required={required}
                             data-lpignore='true'
-                            autoComplete='off' // prevent chrome autocomplete
+                            autoComplete='new-password' // 'off' sometimes doesn't work, have to use new-password to prevent chrome autocomplete
                             error={touched ? error : undefined}
                             // @ts-expect-error This needs to fixed in AutoComplete component
                             onItemSelection={onItemSelection ?? onSelect(field.name, setFieldValue)}

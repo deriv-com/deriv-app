@@ -23,9 +23,10 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common } = useStore();
+    const { client, common, ui } = useStore();
     const { logout } = client;
     const { is_from_derivgo } = common;
+    const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
@@ -54,6 +55,11 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = async () => {
+        if (window.location.pathname.startsWith(shared_routes.phone_verification)) {
+            setIsForcedToExitPnv(true);
+            // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
         history.push(shared_routes.traders_hub);
         await logout();
     };

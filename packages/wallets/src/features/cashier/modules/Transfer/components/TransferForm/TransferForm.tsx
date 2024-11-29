@@ -2,9 +2,8 @@ import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
 import { Localize } from '@deriv-com/translations';
 import { Button, Loader, useDevice } from '@deriv-com/ui';
-import { MT5_ACCOUNT_STATUS, TRADING_PLATFORM_STATUS } from '../../../../../cfd/constants';
 import { useTransfer } from '../../provider';
-import type { TAccount, TInitialTransferFormValues } from '../../types';
+import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormAmountInput } from '../TransferFormAmountInput';
 import { TransferFormDropdown } from '../TransferFormDropdown';
 import { TransferMessages } from '../TransferMessages';
@@ -12,7 +11,7 @@ import './TransferForm.scss';
 
 const TransferForm = () => {
     const { isDesktop } = useDevice();
-    const { activeWallet, isLoading, requestTransferBetweenAccounts } = useTransfer();
+    const { activeWallet, hasPlatformStatus, isLoading, requestTransferBetweenAccounts } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
     const initialValues: TInitialTransferFormValues = {
@@ -29,54 +28,48 @@ const TransferForm = () => {
         [requestTransferBetweenAccounts]
     );
 
-    const isAccountUnavailable = (account: TAccount) =>
-        account?.status === TRADING_PLATFORM_STATUS.UNAVAILABLE ||
-        account?.status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
-
-    const hasPlatformStatus = (values: TInitialTransferFormValues) =>
-        isAccountUnavailable(values.fromAccount) || isAccountUnavailable(values.toAccount);
     if (isLoading) return <Loader />;
-
     return (
         <div className='wallets-transfer'>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                {({ handleSubmit, values }) => (
-                    <form className='wallets-transfer__form' onSubmit={handleSubmit}>
-                        <div className='wallets-transfer__fields'>
-                            <div className='wallets-transfer__fields-section'>
-                                <TransferFormAmountInput fieldName='fromAmount' />
-                                <TransferFormDropdown
-                                    fieldName='fromAccount'
-                                    mobileAccountsListRef={mobileAccountsListRef}
-                                />
+                {({ handleSubmit, values }) => {
+                    const { fromAccount, fromAmount, isError, toAccount, toAmount } = values;
+                    const isTransferBtnDisabled =
+                        !fromAmount || !toAmount || isError || [fromAccount, toAccount].some(hasPlatformStatus);
+
+                    return (
+                        <form className='wallets-transfer__form' onSubmit={handleSubmit}>
+                            <div className='wallets-transfer__fields'>
+                                <div className='wallets-transfer__fields-section'>
+                                    <TransferFormAmountInput fieldName='fromAmount' />
+                                    <TransferFormDropdown
+                                        fieldName='fromAccount'
+                                        mobileAccountsListRef={mobileAccountsListRef}
+                                    />
+                                </div>
+                                <TransferMessages />
+                                <div className='wallets-transfer__fields-section'>
+                                    <TransferFormAmountInput fieldName='toAmount' />
+                                    <TransferFormDropdown
+                                        fieldName='toAccount'
+                                        mobileAccountsListRef={mobileAccountsListRef}
+                                    />
+                                </div>
                             </div>
-                            <TransferMessages />
-                            <div className='wallets-transfer__fields-section'>
-                                <TransferFormAmountInput fieldName='toAmount' />
-                                <TransferFormDropdown
-                                    fieldName='toAccount'
-                                    mobileAccountsListRef={mobileAccountsListRef}
-                                />
+                            <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
+                                <Button
+                                    borderWidth='sm'
+                                    disabled={isTransferBtnDisabled}
+                                    size={isDesktop ? 'lg' : 'md'}
+                                    textSize={isDesktop ? 'md' : 'sm'}
+                                    type='submit'
+                                >
+                                    <Localize i18n_default_text='Transfer' />
+                                </Button>
                             </div>
-                        </div>
-                        <div className='wallets-transfer__submit-button' data-testid='dt_transfer_form_submit_btn'>
-                            <Button
-                                borderWidth='sm'
-                                disabled={
-                                    !values.fromAmount ||
-                                    !values.toAmount ||
-                                    values.isError ||
-                                    hasPlatformStatus(values)
-                                }
-                                size={isDesktop ? 'lg' : 'md'}
-                                textSize={isDesktop ? 'md' : 'sm'}
-                                type='submit'
-                            >
-                                <Localize i18n_default_text='Transfer' />
-                            </Button>
-                        </div>
-                    </form>
-                )}
+                        </form>
+                    );
+                }}
             </Formik>
             {/* Portal for accounts list in mobile view */}
             <div className='wallets-transfer__mobile-accounts-list' ref={mobileAccountsListRef} />

@@ -83,7 +83,7 @@ export const getMarketTypeDetails = (
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const);
+    }) as const;
 
 export const PlatformDetails = {
     ctrader: {
@@ -158,7 +158,7 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },
-    } as const);
+    }) as const;
 
 export const PlatformToLabelIconMapper = {
     ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
@@ -176,7 +176,7 @@ export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTra
         mt5: localize(
             'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.'
         ),
-    } as const);
+    }) as const;
 
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',
@@ -254,3 +254,10 @@ export const TRADING_PLATFORM_STATUS = {
     MAINTENANCE: 'maintenance',
     UNAVAILABLE: 'unavailable',
 } as const;
+
+export const DISABLED_PLATFORM_STATUSES = [
+    MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
+    MT5_ACCOUNT_STATUS.UNAVAILABLE,
+    TRADING_PLATFORM_STATUS.MAINTENANCE,
+    TRADING_PLATFORM_STATUS.UNAVAILABLE,
+] as const;

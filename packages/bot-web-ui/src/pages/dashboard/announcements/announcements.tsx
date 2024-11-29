@@ -29,6 +29,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
     const {
         load_modal: { toggleLoadModal },
         dashboard: { showVideoDialog },
+        quick_strategy: { setFormVisibility },
     } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
@@ -43,18 +44,20 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
         localStorage?.setItem('bot-announcements', JSON.stringify(updated_local_storage_data));
     };
 
+    const updateLocalStorage = (announce_id: string) => {
+        let data: Record<string, boolean> | null = null;
+        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+        storeDataInLocalStorage({ ...data, [announce_id]: false });
+        const temp_notifications = updateNotifications();
+        setReadAnnouncementsMap(temp_notifications);
+    };
+
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
-        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.main_title });
-
-        let data: Record<string, boolean> | null = null;
-        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
-
-        storeDataInLocalStorage({ ...data, [announce_id]: false });
-        const temp_notifications = updateNotifications();
-        setReadAnnouncementsMap(temp_notifications);
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.event_name });
+        updateLocalStorage(announce_id);
     };
 
     const handleRedirect = (url: string) => () => {
@@ -73,6 +76,7 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
             if (data && Object.hasOwn(data, item.id)) {
                 is_not_read = data[item.id];
             }
+
             tmp_notifications.push({
                 key: item.id,
                 icon: <item.icon announce={is_not_read} />,
@@ -109,8 +113,8 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnCancel = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.main_title,
-            announcement_action: selected_announcement?.announcement.cancel_button_text,
+            announcement_name: selected_announcement?.announcement.event_name,
+            announcement_action: selected_announcement?.announcement?.event_action?.cancel_button_text,
         });
         if (selected_announcement?.switch_tab_on_cancel) {
             handleTabChange(selected_announcement.switch_tab_on_cancel);
@@ -124,13 +128,16 @@ const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnno
 
     const handleOnConfirm = () => {
         rudderStackSendAnnouncementActionEvent({
-            announcement_name: selected_announcement?.announcement.main_title,
-            announcement_action: selected_announcement?.announcement.confirm_button_text,
+            announcement_name: selected_announcement?.announcement.event_name,
+            announcement_action: selected_announcement?.announcement?.event_action?.confirm_button_text,
         });
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
         }
-        if (selected_announcement?.should_toggle_modal) {
+        if (selected_announcement?.should_toggle_qs_modal) {
+            setFormVisibility(true);
+        }
+        if (selected_announcement?.should_toggle_load_modal) {
             toggleLoadModal();
         }
         selected_announcement?.onConfirm?.();

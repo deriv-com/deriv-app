@@ -21,7 +21,7 @@ describe('MT5PasswordModalFooter', () => {
                 onSecondaryClick={jest.fn()}
             />
         );
-        expect(screen.getByText('Forgot password?')).toBeInTheDocument();
+        expect(screen.getByText('Forgot password')).toBeInTheDocument();
         expect(screen.getByText('Add account')).toBeInTheDocument();
     });
 
@@ -37,7 +37,7 @@ describe('MT5PasswordModalFooter', () => {
                 onSecondaryClick={mockSecondaryClick}
             />
         );
-        await userEvent.click(screen.getByText('Forgot password?'));
+        await userEvent.click(screen.getByText('Forgot password'));
         expect(mockSecondaryClick).toHaveBeenCalled();
     });
 

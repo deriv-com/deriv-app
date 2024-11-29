@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    phone_settings = {};
     prev_real_account_loginid = '';
     prev_account_type = 'demo';
     external_url_params = {};
@@ -237,6 +238,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
@@ -322,6 +324,7 @@ export default class ClientStore extends BaseStore {
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
             setCFDDisabledSignupTypes: action.bound,
+            setPhoneSettings: action.bound,
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
@@ -436,6 +439,7 @@ export default class ClientStore extends BaseStore {
             is_account_to_be_closed_by_residence: computed,
             setClientKYCStatus: action.bound,
             client_kyc_status: observable,
+            should_show_trustpilot_notification: computed,
         });
 
         reaction(
@@ -448,6 +452,7 @@ export default class ClientStore extends BaseStore {
                 this.residence,
                 this.account_settings,
                 this.preferred_language,
+                this.phone_settings,
             ],
             () => {
                 this.setCookieAccount();
@@ -896,6 +901,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setPhoneSettings(phone_settings) {
+        this.phone_settings = phone_settings;
     }
 
     setTradersHubTracking(is_tradershub_tracking = false) {
@@ -1639,6 +1648,9 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
+            if (Object.keys(this.phone_settings).length === 0) {
+                this.setPhoneSettings((await WS.getPhoneSettings()).phone_settings);
+            }
             if (Object.keys(this.account_settings).length === 0) {
                 this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
             }
@@ -2216,18 +2228,6 @@ export default class ClientStore extends BaseStore {
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
             const authorize_response = await BinarySocket.authorize(is_client_logging_in);
-
-            if (is_social_signup_provider) {
-                const { get_account_status } = await WS.authorized.getAccountStatus();
-
-                Analytics.trackEvent('ce_virtual_signup_form', {
-                    action: 'signup_continued',
-                    signup_provider: get_account_status?.social_identity_provider,
-                    form_name: this.root_store?.ui?.is_mobile
-                        ? 'virtual_signup_web_mobile_default'
-                        : 'virtual_signup_web_desktop_default',
-                });
-            }
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
@@ -2949,5 +2949,9 @@ export default class ClientStore extends BaseStore {
 
     setClientKYCStatus(client_kyc_status) {
         this.client_kyc_status = client_kyc_status;
+    }
+
+    get should_show_trustpilot_notification() {
+        return this.account_status?.status?.includes('customer_review_eligible');
     }
 }

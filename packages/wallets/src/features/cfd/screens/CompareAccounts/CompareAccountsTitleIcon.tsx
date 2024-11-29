@@ -1,7 +1,7 @@
 import React from 'react';
 import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
-import { Divider, Text, Tooltip } from '@deriv-com/ui';
+import { Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { ACCOUNT_ICONS, MT5_PRODUCT } from './constants';
@@ -74,15 +74,15 @@ const getAccountCardTitle = (values: TGetAccountCardTitleValues) => {
     }
 
     if (platform === CFD_PLATFORMS.MT5) {
-        if (isEuRegion) {
-            return isDemo ? localize('CFDs Demo') : localize('CFDs');
-        }
-
         switch (product) {
             case MT5_PRODUCT.STANDARD:
                 return isDemo ? localize('Standard Demo') : localize('Standard');
-            case MT5_PRODUCT.FINANCIAL:
+            case MT5_PRODUCT.FINANCIAL: {
+                if (isEuRegion) {
+                    return isDemo ? localize('CFDs Demo') : localize('CFDs');
+                }
                 return isDemo ? localize('Financial Demo') : localize('Financial');
+            }
             case MT5_PRODUCT.STP:
                 return localize('Financial - STP');
             case MT5_PRODUCT.SWAP_FREE:
@@ -99,17 +99,19 @@ const getAccountCardTitle = (values: TGetAccountCardTitleValues) => {
 
 const CompareAccountsTitleIcon = ({ isDemo, isEuRegion, platform, product }: TCompareAccountsTitleIcon) => {
     const { localize } = useTranslations();
+    const { isDesktop } = useDevice();
 
     const jurisdictionCardIcon = getAccountIcon({ isEuRegion, platform, product });
     const jurisdictionCardTitle = getAccountCardTitle({ isDemo, isEuRegion, platform, product });
     const labuanJurisdictionMessage = localize(
         'This account gives you direct market price access and tighter spreads.'
     );
+    const iconSize = { height: isDesktop ? 48 : 32, width: isDesktop ? 48 : 32 };
 
     return (
         <React.Fragment>
             <div className='wallets-compare-accounts-title'>
-                {jurisdictionCardIcon}
+                {jurisdictionCardIcon(iconSize)}
                 <div className='wallets-compare-accounts-title__separator'>
                     <Text align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}

@@ -24,9 +24,9 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
     const productDetails = account.platform === 'mt5' ? account.product_details : undefined;
     //@ts-expect-error need update api-types
     const instruments = account.platform === 'mt5' ? account.instruments : undefined;
-
     //@ts-expect-error need update api-types
     const isNewBadgeVisible = product === PRODUCT.ZEROSPREAD || product === PRODUCT.GOLD;
+    const shouldShowEuDisclaimer = isEuRegion && product === 'financial';
 
     return (
         <div>
@@ -51,7 +51,7 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
                     isEuRegion={isEuRegion}
                     platform={account.platform}
                 />
-                {isEuRegion && (
+                {shouldShowEuDisclaimer && (
                     <div className='wallets-compare-accounts-card__eu-clients'>
                         <Text color='red' size='2xs' weight='bold'>
                             <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />

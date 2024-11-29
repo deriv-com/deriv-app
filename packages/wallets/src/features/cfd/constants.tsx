@@ -38,10 +38,6 @@ const getMarketTypeDetailsDescription = (
     product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
 ) => {
-    if (isEuRegion && product !== 'stp') {
-        return localize('Your all-in-one access to financial and derived instruments.');
-    }
-
     if (product === 'stp') {
         return localize('Direct access to market prices');
     }
@@ -50,17 +46,15 @@ const getMarketTypeDetailsDescription = (
         return localize('Trading opportunities on popular precious metals.');
     }
 
-    return localize('CFDs on financial instruments');
+    return isEuRegion
+        ? localize('Your all-in-one access to financial and derived instruments.')
+        : localize('CFDs on financial instruments');
 };
 
 const getMarketTypeDetailsTitle = (
     product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
 ) => {
-    if (isEuRegion && product !== 'stp') {
-        return 'CFDs';
-    }
-
     if (product === 'stp') {
         return 'Financial STP';
     }
@@ -69,7 +63,7 @@ const getMarketTypeDetailsTitle = (
         return 'Gold';
     }
 
-    return 'Financial';
+    return isEuRegion ? 'CFDs' : 'Financial';
 };
 
 export const getMarketTypeDetails = (
@@ -78,12 +72,12 @@ export const getMarketTypeDetails = (
     isEuRegion?: boolean
 ) => {
     const getIcon = () => {
-        if (isEuRegion) {
-            return <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />;
+        if (product === 'gold') {
+            return <AccountsDmt5GoldIcon height={48} width={48} />;
         }
-        return product === 'gold' ? (
-            // TODO: replace with icon from quill-icons
-            <AccountsDmt5GoldIcon height={48} width={48} />
+
+        return isEuRegion ? (
+            <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
         ) : (
             <AccountsDmt5FinancialIcon height={48} width={48} />
         );

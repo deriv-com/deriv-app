@@ -12,11 +12,7 @@ const CompareAccountsScreen = () => {
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { is_virtual: isDemo = false } = activeWallet || {};
 
-    const {
-        data: compareAccounts,
-        hasCTraderAccountAvailable,
-        hasDxtradeAccountAvailable,
-    } = useCFDCompareAccounts(isEuRegion);
+    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
 
     // Remove the hardcoded cTrader and Deriv X values and use the values from the API once it's ready
     const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;

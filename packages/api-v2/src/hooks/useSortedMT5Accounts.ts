@@ -6,13 +6,13 @@ import useIsEuRegion from './useIsEuRegion';
 import useMT5AccountsList from './useMT5AccountsList';
 
 /** A custom hook to get the sorted added and non-added MT5 accounts. */
-const useSortedMT5Accounts = (regulation?: string) => {
+const useSortedMT5Accounts = (isEUClient: boolean = false) => {
     const { data: all_available_mt5_accounts } = useAvailableMT5Accounts();
     const { isEUCountry } = useIsEuRegion();
     const { data: mt5_accounts, ...rest } = useMT5AccountsList();
     const { data: activeAccount } = useActiveAccount();
 
-    const isEU = regulation === 'EU' || isEUCountry;
+    const isEU = isEUClient || isEUCountry;
 
     const modified_data = useMemo(() => {
         if (!all_available_mt5_accounts || !mt5_accounts) return;

@@ -21,15 +21,20 @@ export const MT5_PRODUCT = {
     ZERO_SPREAD: 'zero_spread',
 } as const;
 
+type TProps = React.ComponentProps<typeof AccountsDmt5GoldIcon> | React.ComponentProps<typeof AccountsDmt5StandardIcon>;
+
 export const ACCOUNT_ICONS = {
-    [MT5_PRODUCT.STANDARD]: <AccountsDmt5StandardIcon iconSize='lg' />,
-    [MT5_PRODUCT.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
-    [MT5_PRODUCT.SWAP_FREE]: <AccountsDmt5SwfIcon iconSize='lg' />,
-    [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
-    [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
-    [MT5_PRODUCT.ZERO_SPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
-    [MT5_PRODUCT.GOLD]: <AccountsDmt5GoldIcon height={48} width={48} />,
-    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
+    [MT5_PRODUCT.STANDARD]: (props: TProps) => <AccountsDmt5StandardIcon {...props} />,
+    [MT5_PRODUCT.FINANCIAL]: {
+        Eu: (props: TProps) => <AccountsDmt5CfdsIcon {...props} />,
+        NonEU: (props: TProps) => <AccountsDmt5FinancialIcon {...props} />,
+    },
+    [MT5_PRODUCT.SWAP_FREE]: (props: TProps) => <AccountsDmt5SwfIcon {...props} />,
+    [CFD_PLATFORMS.DXTRADE]: (props: TProps) => <AccountsDerivXIcon {...props} />,
+    [CFD_PLATFORMS.CTRADER]: (props: TProps) => <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon {...props} />,
+    [MT5_PRODUCT.ZERO_SPREAD]: (props: TProps) => <AccountsDmt5ZrsIcon {...props} />,
+    [MT5_PRODUCT.GOLD]: (props: TProps) => <AccountsDmt5GoldIcon {...props} />,
+    default: (props: TProps) => <AccountsDmt5CfdsIcon {...props} />,
 } as const;
 
 export const JURISDICTION = {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
+import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useLandingCompany from './useLandingCompany';
-import useSortedMT5Accounts from './useSortedMT5Accounts';
 
 // Remove the hardcoded values and use the values from the API once it's ready
 export const MARKET_TYPE = {
@@ -74,12 +74,29 @@ const ctraderAccount = {
 };
 
 /** A custom hook that gets compare accounts values. */
-const useCFDCompareAccounts = (isEU?: boolean) => {
-    const { data: sortedMt5Accounts, ...rest } = useSortedMT5Accounts(isEU ? 'EU' : undefined);
+const useCFDCompareAccounts = () => {
+    const { data: all_available_mt5_accounts, ...rest } = useAvailableMT5Accounts();
     const { data: landingCompany } = useLandingCompany();
 
     const hasDxtradeAccountAvailable = landingCompany?.dxtrade_all_company;
     const hasCTraderAccountAvailable = landingCompany?.ctrader?.all?.standard === JURISDICTION.SVG;
+
+    const sortedMt5Accounts = useMemo(() => {
+        const sorting_order = ['standard', 'financial', 'stp', 'swap_free', 'zero_spread', 'gold'];
+
+        if (!all_available_mt5_accounts) return;
+
+        const sorted_data = sorting_order.reduce(
+            (acc, sort_order) => {
+                const accounts = all_available_mt5_accounts.filter(account => account.product === sort_order);
+                if (!accounts.length) return acc;
+                return [...acc, ...accounts];
+            },
+            [] as typeof all_available_mt5_accounts
+        );
+
+        return sorted_data;
+    }, [all_available_mt5_accounts]);
 
     const modifiedData = useMemo(() => {
         return {

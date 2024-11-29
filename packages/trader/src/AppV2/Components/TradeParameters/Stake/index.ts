@@ -1,4 +1,5 @@
-import Stake from './stake_2';
+import Stake from './stake';
+
 import './stake.scss';
 
 export default Stake;

@@ -34,6 +34,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         is_logged_in,
         loginid,
         is_client_store_initialized,
+        logout,
         landing_company_shortcode,
         currency,
         residence,
@@ -49,7 +50,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
+        handleLogout: async () => {
+            await logout();
+        },
+    });
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
     });
@@ -132,18 +137,22 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     const isCallBackPage = window.location.pathname.includes('callback');
 
-    const isLoggedInCookie = Cookies.get('logged_state') === 'true';
+    const loggedState = Cookies.get('logged_state');
 
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
 
     React.useEffect(() => {
-        if (isLoggedInCookie && !isClientAccountsPopulated && isOAuth2Enabled && is_client_store_initialized) {
+        if (loggedState === 'true' && !isClientAccountsPopulated && isOAuth2Enabled && is_client_store_initialized) {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-    }, [isLoggedInCookie, isClientAccountsPopulated, isOAuth2Enabled, is_client_store_initialized]);
+
+        if (loggedState === 'false' && is_client_store_initialized && isOAuth2Enabled && isClientAccountsPopulated) {
+            oAuthLogout();
+        }
+    }, [isClientAccountsPopulated, isOAuth2Enabled, is_client_store_initialized, oAuthLogout, loggedState]);
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>

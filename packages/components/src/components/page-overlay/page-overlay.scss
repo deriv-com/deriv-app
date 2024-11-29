@@ -4,7 +4,9 @@
         height: 100%;
         width: 100%;
         top: $HEADER_HEIGHT;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition:
+            transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
+            opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         opacity: 0;
 
@@ -12,6 +14,7 @@
             top: $MOBILE_HEADER_HEIGHT;
         }
     }
+
     &--enter,
     &--exit {
         transform: translateY(50px);
@@ -75,6 +78,9 @@
             z-index: 3;
             padding: 0;
             margin: 0;
+        }
+        &-tradershub {
+            padding: 0.8rem;
         }
     }
     &__content {

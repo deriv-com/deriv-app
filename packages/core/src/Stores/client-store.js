@@ -165,6 +165,7 @@ export default class ClientStore extends BaseStore {
 
     is_passkey_supported = false;
     is_phone_number_verification_enabled = false;
+    is_country_code_dropdown_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -247,6 +248,7 @@ export default class ClientStore extends BaseStore {
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             is_phone_number_verification_enabled: observable,
+            is_country_code_dropdown_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -421,6 +423,7 @@ export default class ClientStore extends BaseStore {
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
             setIsPhoneNumberVerificationEnabled: action.bound,
+            setIsCountryCodeDropdownEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -2774,6 +2777,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
         this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
+    }
+
+    setIsCountryCodeDropdownEnabled(is_country_code_dropdown_enabled = false) {
+        this.is_country_code_dropdown_enabled = is_country_code_dropdown_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

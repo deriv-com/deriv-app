@@ -351,6 +351,7 @@ export default class DashboardStore implements IDashboardStore {
         const { url, type = '' } = dialog_option;
         const dialog_type = ['google', 'url'];
         this.faq_search_value = '';
+        this.setActiveTabTutorial(0);
         this.resetTutorialTabContent();
         if (dialog_type.includes(type)) {
             if (type === 'url') {

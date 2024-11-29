@@ -31,15 +31,10 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const errors_amount = contract_types.reduce((acc, item) => {
-        if (proposal_info?.[item]?.has_error) {
-            return acc + 1;
-        }
-        return acc;
-    }, 0);
+    const is_all_types_with_errors = contract_types.every(item => proposal_info?.[item]?.has_error);
+
     // Showing snackbar for all cases, except when it is Rise/Fall or Digits and only one subtype has error
-    const should_show_snackbar =
-        contract_types.length === 1 || is_multiplier || errors_amount === contract_types.length;
+    const should_show_snackbar = contract_types.length === 1 || is_multiplier || is_all_types_with_errors;
 
     const onClose = React.useCallback(() => setIsOpen(false), []);
 

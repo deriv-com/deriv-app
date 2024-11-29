@@ -1374,7 +1374,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
@@ -1772,12 +1772,14 @@ export default class TradeStore extends BaseStore {
         this.resetErrorServices();
         await this.setContractTypes();
         runInAction(async () => {
-            this.processNewValuesAsync(
-                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-                true,
-                { currency: this.currency },
-                false
-            );
+            if (!this.is_dtrader_v2_enabled) {
+                this.processNewValuesAsync(
+                    { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                    true,
+                    { currency: this.currency },
+                    false
+                );
+            }
         });
         return Promise.resolve();
     }

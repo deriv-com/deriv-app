@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
-import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
+import { getPayoutInfo, getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { ExpandedProposal, getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -52,33 +52,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
-
-    // TODO: move outside
-    const getPayoutInfo = (proposal_info: ReturnType<typeof getProposalInfo>) => {
-        // getting current payout
-        const { has_error, message = '', payout = 0, error_field } = proposal_info ?? {};
-        const float_number_search_regex = /\d+(\.\d+)?/g;
-        const is_error_matching = has_error && (error_field === 'amount' || error_field === 'stake');
-        const proposal_error_message = is_error_matching ? message : '';
-        /* TODO: stop using error text for getting the payout value, need API changes */
-        // Extracting the value of exceeded payout from error text
-        const error_payout = proposal_error_message
-            ? Number(proposal_error_message.match(float_number_search_regex)?.[2])
-            : 0;
-        const contract_payout = payout || error_payout;
-
-        // getting max allowed payout
-        const { payout: validation_payout } =
-            (proposal_info?.validation_params || proposal_info?.validation_params) ?? {};
-        const { max } = validation_payout ?? {};
-        /* TODO: stop using error text for getting the max payout value, need API changes */
-        // Extracting the value of max payout from error text
-        const error_max_payout =
-            is_error_matching && message ? Number(message.match(float_number_search_regex)?.[1]) : 0;
-        const max_payout = max || error_max_payout;
-
-        return { contract_payout, max_payout, error: proposal_error_message };
-    };
 
     const {
         contract_payout: first_contract_payout,

@@ -62,7 +62,10 @@ const initRoutesConfig = (): TRouteConfig[] => [
             },
             {
                 path: routes.cashier_p2p,
-                component: P2P,
+                component: () => {
+                    window.location.href = 'https://p2p.deriv.com';
+                    return null;
+                },
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
             },

@@ -102,7 +102,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
 
     const renderSuccessDescription = useMemo(() => {
         if (isDemo) {
-            return localize("Let's practise trading with {{accountBalance}} virtual funds.", {
+            return localize('Practise trading with {{accountBalance}} virtual funds.', {
                 accountBalance: addedAccount?.display_balance,
             });
         }
@@ -136,7 +136,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
                         i18n_default_text='Your {{marketTypeTitle}} {{demoTitle}} account is ready'
                         values={{
                             demoTitle: isDemo ? localize('demo') : landingCompanyName,
-                            marketTypeTitle,
+                            marketTypeTitle:
+                                isDemo && platform === CFD_PLATFORMS.MT5
+                                    ? `${CFD_PLATFORMS.MT5.toUpperCase()} ${getMarketTypeDetails(localize, product)[marketType].title}`
+                                    : marketTypeTitle,
                         }}
                     />
                 }

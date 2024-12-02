@@ -1,7 +1,8 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '../platform';
+
 import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
+import { CFD_PLATFORMS } from '../platform';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -48,7 +49,7 @@ export const getMT5Title = (account_type: string) => {
 type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp' | 'gold';
 export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest' | 'dml';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -142,7 +143,16 @@ export const getCFDAccountKey = ({
                     return 'financial_demo';
             }
         } else if (product === PRODUCT.GOLD) {
-            return 'gold';
+            switch (shortcode) {
+                case 'bvi':
+                    return 'gold_bvi';
+                case 'vanuatu':
+                    return 'gold_v';
+                case 'dml':
+                    return 'gold_dml';
+                default:
+                    return 'gold';
+            }
         }
     }
     return undefined;

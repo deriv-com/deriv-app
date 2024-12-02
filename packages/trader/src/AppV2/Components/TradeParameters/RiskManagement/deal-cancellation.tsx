@@ -40,7 +40,6 @@ const DealCancellation = observer(({ closeActionSheet }: TDealCancellationProps)
                     switching_cancellation: true,
                 }),
                 hasCloseButton: true,
-                delay: 100,
             });
         }
         // We should switch off TP and SL if DC is on and vice versa

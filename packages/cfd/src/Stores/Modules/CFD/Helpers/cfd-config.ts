@@ -123,11 +123,12 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     }
 
     const financial_demo_title = product === PRODUCT.GOLD ? localize('Demo Gold') : localize('Demo Financial');
+    const financial_demo_short_title = product === PRODUCT.GOLD ? localize('Gold') : localize('Deriv CFDs');
 
     const financial_config = {
         account_type: 'financial',
         leverage: 1000,
-        short_title: is_eu ? localize('Deriv CFDs') : financial_title,
+        short_title: is_eu ? financial_demo_short_title : financial_title,
     };
     const financial_stp_config = {
         account_type: 'financial_stp',

@@ -123,7 +123,9 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     }
 
     const financial_demo_title = product === PRODUCT.GOLD ? localize('Demo Gold') : localize('Demo Financial');
+    const financial_demo_title_eu = product === PRODUCT.GOLD ? localize('Demo Gold') : localize('Demo CFDs');
     const financial_demo_short_title = product === PRODUCT.GOLD ? localize('Gold') : localize('Deriv CFDs');
+    const financial_title_eu = product === PRODUCT.GOLD ? localize('Deriv Gold') : localize('Deriv CFDs');
 
     const financial_config = {
         account_type: 'financial',
@@ -171,7 +173,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Demo CFDs') : financial_demo_title,
+                title: is_eu ? financial_demo_title_eu : financial_demo_title,
                 short_title: financial_config.short_title,
             },
             financial_demo: {
@@ -258,7 +260,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Deriv CFDs') : financial_title,
+                title: is_eu ? financial_title_eu : financial_title,
                 short_title: financial_config.short_title,
             },
             financial_svg: {

@@ -47,6 +47,8 @@ export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.p
 
 export const isNavigationFromP2PV2 = () => window.sessionStorage.getItem('config.platform') === 'p2p-v2';
 
+export const isNavigationFromTradersHubOS = () => window.sessionStorage.getItem('config.platform') === 'tradershub_os';
+
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import MT5LicenseMessage from '../MT5LicenceMessage';
 
@@ -23,10 +24,16 @@ const mockNonRegulatedAccount = {
     shortcode: 'svg',
 };
 
+const wrapper = ({ children }: PropsWithChildren) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
+
 describe('<MT5LicenceMessage />', () => {
     it('displays correct message for regulated account', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
-        render(<MT5LicenseMessage account={mockRegulatedAccount} />);
+        render(<MT5LicenseMessage account={mockRegulatedAccount} />, { wrapper });
 
         expect(
             screen.getByText(
@@ -37,7 +44,7 @@ describe('<MT5LicenceMessage />', () => {
 
     it('displays correct message for non-regulated account', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
-        render(<MT5LicenseMessage account={mockNonRegulatedAccount} />);
+        render(<MT5LicenseMessage account={mockNonRegulatedAccount} />, { wrapper });
 
         expect(
             screen.getByText(

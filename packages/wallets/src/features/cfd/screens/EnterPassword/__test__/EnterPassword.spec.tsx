@@ -5,7 +5,11 @@ import userEvent from '@testing-library/user-event';
 import { MARKET_TYPE, PlatformDetails } from '../../../constants';
 import EnterPassword from '../EnterPassword';
 
-jest.mock('@deriv/api-v2');
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({ data: false })),
+}));
 
 jest.mock('../../components', () => ({
     ...jest.requireActual('../../components'),

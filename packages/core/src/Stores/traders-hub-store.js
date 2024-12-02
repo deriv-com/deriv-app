@@ -466,7 +466,7 @@ export default class TradersHubStore extends BaseStore {
             },
             {
                 name: localize('Gold'),
-                description: localize('CFDs on precious metals'),
+                description: localize('Trading opportunities on popular precious metals.'),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
                 product: 'gold',

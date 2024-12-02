@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.lists_split = {
     init() {
@@ -38,6 +38,9 @@ Blockly.Blocks.lists_split = {
             ),
             category: Blockly.Categories.List,
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'MODE');
     },
     mutationToDom() {
         const container = document.createElement('mutation');

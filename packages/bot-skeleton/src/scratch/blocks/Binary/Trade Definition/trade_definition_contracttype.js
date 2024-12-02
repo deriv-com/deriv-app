@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
 import { getContractTypeOptions } from '../../../shared';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.trade_definition_contracttype = {
     init() {
@@ -30,6 +30,7 @@ Blockly.Blocks.trade_definition_contracttype = {
         if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }
+        replaceDropdownIconsForSafari(this, 'TYPE_LIST');
 
         this.enforceLimitations();
 

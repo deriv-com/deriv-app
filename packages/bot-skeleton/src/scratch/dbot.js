@@ -9,7 +9,12 @@ import { isDbotRTL } from '../utils/workspace';
 
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
-import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
+import {
+    isAllRequiredBlocksEnabled,
+    replaceDropdownIconsForSafari,
+    updateDisabledBlocks,
+    validateErrorOnBlockDelete,
+} from './utils';
 
 import { loadBlockly } from './blockly';
 import { forgetAccumulatorsProposalRequest } from './accumulators-proposal-handler';
@@ -36,6 +41,8 @@ class DBot {
             if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
                 return;
             }
+            replaceDropdownIconsForSafari(this, 'TRADETYPECAT_LIST');
+            replaceDropdownIconsForSafari(this, 'TRADETYPE_LIST');
 
             this.enforceLimitations();
 

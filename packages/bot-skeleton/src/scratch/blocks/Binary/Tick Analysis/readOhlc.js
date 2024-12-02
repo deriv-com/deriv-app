@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.read_ohlc = {
     init() {
@@ -46,6 +46,10 @@ Blockly.Blocks.read_ohlc = {
             display_name: localize('Read candle value (1)'),
             description: localize('This block gives you the specified candle value for a selected time interval.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OHLCFIELD_LIST');
+        replaceDropdownIconsForSafari(this, 'CANDLEINTERVAL_LIST');
     },
     getRequiredValueInputs() {
         return {

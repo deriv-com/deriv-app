@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.read_details = {
     init() {
@@ -30,6 +30,9 @@ Blockly.Blocks.read_details = {
             display_name: localize('Contract details'),
             description: localize('This block gives you information about your last contract.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'DETAIL_INDEX');
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);

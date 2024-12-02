@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator, modifyContextMenu } from '../../utils';
+import { emptyTextValidator, modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.text_changeCase = {
     init() {
@@ -45,6 +45,9 @@ Blockly.Blocks.text_changeCase = {
                 'Changes the capitalisation of a string of text to Upper case, Lower case, Title case.'
             ),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'CASE');
     },
     getRequiredValueInputs() {
         return {

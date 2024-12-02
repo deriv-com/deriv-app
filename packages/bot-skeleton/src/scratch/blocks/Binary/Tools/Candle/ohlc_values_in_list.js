@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../../constants/config';
-import { modifyContextMenu } from '../../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../../utils';
 
 Blockly.Blocks.ohlc_values_in_list = {
     init() {
@@ -37,6 +37,9 @@ Blockly.Blocks.ohlc_values_in_list = {
             display_name: localize('Create a list of candle values (2)'),
             description: localize('This block gives you the selected candle value from a list of candles.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OHLCFIELD_LIST');
     },
     getRequiredValueInputs() {
         return {

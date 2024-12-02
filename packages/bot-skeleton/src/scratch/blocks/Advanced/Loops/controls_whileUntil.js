@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.controls_whileUntil = {
     init() {
@@ -45,6 +45,9 @@ Blockly.Blocks.controls_whileUntil = {
             display_name: localize('Repeat While/Until'),
             description: localize('This block repeats instructions as long as a given condition is true.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'MODE');
     },
     getRequiredValueInputs() {
         return {

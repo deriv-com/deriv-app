@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.contract_check_result = {
     init() {
@@ -32,6 +32,7 @@ Blockly.Blocks.contract_check_result = {
         };
     },
     onchange(event) {
+        replaceDropdownIconsForSafari(this, 'CHECK_RESULT');
         if (!this.workspace || Blockly.derivWorkspace.isFlyoutVisible || this.workspace.isDragging()) {
             return;
         }

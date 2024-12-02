@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../../utils';
 
 Blockly.Blocks.controls_flow_statements = {
     init() {
@@ -40,6 +40,9 @@ Blockly.Blocks.controls_flow_statements = {
     },
     customContextMenu(menu) {
         modifyContextMenu(menu);
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'FLOW');
     },
 };
 

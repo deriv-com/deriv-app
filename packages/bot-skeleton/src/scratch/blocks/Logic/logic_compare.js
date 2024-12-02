@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { modifyContextMenu } from '../../utils';
+import { modifyContextMenu, replaceDropdownIconsForSafari } from '../../utils';
 
 Blockly.Blocks.logic_compare = {
     init() {
@@ -45,6 +45,9 @@ Blockly.Blocks.logic_compare = {
             display_name: localize('Compare'),
             description: localize('This block compares two values and is used to build a conditional structure.'),
         };
+    },
+    onchange() {
+        replaceDropdownIconsForSafari(this, 'OP');
     },
     getRequiredValueInputs() {
         return {

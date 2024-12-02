@@ -33,6 +33,9 @@ const PhoneVerificationPage = observer(() => {
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
     const { is_redirected_from_email, setRedirectFromEmail, setIsForcedToExitPnv } = ui;
@@ -50,7 +53,7 @@ const PhoneVerificationPage = observer(() => {
             (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
             is_virtual ||
             is_phone_number_verified ||
-            no_carriers_supported
+            (isCountryCodeDropdownGBLoaded && !isCountryCodeDropdownEnabled && no_carriers_supported)
         ) {
             setIsForcedToExitPnv(true);
             history.push(routes.personal_details);

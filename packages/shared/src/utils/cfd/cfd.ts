@@ -250,6 +250,7 @@ type TGetCFDAccount = TGetAccount & {
 type TGetMT5Icon = {
     market_type: TMarketType;
     is_eu?: boolean;
+    product?: TProduct;
 };
 
 export const getCFDAccount = ({
@@ -272,8 +273,9 @@ export const getCFDAccount = ({
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
 };
 
-export const getMT5Icon = ({ market_type, is_eu }: TGetMT5Icon) => {
+export const getMT5Icon = ({ market_type, is_eu, product }: TGetMT5Icon) => {
     if (market_type === 'all' && !is_eu) return 'SwapFree';
+    if (product === 'gold') return 'Gold';
     if (market_type === 'financial' && is_eu) return 'CFDs';
     return market_type;
 };

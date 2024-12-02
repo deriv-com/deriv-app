@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
 
     is_mt5_account_list_updated = false;
 
+    phone_settings = {};
     prev_real_account_loginid = '';
     prev_account_type = 'demo';
     external_url_params = {};
@@ -164,6 +165,7 @@ export default class ClientStore extends BaseStore {
 
     is_passkey_supported = false;
     is_phone_number_verification_enabled = false;
+    is_country_code_dropdown_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -237,6 +239,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
@@ -245,6 +248,7 @@ export default class ClientStore extends BaseStore {
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             is_phone_number_verification_enabled: observable,
+            is_country_code_dropdown_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -322,6 +326,7 @@ export default class ClientStore extends BaseStore {
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
             setCFDDisabledSignupTypes: action.bound,
+            setPhoneSettings: action.bound,
             getLimits: action.bound,
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
@@ -418,6 +423,7 @@ export default class ClientStore extends BaseStore {
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
             setIsPhoneNumberVerificationEnabled: action.bound,
+            setIsCountryCodeDropdownEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -449,6 +455,7 @@ export default class ClientStore extends BaseStore {
                 this.residence,
                 this.account_settings,
                 this.preferred_language,
+                this.phone_settings,
             ],
             () => {
                 this.setCookieAccount();
@@ -897,6 +904,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setPhoneSettings(phone_settings) {
+        this.phone_settings = phone_settings;
     }
 
     setTradersHubTracking(is_tradershub_tracking = false) {
@@ -1640,6 +1651,9 @@ export default class ClientStore extends BaseStore {
                     statement: 1,
                 })
             );
+            if (Object.keys(this.phone_settings).length === 0) {
+                this.setPhoneSettings((await WS.getPhoneSettings()).phone_settings);
+            }
             if (Object.keys(this.account_settings).length === 0) {
                 this.setAccountSettings((await WS.authorized.cache.getSettings()).get_settings);
             }
@@ -2763,6 +2777,10 @@ export default class ClientStore extends BaseStore {
 
     setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
         this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
+    }
+
+    setIsCountryCodeDropdownEnabled(is_country_code_dropdown_enabled = false) {
+        this.is_country_code_dropdown_enabled = is_country_code_dropdown_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

@@ -7,6 +7,7 @@ import {
     useSortedMT5Accounts,
 } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
+import { TAddedMT5Account, TAvailableMT5Account } from '../../../../types';
 import {
     AddedCTraderAccountsList,
     AddedDxtradeAccountsList,
@@ -15,7 +16,6 @@ import {
     AvailableDxtradeAccountsList,
     AvailableMT5AccountsList,
 } from '../../flows';
-import { TAddedMT5Account, TAvailableMT5Account } from '../../types';
 import './CFDPlatformsListAccounts.scss';
 
 const CFDPlatformsListAccounts: React.FC = () => {

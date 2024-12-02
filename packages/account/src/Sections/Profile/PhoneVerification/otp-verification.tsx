@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback, Fragment } from 'react';
 import {
+    useGrowthbookGetFeatureValue,
     usePhoneNumberVerificationSetTimer,
     usePhoneVerificationAnalytics,
     useSendOTPVerificationCode,
@@ -30,6 +31,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { trackPhoneVerificationEvents } = usePhoneVerificationAnalytics();
     const { localize } = useTranslations();
     const isMounted = useIsMounted();
+    const [isCountryCodeDropdownEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
 
     const {
         sendPhoneOTPVerification,
@@ -170,7 +174,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at <1>{{users_phone_number}}</1>. <0></0>'
                             values={{
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
-                                users_phone_number: account_settings?.phone,
+                                users_phone_number: isCountryCodeDropdownEnabled
+                                    ? //@ts-expect-error account_settings.calling_country_code is not defined in GetSettings type
+                                      `+${account_settings?.calling_country_code}${account_settings?.phone}`
+                                    : `${account_settings?.phone}`,
                             }}
                             components={[
                                 <Button

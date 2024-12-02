@@ -33,6 +33,9 @@ const PhoneVerificationPage = observer(() => {
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
     const { is_redirected_from_email, setRedirectFromEmail, setIsForcedToExitPnv } = ui;
@@ -41,13 +44,16 @@ const PhoneVerificationPage = observer(() => {
         is_authorize,
         is_virtual,
         setVerificationCode,
+        phone_settings,
     } = client;
+    const no_carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length === 0;
 
     useEffect(() => {
         if (
             (isPhoneNumberVerificationGBLoaded && !isPhoneNumberVerificationEnabled) ||
             is_virtual ||
-            is_phone_number_verified
+            is_phone_number_verified ||
+            (isCountryCodeDropdownGBLoaded && !isCountryCodeDropdownEnabled && no_carriers_supported)
         ) {
             setIsForcedToExitPnv(true);
             history.push(routes.personal_details);

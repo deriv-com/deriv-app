@@ -8,7 +8,7 @@ import {
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Badge, Text, useDevice } from '@deriv-com/ui';
-import { TTranslations } from '../../../../types';
+import { TTranslations } from '../../types';
 import './ClientVerificationStatusBadge.scss';
 
 type TBadgeColor = React.ComponentProps<typeof Badge>['color'];

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
-import { SessionStore, cacheTrackEvents } from '@deriv/shared';
+import { SessionStore } from '@deriv/shared';
 import { getAllowedLanguages, Localize } from '@deriv/translations';
 import { LabelPairedCircleChevronDownXlBoldIcon, LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { TEbooksUrl } from 'Components/banners/book-banner/book-banner';
@@ -23,17 +23,10 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
     };
 
     React.useEffect(() => {
-        cacheTrackEvents.loadEvent([
-            {
-                event: {
-                    name: 'ce_tradershub_banner',
-                    properties: {
-                        action: 'open',
-                        ...analytics_data,
-                    },
-                },
-            },
-        ]);
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'open',
+            ...analytics_data,
+        });
     }, []);
 
     return (
@@ -52,17 +45,10 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
                                     target='_blank'
                                     rel='noopener noreferrer'
                                     onClick={() => {
-                                        cacheTrackEvents.loadEvent([
-                                            {
-                                                event: {
-                                                    name: 'ce_tradershub_banner',
-                                                    properties: {
-                                                        action: 'click download',
-                                                        ...analytics_data,
-                                                    },
-                                                },
-                                            },
-                                        ]);
+                                        Analytics.trackEvent('ce_tradershub_banner', {
+                                            action: 'click download',
+                                            ...analytics_data,
+                                        });
                                     }}
                                 >
                                     <Localize i18n_default_text='Download e-book' />
@@ -82,17 +68,10 @@ const BookBannerTemplate = ({ e_book_show_way, e_books_url, e_book_from_landing,
                         height='24'
                         fill='var(--text-prominent)'
                         onClick={() => {
-                            cacheTrackEvents.loadEvent([
-                                {
-                                    event: {
-                                        name: 'ce_tradershub_banner',
-                                        properties: {
-                                            action: 'close',
-                                            ...analytics_data,
-                                        },
-                                    },
-                                },
-                            ]);
+                            Analytics.trackEvent('ce_tradershub_banner', {
+                                action: 'close',
+                                ...analytics_data,
+                            });
                             SessionStore.remove('show_book');
                             setIsBannerShows(false);
                         }}

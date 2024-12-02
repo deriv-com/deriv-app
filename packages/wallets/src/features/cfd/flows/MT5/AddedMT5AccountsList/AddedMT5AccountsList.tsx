@@ -6,20 +6,25 @@ import {
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
-import { WalletDisabledAccountModal, WalletStatusBadge } from '../../../../../components';
+import {
+    ClientVerificationModal,
+    ClientVerificationStatusBadge,
+    WalletDisabledAccountModal,
+    WalletStatusBadge,
+} from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useIsRtl from '../../../../../hooks/useIsRtl';
-import { ClientVerificationStatusBadge, PlatformStatusBadge } from '../../../components';
+import { TAddedMT5Account } from '../../../../../types';
+import { PlatformStatusBadge } from '../../../components';
 import { DISABLED_PLATFORM_STATUSES, MARKET_TYPE, PlatformDetails } from '../../../constants';
-import { ClientVerificationModal, MT5TradeModal, TradingPlatformStatusModal } from '../../../modals';
-import { TAddedMT5Account } from '../../../types';
+import { MT5TradeModal, TradingPlatformStatusModal } from '../../../modals';
 import { useAddedMT5Account } from './hooks';
 import './AddedMT5AccountsList.scss';
 
 type TProps = { account: TAddedMT5Account };
 
-type TDisabledPlatformStatus = typeof DISABLED_PLATFORM_STATUSES[number];
+type TDisabledPlatformStatus = (typeof DISABLED_PLATFORM_STATUSES)[number];
 
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { localize } = useTranslations();

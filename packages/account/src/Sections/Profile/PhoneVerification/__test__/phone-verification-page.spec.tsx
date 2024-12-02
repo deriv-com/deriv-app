@@ -49,6 +49,9 @@ describe('ConfirmPhoneNumber', () => {
                 verification_code: {
                     phone_number_verification: '',
                 },
+                phone_settings: {
+                    carriers: ['sms', 'whatsapp'],
+                },
             },
             ui: {
                 is_redirected_from_email: false,

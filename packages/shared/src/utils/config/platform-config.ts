@@ -12,7 +12,11 @@ type TPlatform = {
     url?: string;
 };
 
-type TPlatforms = Record<'p2p' | 'p2p_v2' | 'derivgo', TPlatform>;
+type TPlatforms = Record<'p2p' | 'p2p_v2' | 'derivgo' | 'tradershub_os', TPlatform>;
+export const tradershub_os_url =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/tradershub/cfds'
+        : 'https://staging-hub.deriv.com/tradershub/cfds';
 
 // TODO: This should be moved to PlatformContext
 export const platforms: TPlatforms = {
@@ -36,6 +40,13 @@ export const platforms: TPlatforms = {
         platform_name: 'Deriv P2P',
         route_to_path: '',
         url: process.env.NODE_ENV === 'production' ? 'https://p2p.deriv.com' : 'https://staging-p2p.deriv.com',
+    },
+    tradershub_os: {
+        icon_text: undefined,
+        is_hard_redirect: true,
+        platform_name: 'TradersHub',
+        route_to_path: '',
+        url: tradershub_os_url,
     },
 };
 

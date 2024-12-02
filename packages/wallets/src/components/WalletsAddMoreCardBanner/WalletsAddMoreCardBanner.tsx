@@ -72,7 +72,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const redirectToOutSystems = () => {
         // redirect to OS Tradershub if feature is enabled
         const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
-            'trigger_real_account_creation_os',
+            'trigger_os_real_account_creation',
             false
         );
         if (isOutSystemsRealAccountCreationEnabled) {

@@ -97,6 +97,7 @@ export type ProposalResponse = PriceProposalResponse & {
         message: string;
         details?: {
             payout_per_point_choices?: number[];
+            barrier_choices?: string[];
             [k: string]: unknown;
         };
     };
@@ -256,6 +257,7 @@ export default class TradeStore extends BaseStore {
     expiry_type: string | null = 'duration';
 
     // Barrier
+    barrier = '';
     barrier_1 = '';
     barrier_2 = '';
     barrier_count = 0;
@@ -1374,7 +1376,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;

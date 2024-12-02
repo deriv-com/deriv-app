@@ -24,5 +24,5 @@ export const CFD_TEXT = {
     gold: () => localize('Gold'),
     gold_bvi: () => localize('Gold BVI'),
     gold_v: () => localize('Gold Vanuatu'),
-    gold_dml: () => localize('Gold Mauritius'),
+    gold_dml: () => localize('Gold Dml'),
 };

@@ -281,6 +281,20 @@
                 border-radius: $BORDER_RADIUS * 2;
                 justify-content: flex-start;
 
+                &--v2 {
+                    width: 6.2rem;
+                    height: 2.3rem;
+                    background: none;
+                    border: none;
+                    border-radius: $BORDER_RADIUS * 2;
+
+                    .dc-dropdown__display-text {
+                        padding: 0 0 0 3.5rem;
+                        color: var(--text-colored-background);
+                        font-size: var(--text-size-xxs);
+                    }
+                }
+
                 .dc-dropdown__display-text {
                     padding: 0 0 0 2.5rem;
                     color: var(--text-colored-background);

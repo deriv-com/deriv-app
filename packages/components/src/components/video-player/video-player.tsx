@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
 import { useIsRtl } from '@deriv/hooks';
-import { isDTraderV2, isSafariBrowser, mobileOSDetect } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import throttle from 'lodash.throttle';
 import { useDebounceCallback } from 'usehooks-ts';
 import VideoOverlay from './video-overlay';
@@ -17,6 +17,7 @@ type TVideoPlayerProps = {
     increased_drag_area?: boolean;
     muted?: boolean;
     src: string;
+    onModalClose?: () => void;
 };
 type TSupportedEvent = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent;
 
@@ -34,6 +35,7 @@ const VideoPlayer = ({
     increased_drag_area,
     muted = false,
     src,
+    onModalClose,
 }: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
 
@@ -279,6 +281,20 @@ const VideoPlayer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        let timeout: ReturnType<typeof setTimeout>;
+
+        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
+            timeout = setTimeout(() => {
+                setShowControls(false);
+            }, 2000);
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [show_controls]);
+
     return (
         <div
             className={classNames(className, 'player__wrapper')}
@@ -288,14 +304,13 @@ const VideoPlayer = ({
         >
             <Stream
                 autoplay={should_autoplay && !is_dragging.current}
-                // height={height ?? (is_mobile ? '184.5px' : '270px')}
-                // height='100%'
+                height={!is_v2 ? (height ?? (is_mobile ? '184.5px' : '270px')) : undefined}
                 className={classNames('', { player: is_v2 })}
                 width='100%'
                 letterboxColor='transparent'
                 muted={is_muted}
                 preload='auto'
-                // responsive={false}
+                responsive={is_v2 ? undefined : false}
                 src={src}
                 streamRef={video_ref}
                 onEnded={onEnded}
@@ -307,10 +322,15 @@ const VideoPlayer = ({
                 volume={volume}
             />
             <VideoOverlay
-                onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
-                is_ended={is_ended.current || (is_v2 && show_controls)}
+                // onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
+                onClick={() => setShowControls(!show_controls)}
+                togglePlay={togglePlay}
+                show_controls={show_controls}
+                is_ended={is_ended.current}
                 is_mobile={is_mobile}
+                is_playing={is_playing}
                 is_v2={is_v2}
+                onModalClose={onModalClose}
             />
             <VideoControls
                 block_controls={is_dragging.current}
@@ -322,7 +342,7 @@ const VideoPlayer = ({
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}
-                is_v2={isDTraderV2()}
+                is_v2={is_v2}
                 increased_drag_area={increased_drag_area}
                 onRewind={onRewind}
                 onVolumeChange={setVolume}

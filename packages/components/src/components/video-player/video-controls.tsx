@@ -79,11 +79,13 @@ const VideoControls = ({
                             is_mobile={is_mobile}
                             is_muted={is_muted}
                             toggleMute={toggleMute}
+                            is_v2
                         />
                         <PlaybackRateControl
                             onPlaybackRateChange={onPlaybackRateChange}
                             is_mobile={is_mobile}
                             playback_rate={playback_rate}
+                            is_v2
                         />
                     </div>
                     <div className='controls__left--v2'>

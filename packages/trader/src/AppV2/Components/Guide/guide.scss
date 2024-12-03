@@ -201,8 +201,17 @@
     background-color: var(--core-color-solid-slate-1400);
     z-index: 999;
 
-    &__something {
+    &__container {
         height: 100%;
+    }
+
+    &__icon {
+        &-close {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1.6rem;
+        }
     }
 
     &__wrapper {

@@ -19,31 +19,13 @@ type TGuideDescriptionModal = {
     show_guide_for_selected_contract?: boolean;
 };
 
-const PortalModal = ({
-    isOpen,
-    onClose,
-    children,
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    children: React.ReactNode;
-}) => {
-    // React.useEffect(() => {
-    //     if (isOpen) {
-    //         document.body.style.overflow = 'hidden';
-    //     }
-
-    //     return () => {
-    //         document.body.style.overflow = 'unset';
-    //     };
-    // }, [isOpen]);
-
+const PortalModal = ({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) => {
     if (!isOpen) return null;
 
     return ReactDOM.createPortal(
         <div className='modal-player' aria-modal='true'>
             <div
-                className='modal-player__something'
+                className='modal-player__container'
                 onClick={e => e.stopPropagation()}
                 onKeyDown={e => e.stopPropagation()}
             >
@@ -121,50 +103,15 @@ const GuideDescriptionModal = ({
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-            {/* {is_video_player_opened && (
-                // <dialog
-                //     ref={modal_ref}
-                //     onClick={toggleVideoPlayer}
-                //     onKeyDown={toggleVideoPlayer}
-                //     className='modal-player'
-                // >
-                //     <div onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
-                //         <VideoPlayer
-                //             className='modal-player__wrapper'
-                //             data_testid='dt_video_player'
-                //             height='180px'
-                //             is_mobile
-                //             increased_drag_area
-                //             src={video_src}
-                //         />
-                //     </div>
-                // </dialog>
-                <div className='modal-player__overlay' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
-                    <div
-                        className='modal-player'
-                        onClick={e => e.stopPropagation()}
-                        onKeyDown={e => e.stopPropagation()}
-                    >
-                        <VideoPlayer
-                            className='modal-player__wrapper'
-                            data_testid='dt_video_player'
-                            height='180px'
-                            is_mobile
-                            increased_drag_area
-                            src={video_src}
-                        />
-                    </div>
-                </div>
-            )} */}
-            <PortalModal isOpen={is_video_player_opened} onClose={toggleVideoPlayer}>
+            <PortalModal isOpen={is_video_player_opened}>
                 <VideoPlayer
                     className='modal-player__wrapper'
                     data_testid='dt_video_player'
-                    // height='180px'
                     is_v2
                     is_mobile
                     increased_drag_area
                     src={video_src}
+                    onModalClose={toggleVideoPlayer}
                 />
             </PortalModal>
         </React.Fragment>

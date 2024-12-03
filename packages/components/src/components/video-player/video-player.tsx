@@ -322,7 +322,6 @@ const VideoPlayer = ({
                 volume={volume}
             />
             <VideoOverlay
-                // onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
                 onClick={() => setShowControls(!show_controls)}
                 togglePlay={togglePlay}
                 show_controls={show_controls}

@@ -13,6 +13,7 @@ import GTM from 'Utils/gtm';
 import { helpers } from 'Utils/store-helpers';
 import { TDbot } from 'Types';
 import RootStore from './root-store';
+import { getSelectedTradeType } from '@deriv/bot-skeleton/src/scratch/utils';
 
 export type TContractState = {
     buy?: Buy;
@@ -137,7 +138,11 @@ export default class RunPanelStore {
         if (show_bot_stop_message)
             botNotification(notification_message.bot_stop, {
                 label: localize('Reports'),
-                onClick: () => (window.location.href = routes.reports),
+                onClick: () => {
+                    const contract_type = getSelectedTradeType();
+                    sessionStorage.setItem('contract_type_bots', contract_type);
+                    window.location.href = routes.reports;
+                },
             });
     };
 

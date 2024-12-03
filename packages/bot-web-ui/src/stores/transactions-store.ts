@@ -68,38 +68,11 @@ export default class TransactionsStore {
         );
         const statistics = trxs.reduce(
             (stats, { data }) => {
-                const {
-                    profit = 0,
-                    is_completed = false,
-                    payout = 0,
-                    buy_price = 0,
-                    bid_price = 0,
-                } = data as TContractInfo;
+                const { profit = 0, is_completed = false, payout, buy_price = 0, bid_price } = data as TContractInfo;
                 if (is_completed) {
                     if (profit > 0) {
                         stats.won_contracts += 1;
-                        stats.total_payout += payout;
-                    }
-                    if (bid_price > 0) {
-                        if (window.Blockly.derivWorkspace) {
-                            const trade_options_blocks = window.Blockly.derivWorkspace
-                                .getAllBlocks()
-                                .filter(
-                                    b =>
-                                        b.type === 'trade_definition_multiplier' ||
-                                        b.type === 'trade_definition_accumulator'
-                                );
-                            trade_options_blocks.forEach((trade_options_block: { selected_trade_type: string }) => {
-                                if (
-                                    trade_options_block.selected_trade_type === 'accumulator' ||
-                                    trade_options_block.selected_trade_type === 'multiplier'
-                                ) {
-                                    if (stats.total_payout !== bid_price && profit >= 0 && payout !== bid_price) {
-                                        stats.total_payout += bid_price;
-                                    }
-                                }
-                            });
-                        }
+                        stats.total_payout += payout ?? bid_price ?? 0;
                     } else {
                         stats.lost_contracts += 1;
                     }

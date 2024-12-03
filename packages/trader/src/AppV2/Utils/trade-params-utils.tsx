@@ -422,7 +422,7 @@ export const getDatePickerStartDate = (
 
     const getMomentContractStartDateTime = () => {
         const minDurationDate = getMinDuration(server_time, duration_units_list);
-        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
+        const time = isTimeValid(start_time ?? '') ? start_time : (server_time?.toISOString().substr(11, 8) ?? '');
         return setMinTime(minDurationDate, time ?? '');
     };
 
@@ -449,7 +449,15 @@ export const getProposalRequestObject = ({
     const request = createProposalRequestForContract(
         store as Parameters<typeof createProposalRequestForContract>[0],
         trade_type
-    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & { subscribe?: number };
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & {
+        subscribe?: number;
+        limit_order:
+            | {
+                  take_profit?: number;
+                  stop_loss?: number;
+              }
+            | undefined;
+    };
 
     if (!should_subscribe) delete request.subscribe;
 

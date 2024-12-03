@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OTPVerification from '../otp-verification';
-import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/hooks', () => ({
@@ -15,6 +15,7 @@ jest.mock('@deriv/hooks', () => ({
         is_email_otp_timer_loading: false,
         is_phone_otp_timer_loading: false,
     })),
+    useGrowthbookGetFeatureValue: jest.fn(),
 }));
 
 jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
@@ -55,6 +56,7 @@ describe('OTPVerification', () => {
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: jest.fn(),
         });
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue(false);
     });
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
@@ -82,7 +84,7 @@ describe('OTPVerification', () => {
         expect(screen.getByText(/WhatsApp/)).toBeInTheDocument();
     });
 
-    it('should not enabled Verify button when otp does not have 6 characters', () => {
+    it('should not enabled Verify button when otp does not have 6 characters', async () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: jest.fn(),
@@ -91,11 +93,11 @@ describe('OTPVerification', () => {
         renderComponent();
         const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
-        userEvent.type(otp_textfield, '12345');
+        await userEvent.type(otp_textfield, '12345');
         expect(verify_button).toBeDisabled();
     });
 
-    it('should contain value of 123456 for otp textfield component', () => {
+    it('should contain value of 123456 for otp textfield component', async () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: jest.fn(),
@@ -103,11 +105,11 @@ describe('OTPVerification', () => {
         });
         renderComponent();
         const otp_textfield = screen.getByRole('textbox');
-        userEvent.type(otp_textfield, '123456');
+        await userEvent.type(otp_textfield, '123456');
         expect(otp_textfield).toHaveValue('123456');
     });
 
-    it('should render mockSendPhoneOTPVerification when Verify button is clicked', () => {
+    it('should render mockSendPhoneOTPVerification when Verify button is clicked', async () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: mockSendPhoneOTPVerification,
@@ -116,9 +118,9 @@ describe('OTPVerification', () => {
         renderComponent();
         const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
-        userEvent.type(otp_textfield, '123456');
+        await userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
-        userEvent.click(verify_button);
+        await userEvent.click(verify_button);
         expect(mockSendPhoneOTPVerification).toBeCalledTimes(1);
     });
 
@@ -132,7 +134,7 @@ describe('OTPVerification', () => {
         expect(screen.getByText(/Error Message/)).toBeInTheDocument();
     });
 
-    it('should render mockSetPhoneOtpErrorMessage to be empty when users retype inside textfield', () => {
+    it('should render mockSetPhoneOtpErrorMessage to be empty when users retype inside textfield', async () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: mockSendPhoneOTPVerification,
@@ -142,7 +144,7 @@ describe('OTPVerification', () => {
         renderComponent();
         expect(screen.getByText(/Error Message/)).toBeInTheDocument();
         const otp_textfield = screen.getByRole('textbox');
-        userEvent.type(otp_textfield, '123456');
+        await userEvent.type(otp_textfield, '123456');
         expect(mockSetPhoneOtpErrorMessage).toBeCalled();
     });
 
@@ -156,7 +158,7 @@ describe('OTPVerification', () => {
         expect(screen.getByText(/Phone Number Verified Modal/)).toBeInTheDocument();
     });
 
-    it('should render sendEmailOTPVerification when should_show_phone_number_otp is false', () => {
+    it('should render sendEmailOTPVerification when should_show_phone_number_otp is false', async () => {
         const mockSendEmailOTPVerification = jest.fn();
         store.ui.should_show_phone_number_otp = false;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
@@ -166,13 +168,13 @@ describe('OTPVerification', () => {
         renderComponent();
         const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
-        userEvent.type(otp_textfield, '123456');
+        await userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
-        userEvent.click(verify_button);
+        await userEvent.click(verify_button);
         expect(mockSendEmailOTPVerification).toBeCalledTimes(1);
     });
 
-    it('should render setOtpVerification and setVerificationCode when is_email_verified is true', () => {
+    it('should render setOtpVerification and setVerificationCode when is_email_verified is true', async () => {
         store.ui.should_show_phone_number_otp = false;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             is_email_verified: true,
@@ -182,9 +184,9 @@ describe('OTPVerification', () => {
         renderComponent();
         const otp_textfield = screen.getByRole('textbox');
         const verify_button = screen.getByRole('button', { name: 'Verify' });
-        userEvent.type(otp_textfield, '123456');
+        await userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
-        userEvent.click(verify_button);
+        await userEvent.click(verify_button);
         expect(store.client.setVerificationCode).toBeCalled();
         expect(mockSetOtpVerification).toBeCalledWith({ phone_verification_type: '', show_otp_verification: false });
     });

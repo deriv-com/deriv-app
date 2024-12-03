@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
-import { routes, cacheTrackEvents } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 
@@ -26,18 +27,11 @@ const CompareAccount = observer(({ accounts_sub_text, is_desktop }: TCompareAcco
             onClick={() => {
                 history.push(routes.compare_cfds);
                 if (is_traders_dashboard_tracking_enabled) {
-                    cacheTrackEvents.loadEvent([
-                        {
-                            event: {
-                                name: 'ce_tradershub_dashboard_form',
-                                properties: {
-                                    action: 'compare_accounts_push',
-                                    form_name: 'traders_hub_default',
-                                    account_mode: selected_account_type,
-                                },
-                            },
-                        },
-                    ]);
+                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                        action: 'compare_accounts_push',
+                        form_name: 'traders_hub_default',
+                        account_mode: selected_account_type,
+                    });
                 }
             }}
         >

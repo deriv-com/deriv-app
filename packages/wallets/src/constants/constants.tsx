@@ -47,3 +47,18 @@ export const getOptionsAndMultipliersContent = (
         title: 'Deriv GO',
     },
 ];
+
+export const ACCOUNT_VERIFICATION_STATUSES = {
+    EXPIRED: 'expired',
+    NONE: 'none',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    SUSPECTED: 'suspected',
+    VERIFIED: 'verified',
+} as const;
+
+export const ACCOUNT_VERIFICATION_BADGE_STATUS = {
+    FAILED: 'failed',
+    IN_REVIEW: 'in_review',
+    NEEDS_VERIFICATION: 'needs_verification',
+} as const;

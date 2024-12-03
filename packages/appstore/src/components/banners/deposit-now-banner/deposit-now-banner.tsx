@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { Button, Text, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
-import { routes, cacheTrackEvents } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import './deposit-now-banner.scss';
 
 const desktopWidth = 368;
@@ -23,34 +23,20 @@ const DepositNowBanner = observer(() => {
     const { is_eu_user } = traders_hub;
 
     const handleButtonClick = () => {
-        cacheTrackEvents.loadEvent([
-            {
-                event: {
-                    name: 'ce_tradershub_banner',
-                    properties: {
-                        action: 'click_cta',
-                        banner_name: 'first_deposit',
-                        banner_type: 'with_cta',
-                    },
-                },
-            },
-        ]);
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'click_cta',
+            banner_name: 'first_deposit',
+            banner_type: 'with_cta',
+        });
         history.push(`${routes.cashier_deposit}${is_crypto_account ? '#deposit' : ''}`);
     };
 
     React.useEffect(() => {
-        cacheTrackEvents.loadEvent([
-            {
-                event: {
-                    name: 'ce_tradershub_banner',
-                    properties: {
-                        action: 'open',
-                        banner_name: 'first_deposit',
-                        banner_type: 'with_cta',
-                    },
-                },
-            },
-        ]);
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'open',
+            banner_name: 'first_deposit',
+            banner_type: 'with_cta',
+        });
     }, []);
 
     return (

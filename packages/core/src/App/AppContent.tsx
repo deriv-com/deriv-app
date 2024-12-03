@@ -35,6 +35,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         setIsPasskeySupported,
         account_settings,
         setIsPhoneNumberVerificationEnabled,
+        setIsCountryCodeDropdownEnabled,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
@@ -52,6 +53,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     });
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
+    });
+    const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
     });
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
@@ -81,6 +85,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             setIsPhoneNumberVerificationEnabled(!!isPhoneNumberVerificationEnabled);
         }
     }, [isPhoneNumberVerificationEnabled, setIsPhoneNumberVerificationEnabled, isPhoneNumberVerificationGBLoaded]);
+
+    React.useEffect(() => {
+        if (isCountryCodeDropdownGBLoaded) {
+            setIsCountryCodeDropdownEnabled(!!isCountryCodeDropdownEnabled);
+        }
+    }, [isCountryCodeDropdownEnabled, setIsCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

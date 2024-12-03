@@ -66,7 +66,7 @@ describe('<PersonalDetailsForm />', () => {
     };
 
     beforeEach(() => {
-        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true]);
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true, true]);
     });
 
     it('should render successfully', async () => {
@@ -99,9 +99,9 @@ describe('<PersonalDetailsForm />', () => {
     it('should have "required" validation errors on required form fields', async () => {
         renderComponent();
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.clear(first_name);
+            await userEvent.clear(first_name);
             expect(screen.getByText(/First name is required./)).toBeInTheDocument();
         });
     });
@@ -109,18 +109,18 @@ describe('<PersonalDetailsForm />', () => {
     it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
         renderComponent();
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, 'test 3');
+            await userEvent.type(first_name, 'test 3');
             expect(screen.getByText('Letters, spaces, periods, hyphens, apostrophes only.')).toBeInTheDocument();
         });
     });
 
     it('should not display error for the regex validation, for First name when acceptable characters are entered', async () => {
         renderComponent();
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, "test-with' chars.");
+            await userEvent.type(first_name, "test-with' chars.");
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
         });
     });
@@ -172,14 +172,14 @@ describe('<PersonalDetailsForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should update user profile after clicking on Save changes', () => {
+    it('should update user profile after clicking on Save changes', async () => {
         renderComponent();
         const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;
         expect(first_name.value).toBe('John');
-        userEvent.clear(first_name);
-        userEvent.type(first_name, 'James');
+        await userEvent.clear(first_name);
+        await userEvent.type(first_name, 'James');
         const save_changes_button = screen.getByRole('button', { name: /Save changes/ });
-        userEvent.click(save_changes_button);
+        await userEvent.click(save_changes_button);
         expect(first_name.value).toBe('James');
     });
 

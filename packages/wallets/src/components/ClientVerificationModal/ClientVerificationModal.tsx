@@ -1,14 +1,14 @@
 import React from 'react';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper } from '../../../../components';
-import DerivLightUserVerificationIcon from '../../../../public/images/ic-deriv-light-user-verification.svg';
-import { TModifiedMT5Account } from '../../types';
+import DerivLightUserVerificationIcon from '../../public/images/ic-deriv-light-user-verification.svg';
+import { TModifiedMT5Account, TWalletsMFAccountStatus } from '../../types';
+import { ModalStepWrapper } from '../Base';
 import { DocumentsList } from './components';
 import './ClientVerificationModal.scss';
 
 type TClientVerificationModal = {
-    account: TModifiedMT5Account;
+    account: TModifiedMT5Account | TWalletsMFAccountStatus;
 };
 
 const ClientVerificationModal: React.FC<TClientVerificationModal> = ({ account }) => {

@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect, Fragment, ChangeEvent, useMemo, useLayoutEffect } from 'react';
-import clsx from 'clsx';
-import { Formik, Form, FormikHelpers } from 'formik';
+import { ChangeEvent, Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-import { useDevice } from '@deriv-com/ui';
+import clsx from 'clsx';
+import { Form, Formik, FormikHelpers } from 'formik';
+
+import { useInvalidateQuery } from '@deriv/api';
 import {
     Button,
     Checkbox,
@@ -13,35 +14,39 @@ import {
     OpenLiveChatLink,
     Text,
 } from '@deriv/components';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
-import LeaveConfirm from '../../../Components/leave-confirm';
-import FormFooter from '../../../Components/form-footer';
-import FormBody from '../../../Components/form-body';
-import { DateOfBirthField } from '../../../Components/forms/form-fields';
-import FormSubHeader from '../../../Components/form-sub-header';
-import LoadErrorMessage from '../../../Components/load-error-message';
-import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
-import InputGroup from './input-group';
-import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
-import FormSelectField from '../../../Components/forms/form-select-field';
-import { VerifyButton } from './verify-button';
-import { useInvalidateQuery } from '@deriv/api';
-import EmploymentTaxDetailsContainer from '../../../Containers/employment-tax-details-container';
-import { isFieldImmutable } from '../../../Helpers/utils';
-import { PersonalDetailsValueTypes } from '../../../Types';
-import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
-import { account_opening_reason_list } from './constants';
-import { useScrollElementToTop } from '../../../hooks';
 import {
-    useStatesList,
-    useResidenceList,
+    useGetPhoneNumberList,
     useGrowthbookGetFeatureValue,
-    usePhoneNumberVerificationSetTimer,
     useIsPhoneNumberVerified,
+    usePhoneNumberVerificationSetTimer,
+    useResidenceList,
+    useStatesList,
     useTinValidations,
 } from '@deriv/hooks';
+import { AUTH_STATUS_CODES, getBrandWebsiteName, routes, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import FormBody from '../../../Components/form-body';
+import FormFooter from '../../../Components/form-footer';
+import FormSubHeader from '../../../Components/form-sub-header';
+import { DateOfBirthField } from '../../../Components/forms/form-fields';
+import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
+import FormSelectField from '../../../Components/forms/form-select-field';
+import LeaveConfirm from '../../../Components/leave-confirm';
+import LoadErrorMessage from '../../../Components/load-error-message';
+import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
+import EmploymentTaxDetailsContainer from '../../../Containers/employment-tax-details-container';
+import { isFieldImmutable } from '../../../Helpers/utils';
+import { useScrollElementToTop } from '../../../hooks';
+import { PersonalDetailsValueTypes } from '../../../Types';
+
+import { account_opening_reason_list } from './constants';
+import InputGroup from './input-group';
+import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
+import { VerifyButton } from './verify-button';
+
 import './personal-details-form.scss';
 
 type TRestState = {
@@ -56,9 +61,13 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
-    const [isPhoneNumberVerificationEnabled] = useGrowthbookGetFeatureValue({
+    const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
+
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
 
     const { tin_validation_config, mutate } = useTinValidations();
@@ -90,6 +99,15 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
 
+    const {
+        is_global_sms_available,
+        is_global_whatsapp_available,
+        legacy_core_countries_list,
+        selected_phone_code,
+        selected_country_list,
+        updatePhoneSettings,
+    } = useGetPhoneNumberList();
+
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
     const {
@@ -118,7 +136,12 @@ const PersonalDetailsForm = observer(() => {
         fetchAccountSettings();
     }, [fetchAccountSettings]);
 
-    const should_show_loader = is_loading_state_list || is_loading || is_loading_residence_list;
+    const should_show_loader =
+        is_loading_state_list ||
+        is_loading ||
+        is_loading_residence_list ||
+        !isPhoneNumberVerificationLoaded ||
+        !isCountryCodeLoaded;
 
     useEffect(() => {
         const init = async () => {
@@ -136,6 +159,20 @@ const PersonalDetailsForm = observer(() => {
             init();
         }
     }, [invalidate, is_language_changing]);
+
+    const checkForInitialCarriersSupported = () => {
+        const is_sms_carrier_available =
+            selected_country_list?.carriers &&
+            (selected_country_list?.carriers as string[]).includes('sms') &&
+            is_global_sms_available;
+
+        const is_whatsapp_carrier_available =
+            selected_country_list?.carriers &&
+            (selected_country_list?.carriers as string[]).includes('whatsapp') &&
+            is_global_whatsapp_available;
+
+        return is_sms_carrier_available || is_whatsapp_carrier_available;
+    };
 
     const hintMessage = () => {
         if (isPhoneNumberVerificationEnabled) {
@@ -188,6 +225,7 @@ const PersonalDetailsForm = observer(() => {
                 return;
             }
             // Fetches the status of the account after update
+            updatePhoneSettings();
             updateAccountStatus();
             refreshNotifications();
             setIsBtnLoading(false);
@@ -286,7 +324,9 @@ const PersonalDetailsForm = observer(() => {
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    const stripped_phone_number = `+${account_settings.phone?.replace(/\D/g, '')}`;
+    const stripped_phone_number = isCountryCodeDropdownEnabled
+        ? account_settings.phone?.replace(/\D/g, '')
+        : `+${account_settings.phone?.replace(/\D/g, '')}`;
 
     //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
@@ -308,7 +348,8 @@ const PersonalDetailsForm = observer(() => {
         tin_validation_config,
         is_tin_auto_set,
         account_settings?.immutable_fields,
-        is_employment_status_tin_mandatory
+        is_employment_status_tin_mandatory,
+        isCountryCodeDropdownEnabled
     );
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {
@@ -328,7 +369,15 @@ const PersonalDetailsForm = observer(() => {
         return <FormSubmitErrorMessage message={status?.msg} />;
     };
 
-    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
+    const initialValues = getPersonalDetailsInitialValues(
+        account_settings,
+        residence_list,
+        states_list,
+        is_virtual,
+        selected_phone_code,
+        checkForInitialCarriersSupported(),
+        isCountryCodeDropdownEnabled
+    );
 
     return (
         <Formik
@@ -481,22 +530,75 @@ const PersonalDetailsForm = observer(() => {
                                 {!is_virtual && (
                                     <Fragment>
                                         <fieldset className='account-form__fieldset'>
-                                            <div className='account-form__fieldset--phone_container'>
+                                            <div
+                                                className={clsx('account-form__fieldset--phone_container', {
+                                                    'account-form__fieldset--phone_container--verified':
+                                                        is_phone_number_verified,
+                                                    'account-form__fieldset--phone_container--with-1-field':
+                                                        !isCountryCodeDropdownEnabled,
+                                                })}
+                                            >
                                                 <div className='account-form__fieldset--phone_input'>
+                                                    {isCountryCodeDropdownEnabled && (
+                                                        <FormSelectField
+                                                            label={localize('Code*')}
+                                                            name='calling_country_code'
+                                                            list_items={legacy_core_countries_list}
+                                                            is_country_code_dropdown
+                                                            onItemSelection={country_list => {
+                                                                setFieldValue(
+                                                                    'calling_country_code',
+                                                                    country_list.value,
+                                                                    true
+                                                                );
+                                                                const is_sms_carrier_available =
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    country_list.carriers &&
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    (country_list.carriers as string[]).includes(
+                                                                        'sms'
+                                                                    ) &&
+                                                                    is_global_sms_available;
+                                                                const is_whatsapp_carrier_available =
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    country_list.carriers &&
+                                                                    //@ts-expect-error carriers is not defined in TListItem type
+                                                                    (country_list.carriers as string[]).includes(
+                                                                        'whatsapp'
+                                                                    ) &&
+                                                                    is_global_whatsapp_available;
+                                                                setFieldValue(
+                                                                    'is_carriers_available',
+                                                                    is_sms_carrier_available ||
+                                                                        is_whatsapp_carrier_available,
+                                                                    true
+                                                                );
+                                                            }}
+                                                            disabled={
+                                                                isFieldDisabled('calling_country_code') ||
+                                                                !!next_email_otp_request_timer ||
+                                                                is_email_otp_timer_loading
+                                                            }
+                                                        />
+                                                    )}
                                                     <Input
                                                         data-lpignore='true'
                                                         type='text'
+                                                        inputMode='numeric'
                                                         name='phone'
                                                         id={'phone'}
                                                         label={localize('Phone number*')}
                                                         //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                                         value={values.phone}
-                                                        hint={hintMessage()}
                                                         className='account-form__fieldset--phone-number-input'
                                                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                                             let phone_number = e.target.value.replace(/\D/g, '');
-                                                            phone_number =
-                                                                phone_number.length === 0 ? '+' : `+${phone_number}`;
+                                                            if (!isCountryCodeDropdownEnabled) {
+                                                                phone_number =
+                                                                    phone_number.length === 0
+                                                                        ? '+'
+                                                                        : `+${phone_number}`;
+                                                            }
                                                             setFieldValue('phone', phone_number, true);
                                                             setStatus('');
                                                         }}
@@ -517,7 +619,10 @@ const PersonalDetailsForm = observer(() => {
                                                             isFieldDisabled('phone') ||
                                                             !isValid ||
                                                             !stripped_phone_number ||
-                                                            is_email_otp_timer_loading
+                                                            is_email_otp_timer_loading ||
+                                                            (isCountryCodeDropdownEnabled &&
+                                                                //@ts-expect-error is_carriers_available is not defined in GetSettings type
+                                                                !values.is_carriers_available)
                                                         }
                                                         // @ts-expect-error This needs to fixed in VerifyButton component
                                                         values={values}
@@ -528,6 +633,13 @@ const PersonalDetailsForm = observer(() => {
                                                     />
                                                 )}
                                             </div>
+                                            {is_phone_number_verified && (
+                                                <div className='account-form__fieldset--phone_container--verified-hint'>
+                                                    <Text as='p' color='less-prominent' size='xxs'>
+                                                        {hintMessage()}
+                                                    </Text>
+                                                </div>
+                                            )}
                                         </fieldset>
                                         <AccountOpeningReasonField
                                             account_opening_reason_list={account_opening_reason_list}

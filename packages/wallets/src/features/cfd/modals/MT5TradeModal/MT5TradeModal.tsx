@@ -1,9 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { useModal } from '../../../../components/ModalProvider';
-import { TMarketTypes, TPlatforms } from '../../../../types';
+import { TAddedMT5Account, TMarketTypes, TPlatforms } from '../../../../types';
 import { ModalTradeWrapper } from '../../components';
 import { MT5TradeScreen } from '../../screens';
-import { TAddedMT5Account } from '../../types';
 
 type TMT5TradeModalProps = {
     marketType?: TMarketTypes.All;

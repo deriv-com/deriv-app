@@ -28,7 +28,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 type TRoutes =
     | '/404'
@@ -112,8 +112,8 @@ type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 // TODO: Remove this type once the API types are updated
 
 type TClientKyCStatus = {
-    poi_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
-    poa_status?: typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+    poi_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
+    poa_status?: (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
     valid_tin?: 0 | 1;
     required_tin?: 0 | 1;
 };
@@ -482,6 +482,8 @@ export type TClientStore = {
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
+    is_trading_platform_available_account_loaded: boolean;
+    setIsTradingPlatformAvailableAccountLoaded: (value: boolean) => void;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_duplicate_dob_phone: boolean;
@@ -824,7 +826,7 @@ type TUiStore = {
                       position?: string;
                       Component?: React.FunctionComponent;
                       has_right_separator?: boolean;
-                  }
+                  },
               ]
             | []
     ) => void;

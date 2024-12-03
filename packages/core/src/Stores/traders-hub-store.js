@@ -140,6 +140,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.ctrader_accounts_list,
                 this.root_store.client.is_landing_company_loaded,
                 this.root_store.client.trading_platform_available_accounts,
+                this.root_store.client.is_trading_platform_available_account_loaded,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
@@ -402,8 +403,13 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableCFDAccounts() {
-        const { trading_platform_available_accounts, mt5_login_list, landing_company_shortcode, is_logged_in } =
-            this.root_store.client;
+        const {
+            trading_platform_available_accounts,
+            mt5_login_list,
+            landing_company_shortcode,
+            is_logged_in,
+            is_trading_platform_available_account_loaded,
+        } = this.root_store.client;
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('CFDs on financial instruments.')
@@ -500,7 +506,7 @@ export default class TradersHubStore extends BaseStore {
                 return existing_account.length
                     ? getMT5Accounts.filter(account => account.product === existing_account[0].product)
                     : [];
-            } else if (is_logged_in) {
+            } else if (is_logged_in && is_trading_platform_available_account_loaded) {
                 return getMT5Accounts.filter(account =>
                     Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
                 );
@@ -811,7 +817,6 @@ export default class TradersHubStore extends BaseStore {
     }
     setCombinedCFDMT5Accounts() {
         this.combined_cfd_mt5_accounts = [];
-        // console.log(this.available_mt5_accounts);
         this.available_mt5_accounts?.forEach(account => {
             const existing_accounts = this.getExistingAccounts(account.platform, account.market_type, account.product);
             const has_existing_accounts = existing_accounts.length > 0;

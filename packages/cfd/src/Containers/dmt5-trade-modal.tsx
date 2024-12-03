@@ -92,7 +92,7 @@ const DMT5TradeModal = observer(
                 case Jurisdiction.VANUATU:
                     return 'Vanuatu';
                 case Jurisdiction.MAURITIUS:
-                    return 'Dml';
+                    return 'DML';
                 default:
                     return null;
             }

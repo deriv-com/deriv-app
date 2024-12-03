@@ -802,7 +802,8 @@ export default class TradersHubStore extends BaseStore {
             const short_code =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&
-                account.landing_company_short !== 'bvi'
+                account.landing_company_short !== 'bvi' &&
+                account.landing_company_short !== 'dml'
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 

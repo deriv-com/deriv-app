@@ -1,14 +1,13 @@
+name: Reporter
+
 on: 
   pull_request:
-    types: [opened, synchronize, edited]    
-name: Reporter
+    types: [opened, synchronize, edited]
+    
 jobs:
   test:
     name: Run tests in parallel
     runs-on: Runner_16cores_Deriv-app
-    permissions:
-      contents: read
-      actions: read
     strategy:
       matrix:
         shard: [1,2,3,4,5,6,7,8,9,10]
@@ -18,14 +17,15 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
-      - name: Cache node modules
+      - name: Restore npm cache
+        uses: actions/cache/restore@v4
         id: cache-npm
-        uses: actions/cache@v4
         with:
           path: |
             node_modules
             packages/*/node_modules
           key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
+          restore-keys: node_modules-cache-
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"

@@ -28,6 +28,7 @@ const Redirect = observer(() => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
+    let redirected_to_route = false;
 
     // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
@@ -56,7 +57,6 @@ const Redirect = observer(() => {
         window.LiveChatWidget?.call('maximize');
     };
 
-    let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
@@ -307,10 +307,24 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            history.push({
-                pathname: routes.traders_hub,
-                search: url_query_string,
-            });
+            if (/dtrader/i.test(history.location.search)) {
+                history.push({
+                    pathname: routes.trade,
+                    search: url_query_string,
+                });
+            } else if (/smart_trader/i.test(url_query_string)) {
+                window.location.href = routes.smarttrader;
+            } else if (/dbot/i.test(url_query_string)) {
+                history.push({
+                    pathname: routes.bot,
+                    search: url_query_string,
+                });
+            } else {
+                history.push({
+                    pathname: routes.traders_hub,
+                    search: url_query_string,
+                });
+            }
         }
     }, [redirected_to_route, url_query_string, history]);
 

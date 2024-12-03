@@ -7,35 +7,34 @@ import {
     deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
+    getAppId,
     getPropertyValue,
+    getUrlP2P,
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
-    isMobile,
     isEmptyObject,
     isLocal,
+    isMobile,
     isProduction,
     isStaging,
-    isTestLink,
     isTestDerivApp,
+    isTestLink,
     LocalStore,
     redirectToLogin,
     removeCookies,
     routes,
     SessionStore,
     setCurrencies,
+    sortApiData,
     State,
     toMoment,
-    sortApiData,
     urlForLanguage,
-    getAppId,
-    getUrlP2P,
 } from '@deriv/shared';
+import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
+import { getCountry } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
-import { getCountry } from '@deriv/utils';
-
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -44,6 +43,7 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
+
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -60,6 +60,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
@@ -165,7 +166,6 @@ export default class ClientStore extends BaseStore {
 
     is_passkey_supported = false;
     is_phone_number_verification_enabled = false;
-    is_country_code_dropdown_enabled = false;
     should_show_passkey_notification = false;
     passkeys_list = [];
 
@@ -187,6 +187,7 @@ export default class ClientStore extends BaseStore {
             upgrade_info: observable,
             email: observable,
             accounts: observable,
+            is_trading_platform_available_account_loaded: observable,
             trading_platform_available_accounts: observable,
             ctrader_trading_platform_available_accounts: observable,
             pre_switch_broadcast: observable,
@@ -248,7 +249,6 @@ export default class ClientStore extends BaseStore {
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             is_phone_number_verification_enabled: observable,
-            is_country_code_dropdown_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
             balance: computed,
@@ -394,6 +394,7 @@ export default class ClientStore extends BaseStore {
             responseMT5TradingServers: action.bound,
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
+            setIsTradingPlatformAvailableAccountLoaded: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
             responseCTraderTradingPlatformAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
@@ -423,7 +424,6 @@ export default class ClientStore extends BaseStore {
             resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
             setIsPhoneNumberVerificationEnabled: action.bound,
-            setIsCountryCodeDropdownEnabled: action.bound,
             setPasskeysStatusToCookie: action.bound,
             fetchShouldShowPasskeyNotification: action.bound,
             fetchPasskeysList: action.bound,
@@ -2522,10 +2522,15 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    setIsTradingPlatformAvailableAccountLoaded(value) {
+        this.is_trading_platform_available_account_loaded = value;
+    }
+
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
+        this.setIsTradingPlatformAvailableAccountLoaded(true);
     }
 
     responseCTraderTradingPlatformAvailableAccounts(response) {
@@ -2777,10 +2782,6 @@ export default class ClientStore extends BaseStore {
 
     setIsPhoneNumberVerificationEnabled(is_phone_number_verification_enabled = false) {
         this.is_phone_number_verification_enabled = is_phone_number_verification_enabled;
-    }
-
-    setIsCountryCodeDropdownEnabled(is_country_code_dropdown_enabled = false) {
-        this.is_country_code_dropdown_enabled = is_country_code_dropdown_enabled;
     }
 
     setShouldShowPasskeyNotification(should_show_passkey_notification = true) {

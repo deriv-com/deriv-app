@@ -1,7 +1,8 @@
 import React from 'react';
+
+import { useGrowthbookGetFeatureValue, useMT5SVGEligibleToMigrate, useTradingPlatformStatus } from '@deriv/hooks';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 import CFDsListing from '../index';
 
@@ -69,6 +70,7 @@ describe('CFDsListing', () => {
             },
             client: {
                 is_landing_company_loaded: true,
+                is_trading_platform_available_account_loaded: true,
                 real_account_creation_unlock_date: '2022-02-02',
             },
             modules: {
@@ -108,6 +110,7 @@ describe('CFDsListing', () => {
             },
             client: {
                 is_landing_company_loaded: true,
+                is_trading_platform_available_account_loaded: true,
                 real_account_creation_unlock_date: '2022-02-02',
             },
             modules: {

@@ -1,31 +1,33 @@
 import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
+
 import { Loading, Text } from '@deriv/components';
+import {
+    TradingPlatformStatus,
+    useGrowthbookGetFeatureValue,
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
+} from '@deriv/hooks';
 import {
     CFD_PLATFORMS,
     formatMoney,
-    MT5_ACCOUNT_STATUS,
-    TRADING_PLATFORM_STATUS,
     makeLazyLoader,
     moduleLoader,
+    MT5_ACCOUNT_STATUS,
     setPerformanceValue,
+    TRADING_PLATFORM_STATUS,
 } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import ListingContainer from 'Components/containers/listing-container';
+import { useDevice } from '@deriv-com/ui';
+
 import AddOptionsAccount from 'Components/add-options-account';
-import TradingAppCard from 'Components/containers/trading-app-card';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
+import ListingContainer from 'Components/containers/listing-container';
+import TradingAppCard from 'Components/containers/trading-app-card';
 import CFDsDescription from 'Components/elements/cfds-description';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import {
-    useMT5SVGEligibleToMigrate,
-    useTradingPlatformStatus,
-    TradingPlatformStatus,
-    useGrowthbookGetFeatureValue,
-} from '@deriv/hooks';
 
 import './cfds-listing.scss';
 
@@ -86,6 +88,7 @@ const CFDsListing = observer(() => {
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
         ctrader_total_balance,
+        is_trading_platform_available_account_loaded,
         updateMT5AccountDetails,
         is_switching,
     } = client;
@@ -193,7 +196,11 @@ const CFDsListing = observer(() => {
     const is_cfd_accounts_supported =
         combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
 
-    const is_mt5_list_loaded = is_landing_company_loaded && !is_populating_mt5_account_list && !is_switching;
+    const is_mt5_list_loaded =
+        is_landing_company_loaded &&
+        !is_populating_mt5_account_list &&
+        !is_switching &&
+        is_trading_platform_available_account_loaded;
 
     if (is_mt5_list_loaded && !is_cfd_accounts_supported) {
         return null;

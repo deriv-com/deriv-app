@@ -10,25 +10,25 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    GetSelfExclusion,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    P2PAdvertiserInformationResponse,
+    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
+    Statement,
     StatesList,
     Transaction,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     WebsiteStatus,
-    GetSelfExclusion,
-    Statement,
 } from '@deriv/api-types';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 import type { FeatureFlagsStore } from './src/stores';
-import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -482,6 +482,8 @@ export type TClientStore = {
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
+    is_trading_platform_available_account_loaded: boolean;
+    setIsTradingPlatformAvailableAccountLoaded: (value: boolean) => void;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_duplicate_dob_phone: boolean;
@@ -682,8 +684,6 @@ export type TClientStore = {
     setIsPasskeySupported: (value: boolean) => void;
     is_phone_number_verification_enabled: boolean;
     setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
-    is_country_code_dropdown_enabled: boolean;
-    setIsCountryCodeDropdownEnabled: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
@@ -734,7 +734,6 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
-    is_from_tradershub_os: boolean;
     is_from_outside_cashier: boolean;
     is_network_online: boolean;
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';

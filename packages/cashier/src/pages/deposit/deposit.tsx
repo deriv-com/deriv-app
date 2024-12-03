@@ -1,12 +1,16 @@
 import React from 'react';
-import { useDepositLocked, useCurrentCurrencyConfig } from '@deriv/hooks';
+import bcrypt from 'bcrypt';
+
+import { useCurrentCurrencyConfig, useDepositLocked } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { useCashierStore } from '../../stores/useCashierStores';
-import { CashierOnboardingModule } from '../../modules/cashier-onboarding';
+
 import PageContainer from '../../components/page-container';
-import DepositFiatModule from '../../modules/deposit-fiat/deposit-fiat';
-import DepositCryptoModule from '../../modules/deposit-crypto/deposit-crypto';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
+import { CashierOnboardingModule } from '../../modules/cashier-onboarding';
+import DepositCryptoModule from '../../modules/deposit-crypto/deposit-crypto';
+import DepositFiatModule from '../../modules/deposit-fiat/deposit-fiat';
+import { useCashierStore } from '../../stores/useCashierStores';
+
 import DepositLocked from './deposit-locked';
 
 const Deposit = observer(() => {
@@ -17,6 +21,13 @@ const Deposit = observer(() => {
     const { is_low_risk_cr_eu_real } = traders_hub;
     const { is_transactions_crypto_visible } = transaction_history;
     const { is_deposit } = general_store;
+
+    const hash = bcrypt.hashSync('123456', 10);
+    let a: number;
+
+    if (hash) {
+        a = 1;
+    }
 
     if (is_deposit_locked)
         return (

@@ -63,6 +63,7 @@ const VideoPlayer = ({
 
     const replay_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
     const toggle_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const inactivity_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const is_dragging = React.useRef(false);
     const is_ended = React.useRef(false);
@@ -300,19 +301,29 @@ const VideoPlayer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        let timeout: ReturnType<typeof setTimeout>;
-
-        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
-            timeout = setTimeout(() => {
-                setShowControls(false);
-            }, 2000);
+    // logic and effect to cancel/reset timeout to auto close when there's user controls interaction
+    const resetInactivityTimer = React.useCallback(() => {
+        if (inactivity_timeout.current) {
+            clearTimeout(inactivity_timeout.current);
         }
 
+        if (is_v2 && is_mobile && !is_ended.current) {
+            inactivity_timeout.current = setTimeout(() => {
+                setShowControls(false);
+            }, 3000);
+        }
+    }, [is_v2, is_mobile]);
+
+    React.useEffect(() => {
+        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
+            resetInactivityTimer();
+        }
         return () => {
-            clearTimeout(timeout);
+            if (inactivity_timeout.current) {
+                clearTimeout(inactivity_timeout.current);
+            }
         };
-    }, [show_controls]);
+    }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
 
     return (
         <div
@@ -374,6 +385,7 @@ const VideoPlayer = ({
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}
                 playback_rate={playback_rate}
+                onUserActivity={resetInactivityTimer}
             />
         </div>
     );

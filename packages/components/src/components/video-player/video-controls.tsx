@@ -21,6 +21,7 @@ type TVideoControls = {
     onRewind: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
     onVolumeChange: (new_value: number) => void;
     onPlaybackRateChange: (new_value: number) => void;
+    onUserActivity: () => void;
     progress_bar_filled_ref: React.RefObject<HTMLDivElement>;
     progress_bar_ref: React.RefObject<HTMLDivElement>;
     progress_dot_ref: React.RefObject<HTMLSpanElement>;
@@ -56,8 +57,13 @@ const VideoControls = ({
     toggleMute,
     video_duration,
     volume,
+    onUserActivity,
 }: TVideoControls) => {
     const [is_drag_dot_visible, setIsDragDotVisible] = React.useState(false);
+
+    const handleUserInteraction = () => {
+        onUserActivity?.();
+    };
 
     return (
         <div
@@ -65,6 +71,9 @@ const VideoControls = ({
                 'player__controls__wrapper--visible': show_controls,
                 'player__controls__wrapper--interactive': show_controls,
             })}
+            onMouseMove={handleUserInteraction}
+            onTouchStart={handleUserInteraction}
+            onTouchMove={handleUserInteraction}
         >
             {is_v2 && (
                 <div
@@ -86,6 +95,7 @@ const VideoControls = ({
                             is_mobile={is_mobile}
                             playback_rate={playback_rate}
                             is_v2
+                            show_controls={show_controls}
                         />
                     </div>
                     <div className='controls__left--v2'>

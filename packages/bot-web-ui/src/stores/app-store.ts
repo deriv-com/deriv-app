@@ -69,12 +69,12 @@ export default class AppStore {
 
         const country_name = not_allowed_clients_country[client_country];
 
-        if (country_name) {
-            return showDigitalOptionsUnavailableError(
-                common.showError,
-                this.getErrorForEuClients(client.is_logged_in, country_name)
-            );
-        }
+        // if (country_name) {
+            // return showDigitalOptionsUnavailableError(
+            //     common.showError,
+            //     this.getErrorForEuClients(client.is_logged_in, country_name)
+            // );
+        // }
     };
 
     handleErrorForEu = (show_default_error = false) => {
@@ -87,7 +87,7 @@ export default class AppStore {
             }
 
             this.throwErrorForExceptionCountries(client?.clients_country);
-            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
+            // return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
         if (!client.is_landing_company_loaded) {
@@ -97,10 +97,10 @@ export default class AppStore {
         if (window.location.pathname.includes(routes.bot)) {
             this.throwErrorForExceptionCountries(client?.account_settings?.country_code as string);
             if (client.should_show_eu_error) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForEuClients(client.is_logged_in)
-                );
+                // return showDigitalOptionsUnavailableError(
+                //     common.showError,
+                //     this.getErrorForEuClients(client.is_logged_in)
+                // );
             }
 
             if (traders_hub.content_flag === ContentFlag.HIGH_RISK_CR) {
@@ -118,7 +118,9 @@ export default class AppStore {
             }
 
             if (
-                ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+                ((!client.is_bot_allowed &&
+                    // client.is_eu &&
+                    client.should_show_eu_error) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked) &&
                 toggleAccountsDialog

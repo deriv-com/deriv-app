@@ -6,6 +6,9 @@ jobs:
   test:
     name: Run tests in parallel
     runs-on: Runner_16cores_Deriv-app
+    permissions:
+      contents: read
+      actions: read
     strategy:
       matrix:
         shard: [1,2,3,4,5,6,7,8,9,10]

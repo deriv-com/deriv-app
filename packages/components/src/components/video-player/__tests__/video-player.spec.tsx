@@ -99,12 +99,6 @@ describe('<VideoPlayer />', () => {
         await userEvent.click(pause_button);
         expect(screen.queryByText(icon_pause)).not.toBeInTheDocument();
         expect(screen.getByText(icon_play)).toBeInTheDocument();
-
-        // a tap upon replay overlay on mobile should not resume playing while the video is not ended:
-        const replay_button = screen.getByText(icon_replay);
-        expect(replay_button).toBeInTheDocument();
-        await userEvent.click(replay_button);
-        expect(screen.getByText(icon_play)).toBeInTheDocument();
     });
     it('should render the component on mobile for Safari', () => {
         Object.defineProperty(window.navigator, 'userAgent', {

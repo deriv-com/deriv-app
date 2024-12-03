@@ -119,7 +119,7 @@ export default class AppStore {
 
             if (
                 ((!client.is_bot_allowed &&
-                    // client.is_eu &&
+                    client.is_eu &&
                     client.should_show_eu_error) ||
                     isEuResidenceWithOnlyVRTC(client.active_accounts) ||
                     client.is_options_blocked) &&

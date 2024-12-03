@@ -240,26 +240,10 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
         )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
 
-    const gold_accounts = available_accounts
-        .filter(
-            item =>
-                item.market_type === MARKET_TYPE.FINANCIAL &&
-                item.shortcode !== JURISDICTION.MALTA_INVEST &&
-                item.product === PRODUCT.GOLD &&
-                item.is_default_jurisdiction === 'true'
-        )
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
-
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.GAMING && item.is_default_jurisdiction === 'true')
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
-    return [
-        ...gaming_accounts,
-        ...financial_accounts,
-        ...swap_free_accounts,
-        ...zero_spread_accounts,
-        ...gold_accounts,
-    ];
+    return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts, ...zero_spread_accounts];
 };
 
 // Get the maltainvest accounts for EU and DIEL clients
@@ -269,6 +253,7 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
             item =>
                 item.market_type === MARKET_TYPE.FINANCIAL &&
                 item.shortcode === JURISDICTION.MALTA_INVEST &&
+                item.product !== PRODUCT.GOLD &&
                 item.is_default_jurisdiction === 'true'
         )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);

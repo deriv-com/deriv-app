@@ -19,7 +19,7 @@ const CompareAccountsScreen = () => {
 
     return (
         <div className='wallets-compare-accounts'>
-            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} isLoading={isEuRegionLoading} />
+            <CompareAccountsHeader isDemo={isDemo} isLoading={isEuRegionLoading} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel isRtl={isRtl}>
                     {/* Renders MT5 data */}

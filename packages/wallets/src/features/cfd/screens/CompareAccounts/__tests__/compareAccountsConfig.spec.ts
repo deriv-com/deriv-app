@@ -100,7 +100,7 @@ describe('compareAccountsConfig', () => {
                 isEuRegion: true,
             });
 
-            expect(result[6]).toEqual({
+            expect(result[5]).toEqual({
                 highlighted: false,
                 icon: 'Synthetics',
                 isAsterisk: true,

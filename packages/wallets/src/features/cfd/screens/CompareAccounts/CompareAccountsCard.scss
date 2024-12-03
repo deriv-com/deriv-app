@@ -22,6 +22,10 @@
         display: flex;
         justify-content: flex-start;
         padding: 0 2.4rem;
+
+        &--disabled {
+            opacity: 0.2;
+        }
     }
 
     &__banner {

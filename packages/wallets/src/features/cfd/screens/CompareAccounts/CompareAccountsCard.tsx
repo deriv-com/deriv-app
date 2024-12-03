@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
@@ -26,7 +27,6 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
     const instruments = account.platform === 'mt5' ? account.instruments : undefined;
     //@ts-expect-error need update api-types
     const isNewBadgeVisible = product === PRODUCT.ZEROSPREAD || product === PRODUCT.GOLD;
-    const shouldShowEuDisclaimer = isEuRegion && product === 'financial';
 
     return (
         <div>
@@ -51,8 +51,13 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
                     isEuRegion={isEuRegion}
                     platform={account.platform}
                 />
-                {shouldShowEuDisclaimer && (
-                    <div className='wallets-compare-accounts-card__eu-clients'>
+                {isEuRegion && (
+                    <div
+                        className={classNames('wallets-compare-accounts-card__eu-clients', {
+                            //@ts-expect-error need update api-types
+                            'wallets-compare-accounts-card__eu-clients--disabled': product === PRODUCT.GOLD,
+                        })}
+                    >
                         <Text color='red' size='2xs' weight='bold'>
                             <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
                         </Text>

@@ -1,27 +1,26 @@
 import React from 'react';
 
 import { Popover, Text } from '@deriv/components';
-import { PRODUCT } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 
 import { TCompareAccountsCard } from 'Components/props.types';
 
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
-import { CFD_PLATFORMS, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
-import { getAccountCardTitle, getAccountIcon, getMarketType } from '../../Helpers/compare-accounts-config';
+import { CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
+import {
+    generateMarketTypeShortcode,
+    getAccountCardTitle,
+    getAccountIcon,
+    getMarketType,
+} from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const { isDesktop } = useDevice();
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
 
-    const market_type_shortcode =
-        trading_platforms.platform === CFD_PLATFORMS.MT5 &&
-        (market_type === MARKET_TYPE.ALL ||
-            trading_platforms.product === PRODUCT.STP ||
-            trading_platforms.product === PRODUCT.GOLD)
-            ? `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`
-            : (market_type ?? '');
+    const market_type_shortcode = generateMarketTypeShortcode(trading_platforms, market_type);
+
     const jurisdiction_card_icon =
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE || trading_platforms.platform === CFD_PLATFORMS.CTRADER
             ? getAccountIcon(trading_platforms.platform)

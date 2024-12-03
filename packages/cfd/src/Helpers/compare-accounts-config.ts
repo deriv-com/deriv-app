@@ -83,8 +83,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
             return is_demo ? localize('Financial Demo') : localize('Financial');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - STP');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD_DML:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD_BVI:
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD:
             return is_demo ? localize('Gold Demo') : localize('Gold');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
@@ -356,6 +355,31 @@ const getCtraderDemoData = (available_accounts: TModifiedTradingPlatformAvailabl
     return available_accounts.filter(item => item.platform === CFD_PLATFORMS.CTRADER);
 };
 
+const generateMarketTypeShortcode = (
+    trading_platforms: TModifiedTradingPlatformAvailableAccount,
+    market_type: TModifiedTradingPlatformAvailableAccount['market_type'] | 'CFDs'
+) => {
+    // First check if platform is MT5
+    if (trading_platforms.platform !== CFD_PLATFORMS.MT5) {
+        return market_type ?? '';
+    }
+
+    // Check conditions for generating full shortcode
+    const isAllMarketType = market_type === MARKET_TYPE.ALL;
+    const isSTPProduct = trading_platforms.product === PRODUCT.STP;
+    const isGoldProduct = trading_platforms.product === PRODUCT.GOLD;
+
+    if (isAllMarketType || isSTPProduct) {
+        return `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`;
+    }
+
+    if (isGoldProduct) {
+        return `${market_type}_${trading_platforms.product}`;
+    }
+
+    return market_type ?? '';
+};
+
 export {
     getHighlightedIconLabel,
     getJuridisctionDescription,
@@ -373,4 +397,5 @@ export {
     getMT5DemoData,
     getDxtradeDemoData,
     getCtraderDemoData,
+    generateMarketTypeShortcode,
 };

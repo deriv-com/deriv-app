@@ -10,6 +10,7 @@ type TPlaybackRateControl = {
     is_mobile?: boolean;
     playback_rate: number;
     is_v2?: boolean;
+    show_controls?: boolean;
 };
 
 const PlaybackRateControl = ({
@@ -17,6 +18,7 @@ const PlaybackRateControl = ({
     is_mobile,
     playback_rate,
     is_v2 = false,
+    show_controls = false,
 }: TPlaybackRateControl) => {
     const playback_rate_list = [
         { text: '0.25x', value: '0.25' },
@@ -59,6 +61,7 @@ const PlaybackRateControl = ({
                 should_open_on_hover={!is_mobile}
                 should_scroll_to_selected
                 should_autohide={false}
+                should_auto_close_dropdown_list={!show_controls}
             />
         </button>
     );

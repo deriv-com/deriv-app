@@ -14,7 +14,19 @@ import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5PasswordModal from '../MT5PasswordModal';
 
-jest.mock('@deriv/api-v2');
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useAccountStatus: jest.fn(),
+    useAvailableMT5Accounts: jest.fn(),
+    useCreateMT5Account: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
+    useMT5AccountsList: jest.fn(),
+    useSettings: jest.fn(),
+    useTradingPlatformPasswordChange: jest.fn(),
+    useVerifyEmail: jest.fn(),
+}));
 jest.mock('../../../../../components/ModalProvider');
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

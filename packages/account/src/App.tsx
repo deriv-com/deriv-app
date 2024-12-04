@@ -5,6 +5,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { POIProvider } from '@deriv/shared';
+import { BreakpointProvider } from '@deriv-com/quill-ui';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {
@@ -24,9 +25,11 @@ const App = ({ passthrough }: TAppProps) => {
         <StoreProvider store={root_store}>
             <APIProvider>
                 <POIProvider>
-                    {Notifications && <Notifications />}
-                    <Routes />
-                    <ResetTradingPassword />
+                    <BreakpointProvider>
+                        {Notifications && <Notifications />}
+                        <Routes />
+                        <ResetTradingPassword />
+                    </BreakpointProvider>
                 </POIProvider>
             </APIProvider>
             <NetworkStatusToastPopup />

@@ -22,6 +22,30 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../../../../components', () => ({
     ...jest.requireActual('../../../../components'),
+    PlatformStatusBadge: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>PlatformStatusBadge</div>;
+    }),
+}));
+
+jest.mock('../../../../modals', () => ({
+    ...jest.requireActual('../../../../modals'),
+    MT5TradeModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>MT5TradeModal</div>;
+    }),
+    TradingPlatformStatusModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>TradingPlatformStatusModal</div>;
+    }),
+}));
+
+jest.mock('../../../../../../components', () => ({
+    ...jest.requireActual('../../../../../../components'),
+    ClientVerificationModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>ClientVerificationModal</div>;
+    }),
     ClientVerificationStatusBadge: jest.fn(props => {
         mockPropsFn(props.variant);
         return (
@@ -35,30 +59,6 @@ jest.mock('../../../../components', () => ({
             </div>
         );
     }),
-    PlatformStatusBadge: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>PlatformStatusBadge</div>;
-    }),
-}));
-
-jest.mock('../../../../modals', () => ({
-    ...jest.requireActual('../../../../modals'),
-    ClientVerificationModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>ClientVerificationModal</div>;
-    }),
-    MT5TradeModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>MT5TradeModal</div>;
-    }),
-    TradingPlatformStatusModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>TradingPlatformStatusModal</div>;
-    }),
-}));
-
-jest.mock('../../../../../../components', () => ({
-    ...jest.requireActual('../../../../../../components'),
     WalletDisabledAccountModal: jest.fn(props => {
         mockPropsFn(props);
         return <div>WalletDisabledAccountModal</div>;

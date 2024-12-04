@@ -1,10 +1,12 @@
-on: 
+name: Reporter
+
+on:
   push:
     branches:
-      - master
+      - master 
   pull_request:
-    types: [opened, synchronize, edited]    
-name: Reporter
+    types: [opened, synchronize, edited]
+    
 jobs:
   test:
     name: Run tests in parallel
@@ -18,7 +20,16 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
-      - name: Install dependencies
+      - name: Restore npm cache
+        uses: actions/cache/restore@v4
+        id: cache-npm
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+          key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"
       - name: Build components package
         working-directory: packages/components
@@ -28,7 +39,7 @@ jobs:
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
         with:
-          flag-name: ${{ matrix.shard}}
+          flag-name: ${{ matrix.shard }}
           parallel: true
 
   finish:

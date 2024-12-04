@@ -9,32 +9,24 @@ import {
     PartnersProductBrandLightDerivCtraderLogoIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
+import { CFD_PLATFORMS } from '../../constants';
 
-export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
-    [MARKET_TYPE.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
-    [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
-    [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
-    [CFD_PLATFORMS.CTRADER]: <PartnersProductBrandLightDerivCtraderLogoIcon height={48} width={48} />,
-    [PRODUCT.ZEROSPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
-    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
+export const MT5_PRODUCT = {
+    FINANCIAL: 'financial',
+    STANDARD: 'standard',
+    STP: 'stp',
+    SWAP_FREE: 'swap_free',
+    ZERO_SPREAD: 'zero_spread',
 } as const;
 
-export const MARKET_TYPE_SHORTCODE = {
-    ALL_DXTRADE: 'all_',
-    ALL_SVG: 'all_svg',
-    ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
-    ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
-    FINANCIAL_BVI: 'financial_bvi',
-    FINANCIAL_LABUAN: 'financial_labuan',
-    FINANCIAL_MALTAINVEST: 'financial_maltainvest',
-    FINANCIAL_SVG: 'financial_svg',
-    FINANCIAL_VANUATU: 'financial_vanuatu',
-    GAMING: 'gaming',
-    SYNTHETIC_BVI: 'synthetic_bvi',
-    SYNTHETIC_SVG: 'synthetic_svg',
-    SYNTHETIC_VANUATU: 'synthetic_vanuatu',
+export const ACCOUNT_ICONS = {
+    [MT5_PRODUCT.STANDARD]: <AccountsDmt5StandardIcon iconSize='lg' />,
+    [MT5_PRODUCT.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
+    [MT5_PRODUCT.SWAP_FREE]: <AccountsDmt5SwfIcon iconSize='lg' />,
+    [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
+    [CFD_PLATFORMS.CTRADER]: <PartnersProductBrandLightDerivCtraderLogoIcon height={48} width={48} />,
+    [MT5_PRODUCT.ZERO_SPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
+    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;
 
 export const JURISDICTION = {

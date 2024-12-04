@@ -48,7 +48,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
     // default_stake resetting data
-    const is_crypto = isCryptocurrency(currency ?? '');
+    const is_crypto = isCryptocurrency(client_currency ?? '');
     const default_stake = is_crypto
         ? Number(v2_params_initial_values.stake)
         : available_contract_types?.[contract_type]?.config?.default_stake;

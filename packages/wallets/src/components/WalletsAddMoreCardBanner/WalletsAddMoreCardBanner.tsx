@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
+import { getAccountsFromLocalStorage } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
+import { URLConstants } from '@deriv-com/utils';
+import { LANDING_COMPANIES } from '../../constants/constants';
+import { isProduction, OUT_SYSTEMS_TRADERSHUB } from '../../helpers/urls';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { TWalletCarouselItem } from '../../types';
@@ -25,6 +31,8 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
+    const { data: activeWallet } = useActiveWalletAccount();
 
     useEffect(
         () => {
@@ -61,6 +69,35 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
         ]
     );
 
+    const redirectToOutSystems = () => {
+        // redirect to OS Tradershub if feature is enabled
+        const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
+            'trigger_os_real_account_creation',
+            false
+        );
+        if (isOutSystemsRealAccountCreationEnabled) {
+            const clientAccounts = getAccountsFromLocalStorage() ?? {};
+            const loginid = activeWallet?.loginid ?? '';
+            if (!loginid) return;
+            const authToken = clientAccounts[loginid].token;
+            if (!authToken) return;
+            const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+
+            Cookies.set('os_auth_token', authToken, { domain: URLConstants.baseDomain, expires });
+
+            const params = new URLSearchParams({
+                action: 'real-account-signup',
+                currency: currency ?? '',
+                target: LANDING_COMPANIES.MALTAINVEST,
+            });
+            const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
+
+            const redirectURL = new URL(`${baseUrl}/redirect`);
+            redirectURL.search = params.toString();
+            return (window.location.href = redirectURL.toString());
+        }
+    };
+
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
@@ -81,6 +118,10 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     e.stopPropagation();
 
                     if (!currency) return;
+
+                    if (isEuRegion) {
+                        return redirectToOutSystems();
+                    }
 
                     const createAccountResponse = await mutateAsync({
                         account_type: isCrypto ? 'crypto' : 'doughflow',

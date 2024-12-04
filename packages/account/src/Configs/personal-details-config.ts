@@ -13,12 +13,14 @@ type TPersonalDetailsConfig = {
     };
     residence: string;
     account_status: GetAccountStatus;
+    selected_phone_code: string;
 };
 
 export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
+    selected_phone_code,
 }: TPersonalDetailsConfig): TSchema => {
     if (!residence_list || !account_settings) {
         return {};
@@ -61,6 +63,10 @@ export const personal_details_config = ({
                     residence_list.find(item => item.value === account_settings.citizen)?.text) ||
                 '',
         },
+        calling_country_code: {
+            supported_in: ['svg', 'maltainvest'],
+            default_value: selected_phone_code,
+        },
         phone: {
             supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.phone ?? '',
@@ -102,6 +108,7 @@ const personalDetailsConfig = <T>(
         residence_list,
         account_settings,
         account_status,
+        selected_phone_code,
         residence,
     }: TPersonalDetailsConfig,
     PersonalDetails: T
@@ -112,6 +119,7 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
+        selected_phone_code,
     });
     const disabled_items = account_settings.immutable_fields;
     return {

@@ -79,6 +79,7 @@ const PersonalDetails = observer(
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
 
+        const is_country_code_dropdown_enabled = false;
         const { isDesktop } = useDevice();
         const handleCancel = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;
@@ -124,11 +125,15 @@ const PersonalDetails = observer(
         const schema = useMemo(
             () =>
                 is_rendered_for_idv
-                    ? getPersonalDetailsBaseValidationSchema(real_account_signup_target).concat(
-                          getIDVFormValidationSchema()
-                      )
-                    : getPersonalDetailsBaseValidationSchema(real_account_signup_target),
-            [is_rendered_for_idv, real_account_signup_target]
+                    ? getPersonalDetailsBaseValidationSchema(
+                          real_account_signup_target,
+                          is_country_code_dropdown_enabled
+                      ).concat(getIDVFormValidationSchema())
+                    : getPersonalDetailsBaseValidationSchema(
+                          real_account_signup_target,
+                          is_country_code_dropdown_enabled
+                      ),
+            [is_rendered_for_idv, real_account_signup_target, is_country_code_dropdown_enabled]
         );
 
         /*

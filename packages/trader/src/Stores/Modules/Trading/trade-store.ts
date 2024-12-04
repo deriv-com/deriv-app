@@ -41,6 +41,7 @@ import {
     getContractPath,
     routes,
     isDtraderV2Enabled,
+    cacheTrackEvents,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1380,7 +1381,7 @@ export default class TradeStore extends BaseStore {
                 const is_crypto = isCryptocurrency(this.currency ?? '');
                 const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
                 this.setV2ParamsInitialValues({
-                    value: is_crypto ? default_crypto_value : this.default_stake ?? '',
+                    value: is_crypto ? default_crypto_value : (this.default_stake ?? ''),
                     name: 'stake',
                 });
                 obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
@@ -2046,11 +2047,18 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            Analytics.trackEvent(event_type, {
-                ...data,
-                action: data.action as TEvents['ce_indicators_types_form']['action'],
-                form_name: 'default',
-            });
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: event_type,
+                        properties: {
+                            ...data,
+                            action: data.action as TEvents['ce_indicators_types_form']['action'],
+                            form_name: 'default',
+                        },
+                    },
+                },
+            ]);
         }
     }
 

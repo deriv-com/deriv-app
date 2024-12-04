@@ -1,6 +1,6 @@
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
-import { getDomainName } from '@deriv/shared';
+import { getDomainName } from '../brand';
 
 interface Payload {
     type: string;
@@ -176,8 +176,8 @@ const cacheTrackEvents = {
                     arg && typeof arg === 'object' && 'message' in arg
                         ? (arg as Error).message
                         : typeof arg === 'object'
-                        ? JSON.stringify(arg, (key, value) => (key.startsWith('__trackjs') ? undefined : value))
-                        : String(arg)
+                          ? JSON.stringify(arg, (key, value) => (key.startsWith('__trackjs') ? undefined : value))
+                          : String(arg)
                 )
                 .join(' ');
 

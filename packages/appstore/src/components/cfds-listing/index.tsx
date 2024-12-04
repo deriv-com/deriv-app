@@ -86,6 +86,7 @@ const CFDsListing = observer(() => {
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
         ctrader_total_balance,
+        is_trading_platform_available_account_loaded,
         updateMT5AccountDetails,
         is_switching,
     } = client;
@@ -193,7 +194,11 @@ const CFDsListing = observer(() => {
     const is_cfd_accounts_supported =
         combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
 
-    const is_mt5_list_loaded = is_landing_company_loaded && !is_populating_mt5_account_list && !is_switching;
+    const is_mt5_list_loaded =
+        is_landing_company_loaded &&
+        !is_populating_mt5_account_list &&
+        !is_switching &&
+        is_trading_platform_available_account_loaded;
 
     if (is_mt5_list_loaded && !is_cfd_accounts_supported) {
         return null;

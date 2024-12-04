@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { THooks } from '../../../../types';
@@ -51,18 +50,6 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
                     isEuRegion={isEuRegion}
                     platform={account.platform}
                 />
-                {isEuRegion && (
-                    <div
-                        className={classNames('wallets-compare-accounts-card__eu-clients', {
-                            //@ts-expect-error need update api-types
-                            'wallets-compare-accounts-card__eu-clients--disabled': product === PRODUCT.GOLD,
-                        })}
-                    >
-                        <Text color='red' size='2xs' weight='bold'>
-                            <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
-                        </Text>
-                    </div>
-                )}
             </div>
         </div>
     );

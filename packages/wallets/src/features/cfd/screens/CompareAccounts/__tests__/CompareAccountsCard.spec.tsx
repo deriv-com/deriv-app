@@ -66,19 +66,4 @@ describe('CompareAccountsCard', () => {
 
         expect(screen.queryByText('NEW')).not.toBeInTheDocument();
     });
-
-    it('renders the EU clients disclaimer for EU users with financial product', () => {
-        const modifiedDefaultProps = { ...defaultProps, account: { ...defaultProps.account, product: 'financial' } };
-        //@ts-expect-error we only need partial types
-        render(<CompareAccountsCard {...modifiedDefaultProps} isEuRegion />, { wrapper });
-
-        expect(screen.getByText('*Boom 300 and Crash 300 Index')).toBeInTheDocument();
-    });
-
-    it('does not render the EU clients disclaimer for non-EU users', () => {
-        //@ts-expect-error we only need partial types
-        render(<CompareAccountsCard {...defaultProps} />, { wrapper });
-
-        expect(screen.queryByText('*Boom 300 and Crash 300 Index')).not.toBeInTheDocument();
-    });
 });

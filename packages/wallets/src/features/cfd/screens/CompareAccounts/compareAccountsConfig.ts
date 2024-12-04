@@ -59,7 +59,6 @@ const getHighlightedIconLabel = (values: TValues) => {
         {
             highlighted: shouldHighlight('Synthetic indices'),
             icon: 'Synthetics',
-            isAsterisk: isEuRegion,
             text: localize('Synthetic indices'),
         },
         ...(!isEuRegion

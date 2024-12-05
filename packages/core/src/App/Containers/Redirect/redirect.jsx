@@ -312,8 +312,6 @@ const Redirect = observer(() => {
                     pathname: routes.trade,
                     search: url_query_string,
                 });
-            } else if (/smart_trader/i.test(url_query_string)) {
-                window.location.href = routes.smarttrader;
             } else if (/proof-of-address/i.test(url_query_string)) {
                 history.push({
                     pathname: routes.proof_of_address,

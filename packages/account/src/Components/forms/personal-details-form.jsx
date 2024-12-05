@@ -43,7 +43,7 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
-    const is_country_code_dropdown_enabled = false;
+    const is_country_code_dropdown_enabled = true;
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur } = useFormikContext();
 
@@ -388,6 +388,7 @@ const PersonalDetailsForm = props => {
                         )}
                         {!is_svg_only && 'phone' in values && (
                             <PhoneField
+                                is_country_code_dropdown_enabled={is_country_code_dropdown_enabled}
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
                                 country_code_list={legacy_core_countries_list}

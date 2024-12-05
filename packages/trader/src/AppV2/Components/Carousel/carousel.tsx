@@ -1,5 +1,5 @@
 import React from 'react';
-import CarouselHeader from './carousel-header';
+import CarouselHeader, { TQuillIcon } from './carousel-header';
 import { useSwipeable } from 'react-swipeable';
 import clsx from 'clsx';
 
@@ -9,8 +9,12 @@ type TCarousel = {
     header?: typeof CarouselHeader;
     is_swipeable?: boolean;
     is_infinite_loop?: boolean;
+    onNextButtonClick?: () => void;
+    onPreviousButtonClick?: () => void;
     pages: { id: number; component: JSX.Element }[];
+    previous_icon?: TQuillIcon;
     title?: React.ReactNode;
+    next_icon?: TQuillIcon;
     setCurrentIndex?: (arg: number) => void;
 };
 
@@ -20,9 +24,13 @@ const Carousel = ({
     header,
     is_swipeable,
     is_infinite_loop,
+    onNextButtonClick,
+    onPreviousButtonClick,
     pages,
-    setCurrentIndex,
+    previous_icon,
     title,
+    next_icon,
+    setCurrentIndex,
 }: TCarousel) => {
     const [internalIndex, setInternalIndex] = React.useState(0);
 
@@ -35,12 +43,14 @@ const Carousel = ({
         if (!is_infinite_loop && index + 1 >= pages.length) return;
         const newIndex = (index + 1) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
+        onNextButtonClick?.();
     };
 
     const handlePrevClick = () => {
         if (!is_infinite_loop && index - 1 < 0) return;
         const newIndex = (index - 1 + pages.length) % pages.length;
         isControlled ? setCurrentIndex?.(newIndex) : setInternalIndex(newIndex);
+        onPreviousButtonClick?.();
     };
 
     const swipe_handlers = useSwipeable({
@@ -55,6 +65,8 @@ const Carousel = ({
                     current_index={index}
                     onNextClick={handleNextClick}
                     onPrevClick={handlePrevClick}
+                    previous_icon={previous_icon}
+                    next_icon={next_icon}
                     title={title}
                 />
             )}

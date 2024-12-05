@@ -1,6 +1,9 @@
 name: Reporter
 
-on: 
+on:
+  push:
+    branches:
+      - master 
   pull_request:
     types: [opened, synchronize, edited]
     
@@ -25,7 +28,6 @@ jobs:
             node_modules
             packages/*/node_modules
           key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
-          restore-keys: node_modules-cache-
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"

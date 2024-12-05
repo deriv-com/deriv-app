@@ -334,7 +334,7 @@ export default class TradersHubStore extends BaseStore {
             }
             if (this.is_demo) return ContentFlag.CR_DEMO;
         }
-        return ContentFlag.LOW_RISK_CR_NON_EU;
+        return this.is_eu_user ? ContentFlag.LOW_RISK_CR_EU : ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
     get show_eu_related_content() {

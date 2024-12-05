@@ -2353,6 +2353,50 @@ type PhoneNumberChallengeResponse = {
     [k: string]: unknown;
 };
 
+type PhoneNumberSettingsRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_settings: 1;
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberSettingsResponse = {
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    phone_settings?: {
+        /**
+         * List of carriers supported.
+         */
+        carriers: string[];
+        /**
+         * List of countries with their carriers.
+         */
+        countries: {
+            calling_country_code: string;
+            display_name: string;
+            carriers: string[];
+            country_code: string;
+        }[];
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_settings';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
 // TODO: remove these mock phone number challenge types after implementing them inside api-types
 type PhoneNumberVerifyRequest = {
     /**
@@ -2853,6 +2897,10 @@ type TSocketEndpoints = {
     phone_number_challenge: {
         request: PhoneNumberChallengeRequest;
         response: PhoneNumberChallengeResponse;
+    };
+    phone_settings: {
+        request: PhoneNumberSettingsRequest;
+        response: PhoneNumberSettingsResponse;
     };
     phone_number_verify: {
         request: PhoneNumberVerifyRequest;

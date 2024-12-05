@@ -1,6 +1,7 @@
 import type {
     useAccountLimits,
     useActiveAccount,
+    useActiveLinkedToTradingAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
     useAllAccountsList,
@@ -34,6 +35,7 @@ import type {
 import { TSocketError, TSocketResponse } from '@deriv/api-v2/types';
 import { IconTypes } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
+import useWalletsMFAccountStatus from './hooks/useWalletsMFAccountStatus';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
@@ -72,6 +74,7 @@ export namespace THooks {
     export type AccountSettings = NonNullable<ReturnType<typeof useSettings>['data']>;
     export type DocumentUpload = TSocketError<'document_upload'> & TSocketResponse<'document_upload'>;
     export type CompareCFDAccounts = NonNullable<ReturnType<typeof useCFDCompareAccounts>['data']>;
+    export type TActiveLinkedToTradingAccount = ReturnType<typeof useActiveLinkedToTradingAccount>['data'];
 }
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace TPlatforms {
@@ -141,3 +144,31 @@ export type TLanguageType =
     | 'ZH_TW';
 
 export type TProductDetails = { max_leverage: string; min_spread: string };
+/* eslint-disable camelcase */
+/*
+    TODO: Remove these types once API types for client_kyc_status is available for mt5_login_list and trading_platform_available_accounts from BE
+*/
+
+export type TAccountStatuses = 'expired' | 'none' | 'pending' | 'rejected' | 'suspected' | 'verified';
+
+export type TModifiedMT5Account = THooks.SortedMT5Accounts & {
+    client_kyc_status: {
+        poa_status: TAccountStatuses;
+        poi_status: TAccountStatuses;
+        required_tin: 0 | 1;
+        valid_tin: 0 | 1;
+    };
+    licence_number: string;
+    regulatory_authority: string;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ObjectWithKeyInUnion<T, K extends keyof any> = T extends any ? (K extends keyof T ? T : never) : never;
+
+export type TAvailableMT5Account = ObjectWithKeyInUnion<TModifiedMT5Account, 'shortcode'>;
+export type TAddedMT5Account = ObjectWithKeyInUnion<TModifiedMT5Account, 'landing_company_short'>;
+type TUseWalletsMFAccountStatusData = ReturnType<typeof useWalletsMFAccountStatus>['data'];
+export type TWalletsMFAccountStatus = {
+    client_kyc_status: TUseWalletsMFAccountStatusData['client_kyc_status'];
+    is_added: TUseWalletsMFAccountStatusData['is_added'];
+};

@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import getMT5StatusBadgeConfig from '@deriv/account/src/Configs/get-mt5-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
@@ -23,6 +22,7 @@ import {
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
     TRADING_PLATFORM_STATUS,
+    cacheTrackEvents,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -126,12 +126,19 @@ const TradingAppCard = ({
 
     const openStaticPage = () => {
         if (is_traders_dashboard_tracking_enabled) {
-            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                action: 'account_logo_push',
-                form_name: 'traders_hub_default',
-                account_mode: selected_account_type,
-                account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
-            });
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: 'ce_tradershub_dashboard_form',
+                        properties: {
+                            action: 'account_logo_push',
+                            form_name: 'traders_hub_default',
+                            account_mode: selected_account_type,
+                            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
+                        },
+                    },
+                },
+            ]);
         }
 
         if (is_deriv_platform) {

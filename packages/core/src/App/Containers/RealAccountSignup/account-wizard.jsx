@@ -57,7 +57,7 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 const AccountWizard = observer(props => {
     const { client, notifications, ui, traders_hub } = useStore();
 
-    const is_country_code_dropdown_enabled = true;
+    const is_country_code_dropdown_enabled = false;
     const { selected_phone_code } = useGetPhoneNumberList();
 
     const { is_eu_user } = traders_hub;

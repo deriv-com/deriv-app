@@ -314,6 +314,16 @@ const Redirect = observer(() => {
                 });
             } else if (/smart_trader/i.test(url_query_string)) {
                 window.location.href = routes.smarttrader;
+            } else if (/proof-of-address/i.test(url_query_string)) {
+                history.push({
+                    pathname: routes.proof_of_address,
+                    search: url_query_string,
+                });
+            } else if (/proof-of-identity/i.test(url_query_string)) {
+                history.push({
+                    pathname: routes.proof_of_identity,
+                    search: url_query_string,
+                });
             } else if (/dbot/i.test(url_query_string)) {
                 history.push({
                     pathname: routes.bot,

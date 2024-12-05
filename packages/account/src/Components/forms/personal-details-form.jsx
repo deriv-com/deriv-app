@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
 
 import { Autocomplete, Checkbox, InlineMessage, RadioGroup, SelectNative, Text } from '@deriv/components';
-import { useGetPhoneNumberList, useResidenceList } from '@deriv/hooks';
+import { useGetPhoneNumberList, useGrowthbookGetFeatureValue, useResidenceList } from '@deriv/hooks';
 import { routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -43,7 +43,9 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
-    const is_country_code_dropdown_enabled = false;
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur } = useFormikContext();
 
@@ -388,7 +390,7 @@ const PersonalDetailsForm = props => {
                         )}
                         {!is_svg_only && 'phone' in values && (
                             <PhoneField
-                                is_country_code_dropdown_enabled={is_country_code_dropdown_enabled}
+                                is_country_code_dropdown_enabled={isCountryCodeLoaded && isCountryCodeDropdownEnabled}
                                 handleChange={handleChange}
                                 setFieldValue={setFieldValue}
                                 country_code_list={legacy_core_countries_list}
@@ -432,7 +434,7 @@ const PersonalDetailsForm = props => {
                     <FormSubHeader title={localize('Additional information')} />
                     {'phone' in values && (
                         <PhoneField
-                            is_country_code_dropdown_enabled={is_country_code_dropdown_enabled}
+                            is_country_code_dropdown_enabled={isCountryCodeLoaded && isCountryCodeDropdownEnabled}
                             handleChange={handleChange}
                             setFieldValue={setFieldValue}
                             country_code_list={legacy_core_countries_list}

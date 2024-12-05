@@ -17,6 +17,7 @@ import { TIDVFormValues, TListItem, TPersonalDetailsBaseForm } from '../../Types
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { getPersonalDetailsBaseValidationSchema } from '../../Configs/user-profile-validation-config';
 import { getIDVFormValidationSchema } from '../../Configs/kyc-validation-config';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 type TPersonalDetailsSectionForm = Partial<TIDVFormValues & TPersonalDetailsBaseForm> & {
     confirmation_checkbox?: boolean;
@@ -79,7 +80,9 @@ const PersonalDetails = observer(
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
 
-        const is_country_code_dropdown_enabled = false;
+        const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+            featureFlag: 'enable_country_code_dropdown',
+        });
         const { isDesktop } = useDevice();
         const handleCancel = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;
@@ -127,13 +130,13 @@ const PersonalDetails = observer(
                 is_rendered_for_idv
                     ? getPersonalDetailsBaseValidationSchema(
                           real_account_signup_target,
-                          is_country_code_dropdown_enabled
+                          isCountryCodeLoaded && isCountryCodeDropdownEnabled
                       ).concat(getIDVFormValidationSchema())
                     : getPersonalDetailsBaseValidationSchema(
                           real_account_signup_target,
-                          is_country_code_dropdown_enabled
+                          isCountryCodeLoaded && isCountryCodeDropdownEnabled
                       ),
-            [is_rendered_for_idv, real_account_signup_target, is_country_code_dropdown_enabled]
+            [is_rendered_for_idv, real_account_signup_target, isCountryCodeLoaded, isCountryCodeDropdownEnabled]
         );
 
         /*

@@ -1638,7 +1638,7 @@ export default class ClientStore extends BaseStore {
         if (this.is_logged_in) {
             this.getWalletMigrationState();
 
-            await WS.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);

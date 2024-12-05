@@ -276,13 +276,13 @@ const TakeProfitAndStopLossInput = ({
                     variant='fill'
                     value={new_input_value ?? ''}
                     onKeyDown={e => {
-                        console.log(e);
                         if (
                             (e.key === '.' ||
                                 e.keyCode === 190 ||
                                 e.which === 190 ||
                                 e.keyCode === 110 ||
-                                e.code === 'NumpadDecimal') &&
+                                e.code === 'NumpadDecimal' ||
+                                /^\d*\.?\d*$/.test(e.key)) &&
                             (new_input_value?.length ?? 0) >= 8
                         ) {
                             setMaxLength(13);

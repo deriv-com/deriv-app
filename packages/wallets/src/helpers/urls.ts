@@ -141,7 +141,7 @@ export const redirectToOutSystems = (currency = '') => {
         });
         const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
 
-        Cookies.set('os_auth_token', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
+        Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
 
         const params = new URLSearchParams({
             action: 'real-account-signup',

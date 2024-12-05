@@ -1,87 +1,119 @@
 import React from 'react';
-import debounce from 'lodash.debounce';
+import { observer } from 'mobx-react';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, Text, WheelPicker } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import type { TV2ParamsInitialValues } from 'Stores/Modules/Trading/trade-store';
+import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { TTradeStore } from 'Types';
 
 type TPayoutPerPointWheelProps = {
     barrier?: string | number;
+    is_open?: boolean;
     current_payout_per_point: string;
     onPayoutPerPointSelect: (new_value: string | number) => void;
+    onClose: () => void;
     payout_per_point_list: {
         value: string;
     }[];
-    setV2ParamsInitialValues: ({ value, name }: { value: number | string; name: keyof TV2ParamsInitialValues }) => void;
 };
+type TOnProposalResponse = TTradeStore['onProposalResponse'];
 
-const onWheelPickerScrollDebounced = debounce(
-    (new_value: string | number, callback: TPayoutPerPointWheelProps['onPayoutPerPointSelect']) => callback(new_value),
-    200
-);
+const PayoutPerPointWheel = observer(
+    ({
+        barrier,
+        current_payout_per_point,
+        is_open,
+        onPayoutPerPointSelect,
+        onClose,
+        payout_per_point_list,
+    }: TPayoutPerPointWheelProps) => {
+        const trade_store = useTraderStore();
+        const { trade_types } = trade_store;
 
-const PayoutPerPointWheel = ({
-    barrier,
-    current_payout_per_point,
-    onPayoutPerPointSelect,
-    setV2ParamsInitialValues,
-    payout_per_point_list,
-}: TPayoutPerPointWheelProps) => {
-    const initial_value_ref = React.useRef<string | number>();
-    const selected_value_ref = React.useRef<string | number>(current_payout_per_point);
+        const [value, setValue] = React.useState<string | number>(current_payout_per_point);
+        const [displayed_barrier_value, setDisplayedBarrierValue] = React.useState(barrier);
 
-    const onSave = () => {
-        initial_value_ref.current = selected_value_ref.current;
-        setV2ParamsInitialValues({ value: selected_value_ref.current, name: 'payout_per_point' });
-    };
+        // For handling cases when user clicks on Save btn before we got response from API
+        const is_api_response_received_ref = React.useRef(false);
 
-    React.useEffect(() => {
-        if (!initial_value_ref.current && current_payout_per_point) {
-            initial_value_ref.current = current_payout_per_point;
-            setV2ParamsInitialValues({ value: current_payout_per_point, name: 'payout_per_point' });
-        }
-
-        return () => {
-            if (initial_value_ref.current && initial_value_ref.current !== selected_value_ref.current) {
-                onPayoutPerPointSelect(initial_value_ref.current);
+        const new_values = { payout_per_point: String(value) };
+        const proposal_req = getProposalRequestObject({
+            new_values,
+            trade_store,
+            trade_type: Object.keys(trade_types)[0],
+        });
+        // Sending proposal without subscription to get a new barrier value
+        const { data: response } = useDtraderQuery<Parameters<TOnProposalResponse>[0]>(
+            [
+                'proposal',
+                ...Object.entries(new_values).flat().join('-'),
+                `${barrier}`,
+                Object.keys(trade_types)[0],
+                JSON.stringify(proposal_req),
+            ],
+            proposal_req,
+            {
+                enabled: is_open,
             }
-            onWheelPickerScrollDebounced.cancel();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        );
 
-    return (
-        <React.Fragment>
-            <ActionSheet.Content className='payout-per-point__wrapper' data-testid='dt_payout-per-point_wrapper'>
-                <div className='payout-per-point__wheel-picker'>
-                    <WheelPicker
-                        data={payout_per_point_list}
-                        selectedValue={selected_value_ref.current}
-                        setSelectedValue={(new_value: string | number) => {
-                            if (new_value === selected_value_ref.current) return;
-                            selected_value_ref.current = new_value;
-                            onWheelPickerScrollDebounced(new_value, onPayoutPerPointSelect);
-                        }}
-                    />
-                </div>
-                <div className='payout-per-point__barrier'>
-                    <Text color='quill-typography__color--subtle' size='sm'>
-                        <Localize i18n_default_text='Barrier' />
-                    </Text>
-                    <Text size='sm' as='div' className='payout-per-point__barrier__content'>
-                        {barrier ?? <Skeleton width={90} height={14} />}
-                    </Text>
-                </div>
-            </ActionSheet.Content>
-            <ActionSheet.Footer
-                alignment='vertical'
-                primaryAction={{
-                    content: <Localize i18n_default_text='Save' />,
-                    onAction: onSave,
-                }}
-            />
-        </React.Fragment>
-    );
-};
+        const onChange = (new_value: string | number) => {
+            // If a new value is equal to previous one, then we won't send API request
+            const is_equal = value === new_value;
+            is_api_response_received_ref.current = is_equal;
+            if (is_equal) return;
+
+            setValue(new_value);
+        };
+
+        const onSave = () => {
+            // Prevent from saving if user clicks before BE validation
+            if (!is_api_response_received_ref.current) return;
+            onPayoutPerPointSelect(value);
+            onClose();
+        };
+
+        React.useEffect(() => {
+            const onProposalResponse: TOnProposalResponse = response => {
+                const { error, proposal } = response;
+                const { barrier_spot_distance } = proposal ?? {};
+                // Currently we are not handling errors
+                if (barrier_spot_distance && !error) setDisplayedBarrierValue(barrier_spot_distance);
+
+                is_api_response_received_ref.current = true;
+            };
+
+            if (response) onProposalResponse(response);
+        }, [response]);
+
+        return (
+            <React.Fragment>
+                <ActionSheet.Content className='payout-per-point__wrapper' data-testid='dt_payout-per-point_wrapper'>
+                    <div className='payout-per-point__wheel-picker'>
+                        <WheelPicker data={payout_per_point_list} selectedValue={value} setSelectedValue={onChange} />
+                    </div>
+                    <div className='payout-per-point__barrier'>
+                        <Text color='quill-typography__color--subtle' size='sm'>
+                            <Localize i18n_default_text='Barrier' />
+                        </Text>
+                        <Text size='sm' as='div' className='payout-per-point__barrier__content'>
+                            {displayed_barrier_value ?? <Skeleton width={90} height={14} />}
+                        </Text>
+                    </div>
+                </ActionSheet.Content>
+                <ActionSheet.Footer
+                    alignment='vertical'
+                    primaryAction={{
+                        content: <Localize i18n_default_text='Save' />,
+                        onAction: onSave,
+                    }}
+                    shouldCloseOnPrimaryButtonClick={false}
+                />
+            </React.Fragment>
+        );
+    }
+);
 
 export default PayoutPerPointWheel;

@@ -1,4 +1,4 @@
-import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
+import { AppIDConstants, LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -83,6 +83,11 @@ export const isStaging = (domain = window.location.hostname) => {
     return isStagingDerivApp;
 };
 
+export const isProduction = () => {
+    const allDomains = Object.keys(AppIDConstants.domainAppId).map(domain => `(www\\.)?${domain.replace('.', '\\.')}`);
+    return new RegExp(`^(${allDomains.join('|')})$`, 'i').test(window.location.hostname);
+};
+
 /**
  * @deprecated Please use 'URLUtils.getDerivStaticURL' from '@deriv-com/utils' instead of this.
  */
@@ -110,3 +115,8 @@ export const getStaticUrl = (
 
     return `${host}${lang}/${normalizePath(path)}`;
 };
+
+export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
+    PRODUCTION: `https://hub.${domainUrl}/tradershub`,
+    STAGING: `https://staging-hub.${domainUrl}/tradershub`,
+});

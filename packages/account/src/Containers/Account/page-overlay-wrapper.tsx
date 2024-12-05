@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -25,7 +25,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { logout } = client;
-    const { is_from_derivgo } = common;
+    const { is_from_derivgo, is_from_tradershub_os } = common;
     const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
@@ -71,16 +71,19 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 header={selected_route?.getTitle?.()}
                 onClickClose={onClickClose}
                 is_from_app={is_from_derivgo}
+                is_from_tradershub_os={is_from_tradershub_os}
             >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
     }
+
     return (
         <PageOverlay
             header={<Localize i18n_default_text='Settings' />}
             onClickClose={onClickClose}
             is_from_app={is_from_derivgo}
+            is_from_tradershub_os={is_from_tradershub_os}
         >
             <VerticalTab
                 is_floating

@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 import { ASPECT_RATIO } from 'AppV2/Utils/layout-utils';
 
 type TOnboardingVideoProps = {
-    type: 'trade_page' | 'positions_page';
+    type: 'trade_page' | 'positions_page' | 'trade_page_dark' | 'positions_page_dark';
 };
 
 const OnboardingVideo = ({ type }: TOnboardingVideoProps) => {
@@ -15,7 +15,7 @@ const OnboardingVideo = ({ type }: TOnboardingVideoProps) => {
     // memoize file paths for videos and open the modal only after we get them
     const getVideoSource = React.useCallback(
         (extension: string) =>
-            getUrlBase(`/public/videos/user-onboarding-guide-${type.replace('_', '-')}.${extension}`),
+            getUrlBase(`/public/videos/user-onboarding-guide-${type.replaceAll('_', '-')}.${extension}`),
         [type]
     );
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);

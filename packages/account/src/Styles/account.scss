@@ -359,15 +359,106 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &--phone {
                 &_container {
+                    @include rtl {
+                        direction: ltr;
+                    }
                     display: flex;
+
+                    .dc-select-native {
+                        width: 35%;
+
+                        &__display {
+                            @include rtl {
+                                direction: rtl;
+                            }
+                        }
+
+                        .dc-select-native__container {
+                            border-top-right-radius: 0;
+                            border-bottom-right-radius: 0;
+                        }
+
+                        @include mobile {
+                            width: 45%;
+                        }
+                    }
+
+                    .dc-autocomplete {
+                        width: 40%;
+
+                        .dc-dropdown-list {
+                            width: max-content !important;
+                        }
+
+                        .dc-input__container {
+                            border-top-left-radius: $BORDER_RADIUS;
+                            border-bottom-left-radius: $BORDER_RADIUS;
+                        }
+                    }
+
+                    &--with-1-field {
+                        .account-form__fieldset--phone_input {
+                            @include rtl {
+                                direction: rtl;
+                            }
+                            .dc-input__container {
+                                border-top-left-radius: $BORDER_RADIUS;
+                                border-bottom-left-radius: $BORDER_RADIUS;
+                            }
+                        }
+                    }
+
+                    &--verified {
+                        .dc-autocomplete {
+                            margin-bottom: 0 !important;
+                        }
+                        .dc-input {
+                            margin-bottom: 0 !important;
+                        }
+                        .dc-select-native {
+                            margin-bottom: 0;
+                        }
+
+                        &-hint {
+                            margin-bottom: 3.2rem;
+                            margin-inline-start: 1.3rem;
+
+                            @include mobile-or-tablet-screen {
+                                margin-bottom: 1.2rem;
+                            }
+                        }
+                    }
                 }
 
                 &_input {
                     width: 100%;
+                    display: flex;
+                    direction: ltr;
+
+                    .account-form__fieldset--phone-number-input {
+                        @include rtl {
+                            direction: rtl;
+                        }
+                    }
+
+                    .dc-autocomplete {
+                        @include rtl {
+                            direction: rtl;
+                        }
+                    }
 
                     .dc-input__container {
-                        border-start-end-radius: 0;
-                        border-end-end-radius: 0;
+                        border-radius: 0;
+
+                        & > input {
+                            text-align: start;
+                        }
+                    }
+
+                    .dc-dropdown-list {
+                        @include rtl {
+                            direction: rtl;
+                        }
                     }
                 }
             }
@@ -1039,7 +1130,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     background-color: var(--general-main-2);
                     margin-bottom: 1rem;
                     padding: 1rem;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
+                    box-shadow:
+                        0 0 20px rgba(0, 0, 0, 0.05),
+                        0 16px 20px rgba(0, 0, 0, 0.05);
                     border-radius: 0.4rem;
                 }
 

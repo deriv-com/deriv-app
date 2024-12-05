@@ -277,7 +277,11 @@ const TakeProfitAndStopLossInput = ({
                     value={new_input_value ?? ''}
                     onKeyDown={e => {
                         if (
-                            (e.key === '.' || e.keyCode === 190 || e.which === 190) &&
+                            (e.key === '.' ||
+                                e.keyCode === 190 ||
+                                e.which === 190 ||
+                                e.keyCode === 110 ||
+                                e.code === 'NumpadDecimal') &&
                             (new_input_value?.length ?? 0) >= 8
                         ) {
                             setMaxLength(13);

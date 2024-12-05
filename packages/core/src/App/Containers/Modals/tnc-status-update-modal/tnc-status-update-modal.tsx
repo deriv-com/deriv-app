@@ -33,13 +33,20 @@ const TncStatusUpdateModal = observer(() => {
                 <div className='tnc-status-update-modal__text-container'>
                     <Text size={isDesktop ? 'xs' : 'xxs'}>
                         <Localize
-                            i18n_default_text='To continue trading, review and accept our updated <0>terms and conditions</0>. Not accepting will lead to restricted access to your account. Need help? Contact us via <0>live chat</0>.'
+                            i18n_default_text='To continue trading, review and accept our updated <0>terms and conditions</0>. Not accepting will lead to restricted access to your account. Need help? Contact us via <1>live chat</1>.'
                             components={[
                                 <StaticUrl
                                     key={0}
                                     className='link'
                                     href='terms-and-conditions'
                                     is_eu_url={!is_cr_account}
+                                />,
+                                <a
+                                    key={1}
+                                    className='link'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href={URLUtils.getDerivStaticURL('/contact_us')}
                                 />,
                             ]}
                         />

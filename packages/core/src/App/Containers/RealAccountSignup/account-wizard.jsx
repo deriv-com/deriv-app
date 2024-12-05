@@ -57,7 +57,9 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 const AccountWizard = observer(props => {
     const { client, notifications, ui, traders_hub } = useStore();
 
-    const is_country_code_dropdown_enabled = false;
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
     const { selected_phone_code } = useGetPhoneNumberList();
 
     const { is_eu_user } = traders_hub;
@@ -66,7 +68,7 @@ const AccountWizard = observer(props => {
         ...props,
         account_settings: {
             ...client.account_settings,
-            ...(is_country_code_dropdown_enabled && { calling_country_code: '' }),
+            ...(isCountryCodeLoaded && isCountryCodeDropdownEnabled && { calling_country_code: '' }),
         },
         account_status: client.account_status,
         fetchAccountSettings: client.fetchAccountSettings,
@@ -155,12 +157,12 @@ const AccountWizard = observer(props => {
         selected_phone_code,
     };
     React.useEffect(() => {
-        if (selected_phone_code && is_country_code_dropdown_enabled) {
+        if (selected_phone_code && isCountryCodeLoaded && isCountryCodeDropdownEnabled) {
             const updated_items = getItems(get_items_props);
             setStateItems(updated_items);
             setRealAccountSignupFormData(updated_items);
         }
-    }, [selected_phone_code, setRealAccountSignupFormData, is_country_code_dropdown_enabled]);
+    }, [selected_phone_code, setRealAccountSignupFormData, isCountryCodeLoaded, isCountryCodeDropdownEnabled]);
 
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
@@ -201,7 +203,7 @@ const AccountWizard = observer(props => {
                     items = getItems(get_items_props);
                 }
 
-                if (items.length > 1 && 'phone' in items[1]?.form_value && !is_country_code_dropdown_enabled) {
+                if (items.length > 1 && 'phone' in items[1]?.form_value && !isCountryCodeDropdownEnabled) {
                     items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                     setStateItems(items);
                     setRealAccountSignupFormData(items);
@@ -209,7 +211,7 @@ const AccountWizard = observer(props => {
             };
             getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [residence_list, setRealAccountSignupFormData]);
+    }, [residence_list, setRealAccountSignupFormData, isCountryCodeDropdownEnabled]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');

@@ -307,21 +307,21 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            const routeMappings = [
+            const route_mappings = [
                 { pattern: /dtrader/i, route: routes.trade },
                 { pattern: /proof-of-address/i, route: routes.proof_of_address },
                 { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
                 { pattern: /dbot/i, route: routes.bot },
             ];
 
-            const defaultRoute = routes.traders_hub;
+            const default_route = routes.traders_hub;
 
-            const matchedRoute = routeMappings.find(({ pattern }) =>
+            const matched_route = route_mappings.find(({ pattern }) =>
                 pattern.test(url_query_string || history.location.search)
             );
 
             history.push({
-                pathname: matchedRoute ? matchedRoute.route : defaultRoute,
+                pathname: matched_route ? matched_route.route : default_route,
                 search: url_query_string,
             });
         }

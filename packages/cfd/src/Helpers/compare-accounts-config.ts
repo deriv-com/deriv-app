@@ -207,7 +207,7 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
                 item.product === PRODUCT.SWAPFREE &&
                 item.is_default_jurisdiction === 'true'
         )
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
     const zero_spread_accounts = available_accounts
         .filter(
             item =>
@@ -215,7 +215,7 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
                 item.product === PRODUCT.ZEROSPREAD &&
                 item.is_default_jurisdiction === 'true'
         )
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
     const financial_accounts = available_accounts
         .filter(
             item =>
@@ -223,10 +223,10 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
                 item.shortcode !== JURISDICTION.MALTA_INVEST &&
                 item.is_default_jurisdiction === 'true'
         )
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.GAMING && item.is_default_jurisdiction === 'true')
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts, ...zero_spread_accounts];
 };
 
@@ -239,7 +239,7 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
                 item.shortcode === JURISDICTION.MALTA_INVEST &&
                 item.is_default_jurisdiction === 'true'
         )
-        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
     return [...financial_accounts];
 };
 
@@ -319,6 +319,31 @@ const getCtraderDemoData = (available_accounts: TModifiedTradingPlatformAvailabl
     return available_accounts.filter(item => item.platform === CFD_PLATFORMS.CTRADER);
 };
 
+const generateMarketTypeShortcode = (
+    trading_platforms: TModifiedTradingPlatformAvailableAccount,
+    market_type: TModifiedTradingPlatformAvailableAccount['market_type'] | 'CFDs'
+) => {
+    // First check if platform is MT5
+    if (trading_platforms.platform !== CFD_PLATFORMS.MT5) {
+        return market_type ?? '';
+    }
+
+    // Check conditions for generating full shortcode
+    const isAllMarketType = market_type === MARKET_TYPE.ALL;
+    const isSTPProduct = trading_platforms.product === PRODUCT.STP;
+    const isGoldProduct = trading_platforms.product === PRODUCT.GOLD;
+
+    if (isAllMarketType || isSTPProduct) {
+        return `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`;
+    }
+
+    if (isGoldProduct) {
+        return `${market_type}_${trading_platforms.product}`;
+    }
+
+    return market_type ?? '';
+};
+
 export {
     getHighlightedIconLabel,
     getJuridisctionDescription,
@@ -336,4 +361,5 @@ export {
     getMT5DemoData,
     getDxtradeDemoData,
     getCtraderDemoData,
+    generateMarketTypeShortcode,
 };

@@ -4,7 +4,6 @@ import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/a
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { isProduction } from '../../../helpers/urls';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';

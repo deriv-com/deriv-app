@@ -276,6 +276,7 @@ const TakeProfitAndStopLossInput = ({
                     variant='fill'
                     value={new_input_value ?? ''}
                     onKeyDown={e => {
+                        console.log(e);
                         if (
                             (e.key === '.' ||
                                 e.keyCode === 190 ||

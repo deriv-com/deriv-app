@@ -70,6 +70,7 @@ const TakeProfitAndStopLossInput = ({
     const [new_input_value, setNewInputValue] = React.useState(is_take_profit_input ? take_profit : stop_loss);
     const [error_text, setErrorText] = React.useState('');
     const [fe_error_text, setFEErrorText] = React.useState(initial_error_text ?? message ?? '');
+    const [max_length, setMaxLength] = React.useState(10);
 
     // Refs for handling focusing and bluring input
     const input_ref = React.useRef<HTMLInputElement>(null);
@@ -274,6 +275,14 @@ const TakeProfitAndStopLossInput = ({
                     unitLeft={currency_display_code}
                     variant='fill'
                     value={new_input_value ?? ''}
+                    onKeyDown={e => {
+                        if (e.code === 'Period' && (new_input_value?.length ?? 0) >= 8) {
+                            setMaxLength(13);
+                        } else if (!new_input_value?.includes('.')) {
+                            setMaxLength(10);
+                        }
+                    }}
+                    maxLength={max_length}
                 />
                 {!is_enabled && (
                     <button

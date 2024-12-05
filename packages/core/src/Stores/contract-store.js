@@ -3,7 +3,8 @@ import {
     ChartBarrierStore,
     isAccumulatorContract,
     isDigitContract,
-    isDtraderV2Enabled,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
     isEnded,
     isEqualObject,
     isMultiplierContract,
@@ -391,7 +392,8 @@ export default class ContractStore extends BaseStore {
                             ...response.error,
                         },
                         // Temporary switching off old snackbar for DTrader-V2
-                        isDtraderV2Enabled(this.root_store.ui.is_mobile)
+                        isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                            isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
                     );
                     return;
                 }

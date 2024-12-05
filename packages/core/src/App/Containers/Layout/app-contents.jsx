@@ -43,8 +43,11 @@ const AppContents = observer(({ children }) => {
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
 
-    const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
+    const [dtrader_v2_enabled_mobile] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+    });
+    const [dtrader_v2_enabled_desktop] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled_desktop',
     });
 
     React.useEffect(() => {
@@ -120,7 +123,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
-                'app-contents--is-dtrader-v2': dtrader_v2_enabled,
+                'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}
             ref={scroll_ref}
         >

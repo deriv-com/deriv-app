@@ -79,7 +79,7 @@ const PersonalDetails = observer(
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
 
-        const is_country_code_dropdown_enabled = true;
+        const is_country_code_dropdown_enabled = false;
         const { isDesktop } = useDevice();
         const handleCancel = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;

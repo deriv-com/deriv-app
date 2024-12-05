@@ -4,8 +4,9 @@ import { IDV_ERROR_STATUS, getIDVError } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { DerivLightNameDobPoiIcon, DerivLightDobPoiIcon, DerivLightNamePoiIcon } from '@deriv/quill-icons';
 import { getIDVDocumentType } from '../Helpers/utils';
+import { Chat } from '@deriv/utils';
 
-const handleOnClick = () => window.LiveChatWidget?.call('maximize');
+const handleOnClick = () => Chat.open();
 
 export const GENERIC_ERROR_MESSAGE = (
     <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />

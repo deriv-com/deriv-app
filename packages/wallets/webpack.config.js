@@ -42,7 +42,7 @@ module.exports = function (env) {
         externals: [
             {
                 '@deriv/api-v2': '@deriv/api-v2',
-                '@deriv/quill-icons': `@deriv/quill-icons`,
+                '@deriv/quill-icons': '@deriv/quill-icons',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/utils': '@deriv/utils',
                 '@deriv-com/analytics': '@deriv-com/analytics',

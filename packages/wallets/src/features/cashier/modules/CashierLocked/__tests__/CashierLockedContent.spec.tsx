@@ -1,15 +1,17 @@
+import { Chat } from '@deriv/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from '../CashierLockedContent';
 
-window.LiveChatWidget = {
-    call: jest.fn(),
-    get: jest.fn(),
-    init: jest.fn(),
-    on: jest.fn(),
-};
-
 describe('CashierLockedContent', () => {
+    beforeEach(() => {
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
     it('renders title and description as null when not system maintenance', () => {
         const result = getSystemMaintenanceContent({});
 
@@ -101,7 +103,7 @@ describe('CashierLockedContent', () => {
         ).toBeInTheDocument();
     });
 
-    it('renders correct message when cashierLockedStatus status received', () => {
+    it('renders correct message when cashierLockedStatus status received', async () => {
         const result = getCashierLockedDesc({
             cashierLockedStatus: true,
             currency: 'USD',
@@ -111,11 +113,11 @@ describe('CashierLockedContent', () => {
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        userEvent.click(link);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        await userEvent.click(link);
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 
-    it('renders correct message when disabledStatus status received', () => {
+    it('renders correct message when disabledStatus status received', async () => {
         const result = getCashierLockedDesc({
             currency: 'USD',
             disabledStatus: true,
@@ -125,8 +127,8 @@ describe('CashierLockedContent', () => {
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        userEvent.click(link);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        await userEvent.click(link);
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 
     it('renders correct message when askCurrency status received', () => {

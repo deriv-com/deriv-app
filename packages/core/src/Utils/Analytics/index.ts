@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { getLanguage } from '@deriv/translations';
 import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
-import FIREBASE_INIT_DATA from '../../../../api/src/remote_config.json';
+import FIREBASE_INIT_DATA from '@deriv/api/src/remote_config.json';
 import { getCountry } from '@deriv/utils';
 
 export const AnalyticsInitializer = async () => {

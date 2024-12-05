@@ -24,6 +24,7 @@ export const PRODUCT = {
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
     STP: 'stp',
+    GOLD: 'gold',
 } as const;
 
 export const MOBILE_PLATFORMS = {

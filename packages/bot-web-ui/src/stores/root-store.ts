@@ -60,7 +60,7 @@ export default class RootStore {
         this.transactions = new TransactionsStore(this, core);
         this.toolbar = new ToolbarStore(this);
         this.toolbox = new ToolboxStore(this, core);
-        this.quick_strategy = new QuickStrategyStore(this);
+        this.quick_strategy = new QuickStrategyStore(this, core);
         this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
         this.self_exclusion = new SelfExclusionStore(this, core);
         this.dashboard = new DashboardStore(this, core);

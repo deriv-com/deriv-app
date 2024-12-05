@@ -307,32 +307,23 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            if (/dtrader/i.test(history.location.search)) {
-                history.push({
-                    pathname: routes.trade,
-                    search: url_query_string,
-                });
-            } else if (/proof-of-address/i.test(url_query_string)) {
-                history.push({
-                    pathname: routes.proof_of_address,
-                    search: url_query_string,
-                });
-            } else if (/proof-of-identity/i.test(url_query_string)) {
-                history.push({
-                    pathname: routes.proof_of_identity,
-                    search: url_query_string,
-                });
-            } else if (/dbot/i.test(url_query_string)) {
-                history.push({
-                    pathname: routes.bot,
-                    search: url_query_string,
-                });
-            } else {
-                history.push({
-                    pathname: routes.traders_hub,
-                    search: url_query_string,
-                });
-            }
+            const routeMappings = [
+                { pattern: /dtrader/i, route: routes.trade },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                { pattern: /dbot/i, route: routes.bot },
+            ];
+
+            const defaultRoute = routes.traders_hub;
+
+            const matchedRoute = routeMappings.find(({ pattern }) =>
+                pattern.test(url_query_string || history.location.search)
+            );
+
+            history.push({
+                pathname: matchedRoute ? matchedRoute.route : defaultRoute,
+                search: url_query_string,
+            });
         }
     }, [redirected_to_route, url_query_string, history]);
 

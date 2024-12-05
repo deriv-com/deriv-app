@@ -13,22 +13,23 @@ import { TTradeParametersProps } from '../trade-parameters';
 
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
-        duration,
+        contract_type,
+        duration_min_max,
         duration_unit,
+        duration_units_list,
+        duration,
+        expiry_date,
+        expiry_epoch,
         expiry_time,
         expiry_type,
-        contract_type,
         is_market_closed,
-        trade_types,
-        proposal_info,
-        trade_type_tab,
         onChangeMultiple,
-        duration_min_max,
-        symbol,
-        duration_units_list,
-        expiry_epoch,
-        validation_errors,
+        proposal_info,
         start_time,
+        symbol,
+        trade_type_tab,
+        trade_types,
+        validation_errors,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
@@ -97,7 +98,8 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const onClose = React.useCallback(() => setOpen(false), []);
 
     const getInputValues = () => {
-        const formatted_date = end_date.toLocaleDateString('en-GB', {
+        const current_end_date = expiry_date ? new Date(expiry_date) : end_date;
+        const formatted_date = current_end_date.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'short',
             year: 'numeric',

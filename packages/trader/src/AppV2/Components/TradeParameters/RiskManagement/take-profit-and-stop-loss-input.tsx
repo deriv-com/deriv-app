@@ -276,13 +276,14 @@ const TakeProfitAndStopLossInput = ({
                     variant='fill'
                     value={new_input_value ?? ''}
                     onKeyDown={e => {
+                        // eslint-disable-next-line no-alert
+                        alert(`e.key: ${e.key}, e.keyCode: ${e.keyCode}, e.code: ${e.code}`);
                         if (
                             (e.key === '.' ||
                                 e.keyCode === 190 ||
                                 e.which === 190 ||
                                 e.keyCode === 110 ||
-                                e.code === 'NumpadDecimal' ||
-                                /^\d*\.?\d*$/.test(e.key)) &&
+                                e.code === 'NumpadDecimal') &&
                             (new_input_value?.length ?? 0) >= 8
                         ) {
                             setMaxLength(13);

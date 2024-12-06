@@ -119,7 +119,12 @@ const getAccountIcon = (shortcode: string, product?: TProducts) => {
         case MARKET_TYPE.SYNTHETIC:
             return 'Standard';
         case MARKET_TYPE.FINANCIAL:
-            return 'Financial';
+            switch (product) {
+                case PRODUCT.GOLD:
+                    return 'Gold';
+                default:
+                    return 'Financial';
+            }
         case MARKET_TYPE.ALL:
             switch (product) {
                 case PRODUCT.ZEROSPREAD:

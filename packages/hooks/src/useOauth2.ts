@@ -1,4 +1,5 @@
-import { useIsOAuth2Enabled, TOAuth2EnabledAppList, useOAuth2 } from '@deriv-com/auth-client';
+import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
+
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
 /**
@@ -21,13 +22,11 @@ const useOauth2 = ({ handleLogout }: { handleLogout?: () => Promise<void> } = {}
 
     const isOAuth2Enabled = useIsOAuth2Enabled(oAuth2EnabledApps, OAuth2EnabledAppsInitialised);
 
-    const oAuthGrowthbookConfig = {
-        OAuth2EnabledApps: oAuth2EnabledApps,
-        OAuth2EnabledAppsInitialised,
+    const logoutHandler = async () => {
+        if (handleLogout) await OAuth2Logout(handleLogout);
     };
 
-    const { OAuth2Logout: oAuthLogout } = useOAuth2(oAuthGrowthbookConfig, handleLogout ?? (() => Promise.resolve()));
-    return { isOAuth2Enabled, oAuthLogout };
+    return { isOAuth2Enabled, oAuthLogout: logoutHandler };
 };
 
 export default useOauth2;

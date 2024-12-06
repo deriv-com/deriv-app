@@ -308,10 +308,10 @@ const Redirect = observer(() => {
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
             const route_mappings = [
-                { pattern: /accumulator/i, route: '/dtrader?trade_type=accumulator' },
-                { pattern: /turbos/i, route: '/dtrader?trade_type=turboslong' },
-                { pattern: /vanilla/i, route: '/dtrader?trade_type=vanillalongcall' },
-                { pattern: /multiplier/i, route: '/dtrader?trade_type=multiplier' },
+                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
                 { pattern: /proof-of-address/i, route: routes.proof_of_address },
                 { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
                 { pattern: /dbot/i, route: routes.bot },
@@ -323,9 +323,14 @@ const Redirect = observer(() => {
                 pattern.test(url_query_string || history.location.search)
             );
 
+            const updated_search =
+                matched_route && matched_route.type
+                    ? `${url_query_string}&trade_type=${matched_route.type}`
+                    : url_query_string;
+
             history.push({
                 pathname: matched_route ? matched_route.route : default_route,
-                search: url_query_string,
+                search: updated_search,
             });
         }
     }, [redirected_to_route, url_query_string, history]);

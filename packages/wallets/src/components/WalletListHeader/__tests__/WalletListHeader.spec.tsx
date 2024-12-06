@@ -113,7 +113,7 @@ describe('WalletListHeader', () => {
         expect(switcher).not.toHaveClass('wallets-list-header__label-item--disabled');
     });
 
-    it('calls the redirectToOutSystems function when the real tab is clicked', async () => {
+    it('calls the redirectToOutSystems function when the real tab is clicked for EU users without real wallets', async () => {
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
         (useWalletAccountsList as jest.Mock).mockReturnValue({
             data: [{ is_virtual: true, loginid: 'demo123' }],

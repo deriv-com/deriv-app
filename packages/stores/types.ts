@@ -10,25 +10,26 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    GetSelfExclusion,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    P2PAdvertiserInformationResponse,
+    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
+    Statement,
     StatesList,
     Transaction,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     WebsiteStatus,
-    GetSelfExclusion,
-    Statement,
 } from '@deriv/api-types';
 
-import type { FeatureFlagsStore } from './src/stores';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
+
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'

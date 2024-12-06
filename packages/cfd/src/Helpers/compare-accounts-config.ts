@@ -13,6 +13,7 @@ const getHighlightedIconLabel = (
         trading_platforms.product === PRODUCT.GOLD
             ? market_type.concat('_', trading_platforms.product)
             : market_type.concat('_', trading_platforms.shortcode ?? '');
+
     const getForexLabel = () => {
         if (selected_region === REGION.EU) {
             return localize('Forex');
@@ -187,6 +188,7 @@ const getHeaderColor = (shortcode: string) => {
 const getDefaultJurisdictionDetails = (data: TModifiedTradingPlatformAvailableAccount) => {
     const leverage = `${data?.product_details?.max_leverage}`;
     const spread = `${data?.product_details?.min_spread} pips`;
+
     return {
         leverage,
         leverage_description: localize('Maximum leverage'),
@@ -297,6 +299,7 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
                 item.product === PRODUCT.GOLD
         )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
+
     return [...financial_accounts, ...gold_accounts];
 };
 

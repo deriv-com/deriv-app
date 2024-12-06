@@ -472,6 +472,15 @@ export default class TradersHubStore extends BaseStore {
                 icon: 'ZeroSpread',
                 availability: 'Non-EU',
             },
+            {
+                name: localize('Gold'),
+                description: localize('Trading opportunities on popular precious metals.'),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'financial',
+                product: 'gold',
+                icon: 'Gold',
+                availability: 'Non-EU',
+            },
         ];
         const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {
             const { product, is_default_jurisdiction, linkable_landing_companies } = item;
@@ -643,7 +652,7 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-                if (product === PRODUCT.STP) {
+                if (product === PRODUCT.STP || product === PRODUCT.GOLD) {
                     return key.startsWith(`${platform}.${selected_account_type}.${product}`);
                 } else if (
                     platform === CFD_PLATFORMS.MT5 &&
@@ -800,7 +809,8 @@ export default class TradersHubStore extends BaseStore {
             const short_code =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&
-                account.landing_company_short !== 'bvi'
+                account.landing_company_short !== 'bvi' &&
+                account.landing_company_short !== 'dml'
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 

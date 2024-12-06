@@ -482,6 +482,8 @@ export type TClientStore = {
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
+    is_trading_platform_available_account_loaded: boolean;
+    setIsTradingPlatformAvailableAccountLoaded: (value: boolean) => void;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_duplicate_dob_phone: boolean;

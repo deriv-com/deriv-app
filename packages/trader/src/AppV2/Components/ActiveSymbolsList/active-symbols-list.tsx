@@ -6,6 +6,7 @@ import MarketCategories from '../MarketCategories';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { sendMarketTypeToAnalytics } from '../../../Analytics';
+import { useLocalStorageData } from '@deriv/hooks';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -17,6 +18,12 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(symbol);
     const [searchValue, setSearchValue] = useState('');
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+        market_selector: false,
+    });
 
     const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +49,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                         className='active-symbols-list__content'
                         selectedTabIndex={1}
                         onChangeTab={index => {
-                            if (index !== 1) {
+                            if (index !== 1 || !guide_dtrader_v2?.market_selector) {
                                 marketCategoriesRef.current?.scrollTo({ top: 0 });
                             }
                         }}

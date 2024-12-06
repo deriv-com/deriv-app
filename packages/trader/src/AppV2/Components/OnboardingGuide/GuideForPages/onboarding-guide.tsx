@@ -4,6 +4,7 @@ import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import GuideContainer from './guide-container';
 import OnboardingVideo from './onboarding-video';
+import { Step } from 'react-joyride';
 
 type TOnboardingGuideProps = {
     type?: 'trade_page' | 'positions_page';
@@ -85,7 +86,7 @@ const OnboardingGuide = ({ type = 'trade_page', callback }: TOnboardingGuideProp
                 <Modal.Header image={modal_content.image} title={modal_content.title} />
                 <Modal.Body>{modal_content.content}</Modal.Body>
             </Modal>
-            {is_trade_page_guide && <GuideContainer should_run={should_run_guide} onFinishGuide={onFinishGuide} />}
+            {/* {is_trade_page_guide && <GuideContainer should_run={should_run_guide} steps={[{} as Step]} />} */}
         </React.Fragment>
     );
 };

@@ -132,6 +132,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_restricted_mt5_account: false,
             has_wallet: false,
             initialized_broadcast: false,
+            is_trading_platform_available_account_loaded: false,
+            setIsTradingPlatformAvailableAccountLoaded: jest.fn(),
             is_account_setting_loaded: false,
             is_authorize: false,
             is_deposit_lock: false,

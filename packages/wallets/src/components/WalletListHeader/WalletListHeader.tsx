@@ -48,7 +48,7 @@ const WalletListHeader: React.FC = () => {
 
     const handleToggle = () => {
         setIsChecked(prev => !prev);
-        if (isEuRegion && !hasAnyActiveRealWallets) {
+        if (isEuRegion && !hasAnyActiveRealWallets && isDemo) {
             return redirectToOutSystems();
         }
         if (firstRealAccount && activeWallet?.loginid === demoAccount) {

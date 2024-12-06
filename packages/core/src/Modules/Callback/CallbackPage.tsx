@@ -1,10 +1,12 @@
-import { withRouter } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
-import { ButtonLink } from '@deriv/components';
+import { Button } from '@deriv/components';
 import { routes } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { Callback } from '@deriv-com/auth-client';
 
 const CallbackPage = () => {
+    const history = useHistory();
     return (
         <Callback
             onSignInSuccess={tokens => {
@@ -16,9 +18,9 @@ const CallbackPage = () => {
             }}
             renderReturnButton={() => {
                 return (
-                    <ButtonLink to={routes.traders_hub}>
-                        <p>{"Return to Trader's Hub"}</p>
-                    </ButtonLink>
+                    <Button onClick={() => history.push('/')} secondary is_circular>
+                        <Localize i18n_default_text='Try again' />
+                    </Button>
                 );
             }}
         />

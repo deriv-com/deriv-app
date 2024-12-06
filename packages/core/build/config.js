@@ -110,11 +110,6 @@ const copyConfig = base => {
             toType: 'file',
         },
         { from: path.resolve(__dirname, '../src/root_files/custom404.html'), to: 'custom404.html', toType: 'file' },
-        {
-            from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),
-            to: 'localstorage-sync.html',
-            toType: 'file',
-        },
         { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
         { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
         {

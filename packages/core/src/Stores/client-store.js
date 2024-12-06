@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
+import { action, computed, makeObservable, observable, reaction, runInAction, when } from 'mobx';
 import moment from 'moment';
 
 import {
@@ -7,35 +7,32 @@ import {
     deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
+    getAppId,
     getPropertyValue,
-    getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
-    isMobile,
     isEmptyObject,
     isLocal,
+    isMobile,
     isProduction,
     isStaging,
-    isTestLink,
     isTestDerivApp,
+    isTestLink,
     LocalStore,
     redirectToLogin,
     removeCookies,
     routes,
     SessionStore,
     setCurrencies,
+    sortApiData,
     State,
     toMoment,
-    sortApiData,
     urlForLanguage,
-    getAppId,
-    getUrlP2P,
 } from '@deriv/shared';
+import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
+import { getCountry } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
 import { URLConstants } from '@deriv-com/utils';
-import { getCountry } from '@deriv/utils';
-
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -44,6 +41,7 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
+
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -402,7 +400,6 @@ export default class ClientStore extends BaseStore {
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
-            syncWithLegacyPlatforms: action.bound,
             is_high_risk: computed,
             is_low_risk: computed,
             has_residence: computed,
@@ -1044,7 +1041,6 @@ export default class ClientStore extends BaseStore {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
-        this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
     }
 
@@ -1263,7 +1259,6 @@ export default class ClientStore extends BaseStore {
             if (this.is_logged_in && !has_client_accounts) {
                 localStorage.setItem(storage_key, JSON.stringify(this.accounts));
                 LocalStore.set(storage_key, JSON.stringify(this.accounts));
-                this.syncWithLegacyPlatforms(client_id, this.accounts);
             }
 
             try {
@@ -1291,7 +1286,6 @@ export default class ClientStore extends BaseStore {
                         this.setAccountSettings(get_settings_response.get_settings);
                         resolve();
                     });
-                    this.syncWithLegacyPlatforms(client_id, client_accounts);
                 })
                 .catch(error => {
                     // eslint-disable-next-line no-console
@@ -1307,7 +1301,6 @@ export default class ClientStore extends BaseStore {
         this.is_populating_account_list = false;
         this.upgrade_info = this.getBasicUpgradeInfo();
         this.setSwitched(client_id);
-        this.syncWithLegacyPlatforms(client_id, client_accounts);
     }
 
     async realAccountSignup(form_values) {
@@ -2079,7 +2072,6 @@ export default class ClientStore extends BaseStore {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
         this.root_store.notifications.removeAllNotificationMessages(true);
-        this.syncWithLegacyPlatforms(this.loginid, this.accounts);
     }
 
     async logout() {
@@ -2175,7 +2167,6 @@ export default class ClientStore extends BaseStore {
 
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
-            this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
     }
 
@@ -2587,47 +2578,6 @@ export default class ClientStore extends BaseStore {
             ...['immutable_fields', 'email', 'password'],
         ];
         return Object.keys(this.account_settings).filter(field => !readonly_fields.includes(field));
-    }
-
-    syncWithLegacyPlatforms(active_loginid, client_accounts) {
-        const smartTrader = {};
-        const p2p = {};
-
-        smartTrader.iframe = document.getElementById('localstorage-sync');
-        p2p.iframe = document.getElementById('localstorage-sync__p2p');
-        smartTrader.origin = getUrlSmartTrader();
-        p2p.origin = getUrlP2P(false);
-
-        [smartTrader, p2p].forEach(platform => {
-            if (platform.iframe) {
-                // Keep client.accounts in sync (in case user wasn't logged in).
-                platform.iframe.contentWindow.postMessage(
-                    {
-                        key: 'client.accounts',
-                        value: JSON.stringify(client_accounts),
-                    },
-                    platform.origin
-                );
-                platform.iframe.contentWindow.postMessage(
-                    {
-                        key: 'active_loginid',
-                        value: active_loginid,
-                    },
-                    platform.origin
-                );
-
-                if (platform === p2p) {
-                    const currentLang = LocalStore.get(LANGUAGE_KEY);
-                    platform.iframe.contentWindow.postMessage(
-                        {
-                            key: LANGUAGE_KEY,
-                            value: currentLang,
-                        },
-                        platform.origin
-                    );
-                }
-            }
-        });
     }
 
     get is_high_risk() {

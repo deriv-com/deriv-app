@@ -1,8 +1,9 @@
-import { renderHook } from '@testing-library/react-hooks';
-import { useDtraderV2Flag } from '..';
-import useIsGrowthbookIsLoaded from '../useIsGrowthbookLoaded';
-import { useDevice } from '@deriv-com/ui';
 import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
+import { renderHook } from '@testing-library/react-hooks';
+
+import useIsGrowthbookIsLoaded from '../useIsGrowthbookLoaded';
+import { useDtraderV2Flag } from '..';
 
 jest.mock('@deriv-com/analytics', () => ({
     Analytics: {
@@ -12,6 +13,11 @@ jest.mock('@deriv-com/analytics', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: true })),
+}));
+
+jest.mock('@deriv-com/auth-client', () => ({
+    useIsOAuth2Enabled: jest.fn().mockReturnValue(false),
+    useOAuth2: jest.fn().mockReturnValue({ isOAuth2Enabled: false }),
 }));
 
 jest.mock('../useIsGrowthbookLoaded');

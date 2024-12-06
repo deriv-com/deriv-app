@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { StaticUrl } from '@deriv/components';
@@ -12,7 +13,6 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -24,9 +24,11 @@ import {
     isMultiplierContract,
     LocalStore,
     routes,
+    shouldShowPhoneVerificationNotification,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -42,8 +44,6 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import dayjs from 'dayjs';
-import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -493,6 +493,7 @@ export default class NotificationStore extends BaseStore {
                     ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
                     ASK_TIN_INFORMATION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
+                const next_prompt_date = '11 Dec 2024';
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
@@ -521,6 +522,8 @@ export default class NotificationStore extends BaseStore {
                     has_restricted_mt5_account,
                     has_mt5_account_with_rejected_poa
                 );
+
+                if (next_prompt_date) this.addNotificationMessage(this.client_notifications.reaccept_tnc);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -798,11 +801,13 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email, is_cr_account } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
+
+        const next_prompt_date = '11 Dec 2024';
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -1246,6 +1251,25 @@ export default class NotificationStore extends BaseStore {
                         text: localize('Go to my account settings'),
                     },
                 };
+            },
+            reaccept_tnc: {
+                key: 'reaccept_tnc',
+                header: localize('Important update: Terms and conditions'),
+                message: (
+                    <Localize
+                        i18n_default_text="We've updated our <0>terms and conditions</0>. To continue trading, you must review and accept the updated terms. You'll be prompted to accept them starting [{{next_prompt_date}}]."
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='link'
+                                href='terms-and-conditions'
+                                is_eu_url={!is_cr_account}
+                            />,
+                        ]}
+                        values={{ next_prompt_date }}
+                    />
+                ),
+                type: 'announce',
             },
             reset_virtual_balance: {
                 key: 'reset_virtual_balance',

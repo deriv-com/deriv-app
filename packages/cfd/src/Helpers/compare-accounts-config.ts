@@ -133,9 +133,6 @@ const getAccountIcon = (shortcode: string, product?: TProducts) => {
                 default:
                     return 'Financial';
             }
-        case MARKET_TYPE.CFDS:
-            if (product === PRODUCT.GOLD) return 'Gold';
-            break;
         case MARKET_TYPE.ALL:
             switch (product) {
                 case PRODUCT.ZEROSPREAD:
@@ -149,7 +146,12 @@ const getAccountIcon = (shortcode: string, product?: TProducts) => {
         case CFD_PLATFORMS.CTRADER:
             return 'CTrader';
         default:
-            return 'CFDs';
+            switch (product) {
+                case PRODUCT.GOLD:
+                    return 'Gold';
+                default:
+                    return 'CFDs';
+            }
     }
 };
 

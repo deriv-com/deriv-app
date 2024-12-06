@@ -16,7 +16,6 @@ export const MARKET_TYPE = {
     GAMING: 'gaming',
     FINANCIAL: 'financial',
     ALL: 'all',
-    CFDS: 'CFDs',
 } as const;
 
 export const PRODUCT = {

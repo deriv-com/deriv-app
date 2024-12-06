@@ -114,7 +114,7 @@ const CompareCFDs = observer(() => {
                             {all_cfd_available_accounts.map(item => (
                                 <CFDCompareAccountsCard
                                     trading_platforms={item}
-                                    key={item.market_type + item.shortcode}
+                                    key={item.market_type + item.shortcode + (item?.product || '')}
                                     is_eu_user={is_eu_user}
                                     is_demo={is_demo}
                                 />

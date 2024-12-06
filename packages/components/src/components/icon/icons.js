@@ -758,6 +758,7 @@ import './mt5/ic-mt5-financial-platform.svg';
 import './mt5/ic-mt5-financial-stp-platform.svg';
 import './mt5/ic-mt5-financial-stp.svg';
 import './mt5/ic-mt5-financial.svg';
+import './mt5/ic-mt5-gold.svg';
 import './mt5/ic-mt5-high-leverage.svg';
 import './mt5/ic-mt5-liquid-risk.svg';
 import './mt5/ic-mt5-logo.svg';

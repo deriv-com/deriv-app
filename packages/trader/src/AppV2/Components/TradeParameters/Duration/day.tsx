@@ -27,7 +27,9 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
+    expiry_date_input,
     expiry_time_input,
+    setExpiryDateInput,
     setExpiryTimeInput,
 }: {
     setEndTime: (arg: string) => void;
@@ -36,6 +38,8 @@ const DayInput = ({
     end_time: string;
     expiry_time_input: string;
     setExpiryTimeInput: (arg: string) => void;
+    expiry_date_input: string;
+    setExpiryDateInput: (arg: string) => void;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
@@ -136,6 +140,9 @@ const DayInput = ({
                         .split('T')[1]
                         .substring(0, 8)
                 );
+                setExpiryDateInput(
+                    new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[0]
+                );
             }
 
             invalidateDTraderCache([
@@ -146,7 +153,7 @@ const DayInput = ({
             ]);
             setTriggerDate(false);
         }
-    }, [response, setExpiryTimeInput]);
+    }, [response, setExpiryTimeInput, setExpiryDateInput]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -158,7 +165,9 @@ const DayInput = ({
     const adjusted_start_time =
         boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-    const formatted_date = end_date.toLocaleDateString('en-GB', {
+    const current_end_date = expiry_date_input ? new Date(expiry_date_input) : end_date;
+
+    const formatted_date = current_end_date.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -287,7 +296,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={end_date_input}
+                            end_date={new Date(expiry_date_input) || end_date_input}
                             setEndDate={handleDate}
                         />
                     )}

@@ -37,6 +37,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
     const [expiry_time_string, setExpiryTimeString] = useState('');
+    const [expiry_date_string, setExpiryDateString] = useState('');
     const [end_date, setEndDate] = useState<Date>(new Date());
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
@@ -55,6 +56,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             setExpiryTimeString(
                 new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
             );
+            setExpiryDateString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[0]);
         }
     }, [expiry_epoch]);
 
@@ -98,7 +100,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const onClose = React.useCallback(() => setOpen(false), []);
 
     const getInputValues = () => {
-        const current_end_date = expiry_date ? new Date(expiry_date) : end_date;
+        const current_end_date = expiry_date_string ? new Date(expiry_date_string) : end_date;
         const formatted_date = current_end_date.toLocaleDateString('en-GB', {
             day: 'numeric',
             month: 'short',
@@ -192,7 +194,9 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                         end_date={end_date}
                         setEndDate={setEndDate}
                         expiry_time_string={expiry_time_string}
+                        expiry_date_string={expiry_date_string}
                         setExpiryTimeString={setExpiryTimeString}
+                        setExpiryDateString={setExpiryDateString}
                         end_time={end_time}
                         setEndTime={setEndTime}
                     />

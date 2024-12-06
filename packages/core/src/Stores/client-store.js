@@ -1569,7 +1569,9 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleResetEmailModal(true);
             }
         }
-        const client = this.accounts[this.loginid] || { token: localStorage.getItem('config.account1') };
+        const storedToken = localStorage.getItem('config.account1');
+        const client = this.accounts[this.loginid] || (storedToken ? { token: storedToken } : undefined);
+
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed

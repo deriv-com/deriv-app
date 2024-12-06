@@ -364,7 +364,7 @@ const getModules = () => {
             path: routes.callback_page,
             component: CallbackPage,
             is_authenticated: false,
-            getTitle: () => localize('Callback'),
+            getTitle: () => 'Callback',
         },
     ];
 
@@ -382,7 +382,7 @@ const initRoutesConfig = () => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.traders_hub },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
-    { path: routes.callback_page, component: CallbackPage, getTitle: () => localize('Callback') },
+    { path: routes.callback_page, component: CallbackPage, getTitle: () => 'Callback' },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

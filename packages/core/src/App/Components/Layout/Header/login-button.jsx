@@ -8,7 +8,7 @@ import { getLanguage, localize } from '@deriv/translations';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 const LoginButton = ({ className }) => {
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled } = useOauth2({});
     return (
         <Button
             id='dt_login_button'

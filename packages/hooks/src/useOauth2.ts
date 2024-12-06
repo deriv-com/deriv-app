@@ -1,4 +1,9 @@
-import { OAuth2Logout, TOAuth2EnabledAppList, useIsOAuth2Enabled } from '@deriv-com/auth-client';
+import {
+    OAuth2Logout,
+    requestOidcAuthentication,
+    TOAuth2EnabledAppList,
+    useIsOAuth2Enabled,
+} from '@deriv-com/auth-client';
 
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
@@ -15,18 +20,33 @@ import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
  * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
  */
-const useOauth2 = ({ handleLogout }: { handleLogout?: () => Promise<void> } = {}) => {
+const useOauth2 = ({
+    handleLogout,
+    handleLogin,
+}: {
+    handleLogout: () => Promise<void>;
+    handleLogin?: () => Promise<void>;
+}) => {
     const [oAuth2EnabledApps, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue<string>({
         featureFlag: 'hydra_be',
     }) as unknown as [TOAuth2EnabledAppList, boolean];
 
     const isOAuth2Enabled = useIsOAuth2Enabled(oAuth2EnabledApps, OAuth2EnabledAppsInitialised);
 
-    const logoutHandler = async () => {
-        if (handleLogout) await OAuth2Logout(handleLogout);
+    const loginHandler = async () => {
+        if (isOAuth2Enabled) {
+            await requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
+        }
+        await handleLogin?.();
     };
 
-    return { isOAuth2Enabled, oAuthLogout: logoutHandler };
+    const logoutHandler = async () => {
+        await OAuth2Logout(handleLogout);
+    };
+
+    return { isOAuth2Enabled, oAuthLogout: logoutHandler, loginHandler };
 };
 
 export default useOauth2;

@@ -28,6 +28,7 @@ const Redirect = observer(() => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
+    let redirected_to_route = false;
 
     // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
@@ -56,7 +57,6 @@ const Redirect = observer(() => {
         window.LiveChatWidget?.call('maximize');
     };
 
-    let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
@@ -307,8 +307,24 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            const route_mappings = [
+                { pattern: /accumulator/i, route: '/dtrader?trade_type=accumulator' },
+                { pattern: /turbos/i, route: '/dtrader?trade_type=turboslong' },
+                { pattern: /vanilla/i, route: '/dtrader?trade_type=vanillalongcall' },
+                { pattern: /multiplier/i, route: '/dtrader?trade_type=multiplier' },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                { pattern: /dbot/i, route: routes.bot },
+            ];
+
+            const default_route = routes.traders_hub;
+
+            const matched_route = route_mappings.find(({ pattern }) =>
+                pattern.test(url_query_string || history.location.search)
+            );
+
             history.push({
-                pathname: routes.traders_hub,
+                pathname: matched_route ? matched_route.route : default_route,
                 search: url_query_string,
             });
         }

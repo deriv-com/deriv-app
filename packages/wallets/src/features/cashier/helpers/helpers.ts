@@ -9,15 +9,7 @@ type TGetAccountNameProps = {
     displayCurrencyCode?: THooks.CurrencyConfig['display_code'];
     landingCompanyName: TWalletLandingCompanyName;
     mt5MarketType?: TMarketTypes.SortedMT5Accounts;
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp';
-};
-
-//TODO: remove this function when market_type will be added to transfer_between_accounts response in API
-export const getMarketType = (mt5Group?: string) => {
-    if (mt5Group?.includes(MT5MarketTypeDetails.financial.name)) return MT5MarketTypeDetails.financial.name;
-    if (mt5Group?.includes(MT5MarketTypeDetails.synthetic.name)) return MT5MarketTypeDetails.synthetic.name;
-    if (mt5Group?.includes(MT5MarketTypeDetails.all.name)) return MT5MarketTypeDetails.all.name;
-    return undefined;
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp';
 };
 
 //TODO: remove this function when landing_company_name will be added to transfer_between_accounts response in API for mt5 accounts
@@ -37,10 +29,16 @@ export const getAccountName = ({
     mt5MarketType,
     product,
 }: TGetAccountNameProps) => {
-    const MT5FinancialTitle =
-        product === 'stp'
-            ? MT5MarketTypeDetails.financial.product?.stp?.title
-            : MT5MarketTypeDetails.financial.landingCompany?.svg.title;
+    const getMT5FinancialTitle = () => {
+        switch (product) {
+            case 'stp':
+                return MT5MarketTypeDetails.financial.product?.stp?.title;
+            case 'gold':
+                return MT5MarketTypeDetails.financial.product?.gold?.title;
+            default:
+                return MT5MarketTypeDetails.financial.landingCompany?.svg.title;
+        }
+    };
 
     switch (accountCategory) {
         case 'wallet':
@@ -65,7 +63,7 @@ export const getAccountName = ({
                                     'svg' | 'virtual'
                                 >
                             )
-                                ? MT5FinancialTitle
+                                ? getMT5FinancialTitle()
                                 : MT5MarketTypeDetails.financial.landingCompany?.malta.title;
                         case MT5MarketTypeDetails.synthetic.name:
                             return MT5MarketTypeDetails.synthetic.title;

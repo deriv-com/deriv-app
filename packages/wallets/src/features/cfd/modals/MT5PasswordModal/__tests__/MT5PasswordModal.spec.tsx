@@ -14,7 +14,19 @@ import userEvent from '@testing-library/user-event';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5PasswordModal from '../MT5PasswordModal';
 
-jest.mock('@deriv/api-v2');
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useAccountStatus: jest.fn(),
+    useAvailableMT5Accounts: jest.fn(),
+    useCreateMT5Account: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
+    useMT5AccountsList: jest.fn(),
+    useSettings: jest.fn(),
+    useTradingPlatformPasswordChange: jest.fn(),
+    useVerifyEmail: jest.fn(),
+}));
 jest.mock('../../../../../components/ModalProvider');
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -196,7 +208,11 @@ describe('MT5PasswordModal', () => {
         (useCreateMT5Account as jest.Mock).mockReturnValue({ error: undefined, mutate: jest.fn(), status: 'idle' });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({ mutateAsync: jest.fn() });
         (useAccountStatus as jest.Mock).mockReturnValue({ data: undefined, isLoading: false });
-        (useModal as jest.Mock).mockReturnValue({ getModalState: jest.fn(), hide: jest.fn() });
+        (useModal as jest.Mock).mockReturnValue({
+            getModalState: jest.fn(),
+            hide: jest.fn(),
+            setModalOptions: jest.fn(),
+        });
         (useVerifyEmail as jest.Mock).mockReturnValue({ error: undefined, status: 'idle' });
         (useSettings as jest.Mock).mockReturnValue({ data: { email: undefined } });
         (useAvailableMT5Accounts as jest.Mock).mockReturnValue({
@@ -231,7 +247,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard account')).toBeInTheDocument();
     });
 
     it('renders default content for demo account', () => {
@@ -242,7 +258,7 @@ describe('MT5PasswordModal', () => {
 
         expect(screen.getByText('EnterPassword')).toBeInTheDocument();
         expect(screen.getByText('MT5PasswordModalFooter')).toBeInTheDocument();
-        expect(screen.getByText('Enter your demo Deriv MT5 password')).toBeInTheDocument();
+        expect(screen.getByText('Add an MT5 Standard demo account')).toBeInTheDocument();
     });
 
     it('renders WalletError for account creation errors', () => {
@@ -424,14 +440,14 @@ describe('MT5PasswordModal', () => {
         expect(screen.getByText('Deriv MT5 latest password requirements')).toBeInTheDocument();
     });
 
-    it('handles primary and secondary button clicks for MT5ResetPasswordModal', async () => {
+    it('shows success modal when password is updated', async () => {
         (useSettings as jest.Mock).mockReturnValue({ data: { email: 'test@example.com' } });
         (useCreateMT5Account as jest.Mock).mockReturnValue({
             error: { error: { code: 'InvalidTradingPlatformPasswordFormat' } },
             status: 'error',
         });
         (useTradingPlatformPasswordChange as jest.Mock).mockReturnValue({
-            mutateAsync: mockTradingPasswordChangeMutateAsync,
+            mutateAsync: mockTradingPasswordChangeMutateAsync.mockImplementation(params => Promise.resolve(params)),
         });
         (useVerifyEmail as jest.Mock).mockReturnValue({
             mutate: mockEmailVerificationMutate,
@@ -447,15 +463,11 @@ describe('MT5PasswordModal', () => {
             old_password: 'oldPass',
             platform: 'mt5',
         });
-
-        await userEvent.click(screen.getByTestId('dt_mt5_reset_password_modal_secondary_button'));
-        expect(mockEmailVerificationMutate).toHaveBeenCalledWith({
-            type: 'trading_platform_mt5_password_reset',
-            url_parameters: {
-                redirect_to: 10,
-            },
-            verify_email: 'test@example.com',
-        });
+        expect(screen.getByText('Success')).toBeInTheDocument();
+        expect(
+            screen.getByText('You can log in to all your Deriv MT5 accounts with your new password.')
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
     });
 
     it('renders MT5AccountAdded when account creation succeeds', () => {

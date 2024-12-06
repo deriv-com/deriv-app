@@ -41,6 +41,7 @@ import {
     getContractPath,
     routes,
     isDtraderV2Enabled,
+    cacheTrackEvents,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -931,10 +932,16 @@ export default class TradeStore extends BaseStore {
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
         if (
-            name == 'contract_type' &&
+            name === 'contract_type' &&
             ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
         ) {
             this.prev_contract_type = this.contract_type;
+        }
+
+        // reset stop loss after trade type was changed
+        if (name === 'contract_type' && this.has_stop_loss) {
+            this.has_stop_loss = false;
+            this.stop_loss = '';
         }
 
         if (name === 'symbol' && value) {
@@ -1772,12 +1779,14 @@ export default class TradeStore extends BaseStore {
         this.resetErrorServices();
         await this.setContractTypes();
         runInAction(async () => {
-            this.processNewValuesAsync(
-                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-                true,
-                { currency: this.currency },
-                false
-            );
+            if (!this.is_dtrader_v2_enabled) {
+                this.processNewValuesAsync(
+                    { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                    true,
+                    { currency: this.currency },
+                    false
+                );
+            }
         });
         return Promise.resolve();
     }
@@ -1946,6 +1955,10 @@ export default class TradeStore extends BaseStore {
     wsSubscribe = (req: TicksHistoryRequest, callback: (response: TTicksHistoryResponse) => void) => {
         const passthrough_callback = (...args: [TTicksHistoryResponse]) => {
             callback(...args);
+            if ('ohlc' in args[0] && this.root_store.contract_trade.granularity !== 0) {
+                const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
+                if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
+            }
             if (this.is_accumulator) {
                 let current_spot_data = {};
                 if ('tick' in args[0]) {
@@ -2036,11 +2049,18 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            Analytics.trackEvent(event_type, {
-                ...data,
-                action: data.action as TEvents['ce_indicators_types_form']['action'],
-                form_name: 'default',
-            });
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: event_type,
+                        properties: {
+                            ...data,
+                            action: data.action as TEvents['ce_indicators_types_form']['action'],
+                            form_name: 'default',
+                        },
+                    },
+                },
+            ]);
         }
     }
 

@@ -9,32 +9,32 @@ import {
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
-import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
+import AccountsDmt5GoldIcon from '../../../../public/images/account-dmt5-gold-icon.svg';
+import { CFD_PLATFORMS } from '../../constants';
 
-export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
-    [MARKET_TYPE.FINANCIAL]: { Eu: <AccountsDmt5CfdsIcon />, NonEU: <AccountsDmt5FinancialIcon iconSize='lg' /> },
-    [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
-    [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
-    [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
-    [PRODUCT.ZEROSPREAD]: <AccountsDmt5ZrsIcon iconSize='lg' />,
-    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
+export const MT5_PRODUCT = {
+    FINANCIAL: 'financial',
+    GOLD: 'gold',
+    STANDARD: 'standard',
+    STP: 'stp',
+    SWAP_FREE: 'swap_free',
+    ZERO_SPREAD: 'zero_spread',
 } as const;
 
-export const MARKET_TYPE_SHORTCODE = {
-    ALL_DXTRADE: 'all_',
-    ALL_SVG: 'all_svg',
-    ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
-    ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
-    FINANCIAL_BVI: 'financial_bvi',
-    FINANCIAL_LABUAN: 'financial_labuan',
-    FINANCIAL_MALTAINVEST: 'financial_maltainvest',
-    FINANCIAL_SVG: 'financial_svg',
-    FINANCIAL_VANUATU: 'financial_vanuatu',
-    GAMING: 'gaming',
-    SYNTHETIC_BVI: 'synthetic_bvi',
-    SYNTHETIC_SVG: 'synthetic_svg',
-    SYNTHETIC_VANUATU: 'synthetic_vanuatu',
+type TProps = React.ComponentProps<typeof AccountsDmt5GoldIcon> | React.ComponentProps<typeof AccountsDmt5StandardIcon>;
+
+export const ACCOUNT_ICONS = {
+    [MT5_PRODUCT.STANDARD]: (props: TProps) => <AccountsDmt5StandardIcon {...props} />,
+    [MT5_PRODUCT.FINANCIAL]: {
+        Eu: (props: TProps) => <AccountsDmt5CfdsIcon {...props} />,
+        NonEU: (props: TProps) => <AccountsDmt5FinancialIcon {...props} />,
+    },
+    [MT5_PRODUCT.SWAP_FREE]: (props: TProps) => <AccountsDmt5SwfIcon {...props} />,
+    [CFD_PLATFORMS.DXTRADE]: (props: TProps) => <AccountsDerivXIcon {...props} />,
+    [CFD_PLATFORMS.CTRADER]: (props: TProps) => <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon {...props} />,
+    [MT5_PRODUCT.ZERO_SPREAD]: (props: TProps) => <AccountsDmt5ZrsIcon {...props} />,
+    [MT5_PRODUCT.GOLD]: (props: TProps) => <AccountsDmt5GoldIcon {...props} />,
+    default: (props: TProps) => <AccountsDmt5CfdsIcon {...props} />,
 } as const;
 
 export const JURISDICTION = {

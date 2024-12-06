@@ -217,7 +217,7 @@ export type TAccounts = {
     title?: string;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+export type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'gold';
 
 type TPendingAccountDetails = {
     balance?: number;
@@ -335,6 +335,7 @@ export type PersonalDetailsValueTypes = Omit<GetSettings, 'date_of_birth'> & {
     date_of_birth?: string;
     tax_identification_confirm?: boolean;
     tin_skipped?: 0 | 1;
+    calling_country_code?: string;
 };
 
 export type TEmployeeDetailsTinValidationConfig = {

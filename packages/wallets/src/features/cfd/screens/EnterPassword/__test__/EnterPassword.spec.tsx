@@ -1,16 +1,25 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MARKET_TYPE, PlatformDetails } from '../../../constants';
 import EnterPassword from '../EnterPassword';
 
-jest.mock('@deriv/api-v2');
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({ data: false })),
+}));
 
 jest.mock('../../components', () => ({
     ...jest.requireActual('../../components'),
     MT5LicenceMessage: jest.fn(() => <div>MT5LicenceMessage</div>),
-    MT5PasswordModalTnc: jest.fn(() => <div>MT5PasswordModalTnc</div>),
+    MT5PasswordModalTnc: ({ onChange }: { onChange: () => void }) => (
+        <div>
+            <input data-testid='dt_mt5_password_modal_tnc' onChange={() => onChange()} type='checkbox' />
+            MT5PasswordModalTnc
+        </div>
+    ),
 }));
 
 describe('EnterPassword', () => {
@@ -20,7 +29,9 @@ describe('EnterPassword', () => {
         mockUseActiveWalletAccount.mockReturnValue({ data: { is_virtual: false } });
     });
 
-    afterEach(cleanup);
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
     const title = `Enter your ${PlatformDetails.mt5.title} password`;
     const shortPassword = 'abcd';
@@ -34,6 +45,7 @@ describe('EnterPassword', () => {
         onPasswordChange: jest.fn(),
         onPrimaryClick: jest.fn(),
         onSecondaryClick: jest.fn(),
+        onTncChange: jest.fn(),
         password: '',
         passwordError: false,
         platform: PlatformDetails.mt5.platform,
@@ -41,25 +53,14 @@ describe('EnterPassword', () => {
     };
 
     const renderComponent = (props = {}) => {
-        return render(
-            <EnterPassword
-                isTncChecked={true}
-                onTncChange={function (): void {
-                    throw new Error('Function not implemented.');
-                }}
-                {...defaultProps}
-                {...props}
-            />
-        );
+        return render(<EnterPassword {...defaultProps} {...props} />);
     };
 
     it('renders the component correctly', () => {
         renderComponent();
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(
-            screen.getByText(
-                `Enter your ${PlatformDetails.mt5.title} password to add a ${PlatformDetails.mt5.title} Financial account`
-            )
+            screen.getByText(`Enter your ${PlatformDetails.mt5.title} password to add an MT5 Financial account`)
         ).toBeInTheDocument();
     });
 
@@ -70,9 +71,9 @@ describe('EnterPassword', () => {
         expect(defaultProps.onPasswordChange).toHaveBeenCalled();
     });
 
-    it('calls onSecondaryClick when clicking the "Forgot password?" button', async () => {
+    it('calls onSecondaryClick when clicking the "Forgot password" button', async () => {
         renderComponent();
-        const forgotPasswordButton = screen.getByRole('button', { name: 'Forgot password?' });
+        const forgotPasswordButton = screen.getByRole('button', { name: 'Forgot password' });
         await userEvent.click(forgotPasswordButton);
         expect(defaultProps.onSecondaryClick).toHaveBeenCalled();
     });
@@ -122,6 +123,13 @@ describe('EnterPassword', () => {
         renderComponent({ account: { shortcode: 'bvi' } });
 
         expect(screen.getByText('MT5PasswordModalTnc')).toBeInTheDocument();
+    });
+
+    it('calls onTncChange when checking the tnc checkbox', async () => {
+        renderComponent({ account: { shortcode: 'bvi' } });
+        const tncCheckbox = screen.getByTestId('dt_mt5_password_modal_tnc');
+        await userEvent.click(tncCheckbox);
+        expect(defaultProps.onTncChange).toHaveBeenCalled();
     });
 
     it('hides the mt5 tnc checkbox for non-regulated real accounts', () => {

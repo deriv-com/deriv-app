@@ -27,6 +27,9 @@ const Redirect = observer(() => {
         is_mobile,
     } = ui;
 
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+
     // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
     // to be logged in coming from OS subdomains
@@ -42,6 +45,11 @@ const Redirect = observer(() => {
         // remove cookies after populating local storage
         Cookies.remove('client.accounts', { domain, secure: true });
         Cookies.remove('active_loginid', { domain, secure: true });
+
+        if (url_params.get('action') === 'redirect') {
+            window.location.href = window.location.origin + url_params.get('redirect_to');
+        }
+
         window.location.reload();
     }
 
@@ -49,8 +57,6 @@ const Redirect = observer(() => {
         Chat.open();
     };
 
-    const url_query_string = window.location.search;
-    const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];

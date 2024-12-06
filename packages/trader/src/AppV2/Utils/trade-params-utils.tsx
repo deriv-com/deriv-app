@@ -449,7 +449,15 @@ export const getProposalRequestObject = ({
     const request = createProposalRequestForContract(
         store as Parameters<typeof createProposalRequestForContract>[0],
         trade_type
-    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & { subscribe?: number };
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & {
+        subscribe?: number;
+        limit_order:
+            | {
+                  take_profit?: number;
+                  stop_loss?: number;
+              }
+            | undefined;
+    };
 
     if (!should_subscribe) delete request.subscribe;
 

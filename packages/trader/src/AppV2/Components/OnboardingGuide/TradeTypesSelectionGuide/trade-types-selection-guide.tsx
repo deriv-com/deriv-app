@@ -2,10 +2,14 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
-import { UNIFIED_MODE_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
+import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
 import StreamIframe from '../../StreamIframe';
 
-const TradeTypesSelectionGuide = () => {
+type TTradeTypeSelectionGuideProps = {
+    is_dark_mode_on?: boolean;
+};
+
+const TradeTypesSelectionGuide: React.FC<TTradeTypeSelectionGuideProps> = ({ is_dark_mode_on }) => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
 
@@ -15,6 +19,10 @@ const TradeTypesSelectionGuide = () => {
         positions_page: false,
     });
     const { trade_types_selection } = guide_dtrader_v2 || {};
+
+    const video_src = is_dark_mode_on
+        ? DESCRIPTION_VIDEO_ID.trade_type_selection.dark
+        : DESCRIPTION_VIDEO_ID.trade_type_selection.light;
 
     const onFinishGuide = () => {
         setIsModalOpen(false);
@@ -41,7 +49,7 @@ const TradeTypesSelectionGuide = () => {
             primaryButtonCallback={onFinishGuide}
         >
             <Modal.Header
-                image={<StreamIframe src={UNIFIED_MODE_VIDEO_ID.trade_type_selection} title='trade_types_selection' />}
+                image={<StreamIframe src={video_src} title='trade_types_selection' />}
                 title={<Localize i18n_default_text='Manage your trade types' />}
             />
             <Modal.Body>

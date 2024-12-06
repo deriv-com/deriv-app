@@ -62,3 +62,11 @@ export const ACCOUNT_VERIFICATION_BADGE_STATUS = {
     IN_REVIEW: 'in_review',
     NEEDS_VERIFICATION: 'needs_verification',
 } as const;
+
+export const LANDING_COMPANIES = Object.freeze({
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTAINVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+});

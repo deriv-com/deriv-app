@@ -7,6 +7,7 @@ import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { cacheTrackEvents } from '@deriv/shared';
 
 const getIconName = (is_eu: boolean, is_mobile: boolean, is_rtl: boolean) => {
     if (is_eu) {
@@ -58,13 +59,20 @@ const WalletsBannerUpgrading = observer(() => {
     }
 
     React.useEffect(() => {
-        Analytics.trackEvent('ce_tradershub_banner', {
-            action: 'open',
-            form_name: 'ce_tradershub_banner',
-            account_mode: is_demo ? 'demo' : 'real',
-            banner_name: 'setting_up_wallets_step_2',
-            banner_type: 'without_url',
-        });
+        cacheTrackEvents.loadEvent([
+            {
+                event: {
+                    name: 'ce_tradershub_banner',
+                    properties: {
+                        action: 'open',
+                        form_name: 'ce_tradershub_banner',
+                        account_mode: is_demo ? 'demo' : 'real',
+                        banner_name: 'setting_up_wallets_step_2',
+                        banner_type: 'without_url',
+                    },
+                },
+            },
+        ]);
     }, [is_demo]);
 
     return (

@@ -1,4 +1,10 @@
 /** @define chart-spot */
+// Equal to --core-color-solid-red-700, --core-color-solid-green-700 and --core-color-solid-blue-700 form Quill.
+// Can not use Quill token here.
+$solid-red-700: #e6190e;
+$solid-green-700: #008832;
+$solid-blue-700: #2c9aff;
+
 .chart-spot {
     display: flex;
     flex-direction: column;
@@ -12,16 +18,16 @@
         align-items: center;
         font-weight: bold;
         color: var(--text-prominent);
-        background-color: var(--general-main-1);
+        background-color: var(--general-main-5);
         border: 2px solid var(--text-less-prominent);
 
         &--lost {
-            border-color: var(--text-loss-danger);
-            background: var(--text-loss-danger);
+            border-color: $solid-red-700;
+            background: $solid-red-700;
         }
         &--won {
-            background-color: var(--text-profit-success);
-            border-color: var(--text-profit-success);
+            background-color: $solid-green-700;
+            border-color: $solid-green-700;
         }
         &--won,
         &--lost {
@@ -35,8 +41,8 @@
     }
     &__entry {
         align-items: center;
-        background-color: var(--general-main-2);
-        border: 5px solid var(--brand-red-coral);
+        background-color: var(--general-main-5);
+        border: 5px solid $solid-red-700;
         display: flex;
         justify-content: center;
         left: -12px;
@@ -71,8 +77,8 @@
                 background-color: var(--text-less-prominent);
 
                 &--preexit {
-                    background-color: var(--status-info);
-                    border: 2px solid var(--status-info);
+                    background-color: $solid-blue-700;
+                    border: 2px solid $solid-blue-700;
                 }
                 @include mobile {
                     width: 4px;
@@ -92,7 +98,7 @@
                     width: 0.6rem;
                     height: 0.6rem;
                     border-radius: 50%;
-                    background-color: var(--border-active);
+                    background-color: $solid-green-700;
                     @include mobile {
                         width: 0.4rem;
                         height: 0.4rem;
@@ -134,13 +140,13 @@
 
         &--lost {
             &:before {
-                border-bottom: 0.5rem solid var(--text-loss-danger);
+                border-bottom: 0.5rem solid $solid-red-700;
             }
         }
 
         &--won {
             &:before {
-                border-bottom: 0.5rem solid var(--text-profit-success);
+                border-bottom: 0.5rem solid $solid-green-700;
             }
         }
 
@@ -224,10 +230,10 @@
             margin-top: 2px;
         }
         &--lost {
-            background-color: var(--text-loss-danger);
+            background-color: $solid-red-700;
         }
         &--won {
-            background-color: var(--text-profit-success);
+            background-color: $solid-green-700;
         }
         &--won,
         &--lost {
@@ -251,7 +257,8 @@
             bottom: 0;
             left: -11px;
             white-space: nowrap;
-            background-color: var(--general-main-1);
+            background-color: var(--general-main-5);
+            border-radius: 50%;
 
             @include mobile {
                 left: -7px;
@@ -275,7 +282,7 @@
         border-color: var(--text-less-prominent);
 
         &:after {
-            background: linear-gradient(to bottom, var(--general-main-1) 3%, transparent 10%);
+            background: linear-gradient(to bottom, var(--general-main-5) 3%, transparent 10%);
             position: absolute;
             content: ' ';
             top: 0px;
@@ -290,7 +297,7 @@
         bottom: 0;
         left: -11px;
         white-space: nowrap;
-        background-color: var(--general-main-1);
+        background-color: var(--general-main-5);
 
         &--time {
             /* postcss-bem-linter: ignore */
@@ -301,13 +308,13 @@
         &--won {
             /* postcss-bem-linter: ignore */
             circle {
-                fill: var(--text-profit-success);
+                fill: $solid-green-700;
             }
         }
         &--lost {
             /* postcss-bem-linter: ignore */
             circle {
-                fill: var(--text-loss-danger);
+                fill: $solid-red-700;
             }
         }
         @include mobile {
@@ -370,16 +377,22 @@
         }
 
         &.won div {
-            color: var(--text-profit-success);
+            color: $solid-green-700;
         }
         &.lost div {
-            color: var(--text-loss-danger);
+            color: $solid-red-700;
         }
         &__profit {
             display: flex;
             transform: translateY(-54%);
             position: relative;
 
+            &--won {
+                color: $solid-green-700 !important;
+            }
+            &--lost {
+                color: $solid-red-700 !important;
+            }
             &--fading-in {
                 @keyframes fade-profit-in {
                     from {
@@ -455,38 +468,38 @@
         &.lost {
             #{$self}__spot-circle,
             #{$self}__content {
-                background-color: var(--text-loss-danger);
+                background-color: $solid-red-700;
 
                 &.arrow-top:after {
-                    border-bottom: 4px solid var(--text-loss-danger);
+                    border-bottom: 4px solid $solid-red-700;
                 }
                 &.arrow-bottom:before {
-                    border-top: 4px solid var(--text-loss-danger);
+                    border-top: 4px solid $solid-red-700;
                 }
                 &.arrow-left:after {
-                    border-right: 4px solid var(--text-loss-danger);
+                    border-right: 4px solid $solid-red-700;
                 }
                 &.arrow-right:before {
-                    border-left: 4px solid var(--text-loss-danger);
+                    border-left: 4px solid $solid-red-700;
                 }
             }
         }
         &.won {
             #{$self}__spot-circle,
             #{$self}__content {
-                background-color: var(--text-profit-success);
+                background-color: $solid-green-700;
 
                 &.arrow-top:after {
-                    border-bottom: 4px solid var(--text-profit-success);
+                    border-bottom: 4px solid $solid-green-700;
                 }
                 &.arrow-bottom:before {
-                    border-top: 4px solid var(--text-profit-success);
+                    border-top: 4px solid $solid-green-700;
                 }
                 &.arrow-left:after {
-                    border-right: 4px solid var(--text-profit-success);
+                    border-right: 4px solid $solid-green-700;
                 }
                 &.arrow-right:before {
-                    border-left: 4px solid var(--text-profit-success);
+                    border-left: 4px solid $solid-green-700;
                 }
             }
         }
@@ -598,7 +611,7 @@
 .sc-reset_barrier {
     width: 100vw;
     height: 0.1rem;
-    border-bottom: 1px dashed var(--text-info-blue);
+    border-bottom: 1px dashed $solid-blue-700;
 }
 
 .sc-barrier_gradient {
@@ -608,11 +621,11 @@
     opacity: 0.3;
 
     &--to-bottom {
-        background-image: linear-gradient(to bottom, transparent, $COLOR_GREEN_1);
+        background-image: linear-gradient(to bottom, transparent, $solid-green-700);
         bottom: 0;
     }
     &--to-top {
-        background-image: linear-gradient(to top, transparent, $COLOR_GREEN_1);
+        background-image: linear-gradient(to top, transparent, $solid-green-700);
     }
 }
 

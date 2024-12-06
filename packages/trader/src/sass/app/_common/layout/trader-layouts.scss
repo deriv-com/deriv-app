@@ -822,14 +822,5 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
     }
-    /* TODO: Remove this override once the issue is fixed in smartcharts */
-    /* postcss-bem-linter: ignore */
-    @at-root body.theme--light & .chart-line.horizontal .title-wrapper {
-        background-image: linear-gradient(
-            rgba(255, 255, 255, 0.001) 30%,
-            var(--general-main-1) 50%,
-            rgba(255, 255, 255, 0.001) 75%
-        );
-    }
 }
 /*rtl:end:ignore*/

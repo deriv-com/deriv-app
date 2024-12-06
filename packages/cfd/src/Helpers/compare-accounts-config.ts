@@ -57,15 +57,24 @@ const getHighlightedIconLabel = (
             icon: 'Cryptocurrencies',
             text: localize('Cryptocurrencies'),
         },
-        { id: 'ETFs', icon: 'ETF', text: localize('ETFs') },
+        { id: 'ETFs', icon: 'ETF', text: localize('ETFs'), is_available: selected_region === REGION.NON_EU },
         {
             id: 'synthetic_indices',
             icon: 'Synthetics',
             text: localize('Synthetic indices'),
-            is_asterisk: selected_region === REGION.EU,
         },
-        { id: 'basket_indices', icon: 'Baskets', text: localize('Basket indices') },
-        { id: 'derived_FX', icon: 'DerivedFX', text: localize('Derived FX') },
+        {
+            id: 'basket_indices',
+            icon: 'Baskets',
+            text: localize('Basket indices'),
+            is_available: selected_region === REGION.NON_EU,
+        },
+        {
+            id: 'derived_FX',
+            icon: 'DerivedFX',
+            text: localize('Derived FX'),
+            is_available: selected_region === REGION.NON_EU,
+        },
     ];
 
     return instrumentsData.map((item: TInstrumentsIcon) => ({

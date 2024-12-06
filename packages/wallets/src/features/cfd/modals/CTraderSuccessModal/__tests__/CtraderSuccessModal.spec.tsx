@@ -4,7 +4,6 @@ import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider, useModal } from '../../../../../components/ModalProvider';
 import CTraderSuccessModal from '../CTraderSuccessModal';
-import '@testing-library/jest-dom';
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),

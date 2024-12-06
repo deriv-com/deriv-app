@@ -209,6 +209,7 @@ module.exports = function (env) {
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
+                '@deriv/utils': true,
                 '@deriv-com/analytics': `@deriv-com/analytics`,
                 '@deriv-com/translations': '@deriv-com/translations',
             },

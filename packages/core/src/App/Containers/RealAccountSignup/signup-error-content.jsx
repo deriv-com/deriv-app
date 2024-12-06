@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { isMobile, getSignupFormFields } from '@deriv/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 
 const Heading = ({ code }) => {
     switch (code) {
@@ -49,13 +50,7 @@ const Message = ({ code, message, details }) => {
                 <p>
                     <Localize
                         i18n_default_text='Your details match an existing account. If you need help, contact us via <0>live chat</0>.'
-                        components={[
-                            <span
-                                className='chat-inline'
-                                key={0}
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span className='chat-inline' key={0} onClick={Chat.open} />]}
                     />
                 </p>
             );
@@ -104,12 +99,7 @@ const ErrorCTA = ({ code, onConfirm }) => {
         case 'CurrencyTypeNotAllowed':
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
-            return (
-                <TryAgain
-                    text={localize('Go to live chat')}
-                    onConfirm={() => window.LiveChatWidget?.call('maximize')}
-                />
-            );
+            return <TryAgain text={localize('Go to live chat')} onConfirm={() => Chat.open()} />;
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
         case 'InvalidPhone':

@@ -56,14 +56,14 @@ describe('<ActiveSymbolsList />', () => {
         expect(screen.getByText(market_categories)).toBeInTheDocument();
         expect(screen.queryByText(symbol_search_results)).not.toBeInTheDocument();
     });
-    it('renders SymbolsSearchField component with MockedSymbolSearchResults if user is searching', () => {
+    it('renders SymbolsSearchField component with MockedSymbolSearchResults if user is searching', async () => {
         render(MockActiveSymbolsList(default_mock_store));
 
         const search_input = screen.getByRole('textbox');
         expect(search_input).toHaveAttribute('placeholder', input_placeholder_text);
         expect(screen.getByText(market_categories)).toBeInTheDocument();
 
-        userEvent.type(search_input, 'some_symbol');
+        await userEvent.type(search_input, 'some_symbol');
         expect(screen.getByText(symbol_search_results)).toBeInTheDocument();
         expect(screen.queryByText(market_categories)).not.toBeInTheDocument();
     });

@@ -6,6 +6,7 @@ import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
 const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterisk }: TInstrumentsIcon) => {
     const { isMobile } = useDevice();
+
     return (
         <div
             style={{

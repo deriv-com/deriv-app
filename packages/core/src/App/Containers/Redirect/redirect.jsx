@@ -307,10 +307,11 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            const trade_type = /trade_type/i.test(url_query_string) ? url_params.get('trade_type') : '';
-
             const route_mappings = [
-                { pattern: /dtrader/i, route: `/dtrader?trade_type=${trade_type}` },
+                { pattern: /accumulator/i, route: '/dtrader?trade_type=accumulator' },
+                { pattern: /turbos/i, route: '/dtrader?trade_type=turboslong' },
+                { pattern: /vanilla/i, route: '/dtrader?trade_type=vanillalongcall' },
+                { pattern: /multiplier/i, route: '/dtrader?trade_type=multiplier' },
                 { pattern: /proof-of-address/i, route: routes.proof_of_address },
                 { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
                 { pattern: /dbot/i, route: routes.bot },

@@ -1,7 +1,6 @@
 import { localize } from '@deriv/translations';
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
 import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
-import Item from '@deriv/components/src/components/mobile-drawer/mobile-drawer-item';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (

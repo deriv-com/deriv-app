@@ -5,6 +5,9 @@ import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { TFormData } from '../pages/bot-builder/quick-strategy/types';
 import RootStore from './root-store';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
+import { TStores } from '@deriv/stores/types';
 
 export type TActiveSymbol = {
     group: string;
@@ -46,6 +49,7 @@ interface IQuickStrategyStore {
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
     root_store: RootStore;
+    core: TStores;
     is_open = false;
     selected_strategy = 'MARTINGALE';
     form_data: TFormData = {
@@ -65,7 +69,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
     additional_data = {};
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             additional_data: observable,
             current_duration_min_max: observable,
@@ -86,6 +90,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             toggleStopBotDialog: action,
         });
         this.root_store = root_store;
+        this.core = core;
         reaction(
             () => this.is_open,
             () => {
@@ -207,6 +212,8 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         }
 
         this.setFormVisibility(false);
+        const { client } = this.core;
+        client.is_logged_in && botNotification(notification_message[NOTIFICATION_TYPE.BOT_IMPORT]);
 
         await load({
             block_string: Blockly.Xml.domToText(strategy_dom),

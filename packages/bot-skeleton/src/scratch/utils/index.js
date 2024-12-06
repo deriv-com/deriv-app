@@ -8,8 +8,8 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
-import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
-import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
+import { botNotification } from '@deriv/bot-web-ui/src/components/bot-notification/bot-notification';
+import { notification_message } from '@deriv/bot-web-ui/src/components/bot-notification/bot-notification-utils';
 
 export const inject_workspace_options = {
     media: `${__webpack_public_path__}media/`,

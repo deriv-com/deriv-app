@@ -223,7 +223,7 @@ const TradingAppCard = ({
                         >
                             {name}
                         </Text>
-                        {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
+                        {is_new && name === CFD_PRODUCTS_TITLE.GOLD && (
                             <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
                                 <Localize i18n_default_text='NEW' />
                             </Text>

@@ -4,7 +4,6 @@ import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/a
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { isProduction } from '../../../helpers/urls';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';
@@ -50,7 +49,7 @@ jest.mock('@deriv/utils', () => ({
 }));
 
 jest.mock('../../../helpers/urls', () => ({
-    isProduction: jest.fn(),
+    ...jest.requireActual('../../../helpers/urls'),
     OUT_SYSTEMS_TRADERSHUB: {
         PRODUCTION: 'https://hub.deriv.com/tradershub',
         STAGING: 'https://staging-hub.deriv.com/tradershub',
@@ -263,7 +262,6 @@ describe('WalletsAddMoreCardBanner', () => {
     });
 
     it('redirects to OutSystems staging for EU users on staging', async () => {
-        (isProduction as jest.Mock).mockReturnValue(false);
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
@@ -290,7 +288,8 @@ describe('WalletsAddMoreCardBanner', () => {
     });
 
     it('redirects to OutSystems production for EU users on production', async () => {
-        (isProduction as jest.Mock).mockReturnValue(true);
+        const ORIGINAL_NODE_ENV = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
@@ -314,5 +313,6 @@ describe('WalletsAddMoreCardBanner', () => {
         Object.defineProperty(window, 'location', {
             value: originalWindowLocation,
         });
+        process.env.NODE_ENV = ORIGINAL_NODE_ENV;
     });
 });

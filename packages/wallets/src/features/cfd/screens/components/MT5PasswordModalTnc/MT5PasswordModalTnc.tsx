@@ -8,10 +8,11 @@ import './MT5PasswordModalTnc.scss';
 
 export type TMT5PasswordModalTncProps = {
     checked: boolean;
+    companyName?: string;
     onChange: () => void;
 };
 
-const MT5PasswordModalTnc = ({ checked, onChange }: TMT5PasswordModalTncProps) => {
+const MT5PasswordModalTnc = ({ checked, companyName, onChange }: TMT5PasswordModalTncProps) => {
     const { isDesktop } = useDevice();
     const { getModalState } = useModal();
     const selectedJurisdiction = getModalState('selectedJurisdiction');
@@ -29,10 +30,8 @@ const MT5PasswordModalTnc = ({ checked, onChange }: TMT5PasswordModalTncProps) =
                             components={[
                                 <WalletLink key={0} language='en' staticUrl={selectedCompany.tncUrl} variant='bold' />,
                             ]}
-                            i18n_default_text="I confirm and accept {{company}}'s <0>terms and conditions</0>"
-                            values={{
-                                company: selectedCompany.name,
-                            }}
+                            i18n_default_text="I confirm and accept {{companyName}}'s <0>terms and conditions</0>"
+                            values={{ companyName }}
                         />
                     </Text>
                 }

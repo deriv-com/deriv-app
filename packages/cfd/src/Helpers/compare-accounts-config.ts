@@ -359,14 +359,17 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
             item.platform === CFD_PLATFORMS.MT5
     );
     const financial_demo_accounts = available_accounts.filter(
-        item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode === JURISDICTION.SVG
+        item =>
+            item.market_type === MARKET_TYPE.FINANCIAL && item.product !== PRODUCT.STP && item.product !== PRODUCT.GOLD
     );
     const gaming_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
     );
+
     const gold_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.FINANCIAL && item.product === PRODUCT.GOLD
     );
+
     return [
         ...gaming_demo_accounts,
         ...financial_demo_accounts,

@@ -98,6 +98,7 @@ export type ProposalResponse = PriceProposalResponse & {
         message: string;
         details?: {
             payout_per_point_choices?: number[];
+            barrier_choices?: string[];
             [k: string]: unknown;
         };
     };
@@ -257,6 +258,7 @@ export default class TradeStore extends BaseStore {
     expiry_type: string | null = 'duration';
 
     // Barrier
+    barrier = '';
     barrier_1 = '';
     barrier_2 = '';
     barrier_count = 0;

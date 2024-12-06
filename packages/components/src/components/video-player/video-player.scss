@@ -65,14 +65,14 @@
             margin: 0.8rem 0;
             cursor: pointer;
 
-            // &:before {
-            //     content: '';
-            //     display: block;
-            //     height: 2rem;
-            //     width: 100%;
-            //     position: absolute;
-            //     bottom: 67%;
-            // }
+            &:before {
+                content: '';
+                display: block;
+                height: 2rem;
+                width: 100%;
+                position: absolute;
+                bottom: 67%;
+            }
 
             &__filled {
                 position: relative;

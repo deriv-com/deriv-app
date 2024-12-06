@@ -10,25 +10,26 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    GetSelfExclusion,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    P2PAdvertiserInformationResponse,
+    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
+    Statement,
     StatesList,
     Transaction,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     WebsiteStatus,
-    GetSelfExclusion,
-    Statement,
 } from '@deriv/api-types';
 
-import type { FeatureFlagsStore } from './src/stores';
 import { TContractInfo } from '../shared/src/utils/contract';
+
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -105,7 +106,7 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp' | 'gold';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 

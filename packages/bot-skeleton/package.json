@@ -46,7 +46,7 @@
         "localforage": "^1.9.0",
         "lz-string": "^1.4.4",
         "mobx": "^6.6.1",
-        "mobx-react": "^7.5.1",
+        "mobx-react-lite": "^3.4.0",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",
         "shx": "^0.3.2"

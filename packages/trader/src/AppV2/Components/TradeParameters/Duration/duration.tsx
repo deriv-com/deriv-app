@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';

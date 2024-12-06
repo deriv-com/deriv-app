@@ -3,7 +3,7 @@ import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
-import { BreakpointProvider } from '@deriv/quill-design';
+import { BreakpointProvider } from '@deriv-com/quill-ui';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';

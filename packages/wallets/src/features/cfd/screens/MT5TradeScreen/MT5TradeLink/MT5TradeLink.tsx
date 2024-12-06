@@ -11,13 +11,14 @@ import './MT5TradeLink.scss';
 type TMT5TradeLinkProps = {
     app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
+    mt5TradeAccount?: THooks.MT5AccountsList;
     platform?: TPlatforms.All;
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
+const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, mt5TradeAccount, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
     const { localize } = useTranslations();
-    const { icon, link, text, title } = getAppToContentMapper(localize)[app];
+    const { icon, link, text, title } = getAppToContentMapper(localize, mt5TradeAccount?.white_label_links)[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';

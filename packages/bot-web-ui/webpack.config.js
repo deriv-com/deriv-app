@@ -152,7 +152,7 @@ module.exports = function (env) {
                 formik: 'formik',
                 react: 'react',
                 mobx: 'mobx',
-                'mobx-react': 'mobx-react',
+                'mobx-react-lite': 'mobx-react-lite',
                 'react-dom': 'react-dom',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': '@deriv-com/analytics',

@@ -8,12 +8,17 @@ const getHighlightedIconLabel = (
     selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
+    const market_type_shortcode =
+        trading_platforms.product === PRODUCT.GOLD
+            ? market_type.concat('_', trading_platforms.product)
+            : market_type.concat('_', trading_platforms.shortcode ?? '');
     const getForexLabel = () => {
         if (selected_region === REGION.EU) {
             return localize('Forex');
         } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return localize('Forex: standard/exotic');
+        } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD) {
+            return localize('Forex');
         } else if (
             (trading_platforms.platform === CFD_PLATFORMS.MT5 &&
                 market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG) ||

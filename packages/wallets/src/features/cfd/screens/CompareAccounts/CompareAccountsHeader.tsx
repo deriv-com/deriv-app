@@ -1,33 +1,23 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { Localize, useTranslations } from '@deriv-com/translations';
+import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import './CompareAccountsHeader.scss';
 
 type TCompareAccountsHeader = {
     isDemo: boolean;
-    isEuRegion: boolean;
     isLoading: boolean;
 };
 
-const CompareAccountsHeader = ({ isDemo, isEuRegion, isLoading }: TCompareAccountsHeader) => {
+const CompareAccountsHeader = ({ isDemo, isLoading }: TCompareAccountsHeader) => {
     const history = useHistory();
-    const { localize } = useTranslations();
 
-    let headerText;
-    if (isEuRegion) {
-        headerText = (
-            <Localize
-                i18n_default_text='Deriv MT5 CFDs {{demoTitle}} account'
-                values={{ demoTitle: isDemo ? localize('Demo') : localize('real') }}
-            />
-        );
-    } else if (isDemo) {
-        headerText = <Localize i18n_default_text='Compare CFDs demo accounts' />;
-    } else {
-        headerText = <Localize i18n_default_text='Compare CFDs accounts' />;
-    }
+    const headerText = isDemo ? (
+        <Localize i18n_default_text='Compare CFDs demo accounts' />
+    ) : (
+        <Localize i18n_default_text='Compare CFDs accounts' />
+    );
 
     return (
         <div className='wallets-compare-accounts-header'>

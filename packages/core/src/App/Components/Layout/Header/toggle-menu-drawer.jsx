@@ -41,6 +41,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         account_status,
         has_wallet,
+        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -92,10 +93,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     React.useEffect(() => {
-        if (isSuccess && !isSubscribed) {
+        if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
         }
-    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
+    }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
 
     React.useEffect(() => {
         const processRoutes = () => {

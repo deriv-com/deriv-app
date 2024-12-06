@@ -77,6 +77,8 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
             return is_demo ? localize('Financial Demo') : localize('Financial');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - STP');
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD:
+            return is_demo ? localize('Gold Demo') : localize('Gold');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:

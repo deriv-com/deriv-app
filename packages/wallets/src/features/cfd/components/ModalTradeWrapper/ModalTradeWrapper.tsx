@@ -6,18 +6,22 @@ import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
 import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
-import { TPlatforms } from '../../../../types';
+import { TAddedMT5Account, TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
-import { ctraderLinks, dxtradeLinks, whiteLabelLinks } from '../../screens/MT5TradeScreen/MT5TradeLink/urlConfig';
+import {
+    ctraderLinks,
+    dxtradeLinks,
+    whiteLabelLinks as internalWhiteLabelLinks,
+} from '../../screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 import './ModalTradeWrapper.scss';
 
 type TAppLinks = {
-    android: string;
+    android?: string;
     huawei?: string;
-    ios: string;
+    ios?: string;
 };
 
-const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
+const LinksMapper = (whiteLabelLinks?: TAddedMT5Account['white_label_links']): Record<TPlatforms.All, TAppLinks> => ({
     ctrader: {
         android: ctraderLinks.android,
         ios: ctraderLinks.ios,
@@ -28,11 +32,11 @@ const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
         ios: dxtradeLinks.ios,
     },
     mt5: {
-        android: whiteLabelLinks.android,
-        huawei: whiteLabelLinks.huawei,
-        ios: whiteLabelLinks.ios,
+        android: whiteLabelLinks?.android,
+        huawei: internalWhiteLabelLinks.huawei,
+        ios: whiteLabelLinks?.ios,
     },
-};
+});
 
 // TODO: Implement App Icon once icons are available.
 const AppToIconMapper = {
@@ -42,10 +46,11 @@ const AppToIconMapper = {
 } as const;
 
 type TModalTradeWrapper = {
+    mt5Account?: TAddedMT5Account;
     platform: TPlatforms.All;
 };
 
-const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
+const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, mt5Account, platform }) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const appOrder = ['ios', 'android', 'huawei'];
@@ -65,7 +70,9 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
                                 {appOrder.map(app => {
-                                    const AppsLinkMapper = LinksMapper[platform][app as keyof TAppLinks];
+                                    const AppsLinkMapper = LinksMapper(mt5Account?.white_label_links)[platform][
+                                        app as keyof TAppLinks
+                                    ];
                                     if (AppsLinkMapper) {
                                         const AppIcon = AppToIconMapper[app as keyof typeof AppToIconMapper];
                                         const appLink = AppsLinkMapper;

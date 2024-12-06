@@ -17,7 +17,10 @@ import {
 import { localize, useTranslations } from '@deriv-com/translations';
 import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
-import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
+import {
+    ctraderLinks,
+    whiteLabelLinks as internalWhiteLabelLinks,
+} from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 const zeroSpreadDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
     availability: 'Non-EU',
@@ -141,7 +144,10 @@ export const companyNamesAndUrls = {
     vanuatu: { shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
-export const getAppToContentMapper = (localize: ReturnType<typeof useTranslations>['localize']) =>
+export const getAppToContentMapper = (
+    localize: ReturnType<typeof useTranslations>['localize'],
+    whiteLabelLinks?: THooks.MT5AccountsList['white_label_links']
+) =>
     ({
         ctrader: {
             icon: <LabelPairedWindowsXlIcon />,
@@ -151,25 +157,25 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
         },
         linux: {
             icon: <LabelPairedLinuxXlIcon />,
-            link: whiteLabelLinks.linux,
+            link: internalWhiteLabelLinks.linux,
             text: localize('Learn more'),
             title: localize('MetaTrader 5 Linux app'),
         },
         macos: {
             icon: <LabelPairedMacosXlIcon />,
-            link: whiteLabelLinks.macos,
+            link: internalWhiteLabelLinks.macos,
             text: localize('Download'),
             title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
             icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-            link: whiteLabelLinks.webtrader_url,
+            link: whiteLabelLinks?.webtrader_url,
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
-            link: whiteLabelLinks.windows,
+            link: whiteLabelLinks?.windows,
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },

@@ -83,6 +83,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - STP');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD:
+        case MARKET_TYPE_SHORTCODE.CFDS_GOLD:
             return is_demo ? localize('Gold Demo') : localize('Gold');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
@@ -132,6 +133,9 @@ const getAccountIcon = (shortcode: string, product?: TProducts) => {
                 default:
                     return 'Financial';
             }
+        case MARKET_TYPE.CFDS:
+            if (product === PRODUCT.GOLD) return 'Gold';
+            break;
         case MARKET_TYPE.ALL:
             switch (product) {
                 case PRODUCT.ZEROSPREAD:

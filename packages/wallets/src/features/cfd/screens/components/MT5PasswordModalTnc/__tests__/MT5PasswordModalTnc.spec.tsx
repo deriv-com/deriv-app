@@ -33,6 +33,7 @@ const mockOnChange = jest.fn();
 describe('MT5PasswordModalTnc', () => {
     const defaultProps: TMT5PasswordModalTncProps = {
         checked: false,
+        companyName: 'Deriv (BVI) Ltd',
         onChange: mockOnChange,
     };
 

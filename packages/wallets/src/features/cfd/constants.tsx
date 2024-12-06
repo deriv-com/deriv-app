@@ -15,6 +15,7 @@ import {
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
+import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
 import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
@@ -34,47 +35,60 @@ const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize'
 
 const getMarketTypeDetailsDescription = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
 ) => {
-    if (isEuRegion && product !== 'stp') {
-        return localize('Your all-in-one access to financial and derived instruments.');
-    }
-
     if (product === 'stp') {
         return localize('Direct access to market prices');
     }
 
-    return localize('CFDs on financial instruments');
-};
-
-const getMarketTypeDetailsTitle = (product?: THooks.AvailableMT5Accounts['product'] | 'stp', isEuRegion?: boolean) => {
-    if (isEuRegion && product !== 'stp') {
-        return 'CFDs';
+    if (product === 'gold') {
+        return localize('Trading opportunities on popular precious metals.');
     }
 
+    return isEuRegion
+        ? localize('Your all-in-one access to financial and derived instruments.')
+        : localize('CFDs on financial instruments');
+};
+
+const getMarketTypeDetailsTitle = (
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
+    isEuRegion?: boolean
+) => {
     if (product === 'stp') {
         return 'Financial STP';
     }
 
-    return 'Financial';
+    if (product === 'gold') {
+        return 'Gold';
+    }
+
+    return isEuRegion ? 'CFDs' : 'Financial';
 };
 
 export const getMarketTypeDetails = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product'] | 'stp',
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
     isEuRegion?: boolean
-) =>
-    ({
+) => {
+    const getIcon = () => {
+        if (product === 'gold') {
+            return <AccountsDmt5GoldIcon height={48} width={48} />;
+        }
+
+        return isEuRegion ? (
+            <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
+        ) : (
+            <AccountsDmt5FinancialIcon height={48} width={48} />
+        );
+    };
+
+    return {
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
             availability: 'All',
             description: getMarketTypeDetailsDescription(localize, product, isEuRegion),
-            icon: isEuRegion ? (
-                <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
-            ) : (
-                <AccountsDmt5FinancialIcon height={48} width={48} />
-            ),
+            icon: getIcon(),
             title: getMarketTypeDetailsTitle(product, isEuRegion),
         },
         synthetic: {
@@ -83,7 +97,8 @@ export const getMarketTypeDetails = (
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    }) as const;
+    } as const;
+};
 
 export const PlatformDetails = {
     ctrader: {
@@ -115,15 +130,15 @@ export const PlatformDetails = {
 } as const;
 
 export const companyNamesAndUrls = {
-    bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
-    labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
+    bvi: { shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
+    dml: { shortcode: 'DML', tncUrl: 'tnc/deriv-mauritius-ltd.pdf' },
+    labuan: { shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
-        name: 'Deriv Investments (Europe) Limited',
         shortcode: 'Maltainvest',
         tncUrl: 'tnc/deriv-investments-(europe)-limited.pdf',
     },
-    svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
-    vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
+    svg: { shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
+    vanuatu: { shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
 export const getAppToContentMapper = (localize: ReturnType<typeof useTranslations>['localize']) =>
@@ -214,6 +229,7 @@ export const JURISDICTION = {
 export const PRODUCT = {
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
+    GOLD: 'gold',
     SWAPFREE: 'swap_free',
     ZEROSPREAD: 'zero_spread',
 } as const;

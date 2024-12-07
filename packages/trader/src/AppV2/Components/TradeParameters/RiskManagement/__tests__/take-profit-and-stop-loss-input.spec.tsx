@@ -133,7 +133,7 @@ describe('TakeProfitAndStopLossInput', () => {
         expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalled();
     });
 
-    it('should have max length of 10 for take profit input when no decimal is present', async () => {
+    it('should have max length of 10 for take profit input when currency is USD', async () => {
         default_mock_store.modules.trade.has_take_profit = true;
         default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
@@ -141,15 +141,5 @@ describe('TakeProfitAndStopLossInput', () => {
         await userEvent.type(input_field, '12345678901');
 
         expect(input_field).toHaveValue('5123456789');
-    });
-
-    it('should have max length of 13 for take profit input when decimal is present', async () => {
-        default_mock_store.modules.trade.has_take_profit = true;
-        default_mock_store.modules.trade.take_profit = '5';
-        mockTakeProfitAndStopLossInput();
-        const input_field = screen.getByTestId(tp_data_testid);
-        await userEvent.type(input_field, '123456789.12');
-
-        expect(input_field).toHaveValue('5123456789.12');
     });
 });

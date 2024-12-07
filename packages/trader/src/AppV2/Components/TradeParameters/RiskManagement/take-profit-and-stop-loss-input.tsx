@@ -275,30 +275,12 @@ const TakeProfitAndStopLossInput = ({
                     unitLeft={currency_display_code}
                     variant='fill'
                     value={new_input_value ?? ''}
-                    onKeyDown={e => {
+                    onBeforeInput={(e: React.FormEvent<HTMLInputElement>) => {
                         if (
-                            (e.key === '.' ||
-                                e.keyCode === 190 ||
-                                e.which === 190 ||
-                                e.keyCode === 110 ||
-                                e.code === 'NumpadDecimal') &&
-                            (new_input_value?.length ?? 0) >= 8
+                            ['.', ','].includes((e.nativeEvent as InputEvent)?.data ?? '') &&
+                            (new_input_value?.length ?? 0) <= 10
                         ) {
-                            setMaxLength(13);
-                        } else if (!new_input_value?.includes('.')) {
-                            setMaxLength(10);
-                        }
-                    }}
-                    onKeyPress={e => {
-                        if (
-                            (e.key === '.' ||
-                                e.keyCode === 190 ||
-                                e.which === 190 ||
-                                e.keyCode === 110 ||
-                                e.code === 'NumpadDecimal') &&
-                            (new_input_value?.length ?? 0) >= 8
-                        ) {
-                            setMaxLength(13);
+                            setMaxLength(decimals ? 11 + decimals : 10);
                         } else if (!new_input_value?.includes('.')) {
                             setMaxLength(10);
                         }

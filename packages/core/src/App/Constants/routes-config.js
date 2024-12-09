@@ -1,14 +1,16 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
+
 import { Loading } from '@deriv/components';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
-const CFDCompareAccounts = React.lazy(() =>
-    import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
+const CFDCompareAccounts = React.lazy(
+    () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
 );
 
 // Error Routes
@@ -46,13 +48,6 @@ const Bot = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "bot-web-ui-app" */ '@deriv/bot-web-ui');
-    })
-);
-
-const P2P = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
     })
 );
 
@@ -285,39 +280,7 @@ const getModules = () => {
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
-                    routes: [
-                        {
-                            path: routes.p2p_buy_sell,
-                            component: P2P,
-                            getTitle: () => localize('Buy / Sell'),
-                            default: true,
-                        },
-                        {
-                            path: routes.p2p_advertiser_page,
-                            component: P2P,
-                            getTitle: () => localize("Advertiser's page"),
-                        },
-                        {
-                            path: routes.p2p_orders,
-                            component: P2P,
-                            getTitle: () => localize('Orders'),
-                        },
-                        {
-                            path: routes.p2p_my_ads,
-                            component: P2P,
-                            getTitle: () => localize('My ads'),
-                        },
-                        {
-                            path: routes.p2p_my_profile,
-                            component: P2P,
-                            getTitle: () => localize('My profile'),
-                        },
-                        {
-                            path: routes.p2p_verification,
-                            component: P2P,
-                            getTitle: () => localize('P2P verification'),
-                        },
-                    ],
+                    routes: [],
                 },
                 {
                     id: 'gtm-onramp-tab',

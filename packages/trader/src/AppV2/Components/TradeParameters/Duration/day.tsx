@@ -27,7 +27,9 @@ const DayInput = ({
     setEndDate,
     end_date,
     end_time,
+    expiry_date_input,
     expiry_time_input,
+    setExpiryDateInput,
     setExpiryTimeInput,
 }: {
     setEndTime: (arg: string) => void;
@@ -36,6 +38,8 @@ const DayInput = ({
     end_time: string;
     expiry_time_input: string;
     setExpiryTimeInput: (arg: string) => void;
+    expiry_date_input: string;
+    setExpiryDateInput: (arg: string) => void;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
@@ -43,23 +47,26 @@ const DayInput = ({
     const [trigger_date, setTriggerDate] = useState(false);
     const [is_disabled, setIsDisabled] = useState(false);
     const [end_date_input, setEndDateInput] = useState(end_date);
+    const [payout_per_point, setPayoutPerPoint] = useState<number | undefined>();
+    const [barrier_value, setBarrierValue] = useState<string | undefined>();
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
     const {
-        expiry_date,
-        market_open_times,
-        market_close_times,
+        barrier_1,
+        contract_type,
+        duration_min_max,
         duration_units_list,
+        duration,
+        expiry_date,
+        is_turbos,
+        market_close_times,
+        market_open_times,
         start_date,
         start_time,
-        duration_min_max,
-        trade_types,
-        contract_type,
-        duration,
-        tick_data,
         symbol,
-        barrier_1,
+        tick_data,
+        trade_types,
     } = useTraderStore();
     const trade_store = useTraderStore();
     const { addSnackbar } = useSnackbar();
@@ -72,6 +79,8 @@ const DayInput = ({
         basis: 'stake',
         amount: '5',
         symbol,
+        ...(payout_per_point && { payout_per_point }),
+        ...(barrier_value && { barrier: barrier_value }),
     };
 
     const proposal_req = getProposalRequestObject({
@@ -81,11 +90,11 @@ const DayInput = ({
     });
 
     const { data: response } = useDtraderQuery<ProposalResponse>(
-        ['proposal', JSON.stringify(day)],
+        ['proposal', JSON.stringify(day), JSON.stringify(payout_per_point), JSON.stringify(barrier_value)],
         {
             ...proposal_req,
             symbol,
-            ...(barrier_1 ? { barrier: Math.round(tick_data?.quote as number) } : {}),
+            ...(barrier_1 && !is_turbos && !barrier_value ? { barrier: Math.round(tick_data?.quote as number) } : {}),
         },
         {
             enabled: trigger_date,
@@ -94,6 +103,24 @@ const DayInput = ({
 
     useEffect(() => {
         if (response) {
+            if (response?.error?.code === 'ContractBuyValidationError') {
+                const details = response.error.details;
+
+                if (details?.field === 'payout_per_point' && details?.payout_per_point_choices) {
+                    const suggested_payout = details?.payout_per_point_choices[0];
+                    setPayoutPerPoint(suggested_payout);
+                    setTriggerDate(true);
+                    return;
+                }
+
+                if (details?.field === 'barrier' && details?.barrier_choices) {
+                    const suggested_barrier = details?.barrier_choices[0];
+                    setBarrierValue(suggested_barrier);
+                    setTriggerDate(true);
+                    return;
+                }
+            }
+
             if (response?.error?.message && response?.error?.details?.field === 'duration') {
                 addSnackbar({
                     message: <Localize i18n_default_text={response?.error?.message} />,
@@ -113,12 +140,20 @@ const DayInput = ({
                         .split('T')[1]
                         .substring(0, 8)
                 );
+                setExpiryDateInput(
+                    new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[0]
+                );
             }
 
-            invalidateDTraderCache(['proposal', JSON.stringify(day)]);
+            invalidateDTraderCache([
+                'proposal',
+                JSON.stringify(day),
+                JSON.stringify(payout_per_point),
+                JSON.stringify(barrier_value),
+            ]);
             setTriggerDate(false);
         }
-    }, [response, setExpiryTimeInput]);
+    }, [response, setExpiryTimeInput, setExpiryDateInput]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -130,7 +165,9 @@ const DayInput = ({
     const adjusted_start_time =
         boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-    const formatted_date = end_date.toLocaleDateString('en-GB', {
+    const current_end_date = expiry_date_input ? new Date(expiry_date_input) : end_date;
+
+    const formatted_date = current_end_date.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -259,7 +296,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={end_date_input}
+                            end_date={new Date(expiry_date_input) || end_date_input}
                             setEndDate={handleDate}
                         />
                     )}

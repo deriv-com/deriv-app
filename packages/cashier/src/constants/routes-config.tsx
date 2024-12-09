@@ -1,11 +1,12 @@
 import React from 'react';
-import P2P from '@deriv/p2p';
-import { routes, moduleLoader } from '@deriv/shared';
+
+import { moduleLoader, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
+import { CashierLockedChecker } from '../components/cashier-locked-checker';
 import { Cashier } from '../containers';
 import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
-import { TRouteConfig, TRoute } from '../types';
-import { CashierLockedChecker } from '../components/cashier-locked-checker';
+import { TRoute, TRouteConfig } from '../types';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ '../components/page-404')));
@@ -62,16 +63,12 @@ const initRoutesConfig = (): TRouteConfig[] => [
             },
             {
                 path: routes.cashier_p2p,
-                component: P2P,
+                component: () => {
+                    window.location.href = 'https://p2p.deriv.com';
+                    return null;
+                },
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
-            },
-            {
-                path: routes.p2p_verification,
-                component: P2P,
-                getTitle: () => localize('P2P verification'),
-                icon_component: 'IcDp2p',
-                is_invisible: true,
             },
             {
                 id: 'gtm-onramp-tab',

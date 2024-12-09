@@ -51,8 +51,6 @@ export default class RunPanelStore {
             setHasOpenContract: action,
             setIsRunning: action,
             onRunButtonClick: action,
-            is_contracy_buying_in_progress: observable,
-            OpenPositionLimitExceededEvent: action,
             onStopButtonClick: action,
             onClearStatClick: action,
             clearStat: action,
@@ -104,7 +102,6 @@ export default class RunPanelStore {
     is_dialog_open = false;
     is_sell_requested = false;
     show_bot_stop_message = false;
-    is_contracy_buying_in_progress = false;
 
     run_id = '';
     onOkButtonClick: (() => void) | null = null;
@@ -120,9 +117,6 @@ export default class RunPanelStore {
     }
 
     get is_stop_button_disabled() {
-        if (this.is_contracy_buying_in_progress) {
-            return false;
-        }
         return [contract_stages.PURCHASE_SENT as number, contract_stages.IS_STOPPING as number].includes(
             this.contract_stage
         );
@@ -216,7 +210,6 @@ export default class RunPanelStore {
     };
 
     onStopButtonClick = () => {
-        this.is_contracy_buying_in_progress = false;
         const { is_multiplier } = this.root_store.summary_card;
 
         if (is_multiplier) {
@@ -436,10 +429,7 @@ export default class RunPanelStore {
         observer.register('bot.contract', summary_card.onBotContractEvent);
         observer.register('bot.contract', transactions.onBotContractEvent);
         observer.register('Error', this.onError);
-        observer.register('bot.recoverOpenPositionLimitExceeded', this.OpenPositionLimitExceededEvent);
     };
-
-    OpenPositionLimitExceededEvent = () => (this.is_contracy_buying_in_progress = true);
 
     registerReactions = () => {
         const { client, common, notifications } = this.core;
@@ -580,7 +570,6 @@ export default class RunPanelStore {
                 break;
             }
             case 'contract.purchase_received': {
-                this.is_contracy_buying_in_progress = false;
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
                 const { buy } = contract_status;
                 const { is_virtual } = this.core.client;

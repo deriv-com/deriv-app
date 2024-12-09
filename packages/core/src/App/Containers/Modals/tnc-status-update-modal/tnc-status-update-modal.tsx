@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { WS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import './tnc-status-update-modal.scss';
-import { URLUtils } from '@deriv-com/utils';
 
 const TncStatusUpdateModal = observer(() => {
     const { client, ui } = useStore();
@@ -28,12 +27,12 @@ const TncStatusUpdateModal = observer(() => {
         >
             <div className='tnc-status-update-modal'>
                 <Text size={isDesktop ? 's' : 'xs'} weight='bold'>
-                    <Localize i18n_default_text='Accept updated terms and conditions' />
+                    <Localize i18n_default_text="Updated T&C's" />
                 </Text>
                 <div className='tnc-status-update-modal__text-container'>
                     <Text size={isDesktop ? 'xs' : 'xxs'}>
                         <Localize
-                            i18n_default_text='To continue trading, review and accept our updated <0>terms and conditions</0>. Not accepting will lead to restricted access to your account. Need help? Contact us via <1>live chat</1>.'
+                            i18n_default_text='Please review our updated <0>terms and conditions</0>.'
                             components={[
                                 <StaticUrl
                                     key={0}
@@ -41,20 +40,16 @@ const TncStatusUpdateModal = observer(() => {
                                     href='terms-and-conditions'
                                     is_eu_url={!is_cr_account}
                                 />,
-                                <a
-                                    key={1}
-                                    className='link'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href={URLUtils.getDerivStaticURL('/contact_us')}
-                                />,
                             ]}
                         />
+                    </Text>
+                    <Text size={isDesktop ? 'xs' : 'xxs'}>
+                        <Localize i18n_default_text='By continuing you understand and accept the changes.' />
                     </Text>
                 </div>
                 <div className='tnc-status-update-modal__button'>
                     <Button className='dc-dialog__button' has_effect onClick={onClick} primary large>
-                        <Localize i18n_default_text='Accept now' />
+                        <Localize i18n_default_text='Continue' />
                     </Button>
                 </div>
             </div>

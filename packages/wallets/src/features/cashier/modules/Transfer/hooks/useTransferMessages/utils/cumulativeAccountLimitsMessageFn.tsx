@@ -27,15 +27,15 @@ const cumulativeAccountLimitsMessageFn = ({
 
     const allowedSumUSD = isDemoTransfer
         ? //@ts-expect-error needs backend type
-          Number(limits?.daily_cumulative_amount_transfers?.virtual?.allowed)
+          (limits?.daily_cumulative_amount_transfers?.virtual?.allowed as number)
         : //@ts-expect-error needs backend type
-          Number(limits?.daily_cumulative_amount_transfers?.[platformKey]?.allowed);
+          (limits?.daily_cumulative_amount_transfers?.[platformKey]?.allowed as number);
 
     const availableSumUSD = isDemoTransfer
         ? //@ts-expect-error needs backend type
-          Number(limits?.daily_cumulative_amount_transfers?.virtual?.available)
+          (limits?.daily_cumulative_amount_transfers?.virtual?.available as number)
         : //@ts-expect-error needs backend type
-          Number(limits?.daily_cumulative_amount_transfers?.[platformKey]?.available);
+          (limits?.daily_cumulative_amount_transfers?.[platformKey]?.available as number);
 
     if (
         !sourceAccount.currency ||
@@ -100,9 +100,7 @@ const cumulativeAccountLimitsMessageFn = ({
               (activeWalletExchangeRates?.rates?.USD ?? 1);
 
     const sourceCurrencyLimit = allowedSumUSD * USDToSourceRate;
-    const sourceCurrencyRemainder = Number(
-        (availableSumUSD * USDToSourceRate).toFixed(sourceAccount.currencyConfig.fractional_digits)
-    );
+    const sourceCurrencyRemainder = availableSumUSD * USDToSourceRate;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,

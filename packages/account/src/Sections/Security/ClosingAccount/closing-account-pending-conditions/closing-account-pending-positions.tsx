@@ -35,7 +35,6 @@ const ClosingAccountPendingPositions = observer(
                                 return `IcMt5-${getMT5Icon({
                                     market_type: account.market_type,
                                     is_eu: is_eu_user,
-                                    product: account.product,
                                 })}`;
                             case CFD_PLATFORMS.DXTRADE:
                                 return `IcDxtrade-${getCFDAccount({

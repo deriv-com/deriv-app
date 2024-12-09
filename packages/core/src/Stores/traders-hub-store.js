@@ -139,8 +139,6 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.dxtrade_accounts_list,
                 this.root_store.client.ctrader_accounts_list,
                 this.root_store.client.is_landing_company_loaded,
-                this.root_store.client.trading_platform_available_accounts,
-                this.root_store.client.is_trading_platform_available_account_loaded,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
@@ -334,7 +332,7 @@ export default class TradersHubStore extends BaseStore {
             }
             if (this.is_demo) return ContentFlag.CR_DEMO;
         }
-        return this.is_eu_user ? ContentFlag.LOW_RISK_CR_EU : ContentFlag.LOW_RISK_CR_NON_EU;
+        return ContentFlag.LOW_RISK_CR_NON_EU;
     }
 
     get show_eu_related_content() {
@@ -403,13 +401,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailableCFDAccounts() {
-        const {
-            trading_platform_available_accounts,
-            mt5_login_list,
-            landing_company_shortcode,
-            is_logged_in,
-            is_trading_platform_available_account_loaded,
-        } = this.root_store.client;
+        const { trading_platform_available_accounts } = this.root_store.client;
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
                 ? localize('CFDs on financial instruments.')
@@ -472,16 +464,8 @@ export default class TradersHubStore extends BaseStore {
                 icon: 'ZeroSpread',
                 availability: 'Non-EU',
             },
-            {
-                name: localize('Gold'),
-                description: localize('Trading opportunities on popular precious metals.'),
-                platform: CFD_PLATFORMS.MT5,
-                market_type: 'financial',
-                product: 'gold',
-                icon: 'Gold',
-                availability: 'Non-EU',
-            },
         ];
+
         const groupedByProduct = trading_platform_available_accounts.reduce((acc, item) => {
             const { product, is_default_jurisdiction, linkable_landing_companies } = item;
             if (this.is_demo || (this.no_CR_account && !this.is_eu_user)) {
@@ -495,7 +479,7 @@ export default class TradersHubStore extends BaseStore {
                     acc[product].push(item);
                 }
             } else if (
-                (linkable_landing_companies.includes(landing_company_shortcode) &&
+                (linkable_landing_companies.includes(this.root_store.client.landing_company_shortcode) &&
                     is_default_jurisdiction === 'true') ||
                 (acc[product] && acc[product].some(i => i.is_default_jurisdiction === 'true'))
             ) {
@@ -508,14 +492,14 @@ export default class TradersHubStore extends BaseStore {
         }, {});
 
         const getFilteredAccounts = () => {
-            if (is_logged_in && this.content_flag === ContentFlag.LOW_RISK_CR_EU) {
-                const existing_account = mt5_login_list.filter(
-                    account => account.landing_company_short === landing_company_shortcode
+            if (this.content_flag === ContentFlag.LOW_RISK_CR_EU) {
+                const existing_account = this.root_store.client.mt5_login_list.filter(
+                    account => account.landing_company_short === this.root_store.client.landing_company_shortcode
                 );
                 return existing_account.length
                     ? getMT5Accounts.filter(account => account.product === existing_account[0].product)
                     : [];
-            } else if (is_logged_in && is_trading_platform_available_account_loaded) {
+            } else if (this.root_store.client.is_logged_in) {
                 return getMT5Accounts.filter(account =>
                     Object.prototype.hasOwnProperty.call(groupedByProduct, account.product)
                 );
@@ -652,7 +636,7 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-                if (product === PRODUCT.STP || product === PRODUCT.GOLD) {
+                if (product === PRODUCT.STP) {
                     return key.startsWith(`${platform}.${selected_account_type}.${product}`);
                 } else if (
                     platform === CFD_PLATFORMS.MT5 &&
@@ -809,8 +793,7 @@ export default class TradersHubStore extends BaseStore {
             const short_code =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&
-                account.landing_company_short !== 'bvi' &&
-                account.landing_company_short !== 'dml'
+                account.landing_company_short !== 'bvi'
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 

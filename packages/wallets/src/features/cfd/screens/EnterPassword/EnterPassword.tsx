@@ -124,11 +124,7 @@ const EnterPassword: React.FC<TProps> = ({
                 )}
                 {account && !isVirtual && <MT5LicenceMessage account={account} />}
                 {account && account.shortcode !== JURISDICTION.SVG && platform === CFD_PLATFORMS.MT5 && !isVirtual && (
-                    <MT5PasswordModalTnc
-                        checked={isTncChecked}
-                        companyName={account.name}
-                        onChange={() => onTncChange?.()}
-                    />
+                    <MT5PasswordModalTnc checked={isTncChecked} onChange={() => onTncChange?.()} />
                 )}
             </div>
             {isDesktop && (

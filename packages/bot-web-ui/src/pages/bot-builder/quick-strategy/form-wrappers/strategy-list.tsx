@@ -78,12 +78,12 @@ const StrategyList = ({ selector_chip_value, search_value, is_searching, onSelec
     const selected_chip_value = TRADE_TYPES[selector_chip_value];
 
     const strategy_types: TStrategyTypes = [
-        { type: localize('Accumulators'), items: accumulator },
         { type: localize('Options'), items: options },
         { type: localize('Multipliers'), items: multiplier },
+        { type: localize('Accumulators'), items: accumulator },
     ];
 
-    const should_render = (type: string) => selected_chip_value === localize('All') || selected_chip_value === type;
+    const should_render = (type: string) => selected_chip_value === 'All' || selected_chip_value === type;
 
     const filtered_strategies = strategy_types.filter(({ type }) => should_render(type));
     const has_visible_strategies = filtered_strategies.some(({ items }) => items.length > 0);

@@ -118,15 +118,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                     (selectedJurisdiction !== JURISDICTION.LABUAN
                         ? {
                               account_type: categoryAccountType,
-                              ...(marketType === MARKET_TYPE.FINANCIAL && {
+                              ...(selectedJurisdiction === MARKET_TYPE.FINANCIAL && {
                                   mt5_account_type: MARKET_TYPE.FINANCIAL,
-                                  product,
                               }),
                           }
                         : {
                               account_type: MARKET_TYPE.FINANCIAL,
                               mt5_account_type: 'financial_stp',
-                              product,
                           })),
                 ...(marketType === MARKET_TYPE.ALL && { product }),
                 name: firstName ?? '',

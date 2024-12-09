@@ -53,24 +53,15 @@ const getHighlightedIconLabel = (values: TValues) => {
             icon: 'Cryptocurrencies',
             text: localize('Cryptocurrencies'),
         },
-        ...(!isEuRegion
-            ? ([{ highlighted: shouldHighlight('ETFs'), icon: 'ETF', text: localize('ETFs') }] as const)
-            : []),
+        { highlighted: shouldHighlight('ETFs'), icon: 'ETF', text: localize('ETFs') },
         {
             highlighted: shouldHighlight('Synthetic indices'),
             icon: 'Synthetics',
+            isAsterisk: isEuRegion,
             text: localize('Synthetic indices'),
         },
-        ...(!isEuRegion
-            ? ([
-                  { highlighted: shouldHighlight('Basket indices'), icon: 'Baskets', text: localize('Basket indices') },
-              ] as const)
-            : []),
-        ...(!isEuRegion
-            ? ([
-                  { highlighted: shouldHighlight('Derived FX'), icon: 'DerivedFX', text: localize('Derived FX') },
-              ] as const)
-            : []),
+        { highlighted: shouldHighlight('Basket indices'), icon: 'Baskets', text: localize('Basket indices') },
+        { highlighted: shouldHighlight('Derived FX'), icon: 'DerivedFX', text: localize('Derived FX') },
     ] as const;
 };
 

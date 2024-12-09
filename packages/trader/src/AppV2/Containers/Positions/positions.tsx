@@ -24,7 +24,6 @@ const Positions = observer(() => {
 
     const {
         client: { is_logged_in },
-        ui: { is_dark_mode_on },
     } = useStore();
     const {
         positions: { onUnmount },
@@ -85,11 +84,7 @@ const Positions = observer(() => {
                 </Tab.Container>
             </div>
             {!guide_dtrader_v2?.positions_page && is_logged_in && (
-                <OnboardingGuide
-                    type='positions_page'
-                    is_dark_mode_on={is_dark_mode_on}
-                    callback={() => setHasButtonsDemo(true)}
-                />
+                <OnboardingGuide type='positions_page' callback={() => setHasButtonsDemo(true)} />
             )}
         </BottomNav>
     );

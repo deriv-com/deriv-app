@@ -40,8 +40,6 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
     const isVirtual = activeWallet?.is_virtual;
     const { hasClientKycStatus } = getClientVerification(account);
-    //@ts-expect-error - needs backend type update for account product
-    const isNewBadgeVisible = [PRODUCT.ZEROSPREAD, PRODUCT.GOLD].includes(account.product);
 
     const onButtonClick = useCallback(() => {
         if (hasUnavailableAccount) return show(<TradingPlatformStatusModal status={MT5_ACCOUNT_STATUS.UNAVAILABLE} />);
@@ -75,7 +73,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         <Text align='start' size='sm'>
                             {title}
                         </Text>
-                        {isNewBadgeVisible && (
+                        {account.product === PRODUCT.ZEROSPREAD && (
                             <div className='wallets-available-mt5__badge'>
                                 <Text align='start' size='xs' weight='bold'>
                                     <Localize i18n_default_text='NEW' />

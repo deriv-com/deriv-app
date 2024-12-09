@@ -29,9 +29,6 @@ const ServiceErrorSheet = observer(() => {
     const onClose = () => {
         setIsOpen(false);
         if (services_error.type === 'buy') {
-            if (is_insufficient_balance) {
-                return;
-            }
             clearPurchaseInfo();
             resetPurchase();
         }

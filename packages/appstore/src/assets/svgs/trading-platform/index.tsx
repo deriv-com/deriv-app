@@ -18,7 +18,6 @@ import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
 import SwapFree from 'Assets/svgs/trading-platform/ic-appstore-swap-free.svg';
 import ZeroSpread from 'Assets/svgs/trading-platform/ic-appstore-zero-spread.svg';
-import Gold from 'Assets/svgs/trading-platform/ic-appstore-gold.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
 
 import { IconProps } from '../icon-types';
@@ -43,7 +42,6 @@ export const PlatformIcons = {
     SmartTraderBlue,
     ZeroSpread,
     Standard,
-    Gold,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

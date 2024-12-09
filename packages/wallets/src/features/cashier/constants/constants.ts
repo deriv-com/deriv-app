@@ -83,10 +83,6 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
         },
         name: 'financial',
         product: {
-            gold: {
-                name: 'financial',
-                title: 'MT5 Gold',
-            },
             stp: {
                 name: 'financial',
                 title: 'MT5 Financial STP',

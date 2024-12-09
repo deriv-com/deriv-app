@@ -6,10 +6,11 @@ import './InstrumentsIconWithLabel.scss';
 type TInstrumentsIcon = {
     highlighted: boolean;
     icon: keyof ReturnType<typeof getInstrumentsIcons>;
+    isAsterisk?: boolean;
     text: string;
 };
 
-const InstrumentsIconWithLabel = ({ highlighted, icon, text }: TInstrumentsIcon) => {
+const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
     const { isDesktop, isTablet } = useDevice();
 
     return (
@@ -32,6 +33,7 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, text }: TInstrumentsIcon)
                     {text}
                 </Text>
             </div>
+            {isAsterisk && <span className='wallets-compare-accounts-trading-instruments__span'>*</span>}
         </div>
     );
 };

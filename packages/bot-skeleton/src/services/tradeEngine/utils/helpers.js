@@ -2,7 +2,6 @@ import { formatTime, findValueByKeyRecursively, getRoundedNumber, isEmptyObject 
 import { localize } from '@deriv/translations';
 import { error as logError } from './broadcast';
 import { observer as globalObserver } from '../../../utils/observer';
-import { config } from '../../../constants';
 
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
@@ -139,11 +138,6 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
     const { error = {}, msg_type = '', echo_req = {} } = error_obj;
     const { code = '', message = '' } = error;
     let message_to_print = '';
-    const trade_type_block = Blockly.derivWorkspace
-        .getAllBlocks(true)
-        .find(block => block.type === 'trade_definition_tradetype');
-    const selected_trade_type = trade_type_block?.getFieldValue('TRADETYPECAT_LIST') || '';
-    const { TRADE_TYPE_CATEGORY_NAMES } = config;
 
     if (code) {
         switch (code) {
@@ -171,10 +165,9 @@ const getBackoffDelayInMs = (error_obj, delay_index) => {
                 break;
             case 'OpenPositionLimitExceeded':
                 message_to_print = localize(
-                    'You already have an open position for {{ trade_type }} contract type, retrying in {{ delay }}s',
+                    'You already have an open position for this contract type, retrying in {{ delay }}s',
                     {
                         delay: next_delay_in_seconds,
-                        trade_type: TRADE_TYPE_CATEGORY_NAMES?.[selected_trade_type] ?? '',
                     }
                 );
                 break;
@@ -227,7 +220,6 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         .concat(default_errors_to_ignore)
         .includes(error?.error?.code ?? error?.name);
 
-    if (error.error?.code === 'OpenPositionLimitExceeded') globalObserver.emit('bot.recoverOpenPositionLimitExceeded');
     return !is_ignorable_error;
 };
 

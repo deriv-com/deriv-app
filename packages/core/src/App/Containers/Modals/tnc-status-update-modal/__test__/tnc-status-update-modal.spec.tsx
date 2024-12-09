@@ -62,20 +62,14 @@ describe('<TncStatusUpdateModal />', () => {
         });
 
         renderComponent({ store_config: mock });
-        expect(screen.queryByText('Accept updated terms and conditions')).not.toBeInTheDocument();
+        expect(screen.queryByText('Please review our updated terms and conditions')).not.toBeInTheDocument();
     });
 
     it('Should render TncStatusUpdateModal with correct content and verify that clicking the button triggers the API call and toggles the modal.', async () => {
         renderComponent({});
-        expect(screen.getByText('Accept updated terms and conditions')).toBeInTheDocument();
-        expect(screen.getByText(/To continue trading, review and accept our updated/)).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                /\. Not accepting will lead to restricted access to your account. Need help\? Contact us via/
-            )
-        ).toBeInTheDocument();
-        expect(screen.getByText(/live chat/)).toBeInTheDocument();
-        const continue_button = screen.getByRole('button', { name: 'Accept now' });
+        expect(screen.getByText("Updated T&C's")).toBeInTheDocument();
+        expect(screen.getByText('By continuing you understand and accept the changes.')).toBeInTheDocument();
+        const continue_button = screen.getByRole('button', { name: 'Continue' });
 
         await userEvent.click(continue_button);
         expect(WS.tncApproval).toBeCalled();

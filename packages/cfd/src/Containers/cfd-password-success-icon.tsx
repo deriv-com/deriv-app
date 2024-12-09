@@ -1,11 +1,9 @@
 import React from 'react';
-
 import { Icon } from '@deriv/components';
 import { routes } from '@deriv/shared';
-
+import { CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import { TProducts } from '../Components/props.types';
-import { CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';
 
 type TCFDPasswordSuccessIconProps = {
     platform: string;
@@ -21,7 +19,6 @@ const getIconForTradersHub = (type: string | undefined, show_eu_related_content:
         case 'all':
             return product === PRODUCT.ZEROSPREAD ? 'ZeroSpread' : 'SwapFree';
         case 'financial':
-            if (product === PRODUCT.GOLD) return 'Gold';
             return show_eu_related_content ? 'CFDs' : 'Financial';
         default:
             return 'Financial';

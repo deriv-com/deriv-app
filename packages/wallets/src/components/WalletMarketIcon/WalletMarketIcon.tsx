@@ -1,14 +1,13 @@
 /* eslint-disable sort-keys */
 import React, { CSSProperties } from 'react';
-import { AppIcons, CFDPlatformIcons, MT5GoldIcon, MT5MarketIcons, PlatformIcons } from '../../constants/icons';
+import { AppIcons, CFDPlatformIcons, MT5MarketIcons, PlatformIcons } from '../../constants/icons';
 import { TIconTypes } from '../../types';
 
-const Icons: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> | TIconTypes = {
+const Icons: TIconTypes = {
     ...AppIcons,
     ...MT5MarketIcons,
     ...CFDPlatformIcons,
     ...PlatformIcons,
-    ...MT5GoldIcon,
 };
 
 const IconSizes = {

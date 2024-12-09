@@ -1,7 +1,6 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
-import { Analytics } from '@deriv-com/analytics';
+import { useCreateWallet } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorageClientAccounts';
@@ -21,13 +20,7 @@ type TWalletAddedSuccess = {
 };
 
 jest.mock('@deriv/api-v2', () => ({
-    useActiveWalletAccount: jest.fn(() => ({
-        data: { loginid: 'CRW1' },
-    })),
     useCreateWallet: jest.fn(),
-    useIsEuRegion: jest.fn(() => ({
-        data: false,
-    })),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -38,24 +31,6 @@ jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({})),
 }));
-
-jest.mock('@deriv/utils', () => ({
-    ...jest.requireActual('@deriv/utils'),
-    getAccountsFromLocalStorage: jest.fn(() => ({
-        VRW1: {
-            token: '12345',
-        },
-    })),
-}));
-
-jest.mock('../../../helpers/urls', () => ({
-    ...jest.requireActual('../../../helpers/urls'),
-    OUT_SYSTEMS_TRADERSHUB: {
-        PRODUCTION: 'https://hub.deriv.com/tradershub',
-        STAGING: 'https://staging-hub.deriv.com/tradershub',
-    },
-}));
-
 jest.mock('../../../hooks/useSyncLocalStorageClientAccounts', () => jest.fn());
 jest.mock('../../../hooks/useWalletAccountSwitcher', () => jest.fn());
 
@@ -80,8 +55,6 @@ jest.mock('../../WalletAddedSuccess', () => ({
         </div>
     ),
 }));
-
-const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
 
 describe('WalletsAddMoreCardBanner', () => {
     const mockMutate = jest.fn().mockResolvedValue({ new_account_wallet: { client_id: '123', currency: 'USD' } });
@@ -255,64 +228,7 @@ describe('WalletsAddMoreCardBanner', () => {
                 currency: 'USD',
                 display_balance: '0.00 USD',
             });
-        });
-        await waitFor(() => {
             expect(mockSwitchWalletAccount).toHaveBeenCalledWith('123');
         });
-    });
-
-    it('redirects to OutSystems staging for EU users on staging', async () => {
-        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { loginid: 'VRW1' },
-        });
-
-        Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
-
-        const originalWindowLocation = window;
-        Object.defineProperty(window, 'location', {
-            value: { href: '' },
-        });
-
-        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
-
-        const addButton = screen.getByText('Add');
-        fireEvent.click(addButton);
-        expect(window.location.href).toBe(
-            'https://staging-hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest'
-        );
-
-        Object.defineProperty(window, 'location', {
-            value: originalWindowLocation,
-        });
-    });
-
-    it('redirects to OutSystems production for EU users on production', async () => {
-        const ORIGINAL_NODE_ENV = process.env.NODE_ENV;
-        process.env.NODE_ENV = 'production';
-        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { loginid: 'VRW1' },
-        });
-
-        Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
-
-        const originalWindowLocation = window;
-        Object.defineProperty(window, 'location', {
-            value: { href: '' },
-        });
-
-        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
-
-        const addButton = screen.getByText('Add');
-        fireEvent.click(addButton);
-        expect(window.location.href).toBe(
-            'https://hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest'
-        );
-
-        Object.defineProperty(window, 'location', {
-            value: originalWindowLocation,
-        });
-        process.env.NODE_ENV = ORIGINAL_NODE_ENV;
     });
 });

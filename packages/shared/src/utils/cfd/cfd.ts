@@ -1,8 +1,7 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 import { CFD_PLATFORMS } from '../platform';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -33,7 +32,6 @@ export const CFD_text: { [key: string]: string } = {
 export const CFD_PRODUCTS_TITLE = {
     ZEROSPREAD: 'Zero Spread',
     SWAPFREE: 'Swap-Free',
-    GOLD: 'Gold',
 } as const;
 
 export const getMT5Title = (account_type: string) => {
@@ -46,10 +44,10 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp' | 'gold';
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp';
 export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest' | 'dml';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -68,7 +66,6 @@ export const PRODUCT = {
     STP: 'stp',
     FINANCIAL: 'financial',
     STANDARD: 'standard',
-    GOLD: 'gold',
 } as const;
 
 // * mt5_login_list returns these:
@@ -141,17 +138,6 @@ export const getCFDAccountKey = ({
                     return 'financial';
                 default:
                     return 'financial_demo';
-            }
-        } else if (product === PRODUCT.GOLD) {
-            switch (shortcode) {
-                case 'bvi':
-                    return 'gold_bvi';
-                case 'vanuatu':
-                    return 'gold_v';
-                case 'dml':
-                    return 'gold_dml';
-                default:
-                    return 'gold';
             }
         }
     }
@@ -260,7 +246,6 @@ type TGetCFDAccount = TGetAccount & {
 type TGetMT5Icon = {
     market_type: TMarketType;
     is_eu?: boolean;
-    product?: TProduct;
 };
 
 export const getCFDAccount = ({
@@ -283,9 +268,8 @@ export const getCFDAccount = ({
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
 };
 
-export const getMT5Icon = ({ market_type, is_eu, product }: TGetMT5Icon) => {
+export const getMT5Icon = ({ market_type, is_eu }: TGetMT5Icon) => {
     if (market_type === 'all' && !is_eu) return 'SwapFree';
-    if (product === 'gold') return 'Gold';
     if (market_type === 'financial' && is_eu) return 'CFDs';
     return market_type;
 };
@@ -506,7 +490,7 @@ export const mt5_community_url =
 
 export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
 
-export const getFormattedJurisdictionCode = (jurisdiction_code?: (typeof Jurisdiction)[keyof typeof Jurisdiction]) => {
+export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
@@ -532,7 +516,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code?: (typeof Jurisdi
 };
 
 export const getFormattedJurisdictionMarketTypes = (
-    jurisdiction_market_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
 ) => {
     let formatted_market_type = '';
 
@@ -551,8 +535,8 @@ export const getFormattedJurisdictionMarketTypes = (
 };
 
 type TGetMT5AccountTitle = {
-    account_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES];
-    jurisdiction: (typeof Jurisdiction)[keyof typeof Jurisdiction];
+    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
 };
 
 //returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu

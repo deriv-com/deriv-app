@@ -28,7 +28,6 @@ const VerificationDocsListModalContent = observer(() => {
         const url = new URL(url_link);
         const token = getToken();
         const appID = getAppId();
-        // const lang = localStorage.getItem("i18n_language")?.toLowerCase() as string
         const server = getSocketURL();
         url.searchParams.append('mode', 'service');
         url.searchParams.append('appid', appID);

@@ -17,6 +17,7 @@ import {
 import { localize, useTranslations } from '@deriv-com/translations';
 import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
+import { getWebtraderUrl } from './screens/MT5TradeScreen/MT5TradeLink/constants';
 import {
     ctraderLinks,
     whiteLabelLinks as internalWhiteLabelLinks,
@@ -146,7 +147,7 @@ export const companyNamesAndUrls = {
 
 export const getAppToContentMapper = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    whiteLabelLinks?: THooks.MT5AccountsList['white_label_links']
+    mt5TradeAccount: THooks.MT5AccountsList
 ) =>
     ({
         ctrader: {
@@ -169,13 +170,13 @@ export const getAppToContentMapper = (
         },
         web: {
             icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-            link: whiteLabelLinks?.webtrader_url,
+            link: getWebtraderUrl({ mt5TradeAccount }),
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
-            link: whiteLabelLinks?.windows,
+            link: mt5TradeAccount?.white_label_links?.windows,
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },

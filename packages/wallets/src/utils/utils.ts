@@ -35,14 +35,12 @@ export const getClientVerification = (account: TAddedMT5Account | TAvailableMT5A
     const isPoiRequired = hasPoiStatus && requiredDocumentStatuses.includes(documentStatuses.poi_status);
     const isPoaRequired = hasPoaStatus && requiredDocumentStatuses.includes(documentStatuses.poa_status);
     const isTinRequired =
-        hasTinStatus && hasRequiredTin && Boolean(documentStatuses.required_tin) && !documentStatuses.valid_tin;
+        hasRequiredTin && hasTinStatus && Boolean(documentStatuses.required_tin) && !documentStatuses.valid_tin;
 
     return {
         hasClientKycStatus,
         hasPoaStatus,
         hasPoiStatus,
-        hasRequiredTin,
-        hasTinStatus,
         isPoaRequired,
         isPoiRequired,
         isTinRequired,

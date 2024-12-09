@@ -14,32 +14,20 @@ describe('CompareAccountsHeader', () => {
         (useHistory as jest.Mock).mockReturnValue({ push: mockHistoryPush });
     });
 
-    it('displays CFDs compare accounts header title for non-demo, non-EU accounts', () => {
-        render(<CompareAccountsHeader isDemo={false} isEuRegion={false} isLoading={false} />);
+    it('displays proper CFDs compare accounts header title for real accounts', () => {
+        render(<CompareAccountsHeader isDemo={false} isLoading={false} />);
 
         expect(screen.getByText('Compare CFDs accounts')).toBeInTheDocument();
     });
 
-    it('displays CFDs compare accounts header title for demo, non-EU accounts', () => {
-        render(<CompareAccountsHeader isDemo={true} isEuRegion={false} isLoading={false} />);
+    it('displays proper CFDs compare accounts header title for demo accounts', () => {
+        render(<CompareAccountsHeader isDemo={true} isLoading={false} />);
 
         expect(screen.getByText('Compare CFDs demo accounts')).toBeInTheDocument();
     });
 
-    it('displays MT5 CFDs compare accounts header title for non-demo, EU accounts', () => {
-        render(<CompareAccountsHeader isDemo={false} isEuRegion={true} isLoading={false} />);
-
-        expect(screen.getByText('Deriv MT5 CFDs real account')).toBeInTheDocument();
-    });
-
-    it('displays MT5 CFDs compare accounts header title for demo, EU accounts', () => {
-        render(<CompareAccountsHeader isDemo={true} isEuRegion={true} isLoading={false} />);
-
-        expect(screen.getByText('Deriv MT5 CFDs Demo account')).toBeInTheDocument();
-    });
-
     it('redirects back to root when close icon is clicked', () => {
-        render(<CompareAccountsHeader isDemo={false} isEuRegion={false} isLoading={false} />);
+        render(<CompareAccountsHeader isDemo={false} isLoading={false} />);
 
         const closeIcon = screen.getByTestId('dt_wallets_compare_accounts_header_close_icon');
         fireEvent.click(closeIcon);

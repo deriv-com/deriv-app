@@ -1,8 +1,10 @@
 import React from 'react';
+
+import CFDs from './ic-appstore-cfds.svg';
 import Derived from './ic-appstore-derived.svg';
 import Financial from './ic-appstore-financial.svg';
+import Gold from './ic-appstore-gold.svg';
 import Options from './ic-appstore-options.svg';
-import CFDs from './ic-appstore-cfds.svg';
 import Standard from './ic-appstore-standard.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
 import ZeroSpread from './ic-appstore-zero-spread.svg';
@@ -22,6 +24,7 @@ export const PlatformIcons = {
     Standard,
     SwapFree,
     ZeroSpread,
+    Gold,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

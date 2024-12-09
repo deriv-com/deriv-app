@@ -11,7 +11,7 @@ import './MT5TradeLink.scss';
 type TMT5TradeLinkProps = {
     app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
-    mt5TradeAccount: THooks.MT5AccountsList;
+    mt5TradeAccount?: THooks.MT5AccountsList;
     platform?: TPlatforms.All;
 };
 

@@ -147,7 +147,7 @@ export const companyNamesAndUrls = {
 
 export const getAppToContentMapper = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    mt5TradeAccount: THooks.MT5AccountsList
+    mt5TradeAccount?: THooks.MT5AccountsList
 ) =>
     ({
         ctrader: {
@@ -170,7 +170,7 @@ export const getAppToContentMapper = (
         },
         web: {
             icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-            link: getWebtraderUrl({ mt5TradeAccount }),
+            link: mt5TradeAccount ? getWebtraderUrl({ mt5TradeAccount }) : '',
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
         },

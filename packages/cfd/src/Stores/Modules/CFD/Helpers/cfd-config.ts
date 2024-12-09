@@ -109,18 +109,35 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
         leverage: 500,
         short_title: localize('Standard'),
     };
-    const financial_title = product === PRODUCT.STP ? localize('Financial STP') : localize('Financial');
+
+    let financial_title;
+    switch (product) {
+        case PRODUCT.STP:
+            financial_title = localize('Financial STP');
+            break;
+        case PRODUCT.GOLD:
+            financial_title = localize('Gold');
+            break;
+        default:
+            financial_title = localize('Financial');
+    }
+
+    const financial_demo_title = product === PRODUCT.GOLD ? localize('Demo Gold') : localize('Demo Financial');
+    const financial_demo_title_eu = product === PRODUCT.GOLD ? localize('Demo Gold') : localize('Demo CFDs');
+    const financial_demo_short_title = product === PRODUCT.GOLD ? localize('Gold') : localize('Deriv CFDs');
+    const financial_title_eu = product === PRODUCT.GOLD ? localize('Deriv Gold') : localize('Deriv CFDs');
 
     const financial_config = {
         account_type: 'financial',
         leverage: 1000,
-        short_title: is_eu ? localize('Deriv CFDs') : financial_title,
+        short_title: is_eu ? financial_demo_short_title : financial_title,
     };
     const financial_stp_config = {
         account_type: 'financial_stp',
         leverage: 100,
         short_title: localize('Financial STP'),
     };
+
     return {
         demo: {
             all: {
@@ -156,7 +173,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
+                title: is_eu ? financial_demo_title_eu : financial_demo_title,
                 short_title: financial_config.short_title,
             },
             financial_demo: {
@@ -243,7 +260,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Deriv CFDs') : financial_title,
+                title: is_eu ? financial_title_eu : financial_title,
                 short_title: financial_config.short_title,
             },
             financial_svg: {

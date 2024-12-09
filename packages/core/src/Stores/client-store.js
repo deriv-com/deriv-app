@@ -60,6 +60,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
@@ -187,6 +188,7 @@ export default class ClientStore extends BaseStore {
             upgrade_info: observable,
             email: observable,
             accounts: observable,
+            is_trading_platform_available_account_loaded: observable,
             trading_platform_available_accounts: observable,
             ctrader_trading_platform_available_accounts: observable,
             pre_switch_broadcast: observable,
@@ -394,6 +396,7 @@ export default class ClientStore extends BaseStore {
             responseMT5TradingServers: action.bound,
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
+            setIsTradingPlatformAvailableAccountLoaded: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
             responseCTraderTradingPlatformAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
@@ -1635,7 +1638,7 @@ export default class ClientStore extends BaseStore {
         if (this.is_logged_in) {
             this.getWalletMigrationState();
 
-            await WS.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.authorized.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
@@ -2522,10 +2525,15 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    setIsTradingPlatformAvailableAccountLoaded(value) {
+        this.is_trading_platform_available_account_loaded = value;
+    }
+
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
         }
+        this.setIsTradingPlatformAvailableAccountLoaded(true);
     }
 
     responseCTraderTradingPlatformAvailableAccounts(response) {

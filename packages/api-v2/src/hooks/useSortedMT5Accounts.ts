@@ -1,17 +1,18 @@
 import { useMemo } from 'react';
-import useMT5AccountsList from './useMT5AccountsList';
+
+import useActiveAccount from './useActiveAccount';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useIsEuRegion from './useIsEuRegion';
-import useActiveAccount from './useActiveAccount';
+import useMT5AccountsList from './useMT5AccountsList';
 
 /** A custom hook to get the sorted added and non-added MT5 accounts. */
-const useSortedMT5Accounts = (regulation?: string) => {
+const useSortedMT5Accounts = (isEUClient: boolean = false) => {
     const { data: all_available_mt5_accounts } = useAvailableMT5Accounts();
     const { isEUCountry } = useIsEuRegion();
     const { data: mt5_accounts, ...rest } = useMT5AccountsList();
     const { data: activeAccount } = useActiveAccount();
 
-    const isEU = regulation === 'EU' || isEUCountry;
+    const isEU = isEUClient || isEUCountry;
 
     const modified_data = useMemo(() => {
         if (!all_available_mt5_accounts || !mt5_accounts) return;
@@ -47,15 +48,18 @@ const useSortedMT5Accounts = (regulation?: string) => {
     }, [activeAccount?.is_virtual, all_available_mt5_accounts, isEU, mt5_accounts]);
 
     const sorted_data = useMemo(() => {
-        const sorting_order = ['standard', 'financial', 'stp', 'swap_free', 'zero_spread'];
+        const sorting_order = ['standard', 'financial', 'stp', 'swap_free', 'zero_spread', 'gold'];
 
         if (!modified_data) return;
 
-        const sorted_data = sorting_order.reduce((acc, sort_order) => {
-            const accounts = modified_data.filter(account => account.product === sort_order);
-            if (!accounts.length) return acc;
-            return [...acc, ...accounts];
-        }, [] as typeof modified_data);
+        const sorted_data = sorting_order.reduce(
+            (acc, sort_order) => {
+                const accounts = modified_data.filter(account => account.product === sort_order);
+                if (!accounts.length) return acc;
+                return [...acc, ...accounts];
+            },
+            [] as typeof modified_data
+        );
 
         return sorted_data;
     }, [modified_data]);

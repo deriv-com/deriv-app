@@ -34,15 +34,15 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 url = isDemo ? dxtradeLinks.demo : dxtradeLinks.live;
                 break;
             case CFD_PLATFORMS.CTRADER:
-                await getCtraderToken().then(res => {
-                    ctraderToken = res?.service_token?.ctrader?.token;
-                });
                 ctraderURL = isTestLink || isStaging ? ctraderLinks.staging : ctraderLinks.live;
-                if (ctraderToken) {
-                    url = `${ctraderURL}/?token=${ctraderToken}`;
-                } else {
-                    url = ctraderURL;
+                try {
+                    const { service_token: serviceToken } = await getCtraderToken();
+                    ctraderToken = serviceToken?.ctrader?.token;
+                } catch (error) {
+                    /* eslint-disable no-console */
+                    console.error('Failed to fetch cTrader token:', error);
                 }
+                url = ctraderToken ? `${ctraderURL}/?token=${ctraderToken}` : ctraderURL;
                 break;
             default:
                 url = '';

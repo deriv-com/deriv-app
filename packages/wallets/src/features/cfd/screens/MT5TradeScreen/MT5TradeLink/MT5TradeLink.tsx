@@ -81,7 +81,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, m
                     <Button
                         borderWidth='sm'
                         color='black'
-                        onClick={() => window.open(link)}
+                        onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
                         size='sm'
                         variant='outlined'
                     >

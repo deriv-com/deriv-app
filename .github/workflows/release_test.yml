@@ -37,7 +37,7 @@ jobs:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
         TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
     - name: Run tests
-      run: npm test:ci
+      run: npm test
     - name: Publish to Cloudflare Pages Test
       uses: "./.github/actions/publish_to_pages_test"
       with:

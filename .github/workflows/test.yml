@@ -25,11 +25,10 @@ jobs:
       id: cache-nx
       uses: actions/cache@v4
       with:
-        path: nx/cache
+        path: .nx
         key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
-    - if: ${{ steps.cache-nx.outputs.cache-hit != 'true' }}
-      name: Build
-      uses: "./.github/actions/build"
+    - name: Build
+      uses: "./.github/actions/build_affected"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/api-v2

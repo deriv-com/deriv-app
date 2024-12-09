@@ -3,7 +3,7 @@ import {
     AccountsDerivXIcon,
     BrandDerivLogoCoralIcon,
     LegacyEmailIcon,
-    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    PartnersProductBrandLightDerivMt5LogoIcon,
 } from '@deriv/quill-icons';
 
 type TEmailPasswordTitleProps = {
@@ -15,7 +15,7 @@ const EmailPasswordTitle = ({ icon, title }: TEmailPasswordTitleProps) => {
     const displayIcon = {
         deriv_email: <LegacyEmailIcon iconSize='sm' />,
         deriv_password: <BrandDerivLogoCoralIcon height={24} width={24} />,
-        deriv_mt5_password: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={24} width={24} />,
+        deriv_mt5_password: <PartnersProductBrandLightDerivMt5LogoIcon height={24} width={24} />,
         deriv_x_password: <AccountsDerivXIcon iconSize='sm' />,
     };
 

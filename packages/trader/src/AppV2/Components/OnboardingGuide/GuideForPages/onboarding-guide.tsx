@@ -7,11 +7,12 @@ import OnboardingVideo from './onboarding-video';
 import { Step } from 'react-joyride';
 
 type TOnboardingGuideProps = {
-    type?: 'trade_page' | 'positions_page';
     callback?: () => void;
+    is_dark_mode_on?: boolean;
+    type?: 'trade_page' | 'positions_page';
 };
 
-const OnboardingGuide = ({ type = 'trade_page', callback }: TOnboardingGuideProps) => {
+const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOnboardingGuideProps) => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [should_run_guide, setShouldRunGuide] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
@@ -45,7 +46,7 @@ const OnboardingGuide = ({ type = 'trade_page', callback }: TOnboardingGuideProp
     };
 
     const modal_content = {
-        image: <OnboardingVideo type={type} />,
+        image: <OnboardingVideo type={is_dark_mode_on ? `${type}_dark` : type} />,
         title: <Localize i18n_default_text='View your positions' />,
         content: (
             <Localize i18n_default_text='You can view your open and closed positions here. Tap an item for more details.' />

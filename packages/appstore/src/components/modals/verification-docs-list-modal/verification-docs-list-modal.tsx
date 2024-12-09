@@ -1,11 +1,14 @@
 import React, { Suspense } from 'react';
-import { useDevice } from '@deriv-com/ui';
+
+import { Icon, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
+import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
+import { ACCOUNTS_OS_POI_URL, CFD_PLATFORMS, getAppId, getSocketURL, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Text, Modal, UILoader, MobileDialog, Icon } from '@deriv/components';
-import { routes, CFD_PLATFORMS } from '@deriv/shared';
-import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
+
 import ListItem from './ListItem';
+
 import './verification-docs-list-modal.scss';
 
 type TItems = {
@@ -18,7 +21,23 @@ type TItems = {
 const VerificationDocsListModalContent = observer(() => {
     const {
         common: { platform },
+        client: { getToken },
     } = useStore();
+
+    const getFormattedURL = (url_link: string) => {
+        const url = new URL(url_link);
+        const token = getToken();
+        const appID = getAppId();
+        // const lang = localStorage.getItem("i18n_language")?.toLowerCase() as string
+        const server = getSocketURL();
+        url.searchParams.append('mode', 'service');
+        url.searchParams.append('appid', appID);
+        url.searchParams.append('lang', 'en');
+        url.searchParams.append('server', server);
+        url.searchParams.append('token', token);
+        return url.toString();
+    };
+
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
@@ -31,7 +50,7 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
-            route: routes.proof_of_identity,
+            route: getFormattedURL(ACCOUNTS_OS_POI_URL),
         },
         poa_status && {
             id: 'address',

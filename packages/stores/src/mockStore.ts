@@ -335,6 +335,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_account_to_be_closed_by_residence: false,
             statement: {},
             should_show_trustpilot_notification: false,
+            getToken: jest.fn(),
         },
         common: {
             error: common_store_error,

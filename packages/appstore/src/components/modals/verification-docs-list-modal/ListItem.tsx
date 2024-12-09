@@ -16,7 +16,7 @@ type TListItemProps = {
     route: string;
 };
 
-type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+type TAuthStatusCodes = (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
 
 const getBadgeStatus = (status: TAuthStatusCodes) => {
     switch (status) {
@@ -65,7 +65,9 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         if (id === 'address' && status) {
             localStorage.setItem('mt5_poa_status', String(status));
         }
-        history.push(route);
+        // history.push(route);
+        window.open(route, '_blank');
+
         setVerificationModalOpen(false);
     };
 

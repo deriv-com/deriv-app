@@ -1,11 +1,10 @@
-import { cleanup } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-
 import useActiveAccount from '../useActiveAccount';
 import useAvailableMT5Accounts from '../useAvailableMT5Accounts';
 import useIsEuRegion from '../useIsEuRegion';
 import useMT5AccountsList from '../useMT5AccountsList';
 import useSortedMT5Accounts from '../useSortedMT5Accounts';
+import { cleanup } from '@testing-library/react';
 
 jest.mock('../useActiveAccount', () => jest.fn());
 jest.mock('../useAvailableMT5Accounts', () => jest.fn());
@@ -45,11 +44,6 @@ const mockMT5NonEUAvailableAccounts = [
     },
     {
         is_default_jurisdiction: 'true',
-        product: 'gold',
-        shortcode: 'bvi',
-    },
-    {
-        is_default_jurisdiction: 'true',
         product: 'swap_free',
         shortcode: 'svg',
     },
@@ -70,11 +64,6 @@ const mockMT5NonEUAddedAccounts = [
         is_virtual: false,
         landing_company_short: 'bvi',
         product: 'zero_spread',
-    },
-    {
-        is_virtual: false,
-        landing_company_short: 'bvi',
-        product: 'gold',
     },
 ];
 
@@ -146,12 +135,6 @@ describe('useSortedMT5Accounts', () => {
                 product: 'zero_spread',
                 shortcode: 'bvi',
             },
-            {
-                is_added: false,
-                is_default_jurisdiction: 'true',
-                product: 'gold',
-                shortcode: 'bvi',
-            },
         ]);
     });
 
@@ -216,12 +199,6 @@ describe('useSortedMT5Accounts', () => {
                 landing_company_short: 'bvi',
                 product: 'zero_spread',
             },
-            {
-                is_added: true,
-                is_virtual: false,
-                landing_company_short: 'bvi',
-                product: 'gold',
-            },
         ]);
     });
 
@@ -264,7 +241,6 @@ describe('useSortedMT5Accounts', () => {
             'stp',
             'swap_free',
             'zero_spread',
-            'gold',
         ]);
     });
 
@@ -320,12 +296,6 @@ describe('useSortedMT5Accounts', () => {
                 is_virtual: false,
                 landing_company_short: 'bvi',
                 product: 'zero_spread',
-            },
-            {
-                is_added: true,
-                is_virtual: false,
-                landing_company_short: 'bvi',
-                product: 'gold',
             },
         ]);
     });

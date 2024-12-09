@@ -12,25 +12,34 @@ const CompareAccountsScreen = () => {
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { is_virtual: isDemo = false } = activeWallet || {};
 
-    const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
+    const {
+        data: compareAccounts,
+        hasCTraderAccountAvailable,
+        hasDxtradeAccountAvailable,
+    } = useCFDCompareAccounts(isEuRegion);
 
     // Remove the hardcoded cTrader and Deriv X values and use the values from the API once it's ready
     const { ctraderAccount, dxtradeAccount, mt5Accounts } = compareAccounts;
 
     return (
         <div className='wallets-compare-accounts'>
-            <CompareAccountsHeader isDemo={isDemo} isLoading={isEuRegionLoading} />
+            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} isLoading={isEuRegionLoading} />
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel isRtl={isRtl}>
                     {/* Renders MT5 data */}
-                    {mt5Accounts?.map((item, index) => (
-                        <CompareAccountsCard
-                            account={item}
-                            isDemo={isDemo}
-                            isEuRegion={isEuRegion}
-                            key={`compare-accounts-${item?.product}-${index}`}
-                        />
-                    ))}
+                    {mt5Accounts
+                        ?.filter(
+                            //@ts-expect-error needs backend type
+                            mt5Account => mt5Account.is_default_jurisdiction === 'true' && mt5Account.product !== 'gold'
+                        )
+                        .map((item, index) => (
+                            <CompareAccountsCard
+                                account={item}
+                                isDemo={isDemo}
+                                isEuRegion={isEuRegion}
+                                key={`compare-accounts-${item?.product}-${index}`}
+                            />
+                        ))}
                     {/* Renders cTrader data */}
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CompareAccountsCard account={ctraderAccount} isDemo={isDemo} isEuRegion={isEuRegion} />

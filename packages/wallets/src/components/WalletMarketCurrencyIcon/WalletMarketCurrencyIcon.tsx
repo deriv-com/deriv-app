@@ -1,5 +1,5 @@
 import React, { ComponentProps, FC } from 'react';
-import { CFDPlatformIcons, MT5GoldIcon, MT5MarketIcons } from '../../constants/icons';
+import { CFDPlatformIcons, MT5MarketIcons } from '../../constants/icons';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../features/cfd/constants';
 import { THooks, TPlatforms } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
@@ -11,7 +11,7 @@ type TWalletMarketCurrencyIconProps = {
     isDemo: THooks.ActiveWalletAccount['is_virtual'];
     marketType?: keyof typeof MT5MarketIcons;
     platform?: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'] | 'gold';
+    product?: THooks.AvailableMT5Accounts['product'];
     size?: ComponentProps<typeof WalletCurrencyCard>['size'];
 };
 
@@ -27,8 +27,6 @@ const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({
     let MarketTypeIcon;
     if (marketType === MARKET_TYPE.ALL && platform && marketTypeAllkey in CFDPlatformIcons) {
         MarketTypeIcon = marketTypeAllkey;
-    } else if (platform === CFD_PLATFORMS.MT5 && product && product in MT5GoldIcon) {
-        MarketTypeIcon = product;
     } else if (platform === CFD_PLATFORMS.MT5 && marketType && marketType in MT5MarketIcons) {
         MarketTypeIcon = marketType;
     } else MarketTypeIcon = 'standard';

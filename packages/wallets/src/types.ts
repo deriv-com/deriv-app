@@ -117,7 +117,6 @@ export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_curren
 
 export type TProductForMarketDetails =
     | NonNullable<Exclude<THooks.AvailableMT5Accounts['product'], 'financial' | 'standard'>>
-    | 'gold'
     | 'stp';
 
 export type TTranslations = ReturnType<typeof useTranslations>;

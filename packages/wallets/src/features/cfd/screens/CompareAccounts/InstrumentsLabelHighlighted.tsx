@@ -14,10 +14,11 @@ type TInstrumentsLabelHighlighted = {
 const InstrumentsLabelHighlighted = ({ instruments, isEuRegion, platform }: TInstrumentsLabelHighlighted) => {
     const { localize } = useTranslations();
     const iconData = [...getHighlightedIconLabel({ instruments, isEuRegion, localize, platform })];
+    const filteredIconData = isEuRegion ? iconData.filter(item => item.highlighted) : iconData;
 
     return (
         <div className='wallets-compare-accounts-outline' data-testid='dt_compare_cfd_account_outline__container'>
-            {iconData.map(item => (
+            {filteredIconData.map(item => (
                 <InstrumentsIconWithLabel key={item.text} {...item} />
             ))}
         </div>

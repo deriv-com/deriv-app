@@ -80,13 +80,6 @@ describe('CompareAccountsTitleIcon', () => {
         expect(screen.getByText('Swap-Free')).toBeInTheDocument();
     });
 
-    it('renders correct title for gold accounts', () => {
-        render(<CompareAccountsTitleIcon {...defaultProps} product='gold' />, {
-            wrapper,
-        });
-        expect(screen.getByText('Gold')).toBeInTheDocument();
-    });
-
     it('renders correct title for demo swap-free accounts', () => {
         render(<CompareAccountsTitleIcon {...defaultProps} isDemo product='swap_free' />, {
             wrapper,
@@ -136,12 +129,5 @@ describe('CompareAccountsTitleIcon', () => {
         });
 
         expect(screen.getByText('Financial Demo')).toBeInTheDocument();
-    });
-
-    it('renders correct title for demo gold accounts', () => {
-        render(<CompareAccountsTitleIcon {...defaultProps} isDemo product='gold' />, {
-            wrapper,
-        });
-        expect(screen.getByText('Gold Demo')).toBeInTheDocument();
     });
 });

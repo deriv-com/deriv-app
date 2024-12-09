@@ -1,16 +1,15 @@
-import React from 'react';
-import { useLocation, withRouter } from 'react-router';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-
-import { ThemedScrollbars } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { CookieStorage, platforms, routes, TRACKING_STATUS_KEY, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import React from 'react';
+import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
-import { useDevice } from '@deriv-com/ui';
-
+import { ThemedScrollbars } from '@deriv/components';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import { useDevice } from '@deriv-com/ui';
+// import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 

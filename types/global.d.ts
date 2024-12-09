@@ -27,7 +27,6 @@ declare global {
             isInitialized: () => boolean;
             user: {
                 setLocale(locale: string): void;
-                clear: () => void;
             };
         };
         fcWidgetMessengerConfig: {
@@ -41,11 +40,6 @@ declare global {
         FreshChat: {
             initialize: (config: FreshChatConfig) => void;
         };
-        DerivInterCom: {
-            initialize: (config: IntercomConfig) => void;
-        };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Intercom: any;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Analytics: any;
         GrowthbookFeatures: { [key: string]: boolean };
@@ -56,10 +50,6 @@ declare global {
         token: string | null;
         locale?: string;
         hideButton?: boolean;
-    }
-    interface IntercomConfig {
-        token: string | null;
-        hideLauncher?: boolean;
     }
     interface Navigator {
         connection?: NetworkInformation;

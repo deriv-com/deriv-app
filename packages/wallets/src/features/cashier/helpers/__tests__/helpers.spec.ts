@@ -89,18 +89,6 @@ describe('Cashier Helpers', () => {
             ).toBe(MT5MarketTypeDetails.financial.product?.stp?.title);
         });
 
-        it('returns correct name for MT5 financial GOLD account', () => {
-            expect(
-                getAccountName({
-                    accountCategory: 'trading',
-                    accountType: PlatformDetails.mt5.name,
-                    landingCompanyName: 'svg',
-                    mt5MarketType: MT5MarketTypeDetails.financial.name,
-                    product: 'gold',
-                })
-            ).toBe(MT5MarketTypeDetails.financial.product?.gold?.title);
-        });
-
         it('returns correct name for MT5 synthetic account', () => {
             expect(
                 getAccountName({

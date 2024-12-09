@@ -350,9 +350,6 @@ export default class DashboardStore implements IDashboardStore {
     showVideoDialog = (dialog_option: TDialogOptions): void => {
         const { url, type = '' } = dialog_option;
         const dialog_type = ['google', 'url'];
-        this.faq_search_value = '';
-        this.setActiveTabTutorial(0);
-        this.resetTutorialTabContent();
         if (dialog_type.includes(type)) {
             if (type === 'url') {
                 this.dialog_options = {

@@ -69,7 +69,6 @@ describe('CFDsListing', () => {
             },
             client: {
                 is_landing_company_loaded: true,
-                is_trading_platform_available_account_loaded: true,
                 real_account_creation_unlock_date: '2022-02-02',
             },
             modules: {
@@ -109,7 +108,6 @@ describe('CFDsListing', () => {
             },
             client: {
                 is_landing_company_loaded: true,
-                is_trading_platform_available_account_loaded: true,
                 real_account_creation_unlock_date: '2022-02-02',
             },
             modules: {

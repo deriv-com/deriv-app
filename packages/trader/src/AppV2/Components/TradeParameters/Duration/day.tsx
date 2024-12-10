@@ -181,8 +181,11 @@ const DayInput = ({
         };
         updateCurrentGmtTime();
         const interval = setInterval(updateCurrentGmtTime, 1000);
+        // Adjusts end_time to match adjusted_start_time only if end_time is less than adjusted_start_time
+        // and the difference is exactly 5 minutes, ensuring time remains valid.
         if (
             end_time !== '' &&
+            timeToMinutes(end_time) < timeToMinutes(adjusted_start_time) &&
             Math.abs(timeToMinutes(adjusted_start_time) - timeToMinutes(end_time)) === 5 &&
             !open_timepicker
         ) {

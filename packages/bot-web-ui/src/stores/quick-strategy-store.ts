@@ -5,6 +5,8 @@ import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { TFormData } from '../pages/bot-builder/quick-strategy/types';
 import RootStore from './root-store';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 
 export type TActiveSymbol = {
     group: string;
@@ -207,6 +209,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         }
 
         this.setFormVisibility(false);
+        botNotification(notification_message[NOTIFICATION_TYPE.BOT_IMPORT]);
 
         await load({
             block_string: Blockly.Xml.domToText(strategy_dom),

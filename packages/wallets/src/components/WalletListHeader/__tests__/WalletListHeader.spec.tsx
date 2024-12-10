@@ -55,21 +55,21 @@ describe('WalletListHeader', () => {
         expect(checkbox).toBeChecked();
     });
 
-    it('toggles accounts on checkbox change', () => {
+    it('toggles accounts on checkbox change', async () => {
         render(<WalletListHeader />);
 
         const checkbox = screen.getByRole('checkbox');
-        userEvent.click(checkbox);
+        await userEvent.click(checkbox);
         expect(mockSwitchWalletAccount).toHaveBeenCalledWith('demo123');
     });
 
-    it('toggles to the first real account when the demo account is active', () => {
+    it('toggles to the first real account when the demo account is active', async () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true, loginid: 'demo123' } });
         render(<WalletListHeader />);
 
         const checkbox = screen.getByRole('checkbox');
         expect(checkbox).not.toBeChecked();
-        userEvent.click(checkbox);
+        await userEvent.click(checkbox);
 
         expect(mockSwitchWalletAccount).toHaveBeenCalledWith('real1');
     });

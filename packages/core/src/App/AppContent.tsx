@@ -19,7 +19,6 @@ import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookGetFeatureValue, useGrowthbookIsOn, useLiveChat, useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import initHotjar from '../Utils/Hotjar';
-import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
@@ -60,7 +59,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
-    const is_wallets_unsupported_language = WALLETS_UNSUPPORTED_LANGUAGES.includes(current_language);
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
         is_client_store_initialized,
@@ -121,18 +119,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             if (is_dark_mode_on) {
                 setDarkMode(false);
             }
-            if (is_wallets_unsupported_language) {
-                changeSelectedLanguage('EN');
-            }
         }
-    }, [
-        has_wallet,
-        current_language,
-        changeSelectedLanguage,
-        is_dark_mode_on,
-        setDarkMode,
-        is_wallets_unsupported_language,
-    ]);
+    }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>

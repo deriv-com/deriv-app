@@ -116,4 +116,4 @@ export const isDisabledLandscapeBlockerRoute = (path: string) => {
     return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
 };
 
-export const ACCOUNTS_OS_POI_URL = 'https://dev-hub.deriv.com/Accounts';
+export const ACCOUNTS_OS_POI_URL = 'https://dev-hub.deriv.com/Accounts/ProofOfIdentity';

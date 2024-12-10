@@ -1,9 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, Skeleton, Text, ToggleSwitch, WheelPicker, useSnackbar } from '@deriv-com/quill-ui';
+import { observer } from 'mobx-react-lite';
+
 import { Localize } from '@deriv/translations';
+import { Button, Skeleton, Text, ToggleSwitch, useSnackbar, WheelPicker } from '@deriv-com/quill-ui';
+
 import { addUnit, getSnackBarText } from 'AppV2/Utils/trade-params-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TDealCancellationProps = {
     closeActionSheet: () => void;

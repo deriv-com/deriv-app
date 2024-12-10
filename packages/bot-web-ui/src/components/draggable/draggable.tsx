@@ -178,7 +178,11 @@ const Draggable: React.FC<TDraggableProps> = ({
             setIsDragging(false);
             isResizing.current = false;
             if (draggableContentBody?.style) {
-                Object.assign(draggableContentBody.style, previousStyle);
+                try {
+                    Object.assign(draggableContentBody.style, previousStyle);
+                } catch {
+                    // no need to handle this error
+                }
                 draggableContentBody.style.pointerEvents = previousPointerEvent ?? 'unset';
             }
             if (boundaryRef) {

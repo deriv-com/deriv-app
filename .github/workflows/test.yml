@@ -16,19 +16,27 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Check imports
       run: npm run check-imports
-    - name: Install dependencies
+    - name: Restore npm cache
+      uses: actions/cache/restore@v4
+      id: cache-npm
+      with:
+        path: |
+          node_modules
+          packages/*/node_modules
+        key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
+    - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
-    # - name: Invalidate NPM Cache
-    #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    #   uses: "./.github/actions/invalidate_npm_cache"
-    - name: Cache Nx Build Cache
+    - name: Restore NX cache
+      uses: actions/cache/restore@v4
       id: cache-nx
-      uses: actions/cache@v4
       with:
         path: .nx
         key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
     - name: Build
-      uses: "./.github/actions/build_affected"
+      uses: "./.github/actions/build"
+      with:
+        STRICT_BUILD: false
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/api-v2

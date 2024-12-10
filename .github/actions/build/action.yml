@@ -9,6 +9,11 @@ inputs:
     description: 'Node environment'
     required: false
     default: 'test'
+  STRICT_BUILD:
+    description: 'When true, runs `build:all` script without cache skipping for account, bot-web-ui and trader packages,
+    when false, runs `build:all-cache` script with cache skipping for all packages, except components package'
+    required: false
+    default: true
   DATADOG_CLIENT_TOKEN:
     description: 'Datadog client token'
     required: false
@@ -77,5 +82,10 @@ runs:
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
-    run: npm run build:all
+    run: |
+        if [ "${{ inputs.STRICT_BUILD }}" = "true" ]; then
+          npm run build:all
+        else
+          npm run build:all-cache
+        fi
     shell: bash

@@ -45,7 +45,7 @@ jobs:
   finish:
     name: Coveralls Finished
     needs: [test]
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: Runner_8cores_Deriv-app
     steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949

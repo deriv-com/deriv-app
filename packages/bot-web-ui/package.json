@@ -71,13 +71,13 @@
         "webpack-cli": "^5.1.4"
     },
     "dependencies": {
-        "@deriv-com/quill-ui": "1.21.0",
+        "@deriv-com/quill-ui": "1.24.2",
         "@deriv-com/ui": "1.36.4",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "^2.7.1",
+        "@deriv/deriv-charts": "^2.7.2",
         "@deriv/hooks": "^1.0.0",
         "@deriv/quill-icons": "1.23.3",
         "@deriv/shared": "^1.0.0",

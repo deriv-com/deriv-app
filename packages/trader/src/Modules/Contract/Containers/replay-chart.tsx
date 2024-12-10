@@ -6,6 +6,8 @@ import {
     getEndTime,
     getPlatformRedirect,
     hasContractStarted,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -14,7 +16,6 @@ import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/re
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 import { useDevice } from '@deriv-com/ui';
-import { isDtraderV2Enabled } from '@deriv/shared/src/utils/platform/platform';
 
 const ReplayChart = observer(
     ({
@@ -82,7 +83,8 @@ const ReplayChart = observer(
         const prev_start_epoch = usePrevious(start_epoch);
 
         const has_ended = !!getEndTime(contract_info);
-        const is_dtrader_v2_enabled = isDtraderV2Enabled(ui.is_mobile);
+        const is_dtrader_v2_enabled =
+            isDtraderV2DesktopEnabled(ui.is_desktop) || isDtraderV2MobileEnabled(ui.is_mobile);
 
         return (
             <SmartChart
@@ -109,7 +111,7 @@ const ReplayChart = observer(
                 stateChangeListener={chartStateChange}
                 symbol={symbol}
                 allTicks={all_ticks}
-                topWidgets={is_dtrader_v2_enabled && isMobile ? () => <React.Fragment /> : ChartTopWidgets}
+                topWidgets={is_dtrader_v2_enabled ? () => <React.Fragment /> : ChartTopWidgets}
                 isConnectionOpened={is_socket_opened}
                 isStaticChart={
                     // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:

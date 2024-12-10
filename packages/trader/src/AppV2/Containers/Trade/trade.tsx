@@ -20,6 +20,7 @@ import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
+import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -123,13 +124,16 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && (
+                        <OnboardingGuide type='trade_page' is_dark_mode_on={is_dark_mode_on} />
+                    )}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
+            <TradeErrorSnackbar error_fields={['stop_loss', 'take_profit', 'date_start']} should_show_snackbar />
         </BottomNav>
     );
 });

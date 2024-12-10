@@ -64,7 +64,7 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? localize("Let's practise trading with {{dxtradeBalance}} virtual funds.", { dxtradeBalance })
+            ? localize('Practise trading with {{dxtradeBalance}} virtual funds.', { dxtradeBalance })
             : localize(
                   'Transfer funds from your {{currency}} Wallet to your {{dxtradeTitle}} account to start trading.',
                   { currency: activeWallet?.currency, dxtradeTitle: PlatformDetails.dxtrade.title }

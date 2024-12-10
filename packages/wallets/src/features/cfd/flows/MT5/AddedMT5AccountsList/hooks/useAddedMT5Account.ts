@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion, useTradingPlatformStatus } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
+import { ClientVerificationStatusBadge } from '../../../../../../components';
 import type { THooks } from '../../../../../../types';
-import { ClientVerificationStatusBadge } from '../../../../components';
+import { TAddedMT5Account } from '../../../../../../types';
 import {
     CFD_PLATFORMS,
     DISABLED_PLATFORM_STATUSES,
@@ -11,11 +12,10 @@ import {
     MT5_ACCOUNT_STATUS,
     TRADING_PLATFORM_STATUS,
 } from '../../../../constants';
-import { TAddedMT5Account } from '../../../../types';
 
 type TBadgeVariations = Partial<React.ComponentProps<typeof ClientVerificationStatusBadge>['variant']> | undefined;
 type TPlatformStatus = THooks.TradingPlatformStatus[number]['status'];
-type TDisabledPlatformStatus = typeof DISABLED_PLATFORM_STATUSES[number];
+type TDisabledPlatformStatus = (typeof DISABLED_PLATFORM_STATUSES)[number];
 
 const getClientKycStatus = (status: TAddedMT5Account['status']): TBadgeVariations => {
     switch (status) {
@@ -66,7 +66,7 @@ const useAddedMT5Account = (account: TAddedMT5Account) => {
 
     const kycStatus = getClientKycStatus(account.status);
 
-    const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE;
+    const showMT5TradeModal = platformStatus === TRADING_PLATFORM_STATUS.ACTIVE && !kycStatus;
 
     return {
         accountDetails,

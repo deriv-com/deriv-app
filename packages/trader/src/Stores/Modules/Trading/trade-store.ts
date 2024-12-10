@@ -40,9 +40,10 @@ import {
     formatMoney,
     getContractPath,
     routes,
-    isDtraderV2Enabled,
+    cacheTrackEvents,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
 } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -450,7 +451,9 @@ export default class TradeStore extends BaseStore {
             is_accumulator: computed,
             is_chart_loading: observable,
             is_digits_widget_active: observable,
-            is_dtrader_v2_enabled: computed,
+            is_dtrader_v2: computed,
+            is_dtrader_v2_mobile: computed,
+            is_dtrader_v2_desktop: computed,
             is_equal: observable,
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
@@ -576,7 +579,7 @@ export default class TradeStore extends BaseStore {
         when(
             () => !isEmptyObject(this.contract_types_list_v2),
             () => {
-                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2) return;
                 const searchParams = new URLSearchParams(window.location.search);
                 const urlContractType = searchParams.get('trade_type');
                 const tradeStoreString = sessionStorage.getItem('trade_store');
@@ -602,7 +605,7 @@ export default class TradeStore extends BaseStore {
         when(
             () => this.has_symbols_for_v2,
             () => {
-                if (!this.contract_types_list_v2 || !this.is_dtrader_v2_enabled) return;
+                if (!this.contract_types_list_v2 || !this.is_dtrader_v2) return;
                 const searchParams = new URLSearchParams(window.location.search);
                 const urlSymbol = searchParams.get('symbol');
                 const tradeStoreString = sessionStorage.getItem('trade_store');
@@ -782,7 +785,7 @@ export default class TradeStore extends BaseStore {
     };
 
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
-        if (this.is_dtrader_v2_enabled) {
+        if (this.is_dtrader_v2) {
             await when(() => this.has_symbols_for_v2);
             return;
         }
@@ -870,7 +873,7 @@ export default class TradeStore extends BaseStore {
     }
 
     async setContractTypes() {
-        if (this.is_dtrader_v2_enabled) {
+        if (this.is_dtrader_v2) {
             return;
         }
 
@@ -947,10 +950,16 @@ export default class TradeStore extends BaseStore {
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
         if (
-            name == 'contract_type' &&
+            name === 'contract_type' &&
             ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
         ) {
             this.prev_contract_type = this.contract_type;
+        }
+
+        // reset stop loss after trade type was changed
+        if (name === 'contract_type' && this.has_stop_loss) {
+            this.has_stop_loss = false;
+            this.stop_loss = '';
         }
 
         if (name === 'symbol' && value) {
@@ -1122,7 +1131,7 @@ export default class TradeStore extends BaseStore {
                                     type: response.msg_type,
                                     ...response.error,
                                 },
-                                this.is_dtrader_v2_enabled
+                                this.is_dtrader_v2
                             );
 
                             // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
@@ -1358,7 +1367,7 @@ export default class TradeStore extends BaseStore {
 
             if (has_currency_changed && should_reset_stake) {
                 obj_new_values.amount = obj_new_values.amount || getMinPayout(obj_new_values.currency ?? '');
-                if (this.is_dtrader_v2_enabled)
+                if (this.is_dtrader_v2)
                     this.setV2ParamsInitialValues({
                         value: obj_new_values.amount ?? '',
                         name: 'stake',
@@ -1379,7 +1388,7 @@ export default class TradeStore extends BaseStore {
 
         // Set stake to default one (from contracts_for) on symbol or contract type switch.
         // On contract type we also additionally reset take profit
-        if (this.default_stake && this.is_dtrader_v2_enabled) {
+        if (this.default_stake && this.is_dtrader_v2) {
             const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
             const has_contract_type_changed =
                 obj_new_values.contract_type &&
@@ -1443,8 +1452,16 @@ export default class TradeStore extends BaseStore {
         }
     }
 
-    get is_dtrader_v2_enabled() {
-        return isDtraderV2Enabled(this.root_store.ui.is_mobile);
+    get is_dtrader_v2_mobile() {
+        return isDtraderV2MobileEnabled(this.root_store.ui.is_mobile);
+    }
+
+    get is_dtrader_v2_desktop() {
+        return isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop);
+    }
+
+    get is_dtrader_v2() {
+        return this.is_dtrader_v2_mobile || this.is_dtrader_v2_desktop;
     }
 
     get is_synthetics_available() {
@@ -1788,12 +1805,14 @@ export default class TradeStore extends BaseStore {
         this.resetErrorServices();
         await this.setContractTypes();
         runInAction(async () => {
-            this.processNewValuesAsync(
-                { currency: this.root_store.client.currency || this.root_store.client.default_currency },
-                true,
-                { currency: this.currency },
-                false
-            );
+            if (!this.is_dtrader_v2) {
+                this.processNewValuesAsync(
+                    { currency: this.root_store.client.currency || this.root_store.client.default_currency },
+                    true,
+                    { currency: this.currency },
+                    false
+                );
+            }
         });
         return Promise.resolve();
     }
@@ -1962,6 +1981,10 @@ export default class TradeStore extends BaseStore {
     wsSubscribe = (req: TicksHistoryRequest, callback: (response: TTicksHistoryResponse) => void) => {
         const passthrough_callback = (...args: [TTicksHistoryResponse]) => {
             callback(...args);
+            if ('ohlc' in args[0] && this.root_store.contract_trade.granularity !== 0) {
+                const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
+                if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
+            }
             if (this.is_accumulator) {
                 let current_spot_data = {};
                 if ('tick' in args[0]) {
@@ -2052,11 +2075,18 @@ export default class TradeStore extends BaseStore {
         }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            Analytics.trackEvent(event_type, {
-                ...data,
-                action: data.action as TEvents['ce_indicators_types_form']['action'],
-                form_name: 'default',
-            });
+            cacheTrackEvents.loadEvent([
+                {
+                    event: {
+                        name: event_type,
+                        properties: {
+                            ...data,
+                            action: data.action as TEvents['ce_indicators_types_form']['action'],
+                            form_name: 'default',
+                        },
+                    },
+                },
+            ]);
         }
     }
 

@@ -1,8 +1,9 @@
 import React from 'react';
+import { useIsEuRegion } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { InlineMessage, Text, useDevice } from '@deriv-com/ui';
+import { TAvailableMT5Account } from '../../../../../types';
 import { getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../../constants';
-import { TAvailableMT5Account } from '../../../types';
 import './MT5LicenceMessage.scss';
 
 type TMT5LicenseMessageProps = {
@@ -13,6 +14,10 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const isSvg = account.shortcode === JURISDICTION.SVG;
+    const { data: isEuRegion } = useIsEuRegion();
+    const accountName = getMarketTypeDetails(localize, account.product, isEuRegion)[
+        account.market_type || MARKET_TYPE.ALL
+    ].title;
 
     return (
         <InlineMessage className='wallets-mt5-licence-message' iconPosition='top' variant='info'>
@@ -22,9 +27,7 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
                     <Localize
                         i18n_default_text='You are adding your {{accountTitle}} {{accountName}} account under {{companyName}} (company no. 273 LLC 2020).'
                         values={{
-                            accountName: getMarketTypeDetails(localize, account.product)[
-                                account.market_type || MARKET_TYPE.ALL
-                            ].title,
+                            accountName,
                             accountTitle: PlatformDetails.mt5.title,
                             companyName: account.name,
                         }}
@@ -33,9 +36,7 @@ const MT5LicenseMessage: React.FC<TMT5LicenseMessageProps> = ({ account }) => {
                     <Localize
                         i18n_default_text='You are adding your {{accountTitle}} {{accountName}} account under {{companyName}}, regulated by the {{regulatoryAuthority}}{{licenceNumber}}.'
                         values={{
-                            accountName: getMarketTypeDetails(localize, account.product)[
-                                account.market_type || MARKET_TYPE.ALL
-                            ].title,
+                            accountName,
                             accountTitle: PlatformDetails.mt5.title,
                             companyName: account.name,
                             licenceNumber: account.licence_number

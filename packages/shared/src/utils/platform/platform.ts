@@ -47,6 +47,8 @@ export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.p
 
 export const isNavigationFromP2PV2 = () => window.sessionStorage.getItem('config.platform') === 'p2p-v2';
 
+export const isNavigationFromTradersHubOS = () => window.sessionStorage.getItem('config.platform') === 'tradershub_os';
+
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;
@@ -167,15 +169,27 @@ export const isNavigationFromExternalPlatform = (routing_history: TRoutingHistor
     return false;
 };
 
-export const isDtraderV2Enabled = (is_mobile: boolean) => {
-    const dtrader_v2_enabled_growthbook = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
-    const is_dtrader_v2 =
-        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 ||
-        dtrader_v2_enabled_growthbook;
+export const isDtraderV2MobileEnabled = (is_mobile: boolean) => {
+    const dtrader_v2_enabled_gb = Analytics?.getFeatureValue('dtrader_v2_enabled', false);
+    const is_dtrader_v2_mobile =
+        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2_mobile || dtrader_v2_enabled_gb;
 
     return (
-        is_dtrader_v2 &&
+        is_dtrader_v2_mobile &&
         is_mobile &&
+        (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
+    );
+};
+
+export const isDtraderV2DesktopEnabled = (is_desktop: boolean) => {
+    const dtrader_v2_enabled_desktop_gb = Analytics?.getFeatureValue('dtrader_v2_enabled_desktop', false);
+    const is_dtrader_v2_desktop =
+        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2_desktop ||
+        dtrader_v2_enabled_desktop_gb;
+
+    return (
+        is_dtrader_v2_desktop &&
+        is_desktop &&
         (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
     );
 };

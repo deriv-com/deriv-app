@@ -14,11 +14,8 @@ jest.mock('../InstrumentsIconWithLabel', () => ({
 
 describe('InstrumentsLabelHighlighted', () => {
     const defaultProps = {
-        isDemo: false,
         isEuRegion: false,
-        marketType: 'financial' as const,
         platform: 'mt5' as const,
-        shortCode: 'SVG' as const,
     };
 
     const mockIconData = [{ text: 'Forex' }, { text: 'Stocks' }, { text: 'Indices' }];

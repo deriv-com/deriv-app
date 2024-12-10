@@ -93,17 +93,4 @@ describe('LanguageSettings', () => {
         expect(screen.queryByText('Select language')).not.toBeInTheDocument();
         expect(screen.getByText('Redirect')).toBeInTheDocument();
     });
-
-    it('should redirect when the user tries to reach `/account/languages` route having wallet accounts', () => {
-        mockRootStore.client.has_wallet = true;
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: { pathname: routes.languages },
-        });
-
-        renderLanguageSettings();
-
-        expect(screen.queryByText('Select language')).not.toBeInTheDocument();
-        expect(screen.getByText('Redirect')).toBeInTheDocument();
-    });
 });

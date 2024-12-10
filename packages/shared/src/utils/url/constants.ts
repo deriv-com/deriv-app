@@ -24,3 +24,8 @@ export const deriv_urls = Object.freeze({
  * @deprecated Please use 'URLConstants.whatsApp' from '@deriv-com/utils' instead of this.
  */
 export const whatsapp_url = 'https://wa.me/35699578341';
+
+export const OS_Tradershub = Object.freeze({
+    OS_TRADERSHUB_PRODUCTION: `https://hub.${domain_url}/tradershub`,
+    OS_TRADERSHUB_STAGING: `https://staging-hub.${domain_url}/tradershub`,
+});

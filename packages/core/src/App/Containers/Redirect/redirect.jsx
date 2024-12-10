@@ -312,8 +312,9 @@ const Redirect = observer(() => {
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
                 { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
                 { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
-                { pattern: /proof-of-address/i, route: routes.proof_of_address },
-                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address, platform: 'tradershub_os' },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity, platform: 'tradershub_os' },
+                { pattern: /personal-details/i, route: routes.personal_details, platform: 'tradershub_os' },
                 { pattern: /dbot/i, route: routes.bot },
             ];
 
@@ -323,10 +324,13 @@ const Redirect = observer(() => {
                 pattern.test(url_query_string || history.location.search)
             );
 
-            const updated_search =
-                matched_route && matched_route.type
-                    ? `${url_query_string}&trade_type=${matched_route.type}`
-                    : url_query_string;
+            let updated_search = url_query_string;
+            if (matched_route && matched_route.type) {
+                updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
+            }
+            if (matched_route && matched_route.platform) {
+                updated_search = `${url_query_string}&platform=${matched_route.platform}`;
+            }
 
             history.push({
                 pathname: matched_route ? matched_route.route : default_route,

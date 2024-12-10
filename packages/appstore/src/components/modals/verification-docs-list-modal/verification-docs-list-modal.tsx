@@ -29,7 +29,7 @@ const VerificationDocsListModalContent = observer(() => {
         const token = getToken();
         const appID = getAppId();
         const server = getSocketURL();
-        url.searchParams.append('mode', 'service');
+        url.searchParams.append('platform', 'deriv_app');
         url.searchParams.append('appid', appID);
         url.searchParams.append('lang', 'en');
         url.searchParams.append('server', server);

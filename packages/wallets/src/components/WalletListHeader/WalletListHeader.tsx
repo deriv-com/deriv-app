@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
 import { getInitialLanguage, Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
+import { redirectToOutSystems } from '../../helpers/urls';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { defineSwitcherWidth } from '../../utils/utils';
 import './WalletListHeader.scss';
@@ -14,12 +15,15 @@ const WalletListHeader: React.FC = () => {
     const demoTextRef = useRef<HTMLDivElement>(null);
     const realTextRef = useRef<HTMLDivElement>(null);
     const language = getInitialLanguage();
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
 
     const demoAccount = wallets?.find(wallet => wallet.is_virtual)?.loginid;
     const firstRealAccount = wallets?.find(wallet => !wallet.is_virtual && !wallet.is_disabled)?.loginid;
     const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
     const shouldShowSwitcher = (demoAccount && firstRealAccount) || !hasAnyActiveRealWallets;
     const isDemo = activeWallet?.is_virtual;
+    const shouldDisableSwitcher = isEuRegionLoading || (!isEuRegion && !hasAnyActiveRealWallets);
+
     const [isChecked, setIsChecked] = useState(!isDemo);
 
     useEffect(() => {
@@ -44,6 +48,9 @@ const WalletListHeader: React.FC = () => {
 
     const handleToggle = () => {
         setIsChecked(prev => !prev);
+        if (isEuRegion && !hasAnyActiveRealWallets && isDemo) {
+            return redirectToOutSystems();
+        }
         if (firstRealAccount && activeWallet?.loginid === demoAccount) {
             switchWalletAccount(firstRealAccount);
         } else if (demoAccount) {
@@ -70,7 +77,7 @@ const WalletListHeader: React.FC = () => {
                         </div>
                         <div
                             className={classNames('wallets-list-header__label-item', {
-                                'wallets-list-header__label-item--disabled': !hasAnyActiveRealWallets,
+                                'wallets-list-header__label-item--disabled': shouldDisableSwitcher,
                             })}
                             data-testid='dt_wallets_list_header__label_item_real'
                             ref={realTextRef}
@@ -82,7 +89,7 @@ const WalletListHeader: React.FC = () => {
                     </div>
                     <label
                         className={classNames('wallets-list-header__switcher', {
-                            'wallets-list-header__switcher--disabled': !hasAnyActiveRealWallets,
+                            'wallets-list-header__switcher--disabled': shouldDisableSwitcher,
                         })}
                         htmlFor='wallets-list-header__switcher'
                     >
@@ -90,7 +97,7 @@ const WalletListHeader: React.FC = () => {
                             checked={isChecked}
                             className='wallets-list-header__switcher-input'
                             data-testid='wallets_list_header__switcher_input'
-                            disabled={!hasAnyActiveRealWallets}
+                            disabled={shouldDisableSwitcher}
                             id='wallets-list-header__switcher'
                             onChange={handleToggle}
                             type='checkbox'

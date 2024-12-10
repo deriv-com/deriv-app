@@ -6,6 +6,7 @@ import { ActiveSymbols } from '@deriv/api-types';
 import FavoriteSymbols from '../FavoriteSymbols';
 import { usePrevious } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 type TMarketCategory = {
     category: MarketGroup;
@@ -24,6 +25,8 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
         positions_page: false,
         market_selector: false,
     });
+    const { guideStates } = useGuideStates();
+    const { should_run_market_selector_guide } = guideStates;
 
     useEffect(() => {
         if (
@@ -32,15 +35,23 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
             selectedSymbol &&
             itemRefs.current[selectedSymbol] &&
             !prevSymbol &&
+            !should_run_market_selector_guide &&
             guide_dtrader_v2?.market_selector
         ) {
             itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
         }
-    }, [isOpen, category.market, selectedSymbol, prevSymbol]);
+    }, [
+        isOpen,
+        category.market,
+        selectedSymbol,
+        prevSymbol,
+        should_run_market_selector_guide,
+        guide_dtrader_v2?.market_selector,
+    ]);
 
     return (
         <Tab.Panel key={category.market_display_name}>
-            {!guide_dtrader_v2?.market_selector && <div className='joyride-element' />}
+            {should_run_market_selector_guide && <div className='joyride-element' />}
             {category.market !== 'favorites' ? (
                 Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                     <div key={subgroupKey} className='market-category-content__container'>

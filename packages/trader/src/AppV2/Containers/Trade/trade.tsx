@@ -124,7 +124,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {/* {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />} */}
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

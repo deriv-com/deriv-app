@@ -1,3 +1,7 @@
+$HANDLEBAR_HEIGHT: 2.6rem;
+$SEARCHFIELD_HEIGHT: 4.8rem;
+$TABS_HEIGHT: 4.3rem;
+
 .market-category {
     &-content {
         &__container {
@@ -28,7 +32,7 @@
 
 .joyride-element {
     position: absolute;
-    top: 31%;
+    top: calc(100dvh - 90dvh + $HANDLEBAR_HEIGHT + $SEARCHFIELD_HEIGHT + $TABS_HEIGHT);
     width: 100%;
     background-color: transparent;
     height: 330px;

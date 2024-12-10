@@ -6,27 +6,27 @@ import STEPS from './steps-config';
 type TGuideContainerProps = {
     should_run: boolean;
     steps: CallBackProps['step'][];
+    callback?: () => void;
 };
 
 type TFinishedStatuses = CallBackProps['status'][];
 
-const GuideContainer = ({ should_run, steps }: TGuideContainerProps) => {
+const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) => {
     const [step_index, setStepIndex] = React.useState(0);
 
-    // const callbackHandle = (data: CallBackProps) => {
-    //     const { status, step, index } = data;
-    //     if (index === 0) {
-    //         step.disableBeacon = true;
-    //     }
-    //     const finished_statuses: TFinishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
+    const callbackHandle = (data: CallBackProps) => {
+        const { status } = data;
+        const finished_statuses: TFinishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
-    //     if (finished_statuses.includes(status)) onFinishGuide();
-    // };
+        if (finished_statuses.includes(status)) callback?.();
+    };
 
     return (
         <Joyride
+            callback={callbackHandle}
             disableCloseOnEsc
             disableScrolling
+            disableOverlayClose
             floaterProps={{
                 styles: {
                     arrow: {

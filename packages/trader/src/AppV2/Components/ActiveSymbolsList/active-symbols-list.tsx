@@ -7,6 +7,10 @@ import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { sendMarketTypeToAnalytics } from '../../../Analytics';
 import { useLocalStorageData } from '@deriv/hooks';
+import GuideContainer from '../OnboardingGuide/GuideForPages/guide-container';
+import { Localize } from '@deriv/translations';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
+import { Step } from 'react-joyride';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -24,6 +28,20 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         positions_page: false,
         market_selector: false,
     });
+    const { guideStates, setGuideState } = useGuideStates();
+    const { should_run_market_selector_guide } = guideStates;
+
+    const STEPS = [
+        {
+            content: <Localize i18n_default_text='Explore available markets here.' />,
+            offset: 4,
+            placement: 'bottom' as Step['placement'],
+            spotlightPadding: 8,
+            target: '.joyride-element',
+            title: <Localize i18n_default_text='Select a market' />,
+            disableBeacon: true,
+        },
+    ];
 
     const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
@@ -37,6 +55,11 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         <React.Fragment>
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
+                    <GuideContainer
+                        should_run={should_run_market_selector_guide}
+                        steps={STEPS}
+                        callback={() => setGuideState('should_run_market_selector_guide', false)}
+                    />
                     <SymbolsSearchField
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}

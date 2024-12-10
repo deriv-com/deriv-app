@@ -8,8 +8,7 @@ import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useLocalStorageData } from '@deriv/hooks';
-import GuideContainer from '../OnboardingGuide/GuideForPages/guide-container';
-import { Step } from 'react-joyride';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
@@ -21,19 +20,7 @@ const MarketSelector = observer(() => {
         positions_page: false,
         market_selector: false,
     });
-    const [should_run, setShouldRun] = React.useState(false);
-
-    const STEPS = [
-        {
-            content: <Localize i18n_default_text='Explore available markets here.' />,
-            offset: 4,
-            placement: 'top' as Step['placement'],
-            spotlightPadding: 8,
-            target: '.joyride-element',
-            title: <Localize i18n_default_text='Select a market' />,
-            disableBeacon: true,
-        },
-    ];
+    const { setGuideState } = useGuideStates();
 
     const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
     const { pip_size, quote } = tick_data ?? {};
@@ -50,10 +37,10 @@ const MarketSelector = observer(() => {
 
     const onClick = () => {
         if (guide_dtrader_v2?.market_selector) {
-            setShouldRun(false);
+            setGuideState('should_run_market_selector_guide', false);
         } else {
             setGuideDtraderV2({ ...guide_dtrader_v2, market_selector: true });
-            setShouldRun(true);
+            setGuideState('should_run_market_selector_guide', true);
         }
         setIsOpen(true);
     };
@@ -86,9 +73,8 @@ const MarketSelector = observer(() => {
                 </div>
             </div>
             <ActiveSymbolsList isOpen={isOpen} setIsOpen={setIsOpen} />
-            <GuideContainer should_run={should_run} steps={STEPS} />
         </React.Fragment>
     );
 });
 
-export default MarketSelector;
+export default React.memo(MarketSelector);

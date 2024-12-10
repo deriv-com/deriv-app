@@ -57,15 +57,24 @@ const getHighlightedIconLabel = (
             icon: 'Cryptocurrencies',
             text: localize('Cryptocurrencies'),
         },
-        { id: 'ETFs', icon: 'ETF', text: localize('ETFs') },
+        { id: 'ETFs', icon: 'ETF', text: localize('ETFs'), is_available: selected_region === REGION.NON_EU },
         {
             id: 'synthetic_indices',
             icon: 'Synthetics',
             text: localize('Synthetic indices'),
-            is_asterisk: selected_region === REGION.EU,
         },
-        { id: 'basket_indices', icon: 'Baskets', text: localize('Basket indices') },
-        { id: 'derived_FX', icon: 'DerivedFX', text: localize('Derived FX') },
+        {
+            id: 'basket_indices',
+            icon: 'Baskets',
+            text: localize('Basket indices'),
+            is_available: selected_region === REGION.NON_EU,
+        },
+        {
+            id: 'derived_FX',
+            icon: 'DerivedFX',
+            text: localize('Derived FX'),
+            is_available: selected_region === REGION.NON_EU,
+        },
     ];
 
     return instrumentsData.map((item: TInstrumentsIcon) => ({
@@ -84,6 +93,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - STP');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD:
+        case MARKET_TYPE_SHORTCODE.CFDS_GOLD:
             return is_demo ? localize('Gold Demo') : localize('Gold');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
@@ -146,7 +156,12 @@ const getAccountIcon = (shortcode: string, product?: TProducts) => {
         case CFD_PLATFORMS.CTRADER:
             return 'CTrader';
         default:
-            return 'CFDs';
+            switch (product) {
+                case PRODUCT.GOLD:
+                    return 'Gold';
+                default:
+                    return 'CFDs';
+            }
     }
 };
 
@@ -240,10 +255,26 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
         )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
 
+    const gold_accounts = available_accounts
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.FINANCIAL &&
+                item.shortcode !== JURISDICTION.MALTA_INVEST &&
+                item.product === PRODUCT.GOLD &&
+                item.is_default_jurisdiction === 'true'
+        )
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
+
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.GAMING && item.is_default_jurisdiction === 'true')
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
-    return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts, ...zero_spread_accounts];
+    return [
+        ...gaming_accounts,
+        ...financial_accounts,
+        ...swap_free_accounts,
+        ...zero_spread_accounts,
+        ...gold_accounts,
+    ];
 };
 
 // Get the maltainvest accounts for EU and DIEL clients
@@ -253,11 +284,22 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
             item =>
                 item.market_type === MARKET_TYPE.FINANCIAL &&
                 item.shortcode === JURISDICTION.MALTA_INVEST &&
-                item.product !== PRODUCT.GOLD &&
-                item.is_default_jurisdiction === 'true'
+                item.is_default_jurisdiction === 'true' &&
+                item.product !== PRODUCT.GOLD
         )
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
-    return [...financial_accounts];
+
+    const gold_accounts = available_accounts
+        .filter(
+            item =>
+                item.market_type === MARKET_TYPE.FINANCIAL &&
+                item.shortcode === JURISDICTION.MALTA_INVEST &&
+                item.is_default_jurisdiction === 'true' &&
+                item.product === PRODUCT.GOLD
+        )
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 }) as const);
+
+    return [...financial_accounts, ...gold_accounts];
 };
 
 // Make the Deriv X data same as trading_platform_available_accounts
@@ -316,14 +358,17 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
             item.platform === CFD_PLATFORMS.MT5
     );
     const financial_demo_accounts = available_accounts.filter(
-        item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode === JURISDICTION.SVG
+        item =>
+            item.market_type === MARKET_TYPE.FINANCIAL && item.product !== PRODUCT.STP && item.product !== PRODUCT.GOLD
     );
     const gaming_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
     );
+
     const gold_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.FINANCIAL && item.product === PRODUCT.GOLD
     );
+
     return [
         ...gaming_demo_accounts,
         ...financial_demo_accounts,

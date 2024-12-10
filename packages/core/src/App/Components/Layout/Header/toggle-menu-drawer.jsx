@@ -4,15 +4,7 @@ import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
 import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
-import {
-    useAccountTransferVisible,
-    useAuthorize,
-    useIsP2PEnabled,
-    useOnrampVisible,
-    usePaymentAgentTransferVisible,
-    useP2PSettings,
-    useOauth2,
-} from '@deriv/hooks';
+import { useAccountTransferVisible, useOnrampVisible, usePaymentAgentTransferVisible, useOauth2 } from '@deriv/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -41,7 +33,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         account_status,
         has_wallet,
-        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -59,10 +50,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
-    const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { is_p2p_enabled } = useIsP2PEnabled();
 
     const { pathname: route } = useLocation();
 
@@ -84,19 +73,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const timeout = React.useRef();
     const history = useHistory();
-    const {
-        subscribe,
-        rest: { isSubscribed },
-        p2p_settings,
-    } = useP2PSettings();
-
     const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
-    React.useEffect(() => {
-        if (isSuccess && !isSubscribed && is_authorize) {
-            subscribe();
-        }
-    }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -125,7 +102,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_trading_hub_category,
         is_mobile,
         is_passkey_supported,
-        is_p2p_enabled,
     ]);
 
     const toggleDrawer = React.useCallback(() => {
@@ -230,7 +206,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             !route.is_invisible &&
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                            (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
                             (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {

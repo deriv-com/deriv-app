@@ -65,7 +65,7 @@
             margin: 0.8rem 0;
             cursor: pointer;
 
-            &:before {
+            &:not(&--v2)&:before {
                 content: '';
                 display: block;
                 height: 2rem;

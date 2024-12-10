@@ -5,6 +5,7 @@ import Text from '../text';
 import { formatDurationTime } from '@deriv/shared';
 import VolumeControl from './volume-control';
 import PlaybackRateControl from './playback-rate-control';
+import clsx from 'clsx';
 
 type TVideoControls = {
     block_controls?: boolean;
@@ -110,7 +111,7 @@ const VideoControls = ({
                 </div>
             )}
             <div
-                className='player__controls__progress-bar'
+                className={clsx('player__controls__progress-bar', { 'player__controls__progress-bar--v2': is_v2 })}
                 onClick={onRewind}
                 onKeyDown={onRewind}
                 onMouseOver={() => setIsDragDotVisible(true)}

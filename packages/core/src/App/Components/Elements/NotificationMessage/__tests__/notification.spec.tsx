@@ -25,12 +25,6 @@ describe('Notification component', () => {
         expect(element).toBeInTheDocument();
     });
 
-    it('should render the NotificationOrder component when "data.type" is "p2p_completed_order"', () => {
-        render(<Notification data={{ type: 'p2p_completed_order' }} />);
-        const element = screen.getByTestId('dt_notification_order');
-        expect(element).toBeInTheDocument();
-    });
-
     it('should render the default component when "data.type" is not one of the above', () => {
         render(<Notification data={{ type: 'warning' }} />);
         const element = screen.getByTestId('dt_default_component');

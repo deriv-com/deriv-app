@@ -117,8 +117,6 @@ const AppNotificationMessages = observer(
                       'poi_failed',
                       'poi_verified',
                       'poinc_upload_limited',
-                      'p2p_advertiser_nickname_added',
-                      'p2p_daily_limit_increase',
                       'resticted_mt5_with_failed_poa',
                       'resticted_mt5_with_pending_poa',
                       'svg_needs_poa',
@@ -132,27 +130,18 @@ const AppNotificationMessages = observer(
                       'unwelcome',
                       'additional_kyc_info',
                       'notify_account_is_to_be_closed_by_residence',
-                  ].includes(message.key) || message.type === 'p2p_completed_order'
+                  ].includes(message.key)
                 : true;
-
-            const is_only_for_p2p_notification =
-                window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
 
             const is_maintenance_notifications = maintenance_notifications.includes(message.key);
 
-            return (
-                is_not_marked_notification &&
-                is_non_hidden_notification &&
-                (is_only_for_p2p_notification || is_maintenance_notifications)
-            );
+            return is_not_marked_notification && is_non_hidden_notification && is_maintenance_notifications;
         });
 
         const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
 
         const filtered_excluded_notifications = notifications_msg.filter(message =>
-            priority_toast_messages.includes(message.key) || message.type.includes('p2p')
-                ? message
-                : excluded_notifications.includes(message.key)
+            priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
         );
 
         const notifications_sublist =

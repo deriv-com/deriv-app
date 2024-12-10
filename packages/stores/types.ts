@@ -14,8 +14,6 @@ import type {
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
@@ -27,7 +25,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 import type { FeatureFlagsStore } from './src/stores';
 
@@ -509,7 +507,6 @@ export type TClientStore = {
     is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
-    is_p2p_enabled: boolean;
     is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
@@ -546,7 +543,6 @@ export type TClientStore = {
     setInitialized: (status?: boolean) => void;
     setIsClientStoreInitialized: () => void;
     setLogout: (status?: boolean) => void;
-    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
     setLoginInformation: (client_accounts: { [k: string]: TActiveAccount }, client_id: string) => void;
@@ -663,7 +659,6 @@ export type TClientStore = {
     setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
-    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
     real_account_signup_form_data: Array<Record<string, unknown>>;
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
@@ -1108,8 +1103,6 @@ type TNotificationStore = {
         currency: string
     ) => void;
     notifications: TNotificationMessage[];
-    p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
-    p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;
     removeNotifications: (should_close_persistent: boolean) => void;
@@ -1117,10 +1110,8 @@ type TNotificationStore = {
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     removeTradeNotifications: (id?: string) => void;
-    setP2POrderProps: () => void;
     showPOAAddressMismatchSuccessNotification: () => void;
     showPOAAddressMismatchFailureNotification: () => void;
-    setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setShouldShowPopups: (should_show_popups: boolean) => void;
     toggleNotificationsModal: () => void;

@@ -157,7 +157,6 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
-    is_p2p_enabled = false;
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
     wallet_migration_state;
@@ -243,7 +242,6 @@ export default class ClientStore extends BaseStore {
             prev_account_type: observable,
             phone_settings: observable,
             is_already_attempted: observable,
-            is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
             wallet_migration_state: observable,
@@ -417,7 +415,6 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
-            setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
             getWalletMigrationState: action.bound,
@@ -2721,10 +2718,6 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
-    }
-
-    setIsP2PEnabled(is_p2p_enabled) {
-        this.is_p2p_enabled = is_p2p_enabled;
     }
 
     setRealAccountSignupFormData(data) {

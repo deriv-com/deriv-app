@@ -18,17 +18,20 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         duration_unit,
         duration_units_list,
         duration,
-        expiry_date,
         expiry_epoch,
         expiry_time,
         expiry_type,
         is_market_closed,
         onChangeMultiple,
         proposal_info,
+        saved_expiry_date_v2,
+        setSavedExpiryDateV2,
+        setUnsavedExpiryDateV2,
         start_time,
         symbol,
         trade_type_tab,
         trade_types,
+        unsaved_expiry_date_v2,
         validation_errors,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
@@ -56,7 +59,10 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             setExpiryTimeString(
                 new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
             );
+
+            const new_date_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[0];
             setExpiryDateString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[0]);
+            setSavedExpiryDateV2(new_date_string);
         }
     }, [expiry_epoch]);
 
@@ -100,18 +106,22 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const onClose = React.useCallback(() => setOpen(false), []);
 
     const getInputValues = () => {
-        const current_end_date = expiry_date_string ? new Date(expiry_date_string) : end_date;
-        const formatted_date = current_end_date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        });
+        const formatted_date = saved_expiry_date_v2
+            ? new Date(saved_expiry_date_v2).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+              })
+            : '';
         if (expiry_type == 'duration') {
             if (duration_unit === 'm' && duration > 59) {
                 const hours = Math.floor(duration / 60);
                 const minutes = duration % 60;
                 return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             } else if (duration_unit === 'd') {
+                if (!formatted_date) {
+                    return '';
+                }
                 return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT`;
             }
             return `${duration} ${duration_unit_text}`;
@@ -191,14 +201,14 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                         setSelectedHour={setSelectedHour}
                         unit={unit}
                         setUnit={setUnit}
-                        end_date={end_date}
-                        setEndDate={setEndDate}
                         expiry_time_string={expiry_time_string}
-                        expiry_date_string={expiry_date_string}
                         setExpiryTimeString={setExpiryTimeString}
-                        setExpiryDateString={setExpiryDateString}
                         end_time={end_time}
                         setEndTime={setEndTime}
+                        saved_expiry_date_v2={saved_expiry_date_v2}
+                        setSavedExpiryDateV2={setSavedExpiryDateV2}
+                        unsaved_expiry_date_v2={unsaved_expiry_date_v2}
+                        setUnsavedExpiryDateV2={setUnsavedExpiryDateV2}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

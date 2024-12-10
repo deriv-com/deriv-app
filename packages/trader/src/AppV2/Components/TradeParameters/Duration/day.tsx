@@ -23,30 +23,30 @@ const timeToMinutes = (time: string) => {
 };
 
 const DayInput = ({
-    setEndTime,
-    setEndDate,
-    end_date,
     end_time,
-    expiry_date_input,
     expiry_time_input,
-    setExpiryDateInput,
+    saved_expiry_date_v2,
+    setEndTime,
     setExpiryTimeInput,
+    setUnsavedExpiryDateV2,
+    unsaved_expiry_date_v2,
 }: {
-    setEndTime: (arg: string) => void;
-    setEndDate: (arg: Date) => void;
-    end_date: Date;
     end_time: string;
     expiry_time_input: string;
+    saved_expiry_date_v2: string;
+    setEndTime: (arg: string) => void;
     setExpiryTimeInput: (arg: string) => void;
-    expiry_date_input: string;
-    setExpiryDateInput: (arg: string) => void;
+    setUnsavedExpiryDateV2: (arg: string) => void;
+    unsaved_expiry_date_v2: string;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const [trigger_date, setTriggerDate] = useState(false);
     const [is_disabled, setIsDisabled] = useState(false);
-    const [end_date_input, setEndDateInput] = useState(end_date);
+    const [calendar_date_input, setCalendarDateInput] = useState(
+        new Date(saved_expiry_date_v2 || unsaved_expiry_date_v2)
+    );
     const [payout_per_point, setPayoutPerPoint] = useState<number | undefined>();
     const [barrier_value, setBarrierValue] = useState<string | undefined>();
     const { common } = useStore();
@@ -140,9 +140,6 @@ const DayInput = ({
                         .split('T')[1]
                         .substring(0, 8)
                 );
-                setExpiryDateInput(
-                    new Date((response?.proposal?.date_expiry as number) * 1000).toISOString().split('T')[0]
-                );
             }
 
             invalidateDTraderCache([
@@ -153,7 +150,7 @@ const DayInput = ({
             ]);
             setTriggerDate(false);
         }
-    }, [response, setExpiryTimeInput, setExpiryDateInput]);
+    }, [response, setExpiryTimeInput, setUnsavedExpiryDateV2]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -165,9 +162,7 @@ const DayInput = ({
     const adjusted_start_time =
         boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-    const current_end_date = expiry_date_input ? new Date(expiry_date_input) : end_date;
-
-    const formatted_date = current_end_date.toLocaleDateString('en-GB', {
+    const formatted_date = new Date(unsaved_expiry_date_v2).toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -202,7 +197,7 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [end_date_input]);
+    }, [unsaved_expiry_date_v2]);
 
     let is_24_hours_contract = false;
 
@@ -220,11 +215,16 @@ const DayInput = ({
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        setEndDateInput(date);
+        setCalendarDateInput(date);
         if (difference_in_days == 0) {
             setEndTime(adjusted_start_time);
+            const today = new Date().toISOString().split('T')[0];
+            setUnsavedExpiryDateV2(today);
         } else {
             setEndTime('');
+            setUnsavedExpiryDateV2(
+                `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+            );
         }
         setTriggerDate(true);
     };
@@ -273,7 +273,6 @@ const DayInput = ({
                     setOpen(false);
                     setOpenTimePicker(false);
                     setIsDisabled(false);
-                    setEndDateInput(end_date);
                 }}
                 position='left'
                 expandable={false}
@@ -296,7 +295,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={new Date(expiry_date_input) || end_date_input}
+                            end_date={calendar_date_input}
                             setEndDate={handleDate}
                         />
                     )}
@@ -316,10 +315,9 @@ const DayInput = ({
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
                                 if (!is_disabled) {
-                                    setEndDate(end_date_input);
                                     setOpen(false);
                                     setOpenTimePicker(false);
-                                    const end_date = end_date_input.toLocaleDateString('en-GB', {
+                                    const end_date = new Date(unsaved_expiry_date_v2).toLocaleDateString('en-GB', {
                                         day: 'numeric',
                                         month: 'short',
                                         year: 'numeric',

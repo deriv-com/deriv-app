@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import BotBuilderTourDesktop from './bot-builder-tour-desktop';
 import BotBuilderTourMobile from './bot-builder-tour-mobile';
 

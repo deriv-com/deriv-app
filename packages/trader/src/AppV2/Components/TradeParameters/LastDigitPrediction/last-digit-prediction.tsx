@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { ActionSheet, CaptionText, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';

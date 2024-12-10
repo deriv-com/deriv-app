@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { Localize } from '@deriv/translations';
 import { Money, Skeleton } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';

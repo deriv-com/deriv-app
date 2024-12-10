@@ -173,6 +173,8 @@ module.exports = function (env) {
                 'react-dom': 'react-dom',
                 'react-router': 'react-router',
                 'react-router-dom': 'react-router-dom',
+                mobx: 'mobx',
+                'mobx-react-lite': 'mobx-react-lite',
                 'prop-types': 'prop-types',
                 '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv/shared': '@deriv/shared',

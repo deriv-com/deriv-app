@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { getCurrencyDisplayCode, isEmptyObject } from '@deriv/shared';

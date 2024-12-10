@@ -1,21 +1,23 @@
-import { ActionSheet, Text, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
 import React, { useEffect, useState } from 'react';
 
-import DaysDatepicker from './datepicker';
-import EndTimePicker from './timepicker';
-import { useStore } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { LabelPairedCalendarSmRegularIcon, LabelPairedClockThreeSmRegularIcon } from '@deriv/quill-icons';
 import { hasIntradayDurationUnit, setTime, toMoment } from '@deriv/shared';
-import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
+import { useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { ActionSheet, Text, TextField, useSnackbar } from '@deriv-com/quill-ui';
+
+import { invalidateDTraderCache, useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
 import {
     getClosestTimeToCurrentGMT,
     getDatePickerStartDate,
     getProposalRequestObject,
 } from 'AppV2/Utils/trade-params-utils';
-import { invalidateDTraderCache, useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
 import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import DaysDatepicker from './datepicker';
+import EndTimePicker from './timepicker';
 
 const timeToMinutes = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);

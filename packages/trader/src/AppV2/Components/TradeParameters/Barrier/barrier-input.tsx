@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
 import { observer } from 'mobx-react';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
 
 const chips_options = [
     {
@@ -17,27 +20,38 @@ const chips_options = [
     },
 ];
 const BarrierInput = observer(
-    ({
-        setInitialBarrierValue,
-        isDays,
-        onClose,
-    }: {
-        setInitialBarrierValue: (val: string) => void;
-        isDays: boolean;
-        onClose: (val: boolean) => void;
-    }) => {
-        const { barrier_1, onChange, validation_errors, tick_data, setV2ParamsInitialValues } = useTraderStore();
+    ({ isDays, onClose, is_open }: { isDays: boolean; onClose: () => void; is_open: boolean }) => {
+        const trade_store = useTraderStore();
+        const { barrier_1, onChange, tick_data, trade_types } = trade_store;
+        const [value, setValue] = useState(String(barrier_1.replace(/[+-]/g, '')));
         const [option, setOption] = React.useState(0);
         const [should_show_error, setShouldShowError] = React.useState(false);
-        const [previous_value, setPreviousValue] = React.useState(barrier_1);
         const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
-        const show_hidden_error = validation_errors?.barrier_1.length > 0 && (barrier_1 || should_show_error);
+        const prefix = (option === 0 && '+') || (option === 1 && '-');
+        const new_values = { barrier: `${prefix || ''}${value}` };
+
+        const proposal_req = getProposalRequestObject({
+            new_values,
+            trade_store,
+            trade_type: Object.keys(trade_types)[0],
+        });
+
+        const { data: response } = useDtraderQuery<ProposalResponse>(
+            ['proposal', `${prefix || ''}${value}`],
+            {
+                ...proposal_req,
+                ...new_values,
+            },
+            {
+                enabled: is_open && barrier_1 !== '',
+            }
+        );
+
+        const show_hidden_error = Boolean(value && response?.error?.message);
 
         React.useEffect(() => {
-            setInitialBarrierValue(barrier_1);
-            setV2ParamsInitialValues({ name: 'barrier_1', value: barrier_1 });
             if (barrier_1.includes('-')) {
                 setOption(1);
             } else if (barrier_1.includes('+')) {
@@ -45,7 +59,6 @@ const BarrierInput = observer(
             } else {
                 setOption(2);
             }
-            onChange({ target: { name: 'barrier_1', value: barrier_1 } });
         }, []);
 
         React.useEffect(() => {
@@ -69,35 +82,47 @@ const BarrierInput = observer(
         }, [is_focused]);
 
         const handleChipSelect = (index: number) => {
+            // On each change have to check if its =,- as per the barrier_1. If yes , then set the value or else just don't
+            // and make it empty
+
             setOption(index);
-            const current_value = barrier_1.replace(/^[+-]/, '');
-            let newValue = previous_value.replace(/^[+-]/, '');
+            const sign = barrier_1[0];
 
-            if (index === 0) {
-                newValue = `+${newValue}`;
-            } else if (index === 1) {
-                newValue = `-${newValue}`;
-            } else if (index === 2) {
-                newValue = '';
-                setPreviousValue(current_value);
+            if (sign == '+' && index == 0) {
+                setValue(barrier_1.replace(/[+-]/g, ''));
+            } else if (sign === '-' && index == 1) {
+                setValue(barrier_1.replace(/[+-]/g, ''));
+            } else if (index == 2 && !['+', '-'].includes(sign)) {
+                setValue(barrier_1);
+            } else {
+                setValue('');
             }
 
-            if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
-                newValue = `${newValue.charAt(0)}0${newValue.slice(1)}`;
-            } else if (newValue.startsWith('.')) {
-                newValue = `0${newValue}`;
-            }
+            // const current_value = barrier_1.replace(/^[+-]/, '');
+            // let newValue = previous_value.replace(/^[+-]/, '');
 
-            onChange({ target: { name: 'barrier_1', value: newValue } });
+            // if (index === 0) {
+            //     newValue = `+${newValue}`;
+            // } else if (index === 1) {
+            //     newValue = `-${newValue}`;
+            // } else if (index === 2) {
+            //     newValue = '';
+            //     setPreviousValue(current_value);
+            // }
+
+            // if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
+            //     newValue = `${newValue.charAt(0)}0${newValue.slice(1)}`;
+            // } else if (newValue.startsWith('.')) {
+            //     newValue = `0${newValue}`;
+            // }
+            // onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 
         const handleOnChange = (e: { target: { name: string; value: string } }) => {
             let value = e.target.value;
             if (option === 0) value = `+${value}`;
             if (option === 1) value = `-${value}`;
-            onChange({ target: { name: 'barrier_1', value } });
-            setV2ParamsInitialValues({ name: 'barrier_1', value });
-            setPreviousValue(value);
+            setValue(value.replace(/[+-]/g, ''));
         };
 
         return (
@@ -126,7 +151,7 @@ const BarrierInput = observer(
                                     noStatusIcon
                                     status={show_hidden_error ? 'error' : 'neutral'}
                                     shouldRound={false}
-                                    value={barrier_1}
+                                    value={value}
                                     allowDecimals
                                     decimals={pip_size}
                                     allowSign={false}
@@ -136,7 +161,7 @@ const BarrierInput = observer(
                                     onChange={handleOnChange}
                                     placeholder={localize('Price')}
                                     variant='fill'
-                                    message={show_hidden_error ? validation_errors?.barrier_1[0] : ''}
+                                    message={show_hidden_error ? response?.error?.message : ''}
                                     ref={barrier_ref}
                                 />
                             ) : (
@@ -147,7 +172,7 @@ const BarrierInput = observer(
                                     noStatusIcon
                                     addonLabel={option == 0 ? '+' : '-'}
                                     decimals={pip_size}
-                                    value={barrier_1.replace(/[+-]/g, '')}
+                                    value={value}
                                     allowDecimals
                                     inputMode='decimal'
                                     allowSign={false}
@@ -157,13 +182,11 @@ const BarrierInput = observer(
                                     placeholder={localize('Distance to spot')}
                                     regex={/[^0-9.,]/g}
                                     variant='fill'
-                                    message={show_hidden_error ? validation_errors?.barrier_1[0] : ''}
+                                    message={show_hidden_error ? response?.error?.message : ''}
                                     ref={barrier_ref}
                                 />
                             )}
-                            {(validation_errors?.barrier_1.length == 0 || !show_hidden_error) && (
-                                <div className='barrier-params__error-area' />
-                            )}
+                            {!show_hidden_error && <div className='barrier-params__error-area' />}
                         </div>
                         <div className='barrier-params__current-spot-wrapper'>
                             <Text size='sm'>
@@ -179,10 +202,9 @@ const BarrierInput = observer(
                     primaryAction={{
                         content: <Localize i18n_default_text='Save' />,
                         onAction: () => {
-                            if (validation_errors.barrier_1.length === 0) {
-                                onClose(true);
-                            } else {
-                                setShouldShowError(true);
+                            if (!show_hidden_error && value !== '') {
+                                onChange({ target: { name: 'barrier_1', value: `${prefix || ''}${value}` } });
+                                onClose();
                             }
                         },
                     }}

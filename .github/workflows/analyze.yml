@@ -23,22 +23,13 @@ jobs:
     - name: Setup Node
       uses: "./.github/actions/setup_node"
     - name: Restore npm cache
-      uses: actions/cache/restore@v4
-      id: cache-npm
-      with:
-        path: |
-          node_modules
-          packages/*/node_modules
-        key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
-    - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      id: restored_npm_cache
+      uses: ./.github/actions/restore_npm_cache
+    - if: ${{ steps.restored_npm_cache.outputs.cache-hit != 'true' }}
       name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
     - name: Restore NX cache
-      uses: actions/cache/restore@v4
-      id: cache-nx
-      with:
-        path: .nx
-        key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
+      uses: ./.github/actions/restore_nx_cache
     - name: Analyze
       uses: "./.github/actions/analyze"
       with:

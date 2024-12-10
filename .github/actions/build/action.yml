@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'test'
   STRICT_BUILD:
-    description: 'When true, runs `build:all` script without cache skipping for account, bot-web-ui and trader packages,
+    description: 'When true, runs `build:all` script without cache skipping for components, account, bot-web-ui and trader packages,
     when false, runs `build:all-cache` script with cache skipping for all packages, except components package'
     required: false
     default: true

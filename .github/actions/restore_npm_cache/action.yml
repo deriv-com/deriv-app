@@ -1,0 +1,19 @@
+name: Restore npm cache
+description: Restores the NPM cache
+
+outputs:
+  cache-hit:
+    description: Indicates if the cache was restored successfully
+    value: ${{ steps.restored_cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+  - name: Restore cache
+    id: restored_cache
+    uses: actions/cache/restore@v4
+    with:
+      path: |
+        node_modules
+        packages/*/node_modules
+      key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}

@@ -7,6 +7,7 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
+import { Chat } from '@deriv/utils';
 
 const Redirect = observer(() => {
     const history = useHistory();
@@ -53,7 +54,7 @@ const Redirect = observer(() => {
     }
 
     const openLivechat = () => {
-        window.LiveChatWidget?.call('maximize');
+        Chat.open();
     };
 
     let redirected_to_route = false;

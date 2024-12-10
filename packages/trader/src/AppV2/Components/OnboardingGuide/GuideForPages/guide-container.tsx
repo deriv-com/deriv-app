@@ -5,49 +5,44 @@ import STEPS from './steps-config';
 
 type TGuideContainerProps = {
     should_run: boolean;
-    onFinishGuide: () => void;
+    steps: CallBackProps['step'][];
+    callback?: () => void;
 };
 
 type TFinishedStatuses = CallBackProps['status'][];
 
-const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => {
+const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) => {
     const [step_index, setStepIndex] = React.useState(0);
 
     const callbackHandle = (data: CallBackProps) => {
-        const { status, step, index } = data;
-        if (index === 0) {
-            step.disableBeacon = true;
-        }
+        const { status } = data;
         const finished_statuses: TFinishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
-        if (finished_statuses.includes(status)) onFinishGuide();
+        if (finished_statuses.includes(status)) callback?.();
     };
 
     return (
         <Joyride
-            continuous
             callback={callbackHandle}
             disableCloseOnEsc
-            disableOverlayClose
             disableScrolling
+            disableOverlayClose
             floaterProps={{
                 styles: {
                     arrow: {
                         length: 4,
                         spread: 8,
-                        display: step_index === 3 ? 'none' : 'inline-flex',
                     },
                 },
             }}
             run={should_run}
-            showSkipButton
-            steps={STEPS}
+            steps={steps}
             spotlightPadding={0}
-            scrollToFirstStep
             styles={{
                 options: {
                     arrowColor: 'var(--component-textIcon-normal-prominent)',
                     overlayColor: 'var(--core-color-opacity-black-600)',
+                    zIndex: 1000,
                 },
                 spotlight: {
                     borderRadius: 'unset',

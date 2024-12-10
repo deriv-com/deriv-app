@@ -5,6 +5,8 @@ import MarketCategoryItem from '../MarketCategoryItem';
 import { ActiveSymbols } from '@deriv/api-types';
 import FavoriteSymbols from '../FavoriteSymbols';
 import { usePrevious } from '@deriv/components';
+import { useLocalStorageData } from '@deriv/hooks';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 type TMarketCategory = {
     category: MarketGroup;
@@ -17,15 +19,40 @@ type TMarketCategory = {
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
     const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const prevSymbol = usePrevious(selectedSymbol);
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
+    });
+    const { guideStates } = useGuideStates();
+    const { should_run_market_selector_guide } = guideStates;
 
     useEffect(() => {
-        if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol] && !prevSymbol) {
+        if (
+            isOpen &&
+            category.market === 'all' &&
+            selectedSymbol &&
+            itemRefs.current[selectedSymbol] &&
+            !prevSymbol &&
+            !should_run_market_selector_guide &&
+            guide_dtrader_v2?.market_selector
+        ) {
             itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
         }
-    }, [isOpen, category.market, selectedSymbol, prevSymbol]);
+    }, [
+        isOpen,
+        category.market,
+        selectedSymbol,
+        prevSymbol,
+        should_run_market_selector_guide,
+        guide_dtrader_v2?.market_selector,
+    ]);
 
     return (
         <Tab.Panel key={category.market_display_name}>
+            {should_run_market_selector_guide && <div className='joyride-element' />}
             {category.market !== 'favorites' ? (
                 Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                     <div key={subgroupKey} className='market-category-content__container'>

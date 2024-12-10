@@ -7,11 +7,21 @@ import { Localize } from '@deriv/translations';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { useLocalStorageData } from '@deriv/hooks';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { activeSymbols } = useActiveSymbols();
     const { symbol: storeSymbol, tick_data, is_market_closed } = useTraderStore();
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
+    });
+    const { setGuideState } = useGuideStates();
 
     const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
     const { pip_size, quote } = tick_data ?? {};
@@ -26,9 +36,19 @@ const MarketSelector = observer(() => {
     if (typeof currentSymbol?.exchange_is_open === 'undefined')
         return <Skeleton.Square height={42} width={240} rounded />;
 
+    const onClick = () => {
+        if (guide_dtrader_v2?.market_selector) {
+            setGuideState('should_run_market_selector_guide', false);
+        } else {
+            setGuideDtraderV2({ ...guide_dtrader_v2, market_selector: true });
+            setGuideState('should_run_market_selector_guide', true);
+        }
+        setIsOpen(true);
+    };
+
     return (
         <React.Fragment>
-            <div className='market-selector__container' onClick={() => setIsOpen(true)}>
+            <div className='market-selector__container' onClick={onClick}>
                 <div className='market-selector'>
                     <SymbolIconsMapper symbol={storeSymbol} />
                     <div className='market-selector-info'>
@@ -58,4 +78,4 @@ const MarketSelector = observer(() => {
     );
 });
 
-export default MarketSelector;
+export default React.memo(MarketSelector);

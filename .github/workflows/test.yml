@@ -21,8 +21,14 @@ jobs:
     # - name: Invalidate NPM Cache
     #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     #   uses: "./.github/actions/invalidate_npm_cache"
+    - name: Cache Nx Build Cache
+      id: cache-nx
+      uses: actions/cache@v4
+      with:
+        path: .nx
+        key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
     - name: Build
-      uses: "./.github/actions/build"
+      uses: "./.github/actions/build_affected"
     - name: Check TypeScript for @deriv/api
       run: npx tsc --project packages/api/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/api-v2

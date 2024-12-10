@@ -98,6 +98,7 @@ export type ProposalResponse = PriceProposalResponse & {
         message: string;
         details?: {
             payout_per_point_choices?: number[];
+            barrier_choices?: string[];
             [k: string]: unknown;
         };
     };
@@ -255,8 +256,11 @@ export default class TradeStore extends BaseStore {
     expiry_epoch: number | string = '';
     expiry_time: string | null = '';
     expiry_type: string | null = 'duration';
+    saved_expiry_date_v2: string = '';
+    unsaved_expiry_date_v2: string = '';
 
     // Barrier
+    barrier = '';
     barrier_1 = '';
     barrier_2 = '';
     barrier_count = 0;
@@ -427,6 +431,10 @@ export default class TradeStore extends BaseStore {
             duration: observable,
             expiration: observable,
             expiry_date: observable,
+            saved_expiry_date_v2: observable,
+            unsaved_expiry_date_v2: observable,
+            setSavedExpiryDateV2: action.bound,
+            setUnsavedExpiryDateV2: action.bound,
             expiry_epoch: observable,
             expiry_time: observable,
             expiry_type: observable,
@@ -730,6 +738,14 @@ export default class TradeStore extends BaseStore {
         name: keyof TV2ParamsInitialValues;
     }) {
         this.v2_params_initial_values = { ...this.v2_params_initial_values, ...{ [name]: value } };
+    }
+
+    setSavedExpiryDateV2(date: string) {
+        this.saved_expiry_date_v2 = date || '';
+    }
+
+    setUnsavedExpiryDateV2(date: string) {
+        this.unsaved_expiry_date_v2 = date || '';
     }
 
     clearV2ParamsInitialValues() {

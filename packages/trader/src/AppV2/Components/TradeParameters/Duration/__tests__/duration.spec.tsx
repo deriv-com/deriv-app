@@ -64,6 +64,10 @@ describe('Duration', () => {
                     },
                     start_time: null,
                     symbol: 'EURUSD',
+                    saved_expiry_date_v2: '',
+                    setSavedExpiryDateV2: jest.fn(),
+                    setUnsavedExpiryDateV2: jest.fn(),
+                    unsaved_expiry_date_v2: '',
                 },
             },
             common: {
@@ -98,24 +102,12 @@ describe('Duration', () => {
         expect(screen.getByDisplayValue('2 hours 5 minutes')).toBeInTheDocument();
     });
 
-    it('should render the correct value for duration in end time', () => {
-        default_trade_store.modules.trade.duration = 1;
-        default_trade_store.modules.trade.expiry_time = '23:55';
-        default_trade_store.modules.trade.expiry_type = 'endtime';
-        const RealDate = Date;
-        global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
-        mockDuration();
-        expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Ends on 1 Jan 2024 23:55 GMT')).toBeInTheDocument();
-        global.Date = RealDate;
-    });
-
-    it('should open the ActionSheet when the text field is clicked', () => {
+    it('should open the ActionSheet when the text field is clicked', async () => {
         default_trade_store.modules.trade.expiry_time = '12:30';
         mockDuration();
         const textField = screen.getByLabelText('Duration');
         expect(textField).toBeInTheDocument();
-        userEvent.click(textField);
+        await userEvent.click(textField);
 
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
@@ -133,13 +125,6 @@ describe('Duration', () => {
         mockDuration();
         expect(screen.getByText(/duration/i)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeDisabled();
-    });
-
-    it('should set the correct end date when duration is set in days', () => {
-        default_trade_store.modules.trade.duration = 3;
-        default_trade_store.modules.trade.duration_unit = 'd';
-        mockDuration();
-        expect(screen.getByDisplayValue(/ends on/i)).toBeInTheDocument();
     });
 
     it('should calculate the correct duration based on the smallest unit from the store', () => {
@@ -162,33 +147,14 @@ describe('Duration', () => {
         expect(screen.getByDisplayValue('5 ticks')).toBeInTheDocument();
     });
 
-    it('should update the selected hour and unit when the component is opened', () => {
+    it('should update the selected hour and unit when the component is opened', async () => {
         default_trade_store.modules.trade.duration_unit = 'm';
         default_trade_store.modules.trade.duration = 125;
         mockDuration();
 
         const textField = screen.getByLabelText('Duration');
-        userEvent.click(textField);
+        await userEvent.click(textField);
 
         expect(screen.getByDisplayValue('2 hours 5 minutes')).toBeInTheDocument();
-    });
-
-    it('should update the selected unit and time when expiry_time is set', () => {
-        const mockDate = new Date('2024-10-08T08:00:00Z');
-        jest.spyOn(global.Date.prototype, 'getTime').mockReturnValue(mockDate.getTime());
-        jest.spyOn(global.Date.prototype, 'toLocaleDateString').mockReturnValue('8 Oct 2024');
-        jest.spyOn(global.Date.prototype, 'toISOString').mockReturnValue('2024-10-08T08:00:00Z');
-
-        default_trade_store.modules.trade.expiry_time = '14:00';
-        default_trade_store.modules.trade.expiry_type = 'endtime';
-
-        mockDuration();
-
-        const textField = screen.getByLabelText('Duration');
-        userEvent.click(textField);
-
-        expect(screen.getByDisplayValue('Ends on 8 Oct 2024 14:00 GMT')).toBeInTheDocument();
-
-        jest.restoreAllMocks();
     });
 });

@@ -8,7 +8,6 @@ import userEvent from '@testing-library/user-event';
 import { useSnackbar } from '@deriv-com/quill-ui';
 import moment from 'moment';
 import { toMoment } from '@deriv/shared';
-import { set } from 'mobx';
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
     observe: jest.fn(),
@@ -102,18 +101,6 @@ describe('Duration', () => {
         expect(screen.getByLabelText('Duration')).toBeInTheDocument();
         expect(screen.getByDisplayValue('2 hours 5 minutes')).toBeInTheDocument();
     });
-
-    // it('should render the correct value for duration in end time', () => {
-    //     default_trade_store.modules.trade.duration = 1;
-    //     default_trade_store.modules.trade.expiry_time = '23:55';
-    //     default_trade_store.modules.trade.expiry_type = 'endtime';
-    //     const RealDate = Date;
-    //     global.Date = jest.fn(() => new RealDate(2024, 0, 1)) as any;
-    //     mockDuration();
-    //     expect(screen.getByLabelText('Duration')).toBeInTheDocument();
-    //     expect(screen.getByDisplayValue('Ends on 1 Jan 2024 23:55 GMT')).toBeInTheDocument();
-    //     global.Date = RealDate;
-    // });
 
     it('should open the ActionSheet when the text field is clicked', async () => {
         default_trade_store.modules.trade.expiry_time = '12:30';

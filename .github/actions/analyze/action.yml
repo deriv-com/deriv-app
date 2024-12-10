@@ -124,7 +124,7 @@ runs:
       TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
       NODE_OPTIONS: "--max_old_space_size=4096"
     shell: bash
-    run: npm run build:prod && npm run analyze:stats && npm run analyze:build
+    run: npm run build:prod-analyze && npm run analyze:stats && npm run analyze:build
 
   - name: Compare report to master
     id: diff

@@ -24,6 +24,12 @@ jobs:
       uses: "./.github/actions/setup_node"
     - name: Install dependencies
       uses: "./.github/actions/npm_install_from_cache"
+    - name: Restore NX cache
+      uses: actions/cache/restore@v4
+      id: cache-nx
+      with:
+        path: .nx
+        key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
     - name: Analyze
       uses: "./.github/actions/analyze"
       with:

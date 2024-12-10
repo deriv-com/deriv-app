@@ -82,6 +82,7 @@
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
         "build:travis": "nx run-many --projects=@deriv/shared,@deriv/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/p2p,@deriv/cfd,@deriv/reports --target=build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build:all && export NODE_ENV=",
+        "build:prod-analyze": "export NODE_ENV=staging && npm run build:all-cache && export NODE_ENV=",
         "build:storybook": "cd packages/components && sb build --output-dir .out",
         "build:gh-pages": "f () { nx run-many --target=build --projects=@deriv/components,@deriv/p2p && nx run-many --target=build --projects=@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports && npm run build:local $1 ;}; f",
         "check-imports": "node ./scripts/check-imports.js",

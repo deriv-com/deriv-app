@@ -25,7 +25,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { isDesktop } = useDevice();
     const modal = useModal();
 
-    const isFromAccountDropdown = fieldName === 'toAccount';
+    const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const fromAccountList = useMemo(() => {
         if (!activeWallet) return { tradingAccounts: [], walletAccounts: [] };

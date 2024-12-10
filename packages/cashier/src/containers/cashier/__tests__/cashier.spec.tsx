@@ -4,7 +4,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { P2PSettingsProvider, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 import { routes } from '@deriv/shared';
 import { APIProvider } from '@deriv/api';
@@ -53,11 +53,6 @@ jest.mock('@deriv/hooks', () => {
             data: true,
             isLoading: false,
             isSuccess: true,
-        })),
-        useIsP2PEnabled: jest.fn(() => ({
-            is_p2p_enabled: true,
-            is_p2p_enabled_loading: false,
-            is_p2p_enabled_success: true,
         })),
     };
 });
@@ -149,9 +144,7 @@ describe('<Cashier />', () => {
             ...render(<Router history={history}>{component}</Router>, {
                 wrapper: ({ children }) => (
                     <APIProvider>
-                        <CashierProviders store={mock_root_store}>
-                            <P2PSettingsProvider>{children}</P2PSettingsProvider>
-                        </CashierProviders>
+                        <CashierProviders store={mock_root_store}>{children}</CashierProviders>
                     </APIProvider>
                 ),
             }),

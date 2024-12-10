@@ -1,6 +1,7 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+
 import { EmptyState } from '@deriv/components';
+import { localize } from '@deriv/translations';
 
 type TProps = {
     error: unknown;
@@ -9,7 +10,7 @@ type TProps = {
 const ErrorState: React.FC<TProps> = ({ error }) => {
     let message = localize('Something went wrong. Please refresh the page and try again.');
 
-    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
+    if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'boolean') {
         message = error.message;
     }
 

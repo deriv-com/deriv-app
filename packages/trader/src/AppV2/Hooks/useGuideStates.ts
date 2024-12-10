@@ -4,7 +4,8 @@ type GuideFlags =
     | 'should_run_trade_types_selection_guide'
     | 'should_run_trade_page_guide'
     | 'should_run_positions_page_guide'
-    | 'should_run_market_selector_guide';
+    | 'should_run_market_selector_guide'
+    | 'should_run_trade_param_quick_adjustment_guide';
 
 type GuideStates = Record<GuideFlags, boolean>;
 
@@ -13,6 +14,7 @@ let sharedGuideStates: GuideStates = {
     should_run_trade_page_guide: false,
     should_run_positions_page_guide: false,
     should_run_market_selector_guide: false,
+    should_run_trade_param_quick_adjustment_guide: false,
 };
 
 const listeners = new Set<() => void>();

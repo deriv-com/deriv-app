@@ -27,6 +27,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         trade_page: false,
         positions_page: false,
         market_selector: false,
+        trade_param_quick_adjustment: false,
     });
     const { guideStates, setGuideState } = useGuideStates();
     const { should_run_market_selector_guide } = guideStates;
@@ -34,7 +35,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const STEPS = [
         {
             content: <Localize i18n_default_text='Explore available markets here.' />,
-            offset: 4,
+            offset: -200,
             placement: 'bottom' as Step['placement'],
             spotlightPadding: 8,
             target: '.joyride-element',
@@ -56,7 +57,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <GuideContainer
-                        should_run={should_run_market_selector_guide}
+                        should_run={should_run_market_selector_guide && !guide_dtrader_v2?.market_selector}
                         steps={STEPS}
                         callback={() => setGuideState('should_run_market_selector_guide', false)}
                     />
@@ -72,7 +73,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                         className='active-symbols-list__content'
                         selectedTabIndex={1}
                         onChangeTab={index => {
-                            if (index !== 1 || !guide_dtrader_v2?.market_selector) {
+                            if (index !== 1) {
                                 marketCategoriesRef.current?.scrollTo({ top: 0 });
                             }
                         }}

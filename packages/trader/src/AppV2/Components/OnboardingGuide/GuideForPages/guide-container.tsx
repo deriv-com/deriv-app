@@ -33,9 +33,6 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
                         length: 4,
                         spread: 8,
                     },
-                    options: {
-                        zIndex: 1000,
-                    },
                 },
             }}
             run={should_run}

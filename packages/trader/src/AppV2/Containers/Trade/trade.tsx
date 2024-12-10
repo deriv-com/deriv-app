@@ -45,6 +45,8 @@ const Trade = observer(() => {
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
     });
 
     const symbols = React.useMemo(

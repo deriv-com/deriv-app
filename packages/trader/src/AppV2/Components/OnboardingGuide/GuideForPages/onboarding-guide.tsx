@@ -22,6 +22,8 @@ const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOn
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
     });
 
     const is_trade_page_guide = type === 'trade_page';

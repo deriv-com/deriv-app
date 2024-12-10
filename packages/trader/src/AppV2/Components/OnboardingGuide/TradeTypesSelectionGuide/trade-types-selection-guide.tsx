@@ -17,6 +17,8 @@ const TradeTypesSelectionGuide: React.FC<TTradeTypeSelectionGuideProps> = ({ is_
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
     });
     const { trade_types_selection } = guide_dtrader_v2 || {};
 

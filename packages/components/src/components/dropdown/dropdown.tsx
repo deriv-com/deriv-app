@@ -48,6 +48,7 @@ type TDropdown = {
     suffix_icon_size?: number;
     should_open_on_hover?: boolean;
     should_scroll_to_selected?: boolean;
+    should_auto_close_dropdown_list?: boolean;
     should_autohide?: boolean;
     test_id?: string;
     value?: string | number;
@@ -284,6 +285,7 @@ const Dropdown = ({
     suffix_icon_size = 16,
     should_open_on_hover = false,
     should_scroll_to_selected,
+    should_auto_close_dropdown_list,
     should_autohide,
     test_id,
     value,
@@ -331,6 +333,12 @@ const Dropdown = ({
             'dc-dropdown__display--is-left-text': is_align_text_left,
         });
     };
+
+    React.useEffect(() => {
+        if (should_auto_close_dropdown_list) {
+            setIsListVisible(false);
+        }
+    }, [should_auto_close_dropdown_list]);
 
     React.useEffect(() => {
         if (is_nativepicker && !is_nativepicker_visible && is_list_visible) {

@@ -1,19 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react';
-
-import { getUnitMap } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-
-import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
-import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { getUnitMap } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-
-import { TTradeParametersProps } from '../trade-parameters';
-
 import DurationActionSheetContainer from './container';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
+import { useStore } from '@deriv/stores';
+import { TTradeParametersProps } from '../trade-parameters';
 
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {

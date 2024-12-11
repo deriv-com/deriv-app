@@ -84,7 +84,6 @@ const BarrierInput = observer(
         const handleChipSelect = (index: number) => {
             // On each change have to check if its =,- as per the barrier_1. If yes , then set the value or else just don't
             // and make it empty
-
             setOption(index);
             const sign = barrier_1[0];
 
@@ -97,25 +96,6 @@ const BarrierInput = observer(
             } else {
                 setValue('');
             }
-
-            // const current_value = barrier_1.replace(/^[+-]/, '');
-            // let newValue = previous_value.replace(/^[+-]/, '');
-
-            // if (index === 0) {
-            //     newValue = `+${newValue}`;
-            // } else if (index === 1) {
-            //     newValue = `-${newValue}`;
-            // } else if (index === 2) {
-            //     newValue = '';
-            //     setPreviousValue(current_value);
-            // }
-
-            // if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
-            //     newValue = `${newValue.charAt(0)}0${newValue.slice(1)}`;
-            // } else if (newValue.startsWith('.')) {
-            //     newValue = `0${newValue}`;
-            // }
-            // onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 
         const handleOnChange = (e: { target: { name: string; value: string } }) => {

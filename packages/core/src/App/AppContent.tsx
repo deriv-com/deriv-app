@@ -8,7 +8,6 @@ import {
     useOauth2,
     useSilentLoginAndLogout,
 } from '@deriv/hooks';
-import { WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useTranslations } from '@deriv-com/translations';
@@ -82,7 +81,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
-    const is_wallets_unsupported_language = WALLETS_UNSUPPORTED_LANGUAGES.includes(current_language);
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
         is_client_store_initialized,
@@ -143,18 +141,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             if (is_dark_mode_on) {
                 setDarkMode(false);
             }
-            if (is_wallets_unsupported_language) {
-                changeSelectedLanguage('EN');
-            }
         }
-    }, [
-        has_wallet,
-        current_language,
-        changeSelectedLanguage,
-        is_dark_mode_on,
-        setDarkMode,
-        is_wallets_unsupported_language,
-    ]);
+    }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
     const isCallBackPage = window.location.pathname.includes('callback');
 

@@ -25,6 +25,8 @@ const useSilentLoginAndLogout = ({
 
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+    const isSilentLoginExcluded =
+        window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
     useEffect(() => {
         if (
@@ -32,7 +34,7 @@ const useSilentLoginAndLogout = ({
             !isClientAccountsPopulated &&
             isOAuth2Enabled &&
             is_client_store_initialized &&
-            window.location.pathname !== '/callback'
+            !isSilentLoginExcluded
         ) {
             // Perform silent login
             requestOidcAuthentication({
@@ -40,11 +42,24 @@ const useSilentLoginAndLogout = ({
             });
         }
 
-        if (loggedState === 'false' && is_client_store_initialized && isOAuth2Enabled && isClientAccountsPopulated) {
+        if (
+            loggedState === 'false' &&
+            is_client_store_initialized &&
+            isOAuth2Enabled &&
+            isClientAccountsPopulated &&
+            !window.location.pathname.includes('callback')
+        ) {
             // Perform single logout
             oAuthLogout();
         }
-    }, [loggedState, isClientAccountsPopulated, is_client_store_initialized, isOAuth2Enabled, oAuthLogout]);
+    }, [
+        loggedState,
+        isClientAccountsPopulated,
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
+        isSilentLoginExcluded,
+    ]);
 };
 
 export default useSilentLoginAndLogout;

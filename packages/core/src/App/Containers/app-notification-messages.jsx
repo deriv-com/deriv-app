@@ -133,9 +133,16 @@ const AppNotificationMessages = observer(
                   ].includes(message.key)
                 : true;
 
+            const is_only_for_p2p_notification =
+                window.location.pathname !== routes.cashier_p2p || message?.platform === 'P2P';
+
             const is_maintenance_notifications = maintenance_notifications.includes(message.key);
 
-            return is_not_marked_notification && is_non_hidden_notification && is_maintenance_notifications;
+            return (
+                is_not_marked_notification &&
+                is_non_hidden_notification &&
+                (is_only_for_p2p_notification || is_maintenance_notifications)
+            );
         });
 
         const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;

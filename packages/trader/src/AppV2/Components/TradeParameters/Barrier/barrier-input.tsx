@@ -25,8 +25,6 @@ const BarrierInput = observer(
         const { barrier_1, onChange, tick_data, trade_types } = trade_store;
         const [value, setValue] = useState(String(barrier_1.replace(/[+-]/g, '')));
         const [option, setOption] = React.useState(0);
-        const [should_show_error, setShouldShowError] = React.useState(false);
-        const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
         const prefix = (option === 0 && '+') || (option === 1 && '-');
@@ -60,26 +58,6 @@ const BarrierInput = observer(
                 setOption(2);
             }
         }, []);
-
-        React.useEffect(() => {
-            const barrier_element = barrier_ref.current;
-            const checkFocus = () => {
-                setIsFocused(!!(barrier_element && barrier_element.contains(document.activeElement)));
-            };
-            document.addEventListener('focusin', checkFocus);
-            document.addEventListener('focusout', checkFocus);
-
-            return () => {
-                document.removeEventListener('focusin', checkFocus);
-                document.removeEventListener('focusout', checkFocus);
-            };
-        });
-
-        React.useEffect(() => {
-            if (is_focused) {
-                setShouldShowError(false);
-            }
-        }, [is_focused]);
 
         const handleChipSelect = (index: number) => {
             // On each change have to check if its =,- as per the barrier_1. If yes , then set the value or else just don't

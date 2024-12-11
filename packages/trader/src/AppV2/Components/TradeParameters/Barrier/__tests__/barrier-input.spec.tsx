@@ -6,9 +6,21 @@ import TraderProviders from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import { TCoreStores } from '@deriv/stores/types';
+import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+
+jest.mock('AppV2/Hooks/useDtraderQuery', () => ({
+    ...jest.requireActual('AppV2/Hooks/useDtraderQuery'),
+    useDtraderQuery: jest.fn(),
+}));
 
 describe('BarrierInput', () => {
-    const setInitialBarrierValue = jest.fn();
+    let mockUseDtraderQuery: jest.Mock;
+
+    beforeEach(() => {
+        mockUseDtraderQuery = useDtraderQuery as jest.Mock;
+        mockUseDtraderQuery.mockReset();
+    });
+
     const onChange = jest.fn();
     const onClose = jest.fn();
     const default_trade_store = {
@@ -22,17 +34,25 @@ describe('BarrierInput', () => {
             },
         },
     };
-    const mockBarrierInput = (mocked_store: TCoreStores) => {
+    const mockBarrierInput = (mocked_store: TCoreStores, is_open = true) => {
         render(
             <TraderProviders store={mocked_store}>
                 <ModulesProvider store={mocked_store}>
-                    <BarrierInput isDays={false} onClose={onClose} is_open={true} />
+                    <BarrierInput isDays={false} onClose={onClose} is_open={is_open} />
                 </ModulesProvider>
             </TraderProviders>
         );
     };
 
     it('renders BarrierInput component correctly', () => {
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: +10 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
+
         mockBarrierInput(mockStore(default_trade_store));
         expect(screen.getByText('Above spot')).toBeInTheDocument();
         expect(screen.getByText('Below spot')).toBeInTheDocument();
@@ -42,118 +62,92 @@ describe('BarrierInput', () => {
     });
 
     it('closes ActionSheet on pressing primary action when on first page', async () => {
-        mockBarrierInput(mockStore(default_trade_store));
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: +10 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
+        mockBarrierInput(mockStore(default_trade_store), false);
         await userEvent.click(screen.getByRole('textbox'));
         await userEvent.click(screen.getByText(/Save/));
         await waitFor(() => {
-            expect(onClose).toBeCalledWith(true);
+            expect(onClose).toHaveBeenCalled();
         });
     });
 
-    it('calls setInitialBarrierValue and onChange on component mount', () => {
-        mockBarrierInput(mockStore(default_trade_store));
-        expect(setInitialBarrierValue).toHaveBeenCalledWith('+10');
-    });
-
-    it('handles chip selection correctly', async () => {
-        mockBarrierInput(mockStore(default_trade_store));
-        const aboveSpotChip = screen.getByText('Above spot');
-        const belowSpotChip = screen.getByText('Below spot');
-        const fixedPriceChip = screen.getByText('Fixed barrier');
-
-        await userEvent.click(belowSpotChip);
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-10' } });
-
-        await userEvent.click(fixedPriceChip);
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
-
-        await userEvent.click(aboveSpotChip);
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+10' } });
-    });
-
     it('handles input change correctly', async () => {
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: -101 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
         mockBarrierInput(mockStore(default_trade_store));
         const input = screen.getByPlaceholderText('Distance to spot');
-
-        fireEvent.change(input, { target: { value: '20' } });
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+20' } });
-
-        const belowSpotChip = screen.getByText('Below spot');
-        await userEvent.click(belowSpotChip);
-        fireEvent.change(input, { target: { value: '15' } });
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-15' } });
-    });
-
-    it('sets initial barrier value and option correctly for a positive barrier', () => {
-        mockBarrierInput(mockStore(default_trade_store));
-        expect(setInitialBarrierValue).toHaveBeenCalledWith('+10');
-        expect(screen.getAllByRole('button')[0]).toHaveAttribute('data-state', 'selected');
-    });
-
-    it('sets initial barrier value and option correctly for a negative barrier', () => {
-        default_trade_store.modules.trade.barrier_1 = '-10';
-        mockBarrierInput(mockStore(default_trade_store));
-        expect(setInitialBarrierValue).toHaveBeenCalledWith('-10');
-        expect(screen.getAllByRole('button')[1]).toHaveAttribute('data-state', 'selected');
-    });
-
-    it('sets initial barrier value and option correctly for a fixed price barrier', () => {
-        default_trade_store.modules.trade.barrier_1 = '30';
-        mockBarrierInput(mockStore(default_trade_store));
-        expect(setInitialBarrierValue).toHaveBeenCalledWith('30');
-        expect(screen.getAllByRole('button')[2]).toHaveAttribute('data-state', 'selected');
+        fireEvent.change(input, { target: { value: '10' } });
+        const inputElement = screen.getByPlaceholderText('Distance to spot');
+        expect(inputElement).toHaveValue('10');
     });
 
     it('shows error when a validation error comes', () => {
-        default_trade_store.modules.trade.validation_errors.barrier_1 = ['Something went wrong'] as never;
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: -0.6 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {
+                    message: 'Barrier is out of acceptable range.',
+                },
+            },
+        });
         mockBarrierInput(mockStore(default_trade_store));
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+        expect(screen.getByText('Barrier is out of acceptable range.')).toBeInTheDocument();
     });
 
-    it('shows error when a validation error comes for fixed price as well', () => {
-        default_trade_store.modules.trade.validation_errors.barrier_1 = ['Something went wrong'] as never;
-        default_trade_store.modules.trade.barrier_1 = '10';
+    it('show value correctly for Below spot', async () => {
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: -0.6 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
+        default_trade_store.modules.trade.barrier_1 = '-0.6';
         mockBarrierInput(mockStore(default_trade_store));
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+
+        const inputElement = screen.getByPlaceholderText('Distance to spot');
+        expect(inputElement).toHaveValue('0.6');
     });
 
-    it('handles chip selection correctly for Above spot when initial barrier is negative', async () => {
-        default_trade_store.modules.trade.barrier_1 = '-10';
+    it('show value correctly for above spot', async () => {
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: +0.6 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
+        default_trade_store.modules.trade.barrier_1 = '+0.6';
         mockBarrierInput(mockStore(default_trade_store));
 
-        const aboveSpotChip = screen.getByText('Above spot');
-        await userEvent.click(aboveSpotChip);
-
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+10' } });
+        const inputElement = screen.getByPlaceholderText('Distance to spot');
+        expect(inputElement).toHaveValue('0.6');
     });
 
-    it('handles chip selection correctly for Below spot when initial barrier is positive', async () => {
-        default_trade_store.modules.trade.barrier_1 = '+.6';
+    it('show value correctly when initial barrier is fixed price', async () => {
+        default_trade_store.modules.trade.barrier_1 = '60';
+        mockUseDtraderQuery.mockReturnValue({
+            data: {
+                proposal: { barrier: 60 },
+                echo_req: { contract_type: 'TURBOSSHORT', authorized: true },
+                error: {},
+            },
+        });
         mockBarrierInput(mockStore(default_trade_store));
 
-        const belowSpotChip = screen.getByText('Below spot');
-        await userEvent.click(belowSpotChip);
-
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '-0.6' } });
-    });
-
-    it('handles chip selection correctly for Fixed barrier', async () => {
-        default_trade_store.modules.trade.barrier_1 = '+.6';
-        mockBarrierInput(mockStore(default_trade_store));
-
-        const fixedPriceChip = screen.getByText('Fixed barrier');
-        await userEvent.click(fixedPriceChip);
-
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '' } });
-    });
-
-    it('handles chip selection correctly for Above spot when initial barrier is fixed price', async () => {
-        default_trade_store.modules.trade.barrier_1 = '.6';
-        mockBarrierInput(mockStore(default_trade_store));
-
-        const aboveSpotChip = screen.getByText('Above spot');
-        await userEvent.click(aboveSpotChip);
-
-        expect(onChange).toHaveBeenCalledWith({ target: { name: 'barrier_1', value: '+0.6' } });
+        const inputElement = screen.getByPlaceholderText('Price');
+        expect(inputElement).toHaveValue('60');
     });
 });

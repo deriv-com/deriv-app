@@ -52,7 +52,6 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
     const { setVerificationModalOpen } = traders_hub;
-    const history = useHistory();
     const is_document_verified = status === AUTH_STATUS_CODES.VERIFIED;
 
     const onClickItem = () => {
@@ -65,9 +64,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         if (id === 'address' && status) {
             localStorage.setItem('mt5_poa_status', String(status));
         }
-        // history.push(route);
-        window.open(route, '_blank');
-
+        window.location.href = route;
         setVerificationModalOpen(false);
     };
 

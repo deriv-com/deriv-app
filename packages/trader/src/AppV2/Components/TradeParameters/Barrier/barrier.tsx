@@ -21,7 +21,6 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
         trade_type_tab,
     } = useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
-    const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
     const isDays = duration_unit == 'd';
     const has_error =
         validation_errors.barrier_1.length > 0 ||
@@ -36,7 +35,7 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [initialBarrierValue, is_open]
+        [is_open]
     );
 
     React.useEffect(() => {

@@ -16,7 +16,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
+import { StoreProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
@@ -107,14 +107,12 @@ const AppWithoutTranslation = ({ root_store }) => {
                         <BreakpointProvider>
                             <APIProvider>
                                 <POIProvider>
-                                    <P2PSettingsProvider>
-                                        <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
-                                            {/* This is required as translation provider uses suspense to reload language */}
-                                            <React.Suspense fallback={<Loading />}>
-                                                <AppContent passthrough={platform_passthrough} />
-                                            </React.Suspense>
-                                        </TranslationProvider>
-                                    </P2PSettingsProvider>
+                                    <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
+                                        {/* This is required as translation provider uses suspense to reload language */}
+                                        <React.Suspense fallback={<Loading />}>
+                                            <AppContent passthrough={platform_passthrough} />
+                                        </React.Suspense>
+                                    </TranslationProvider>
                                 </POIProvider>
                             </APIProvider>
                         </BreakpointProvider>

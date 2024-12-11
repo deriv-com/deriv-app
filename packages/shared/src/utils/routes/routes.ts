@@ -115,3 +115,7 @@ export const isDisabledLandscapeBlockerRoute = (path: string) => {
     if (path === routes.traders_hub) return true;
     return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
 };
+
+export const ACCOUNTS_OS_POI_URL = 'https://deriv-dev.outsystems.app/Accounts/ProofOfIdentity';
+export const ACCOUNTS_OS_POI_STATUS_URL = 'https://deriv-dev.outsystems.app/Accounts/ProofOfIdentityStatus';
+export const ACCOUNTS_OS_POA_URL = 'https://deriv-dev.outsystems.app/Accounts/ProofOfAddress';

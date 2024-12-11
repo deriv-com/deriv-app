@@ -711,6 +711,7 @@ export type TClientStore = {
         valid_tin: 0 | 1;
     };
     should_show_trustpilot_notification: boolean;
+    getToken: () => string;
 };
 
 type TCommonStoreError = {

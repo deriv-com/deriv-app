@@ -446,6 +446,7 @@ export default class ClientStore extends BaseStore {
             setClientKYCStatus: action.bound,
             client_kyc_status: observable,
             should_show_trustpilot_notification: computed,
+            getToken: action.bound,
         });
 
         reaction(

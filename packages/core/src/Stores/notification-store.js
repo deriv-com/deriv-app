@@ -1268,7 +1268,7 @@ export default class NotificationStore extends BaseStore {
                             />,
                             <Text key={1} size='xs' weight='bold' />,
                         ]}
-                        values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM, YYYY') }}
+                        values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM YYYY') }}
                     />
                 ),
                 type: 'announce',

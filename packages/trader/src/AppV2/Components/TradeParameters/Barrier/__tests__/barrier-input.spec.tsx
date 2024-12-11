@@ -22,12 +22,11 @@ describe('BarrierInput', () => {
             },
         },
     };
-
     const mockBarrierInput = (mocked_store: TCoreStores) => {
         render(
             <TraderProviders store={mocked_store}>
                 <ModulesProvider store={mocked_store}>
-                    <BarrierInput isDays={false} setInitialBarrierValue={setInitialBarrierValue} onClose={onClose} />
+                    <BarrierInput isDays={false} onClose={onClose} is_open={true} />
                 </ModulesProvider>
             </TraderProviders>
         );

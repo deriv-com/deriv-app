@@ -13,10 +13,8 @@ import { TTradeParametersProps } from '../trade-parameters';
 const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         barrier_1,
-        onChange,
         duration_unit,
         is_market_closed,
-        setV2ParamsInitialValues,
         v2_params_initial_values,
         validation_errors,
         proposal_info,
@@ -32,12 +30,8 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const [barrier_error_shown, setBarrierErrorShown] = React.useState(false);
 
     const onClose = React.useCallback(
-        (is_saved = false) => {
+        () => {
             if (is_open) {
-                if (!is_saved) {
-                    onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
-                }
-                setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
                 setIsOpen(false);
             }
         },
@@ -70,9 +64,7 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const barrier_carousel_pages = [
         {
             id: 1,
-            component: (
-                <BarrierInput isDays={isDays} setInitialBarrierValue={setInitialBarrierValue} onClose={onClose} />
-            ),
+            component: <BarrierInput is_open={is_open} isDays={isDays} onClose={onClose} />,
         },
         {
             id: 2,

@@ -25,10 +25,13 @@ const BarrierInput = observer(
         const { barrier_1, onChange, tick_data, trade_types } = trade_store;
         const [value, setValue] = useState(String(barrier_1.replace(/[+-]/g, '')));
         const [option, setOption] = React.useState(0);
+        const [should_show_error, setShouldShowError] = React.useState(false);
+        const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
         const prefix = (option === 0 && '+') || (option === 1 && '-');
         const new_values = { barrier: `${prefix || ''}${value}` };
+        const required_error = localize('Barrier is a required field.');
 
         const proposal_req = getProposalRequestObject({
             new_values,
@@ -59,10 +62,31 @@ const BarrierInput = observer(
             }
         }, []);
 
+        React.useEffect(() => {
+            const barrier_element = barrier_ref.current;
+            const checkFocus = () => {
+                setIsFocused(!!(barrier_element && barrier_element.contains(document.activeElement)));
+            };
+            document.addEventListener('focusin', checkFocus);
+            document.addEventListener('focusout', checkFocus);
+
+            return () => {
+                document.removeEventListener('focusin', checkFocus);
+                document.removeEventListener('focusout', checkFocus);
+            };
+        });
+
+        React.useEffect(() => {
+            if (is_focused) {
+                setShouldShowError(false);
+            }
+        }, [is_focused]);
+
         const handleChipSelect = (index: number) => {
             // On each change have to check if its =,- as per the barrier_1. If yes , then set the value or else just don't
             // and make it empty
             setOption(index);
+            setShouldShowError(false);
             const sign = barrier_1[0];
 
             if (sign == '+' && index == 0) {
@@ -74,6 +98,16 @@ const BarrierInput = observer(
             } else {
                 setValue('');
             }
+        };
+
+        const getErrorMessage = () => {
+            if (should_show_error) {
+                return required_error;
+            }
+            if (show_hidden_error) {
+                return response?.error?.message;
+            }
+            return '';
         };
 
         const handleOnChange = (e: { target: { name: string; value: string } }) => {
@@ -107,7 +141,7 @@ const BarrierInput = observer(
                                     customType='commaRemoval'
                                     name='barrier_1'
                                     noStatusIcon
-                                    status={show_hidden_error ? 'error' : 'neutral'}
+                                    status={show_hidden_error || should_show_error ? 'error' : 'neutral'}
                                     shouldRound={false}
                                     value={value}
                                     allowDecimals
@@ -119,7 +153,7 @@ const BarrierInput = observer(
                                     onChange={handleOnChange}
                                     placeholder={localize('Price')}
                                     variant='fill'
-                                    message={show_hidden_error ? response?.error?.message : ''}
+                                    message={getErrorMessage()}
                                     ref={barrier_ref}
                                 />
                             ) : (
@@ -134,17 +168,19 @@ const BarrierInput = observer(
                                     allowDecimals
                                     inputMode='decimal'
                                     allowSign={false}
-                                    status={show_hidden_error ? 'error' : 'neutral'}
+                                    status={show_hidden_error || should_show_error ? 'error' : 'neutral'}
                                     shouldRound={false}
                                     onChange={handleOnChange}
                                     placeholder={localize('Distance to spot')}
                                     regex={/[^0-9.,]/g}
                                     variant='fill'
-                                    message={show_hidden_error ? response?.error?.message : ''}
+                                    message={getErrorMessage()}
                                     ref={barrier_ref}
                                 />
                             )}
-                            {!show_hidden_error && <div className='barrier-params__error-area' />}
+                            {!(show_hidden_error || should_show_error) && (
+                                <div className='barrier-params__error-area' />
+                            )}
                         </div>
                         <div className='barrier-params__current-spot-wrapper'>
                             <Text size='sm'>
@@ -163,6 +199,8 @@ const BarrierInput = observer(
                             if (!show_hidden_error && value !== '') {
                                 onChange({ target: { name: 'barrier_1', value: `${prefix || ''}${value}` } });
                                 onClose();
+                            } else {
+                                setShouldShowError(true);
                             }
                         },
                     }}

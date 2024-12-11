@@ -2,7 +2,15 @@ import React, { Suspense } from 'react';
 
 import { Icon, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import { ACCOUNTS_OS_POI_URL, CFD_PLATFORMS, getAppId, getSocketURL, routes } from '@deriv/shared';
+import {
+    ACCOUNTS_OS_POA_URL,
+    ACCOUNTS_OS_POI_STATUS_URL,
+    ACCOUNTS_OS_POI_URL,
+    CFD_PLATFORMS,
+    getAppId,
+    getSocketURL,
+    routes,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -49,13 +57,13 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
-            route: getFormattedURL(ACCOUNTS_OS_POI_URL),
+            route: getFormattedURL(poi_status === 'none' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL),
         },
         poa_status && {
             id: 'address',
             text: 'Proof of address',
             status: poa_status,
-            route: routes.proof_of_address,
+            route: getFormattedURL(ACCOUNTS_OS_POA_URL),
         },
         is_tin_required && {
             id: 'tax',

@@ -32,10 +32,10 @@ const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
     }, [currentLang, i18nLanguage]);
 
     const defaultContent: TErrorContent = {
-        buttonText: <Localize i18n_default_text='Try again' />,
+        buttonText: <Localize i18n_default_text='Refresh page' />,
         message: error.message,
         onClick: () => window.location.reload(),
-        title: <Localize i18n_default_text='Oops, something went wrong!' />,
+        title: <Localize i18n_default_text='Something went wrong' />,
     };
 
     const depositErrorCodeHandlers: TErrorCodeHandlers = {

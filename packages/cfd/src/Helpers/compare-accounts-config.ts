@@ -87,24 +87,24 @@ const getHighlightedIconLabel = (
 const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC:
-            return is_demo ? localize('Standard Demo') : localize('Standard');
+            return is_demo ? localize('Standard demo') : localize('Standard');
         case MARKET_TYPE_SHORTCODE.FINANCIAL:
-            return is_demo ? localize('Financial Demo') : localize('Financial');
+            return is_demo ? localize('Financial demo') : localize('Financial');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - STP');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD:
         case MARKET_TYPE_SHORTCODE.CFDS_GOLD:
-            return is_demo ? localize('Gold Demo') : localize('Gold');
+            return is_demo ? localize('Gold demo') : localize('Gold');
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
-            return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free');
+            return is_demo ? localize('Swap-Free demo') : localize('Swap-Free');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread');
+            return is_demo ? localize('Zero Spread demo') : localize('Zero Spread');
         case CFD_PLATFORMS.DXTRADE:
-            return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
+            return is_demo ? localize('Deriv X demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
-            return is_demo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
+            return is_demo ? localize('Deriv cTrader demo') : localize('Deriv cTrader');
         default:
-            return is_demo ? localize('CFDs Demo') : localize('CFDs');
+            return is_demo ? localize('CFDs demo') : localize('CFDs');
     }
 };
 

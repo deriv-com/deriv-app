@@ -76,6 +76,7 @@ export const priority_toast_messages = [
     'svg_needs_poi',
     'poi_failed',
     'poa_failed',
+    'reaccept_tnc',
     'svg_poi_expired',
     ...maintenance_notifications,
 ];

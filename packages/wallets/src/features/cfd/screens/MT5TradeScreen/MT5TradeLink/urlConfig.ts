@@ -27,14 +27,10 @@ export const dxtradeLinks = {
 };
 
 /**
- * URLs for the mt5 platform.
+ * Static URLs for the mt5 platforms, which are unavailable from the mt5_login_list endpoint
  */
 export const whiteLabelLinks = {
-    android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     huawei: 'https://appgallery.huawei.com/#/app/C102015329',
-    ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
     linux: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
     macos: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
-    webtrader_url: 'https://mt5-real01-web-svg.deriv.com/terminal',
-    windows: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
 };

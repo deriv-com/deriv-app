@@ -117,6 +117,7 @@ const AppNotificationMessages = observer(
                       'poi_failed',
                       'poi_verified',
                       'poinc_upload_limited',
+                      'reaccept_tnc',
                       'resticted_mt5_with_failed_poa',
                       'resticted_mt5_with_pending_poa',
                       'svg_needs_poa',

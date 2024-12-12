@@ -18,7 +18,14 @@ const CallbackPage = () => {
             }}
             renderReturnButton={() => {
                 return (
-                    <Button onClick={() => history.push('/')} secondary is_circular>
+                    <Button
+                        onClick={() => {
+                            history.push('/');
+                            window.location.reload();
+                        }}
+                        secondary
+                        is_circular
+                    >
                         <Localize i18n_default_text='Try again' />
                     </Button>
                 );

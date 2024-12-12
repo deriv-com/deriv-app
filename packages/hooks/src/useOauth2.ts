@@ -1,3 +1,5 @@
+import { redirectToLogin } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import {
     OAuth2Logout,
     requestOidcAuthentication,
@@ -20,13 +22,7 @@ import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
  * @param {{ handleLogout?: () => Promise<void> }} [options] - An object with an optional `handleLogout` property.
  * @returns {{ isOAuth2Enabled: boolean; oAuthLogout: () => Promise<void> }}
  */
-const useOauth2 = ({
-    handleLogout,
-    handleLogin,
-}: {
-    handleLogout: () => Promise<void>;
-    handleLogin?: () => Promise<void>;
-}) => {
+const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     const [oAuth2EnabledApps, OAuth2EnabledAppsInitialised] = useGrowthbookGetFeatureValue<string>({
         featureFlag: 'hydra_be',
     }) as unknown as [TOAuth2EnabledAppList, boolean];
@@ -39,7 +35,7 @@ const useOauth2 = ({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-        await handleLogin?.();
+        redirectToLogin(false, getLanguage());
     };
 
     const logoutHandler = async () => {

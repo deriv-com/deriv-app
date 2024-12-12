@@ -7,6 +7,7 @@ import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, Localize, localize } from '@deriv/translations';
 import { Analytics, TEvents } from '@deriv-com/analytics';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 import './wallets-upgrade-logout-modal.scss';
 
@@ -29,12 +30,16 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
 
-    const { loginHandler, oAuthLogout } = useOauth2({
+    const { oAuthLogout, isOAuth2Enabled } = useOauth2({
         handleLogout: async () => {
             await logout();
-        },
-        handleLogin: async () => {
-            await redirectToLogin(false, getLanguage());
+            if (isOAuth2Enabled) {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                });
+            } else {
+                redirectToLogin(false, getLanguage());
+            }
         },
     });
 
@@ -48,9 +53,7 @@ const WalletsUpgradeLogoutModal = observer(() => {
             expires: 0.5, // 12 hours expiration time
             secure: true,
         });
-        oAuthLogout().then(async () => {
-            await loginHandler();
-        });
+        await oAuthLogout();
         trackAnalyticsEvent('click_cta', account_mode);
     };
 

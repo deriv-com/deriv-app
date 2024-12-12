@@ -45,6 +45,8 @@ const Trade = observer(() => {
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
     });
 
     const symbols = React.useMemo(
@@ -124,9 +126,7 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {!guide_dtrader_v2?.trade_page && is_logged_in && (
-                        <OnboardingGuide type='trade_page' is_dark_mode_on={is_dark_mode_on} />
-                    )}
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

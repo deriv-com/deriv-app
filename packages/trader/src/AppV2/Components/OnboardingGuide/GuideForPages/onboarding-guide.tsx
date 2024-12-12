@@ -4,6 +4,7 @@ import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import GuideContainer from './guide-container';
 import OnboardingVideo from './onboarding-video';
+import { Step } from 'react-joyride';
 
 type TOnboardingGuideProps = {
     callback?: () => void;
@@ -21,6 +22,8 @@ const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOn
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
     });
 
     const is_trade_page_guide = type === 'trade_page';
@@ -86,7 +89,7 @@ const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOn
                 <Modal.Header image={modal_content.image} title={modal_content.title} />
                 <Modal.Body>{modal_content.content}</Modal.Body>
             </Modal>
-            {is_trade_page_guide && <GuideContainer should_run={should_run_guide} onFinishGuide={onFinishGuide} />}
+            {/* {is_trade_page_guide && <GuideContainer should_run={should_run_guide} steps={[{} as Step]} />} */}
         </React.Fragment>
     );
 };

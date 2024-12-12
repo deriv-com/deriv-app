@@ -56,7 +56,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                 )}
                 {step.content && <CaptionText className='guide-tooltip__content'>{step.content}</CaptionText>}
             </div>
-            <Button
+            {/* <Button
                 {...primaryProps}
                 onClick={e => {
                     setStepIndex((prev: number) => prev + 1);
@@ -67,7 +67,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                 variant='secondary'
                 size='sm'
                 label={isLastStep ? <Localize i18n_default_text='Done' /> : <Localize i18n_default_text='Next' />}
-            />
+            /> */}
         </div>
     );
 };

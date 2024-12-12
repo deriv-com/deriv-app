@@ -6,6 +6,11 @@ import MarketCategories from '../MarketCategories';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { sendMarketTypeToAnalytics } from '../../../Analytics';
+import { useLocalStorageData } from '@deriv/hooks';
+import GuideContainer from '../OnboardingGuide/GuideForPages/guide-container';
+import { Localize } from '@deriv/translations';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
+import { Step } from 'react-joyride';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -17,6 +22,27 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(symbol);
     const [searchValue, setSearchValue] = useState('');
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
+    });
+    const { guideStates, setGuideState } = useGuideStates();
+    const { should_run_market_selector_guide } = guideStates;
+
+    const STEPS = [
+        {
+            content: <Localize i18n_default_text='Explore available markets here.' />,
+            offset: -200,
+            placement: 'bottom' as Step['placement'],
+            spotlightPadding: 8,
+            target: '.joyride-element',
+            title: <Localize i18n_default_text='Select a market' />,
+            disableBeacon: true,
+        },
+    ];
 
     const marketCategoriesRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +56,11 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         <React.Fragment>
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
+                    <GuideContainer
+                        should_run={should_run_market_selector_guide && !guide_dtrader_v2?.market_selector}
+                        steps={STEPS}
+                        callback={() => setGuideState('should_run_market_selector_guide', false)}
+                    />
                     <SymbolsSearchField
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}

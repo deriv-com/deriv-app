@@ -1,6 +1,4 @@
 .player {
-    position: unset !important;
-
     &__wrapper {
         position: relative;
     }
@@ -10,7 +8,7 @@
         top: 0;
         height: 100%;
         width: 100%;
-        background: rgba(0, 0, 0, 0.72);
+        background: rgba(0, 0, 0, 0.5);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -24,12 +22,6 @@
 
         &__icon {
             margin: 0;
-            &-close {
-                position: fixed;
-                top: 0;
-                right: 0;
-                padding: 1.6rem;
-            }
         }
     }
 
@@ -65,7 +57,7 @@
             margin: 0.8rem 0;
             cursor: pointer;
 
-            &:not(&--v2)&:before {
+            &:before {
                 content: '';
                 display: block;
                 height: 2rem;
@@ -98,20 +90,6 @@
             height: 3.6rem;
             padding-bottom: 0.4rem;
 
-            &--v2 {
-                display: flex;
-                flex-direction: column;
-                height: 3.6rem;
-                padding-bottom: 0.4rem;
-
-                .controls__right--v2 {
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    gap: 0.8rem;
-                }
-            }
-
             &--blocked {
                 pointer-events: none;
             }
@@ -123,10 +101,6 @@
 
         &__time-wrapper {
             margin: 0 1.6rem;
-
-            &--v2 {
-                margin: 0;
-            }
         }
 
         &__button {
@@ -281,20 +255,6 @@
                 border-radius: $BORDER_RADIUS * 2;
                 justify-content: flex-start;
 
-                &--v2 {
-                    width: 6.2rem;
-                    height: 2.3rem;
-                    background: none;
-                    border: none;
-                    border-radius: $BORDER_RADIUS * 2;
-
-                    .dc-dropdown__display-text {
-                        padding: 0 0 0 3.5rem;
-                        color: var(--text-colored-background);
-                        font-size: var(--text-size-xxs);
-                    }
-                }
-
                 .dc-dropdown__display-text {
                     padding: 0 0 0 2.5rem;
                     color: var(--text-colored-background);
@@ -332,7 +292,7 @@
         .dc-list,
         .dc-themed-scrollbars {
             @include mobile {
-                max-height: 100vh !important;
+                height: 13.2rem;
             }
         }
     }

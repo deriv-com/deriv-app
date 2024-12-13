@@ -52,10 +52,10 @@ const TradeTypesSelectionGuide: React.FC<TTradeTypeSelectionGuideProps> = ({ is_
         >
             <Modal.Header
                 image={<StreamIframe src={video_src} title='trade_types_selection' />}
-                title={<Localize i18n_default_text='Manage your trade types' />}
+                title={<Localize i18n_default_text='Add, reorder or remove from pinned' />}
             />
             <Modal.Body>
-                <Localize i18n_default_text='Pin, rearrange, or remove your favorite trade types for easy access.' />
+                <Localize i18n_default_text='Manage your preferred trade types for easy access on the trade page.' />
             </Modal.Body>
         </Modal>
     );

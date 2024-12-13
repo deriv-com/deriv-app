@@ -29,6 +29,7 @@ const Redirect = observer(() => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
+    let redirected_to_route = false;
 
     // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
@@ -57,7 +58,6 @@ const Redirect = observer(() => {
         Chat.open();
     };
 
-    let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
@@ -308,9 +308,34 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            const route_mappings = [
+                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address, platform: 'tradershub_os' },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity, platform: 'tradershub_os' },
+                { pattern: /personal-details/i, route: routes.personal_details, platform: 'tradershub_os' },
+                { pattern: /dbot/i, route: routes.bot },
+            ];
+
+            const default_route = routes.traders_hub;
+
+            const matched_route = route_mappings.find(({ pattern }) =>
+                pattern.test(url_query_string || history.location.search)
+            );
+
+            let updated_search = url_query_string;
+            if (matched_route && matched_route.type) {
+                updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
+            }
+            if (matched_route && matched_route.platform) {
+                updated_search = `${url_query_string}&platform=${matched_route.platform}`;
+            }
+
             history.push({
-                pathname: routes.traders_hub,
-                search: url_query_string,
+                pathname: matched_route ? matched_route.route : default_route,
+                search: updated_search,
             });
         }
     }, [redirected_to_route, url_query_string, history]);

@@ -1,12 +1,15 @@
 import React from 'react';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { defineSwitcherWidth } from '../../../utils/utils';
 import WalletListHeader from '../WalletListHeader';
 
+const mockRedirectToOutSystems = jest.fn();
+
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { is_virtual: false, loginid: 'real1' } })),
+    useIsEuRegion: jest.fn(() => ({ data: false })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
             { is_virtual: false, loginid: 'real1' },
@@ -25,6 +28,10 @@ jest.mock('../../../hooks/useWalletAccountSwitcher', () => ({
 jest.mock('../../../utils/utils', () => ({
     ...jest.requireActual('../../../utils/utils'),
     defineSwitcherWidth: jest.fn(),
+}));
+
+jest.mock('../../../helpers/urls', () => ({
+    redirectToOutSystems: mockRedirectToOutSystems,
 }));
 
 describe('WalletListHeader', () => {
@@ -92,5 +99,56 @@ describe('WalletListHeader', () => {
 
         const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
         expect(switcher).toHaveClass('wallets-list-header__label-item--disabled');
+    });
+
+    it('renders an enabled switcher when an EU user has no real account', () => {
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [{ is_virtual: true, loginid: 'demo123' }],
+        });
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
+
+        render(<WalletListHeader />);
+
+        const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
+        expect(switcher).not.toHaveClass('wallets-list-header__label-item--disabled');
+    });
+
+    it('calls the redirectToOutSystems function when the real tab is clicked for EU users without real wallets', async () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [{ is_virtual: true, loginid: 'demo123' }],
+        });
+
+        render(<WalletListHeader />);
+
+        const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
+        await userEvent.click(switcher);
+
+        expect(mockRedirectToOutSystems).not.toHaveBeenCalled();
+    });
+    it('does not call the redirectToOutSystems function when the real tab is clicked for non-EU users without real wallets', async () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: false });
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [{ is_virtual: true, loginid: 'demo123' }],
+        });
+
+        render(<WalletListHeader />);
+
+        const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
+        await userEvent.click(switcher);
+
+        expect(mockRedirectToOutSystems).not.toHaveBeenCalled();
+    });
+
+    it('does not call redirectToOutSystems when the active wallet is a real account', async () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: false, loginid: 'real1' } });
+
+        render(<WalletListHeader />);
+
+        const switcher = screen.getByTestId('dt_wallets_list_header__label_item_real');
+        await userEvent.click(switcher);
+
+        expect(mockRedirectToOutSystems).not.toHaveBeenCalled();
     });
 });

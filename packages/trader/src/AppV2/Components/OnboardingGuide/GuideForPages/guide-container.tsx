@@ -10,8 +10,18 @@ type TGuideContainerProps = {
 
 type TFinishedStatuses = CallBackProps['status'][];
 
-const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => {
+const GuideContainer = ({ onFinishGuide }: TGuideContainerProps) => {
     const [step_index, setStepIndex] = React.useState(0);
+    const [should_run, setShouldRun] = React.useState(false);
+    const observer = new MutationObserver(() => {
+        if (document.getElementsByClassName('trade__parameter-tooltip-info').length > 0) {
+            setTimeout(() => {
+                setShouldRun(true);
+            }, 400);
+            observer.disconnect();
+        }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     const callbackHandle = (data: CallBackProps) => {
         const { status, step, index } = data;
@@ -48,6 +58,7 @@ const GuideContainer = ({ should_run, onFinishGuide }: TGuideContainerProps) => 
                 options: {
                     arrowColor: 'var(--component-textIcon-normal-prominent)',
                     overlayColor: 'var(--core-color-opacity-black-600)',
+                    zIndex: 200,
                 },
                 spotlight: {
                     borderRadius: 'unset',

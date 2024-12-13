@@ -196,6 +196,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info' />
                     <DurationActionSheetContainer
                         selected_hour={selected_hour}
                         setSelectedHour={setSelectedHour}

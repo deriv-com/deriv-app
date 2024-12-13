@@ -1,9 +1,0 @@
-.block-user-modal {
-    &__body {
-        padding: 0 2.4rem;
-
-        @include mobile-or-tablet-screen {
-            padding: 0 1.6rem;
-        }
-    }
-}

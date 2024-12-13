@@ -35,7 +35,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
     setInterval(() => {
-        if (freshChat.flag) {
+        if (freshChat.flag || intercom.flag) {
             window.LiveChatWidget?.call('destroy');
         }
     }, 10);

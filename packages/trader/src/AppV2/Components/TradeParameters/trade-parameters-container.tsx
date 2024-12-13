@@ -31,7 +31,6 @@ const TradeParametersContainer = ({
     const STEPS = [
         {
             content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
-            offset: 4,
             placement: 'top' as Step['placement'],
             target: '.trade-params--minimized',
             title: <Localize i18n_default_text='Make quick adjustments.' />,

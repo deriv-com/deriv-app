@@ -510,7 +510,7 @@
     "508390614": "Demo STP Financeira",
     "511243369": "A sua passkey foi removida com sucesso. Para evitar prompts de início de sessão, remova também a passkey do gestor de palavras-passe da Google.",
     "511679687": "Os accumulators permitem-lhe expressar uma perspetiva sobre a gama de movimentos de um índice e aumentar a sua entrada exponencialmente a uma <0>taxa de crescimento</0> fixa.",
-    "511698670": "Atualizámos os nossos <0>termos e condições</0>. Para continuar a negociar, deve rever e aceitar os termos atualizados. Será solicitado a aceitá-los a partir de [<1>{{next_prompt_date}}</1>].",
+    "511698670": "Atualizámos os nossos <0>termos e condições</0>. Para continuar a negociar, deve rever e aceitar os termos atualizados. Ser-lhe-á pedido que os aceite a partir de [<1>{{next_prompt_date}}</1>].",
     "514031715": "a lista {{ input_list }} está vazia",
     "514776243": "A palavra-passe {{account_type}} foi alterada.",
     "514948272": "Copiar link",

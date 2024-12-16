@@ -31,7 +31,7 @@ type APIContextData = {
     setOnConnected: (onConnected: () => void) => void;
     connection: WebSocket;
     wsClient: WSClient;
-    changeEndpoint: () => void;
+    createNewWSConnection: () => void;
 };
 
 /**
@@ -239,7 +239,7 @@ const APIProvider = ({ children, platform }: PropsWithChildren<TAPIProviderProps
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [language]);
 
-    const changeEndpoint = useCallback(() => {
+    const createNewWSConnection = useCallback(() => {
         setReconnect(true);
     }, []);
 
@@ -247,7 +247,7 @@ const APIProvider = ({ children, platform }: PropsWithChildren<TAPIProviderProps
         <APIContext.Provider
             value={{
                 subscribe,
-                changeEndpoint,
+                createNewWSConnection,
                 unsubscribe,
                 queryClient: reactQueryRef.current,
                 setOnReconnected,

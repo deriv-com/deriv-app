@@ -24,7 +24,7 @@ type AuthContextType = {
     error: unknown;
     isSwitching: boolean;
     isInitializing: boolean;
-    changeEndpoint: () => void;
+    createNewWSConnection: () => void;
     subscribe: <T extends TSocketSubscribableEndpointNames>(
         name: T,
         payload?: TSocketRequestPayload<T>
@@ -113,7 +113,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient, setOnReconnected, setOnConnected, wsClient, changeEndpoint } = useAPIContext();
+    const { queryClient, setOnReconnected, setOnConnected, wsClient, createNewWSConnection } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -160,10 +160,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                 (isDemo && wsClient?.endpoint === AppIDConstants.environments.real) ||
                 (!isDemo && wsClient?.endpoint === AppIDConstants.environments.demo);
             if (shouldSWitchEndpoint) {
-                changeEndpoint();
+                createNewWSConnection();
             }
         },
-        [loginIDKey, wsClient?.endpoint, changeEndpoint]
+        [loginIDKey, wsClient?.endpoint, createNewWSConnection]
     );
 
     useEffect(() => {
@@ -280,7 +280,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isInitializing,
             subscribe,
             logout,
-            changeEndpoint,
+            createNewWSConnection,
         };
     }, [
         data,
@@ -292,7 +292,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
         isSuccess,
         loginid,
         logout,
-        changeEndpoint,
+        createNewWSConnection,
         subscribe,
     ]);
 

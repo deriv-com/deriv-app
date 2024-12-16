@@ -6,7 +6,6 @@ import MarketCategories from '../MarketCategories';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { sendMarketTypeToAnalytics } from '../../../Analytics';
-import { useLocalStorageData } from '@deriv/hooks';
 import GuideContainer from '../OnboardingGuide/GuideForPages/guide-container';
 import { Localize } from '@deriv/translations';
 import useGuideStates from 'AppV2/Hooks/useGuideStates';
@@ -22,13 +21,6 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(symbol);
     const [searchValue, setSearchValue] = useState('');
-    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-    });
     const { guideStates, setGuideState } = useGuideStates();
     const { should_run_market_selector_guide } = guideStates;
 
@@ -39,6 +31,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             target: '.joyride-element',
             title: <Localize i18n_default_text='Select a market' />,
             disableBeacon: true,
+            offset: 0,
         },
     ];
 
@@ -49,7 +42,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         if (should_run_market_selector_guide && isOpen) {
             timerRef.current = setTimeout(() => {
                 setShowGuide(true);
-            }, 500);
+            }, 300);
         }
 
         return () => {

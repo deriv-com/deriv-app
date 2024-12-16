@@ -7,6 +7,7 @@ import FavoriteSymbols from '../FavoriteSymbols';
 import { usePrevious } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
 import useGuideStates from 'AppV2/Hooks/useGuideStates';
+import { useStore } from '@deriv/stores';
 
 type TMarketCategory = {
     category: MarketGroup;
@@ -28,6 +29,9 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
     });
     const { guideStates } = useGuideStates();
     const { should_run_market_selector_guide } = guideStates;
+    const {
+        client: { is_logged_in },
+    } = useStore();
 
     useEffect(() => {
         if (
@@ -52,7 +56,7 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
 
     return (
         <Tab.Panel key={category.market_display_name}>
-            {should_run_market_selector_guide && <div className='joyride-element' />}
+            {should_run_market_selector_guide && is_logged_in && <div className='joyride-element' />}
             {category.market !== 'favorites' ? (
                 Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                     <div key={subgroupKey} className='market-category-content__container'>

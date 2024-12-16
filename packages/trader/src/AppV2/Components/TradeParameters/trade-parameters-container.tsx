@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 import Guide from '../Guide';
-import useGuideStates from 'AppV2/Hooks/useGuideStates';
 import { useLocalStorageData } from '@deriv/hooks';
 import GuideContainer from '../OnboardingGuide/GuideForPages/guide-container';
 import { Step } from 'react-joyride';
+import { useStore } from '@deriv/stores';
 
 type TTradeParametersContainer = {
     is_minimized?: boolean;
@@ -19,6 +19,9 @@ const TradeParametersContainer = ({
     is_minimized_visible,
 }: React.PropsWithChildren<TTradeParametersContainer>) => {
     const is_minimized_and_visible = is_minimized && is_minimized_visible;
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
         trade_types_selection: false,
         trade_page: false,
@@ -26,8 +29,26 @@ const TradeParametersContainer = ({
         market_selector: false,
         trade_param_quick_adjustment: false,
     });
-    const { guideStates, setGuideState } = useGuideStates();
-    const { should_run_trade_param_quick_adjustment_guide } = guideStates;
+    const [show_guide, setShowGuide] = React.useState(false);
+    const timerRef = React.useRef<NodeJS.Timeout>();
+
+    React.useEffect(() => {
+        if (is_minimized_and_visible && !guide_dtrader_v2?.trade_param_quick_adjustment) {
+            timerRef.current = setTimeout(() => {
+                setShowGuide(true);
+                setGuideDtraderV2({ ...guide_dtrader_v2, trade_param_quick_adjustment: true });
+            }, 300);
+        }
+
+        return () => {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+            setShowGuide(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_minimized_and_visible]);
+
     const STEPS = [
         {
             content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
@@ -43,13 +64,6 @@ const TradeParametersContainer = ({
         },
     ];
 
-    React.useEffect(() => {
-        if (is_minimized_and_visible && !guide_dtrader_v2?.trade_param_quick_adjustment) {
-            setGuideState('should_run_trade_param_quick_adjustment_guide', true);
-            setGuideDtraderV2({ ...guide_dtrader_v2, trade_param_quick_adjustment: true });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_minimized_and_visible]);
     return (
         <section
             className={clsx('', {
@@ -57,13 +71,9 @@ const TradeParametersContainer = ({
                 'trade-params': !is_minimized_and_visible,
             })}
         >
-            <GuideContainer
-                should_run={
-                    should_run_trade_param_quick_adjustment_guide && !guide_dtrader_v2?.trade_param_quick_adjustment
-                }
-                steps={STEPS}
-                callback={() => setGuideState('should_run_market_selector_guide', false)}
-            />
+            {is_logged_in && (
+                <GuideContainer should_run={show_guide} steps={STEPS} callback={() => setShowGuide(false)} />
+            )}
             {!is_minimized_and_visible && (
                 <div className='trade-params__title'>
                     <Text>

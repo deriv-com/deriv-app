@@ -1,11 +1,12 @@
-import SubscriptionsManager from './subscriptions-manager';
-import request from './request';
 import {
-    TSocketResponse,
-    TSocketRequestPayload,
     TSocketEndpointNames,
+    TSocketRequestPayload,
+    TSocketResponse,
     TSocketSubscribableEndpointNames,
 } from '../../types';
+
+import request from './request';
+import SubscriptionsManager from './subscriptions-manager';
 
 /**
  * WSClient as main instance

@@ -1,41 +1,31 @@
 import { Icon, Popover, Text } from '@deriv/components';
 import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
 
-import useFreshChat from './use-freshchat';
-import useIntercom from './use-intercom';
+import useIsFreshchatAvailable from './useIsFreshchatAvailable';
+import useIsIntercomAvailable from './useIsIntercomAvailable';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
-    const { client } = useStore();
-    const { loginid, accounts } = client;
     const { isDesktop } = useDevice();
-
-    const active_account = accounts?.[loginid ?? ''];
-    const token = active_account ? active_account.token : null;
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
-    const freshChat = useFreshChat(token);
-    const intercom = useIntercom(token);
+    const fcAvailable = useIsFreshchatAvailable();
+    const icAvailable = useIsIntercomAvailable();
 
-    // eslint-disable-next-line no-nested-ternary
-    const chat = freshChat.flag ? freshChat : intercom.flag ? intercom : null;
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !fcAvailable && !icAvailable;
 
-    const isFreshchatEnabledButNotReady = (freshChat.flag && !chat?.is_ready) || (intercom.flag && !chat?.is_ready);
-
-    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !freshChat.flag && !intercom.flag;
-
-    if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
+    if (isNeitherChatNorLiveChatAvailable) {
         return null;
     }
 
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
     setInterval(() => {
-        if (freshChat.flag || intercom.flag) {
+        if (fcAvailable || icAvailable) {
             window.LiveChatWidget?.call('destroy');
         }
     }, 10);

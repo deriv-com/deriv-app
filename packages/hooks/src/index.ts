@@ -44,6 +44,8 @@ export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountN
 export { default as useIsRtl } from './useIsRtl';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useLiveChat } from './useLiveChat';
+export { default as useIntercom } from './useIntercom';
+export { default as useFreshChat } from './useFreshchat';
 export { default as useIsLiveChatWidgetAvailable } from './useIsLiveChatWidgetAvailable';
 export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';
 export { default as useLocalStorageData } from './useLocalStorageData';

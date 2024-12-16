@@ -10,6 +10,7 @@ const STEPS = [
         target: '.trade__parameter-tooltip-info',
         title: <Localize i18n_default_text='Explore trade types (1/6)' />,
         placement: 'top' as Step['placement'],
+        disableBeacon: true,
         zIndex: 999,
         styles: {
             spotlight: {

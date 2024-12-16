@@ -1,5 +1,5 @@
 import React from 'react';
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import Joyride, { ACTIONS, CallBackProps, STATUS } from 'react-joyride';
 import GuideTooltip from './guide-tooltip';
 import STEPS from './steps-config';
 
@@ -13,18 +13,28 @@ type TFinishedStatuses = CallBackProps['status'][];
 const GuideContainer = ({ onFinishGuide }: TGuideContainerProps) => {
     const [step_index, setStepIndex] = React.useState(0);
     const [should_run, setShouldRun] = React.useState(false);
-    const observer = new MutationObserver(() => {
-        if (document.getElementsByClassName('trade__parameter-tooltip-info').length > 0) {
-            setTimeout(() => {
-                setShouldRun(true);
-            }, 400);
-            observer.disconnect();
-        }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+
+    React.useEffect(() => {
+        // check local storage before doing this
+        const observer = new MutationObserver(() => {
+            if (document.getElementsByClassName('trade__parameter-tooltip-info').length > 0) {
+                setTimeout(() => {
+                    setShouldRun(true);
+                }, 400);
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }, []);
 
     const callbackHandle = (data: CallBackProps) => {
-        const { status, step, index } = data;
+        const { status, step, index, action, origin } = data;
+
+        // if user closes the guide, set should_run to false and this flag to local storage
+        if (action === ACTIONS.CLOSE) {
+            setShouldRun(false);
+        }
+
         if (index === 0) {
             step.disableBeacon = true;
         }
@@ -38,7 +48,7 @@ const GuideContainer = ({ onFinishGuide }: TGuideContainerProps) => {
             continuous
             callback={callbackHandle}
             disableCloseOnEsc
-            disableOverlayClose
+            disableOverlayClose={false}
             disableScrolling
             floaterProps={{
                 styles: {

@@ -1,14 +1,18 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
+
 import { Loading } from '@deriv/components';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
-const CFDCompareAccounts = React.lazy(() =>
-    import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
+import CallbackPage from '../../Modules/Callback/CallbackPage.tsx';
+
+const CFDCompareAccounts = React.lazy(
+    () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
 );
 
 // Error Routes
@@ -356,6 +360,12 @@ const getModules = () => {
             is_authenticated: false,
             getTitle: () => localize("Trader's Hub"),
         },
+        {
+            path: routes.callback_page,
+            component: CallbackPage,
+            is_authenticated: false,
+            getTitle: () => 'Callback',
+        },
     ];
 
     return modules;
@@ -372,6 +382,7 @@ const initRoutesConfig = () => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.traders_hub },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
+    { path: routes.callback_page, component: CallbackPage, getTitle: () => 'Callback' },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

@@ -77,7 +77,7 @@ export const getAppId = () => {
     return app_id;
 };
 
-export const getSocketURL = () => {
+export const getSocketURL = (is_wallets = false) => {
     const local_storage_server_url = window.localStorage.getItem('config.server_url');
     if (local_storage_server_url) return local_storage_server_url;
 
@@ -87,8 +87,10 @@ export const getSocketURL = () => {
         const params = new URLSearchParams(document.location.search.substring(1));
         active_loginid_from_url = params.get('acct1');
     }
-
-    const loginid = window.localStorage.getItem('active_loginid') || active_loginid_from_url;
+    const local_storage_id = is_wallets
+        ? window.localStorage.getItem('active_wallet_loginid')
+        : window.localStorage.getItem('active_loginid');
+    const loginid = local_storage_id || active_loginid_from_url;
     const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
 
     const server = is_real ? 'green' : 'blue';

@@ -17,10 +17,10 @@ import {
     CurrencyUsdIcon,
     CurrencyUsdtIcon,
     CurrencyXrpIcon,
-    DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    DerivProductDerivGoBrandLightLogoHorizontalIcon,
-    DerivProductDerivTraderBrandLightLogoHorizontalIcon,
-    PartnersProductSmarttraderBrandLightLogoIcon,
+    DerivProductBrandLightDerivBotLogoIcon,
+    DerivProductBrandLightDerivGoLogoIcon,
+    DerivProductBrandLightDerivTraderLogoIcon,
+    PartnersProductBrandLightSmarttraderLogoIcon,
     PaymentMethodBitcoinBrandIcon,
     PaymentMethodDerivDemoBrandDarkIcon,
     PaymentMethodEthereumBrandIcon,
@@ -29,13 +29,14 @@ import {
     PaymentMethodUsdCoinBrandIcon,
     PaymentMethodXrpBrandIcon,
 } from '@deriv/quill-icons';
+import AccountsDmt5GoldIcon from '../public/images/account-dmt5-gold-icon.svg';
 import { TCurrencyIconTypes, TIconTypes } from '../types';
 
 export const AppIcons: TIconTypes = {
-    bot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
-    derivgo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
-    smarttrader: PartnersProductSmarttraderBrandLightLogoIcon,
-    trader: DerivProductDerivTraderBrandLightLogoHorizontalIcon,
+    bot: DerivProductBrandLightDerivBotLogoIcon,
+    derivgo: DerivProductBrandLightDerivGoLogoIcon,
+    smarttrader: PartnersProductBrandLightSmarttraderLogoIcon,
+    trader: DerivProductBrandLightDerivTraderLogoIcon,
 };
 
 export const CFDPlatformIcons: TIconTypes = {
@@ -54,6 +55,11 @@ export const MT5MarketIcons: TIconTypes = {
 
 export const PlatformIcons: TIconTypes = {
     standard: AccountsDerivAccountLightIcon,
+};
+
+export const MT5GoldIcon = {
+    //TODO: replace with icon from quill-icons and change the extension of the file from tsx to ts
+    gold: AccountsDmt5GoldIcon,
 };
 
 // Currencies icons

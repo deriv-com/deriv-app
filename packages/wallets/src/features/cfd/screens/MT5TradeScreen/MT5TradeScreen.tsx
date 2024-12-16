@@ -6,9 +6,8 @@ import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { WalletBadge, WalletListCardBadge } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import { THooks } from '../../../../types';
+import { TAddedMT5Account, THooks } from '../../../../types';
 import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
-import { TAddedMT5Account } from '../../types';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
 import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
@@ -231,7 +230,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         {isDesktop ? (
-                            <MT5DesktopRedirectOption />
+                            <MT5DesktopRedirectOption mt5TradeAccount={details as THooks.MT5AccountsList} />
                         ) : (
                             <MT5MobileRedirectOption mt5TradeAccount={details as THooks.MT5AccountsList} />
                         )}

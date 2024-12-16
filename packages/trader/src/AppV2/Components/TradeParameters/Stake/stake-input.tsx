@@ -6,6 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { ActionSheet, TextFieldWithSteppers } from '@deriv-com/quill-ui';
 
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import useIsVirtualKeyboardOpen from 'AppV2/Hooks/useIsVirtualKeyboardOpen';
 import { getPayoutInfo, getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { ExpandedProposal, getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
@@ -52,6 +53,14 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
+
+    // scroll the page when a virtual keyboard pop up
+    const input_id = 'stake_input';
+    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
+    }, [should_scroll]);
 
     const {
         contract_payout: first_contract_payout,
@@ -289,6 +298,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     data-testid='dt_input_with_steppers'
                     decimals={getDecimalPlaces(currency)}
                     inputMode='decimal'
+                    id={input_id}
                     message={fe_stake_error || (should_show_stake_error && stake_error) || getInputMessage()}
                     minusDisabled={Number(proposal_request_values.amount) - 1 <= 0}
                     name='amount'

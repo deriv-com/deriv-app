@@ -1,10 +1,12 @@
-import { Popover, Icon, Text } from '@deriv/components';
-import { useDevice } from '@deriv-com/ui';
-import { Localize } from '@deriv/translations';
-import { useGrowthbookGetFeatureValue, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
-import useFreshChat from 'App/Components/Elements/LiveChat/use-freshchat';
+import { Icon, Popover, Text } from '@deriv/components';
+import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
+import { useDevice } from '@deriv-com/ui';
+
+import useFreshChat from './use-freshchat';
+import useIntercom from './use-intercom';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { client } = useStore();
@@ -15,16 +17,16 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const token = active_account ? active_account.token : null;
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+
     const freshChat = useFreshChat(token);
+    const intercom = useIntercom(token);
 
-    const [enable_freshworks_live_chat] = useGrowthbookGetFeatureValue({
-        featureFlag: 'enable_freshworks_live_chat',
-    });
+    // eslint-disable-next-line no-nested-ternary
+    const chat = freshChat.flag ? freshChat : intercom.flag ? intercom : null;
 
-    const chat = enable_freshworks_live_chat ? freshChat : null;
+    const isFreshchatEnabledButNotReady = (freshChat.flag && !chat?.is_ready) || (intercom.flag && !chat?.is_ready);
 
-    const isFreshchatEnabledButNotReady = enable_freshworks_live_chat && !chat?.isReady;
-    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !enable_freshworks_live_chat;
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !freshChat.flag && !intercom.flag;
 
     if (isFreshchatEnabledButNotReady || isNeitherChatNorLiveChatAvailable) {
         return null;
@@ -33,7 +35,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
     setInterval(() => {
-        if (enable_freshworks_live_chat) {
+        if (freshChat.flag) {
             window.LiveChatWidget?.call('destroy');
         }
     }, 10);

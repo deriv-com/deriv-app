@@ -1,14 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { TModifiedMT5Account } from 'src/features/cfd/types';
 import { useTranslations } from '@deriv-com/translations';
-import { ClientVerificationStatusBadge } from '../../../../components';
+import { TModifiedMT5Account, TWalletsMFAccountStatus } from '../../../../types';
 import { getClientVerification } from '../../../../utils';
+import { ClientVerificationStatusBadge } from '../../../ClientVerificationBadge';
 import { DocumentTile } from './components';
 import './DocumentsList.scss';
 
 type TDocumentsListProps = {
-    account: TModifiedMT5Account;
+    account: TModifiedMT5Account | TWalletsMFAccountStatus;
 };
 
 type TStatusBadgeProps = Record<TModifiedMT5Account['client_kyc_status']['poa_status' | 'poi_status'], JSX.Element>;
@@ -25,18 +25,8 @@ const statusBadge: TStatusBadgeProps = {
 const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const history = useHistory();
     const { localize } = useTranslations();
-    const {
-        hasPoaStatus,
-        hasPoiStatus,
-        hasRequiredTin,
-        hasTinStatus,
-        isPoaRequired,
-        isPoiRequired,
-        isTinRequired,
-        statuses,
-    } = getClientVerification(account);
-
-    const shouldShowTin = hasRequiredTin && hasTinStatus && isTinRequired;
+    const { hasPoaStatus, hasPoiStatus, isPoaRequired, isPoiRequired, isTinRequired, statuses } =
+        getClientVerification(account);
 
     return (
         <div className='wallets-documents-list'>
@@ -54,14 +44,16 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                     badge={statusBadge[statuses.poa_status]}
                     disabled={!isPoaRequired}
                     onClick={() => {
-                        localStorage.setItem('mt5_poa_status', statuses.poa_status);
+                        if ('platform' in account && account?.platform === 'mt5') {
+                            localStorage.setItem('mt5_poa_status', statuses.poa_status);
+                        }
                         // @ts-expect-error the following link is not part of wallets routes config
                         history.push('/account/proof-of-address');
                     }}
                     title={localize('Proof of address')}
                 />
             )}
-            {shouldShowTin && (
+            {isTinRequired && (
                 <DocumentTile
                     // @ts-expect-error the following link is not part of wallets routes config
                     onClick={() => history.push('/account/personal-details')}

@@ -68,7 +68,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                     switching_tp_sl: true,
                 }),
                 hasCloseButton: true,
-                delay: 100,
             });
         }
 

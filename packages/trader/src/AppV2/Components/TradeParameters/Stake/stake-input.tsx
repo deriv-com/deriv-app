@@ -208,7 +208,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     };
 
                     setDetails(prev => ({ ...prev, ...new_stake_details_values }));
-                }
+                } else if (!proposal && is_multiplier)
+                    setDetails(prev => ({ ...prev, ...{ commission: 0, stop_out: 0 } }));
             }
         };
 

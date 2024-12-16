@@ -49,7 +49,7 @@ const App: React.FC<TProps> = ({
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
                     <React.Suspense fallback={<Loader />}>
                         <ModalProvider>
-                            {Notifications && <Notifications />}
+                            {!isWalletsOnboardingTourGuideVisible && Notifications && <Notifications />}
                             <AppContent
                                 isWalletsOnboardingTourGuideVisible={isWalletsOnboardingTourGuideVisible}
                                 setPreferredLanguage={setPreferredLanguage}

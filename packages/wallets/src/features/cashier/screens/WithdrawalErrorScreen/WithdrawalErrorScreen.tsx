@@ -38,11 +38,11 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
     }, [currentLang, i18nLanguage]);
 
     const defaultContent: TErrorContent = {
-        buttonText: <Localize i18n_default_text='Refresh page' />,
+        buttonText: <Localize i18n_default_text='Try again' />,
         buttonVariant: 'ghost',
         message: error.message,
         onClick: () => window.location.reload(),
-        title: <Localize i18n_default_text='Something went wrong' />,
+        title: <Localize i18n_default_text='Oops, something went wrong!' />,
     };
 
     const withdrawalErrorCodeHandlers: TErrorCodeHandlers = {

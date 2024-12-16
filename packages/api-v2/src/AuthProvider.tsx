@@ -24,7 +24,6 @@ type AuthContextType = {
     error: unknown;
     isSwitching: boolean;
     isInitializing: boolean;
-    createNewWSConnection: () => void;
     subscribe: <T extends TSocketSubscribableEndpointNames>(
         name: T,
         payload?: TSocketRequestPayload<T>
@@ -156,10 +155,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
             localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
             const isDemo = activeAccount.is_virtual;
-            const shouldSWitchEndpoint =
+            const shouldCreateNewWSConnection =
                 (isDemo && wsClient?.endpoint === AppIDConstants.environments.real) ||
                 (!isDemo && wsClient?.endpoint === AppIDConstants.environments.demo);
-            if (shouldSWitchEndpoint) {
+            if (shouldCreateNewWSConnection) {
                 createNewWSConnection();
             }
         },

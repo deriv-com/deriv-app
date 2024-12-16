@@ -35,7 +35,7 @@
         "@deriv-com/utils": "^0.0.40",
         "@deriv-com/ui": "1.36.4",
         "@deriv/api": "^1.0.0",
-        "@deriv-com/quill-ui": "1.24.2",
+        "@deriv-com/quill-ui": "1.24.3",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/quill-icons": "2.2.1",

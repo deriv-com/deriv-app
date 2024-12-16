@@ -7,12 +7,12 @@ import {
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    DerivProductDerivXBrandDarkWordmarkIcon,
+    DerivProductBrandDarkDerivXWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
     LabelPairedWindowsXlIcon,
-    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
-    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    PartnersProductBrandDarkDerivCtraderWordmarkIcon,
+    PartnersProductBrandLightDerivMt5LogoWordmarkIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
@@ -169,7 +169,7 @@ export const getAppToContentMapper = (
             title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
-            icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
+            icon: <PartnersProductBrandLightDerivMt5LogoWordmarkIcon height={32} width={32} />,
             link: mt5TradeAccount ? getWebtraderUrl({ mt5TradeAccount }) : '',
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
@@ -183,8 +183,8 @@ export const getAppToContentMapper = (
     }) as const;
 
 export const PlatformToLabelIconMapper = {
-    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
-    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
+    ctrader: <PartnersProductBrandDarkDerivCtraderWordmarkIcon height={8} width={58} />,
+    dxtrade: <DerivProductBrandDarkDerivXWordmarkIcon height={10} width={35} />,
 } as const;
 
 export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTranslations>['localize']) =>

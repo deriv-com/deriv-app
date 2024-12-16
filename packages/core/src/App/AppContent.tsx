@@ -8,6 +8,7 @@ import {
     useIntercom,
     useLiveChat,
     useOauth2,
+    useSilentLoginAndLogout,
 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
@@ -41,6 +42,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         landing_company_shortcode,
         currency,
         residence,
+        logout,
         email,
         setIsPasskeySupported,
         account_settings,
@@ -55,7 +57,18 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2();
+    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
+        handleLogout: async () => {
+            await logout();
+        },
+    });
+
+    useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
+    });
+
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
     });
@@ -138,10 +151,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         }
     }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
+    const isCallBackPage = window.location.pathname.includes('callback');
+
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
-            <Header />
+            {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
                     {/* TODO: [trader-remove-client-base] */}

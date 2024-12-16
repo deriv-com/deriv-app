@@ -78,7 +78,7 @@ type TPasswordModalHeaderProps = {
 };
 
 type TCFDPasswordFormReusedProps = {
-    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+    platform: (typeof CFD_PLATFORMS)[keyof typeof CFD_PLATFORMS];
     error_message: string;
     validatePassword: (values: TCFDPasswordFormValues) => FormikErrors<TCFDPasswordFormValues>;
 };
@@ -119,7 +119,7 @@ type TCFDPasswordFormProps = TCFDPasswordFormReusedProps & {
 type TCFDPasswordModalProps = {
     error_type?: string;
     form_error?: string;
-    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+    platform: (typeof CFD_PLATFORMS)[keyof typeof CFD_PLATFORMS];
 };
 
 const PasswordModalHeader = ({
@@ -368,7 +368,10 @@ const CFDPasswordForm = observer(
         const { isDesktop } = useDevice();
         const { jurisdiction_selected_shortcode } = useCfdStore();
         const [checked, setChecked] = React.useState(false);
-        const need_tnc = jurisdiction_selected_shortcode !== 'svg' && account_type.category === CATEGORY.REAL;
+        const need_tnc =
+            jurisdiction_selected_shortcode !== 'svg' &&
+            account_type.category === CATEGORY.REAL &&
+            platform !== CFD_PLATFORMS.DXTRADE;
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -486,7 +489,7 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
-                            {account_type.category === CATEGORY.REAL && (
+                            {account_type.category === CATEGORY.REAL && platform !== CFD_PLATFORMS.DXTRADE && (
                                 <CfdPasswordModalTnc
                                     className='cfd-password-modal-tnc--bottom'
                                     platform={platform}

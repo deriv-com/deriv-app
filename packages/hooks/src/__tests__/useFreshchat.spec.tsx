@@ -22,10 +22,10 @@ describe('useFreshChat', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        global.window.FreshChat = mockFreshChat;
-        global.window.fcSettings = {};
+        (global.window as any).FreshChat = mockFreshChat;
+        (global.window as any).fcSettings = {};
         jest.useFakeTimers();
-        global.window.fcWidget = { isInitialized: jest.fn() };
+        (global.window as any).fcWidget = { isInitialized: jest.fn() };
     });
 
     afterEach(() => {
@@ -66,17 +66,15 @@ describe('useFreshChat', () => {
 describe('useIsFreshchatAvailable', () => {
     beforeEach(() => {
         jest.useFakeTimers();
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        global.window.fcWidget = { isInitialized: jest.fn() };
+        (window as any).fcWidget = { isInitialized: jest.fn() };
     });
 
     afterEach(() => {
         jest.useRealTimers();
     });
+
     it('should return true when Freshchat is initialized', () => {
-        // @ts-expect-error fcWidget is added to window in beforeEach
-        window.fcWidget.isInitialized.mockReturnValue(true);
+        ((window as any).fcWidget.isInitialized as jest.Mock).mockReturnValue(true);
 
         const { result } = renderHook(() => useIsFreshchatAvailable());
 
@@ -86,9 +84,9 @@ describe('useIsFreshchatAvailable', () => {
 
         expect(result.current).toBe(true);
     });
+
     it('should return false when Freshchat initialization times out', () => {
-        // @ts-expect-error fcWidget is added to window in beforeEach
-        window.fcWidget.isInitialized.mockReturnValue(false);
+        ((window as any).fcWidget.isInitialized as jest.Mock).mockReturnValue(false);
 
         const { result } = renderHook(() => useIsFreshchatAvailable());
 

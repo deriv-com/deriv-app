@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
+import { useCreateWallet, useIsEuRegion, useSettings } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
@@ -12,6 +12,7 @@ import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletError } from '../WalletError';
+import { WalletCoolingOffExpirationModal } from '../WalletCoolingOffExpirationModal';
 
 const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     currency,
@@ -27,6 +28,10 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const { localize } = useTranslations();
     const { data: isEuRegion } = useIsEuRegion();
+    const {
+        data: { cooling_off_expiration_date },
+    } = useSettings();
+    const [shouldShowCoolingOffExpirationModal, setShouldShowCoolingOffExpirationModal] = useState(false);
 
     useEffect(
         () => {
@@ -64,48 +69,66 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     );
 
     return (
-        <div className='wallets-add-more__banner'>
-            <div className='wallets-add-more__banner-header'>
-                <WalletCurrencyIcon currency={currency ?? 'USD'} size={isDesktop ? 'sm' : 'xs'} />
-            </div>
-            <Button
-                color='white'
-                disabled={isAdded || isWalletCreationLoading}
-                icon={
-                    // TODO: Replace hex colors with values from Deriv UI
-                    isAdded ? (
-                        <LabelPairedCheckMdFillIcon fill='#333333' />
-                    ) : (
-                        <LabelPairedPlusMdFillIcon fill='#333333' />
-                    )
-                }
-                onClick={async e => {
-                    e.stopPropagation();
-
-                    if (!currency) return;
-
-                    if (isEuRegion) {
-                        return redirectToOutSystems(currency);
+        <>
+            <div className='wallets-add-more__banner'>
+                <div className='wallets-add-more__banner-header'>
+                    <WalletCurrencyIcon currency={currency ?? 'USD'} size={isDesktop ? 'sm' : 'xs'} />
+                </div>
+                <Button
+                    color='white'
+                    disabled={isAdded || isWalletCreationLoading}
+                    icon={
+                        // TODO: Replace hex colors with values from Deriv UI
+                        isAdded ? (
+                            <LabelPairedCheckMdFillIcon fill='#333333' />
+                        ) : (
+                            <LabelPairedPlusMdFillIcon fill='#333333' />
+                        )
                     }
+                    onClick={async e => {
+                        e.stopPropagation();
 
-                    const createAccountResponse = await mutateAsync({
-                        account_type: isCrypto ? 'crypto' : 'doughflow',
-                        currency,
-                    });
+                        if (!currency) return;
 
-                    const newAccountWallet = createAccountResponse?.new_account_wallet;
+                        if (isEuRegion && cooling_off_expiration_date) {
+                            setShouldShowCoolingOffExpirationModal(true);
+                        }
 
-                    if (!newAccountWallet) return;
+                        if (isEuRegion) {
+                            return redirectToOutSystems(currency);
+                        }
 
-                    await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: `0.00 ${currency}` });
-                    switchWalletAccount(newAccountWallet.client_id);
-                }}
-                size={isDesktop ? 'lg' : 'sm'}
-                textSize='sm'
-            >
-                {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
-            </Button>
-        </div>
+                        const createAccountResponse = await mutateAsync({
+                            account_type: isCrypto ? 'crypto' : 'doughflow',
+                            currency,
+                        });
+
+                        const newAccountWallet = createAccountResponse?.new_account_wallet;
+
+                        if (!newAccountWallet) return;
+
+                        await addWalletAccountToLocalStorage({
+                            ...newAccountWallet,
+                            display_balance: `0.00 ${currency}`,
+                        });
+                        switchWalletAccount(newAccountWallet.client_id);
+                    }}
+                    size={isDesktop ? 'lg' : 'sm'}
+                    textSize='sm'
+                >
+                    {isAdded ? <Localize i18n_default_text='Added' /> : <Localize i18n_default_text='Add' />}
+                </Button>
+            </div>
+            {shouldShowCoolingOffExpirationModal && cooling_off_expiration_date && (
+                <WalletCoolingOffExpirationModal
+                    coolingOffExpirationDate={cooling_off_expiration_date}
+                    isVisible={shouldShowCoolingOffExpirationModal}
+                    onClose={() => {
+                        setShouldShowCoolingOffExpirationModal(false);
+                    }}
+                />
+            )}
+        </>
     );
 };
 

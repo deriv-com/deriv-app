@@ -1,12 +1,9 @@
 import { Icon, Popover, Text } from '@deriv/components';
-import { useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import { useIsFreshchatAvailable, useIsIntercomAvailable, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
-
-import useIsFreshchatAvailable from './useIsFreshchatAvailable';
-import useIsIntercomAvailable from './useIsIntercomAvailable';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { isDesktop } = useDevice();

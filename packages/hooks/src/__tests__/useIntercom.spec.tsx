@@ -3,7 +3,7 @@ import { useScript } from 'usehooks-ts';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';
-import useIntercom from '../useIntercom';
+import useIntercom, { useIsIntercomAvailable } from '../useIntercom';
 
 jest.mock('usehooks-ts', () => ({
     useScript: jest.fn(),
@@ -97,5 +97,30 @@ describe('useIntercom', () => {
         expect(global.clearInterval).toHaveBeenCalled();
 
         jest.useRealTimers();
+    });
+});
+
+describe('useIsIntercomAvailable', () => {
+    beforeEach(() => {
+        jest.useFakeTimers();
+        delete (window as any).Intercom;
+    });
+
+    afterEach(() => {
+        jest.useRealTimers();
+    });
+
+    it('should return false when Intercom is not available', () => {
+        const { result } = renderHook(() => useIsIntercomAvailable());
+        expect(result.current).toBe(false);
+    });
+
+    it('should return true when Intercom becomes available', () => {
+        const { result } = renderHook(() => useIsIntercomAvailable());
+
+        (window as any).Intercom = jest.fn();
+        jest.advanceTimersByTime(100);
+
+        expect(result.current).toBe(true);
     });
 });

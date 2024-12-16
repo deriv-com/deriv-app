@@ -14,8 +14,8 @@ type TStakeDetailsProps = Pick<TTradeStore, 'contract_type' | 'currency' | 'has_
         error_1?: string;
         error_2?: string;
         first_contract_payout: number;
-        is_first_payout_exceed?: boolean;
-        is_second_payout_exceed?: boolean;
+        is_first_payout_exceeded?: boolean;
+        is_second_payout_exceeded?: boolean;
         max_payout: string | number;
         max_stake: string | number;
         min_stake: string | number;
@@ -39,8 +39,8 @@ const StakeDetails = ({
     should_show_payout_details,
 }: TStakeDetailsProps) => {
     const [displayed_values, setDisplayedValues] = React.useState({
-        is_first_payout_exceed: false,
-        is_second_payout_exceed: false,
+        is_first_payout_exceeded: false,
+        is_second_payout_exceeded: false,
         commission: '',
         first_contract_payout: '',
         max_payout: '',
@@ -58,8 +58,8 @@ const StakeDetails = ({
         const {
             commission: commission_value,
             first_contract_payout,
-            is_first_payout_exceed,
-            is_second_payout_exceed,
+            is_first_payout_exceeded,
+            is_second_payout_exceeded,
             second_contract_payout,
             stop_out: stop_out_value,
             max_payout,
@@ -73,8 +73,8 @@ const StakeDetails = ({
         if (
             commission_value !== new_commission ||
             first_contract_payout !== new_payout_1 ||
-            displayed_values.is_first_payout_exceed !== is_first_payout_exceed ||
-            displayed_values.is_second_payout_exceed !== is_second_payout_exceed ||
+            displayed_values.is_first_payout_exceeded !== is_first_payout_exceeded ||
+            displayed_values.is_second_payout_exceeded !== is_second_payout_exceeded ||
             second_contract_payout !== new_payout_2 ||
             stop_out_value !== new_stop_out ||
             max_payout !== new_max_payout
@@ -82,8 +82,8 @@ const StakeDetails = ({
             setDisplayedValues({
                 commission: new_commission,
                 first_contract_payout: new_payout_1,
-                is_first_payout_exceed,
-                is_second_payout_exceed,
+                is_first_payout_exceeded,
+                is_second_payout_exceeded,
                 second_contract_payout: new_payout_2,
                 stop_out: new_stop_out,
                 max_payout: new_max_payout,
@@ -114,7 +114,7 @@ const StakeDetails = ({
             }),
             is_displayed: !!contract_types.length && should_show_payout_details,
             label: payout_title,
-            has_error: details.is_first_payout_exceed,
+            has_error: details.is_first_payout_exceeded,
             value: displayed_values.first_contract_payout,
         },
         {
@@ -123,7 +123,7 @@ const StakeDetails = ({
             }),
             is_displayed: contract_types.length > 1 && should_show_payout_details,
             label: payout_title,
-            has_error: details.is_second_payout_exceed,
+            has_error: details.is_second_payout_exceeded,
             value: displayed_values.second_contract_payout,
         },
     ];

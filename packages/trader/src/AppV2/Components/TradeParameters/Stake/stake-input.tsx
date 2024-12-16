@@ -54,7 +54,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
     const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
 
-    // scroll the page when a virtual keyboard pop up
+    // scroll the page when a virtual keyboard pops up
     const input_id = 'stake_input';
     const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
 
@@ -79,8 +79,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         error_1: first_payout_error,
         error_2: second_payout_error,
         first_contract_payout,
-        is_first_payout_exceed: !!first_payout_error && first_contract_payout > max_payout,
-        is_second_payout_exceed: !!second_payout_error && second_contract_payout > max_payout,
+        is_first_payout_exceeded: !!first_payout_error && first_contract_payout > max_payout,
+        is_second_payout_exceeded: !!second_payout_error && second_contract_payout > max_payout,
         second_contract_payout,
         max_payout,
         max_stake,
@@ -178,7 +178,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                 const new_stake_details_values = {
                     ...(max_payout ? { max_payout } : {}),
                     first_contract_payout: contract_payout || 0,
-                    is_first_payout_exceed: !!error && contract_payout > max_payout,
+                    is_first_payout_exceeded: !!error && contract_payout > max_payout,
                     error_1: error,
                 };
 
@@ -235,7 +235,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             const new_stake_details_values = {
                 ...(max_payout ? { max_payout } : {}),
                 second_contract_payout: contract_payout || 0,
-                is_second_payout_exceed: !!error && contract_payout > max_payout,
+                is_second_payout_exceeded: !!error && contract_payout > max_payout,
                 error_2: error,
             };
 

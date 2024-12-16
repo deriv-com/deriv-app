@@ -371,7 +371,7 @@ const CFDPasswordForm = observer(
         const need_tnc =
             jurisdiction_selected_shortcode !== 'svg' &&
             account_type.category === CATEGORY.REAL &&
-            platform !== CFD_PLATFORMS.DXTRADE;
+            platform === CFD_PLATFORMS.MT5;
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -489,7 +489,7 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
-                            {account_type.category === CATEGORY.REAL && platform !== CFD_PLATFORMS.DXTRADE && (
+                            {account_type.category === CATEGORY.REAL && platform === CFD_PLATFORMS.MT5 && (
                                 <CfdPasswordModalTnc
                                     className='cfd-password-modal-tnc--bottom'
                                     platform={platform}

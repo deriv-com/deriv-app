@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -8,6 +8,7 @@ import useSyncLocalStorageClientAccounts from '../../../hooks/useSyncLocalStorag
 import useWalletAccountSwitcher from '../../../hooks/useWalletAccountSwitcher';
 import { ModalProvider } from '../../ModalProvider';
 import WalletsAddMoreCardBanner from '../WalletsAddMoreCardBanner';
+import WalletsAuthProvider from '../../../AuthProvider';
 
 type TWalletError = {
     buttonText: string;
@@ -21,6 +22,7 @@ type TWalletAddedSuccess = {
 };
 
 jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(() => ({
         data: { loginid: 'CRW1' },
     })),
@@ -81,7 +83,13 @@ jest.mock('../../WalletAddedSuccess', () => ({
     ),
 }));
 
-const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
+const wrapper = ({ children }: PropsWithChildren) => (
+    <APIProvider>
+        <WalletsAuthProvider>
+            <ModalProvider>{children}</ModalProvider>{' '}
+        </WalletsAuthProvider>
+    </APIProvider>
+);
 
 describe('WalletsAddMoreCardBanner', () => {
     const mockMutate = jest.fn().mockResolvedValue({ new_account_wallet: { client_id: '123', currency: 'USD' } });
@@ -123,33 +131,21 @@ describe('WalletsAddMoreCardBanner', () => {
 
     it('should render the default component correctly', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency={undefined} is_added={false} is_crypto={false} />
-            </ModalProvider>
-        );
+        render(<WalletsAddMoreCardBanner currency={undefined} is_added={false} is_crypto={false} />, { wrapper });
 
         expect(screen.getByTestId('wallet-currency-icon')).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('Add');
     });
 
     it('should disable the button when is added is true', () => {
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={true} is_crypto={false} />
-            </ModalProvider>
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={true} is_crypto={false} />, { wrapper });
 
         expect(screen.getByRole('button')).toBeDisabled();
         expect(screen.getByRole('button')).toHaveTextContent('Added');
     });
 
     it('should call mutate with correct arguments when add button is clicked', () => {
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />
-            </ModalProvider>
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
 
         fireEvent.click(screen.getByText('Add'));
 
@@ -170,12 +166,10 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'success',
         });
 
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />
-            </ModalProvider>,
-            { container: $root }
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, {
+            container: $root,
+            wrapper,
+        });
         expect(screen.getByTestId('wallet-added-success')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('Secondary'));
@@ -196,12 +190,10 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'success',
         });
 
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />
-            </ModalProvider>,
-            { container: $root }
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, {
+            container: $root,
+            wrapper,
+        });
         expect(screen.getByTestId('wallet-added-success')).toBeInTheDocument();
 
         fireEvent.click(screen.getByText('Primary'));
@@ -218,12 +210,10 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'error',
         });
 
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />
-            </ModalProvider>,
-            { container: $root }
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, {
+            container: $root,
+            wrapper,
+        });
 
         expect(screen.getByTestId('wallet-error')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
@@ -241,11 +231,7 @@ describe('WalletsAddMoreCardBanner', () => {
             status: 'success',
         });
 
-        render(
-            <ModalProvider>
-                <WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />
-            </ModalProvider>
-        );
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
 
         fireEvent.click(screen.getByText('Add'));
 

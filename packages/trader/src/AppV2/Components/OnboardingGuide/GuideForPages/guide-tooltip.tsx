@@ -9,7 +9,14 @@ export interface GuideTooltipProps extends TooltipRenderProps {
     setStepIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps, setStepIndex }: GuideTooltipProps) => {
+const GuideTooltip = ({
+    isLastStep,
+    primaryProps,
+    closeProps,
+    step,
+    tooltipProps,
+    setStepIndex,
+}: GuideTooltipProps) => {
     const swipe_handlers = useSwipeable({
         onSwipedUp: () => {
             document.querySelector('.trade__chart')?.scrollIntoView();
@@ -40,7 +47,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                             {step.title}
                         </CaptionText>
                         <IconButton
-                            onClick={skipProps.onClick}
+                            onClick={closeProps.onClick}
                             icon={
                                 <LabelPairedXmarkSmBoldIcon
                                     fill='var(--component-textIcon-inverse-prominent)'

@@ -69,6 +69,13 @@
         &--with-button {
             min-height: 13.6rem;
         }
+
+        &-tooltip-info {
+            position: absolute;
+            top: 20px;
+            bottom: 95px;
+            width: 100%;
+        }
     }
 }
 .trade-types-dialog {

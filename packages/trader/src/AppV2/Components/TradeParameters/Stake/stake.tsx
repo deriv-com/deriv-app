@@ -282,6 +282,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info' />
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <ActionSheet.Content className='stake-content'>
                         <TextFieldWithSteppers

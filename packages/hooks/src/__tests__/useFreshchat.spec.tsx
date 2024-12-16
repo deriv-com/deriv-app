@@ -22,12 +22,9 @@ describe('useFreshChat', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        // @ts-expect-error FreshChat is dynamically added to window
         global.window.FreshChat = mockFreshChat;
-        // @ts-expect-error fcSettings is dynamically added to window
         global.window.fcSettings = {};
         jest.useFakeTimers();
-        // @ts-expect-error fcWidget is dynamically added to window
         global.window.fcWidget = { isInitialized: jest.fn() };
     });
 

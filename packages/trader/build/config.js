@@ -1,7 +1,6 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./loaders-config');
-// const { transformContentUrlBase } = require('./helpers');
 
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
@@ -27,6 +26,8 @@ const htmlOutputConfig = () => ({
 const cssConfig = () => ({
     filename: 'trader/css/trader.main.[contenthash].css',
     chunkFilename: 'trader/css/trader.[name].[contenthash].css',
+    // filename: 'css/trader.main.[contenthash].css',
+    // chunkFilename: 'css/trader.[name].[contenthash].css',
 });
 
 const stylelintConfig = () => ({

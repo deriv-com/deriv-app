@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import { Chat } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -26,13 +27,6 @@ jest.mock('@deriv-com/translations', () => ({
     },
     useTranslations: jest.fn(),
 }));
-
-window.LiveChatWidget = {
-    call: jest.fn(),
-    get: jest.fn(),
-    init: jest.fn(),
-    on: jest.fn(),
-};
 
 describe('WalletsDisabledAccountsBanner', () => {
     const mockDisabledAccounts: ComponentProps<typeof WalletsDisabledAccountsBanner>['disabledAccounts'] = [
@@ -90,6 +84,14 @@ describe('WalletsDisabledAccountsBanner', () => {
         return text.replace('{{title}}', title);
     });
 
+    beforeEach(() => {
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
     beforeAll(() => {
         (useTranslations as jest.Mock).mockReturnValue({ localize: mockLocalize });
     });
@@ -110,10 +112,11 @@ describe('WalletsDisabledAccountsBanner', () => {
         render(<WalletsDisabledAccountsBanner disabledAccounts={[mockDisabledAccounts[0], mockDisabledAccounts[1]]} />);
 
         const chatButton = screen.getByRole('button');
-        chatButton.addEventListener('click', () => window.LiveChatWidget.call('maximize'));
+
+        chatButton.addEventListener('click', () => Chat.open());
         await userEvent.click(chatButton);
 
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 
     it('renders the icon', () => {

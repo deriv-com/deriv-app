@@ -2,10 +2,10 @@ import React from 'react';
 import { ActionSheet, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
-const BarrierDescription = ({ isDays }: { isDays: boolean }) => {
+const BarrierDescription = ({ is_days }: { is_days: boolean }) => {
     return (
         <ActionSheet.Content className='barrier-params__description-content'>
-            {isDays ? (
+            {is_days ? (
                 <div className='content-section'>
                     <Text bold>
                         <Localize i18n_default_text='Fixed barrier:' />

@@ -117,11 +117,32 @@ export type TCurrencyIconTypes = Record<THooks.WalletAccountsList['wallet_curren
 
 export type TProductForMarketDetails =
     | NonNullable<Exclude<THooks.AvailableMT5Accounts['product'], 'financial' | 'standard'>>
+    | 'gold'
     | 'stp';
 
 export type TTranslations = ReturnType<typeof useTranslations>;
 
-export type TLanguageType = 'AR' | 'EN' | 'ES' | 'FR' | 'RU';
+export type TLanguageType =
+    | 'AR'
+    | 'BN'
+    | 'DE'
+    | 'EN'
+    | 'ES'
+    | 'FR'
+    | 'IT'
+    | 'KM'
+    | 'KO'
+    | 'PL'
+    | 'PT'
+    | 'RU'
+    | 'SI'
+    | 'SW'
+    | 'TH'
+    | 'TR'
+    | 'UZ'
+    | 'VI'
+    | 'ZH_CN'
+    | 'ZH_TW';
 
 export type TProductDetails = { max_leverage: string; min_spread: string };
 /* eslint-disable camelcase */

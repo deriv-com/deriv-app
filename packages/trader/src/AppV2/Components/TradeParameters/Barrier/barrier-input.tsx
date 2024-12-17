@@ -20,7 +20,7 @@ const chips_options = [
     },
 ];
 const BarrierInput = observer(
-    ({ isDays, onClose, is_open }: { isDays: boolean; onClose: () => void; is_open: boolean }) => {
+    ({ is_days, onClose, is_open }: { is_days: boolean; onClose: () => void; is_open: boolean }) => {
         const trade_store = useTraderStore();
         const { barrier_1, onChange, tick_data, trade_types } = trade_store;
         const [value, setValue] = useState(String(barrier_1.replace(/[+-]/g, '')));
@@ -89,11 +89,11 @@ const BarrierInput = observer(
             setShouldShowError(false);
             const sign = barrier_1[0];
 
-            if (sign == '+' && index == 0) {
+            if (sign === '+' && index === 0) {
                 setValue(barrier_1.replace(/[+-]/g, ''));
-            } else if (sign === '-' && index == 1) {
+            } else if (sign === '-' && index === 1) {
                 setValue(barrier_1.replace(/[+-]/g, ''));
-            } else if (index == 2 && !['+', '-'].includes(sign)) {
+            } else if (index === 2 && !['+', '-'].includes(sign)) {
                 setValue(barrier_1);
             } else {
                 setValue('');
@@ -121,7 +121,7 @@ const BarrierInput = observer(
             <>
                 <ActionSheet.Content>
                     <div className='barrier-params'>
-                        {!isDays && (
+                        {!is_days && (
                             <div className='barrier-params__chips'>
                                 {chips_options.map((item, index) => (
                                     <Chip.Selectable
@@ -136,7 +136,7 @@ const BarrierInput = observer(
                         )}
 
                         <div>
-                            {option === 2 || isDays ? (
+                            {option === 2 || is_days ? (
                                 <TextField
                                     customType='commaRemoval'
                                     name='barrier_1'

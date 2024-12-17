@@ -38,7 +38,7 @@ describe('BarrierInput', () => {
         render(
             <TraderProviders store={mocked_store}>
                 <ModulesProvider store={mocked_store}>
-                    <BarrierInput isDays={false} onClose={onClose} is_open={is_open} />
+                    <BarrierInput is_days={false} onClose={onClose} is_open={is_open} />
                 </ModulesProvider>
             </TraderProviders>
         );

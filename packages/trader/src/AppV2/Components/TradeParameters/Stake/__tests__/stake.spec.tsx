@@ -136,7 +136,6 @@ describe('Stake', () => {
     it('does not render payout details for Accumulators', async () => {
         default_mock_store.modules.trade.is_accumulator = true;
         render(<MockedStake />);
-
         await userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });
@@ -144,7 +143,6 @@ describe('Stake', () => {
     it('does not render payout details for Turbos', async () => {
         default_mock_store.modules.trade.is_turbos = true;
         render(<MockedStake />);
-
         await userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });
@@ -152,7 +150,6 @@ describe('Stake', () => {
     it('does not render payout details for Vanillas', async () => {
         default_mock_store.modules.trade.is_vanilla = true;
         render(<MockedStake />);
-
         await userEvent.click(screen.getByText(stake_param_label));
         expect(screen.queryByText(/payout/i)).not.toBeInTheDocument();
     });

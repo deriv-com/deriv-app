@@ -28,7 +28,6 @@ import {
     showUnavailableLocationError,
     getCurrencyDisplayCode,
     BARRIER_COLORS,
-    BARRIER_LINE_STYLES,
     TRADE_TYPES,
     hasBarrier,
     isHighLow,
@@ -55,7 +54,6 @@ import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
 import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
-import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
 import { TContractTypesList, TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
 import debounce from 'lodash.debounce';
@@ -265,7 +263,6 @@ export default class TradeStore extends BaseStore {
     barrier_count = 0;
     main_barrier: ChartBarrierStore | null = null;
     barriers: TBarriers = [];
-    hovered_barrier = '';
     barrier_choices: string[] = [];
     payout_choices: string[] = [];
     // Start Time
@@ -374,7 +371,6 @@ export default class TradeStore extends BaseStore {
             'has_take_profit',
             'has_stop_loss',
             'has_cancellation',
-            'hovered_barrier',
             'short_barriers',
             'long_barriers',
             'strike_price_choices',
@@ -445,7 +441,6 @@ export default class TradeStore extends BaseStore {
             has_stop_loss: observable,
             has_symbols_for_v2: observable,
             has_take_profit: observable,
-            hovered_barrier: observable,
             hovered_contract_type: observable,
             is_accumulator: computed,
             is_chart_loading: observable,
@@ -478,7 +473,6 @@ export default class TradeStore extends BaseStore {
             ref: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
-            setHoveredBarrier: action.bound,
             setDefaultStake: action.bound,
             sessions: observable,
             setDefaultGrowthRate: action.bound,
@@ -990,10 +984,6 @@ export default class TradeStore extends BaseStore {
         this.root_store.common.setSelectedContractType(this.contract_type);
     }
 
-    setHoveredBarrier(hovered_value: string) {
-        this.hovered_barrier = hovered_value;
-    }
-
     setDefaultStake(default_stake?: number) {
         this.default_stake = default_stake;
     }
@@ -1064,16 +1054,10 @@ export default class TradeStore extends BaseStore {
         const { contract_type, barrier, barrier2 } = proposal_info;
         if (isBarrierSupported(contract_type)) {
             // create barrier only when it's available in response
-            this.main_barrier = new ChartBarrierStore(
-                this.hovered_barrier || barrier,
-                barrier2,
-                this.onChartBarrierChange,
-                {
-                    color: this.hovered_barrier ? getHoveredColor(contract_type) : BARRIER_COLORS.BLUE,
-                    line_style: this.hovered_barrier && BARRIER_LINE_STYLES.DASHED,
-                    not_draggable: this.is_turbos || this.is_vanilla,
-                }
-            );
+            this.main_barrier = new ChartBarrierStore(barrier, barrier2, this.onChartBarrierChange, {
+                color: BARRIER_COLORS.BLUE,
+                not_draggable: this.is_turbos || this.is_vanilla,
+            });
         } else {
             this.main_barrier = null;
         }

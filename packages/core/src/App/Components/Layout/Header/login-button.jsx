@@ -16,7 +16,7 @@ const LoginButton = ({ className }) => {
     const { isOAuth2Enabled } = useOauth2({});
     const isUserLoggedState = Cookies.get('logged_state') === 'true';
 
-    if (isUserLoggedState) {
+    if (isUserLoggedState && isOAuth2Enabled) {
         return <PulsatingSkeleton className={className} />;
     }
 

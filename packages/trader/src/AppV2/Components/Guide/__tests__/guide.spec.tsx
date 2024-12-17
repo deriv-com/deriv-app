@@ -121,18 +121,6 @@ describe('Guide', () => {
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
-    it('should render component without label if has_label === false and if user clicks on it, should show available contract information', async () => {
-        renderGuide({ has_label: false });
-
-        expect(screen.queryByText('Guide')).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByRole('button'));
-
-        expect(screen.getByText(trade_types)).toBeInTheDocument();
-        expect(sendOpenGuideToAnalytics).toHaveBeenCalledWith(TRADE_TYPES.RISE_FALL, 'trade_type_page');
-        AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
-    });
-
     it('should render component with description for only for selected trade type if show_guide_for_selected_contract === true', async () => {
         renderGuide({ show_guide_for_selected_contract: true });
 

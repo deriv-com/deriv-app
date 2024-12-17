@@ -27,7 +27,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     if (isLoading) return <Loader />;
 
     const description = isDemo
-        ? localize("Let's practise trading with {{ctraderBalance}} virtual funds.", {
+        ? localize('Practise trading with {{ctraderBalance}} virtual funds.', {
               ctraderBalance: cTraderAccount.display_balance,
           })
         : localize(

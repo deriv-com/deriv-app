@@ -10,6 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import StakeDetails from './stake-details';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { TTradeParametersProps } from '../trade-parameters';
+import useIsVirtualKeyboardOpen from 'AppV2/Hooks/useIsVirtualKeyboardOpen';
 
 const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
@@ -48,7 +49,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
     const stake_ref = React.useRef<HTMLInputElement | null>(null);
 
     // default_stake resetting data
-    const is_crypto = isCryptocurrency(currency ?? '');
+    const is_crypto = isCryptocurrency(client_currency ?? '');
     const default_stake = is_crypto
         ? Number(v2_params_initial_values.stake)
         : available_contract_types?.[contract_type]?.config?.default_stake;
@@ -131,6 +132,14 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
         min_stake,
         second_contract_payout,
     });
+
+    // scroll the page when a virtual keyboard pop up
+    const input_id = 'stake_input';
+    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
+    }, [should_scroll]);
 
     React.useEffect(() => {
         if (stake_error && !is_minimized && !is_open) {
@@ -297,6 +306,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             unitLeft={getCurrencyDisplayCode(currency)}
                             value={amount}
                             variant='fill'
+                            id={input_id}
                         />
                         <StakeDetails
                             commission={commission}
@@ -321,6 +331,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                             onAction: () => {
                                 if (!stake_error) {
                                     onClose(true);
+                                    onChange({ target: { name: 'amount', value: amount } });
                                 } else {
                                     setShouldShowError(true);
                                 }

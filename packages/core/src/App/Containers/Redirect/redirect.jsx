@@ -35,16 +35,19 @@ const Redirect = observer(() => {
     // to be logged in coming from OS subdomains
     const client_accounts = Cookies.get('client.accounts');
     const active_loginid = Cookies.get('active_loginid');
+    const active_wallet_loginid = Cookies.get('active_wallet_loginid');
 
     if (client_accounts && active_loginid) {
         localStorage.setItem('client.accounts', client_accounts);
         localStorage.setItem('active_loginid', active_loginid);
+        localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
 
         const domain = getDomainName();
 
         // remove cookies after populating local storage
         Cookies.remove('client.accounts', { domain, secure: true });
         Cookies.remove('active_loginid', { domain, secure: true });
+        Cookies.remove('active_wallet_loginid', { domain, secure: true });
 
         if (url_params.get('action') === 'redirect') {
             window.location.href = window.location.origin + url_params.get('redirect_to');

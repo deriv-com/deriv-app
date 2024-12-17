@@ -1,0 +1,12 @@
+.wallets-cooling-off-expiration-modal {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    &__text {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}

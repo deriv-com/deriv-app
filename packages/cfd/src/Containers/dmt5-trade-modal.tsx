@@ -60,18 +60,21 @@ const DMT5TradeModal = observer(
                     return 'Zero Spread';
                 case PRODUCT.STP:
                     return 'Financial STP';
+                case PRODUCT.GOLD:
+                    return 'Gold';
                 default:
                     return show_eu_related_content ? 'CFDs' : 'Financial';
             }
         };
 
         const getAccountIcons = () => {
-            if (show_eu_related_content) return 'CFDs';
+            if (show_eu_related_content && product === PRODUCT.FINANCIAL) return 'CFDs';
             else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
                 return 'SwapFree';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
                 return 'ZeroSpread';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL && product === PRODUCT.GOLD) return 'Gold';
             return 'Financial';
         };
 
@@ -88,6 +91,8 @@ const DMT5TradeModal = observer(
                     return 'BVI';
                 case Jurisdiction.VANUATU:
                     return 'Vanuatu';
+                case Jurisdiction.MAURITIUS:
+                    return 'DML';
                 default:
                     return null;
             }

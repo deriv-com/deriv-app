@@ -101,6 +101,16 @@ describe('getPersonalDetailsBaseValidationSchema', () => {
         await expect(phone.validate('1234567890'.repeat(4))).rejects.toThrow('You should enter 9-20 numbers.');
     });
 
+    it('should throw You should enter 5-15 numbers. error if phone number is invalid when isCountryCodeDropdownEnabled is true', async () => {
+        const isCountryCodeDropdownEnabled = true;
+        const { phone } = getPersonalDetailsBaseValidationSchema('svg', isCountryCodeDropdownEnabled).fields;
+
+        await expect(phone.validate('12345')).resolves.toBe('12345');
+        await expect(phone.validate('')).rejects.toThrow('Phone is required.');
+        await expect(phone.validate('1234')).rejects.toThrow('You should enter 5-15 numbers.');
+        await expect(phone.validate('1234567890'.repeat(4))).rejects.toThrow('You should enter 5-15 numbers.');
+    });
+
     it('should throw an error if place of birth is invalid', async () => {
         const { place_of_birth } = getPersonalDetailsBaseValidationSchema('svg').fields;
 

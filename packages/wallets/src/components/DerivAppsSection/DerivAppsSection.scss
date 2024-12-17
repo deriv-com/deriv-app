@@ -57,7 +57,10 @@
     }
 }
 
-.wallets-deriv-apps-balance-loader {
-    padding: 0.7rem;
-    width: 8rem;
+.wallets-deriv-apps {
+    &-balance-loader,
+    &-button-content-loader {
+        padding: 0.7rem;
+        width: 8rem;
+    }
 }

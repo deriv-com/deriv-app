@@ -3,6 +3,7 @@ import {
     useAccountStatus,
     useAvailableMT5Accounts,
     useCreateMT5Account,
+    useIsEuRegion,
     useSettings,
     useTradingPlatformPasswordChange,
     useVerifyEmail,
@@ -15,11 +16,11 @@ import { validatePassword } from '../../../../components/Base/WalletPasswordFiel
 import { useModal } from '../../../../components/ModalProvider';
 import { WalletSuccessChangeMT5Password } from '../../../../components/WalletsChangeMT5Password';
 import { getPasswordErrorMessage } from '../../../../constants/password';
+import { TAvailableMT5Account } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
-import { TAvailableMT5Account } from '../../types';
 import { MT5AccountAdded } from '../MT5AccountAdded';
 import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
@@ -65,6 +66,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const { getModalState, hide, setModalOptions } = useModal();
     const { data: settingsData } = useSettings();
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const {
         address_city: addressCity,
@@ -83,7 +85,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const marketType = account.market_type ?? 'synthetic';
     const platform = account.platform;
     const product = account.product;
-    const marketTypeTitle = getMarketTypeDetails(localize, product)[marketType].title;
+    const marketTypeTitle = getMarketTypeDetails(localize, product, isEuRegion)[marketType].title;
 
     const isMT5PasswordNotSet = accountStatusData?.is_mt5_password_not_set;
     const { platform: mt5Platform, title } = PlatformDetails.mt5;
@@ -116,13 +118,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                     (selectedJurisdiction !== JURISDICTION.LABUAN
                         ? {
                               account_type: categoryAccountType,
-                              ...(selectedJurisdiction === MARKET_TYPE.FINANCIAL && {
+                              ...(marketType === MARKET_TYPE.FINANCIAL && {
                                   mt5_account_type: MARKET_TYPE.FINANCIAL,
+                                  product,
                               }),
                           }
                         : {
                               account_type: MARKET_TYPE.FINANCIAL,
                               mt5_account_type: 'financial_stp',
+                              product,
                           })),
                 ...(marketType === MARKET_TYPE.ALL && { product }),
                 name: firstName ?? '',

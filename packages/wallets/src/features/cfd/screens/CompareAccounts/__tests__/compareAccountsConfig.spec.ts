@@ -93,20 +93,6 @@ describe('compareAccountsConfig', () => {
             });
             expect(result[0].text).toBe('Forex: major/minor');
         });
-
-        it('adds asterisk for synthetic indices in EU region', () => {
-            const result = getHighlightedIconLabel({
-                ...defaultValues,
-                isEuRegion: true,
-            });
-
-            expect(result[6]).toEqual({
-                highlighted: false,
-                icon: 'Synthetics',
-                isAsterisk: true,
-                text: 'Synthetic indices',
-            });
-        });
     });
 
     describe('getPlatformType', () => {

@@ -3,20 +3,22 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv/shared';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { cacheTrackEvents, getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv/stores';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
+
 import validateSignupFields from './validate-signup-fields.jsx';
+
 import 'Sass/app/modules/account-signup.scss';
-import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
 
 const AccountSignup = ({
     enableApp,

@@ -1,0 +1,18 @@
+.skeleton-loader {
+    width: 80px;
+    border-radius: 4px;
+    height: 32px;
+    background-color: #e2e5e7;
+    background-image: linear-gradient(90deg, rgba(#fff, 0), rgba(#fff, 0.5), rgba(#fff, 0));
+    background-size: 4rem 100%;
+    background-repeat: no-repeat;
+    background-position: left -4rem top 0;
+    animation: shine 1.4s ease infinite;
+    margin-right: 14px;
+}
+
+@keyframes shine {
+    to {
+        background-position: right -4rem top 0;
+    }
+}

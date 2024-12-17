@@ -37,7 +37,7 @@ const Redirect = observer(() => {
     const active_loginid = Cookies.get('active_loginid');
     const active_wallet_loginid = Cookies.get('active_wallet_loginid');
 
-    if (client_accounts && active_loginid && active_wallet_loginid) {
+    if (client_accounts && active_loginid) {
         localStorage.setItem('client.accounts', client_accounts);
         localStorage.setItem('active_loginid', active_loginid);
         localStorage.setItem('active_wallet_loginid', active_wallet_loginid);

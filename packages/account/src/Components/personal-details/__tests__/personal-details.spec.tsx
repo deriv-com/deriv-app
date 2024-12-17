@@ -10,6 +10,7 @@ import { FormikErrors } from 'formik';
 import { getIDVFormValidationSchema } from '../../../Configs/kyc-validation-config';
 import { useDevice } from '@deriv-com/ui';
 import { APIProvider } from '@deriv/api';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -36,6 +37,11 @@ jest.mock('Helpers/utils', () => ({
     isDocumentTypeValid: jest.fn(),
     shouldShowIdentityInformation: jest.fn(() => false),
     isAdditionalDocumentValid: jest.fn(),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: jest.fn(),
 }));
 
 type TPersonalDetailsSectionForm = ComponentProps<typeof PersonalDetails>['value'];
@@ -260,6 +266,10 @@ describe('<PersonalDetails/>', () => {
         real_account_signup_target: '',
     };
 
+    beforeEach(() => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, false]);
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -296,9 +306,9 @@ describe('<PersonalDetails/>', () => {
         const citizenship = screen.getByTestId('citizenship');
         const phone = screen.getByTestId('phone');
 
-        userEvent.clear(first_name);
+        await userEvent.clear(first_name);
         fireEvent.blur(date_of_birth);
-        userEvent.clear(last_name);
+        await userEvent.clear(last_name);
         fireEvent.blur(place_of_birth);
         fireEvent.blur(citizenship);
         fireEvent.blur(phone);
@@ -343,8 +353,8 @@ describe('<PersonalDetails/>', () => {
         const date_of_birth = screen.getByTestId('date_of_birth');
         const phone = screen.getByTestId('phone');
 
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
+        await userEvent.type(first_name, 'test firstname');
+        await userEvent.type(last_name, 'test lastname');
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
         fireEvent.change(phone, { target: { value: '+931234567890' } });
 
@@ -358,7 +368,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
-        userEvent.click(next_btn);
+        await userEvent.click(next_btn);
 
         await waitFor(() => {
             expect(new_props.onSubmit).toBeCalled();
@@ -426,12 +436,25 @@ describe('<PersonalDetails/>', () => {
         const mrs_radio_btn: HTMLInputElement = screen.getByRole('radio', { name: /ms/i }) as HTMLInputElement;
         expect(mr_radio_btn).toBeInTheDocument();
         expect(mrs_radio_btn).toBeInTheDocument();
-        expect(mr_radio_btn.checked).toEqual(false);
+        expect(mr_radio_btn).not.toBeChecked();
 
         fireEvent.click(mr_radio_btn);
 
-        expect(mr_radio_btn.checked).toEqual(true);
-        expect(mrs_radio_btn.checked).toEqual(false);
+        expect(mr_radio_btn).toBeChecked();
+        expect(mrs_radio_btn).not.toBeChecked();
+    });
+
+    it('should display country code dropdown when isCountryCodeDropdownEnabled is true ', () => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true, true]);
+        renderwithRouter({});
+
+        expect(screen.getByText(/code\*/i)).toBeInTheDocument();
+    });
+
+    it('should not display country code dropdown when isCountryCodeDropdownEnabled is false ', () => {
+        renderwithRouter({});
+
+        expect(screen.queryByText(/code\*/i)).not.toBeInTheDocument();
     });
 
     it('should display the correct field details ', () => {
@@ -608,7 +631,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
         fireEvent.change(phone, { target: { value: '+49123456789012' } });
 
-        expect(mr_radio_btn.checked).toEqual(true);
+        expect(mr_radio_btn).toBeChecked();
         const next_btn = screen.getByRole('button', { name: /next/i });
 
         expect(next_btn).toBeEnabled();

@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { useGetPhoneNumberList, useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AccountWizard from '../account-wizard';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useIsClientHighRiskForMT5: jest.fn(),
+    useGetPhoneNumberList: jest.fn(),
 }));
 
 const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFunction<
@@ -69,6 +70,11 @@ jest.mock('../account-wizard-form', () => ({
 describe('<AccountWizard />', () => {
     beforeEach(() => {
         mockUseIsClientHighRiskForMT5.mockReturnValue(false);
+        (useGetPhoneNumberList as jest.Mock).mockReturnValue({
+            legacy_core_countries_list: [
+                { text: 'United States (+1)', value: '+1', id: '1_US', carriers: [], disabled: false },
+            ],
+        });
     });
 
     const store = mockStore({

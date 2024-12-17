@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 import { Localize } from '@deriv/translations';
 import GuideContainer from './guide-container';
 import OnboardingVideo from './onboarding-video';
@@ -15,6 +16,7 @@ type TOnboardingGuideProps = {
 const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOnboardingGuideProps) => {
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const [should_run_guide, setShouldRunGuide] = React.useState(false);
+    const { setGuideState } = useGuideStates();
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const is_button_clicked_ref = React.useRef(false);
 
@@ -45,6 +47,8 @@ const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOn
         is_button_clicked_ref.current = true;
         setShouldRunGuide(true);
         setIsModalOpen(false);
+
+        setGuideState('should_run_trade_page_guide', true);
     };
 
     const modal_content = {

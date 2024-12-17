@@ -4,11 +4,11 @@ import { Localize } from '@deriv/translations';
 
 const STEPS = [
     {
-        content: <Localize i18n_default_text='Scroll left or right to explore trade types.' />,
+        content: <Localize i18n_default_text='Swipe left or right to explore trade types.' />,
         offset: 0,
         spotlightPadding: 2,
         target: '.trade__trade-types',
-        title: <Localize i18n_default_text='Explore trade types (1/6)' />,
+        title: <Localize i18n_default_text='Explore trade types' />,
     },
     {
         content: <Localize i18n_default_text='View available markets here.' />,

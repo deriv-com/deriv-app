@@ -7,8 +7,11 @@ import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/t
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import { safeParse } from '@deriv/utils';
+import { useLocalStorageData } from '@deriv/hooks';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
+import GuideContainer from '../../Components/OnboardingGuide/GuideForPages/guide-container';
+import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (
@@ -38,7 +41,21 @@ type TResultItem = {
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mode_on }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
+        trade_types_selection: false,
+        trade_page: false,
+        positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
+    });
+    const { guideStates, setGuideState } = useGuideStates();
+    const { should_run_trade_page_guide } = guideStates;
     const trade_types_ref = React.useRef<HTMLDivElement>(null);
+
+    const onCloseGuide = () => {
+        setGuideState('should_run_trade_page_guide', false);
+        setGuideDtraderV2({ ...guide_dtrader_v2, trade_page: true });
+    };
 
     const createArrayFromCategories = (data: TTradeTypesProps['trade_types']): TItem[] => {
         const result: TItem[] = [];
@@ -220,8 +237,25 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     const trade_type_chips = getTradeTypeChips();
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
 
+    const STEPS = [
+        {
+            content: <Localize i18n_default_text='Swipe left or right to explore trade types.' />,
+            offset: 0,
+            spotlightPadding: 2,
+            target: '.trade__trade-types',
+            disableBeacon: true,
+            spotlightClicks: true,
+            title: <Localize i18n_default_text='Explore trade types' />,
+        },
+    ];
+
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>
+            <GuideContainer
+                should_run={should_run_trade_page_guide && !guide_dtrader_v2?.trade_types_selection}
+                steps={STEPS}
+                callback={() => onCloseGuide()}
+            />
             {trade_type_chips.map(({ title, id }: TItem) => (
                 <Chip.Selectable
                     key={id}

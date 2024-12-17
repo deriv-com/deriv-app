@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { SegmentedControlSingleChoice } from '@deriv-com/quill-ui';
 import { useTraderStore } from 'Stores/useTraderStores';

@@ -3,7 +3,7 @@ import { Button, TButtonColor } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';
 import { FormatUtils } from '@deriv-com/utils';
 

@@ -15,14 +15,7 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 const Positions = observer(() => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(false);
     const [activeTab, setActiveTab] = React.useState(getPositionsV2TabIndexFromURL());
-    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const history = useHistory();
 
     const {

@@ -2,6 +2,7 @@ import React from 'react';
 import { History } from 'history';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate, routes } from '@deriv/shared';
+import { Chat } from '@deriv/utils';
 
 type TProps = {
     cashier_validation: string[] | undefined;
@@ -126,13 +127,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='Your cashier is currently locked. Please contact us via <0>live chat</0> to find out how to unlock it.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -143,13 +138,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='Your account is temporarily disabled. Please contact us via <0>live chat</0> to enable deposits and withdrawals again.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -374,13 +363,7 @@ const getMessage = ({
                     <Localize
                         i18n_default_text='You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via <0>live chat</0>.'
                         values={{ exclude_until: formatDate(excluded_until, 'DD MMM, YYYY') }}
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -391,13 +374,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='Please contact us via <0>live chat</0>.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -467,13 +444,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -484,13 +455,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='Unfortunately, you can only make deposits. Please contact us via <0>live chat</0> to enable withdrawals.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -501,13 +466,7 @@ const getMessage = ({
                 description: (
                     <Localize
                         i18n_default_text='You can only make deposits. Please contact us via <0>live chat</0> for more information.'
-                        components={[
-                            <span
-                                key={0}
-                                className='link link--orange'
-                                onClick={() => window.LiveChatWidget?.call('maximize')}
-                            />,
-                        ]}
+                        components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
                     />
                 ),
             };
@@ -527,13 +486,7 @@ const getMessage = ({
         description: (
             <Localize
                 i18n_default_text='Your cashier is currently locked. Please contact us via <0>live chat</0> to find out how to unlock it.'
-                components={[
-                    <span
-                        key={0}
-                        className='link link--orange'
-                        onClick={() => window.LiveChatWidget?.call('maximize')}
-                    />,
-                ]}
+                components={[<span key={0} className='link link--orange' onClick={Chat.open} />]}
             />
         ),
     };

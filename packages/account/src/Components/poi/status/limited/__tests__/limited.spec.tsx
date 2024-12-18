@@ -1,15 +1,19 @@
 import React from 'react';
+
+import { Chat } from '@deriv/utils';
 import { fireEvent, render, screen } from '@testing-library/react';
+
 import { POILimited } from '../limited';
 
-window.LiveChatWidget = {
-    call: jest.fn(),
-    get: jest.fn(),
-    init: jest.fn(),
-    on: jest.fn(),
-};
-
 describe('<POILimited/>', () => {
+    beforeEach(() => {
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
     it('should render POILimited component', () => {
         render(<POILimited />);
         expect(screen.getByText(/you've reached the limit for uploading your documents\./i)).toBeInTheDocument();
@@ -18,7 +22,6 @@ describe('<POILimited/>', () => {
         const live_chat_text = screen.getByText(/live chat/i);
         expect(live_chat_text).toBeInTheDocument();
         fireEvent.click(live_chat_text);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledTimes(1);
-        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 });

@@ -20,7 +20,7 @@ const MT5TradeModal: FC<TMT5TradeModalProps> = ({ marketType, mt5Account, platfo
     }, []);
 
     return (
-        <ModalTradeWrapper platform={platform}>
+        <ModalTradeWrapper mt5Account={mt5Account} platform={platform}>
             <MT5TradeScreen mt5Account={mt5Account} />
         </ModalTradeWrapper>
     );

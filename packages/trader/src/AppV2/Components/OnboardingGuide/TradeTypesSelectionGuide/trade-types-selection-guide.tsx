@@ -2,9 +2,9 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import { getLocalStorage } from '@deriv/utils';
 import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
 import StreamIframe from '../../StreamIframe';
-import { getLocalStorage } from '@deriv/utils';
 
 type TTradeTypeSelectionGuideProps = {
     is_dark_mode_on?: boolean;

@@ -1,9 +1,9 @@
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import { getLocalStorage } from '@deriv/utils';
 import React from 'react';
 import { Step } from 'react-joyride';
 import GuideContainer from '../GuideForPages/guide-container';
-import { getLocalStorage } from '@deriv/utils';
 
 const TradeParamsGuide = () => {
     const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');

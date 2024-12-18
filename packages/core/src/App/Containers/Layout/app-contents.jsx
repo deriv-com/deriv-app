@@ -59,6 +59,9 @@ const AppContents = observer(({ children }) => {
         Analytics.pageView(window.location.href, {
             loggedIn: is_logged_in,
             device_type: isMobile ? 'mobile' : 'desktop',
+            network_rtt: navigator?.connection?.rtt,
+            network_type: navigator?.connection?.effectiveType,
+            network_downlink: navigator?.connection?.downlink,
         });
         // react-hooks/exhaustive-deps
     }, [window.location.href]);

@@ -20,7 +20,11 @@ const Wallets = React.lazy(() =>
 
 const RootComponent = observer(props => {
     const { client, ui } = useStore();
-    const { is_wallets_onboarding_tour_guide_visible, setIsWalletsOnboardingTourGuideVisible } = ui;
+    const {
+        is_wallets_onboarding_tour_guide_visible,
+        setIsWalletsOnboardingTourGuideVisible,
+        notification_messages_ui,
+    } = ui;
     const { has_wallet, logout } = client;
 
     const { oAuthLogout } = useOauth2({ handleLogout: logout });
@@ -35,6 +39,7 @@ const RootComponent = observer(props => {
             logout={async () => {
                 await oAuthLogout();
             }}
+            notificationMessagesUi={notification_messages_ui}
             onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
         />
     ) : (

@@ -1675,6 +1675,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
+
+            // This was set for the new callback page logic, once the user has logged in, we can remove the tokens and account1 from local storage since client.accounts is handling it already
+            if (localStorage.getItem('config.tokens') && localStorage.getItem('config.account1')) {
+                localStorage.removeItem('config.tokens');
+                localStorage.removeItem('config.account1');
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }

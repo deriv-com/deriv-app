@@ -1,20 +1,22 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
+import { Redirect } from 'react-router-dom';
+
+import { Loading } from '@deriv/components';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import {
-    PersonalDetails,
-    ProofOfIdentity,
-    ProofOfAddress,
-    ProofOfOwnership,
     Account,
     DeactivateAccount,
+    PersonalDetails,
+    ProofOfAddress,
+    ProofOfIdentity,
     ProofOfIncome,
+    ProofOfOwnership,
 } from '../Sections';
-
 import { TRoute, TRouteConfig } from '../Types';
-import { Loading } from '@deriv/components';
 // Error Routes
 const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
@@ -86,6 +88,10 @@ const ClosingAccount = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/ClosingAccount')),
     () => <Loading />
 )();
+const RedirectToOSPOI = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/redirect-to-poi-os')),
+    () => <Loading />
+)();
 
 export type TPage404 = typeof Page404;
 
@@ -155,7 +161,7 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
+                        component: RedirectToOSPOI,
                         getTitle: () => localize('Proof of identity'),
                     },
                     {

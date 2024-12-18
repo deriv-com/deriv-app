@@ -20,6 +20,7 @@ const MarketSelector = observer(() => {
         positions_page: false,
         market_selector: false,
         trade_param_quick_adjustment: false,
+        trade_params: false,
     });
     const { setGuideState } = useGuideStates();
 

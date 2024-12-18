@@ -107,6 +107,7 @@ const GrowthRate = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-large' />
                     <Carousel
                         classname={clsx('growth-rate__carousel', is_small_screen && 'growth-rate__carousel--small')}
                         header={CarouselHeader}

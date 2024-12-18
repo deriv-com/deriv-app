@@ -1,4 +1,4 @@
-$HANDLEBAR_HEIGHT: 2.6rem;
+$HANDLEBAR_HEIGHT: 2rem;
 $SEARCHFIELD_HEIGHT: 4.8rem;
 $TABS_HEIGHT: 4.3rem;
 
@@ -31,9 +31,9 @@ $TABS_HEIGHT: 4.3rem;
 }
 
 .joyride-element {
-    position: absolute;
+    position: fixed;
     top: calc(100dvh - 90dvh + $HANDLEBAR_HEIGHT + $SEARCHFIELD_HEIGHT + $TABS_HEIGHT);
     width: 100%;
     background-color: transparent;
-    height: 330px;
+    height: 34rem;
 }

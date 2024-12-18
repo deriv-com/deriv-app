@@ -77,6 +77,7 @@ const Multiplier = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={isOpen}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-large' />
                     <Carousel
                         classname={clsx(
                             'multiplier__carousel',

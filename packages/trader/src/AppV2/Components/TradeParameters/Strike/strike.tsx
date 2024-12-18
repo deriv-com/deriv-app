@@ -110,6 +110,7 @@ const Strike = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-large' />
                     <Carousel
                         classname={clsx('strike__carousel', is_small_screen && 'strike__carousel--small')}
                         header={CarouselHeader}

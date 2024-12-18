@@ -20,14 +20,7 @@ type TMarketCategory = {
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
     const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
     const prevSymbol = usePrevious(selectedSymbol);
-    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const { guideStates } = useGuideStates();
     const { should_run_market_selector_guide } = guideStates;
     const {

@@ -1,8 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Localize } from '@deriv/translations';
-// import { LocalStorageUtils } from '@deriv-com/utils';
-// const latest_guide_dtrader_v2 = LocalStorageUtils.getValue<object>('guide_dtrader_v2');
 import { Text } from '@deriv-com/quill-ui';
 import Guide from '../Guide';
 

@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import React from 'react';
 import { Step } from 'react-joyride';
 import GuideContainer from '../GuideForPages/guide-container';
+import { getLocalStorage } from '@deriv/utils';
 
 type TQuickAdjGuide = {
     is_minimized?: boolean;
@@ -10,22 +11,16 @@ type TQuickAdjGuide = {
 };
 const QuickAdjGuide = ({ is_minimized, is_minimized_visible }: TQuickAdjGuide) => {
     const is_minimized_and_visible = is_minimized && is_minimized_visible;
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const [show_guide, setShowGuide] = React.useState(false);
     const timerRef = React.useRef<NodeJS.Timeout>();
 
     React.useEffect(() => {
         if (is_minimized_and_visible && !guide_dtrader_v2?.trade_param_quick_adjustment) {
+            const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
             timerRef.current = setTimeout(() => {
                 setShowGuide(true);
-                setGuideDtraderV2({ ...guide_dtrader_v2, trade_param_quick_adjustment: true });
+                setGuideDtraderV2({ ...latest_guide_dtrader_v2, trade_param_quick_adjustment: true });
             }, 300);
         }
 

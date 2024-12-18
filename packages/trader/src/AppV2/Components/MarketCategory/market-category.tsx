@@ -26,6 +26,7 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
         positions_page: false,
         market_selector: false,
         trade_param_quick_adjustment: false,
+        trade_params: false,
     });
     const { guideStates } = useGuideStates();
     const { should_run_market_selector_guide } = guideStates;

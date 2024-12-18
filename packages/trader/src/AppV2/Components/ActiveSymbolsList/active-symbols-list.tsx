@@ -32,6 +32,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             title: <Localize i18n_default_text='Select a market' />,
             disableBeacon: true,
             offset: 0,
+            spotlightPadding: 4,
         },
     ];
 

@@ -6,7 +6,7 @@ import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
 import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
 import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
-import { safeParse } from '@deriv/utils';
+import { safeParse, getLocalStorage } from '@deriv/utils';
 import { useLocalStorageData } from '@deriv/hooks';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Guide from '../../Components/Guide';
@@ -41,20 +41,15 @@ type TResultItem = {
 const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mode_on }: TTradeTypesProps) => {
     const [is_open, setIsOpen] = React.useState<boolean>(false);
     const [is_editing, setIsEditing] = React.useState<boolean>(false);
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-    });
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const { guideStates, setGuideState } = useGuideStates();
     const { should_run_trade_page_guide } = guideStates;
     const trade_types_ref = React.useRef<HTMLDivElement>(null);
 
     const onCloseGuide = () => {
+        const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
         setGuideState('should_run_trade_page_guide', false);
-        setGuideDtraderV2({ ...guide_dtrader_v2, trade_page: true });
+        setGuideDtraderV2({ ...latest_guide_dtrader_v2, trade_page: true });
     };
 
     const createArrayFromCategories = (data: TTradeTypesProps['trade_types']): TItem[] => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import { getLocalStorage } from '@deriv/utils';
 import OnboardingVideo from './onboarding-video';
 
 type TOnboardingGuideProps = {
@@ -14,19 +15,13 @@ const OnboardingGuide = ({ type = 'trade_page', is_dark_mode_on, callback }: TOn
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
 
     const is_trade_page_guide = type === 'trade_page';
 
     const onFinishGuide = React.useCallback(() => {
-        setGuideDtraderV2({ ...guide_dtrader_v2, [type]: true });
+        const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
+        setGuideDtraderV2({ ...latest_guide_dtrader_v2, [type]: true });
         callback?.();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setGuideDtraderV2]);

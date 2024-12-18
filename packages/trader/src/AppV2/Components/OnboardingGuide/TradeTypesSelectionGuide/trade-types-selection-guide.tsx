@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
+import { getLocalStorage } from '@deriv/utils';
 import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
 import StreamIframe from '../../StreamIframe';
 
@@ -13,14 +14,7 @@ const TradeTypesSelectionGuide: React.FC<TTradeTypeSelectionGuideProps> = ({ is_
     const [is_modal_open, setIsModalOpen] = React.useState(false);
     const guide_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
 
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const { trade_types_selection } = guide_dtrader_v2 || {};
 
     const video_src = is_dark_mode_on
@@ -28,8 +22,9 @@ const TradeTypesSelectionGuide: React.FC<TTradeTypeSelectionGuideProps> = ({ is_
         : DESCRIPTION_VIDEO_ID.trade_type_selection.light;
 
     const onFinishGuide = () => {
+        const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
         setIsModalOpen(false);
-        setGuideDtraderV2({ ...guide_dtrader_v2, trade_types_selection: true });
+        setGuideDtraderV2({ ...latest_guide_dtrader_v2, trade_types_selection: true });
     };
 
     React.useEffect(() => {

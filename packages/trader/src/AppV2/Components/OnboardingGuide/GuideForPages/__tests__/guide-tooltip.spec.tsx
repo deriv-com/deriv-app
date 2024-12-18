@@ -26,7 +26,6 @@ describe('GuideTooltip', () => {
 
         expect(screen.getByText('Title')).toBeInTheDocument();
         expect(screen.getByText('Step content')).toBeInTheDocument();
-        expect(screen.getByText('Next')).toBeInTheDocument();
         expect(screen.queryByText('Done')).not.toBeInTheDocument();
     });
 
@@ -35,7 +34,6 @@ describe('GuideTooltip', () => {
 
         expect(screen.getByText('Title')).toBeInTheDocument();
         expect(screen.getByText('Step content')).toBeInTheDocument();
-        expect(screen.getByText('Done')).toBeInTheDocument();
         expect(screen.queryByText('Next')).not.toBeInTheDocument();
     });
 

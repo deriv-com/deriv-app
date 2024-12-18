@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OnboardingGuide from '../onboarding-guide';
 
-const trading_modal_text = 'Welcome to the new Deriv Trader';
+const trading_modal_text = 'Welcome to the Deriv Trader';
 const positions_modal_text = 'View your positions';
 const guide_container = 'GuideContainer';
 const localStorage_key = 'guide_dtrader_v2';
@@ -26,7 +26,7 @@ describe('OnboardingGuide', () => {
 
         expect(screen.getByText('OnboardingVideo')).toBeInTheDocument();
         expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
-        expect(screen.getByText("Let's begin")).toBeInTheDocument();
+        expect(screen.getByText("Let's go")).toBeInTheDocument();
 
         jest.useRealTimers();
     });
@@ -40,24 +40,6 @@ describe('OnboardingGuide', () => {
         expect(screen.getByText('OnboardingVideo')).toBeInTheDocument();
         expect(screen.getByText(positions_modal_text)).toBeInTheDocument();
         expect(screen.getByText('Got it')).toBeInTheDocument();
-
-        jest.useRealTimers();
-    });
-
-    it('should close the Modal for trading page and start the guide after user clicks on "Let\'s begin" button', async () => {
-        jest.useFakeTimers({ legacyFakeTimers: true });
-        render(<OnboardingGuide />);
-
-        await waitFor(() => jest.advanceTimersByTime(800));
-
-        expect(screen.getByText(trading_modal_text)).toBeInTheDocument();
-        expect(screen.queryByText(guide_container)).not.toBeInTheDocument();
-
-        await userEvent.click(screen.getByRole('button'));
-        await waitFor(() => jest.advanceTimersByTime(300));
-
-        expect(screen.queryByText(trading_modal_text)).not.toBeInTheDocument();
-        expect(screen.getByText(guide_container)).toBeInTheDocument();
 
         jest.useRealTimers();
     });

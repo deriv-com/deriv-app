@@ -1,7 +1,6 @@
 import React from 'react';
 import Joyride, { ACTIONS, CallBackProps, STATUS } from 'react-joyride';
 import GuideTooltip from './guide-tooltip';
-import STEPS from './steps-config';
 
 type TGuideContainerProps = {
     should_run: boolean;
@@ -26,6 +25,7 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
             callback={callbackHandle}
             disableCloseOnEsc
             disableScrolling
+            disableScrollParentFix
             floaterProps={{
                 styles: {
                     arrow: {

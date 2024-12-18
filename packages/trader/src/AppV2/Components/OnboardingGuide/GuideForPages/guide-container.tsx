@@ -1,5 +1,5 @@
 import React from 'react';
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import Joyride, { ACTIONS, CallBackProps, STATUS } from 'react-joyride';
 import GuideTooltip from './guide-tooltip';
 
 type TGuideContainerProps = {
@@ -14,10 +14,10 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
     const [step_index, setStepIndex] = React.useState(0);
 
     const callbackHandle = (data: CallBackProps) => {
-        const { status } = data;
+        const { status, action } = data;
         const finished_statuses: TFinishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
-        if (finished_statuses.includes(status)) callback?.();
+        if (finished_statuses.includes(status) || action === ACTIONS.CLOSE) callback?.();
     };
 
     return (
@@ -26,7 +26,6 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
             disableCloseOnEsc
             disableScrolling
             disableScrollParentFix
-            disableOverlayClose
             floaterProps={{
                 styles: {
                     arrow: {

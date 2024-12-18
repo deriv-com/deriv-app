@@ -21,6 +21,8 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
+import TradeParamsGuide from 'AppV2/Components/OnboardingGuide/TradeParamsGuide/trade-params-guide';
+import QuickAdjGuide from 'AppV2/Components/OnboardingGuide/QuickAdjGuide/quick-adj-guide';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
@@ -47,6 +49,7 @@ const Trade = observer(() => {
         positions_page: false,
         market_selector: false,
         trade_param_quick_adjustment: false,
+        trade_params: false,
     });
 
     const symbols = React.useMemo(
@@ -127,6 +130,10 @@ const Trade = observer(() => {
                         {!is_market_closed && <PurchaseButton />}
                     </div>
                     {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2?.trade_params && is_logged_in && <TradeParamsGuide />}
+                    {!guide_dtrader_v2?.trade_param_quick_adjustment && is_logged_in && (
+                        <QuickAdjGuide is_minimized_visible={is_minimized_params_visible} is_minimized />
+                    )}
                 </React.Fragment>
             ) : (
                 <Loading.DTraderV2 />

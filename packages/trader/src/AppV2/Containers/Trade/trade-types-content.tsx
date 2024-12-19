@@ -56,11 +56,7 @@ const TradeTypesContent = ({
                 </Button>
             </div>
         </div>
-        <ActionSheet.Content
-            className={clsx('trade-types-dialog__content', {
-                'trade-types-dialog__content--is_editing': is_editing,
-            })}
-        >
+        <ActionSheet.Content className='trade-types-dialog__content'>
             {is_editing ? (
                 <DraggableList
                     categories={pinned_trade_types}

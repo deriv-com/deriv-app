@@ -36,7 +36,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
         },
     ];
 
-    const [showGuide, setShowGuide] = useState(false);
+    const [show_guide, setShowGuide] = useState(false);
     const timerRef = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
             <ActionSheet.Root isOpen={isOpen} onClose={() => setIsOpen(false)}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <GuideContainer
-                        should_run={showGuide}
+                        should_run={show_guide}
                         steps={STEPS}
                         callback={() => setGuideState('should_run_market_selector_guide', false)}
                     />

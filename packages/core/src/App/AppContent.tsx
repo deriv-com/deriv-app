@@ -2,8 +2,10 @@ import React from 'react';
 
 import { useRemoteConfig } from '@deriv/api';
 import {
+    useFreshChat,
     useGrowthbookGetFeatureValue,
     useGrowthbookIsOn,
+    useIntercom,
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
@@ -46,6 +48,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         account_settings,
         setIsPhoneNumberVerificationEnabled,
         setIsCountryCodeDropdownEnabled,
+        accounts,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
@@ -95,6 +98,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     };
 
     useLiveChat(livechat_client_information);
+    const active_account = accounts?.[loginid ?? ''];
+    const token = active_account ? active_account.token : null;
+    useFreshChat(token);
+    useIntercom(token);
 
     React.useEffect(() => {
         switchLanguage(current_language);

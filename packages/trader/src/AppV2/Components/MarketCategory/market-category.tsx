@@ -50,7 +50,9 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
 
     return (
         <Tab.Panel key={category.market_display_name}>
-            {should_run_market_selector_guide && is_logged_in && <div className='joyride-element' />}
+            {should_run_market_selector_guide && is_logged_in && (
+                <div className='joyride-element' data-testid='joyride-element' />
+            )}
             {category.market !== 'favorites' ? (
                 Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                     <div key={subgroupKey} className='market-category-content__container'>

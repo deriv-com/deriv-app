@@ -2,7 +2,7 @@ import React from 'react';
 import Joyride, { ACTIONS, CallBackProps, STATUS } from 'react-joyride';
 import GuideTooltip from './guide-tooltip';
 
-type TGuideContainerProps = {
+export type TGuideContainerProps = {
     should_run: boolean;
     steps: CallBackProps['step'][];
     callback?: () => void;
@@ -48,7 +48,7 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
                 },
             }}
             stepIndex={step_index}
-            tooltipComponent={props => <GuideTooltip {...props} setStepIndex={setStepIndex} />}
+            tooltipComponent={props => <GuideTooltip {...props} />}
         />
     );
 };

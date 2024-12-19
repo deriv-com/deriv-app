@@ -189,11 +189,32 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const { isDesktop } = useDevice();
     const previous_active_positions = usePrevious(active_positions);
-    const contract_types = [
-        { text: localize('Options'), value: 'options', is_default: !is_multiplier && !is_accumulator },
-        { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier },
-        { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator },
-    ];
+
+    const generateContractTypes = () => {
+        const contract_type_bot = sessionStorage.getItem('contract_type_bots');
+
+        if (!contract_type_bot) {
+            return [
+                { text: localize('Options'), value: 'options', is_default: !is_multiplier && !is_accumulator },
+                { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier },
+                { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator },
+            ];
+        }
+
+        const is_multiplier_bot = contract_type_bot === 'trade_definition_multiplier';
+        const is_accumulator_bot = contract_type_bot === 'trade_definition_accumulator';
+
+        const contract_types = [
+            { text: localize('Options'), value: 'options', is_default: !is_multiplier_bot && !is_accumulator_bot },
+            { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier_bot },
+            { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator_bot },
+        ];
+        sessionStorage.removeItem('contract_type_bots');
+        return contract_types;
+    };
+
+    const contract_types = generateContractTypes();
+
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.value || 'options'
     );

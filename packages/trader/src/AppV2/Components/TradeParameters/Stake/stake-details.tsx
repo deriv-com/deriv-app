@@ -20,7 +20,7 @@ type TStakeDetailsProps = Pick<TTradeStore, 'contract_type' | 'currency' | 'has_
         max_stake: string | number;
         min_stake: string | number;
         second_contract_payout: number;
-        stop_out?: number;
+        stop_out?: number | string;
     };
     is_loading_proposal: boolean;
     is_empty?: boolean;

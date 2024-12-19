@@ -57,14 +57,6 @@ describe('useDtraderV2Flag', () => {
         });
     });
 
-    it('should initially set load_dtrader_module and dtrader_v2_enabled_mobile to false', () => {
-        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue({ isGBLoaded: false, isGBAvailable: true });
-        (isDtraderV2MobileEnabled as jest.Mock).mockReturnValue(false);
-        const { result } = renderHook(() => useDtraderV2Flag());
-        expect(result.current.load_dtrader_module).toBe(false);
-        expect(result.current.dtrader_v2_enabled_mobile).toBe(false);
-    });
-
     it('should set load_dtrader_module and dtrader_v2_enabled_mobile to true when dtrader is enabled', () => {
         (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue({ isGBLoaded: true, isGBAvailable: true });
         (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });

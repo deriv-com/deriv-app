@@ -171,10 +171,11 @@ const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
                     <TransactionsPendingRowField
                         className={{ 'wallets-transactions-pending-row__transaction-time': isDesktop }}
                         name={localize('Time')}
-                        value={`${
-                            isDesktop &&
-                            `${FormatUtils.getFormattedDateString(transaction.submit_date, { unix: true })} `
-                        }${FormatUtils.getFormattedTimeString(transaction.submit_date, true)}`}
+                        value={
+                            isDesktop
+                                ? `${FormatUtils.getFormattedDateString(transaction.submit_date, { unix: true })} ${FormatUtils.getFormattedTimeString(transaction.submit_date, true)}`
+                                : `${FormatUtils.getFormattedTimeString(transaction.submit_date, true)}`
+                        }
                         valueTextProps={{
                             color: 'general',
                             size: isDesktop ? '2xs' : 'xs',

@@ -73,9 +73,15 @@
 }
 .trade-types-dialog {
     &__title {
-        margin: var(--core-spacing-1200) var(--core-spacing-50);
+        margin: var(--core-spacing-1000) var(--core-spacing-50);
     }
     &__content {
         padding-top: var(--core-spacing-50);
+        &--is_editing {
+            overflow: hidden;
+        }
+    }
+    &--is_editing {
+        overflow: hidden;
     }
 }

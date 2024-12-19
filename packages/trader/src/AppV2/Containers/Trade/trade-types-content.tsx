@@ -1,8 +1,12 @@
 import React from 'react';
-import { Button, Text, ActionSheet } from '@deriv-com/quill-ui';
+import clsx from 'clsx';
+
+import { Localize } from '@deriv/translations';
+import { ActionSheet, Button, Text } from '@deriv-com/quill-ui';
+
 import { DraggableList } from 'AppV2/Components/DraggableList';
 import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
-import { Localize } from '@deriv/translations';
+
 import { TItem, TResultItem } from './trade-types';
 
 type TTradeTypesContent = {
@@ -52,7 +56,11 @@ const TradeTypesContent = ({
                 </Button>
             </div>
         </div>
-        <ActionSheet.Content className='trade-types-dialog__content'>
+        <ActionSheet.Content
+            className={clsx('trade-types-dialog__content', {
+                'trade-types-dialog__content--is_editing': is_editing,
+            })}
+        >
             {is_editing ? (
                 <DraggableList
                     categories={pinned_trade_types}

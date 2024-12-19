@@ -1,7 +1,8 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
 import { Localize } from '@deriv-com/translations';
-import { Button, Loader, useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../../../components';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormAmountInput } from '../TransferFormAmountInput';
@@ -28,7 +29,8 @@ const TransferForm = () => {
         [requestTransferBetweenAccounts]
     );
 
-    if (isLoading) return <Loader />;
+    if (isLoading) return <WalletLoader />;
+
     return (
         <div className='wallets-transfer'>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>

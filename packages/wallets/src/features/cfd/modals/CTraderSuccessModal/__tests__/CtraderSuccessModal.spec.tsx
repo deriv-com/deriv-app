@@ -10,7 +10,6 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 jest.mock('@deriv-com/ui', () => ({
-    Loader: () => <div>Loading...</div>,
     useDevice: jest.fn(),
 }));
 
@@ -42,6 +41,7 @@ jest.mock('../../../../../components', () => ({
         </div>
     ),
     ModalWrapper: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../components', () => ({

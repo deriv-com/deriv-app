@@ -8,20 +8,14 @@ import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useLocalStorageData } from '@deriv/hooks';
+import { getLocalStorage } from '@deriv/utils';
 import useGuideStates from 'AppV2/Hooks/useGuideStates';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { activeSymbols } = useActiveSymbols();
     const { symbol: storeSymbol, tick_data, is_market_closed } = useTraderStore();
-    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
-        trade_types_selection: false,
-        trade_page: false,
-        positions_page: false,
-        market_selector: false,
-        trade_param_quick_adjustment: false,
-        trade_params: false,
-    });
+    const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const { setGuideState } = useGuideStates();
 
     const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
@@ -41,7 +35,8 @@ const MarketSelector = observer(() => {
         if (guide_dtrader_v2?.market_selector) {
             setGuideState('should_run_market_selector_guide', false);
         } else {
-            setGuideDtraderV2({ ...guide_dtrader_v2, market_selector: true });
+            const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
+            setGuideDtraderV2({ ...latest_guide_dtrader_v2, market_selector: true });
             setGuideState('should_run_market_selector_guide', true);
         }
         setIsOpen(true);

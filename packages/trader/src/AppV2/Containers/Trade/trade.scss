@@ -71,9 +71,8 @@
         }
 
         &-tooltip-info {
-            position: absolute;
-            top: 2rem;
-            bottom: 9.5rem;
+            position: fixed;
+            bottom: 8rem;
             width: 100%;
             &-large {
                 height: 38rem;

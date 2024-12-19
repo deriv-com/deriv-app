@@ -89,38 +89,19 @@ const reducer = (state: TStakeState, action: TStakeAction): TStakeState => {
     }
 };
 
-const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
-    const trade_store = useTraderStore();
+const createInitialState = (trade_store: ReturnType<typeof useTraderStore>) => {
     const {
         amount,
         commission,
         contract_type,
-        currency,
-        barrier_1,
-        has_stop_loss,
-        is_accumulator,
-        is_multiplier,
-        is_turbos,
-        is_vanilla,
-        onChange,
-        proposal_info,
-        stop_out,
         trade_type_tab,
         trade_types,
+        proposal_info,
         validation_params,
+        stop_out,
     } = trade_store;
 
     const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
-    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
-
-    // scroll the page when a virtual keyboard pops up
-    const input_id = 'stake_input';
-    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
-
-    React.useEffect(() => {
-        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
-    }, [should_scroll]);
-
     const {
         contract_payout: first_contract_payout,
         max_payout,
@@ -133,7 +114,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const { stake } = (validation_params[contract_types[0]] || validation_params[contract_types[1]]) ?? {};
     const { max: max_stake = 0, min: min_stake = 0 } = stake ?? {};
 
-    const initialState = {
+    return {
         proposal_request_values: { amount },
         stake_error: '',
         fe_stake_error: '',
@@ -151,9 +132,48 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             stop_out,
         },
     };
+};
 
-    const [state, dispatch] = React.useReducer(reducer, initialState);
+const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
+    const trade_store = useTraderStore();
+    const {
+        contract_type,
+        currency,
+        barrier_1,
+        has_stop_loss,
+        is_accumulator,
+        is_multiplier,
+        is_turbos,
+        is_vanilla,
+        onChange,
+        trade_type_tab,
+        trade_types,
+    } = trade_store;
+
+    const [state, dispatch] = React.useReducer(reducer, null, () => createInitialState(trade_store));
     const { proposal_request_values, stake_error, fe_stake_error, details } = state;
+
+    const contract_types = React.useMemo(
+        () => getDisplayedContractTypes(trade_types, contract_type, trade_type_tab),
+        [trade_types, contract_type, trade_type_tab]
+    );
+
+    const should_show_payout_details = !is_accumulator && !is_multiplier && !is_turbos && !is_vanilla;
+
+    // scroll the page when a virtual keyboard pops up
+    const input_id = 'stake_input';
+    const { is_key_board_visible: should_scroll } = useIsVirtualKeyboardOpen(input_id);
+
+    React.useEffect(() => {
+        if (should_scroll) window?.scrollTo({ top: 225, behavior: 'smooth' });
+    }, [should_scroll]);
+
+    React.useEffect(() => {
+        const initial_state = createInitialState(trade_store);
+        dispatch({ type: 'SET_PROPOSAL_VALUES', payload: initial_state.proposal_request_values });
+        dispatch({ type: 'UPDATE_DETAILS', payload: initial_state.details });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // Parallel proposal without subscription
     // For Rise/Fall and all Digits we should do 2 proposal requests

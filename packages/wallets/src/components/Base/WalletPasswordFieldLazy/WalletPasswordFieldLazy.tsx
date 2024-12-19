@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../WalletLoader';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 
 export interface WalletPasswordFieldProps extends WalletTextFieldProps {
@@ -16,7 +16,7 @@ const WalletPasswordFieldLazyContainer = lazy(
 ) as React.FC<WalletPasswordFieldProps>;
 
 const WalletPasswordFieldLazy: React.FC<WalletPasswordFieldProps> = props => (
-    <Suspense fallback={<Loader isFullScreen={false} />}>
+    <Suspense fallback={<WalletLoader isFullScreen={false} />}>
         <WalletPasswordFieldLazyContainer {...props} />
     </Suspense>
 );

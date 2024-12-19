@@ -8,7 +8,8 @@ import {
     usePOI,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { ActionScreen, Loader } from '@deriv-com/ui';
+import { ActionScreen } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
 import './CashierLocked.scss';
 
@@ -79,7 +80,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     });
 
     if (isLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (isSystemMaintenance && systemMaintenanceContent) {

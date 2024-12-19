@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
 import { TSocketRequestPayload } from '@deriv/api-v2/types';
-import { Loader, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
+import { WalletLoader } from '../../../../../../components';
 import { useCashierScroll } from '../../../../context';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
@@ -52,7 +53,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         setFilter(filter);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!wallet || (!transactions && (isFetching || isLoading))) return <Loader />;
+    if (!wallet || (!transactions && (isFetching || isLoading))) return <WalletLoader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 

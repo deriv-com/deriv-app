@@ -30,7 +30,6 @@ jest.mock('@deriv/api-v2', () => ({
 jest.mock('../../../../../components/ModalProvider');
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    Loader: jest.fn(() => <div>Loading...</div>),
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
@@ -51,6 +50,7 @@ jest.mock('../../../../../components/Base', () => ({
         </div>
     ),
     ModalWrapper: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../../../../../components', () => ({

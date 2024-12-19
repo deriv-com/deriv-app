@@ -16,15 +16,15 @@ const useDtraderV2Flag = () => {
     const [dtrader_v2_enabled_mobile, setDtraderV2EnabledMobile] = useState(false);
     const [dtrader_v2_enabled_desktop, setDtraderV2EnabledDesktop] = useState(false);
 
-    useEffect(() => {
-        if (is_dtrader_v2_mobile) {
-            setDtraderV2EnabledMobile(is_dtrader_v2_mobile);
-        }
-        if (is_dtrader_v2_desktop) {
-            setDtraderV2EnabledDesktop(is_dtrader_v2_desktop);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_mobile, is_desktop]);
+    // useEffect(() => {
+    //     if (is_dtrader_v2_mobile) {
+    //         setDtraderV2EnabledMobile(is_dtrader_v2_mobile);
+    //     }
+    //     if (is_dtrader_v2_desktop) {
+    //         setDtraderV2EnabledDesktop(is_dtrader_v2_desktop);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [is_mobile, is_desktop]);
 
     return { dtrader_v2_enabled_mobile, dtrader_v2_enabled_desktop };
 };

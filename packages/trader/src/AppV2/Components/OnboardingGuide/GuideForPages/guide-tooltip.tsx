@@ -1,41 +1,14 @@
 import React from 'react';
-import { Button, CaptionText, IconButton, Text } from '@deriv-com/quill-ui';
-import { LabelPairedChevronsUpXlBoldIcon, LabelPairedXmarkSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
+import { CaptionText, IconButton } from '@deriv-com/quill-ui';
+import { LabelPairedXmarkSmBoldIcon } from '@deriv/quill-icons';
 import { TooltipRenderProps } from 'react-joyride';
-import { useSwipeable } from 'react-swipeable';
 
-export interface GuideTooltipProps extends TooltipRenderProps {
-    setStepIndex: React.Dispatch<React.SetStateAction<number>>;
-}
-
-const GuideTooltip = ({ closeProps, step, tooltipProps, setStepIndex }: GuideTooltipProps) => {
-    const swipe_handlers = useSwipeable({
-        onSwipedUp: () => {
-            document.querySelector('.trade__chart')?.scrollIntoView();
-            setStepIndex((prev: number) => prev + 1);
-        },
-        preventDefaultTouchmoveEvent: true,
-        trackTouch: true,
-        trackMouse: true,
-    });
-
-    if (step.title === 'scroll-icon') {
-        return (
-            <div {...swipe_handlers} className='guide-tooltip__wrapper-scroll'>
-                <LabelPairedChevronsUpXlBoldIcon className='guide-tooltip--bounce' />
-                <Text size='sm' bold className='guide-tooltip__wrapper-scroll-text'>
-                    <Localize i18n_default_text='Swipe up to see the chart' />
-                </Text>
-            </div>
-        );
-    }
-
+const GuideTooltip = ({ closeProps, step, tooltipProps }: TooltipRenderProps) => {
     return (
         <div {...tooltipProps} className='guide-tooltip__wrapper'>
             <div>
                 {step.title && (
-                    <div className='guide-tooltip__header'>
+                    <div className='guide-tooltip__header' data-testid='guide-tooltip__header'>
                         <CaptionText bold className='guide-tooltip__header__title'>
                             {step.title}
                         </CaptionText>
@@ -54,7 +27,11 @@ const GuideTooltip = ({ closeProps, step, tooltipProps, setStepIndex }: GuideToo
                         />
                     </div>
                 )}
-                {step.content && <CaptionText className='guide-tooltip__content'>{step.content}</CaptionText>}
+                {step.content && (
+                    <CaptionText className='guide-tooltip__content' data-testid='guide-tooltip__content'>
+                        {step.content}
+                    </CaptionText>
+                )}
             </div>
         </div>
     );

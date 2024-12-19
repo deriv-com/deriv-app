@@ -48,7 +48,7 @@ const GuideContainer = ({ should_run, steps, callback }: TGuideContainerProps) =
                 },
             }}
             stepIndex={step_index}
-            tooltipComponent={props => <GuideTooltip {...props} setStepIndex={setStepIndex} />}
+            tooltipComponent={props => <GuideTooltip {...props} />}
         />
     );
 };

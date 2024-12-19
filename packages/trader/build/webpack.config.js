@@ -23,19 +23,6 @@ module.exports = function (env) {
             moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
-            // splitChunks: {
-            //     chunks: 'all',
-            //     minSize: 30000,
-            //     maxSize: 240000,
-            //     name(module, chunks, cacheGroupKey) {
-            //         const moduleFileName = module
-            //             .identifier()
-            //             .split('/')
-            //             .reduceRight(item => item);
-            //         const allChunksNames = chunks.map(item => item.name).join('~');
-            //         return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
-            //     },
-            // },
         },
         output: {
             filename: 'trader/js/[name].js',
@@ -45,7 +32,6 @@ module.exports = function (env) {
             libraryExport: 'default',
             library: '@deriv/trader',
             libraryTarget: 'umd',
-            // clean: true,
         },
         externals: [
             {

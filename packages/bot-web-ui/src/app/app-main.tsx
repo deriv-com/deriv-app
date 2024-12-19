@@ -23,9 +23,7 @@ const originToDomainMap = {
 
 const App = ({ passthrough }: TAppProps) => {
     // Extract the correct domain based on the current origin
-    const targetDomain = Object.entries(originToDomainMap).find(([origin]) =>
-        window.location.origin.includes(origin)
-    )?.[1];
+    const targetDomain = originToDomainMap[window.location.host as keyof typeof originToDomainMap];
 
     // Redirect to the dbot.deriv.com only from staging and production
     if (targetDomain) {

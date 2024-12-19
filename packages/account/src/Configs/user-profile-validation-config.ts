@@ -30,16 +30,18 @@ type TINDepdendents = {
     is_required_for_tax_residence?: boolean;
 };
 
-Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message) {
+Yup.addMethod(Yup.string, 'validatePhoneNumberLength', function (message, isCountryCodeDropdownEnabled) {
     return this.test('is-valid-phone-number-length', message || localize('You should enter 9-20 numbers.'), value => {
         if (typeof value === 'string') {
             // Remove the leading '+' symbol before validation
             const phoneNumber = value.startsWith('+') ? value.slice(1) : value;
-            return /^[0-9]{9,20}$/.test(phoneNumber);
+            return isCountryCodeDropdownEnabled ? /^[0-9]{5,15}$/.test(phoneNumber) : /^[0-9]{9,20}$/.test(phoneNumber);
         }
         return false;
     });
 });
+
+const tempPhoneNumberValidation = /^[0-9]{5,15}$/;
 
 const makeTinOptional = ({
     is_mf,
@@ -185,7 +187,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) =>
         address_state: Yup.string().matches(addressState, localize('State is not in a proper format')),
     });
 
-export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
+export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isCountryCodeDropdownEnabled?: boolean) =>
     Yup.object({
         salutation: Yup.string().when({
             is: () => broker_code === 'maltainvest',
@@ -210,8 +212,19 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
         phone: Yup.string()
             .required(localize('Phone is required.'))
             // @ts-expect-error yup validation giving type error
-            .validatePhoneNumberLength(localize('You should enter 9-20 numbers.'))
-            .matches(phoneNumber, localize('Please enter a valid phone number (e.g. +15417541234).')),
+            .validatePhoneNumberLength(
+                isCountryCodeDropdownEnabled
+                    ? localize('You should enter 5-15 numbers.')
+                    : localize('You should enter 9-20 numbers.'),
+                isCountryCodeDropdownEnabled
+            )
+            .matches(
+                isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : phoneNumber,
+                localize('Please enter a valid phone number (e.g. +15417541234).')
+            ),
+        ...(isCountryCodeDropdownEnabled && {
+            calling_country_code: Yup.string().required(localize('Code required.')),
+        }),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
         citizen: broker_code
             ? Yup.string().when({

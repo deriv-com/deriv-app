@@ -46,7 +46,7 @@ type TSupportedContracts = {
 
 export const getSupportedContracts = (is_high_low: boolean): TSupportedContracts => ({
     ACCU: {
-        name: 'Accumulators',
+        name: localize('Accumulators'),
         position: 'top',
     },
     ASIANU: {

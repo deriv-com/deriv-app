@@ -13,6 +13,10 @@ type TPlatform = {
 };
 
 type TPlatforms = Record<'p2p' | 'p2p_v2' | 'derivgo' | 'tradershub_os', TPlatform>;
+export const tradershub_os_url =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/tradershub/cfds'
+        : 'https://staging-hub.deriv.com/tradershub/cfds';
 
 // TODO: This should be moved to PlatformContext
 export const platforms: TPlatforms = {
@@ -42,7 +46,7 @@ export const platforms: TPlatforms = {
         is_hard_redirect: true,
         platform_name: 'TradersHub',
         route_to_path: '',
-        url: routes.personal_details,
+        url: tradershub_os_url,
     },
 };
 

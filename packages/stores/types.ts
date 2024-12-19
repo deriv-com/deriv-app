@@ -10,25 +10,26 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    GetSelfExclusion,
     GetSettings,
     LandingCompany,
     LogOutResponse,
+    P2PAdvertiserInformationResponse,
+    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
+    Statement,
     StatesList,
     Transaction,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     WebsiteStatus,
-    GetSelfExclusion,
-    Statement,
 } from '@deriv/api-types';
 
-import type { FeatureFlagsStore } from './src/stores';
 import { TContractInfo } from '../shared/src/utils/contract';
+
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -105,7 +106,7 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'financial' | 'standard' | 'stp' | 'gold';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
@@ -482,6 +483,8 @@ export type TClientStore = {
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
+    is_trading_platform_available_account_loaded: boolean;
+    setIsTradingPlatformAvailableAccountLoaded: (value: boolean) => void;
     is_account_setting_loaded: boolean;
     is_deposit_lock: boolean;
     is_duplicate_dob_phone: boolean;
@@ -565,6 +568,24 @@ export type TClientStore = {
     };
     website_status: WebsiteStatus;
     email: string;
+    phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    };
+    setPhoneSettings: (phone_settings: {
+        carriers: string[];
+        countries: {
+            calling_country_code: string;
+            carriers: string[];
+            country_code: string;
+            display_name: string;
+        }[];
+    }) => void;
     setVerificationCode: (code: string, action: string) => void;
     updateAccountStatus: () => Promise<void>;
     updateMT5AccountDetails: () => Promise<void>;
@@ -664,6 +685,8 @@ export type TClientStore = {
     setIsPasskeySupported: (value: boolean) => void;
     is_phone_number_verification_enabled: boolean;
     setIsPhoneNumberVerificationEnabled: (value: boolean) => void;
+    is_country_code_dropdown_enabled: boolean;
+    setIsCountryCodeDropdownEnabled: (value: boolean) => void;
     setPasskeysStatusToCookie: (status: 'available' | 'not_available') => void;
     should_show_passkey_notification: boolean;
     setShouldShowPasskeyNotification: (value: boolean) => void;
@@ -687,6 +710,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    should_show_trustpilot_notification: boolean;
 };
 
 type TCommonStoreError = {
@@ -996,6 +1020,7 @@ type TBarriers = Array<{
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;
+    updateColor: ({ barrier_color, shade_color }: { barrier_color?: string; shade_color?: string }) => void;
 }>;
 type TContractTradeStore = {
     accountSwitchListener: () => Promise<void>;

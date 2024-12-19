@@ -1,10 +1,10 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { StaticUrl } from '@deriv/components';
+import { StaticUrl, Text } from '@deriv/components';
 import {
     checkServerMaintenance,
-    daysSince,
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
@@ -13,7 +13,6 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -25,9 +24,11 @@ import {
     isMultiplierContract,
     LocalStore,
     routes,
+    shouldShowPhoneVerificationNotification,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -43,8 +44,6 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import dayjs from 'dayjs';
-import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -322,7 +321,6 @@ export default class NotificationStore extends BaseStore {
             account_list,
             account_settings,
             account_status,
-            account_open_date,
             accounts,
             isAccountOfType,
             is_eu,
@@ -346,17 +344,20 @@ export default class NotificationStore extends BaseStore {
             is_p2p_enabled,
             is_poa_expired,
             currency,
+            is_country_code_dropdown_enabled,
+            phone_settings,
         } = this.root_store.client;
+        const carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length > 0;
         const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
-        const is_website_up = website_status.site_status === 'up';
-        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.trustpilot?.key
-        );
+        const marked_notifications = LocalStore.getObject('marked_notifications');
+        const has_trustpilot = Array.isArray(marked_notifications)
+            ? marked_notifications.includes(this.client_notifications?.trustpilot?.key)
+            : false;
         const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
             account_settings?.phone_number_verification?.next_email_attempt,
             current_time
@@ -367,7 +368,8 @@ export default class NotificationStore extends BaseStore {
             account_settings?.phone &&
             !is_next_email_attempt_timer_running &&
             !is_virtual &&
-            is_phone_number_verification_enabled;
+            is_phone_number_verification_enabled &&
+            (is_country_code_dropdown_enabled ? carriers_supported : true);
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -464,6 +466,10 @@ export default class NotificationStore extends BaseStore {
                 });
             }
 
+            if (!has_trustpilot && this.root_store.client.should_show_trustpilot_notification) {
+                this.addNotificationMessage(this.client_notifications.trustpilot);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -515,6 +521,9 @@ export default class NotificationStore extends BaseStore {
                     has_restricted_mt5_account,
                     has_mt5_account_with_rejected_poa
                 );
+
+                if (account_settings?.tnc_update_notification_start_date)
+                    this.addNotificationMessage(this.client_notifications.reaccept_tnc);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -629,9 +638,6 @@ export default class NotificationStore extends BaseStore {
                         );
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p?.key });
-                }
-                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
-                    this.addNotificationMessage(this.client_notifications.trustpilot);
                 }
                 has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
                 if (has_missing_required_field) {
@@ -795,11 +801,14 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email, is_cr_account, account_settings } =
+            this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
+
+        const next_prompt_date = account_settings?.tnc_update_notification_start_date;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -845,7 +854,10 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     onClick: () => {
                         window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
-                        this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
+                        this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                        this.removeNotificationByKey({
+                            key: this.client_notifications.trustpilot.key,
+                        });
                         this.removeNotificationMessage({
                             key: this.client_notifications.trustpilot.key,
                             should_show_again: false,
@@ -1240,6 +1252,26 @@ export default class NotificationStore extends BaseStore {
                         text: localize('Go to my account settings'),
                     },
                 };
+            },
+            reaccept_tnc: {
+                key: 'reaccept_tnc',
+                header: localize('Important update: Terms and conditions'),
+                message: (
+                    <Localize
+                        i18n_default_text="We've updated our <0>terms and conditions</0>. To continue trading, you must review and accept the updated terms. You'll be prompted to accept them starting [<1>{{next_prompt_date}}</1>]."
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='link'
+                                href='terms-and-conditions'
+                                is_eu_url={!is_cr_account}
+                            />,
+                            <Text key={1} size='xs' weight='bold' />,
+                        ]}
+                        values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM YYYY') }}
+                    />
+                ),
+                type: 'announce',
             },
             reset_virtual_balance: {
                 key: 'reset_virtual_balance',

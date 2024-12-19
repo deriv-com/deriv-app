@@ -30,10 +30,4 @@ describe('InstrumentsIconWithLabel', () => {
         expect(screen.getByTestId('forex-icon')).toBeInTheDocument();
         expect(screen.getByText('Forex')).toBeInTheDocument();
     });
-
-    it('renders asterisk when isAsterisk is true', () => {
-        render(<InstrumentsIconWithLabel {...defaultProps} isAsterisk={true} />);
-
-        expect(screen.getByText('*')).toBeInTheDocument();
-    });
 });

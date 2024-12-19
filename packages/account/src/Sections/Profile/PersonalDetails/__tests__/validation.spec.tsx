@@ -101,6 +101,24 @@ describe('getPersonalDetailsInitialValues', () => {
             residence: 'id',
         });
     });
+
+    it('should return correct initial values when isCountryCodeDropdownEnabled is true', () => {
+        const isCountryCodeDropdownEnabled = true;
+        const initial_values = getPersonalDetailsInitialValues(
+            account_settings,
+            mock_residence_list,
+            mock_state_list,
+            false,
+            '60',
+            true,
+            isCountryCodeDropdownEnabled
+        );
+        expect(initial_values.first_name).toBe('John');
+        expect(initial_values.last_name).toBe('Doe');
+        expect(initial_values.place_of_birth).toBe('Colombia');
+        expect(initial_values.address_state).toBe('State Test');
+        expect(initial_values.calling_country_code).toBe('60');
+    });
 });
 
 describe('makeSettingsRequest', () => {

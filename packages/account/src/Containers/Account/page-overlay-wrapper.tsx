@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -75,6 +75,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 header={selected_route?.getTitle?.()}
                 onClickClose={onClickClose}
                 is_from_app={is_from_derivgo}
+                is_from_tradershub_os={is_from_tradershub_os}
             >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>

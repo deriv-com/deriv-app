@@ -65,7 +65,7 @@ const WorkspaceGroup = observer(() => {
                             action={() => setChartModalVisibility()}
                         />
                         <ToolbarIcon
-                            popover_message={localize('Trading View Chart')}
+                            popover_message={localize('TradingView Chart')}
                             icon='IcTradingViewChart'
                             icon_id='db-toolbar__tradingview-button'
                             data_testid='dt_toolbar_tradingview_chart_button'

@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
@@ -27,6 +27,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const { data: poiData, isLoading: isPOILoading } = usePOI();
     const { data: poaData, isLoading: isPOALoading } = usePOA();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const history = useHistory();
     const { isDesktop } = useDevice();
@@ -47,11 +48,11 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const marketTypeTitle =
         marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
-            : getMarketTypeDetails(localize, product)[marketType].title;
+            : getMarketTypeDetails(localize, product, isEuRegion)[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
-    const landingCompanyName = `(${
-        companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
-    })`;
+    const landingCompanyName = isEuRegion
+        ? ''
+        : `(${companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode})`;
 
     const isDemo = activeWallet?.is_virtual;
     const buttonSize = isDesktop ? 'md' : 'lg';
@@ -101,7 +102,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
 
     const renderSuccessDescription = useMemo(() => {
         if (isDemo) {
-            return localize("Let's practise trading with {{accountBalance}} virtual funds.", {
+            return localize('Practise trading with {{accountBalance}} virtual funds.', {
                 accountBalance: addedAccount?.display_balance,
             });
         }
@@ -135,7 +136,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
                         i18n_default_text='Your {{marketTypeTitle}} {{demoTitle}} account is ready'
                         values={{
                             demoTitle: isDemo ? localize('demo') : landingCompanyName,
-                            marketTypeTitle,
+                            marketTypeTitle:
+                                isDemo && platform === CFD_PLATFORMS.MT5
+                                    ? `${CFD_PLATFORMS.MT5.toUpperCase()} ${getMarketTypeDetails(localize, product)[marketType].title}`
+                                    : marketTypeTitle,
                         }}
                     />
                 }

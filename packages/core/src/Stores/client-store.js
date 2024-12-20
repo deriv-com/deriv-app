@@ -1606,7 +1606,7 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform', 'lang'])}`);
                 }
             }
             runInAction(() => {

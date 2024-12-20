@@ -83,7 +83,7 @@ const CompareCFDs = observer(() => {
                 </Text>
             </div>
             <h1 className='compare-cfd-header-title'>
-                <Text size='m' weight='bold' color='prominent'>
+                <Text size='m' weight='bold' color='prominent' align='center'>
                     {getCompareAccountsHeader()}
                 </Text>
             </h1>

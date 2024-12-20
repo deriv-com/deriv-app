@@ -1,9 +1,15 @@
-import { Loader } from '@deriv-com/ui';
-import { getDomainName, routes } from '@deriv/shared';
-import Cookies from 'js-cookie';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
+import { getDomainName, routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import { Loader } from '@deriv-com/ui';
 
 const OSRedirect = () => {
+    const {
+        client: { is_logged_in },
+    } = useStore();
     const url_query_string = window.location.search;
     const history = useHistory();
 
@@ -47,11 +53,15 @@ const OSRedirect = () => {
         updated_search = `${url_query_string}&platform=${matched_route.platform}`;
     }
 
-    history.push({
-        pathname: matched_route?.route,
-        // @ts-expect-error need to update react-router-dom types
-        search: updated_search,
-    });
+    useEffect(() => {
+        if (is_logged_in) {
+            history.push({
+                pathname: matched_route?.route,
+                // @ts-expect-error need to update react-router-dom types
+                search: updated_search,
+            });
+        }
+    }, [history, is_logged_in, matched_route?.route, updated_search]);
 
     return <Loader isFullScreen />;
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
 import './DepositFiat.scss';
@@ -22,7 +22,7 @@ const DepositFiat: React.FC = () => {
         }
     }, [isAuthorizeSuccess, mutateDepositFiat]);
 
-    if (isDepositFiatLoading) return <Loader />;
+    if (isDepositFiatLoading) return <WalletLoader />;
 
     if (isServerError(depositFiatError)) {
         return <DepositErrorScreen error={depositFiatError} />;
@@ -30,7 +30,7 @@ const DepositFiat: React.FC = () => {
 
     return (
         <React.Fragment>
-            {isIframeLoading && <Loader />}
+            {isIframeLoading && <WalletLoader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'

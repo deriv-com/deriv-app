@@ -9,9 +9,9 @@ jest.mock('@deriv/api-v2', () => ({
     useCashierValidation: jest.fn(),
 }));
 
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 const mockActiveWalletData = { currency: 'USD', loginid: 'MF42069' };

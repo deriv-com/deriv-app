@@ -1,8 +1,8 @@
 import React from 'react';
 import { useAccountStatus, useActiveWalletAccount, useCashierValidation } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { ActionScreen, Loader, Text } from '@deriv-com/ui';
-import { WalletLink } from '../../../../components';
+import { ActionScreen, Text } from '@deriv-com/ui';
+import { WalletLink, WalletLoader } from '../../../../components';
 import './TransferLocked.scss';
 
 type TCashierLockedProps = {
@@ -24,7 +24,7 @@ const TransferLocked: React.FC<TCashierLockedProps> = ({ children }) => {
         askFinancialRiskApproval;
 
     if (isAccountStatusLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (isMFTransferLocked) {

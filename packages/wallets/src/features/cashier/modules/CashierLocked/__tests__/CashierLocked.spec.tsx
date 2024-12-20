@@ -20,9 +20,9 @@ jest.mock('@deriv/api-v2', () => ({
     usePOI: jest.fn(),
 }));
 
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../CashierLockedContent', () => ({

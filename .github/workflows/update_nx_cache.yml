@@ -1,4 +1,4 @@
-name: Update node modules cache
+name: Update NX cache
 
 on:
   push:
@@ -14,14 +14,16 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
-      - name: Cache node modules
-        id: cache-npm
+      - name: Cache NX cache
+        id: cache-nx
         uses: actions/cache@v4
         with:
-          path: |
-            node_modules
-            packages/*/node_modules
-          key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+          path: .nx
+          key: nx-cache-${{ hashFiles('nx.json', 'package-lock.json', 'packages/*/package.json') }}
+      - if: ${{ steps.cache-nx.outputs.cache-hit != 'true' }}
         name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"
+      - name: Build
+        uses: "./.github/actions/build"
+
+

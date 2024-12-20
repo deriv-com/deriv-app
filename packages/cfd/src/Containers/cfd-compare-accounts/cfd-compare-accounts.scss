@@ -79,8 +79,11 @@
                 padding: 0.1rem;
             }
             @include mobile-screen {
-                transform: translateX(12rem) translateY(-2rem) rotate(45deg);
-                width: 12rem;
+                transform: rotate(45deg);
+                right: -32px;
+                top: 10px;
+                width: 108px;
+                height: 16px;
                 font-size: var(--text-size-xxxs);
             }
         }

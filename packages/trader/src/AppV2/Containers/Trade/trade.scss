@@ -72,7 +72,7 @@
 
         &-tooltip-info {
             position: fixed;
-            bottom: 8rem;
+            bottom: var(--core-spacing-400);
             width: 100%;
             &-large {
                 height: 38rem;

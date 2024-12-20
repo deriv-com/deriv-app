@@ -249,6 +249,7 @@ export type TInstrumentsIcon = {
     highlighted?: boolean;
     className?: string;
     is_asterisk?: boolean;
+    is_available?: boolean;
 };
 
 export type TCompareAccountsCard = {

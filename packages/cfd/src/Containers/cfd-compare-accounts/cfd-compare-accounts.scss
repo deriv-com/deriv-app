@@ -78,6 +78,11 @@
                 transform: translateX(8rem) translateY(-2rem) rotate(45deg);
                 padding: 0.1rem;
             }
+            @include mobile-screen {
+                transform: translateX(12rem) translateY(-2rem) rotate(45deg);
+                width: 12rem;
+                font-size: var(--text-size-xxxs);
+            }
         }
     }
     &-outline {

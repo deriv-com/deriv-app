@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { ThemedScrollbars } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { CookieStorage, platforms, routes, TRACKING_STATUS_KEY, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
@@ -42,13 +41,6 @@ const AppContents = observer(({ children }) => {
 
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
-
-    const [dtrader_v2_enabled_mobile] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_enabled',
-    });
-    const [dtrader_v2_enabled_desktop] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dtrader_v2_enabled_desktop',
-    });
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
@@ -126,7 +118,6 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
-                'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}
             ref={scroll_ref}
         >

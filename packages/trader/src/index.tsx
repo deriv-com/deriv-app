@@ -30,13 +30,9 @@ const AppV2Loader = makeLazyLoader(
 )() as React.ComponentType<Apptypes>;
 
 const App = ({ passthrough }: Apptypes) => {
-    const { dtrader_v2_enabled_desktop, dtrader_v2_enabled_mobile, load_dtrader_module } = useDtraderV2Flag();
+    const { load_dtrader_module } = useDtraderV2Flag();
     if (load_dtrader_module) {
-        return dtrader_v2_enabled_desktop || dtrader_v2_enabled_mobile ? (
-            <AppV2Loader passthrough={passthrough} />
-        ) : (
-            <AppLoader passthrough={passthrough} />
-        );
+        <AppLoader passthrough={passthrough} />;
     }
     return <Loading />;
 };

@@ -44,12 +44,16 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     }));
 
     const onClickClose = React.useCallback(() => {
+        if (is_from_tradershub_os) {
+            window.location.href = 'https://hub.deriv.com/tradershub/cfds';
+            return;
+        }
         if (location.pathname === shared_routes.passkeys) {
             passkeysMenuCloseActionEventTrack();
         }
 
         history.push(shared_routes.traders_hub);
-    }, [history]);
+    }, [history, is_from_tradershub_os, passkeysMenuCloseActionEventTrack]);
 
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });

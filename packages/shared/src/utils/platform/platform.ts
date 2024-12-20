@@ -106,6 +106,7 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
         return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
+    if (isNavigationFromTradersHubOS()) return { name: 'TradersHub', route: 'https://hub.deriv.com/tradershub/cfds' };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

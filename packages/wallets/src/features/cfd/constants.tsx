@@ -7,17 +7,21 @@ import {
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    DerivProductDerivXBrandDarkWordmarkIcon,
+    DerivProductBrandDarkDerivXWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
     LabelPairedWindowsXlIcon,
-    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
-    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    PartnersProductBrandDarkDerivCtraderWordmarkIcon,
+    PartnersProductBrandLightDerivMt5LogoWordmarkIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
 import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
-import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
+import { getWebtraderUrl } from './screens/MT5TradeScreen/MT5TradeLink/constants';
+import {
+    ctraderLinks,
+    whiteLabelLinks as internalWhiteLabelLinks,
+} from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 const zeroSpreadDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
     availability: 'Non-EU',
@@ -141,7 +145,10 @@ export const companyNamesAndUrls = {
     vanuatu: { shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
-export const getAppToContentMapper = (localize: ReturnType<typeof useTranslations>['localize']) =>
+export const getAppToContentMapper = (
+    localize: ReturnType<typeof useTranslations>['localize'],
+    mt5TradeAccount?: THooks.MT5AccountsList
+) =>
     ({
         ctrader: {
             icon: <LabelPairedWindowsXlIcon />,
@@ -151,33 +158,33 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
         },
         linux: {
             icon: <LabelPairedLinuxXlIcon />,
-            link: whiteLabelLinks.linux,
+            link: internalWhiteLabelLinks.linux,
             text: localize('Learn more'),
             title: localize('MetaTrader 5 Linux app'),
         },
         macos: {
             icon: <LabelPairedMacosXlIcon />,
-            link: whiteLabelLinks.macos,
+            link: internalWhiteLabelLinks.macos,
             text: localize('Download'),
             title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
-            icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-            link: whiteLabelLinks.webtrader_url,
+            icon: <PartnersProductBrandLightDerivMt5LogoWordmarkIcon height={32} width={32} />,
+            link: mt5TradeAccount ? getWebtraderUrl({ mt5TradeAccount }) : '',
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
-            link: whiteLabelLinks.windows,
+            link: mt5TradeAccount?.white_label_links?.windows,
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },
     }) as const;
 
 export const PlatformToLabelIconMapper = {
-    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
-    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
+    ctrader: <PartnersProductBrandDarkDerivCtraderWordmarkIcon height={8} width={58} />,
+    dxtrade: <DerivProductBrandDarkDerivXWordmarkIcon height={10} width={35} />,
 } as const;
 
 export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTranslations>['localize']) =>

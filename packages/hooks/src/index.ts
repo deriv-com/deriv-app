@@ -44,6 +44,8 @@ export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountN
 export { default as useIsRtl } from './useIsRtl';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useLiveChat } from './useLiveChat';
+export { default as useIntercom, useIsIntercomAvailable } from './useIntercom';
+export { default as useFreshChat, useIsFreshchatAvailable } from './useFreshchat';
 export { default as useIsLiveChatWidgetAvailable } from './useIsLiveChatWidgetAvailable';
 export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';
 export { default as useLocalStorageData } from './useLocalStorageData';
@@ -106,4 +108,5 @@ export { default as useDtraderV2Flag } from './useDtraderV2Flag';
 export { default as useIsGrowthbookIsLoaded } from './useIsGrowthbookLoaded';
 export { default as useOauth2 } from './useOauth2';
 export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimitsDetails';
+export { default as useSilentLoginAndLogout } from './useSilentLoginAndLogout';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

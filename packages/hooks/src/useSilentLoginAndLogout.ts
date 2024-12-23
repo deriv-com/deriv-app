@@ -42,16 +42,19 @@ const useSilentLoginAndLogout = ({
             });
         }
 
-        if (
-            loggedState === 'false' &&
-            is_client_store_initialized &&
-            isOAuth2Enabled &&
-            isClientAccountsPopulated &&
-            !window.location.pathname.includes('callback')
-        ) {
-            // Perform single logout
-            oAuthLogout();
-        }
+        // NOTE: Commented this out for now due to new signup registration flow broken due to Single-Logout issue
+        // There is a case where if logged_state is false coming from other platforms, Deriv app will SLO the user out once they are redirected from Traders Hub as new user
+        // User needs to be registered to Hydra's session first in order for SSO and SLO to work
+        // if (
+        //     loggedState === 'false' &&
+        //     is_client_store_initialized &&
+        //     isOAuth2Enabled &&
+        //     isClientAccountsPopulated &&
+        //     !window.location.pathname.includes('callback')
+        // ) {
+        //     // Perform single logout
+        //     oAuthLogout();
+        // }
     }, [
         loggedState,
         isClientAccountsPopulated,

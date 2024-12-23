@@ -198,8 +198,8 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <div
                         className={clsx('trade__parameter-tooltip-info', {
-                            'trade_parameter-tooltip-info-small': duration_units_list.length <= 1,
-                            'trade_parameter-tooltip-info-large': duration_units_list.length > 1,
+                            'trade__parameter-tooltip-info-small': duration_units_list.length <= 1,
+                            'trade__parameter-tooltip-info-large': duration_units_list.length > 1,
                         })}
                     />
                     <DurationActionSheetContainer

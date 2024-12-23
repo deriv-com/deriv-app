@@ -31,7 +31,7 @@ const VideoOverlay = ({
     return (
         <div
             className={classNames('player__overlay', {
-                'player__overlay--visible': is_ended || show_controls,
+                'player__overlay--visible': is_ended || (is_v2 && show_controls),
             })}
             onClick={onClick}
             onKeyDown={onClick}

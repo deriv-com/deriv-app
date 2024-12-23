@@ -156,9 +156,7 @@
                 background-color: var(--general-main-2);
                 box-shadow: 0 0.8rem 1.6rem 0 var(--shadow-menu);
                 transform: translateY(0);
-                transition:
-                    transform 0.25s ease,
-                    opacity 0.25s linear;
+                transition: transform 0.25s ease, opacity 0.25s linear;
                 opacity: 0;
 
                 &--enter,

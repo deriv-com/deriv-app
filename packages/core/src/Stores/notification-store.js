@@ -1,7 +1,8 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { StaticUrl } from '@deriv/components';
+import { StaticUrl, Text } from '@deriv/components';
 import {
     checkServerMaintenance,
     extractInfoFromShortcode,
@@ -12,7 +13,6 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -24,9 +24,12 @@ import {
     isMultiplierContract,
     LocalStore,
     routes,
+    shouldShowPhoneVerificationNotification,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+import { Chat } from '@deriv/utils';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -42,8 +45,6 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import dayjs from 'dayjs';
-import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -522,6 +523,9 @@ export default class NotificationStore extends BaseStore {
                     has_mt5_account_with_rejected_poa
                 );
 
+                if (account_settings?.tnc_update_notification_start_date)
+                    this.addNotificationMessage(this.client_notifications.reaccept_tnc);
+
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
                 if (needs_poinc) this.addNotificationMessage(this.client_notifications.needs_poinc);
@@ -798,11 +802,14 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email, is_cr_account, account_settings } =
+            this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
+
+        const next_prompt_date = account_settings?.tnc_update_notification_start_date;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -833,7 +840,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to unlock it.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1090,7 +1097,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1247,6 +1254,26 @@ export default class NotificationStore extends BaseStore {
                     },
                 };
             },
+            reaccept_tnc: {
+                key: 'reaccept_tnc',
+                header: localize('Important update: Terms and conditions'),
+                message: (
+                    <Localize
+                        i18n_default_text="We've updated our <0>terms and conditions</0>. To continue trading, you must review and accept the updated terms. You'll be prompted to accept them starting [<1>{{next_prompt_date}}</1>]."
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='link'
+                                href='terms-and-conditions'
+                                is_eu_url={!is_cr_account}
+                            />,
+                            <Text key={1} size='xs' weight='bold' />,
+                        ]}
+                        values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM YYYY') }}
+                    />
+                ),
+                type: 'announce',
+            },
             reset_virtual_balance: {
                 key: 'reset_virtual_balance',
                 header: localize('Reset your balance'),
@@ -1287,7 +1314,7 @@ export default class NotificationStore extends BaseStore {
                     ),
                     action: {
                         onClick: () => {
-                            window.LiveChatWidget?.call('maximize');
+                            Chat.open();
                         },
                         text: localize('Go to live chat'),
                     },
@@ -1400,7 +1427,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1412,7 +1439,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1587,7 +1614,7 @@ export default class NotificationStore extends BaseStore {
                 ),
                 action: {
                     onClick: async () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to LiveChat'),
                 },
@@ -1755,7 +1782,7 @@ export default class NotificationStore extends BaseStore {
             : {
                   text: localize('Contact live chat'),
                   onClick: () => {
-                      window.LiveChatWidget?.call('maximize');
+                      Chat.open();
                   },
               };
 

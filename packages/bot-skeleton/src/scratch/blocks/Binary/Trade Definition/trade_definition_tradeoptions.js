@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu } from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu, setCurrency } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -118,7 +118,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
             (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
-            this.setCurrency();
+            setCurrency(this);
             this.updateAmountLimits();
         }
 
@@ -518,11 +518,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         container.setAttribute('has_prediction', !!this.getInput('PREDICTION'));
 
         return container;
-    },
-    setCurrency() {
-        const currency_field = this.getField('CURRENCY_LIST');
-        const { currency } = DBotStore.instance.client;
-        currency_field?.setText(getCurrencyDisplayCode(currency));
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

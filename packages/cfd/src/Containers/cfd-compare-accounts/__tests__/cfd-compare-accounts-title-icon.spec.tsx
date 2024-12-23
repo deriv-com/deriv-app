@@ -101,7 +101,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Standard demo')).toBeInTheDocument();
+        expect(screen.getByText('Standard Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for financial product in demo account', () => {
@@ -115,7 +115,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Financial demo')).toBeInTheDocument();
+        expect(screen.getByText('Financial Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for Swap-Free with correct product type  demo account', () => {
@@ -128,7 +128,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Swap-Free demo')).toBeInTheDocument();
+        expect(screen.getByText('Swap-Free Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for Zero Spread with correct product type  demo account', () => {
@@ -142,7 +142,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Zero Spread demo')).toBeInTheDocument();
+        expect(screen.getByText('Zero Spread Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for DerivX with correct product type demo account', () => {
@@ -154,7 +154,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Deriv X demo')).toBeInTheDocument();
+        expect(screen.getByText('Deriv X Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for EU clients demo accounts', () => {
@@ -164,6 +164,6 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = true;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('CFDs demo')).toBeInTheDocument();
+        expect(screen.getByText('CFDs Demo')).toBeInTheDocument();
     });
 });

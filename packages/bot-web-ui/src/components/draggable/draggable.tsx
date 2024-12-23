@@ -178,11 +178,7 @@ const Draggable: React.FC<TDraggableProps> = ({
             setIsDragging(false);
             isResizing.current = false;
             if (draggableContentBody?.style) {
-                try {
-                    Object.assign(draggableContentBody.style, previousStyle);
-                } catch {
-                    // no need to handle this error
-                }
+                Object.assign(draggableContentBody.style, previousStyle);
                 draggableContentBody.style.pointerEvents = previousPointerEvent ?? 'unset';
             }
             if (boundaryRef) {
@@ -200,12 +196,7 @@ const Draggable: React.FC<TDraggableProps> = ({
     return (
         <div
             className={`draggable ${isDragging ? 'dragging' : ''}`}
-            style={{
-                position: 'absolute',
-                top: typeof position.y === 'number' ? position.y : 0,
-                left: typeof position.x === 'number' ? position.x : 0,
-                zIndex: typeof zIndex === 'number' ? zIndex : 0,
-            }}
+            style={{ position: 'absolute', top: position.y, left: position.x, zIndex }}
             onMouseDown={() => calculateZindex({ setZIndex })}
             onKeyDown={() => calculateZindex({ setZIndex })}
             data-testid='dt_react_draggable'
@@ -215,10 +206,7 @@ const Draggable: React.FC<TDraggableProps> = ({
                 ref={draggableRef}
                 className='draggable-content'
                 data-testid='dt_react_draggable_content'
-                style={{
-                    width: typeof size.width === 'number' ? size.width : 0,
-                    height: typeof size.height === 'number' ? size.height : 0,
-                }}
+                style={{ width: size.width, height: size.height }}
             >
                 <div
                     id='draggable-content__header'

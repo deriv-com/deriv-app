@@ -5,12 +5,11 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import DepositCrypto from '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-wallet-address/deposit-crypto-wallet-address';
-import { Chat } from '@deriv/utils';
 
 export const OneTimeDepositModalContent = ({ is_crypto_provider = false }: { is_crypto_provider?: boolean }) => {
     const { isDesktop } = useDevice();
 
-    const onLiveChatClick = () => Chat.open();
+    const onLiveChatClick = () => window.LiveChatWidget?.call('maximize');
 
     return (
         <div

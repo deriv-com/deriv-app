@@ -3,13 +3,11 @@ import {
     ChartBarrierStore,
     isAccumulatorContract,
     isDigitContract,
-    isDtraderV2DesktopEnabled,
-    isDtraderV2MobileEnabled,
+    isDtraderV2Enabled,
     isEnded,
     isEqualObject,
     isMultiplierContract,
     isResetContract,
-    isSmartTraderContract,
     isOpen,
     isTurbosContract,
     getDigitInfo,
@@ -288,12 +286,6 @@ export default class ContractStore extends BaseStore {
             ) {
                 main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
             }
-            if (isBarrierSupported(contract_type) && !isSmartTraderContract(contract_type)) {
-                // Barrier color will depend on pnl (except old SmartTrader contracts)
-                main_barrier?.updateColor({
-                    barrier_color: contract_info.profit >= 0 ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED,
-                });
-            }
             if (
                 contract_info.contract_id &&
                 contract_info.contract_id === this.root_store.contract_replay.contract_id
@@ -321,11 +313,10 @@ export default class ContractStore extends BaseStore {
                 reset_barrier,
             } = contract_info;
             const high_barrier = this.accu_high_barrier || barrier || high;
-            const updated_color = contract_info.profit >= 0 ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED;
             const common_props = {
                 not_draggable: true,
                 shade: DEFAULT_SHADES['2'],
-                color: isSmartTraderContract(contract_type) ? BARRIER_COLORS.BLUE : updated_color,
+                color: BARRIER_COLORS.BLUE,
             };
             if (
                 isBarrierSupported(contract_type) &&
@@ -400,8 +391,7 @@ export default class ContractStore extends BaseStore {
                             ...response.error,
                         },
                         // Temporary switching off old snackbar for DTrader-V2
-                        isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
-                            isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+                        isDtraderV2Enabled(this.root_store.ui.is_mobile)
                     );
                     return;
                 }

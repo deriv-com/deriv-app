@@ -3,7 +3,6 @@ import { Text, useOnClickOutside, Modal, Button } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import './wallets-migration-failed.scss';
-import { Chat } from '@deriv/utils';
 
 const WalletsMigrationFailed = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -17,7 +16,7 @@ const WalletsMigrationFailed = observer(() => {
     };
 
     const handleLivechatButtonClick = () => {
-        Chat.open();
+        window.LiveChatWidget?.call('maximize');
         setWalletsMigrationFailedPopup(false);
     };
 

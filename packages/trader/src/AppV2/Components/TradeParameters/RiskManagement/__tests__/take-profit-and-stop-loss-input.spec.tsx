@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import ModulesProvider from 'Stores/Providers/modules-providers';
@@ -90,56 +90,46 @@ describe('TakeProfitAndStopLossInput', () => {
         expect(screen.getByText(accu_content)).toBeInTheDocument();
     });
 
-    it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', async () => {
+    it('should call focusAndOpenKeyboard, when ToggleSwitch is switched to true.', () => {
         const mockFocusAndOpenKeyboard = jest.spyOn(utils, 'focusAndOpenKeyboard');
         mockTakeProfitAndStopLossInput();
 
         const toggle_switcher = screen.getAllByRole('button')[0];
-        await userEvent.click(toggle_switcher);
+        userEvent.click(toggle_switcher);
         expect(mockFocusAndOpenKeyboard).toBeCalledTimes(1);
     });
 
-    it('should call focusAndOpenKeyboard, when user clicks on Take Profit overlay.', async () => {
+    it('should call focusAndOpenKeyboard, when user clicks on Take Profit overlay.', () => {
         const mockFocusAndOpenKeyboard = jest.spyOn(utils, 'focusAndOpenKeyboard');
         mockTakeProfitAndStopLossInput();
 
         const take_profit_overlay = screen.getByTestId('dt_take_profit_overlay');
-        await userEvent.click(take_profit_overlay);
+        userEvent.click(take_profit_overlay);
 
         expect(mockFocusAndOpenKeyboard).toBeCalledTimes(1);
     });
 
-    it('should render take profit overlay if ToggleSwitch was switched to false', async () => {
+    it('should render take profit overlay if ToggleSwitch was switched to false', () => {
         default_mock_store.modules.trade.has_take_profit = true;
         default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
 
         expect(screen.queryByTestId('dt_take_profit_overlay')).not.toBeInTheDocument();
         const toggle_switcher = screen.getAllByRole('button')[0];
-        await userEvent.click(toggle_switcher);
+        userEvent.click(toggle_switcher);
 
         expect(screen.getByTestId('dt_take_profit_overlay')).toBeInTheDocument();
     });
 
-    it('should call onChangeMultiple when user click on Save button, if there are no API errors', async () => {
+    it('should call onChangeMultiple when user click on Save button, if there are no API errors', () => {
         default_mock_store.modules.trade.has_take_profit = true;
         default_mock_store.modules.trade.take_profit = '5';
         mockTakeProfitAndStopLossInput();
 
-        await userEvent.type(screen.getByTestId(tp_data_testid), '2');
+        userEvent.type(screen.getByTestId(tp_data_testid), '2');
         const save_button = screen.getByText('Save');
-        await userEvent.click(save_button);
+        userEvent.click(save_button);
 
         expect(default_mock_store.modules.trade.onChangeMultiple).toBeCalled();
-    });
-
-    it('should have max length of 10 for take profit input when currency is USD', async () => {
-        default_mock_store.modules.trade.has_take_profit = true;
-        default_mock_store.modules.trade.take_profit = '5';
-        mockTakeProfitAndStopLossInput();
-        const input_field = screen.getByTestId(tp_data_testid);
-        await userEvent.type(input_field, '12345678901');
-
-        expect(input_field).toHaveValue('5123456789');
     });
 });

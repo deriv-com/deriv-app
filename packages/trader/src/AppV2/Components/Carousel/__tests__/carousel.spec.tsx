@@ -31,18 +31,12 @@ const MockHeader: React.ComponentProps<typeof Carousel>['header'] = ({ current_i
     </React.Fragment>
 );
 
+const mock_props = {
+    pages: mock_pages,
+    header: MockHeader,
+};
+
 describe('Carousel', () => {
-    let mock_props: React.ComponentProps<typeof Carousel>;
-
-    beforeEach(() => {
-        mock_props = {
-            pages: mock_pages,
-            header: MockHeader,
-            onNextButtonClick: jest.fn(),
-            onPreviousButtonClick: jest.fn(),
-        };
-    });
-
     it('renders all passed pages', () => {
         render(<Carousel {...mock_props} />);
         expect(screen.getAllByTestId(data_test_id)).toHaveLength(mock_pages.length);
@@ -65,25 +59,25 @@ describe('Carousel', () => {
 
     it('sets index to 1 if user clicks on "Next"', async () => {
         render(<Carousel {...mock_props} />);
-        await userEvent.click(screen.getByText(next_button));
+        userEvent.click(screen.getByText(next_button));
         await screen.findByText('Current Index: 1');
     });
 
     it('sets index to 0 if user clicks on "Previous"', async () => {
         render(<Carousel {...mock_props} />);
-        await userEvent.click(screen.getByText(next_button));
-        await userEvent.click(screen.getByText(prev_button));
+        userEvent.click(screen.getByText(next_button));
+        userEvent.click(screen.getByText(prev_button));
         await screen.findByText('Current Index: 0');
     });
 
-    it('handles controlled component behavior', async () => {
+    it('handles controlled component behavior', () => {
         const setCurrentIndex = jest.fn();
         render(<Carousel {...mock_props} current_index={0} setCurrentIndex={setCurrentIndex} />);
 
-        await userEvent.click(screen.getByText(next_button));
+        userEvent.click(screen.getByText(next_button));
         expect(setCurrentIndex).toHaveBeenCalledWith(1);
 
-        await userEvent.click(screen.getByText(prev_button));
+        userEvent.click(screen.getByText(prev_button));
         expect(setCurrentIndex).toHaveBeenCalledWith(mock_pages.length - 1);
     });
 
@@ -91,13 +85,13 @@ describe('Carousel', () => {
         render(<Carousel {...mock_props} is_infinite_loop={true} />);
 
         const next = screen.getByText(next_button);
-        await userEvent.click(next);
+        userEvent.click(next);
         await screen.findByText('Current Index: 1');
 
-        await userEvent.click(next);
+        userEvent.click(next);
         await screen.findByText('Current Index: 0');
 
-        await userEvent.click(screen.getByText(prev_button));
+        userEvent.click(screen.getByText(prev_button));
         await screen.findByText('Current Index: 1');
     });
 
@@ -105,46 +99,33 @@ describe('Carousel', () => {
         render(<Carousel {...mock_props} />);
 
         const next = screen.getByText(next_button);
-        await userEvent.click(next);
+        userEvent.click(next);
         await screen.findByText('Current Index: 1');
 
-        await userEvent.click(next);
+        userEvent.click(next);
         await screen.findByText('Current Index: 1');
 
-        await userEvent.click(screen.getByText(prev_button));
+        userEvent.click(screen.getByText(prev_button));
         await screen.findByText('Current Index: 0');
     });
 
-    it('calls setCurrentIndex if provided on next click', async () => {
+    it('calls setCurrentIndex if provided on next click', () => {
         const setCurrentIndex = jest.fn();
         render(<Carousel {...mock_props} current_index={0} setCurrentIndex={setCurrentIndex} />);
-        await userEvent.click(screen.getByText(next_button));
+        userEvent.click(screen.getByText(next_button));
         expect(setCurrentIndex).toHaveBeenCalledWith(1);
     });
 
-    it('calls onNextButtonClick if provided on next click', async () => {
-        render(<Carousel {...mock_props} />);
-
-        expect(mock_props.onNextButtonClick).not.toHaveBeenCalled();
-        await userEvent.click(screen.getByText(next_button));
-        expect(mock_props.onNextButtonClick).toHaveBeenCalled();
-    });
-
-    it('calls setCurrentIndex and calls onPreviousButtonClick if provided on previous click', async () => {
+    it('calls setCurrentIndex if provided on previous click', () => {
         const setCurrentIndex = jest.fn();
         render(<Carousel {...mock_props} current_index={1} setCurrentIndex={setCurrentIndex} />);
-
-        expect(mock_props.onPreviousButtonClick).not.toHaveBeenCalled();
-
-        await userEvent.click(screen.getByText(prev_button));
-
+        userEvent.click(screen.getByText(prev_button));
         expect(setCurrentIndex).toHaveBeenCalledWith(0);
-        expect(mock_props.onPreviousButtonClick).toHaveBeenCalled();
     });
 
-    it('wraps around to the last page when clicking previous on the first page', async () => {
+    it('wraps around to the last page when clicking previous on the first page', () => {
         render(<Carousel {...mock_props} />);
-        await userEvent.click(screen.getByText(next_button));
+        userEvent.click(screen.getByText(next_button));
         expect(screen.getByText('Current Index: 1')).toBeInTheDocument();
     });
 });

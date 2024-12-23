@@ -1,10 +1,10 @@
 //Configures which trade types have barrier rendered when selected
 export const CONTRACT_SHADES = {
     ACCU: 'NONE_DOUBLE',
-    CALL: 'NONE_SINGLE',
-    PUT: 'NONE_SINGLE',
-    CALLE: 'NONE_SINGLE',
-    PUTE: 'NONE_SINGLE',
+    CALL: 'ABOVE',
+    PUT: 'BELOW',
+    CALLE: 'ABOVE',
+    PUTE: 'BELOW',
     EXPIRYRANGE: 'BETWEEN',
     EXPIRYMISS: 'OUTSIDE',
     RANGE: 'BETWEEN',
@@ -13,8 +13,8 @@ export const CONTRACT_SHADES = {
     NOTOUCH: 'NONE_SINGLE', // no shade
     ASIANU: 'ABOVE',
     ASIAND: 'BELOW',
-    MULTUP: 'NONE_SINGLE',
-    MULTDOWN: 'NONE_SINGLE',
+    MULTUP: 'ABOVE',
+    MULTDOWN: 'BELOW',
     TURBOSLONG: 'NONE_SINGLE',
     TURBOSSHORT: 'NONE_SINGLE',
     VANILLALONGCALL: 'NONE_SINGLE',
@@ -33,10 +33,10 @@ export const DEFAULT_SHADES = {
 };
 
 export const BARRIER_COLORS = {
-    GREEN: '#008832',
-    RED: '#e6190e',
+    GREEN: '#4bb4b3',
+    RED: '#ec3f3f',
     ORANGE: '#ff6444',
-    BLUE: '#2c9aff',
+    BLUE: '#377cfc',
 };
 
 export const BARRIER_LINE_STYLES = {

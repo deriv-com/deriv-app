@@ -10,43 +10,34 @@ import { DURATION_UNIT } from 'AppV2/Utils/trade-params-utils';
 
 const DurationActionSheetContainer = observer(
     ({
-        end_time,
-        expiry_time_string,
-        saved_expiry_date_v2,
         selected_hour,
-        setEndTime,
-        setExpiryTimeString,
-        setSavedExpiryDateV2,
         setSelectedHour,
-        setUnit,
-        setUnsavedExpiryDateV2,
         unit,
-        unsaved_expiry_date_v2,
+        end_date,
+        setEndDate,
+        setUnit,
+        end_time,
+        setEndTime,
+        expiry_time_string,
+        setExpiryTimeString,
     }: {
         selected_hour: number[];
         setSelectedHour: (arg: number[]) => void;
         unit: string;
+        end_date: Date;
+        setEndDate: (arg: Date) => void;
         setUnit: (arg: string) => void;
         end_time: string;
         setEndTime: (arg: string) => void;
         expiry_time_string: string;
         setExpiryTimeString: (arg: string) => void;
-        saved_expiry_date_v2: string;
-        setSavedExpiryDateV2: (arg: string) => void;
-        unsaved_expiry_date_v2: string;
-        setUnsavedExpiryDateV2: (arg: string) => void;
     }) => {
         const { duration, duration_units_list, onChangeMultiple } = useTraderStore();
         const [selected_time, setSelectedTime] = useState([duration]);
         const [expiry_time_input, setExpiryTimeInput] = React.useState(expiry_time_string);
 
-        React.useEffect(() => {
-            setUnsavedExpiryDateV2(saved_expiry_date_v2 || unsaved_expiry_date_v2);
-        }, []);
-
         const onAction = () => {
             setExpiryTimeString(expiry_time_input);
-            setSavedExpiryDateV2(unsaved_expiry_date_v2);
             if (unit === DURATION_UNIT.HOURS) {
                 const minutes = selected_hour[0] * 60 + selected_hour[1];
                 const hour = Math.floor(duration / 60);
@@ -60,7 +51,7 @@ const DurationActionSheetContainer = observer(
                     expiry_type: 'duration',
                 });
             } else if (unit === DURATION_UNIT.DAYS) {
-                const difference_in_time = new Date(unsaved_expiry_date_v2).getTime() - new Date().getTime();
+                const difference_in_time = end_date.getTime() - new Date().getTime();
                 const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
                 setSelectedHour([]);
                 if (end_time) {
@@ -126,13 +117,12 @@ const DurationActionSheetContainer = observer(
 
                 {unit === DURATION_UNIT.DAYS && (
                     <DayInput
-                        end_time={end_time}
-                        expiry_time_input={expiry_time_input}
-                        saved_expiry_date_v2={saved_expiry_date_v2}
                         setEndTime={setEndTime}
+                        setEndDate={setEndDate}
+                        end_date={end_date}
+                        end_time={end_time}
                         setExpiryTimeInput={setExpiryTimeInput}
-                        setUnsavedExpiryDateV2={setUnsavedExpiryDateV2}
-                        unsaved_expiry_date_v2={unsaved_expiry_date_v2 || saved_expiry_date_v2}
+                        expiry_time_input={expiry_time_input}
                     />
                 )}
                 <ActionSheet.Footer

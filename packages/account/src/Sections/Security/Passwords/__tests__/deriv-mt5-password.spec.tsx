@@ -6,7 +6,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
-    PartnersProductBrandLightDerivMt5LogoIcon: () => 'PartnersProductBrandLightDerivMt5LogoIcon',
+    PartnersProductDerivMt5BrandLightLogoHorizontalIcon: () => 'PartnersProductDerivMt5BrandLightLogoHorizontalIcon',
 }));
 
 jest.mock('@deriv/api', () => ({
@@ -45,7 +45,7 @@ describe('<DerivMT5Password />', () => {
         expect(
             screen.getByText(/use your to log in to your Deriv MT5 accounts on the desktop, web and mobile apps\./i)
         ).toBeInTheDocument();
-        expect(screen.queryByText(/PartnersProductBrandLightDerivMt5LogoIcon/i)).toBeInTheDocument();
+        expect(screen.queryByText(/PartnersProductDerivMt5BrandLightLogoHorizontalIcon/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change password/i })).toBeInTheDocument();
         expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
     });

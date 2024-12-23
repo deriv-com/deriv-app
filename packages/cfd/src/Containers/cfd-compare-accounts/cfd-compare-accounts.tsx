@@ -17,6 +17,7 @@ import {
     dxtrade_data,
     ctrader_data,
 } from '../../Helpers/compare-accounts-config';
+import { REGION } from '../../Helpers/cfd-config';
 
 const CompareCFDs = observer(() => {
     const { isDesktop } = useDevice();
@@ -25,7 +26,8 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts, available_ctrader_accounts } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region, available_ctrader_accounts } =
+        traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
@@ -62,12 +64,20 @@ const CompareCFDs = observer(() => {
             ? all_cfd_available_accounts.length + 1
             : all_cfd_available_accounts.length;
 
-    const getCompareAccountsHeader = () => (
-        <Localize
-            i18n_default_text='Compare CFDs {{title}} accounts'
-            values={{ title: is_demo ? localize('demo') : '' }}
-        />
-    );
+    const getCompareAccountsHeader = () =>
+        selected_region === REGION.EU ? (
+            <Localize
+                i18n_default_text='Deriv MT5 CFDs {{title}} account'
+                values={{
+                    title: is_demo ? localize('demo') : localize('real'),
+                }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='Compare CFDs {{title}} accounts'
+                values={{ title: is_demo ? localize('demo') : '' }}
+            />
+        );
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -83,7 +93,7 @@ const CompareCFDs = observer(() => {
                 </Text>
             </div>
             <h1 className='compare-cfd-header-title'>
-                <Text size='m' weight='bold' color='prominent' align='center'>
+                <Text size='m' weight='bold' color='prominent'>
                     {getCompareAccountsHeader()}
                 </Text>
             </h1>

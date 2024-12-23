@@ -7,6 +7,7 @@ import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } fr
 import { Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
+import 'Sass/app/modules/contract/digits.scss';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
 

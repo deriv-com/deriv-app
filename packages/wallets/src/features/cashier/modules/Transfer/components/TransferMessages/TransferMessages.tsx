@@ -36,7 +36,7 @@ const TransferMessages: React.FC = () => {
                     <WalletAlertMessage key={`${idx}-${type}`} message={message} type={type}>
                         {action?.buttonLabel && action?.navigateTo && (
                             <div className='wallets-transfer-messages__action-button'>
-                                <Button borderWidth='sm' isFullWidth size='sm' type='button' variant='contained'>
+                                <Button borderWidth='sm' size='sm' type='button' variant='contained'>
                                     <Link
                                         className='wallets-transfer-messages__link'
                                         to={

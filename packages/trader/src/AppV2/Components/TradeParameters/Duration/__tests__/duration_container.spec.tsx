@@ -80,10 +80,6 @@ describe('DurationActionSheetContainer', () => {
                     expiry_time: null,
                     contract_type: 'call',
                     symbol: '1HZ100V',
-                    saved_expiry_date_v2: '',
-                    setSavedExpiryDateV2: jest.fn(),
-                    setUnsavedExpiryDateV2: jest.fn(),
-                    unsaved_expiry_date_v2: '',
                 },
             },
             common: {
@@ -98,8 +94,8 @@ describe('DurationActionSheetContainer', () => {
         setUnit = jest.fn(),
         selected_hour = [0, 0],
         setSelectedHour = jest.fn(),
-        saved_expiry_date_v2 = new Date().toISOString().slice(0, 10),
-        setSavedExpiryDateV2 = jest.fn(),
+        end_date = new Date(),
+        setEndDate = jest.fn(),
         end_time = '',
         setEndTime = jest.fn()
     ) => {
@@ -110,14 +106,12 @@ describe('DurationActionSheetContainer', () => {
                     setSelectedHour={setSelectedHour}
                     unit={unit}
                     setUnit={setUnit}
-                    saved_expiry_date_v2={saved_expiry_date_v2}
-                    setSavedExpiryDateV2={setSavedExpiryDateV2}
+                    end_date={end_date}
+                    setEndDate={setEndDate}
                     end_time={end_time}
                     setEndTime={setEndTime}
                     expiry_time_string='24th Aug 2024'
                     setExpiryTimeString={() => jest.fn()}
-                    unsaved_expiry_date_v2={''}
-                    setUnsavedExpiryDateV2={() => jest.fn()}
                 />
             </TraderProviders>
         );
@@ -129,21 +123,21 @@ describe('DurationActionSheetContainer', () => {
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
-    it('should select duration in hours if duration is more than 59 minutes', async () => {
+    it('should select duration in hours if duration is more than 59 minutes', () => {
         default_trade_store.modules.trade.duration = 130;
         renderDurationContainer(default_trade_store, 'h', jest.fn(), [2, 10]);
 
         const duration_chip = screen.getByText('1 h');
-        await userEvent.click(duration_chip);
+        userEvent.click(duration_chip);
 
         expect(default_trade_store.modules.trade.onChangeMultiple).not.toHaveBeenCalled();
     });
 
-    it('should call onChangeMultiple with correct data with hours', async () => {
+    it('should call onChangeMultiple with correct data with hours', () => {
         default_trade_store.modules.trade.duration = 130;
         renderDurationContainer(default_trade_store, 'm', jest.fn(), [2, 10], jest.fn());
 
-        await userEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 'm',
@@ -153,12 +147,12 @@ describe('DurationActionSheetContainer', () => {
         });
     });
 
-    it('should call onChangeMultiple with correct data with ticks', async () => {
+    it('should call onChangeMultiple with correct data with ticks', () => {
         default_trade_store.modules.trade.duration = 5;
 
         renderDurationContainer(default_trade_store, 't');
 
-        await userEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 't',
@@ -171,18 +165,18 @@ describe('DurationActionSheetContainer', () => {
     it('should call change duration on changing chips', async () => {
         renderDurationContainer(default_trade_store, 'h');
 
-        await userEvent.click(screen.getByText('minutes'));
+        userEvent.click(screen.getByText('minutes'));
         expect(screen.getByText('1 min')).toBeInTheDocument();
-        await userEvent.click(screen.getByText('hours'));
+        userEvent.click(screen.getByText('hours'));
         expect(screen.getByText('1 h')).toBeInTheDocument();
     });
 
-    it('should call onChangeMultiple with correct data with seconds', async () => {
+    it('should call onChangeMultiple with correct data with seconds', () => {
         default_trade_store.modules.trade.duration = 20;
 
         renderDurationContainer(default_trade_store, 's');
-        await userEvent.click(screen.getByText('22 sec'));
-        await userEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('22 sec'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 's',
@@ -192,12 +186,12 @@ describe('DurationActionSheetContainer', () => {
         });
     });
 
-    it('should call onChangeMultiple with correct data with hour', async () => {
+    it('should call onChangeMultiple with correct data with hour', () => {
         default_trade_store.modules.trade.duration = 4;
 
         renderDurationContainer(default_trade_store, 'h');
-        await userEvent.click(screen.getByText('4 h'));
-        await userEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('4 h'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             duration_unit: 'm',
@@ -207,7 +201,7 @@ describe('DurationActionSheetContainer', () => {
         });
     });
 
-    it('should call onChangeMultiple with correct endtime with endtime', async () => {
+    it('should call onChangeMultiple with correct endtime with endtime', () => {
         default_trade_store.modules.trade.expiry_time = '23:35';
 
         renderDurationContainer(
@@ -216,16 +210,33 @@ describe('DurationActionSheetContainer', () => {
             jest.fn(),
             [0, 0],
             jest.fn(),
-            new Date().toISOString().slice(0, 10),
+            new Date(),
             jest.fn(),
             '11:35',
             jest.fn()
         );
-        await userEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByText('Save'));
 
         expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
             expiry_time: '11:35',
             expiry_type: 'endtime',
+        });
+    });
+
+    it('should call onChangeMultiple with correct day', () => {
+        default_trade_store.modules.trade.duration_unit = 'd';
+        default_trade_store.modules.trade.duration = '3';
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        renderDurationContainer(default_trade_store, 'd', jest.fn(), [0, 0], jest.fn(), tomorrow);
+        userEvent.click(screen.getByText('Save'));
+        expect(default_trade_store.modules.trade.onChangeMultiple).toHaveBeenCalledWith({
+            duration: 1,
+            duration_unit: 'd',
+            expiry_type: 'duration',
+            expiry_time: null,
         });
     });
 
@@ -240,14 +251,14 @@ describe('DurationActionSheetContainer', () => {
         expect(date_input).toBeInTheDocument();
     });
 
-    it('should open datepicker on clicking on date input in the days page', async () => {
+    it('should open datepicker on clicking on date input in the days page', () => {
         renderDurationContainer(default_trade_store, 'd');
         const mockEvents = [{ dates: 'Fridays, Saturdays', descrip: 'Some description' }];
         jest.spyOn(ContractType, 'getTradingEvents').mockResolvedValue(mockEvents);
 
         const date_input = screen.getByTestId('dt_date_input');
         expect(date_input).toBeInTheDocument();
-        await userEvent.click(date_input);
+        userEvent.click(date_input);
         expect(screen.getByText('Pick an end date'));
     });
 
@@ -255,9 +266,9 @@ describe('DurationActionSheetContainer', () => {
         renderDurationContainer(default_trade_store, 'd');
         const date_input = screen.getByTestId('dt_date_input');
         expect(date_input).toBeInTheDocument();
-        await userEvent.click(date_input);
+        userEvent.click(date_input);
         expect(screen.getByText('Pick an end date'));
-        await userEvent.click(screen.getByText('Done'));
+        userEvent.click(screen.getByText('Done'));
         await waitFor(() => expect(screen.queryByText('Pick an end date')).not.toBeInTheDocument());
     });
 

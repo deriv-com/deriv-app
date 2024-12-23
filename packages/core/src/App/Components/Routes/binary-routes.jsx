@@ -12,7 +12,7 @@ const BinaryRoutes = observer(props => {
     const { promptFn, prompt_when } = ui;
     const { pushDataLayer } = gtm;
     const location = useLocation();
-    const { dtrader_v2_enabled_mobile, dtrader_v2_enabled_desktop } = useDtraderV2Flag();
+    const { dtrader_v2_enabled } = useDtraderV2Flag();
 
     React.useEffect(() => {
         pushDataLayer({ event: 'page_load' });
@@ -20,7 +20,7 @@ const BinaryRoutes = observer(props => {
     }, [location]);
 
     const getLoader = () => {
-        if (dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop)
+        if (dtrader_v2_enabled)
             return (
                 <Loading.DTraderV2
                     initial_app_loading

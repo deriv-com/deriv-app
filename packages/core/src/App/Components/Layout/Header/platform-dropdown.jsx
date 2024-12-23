@@ -37,9 +37,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
             <a
                 data-testid='dt_platform_dropdown_link'
                 href={platform.href}
-                className={`platform-dropdown__list-platform ${
-                    getActivePlatform(app_routing_history) === platform.name ? 'active' : ''
-                }`}
+                className='platform-dropdown__list-platform'
             >
                 <PlatformBox platform={platform} />
             </a>

@@ -6,7 +6,7 @@ import {
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    PartnersProductBrandLightDerivCtraderLogoIcon,
+    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import { useTranslations } from '@deriv-com/translations';
 import AccountsDmt5GoldIcon from '../../../../public/images/account-dmt5-gold-icon.svg';
@@ -31,7 +31,7 @@ export const ACCOUNT_ICONS = {
     },
     [MT5_PRODUCT.SWAP_FREE]: (props: TProps) => <AccountsDmt5SwfIcon {...props} />,
     [CFD_PLATFORMS.DXTRADE]: (props: TProps) => <AccountsDerivXIcon {...props} />,
-    [CFD_PLATFORMS.CTRADER]: (props: TProps) => <PartnersProductBrandLightDerivCtraderLogoIcon {...props} />,
+    [CFD_PLATFORMS.CTRADER]: (props: TProps) => <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon {...props} />,
     [MT5_PRODUCT.ZERO_SPREAD]: (props: TProps) => <AccountsDmt5ZrsIcon {...props} />,
     [MT5_PRODUCT.GOLD]: (props: TProps) => <AccountsDmt5GoldIcon {...props} />,
     default: (props: TProps) => <AccountsDmt5CfdsIcon {...props} />,

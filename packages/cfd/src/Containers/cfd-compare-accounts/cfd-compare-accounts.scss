@@ -78,14 +78,6 @@
                 transform: translateX(8rem) translateY(-2rem) rotate(45deg);
                 padding: 0.1rem;
             }
-            @include mobile-screen {
-                transform: rotate(45deg);
-                right: -32px;
-                top: 10px;
-                width: 108px;
-                height: 16px;
-                font-size: var(--text-size-xxxs);
-            }
         }
     }
     &-outline {

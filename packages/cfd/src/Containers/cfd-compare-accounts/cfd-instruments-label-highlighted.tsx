@@ -1,4 +1,6 @@
 import React from 'react';
+import { Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import InstrumentsIconWithLabel from './instruments-icon-with-label';
 import { TInstrumentsIcon, TCompareAccountsCard } from 'Components/props.types';
 import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
@@ -15,7 +17,7 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
             {is_eu_user ? (
                 <React.Fragment>
                     {iconData
-                        .filter(instrument => instrument.is_available !== false)
+                        .filter(item => item.highlighted)
                         .map(item => (
                             <InstrumentsIconWithLabel
                                 key={item.text}
@@ -23,6 +25,11 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
                                 className='compare-cfd-account-instrument-icon'
                             />
                         ))}
+                    <div className='compare-cfd-account-card-container__eu-clients'>
+                        <Text color='red' size='xxs' weight='bold'>
+                            <Localize i18n_default_text='*Boom 300 and Crash 300 Index' />
+                        </Text>
+                    </div>
                 </React.Fragment>
             ) : (
                 iconData.map(item => (

@@ -1,14 +1,10 @@
 import React from 'react';
-import Cookies from 'js-cookie';
-
-import { Dialog, Icon, Text } from '@deriv/components';
-import { useOauth2 } from '@deriv/hooks';
-import { redirectToLogin } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import { getLanguage, Localize, localize } from '@deriv/translations';
 import { Analytics, TEvents } from '@deriv-com/analytics';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
-
+import Cookies from 'js-cookie';
+import { Dialog, Icon, Text } from '@deriv/components';
+import { redirectToLogin, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';
 
 const trackAnalyticsEvent = (
@@ -30,30 +26,20 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
 
-    const { oAuthLogout, isOAuth2Enabled } = useOauth2({
-        handleLogout: async () => {
-            await logout();
-            if (isOAuth2Enabled) {
-                await requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                });
-            } else {
-                redirectToLogin(false, getLanguage());
-            }
-        },
-    });
-
     React.useEffect(() => {
         trackAnalyticsEvent('open', account_mode);
     }, [account_mode]);
 
-    const onConfirmHandler = async () => {
+    const onConfirmHandler = () => {
         Cookies.set('recent_wallets_migration', 'true', {
             path: '/', // not available on other subdomains
             expires: 0.5, // 12 hours expiration time
             secure: true,
         });
-        await oAuthLogout();
+        logout().then(() => {
+            window.location.href = routes.traders_hub;
+            redirectToLogin(false, getLanguage());
+        });
         trackAnalyticsEvent('click_cta', account_mode);
     };
 

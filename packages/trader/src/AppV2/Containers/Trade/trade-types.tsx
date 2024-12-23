@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
 import { DraggableList } from 'AppV2/Components/DraggableList';
@@ -10,13 +9,9 @@ import { Localize, localize } from '@deriv/translations';
 import { safeParse, getLocalStorage } from '@deriv/utils';
 import { useLocalStorageData } from '@deriv/hooks';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
-import Carousel from 'AppV2/Components/Carousel';
-import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import TradeTypesContent from './trade-types-content';
 import Guide from '../../Components/Guide';
 import GuideContainer from '../../Components/OnboardingGuide/GuideForPages/guide-container';
 import useGuideStates from 'AppV2/Hooks/useGuideStates';
-import { sendOpenGuideToAnalytics } from '../../../Analytics';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (
@@ -29,13 +24,13 @@ type TTradeTypesProps = {
     is_dark_mode_on: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
-export type TItem = {
+type TItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
 };
 
-export type TResultItem = {
+type TResultItem = {
     id: string;
     title?: string;
     button_title?: string;
@@ -236,34 +231,6 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
     const trade_type_chips = getTradeTypeChips();
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
-    const show_trade_type_list_divider = !!other_trade_types[0]?.items?.length;
-    const show_editing_divider = trade_types_array.length !== pinned_trade_types[0]?.items?.length;
-    const trade_type_content_props = {
-        handleCustomizeTradeTypes,
-        handleRemovePinnedClick,
-        handleOnDrag,
-        handleOnTradeTypeSelect,
-        handleAddPinnedClick,
-        is_editing,
-        is_dark_mode_on,
-        isTradeTypeSelected,
-        savePinnedToLocalStorage,
-        show_trade_type_list_divider,
-        show_editing_divider,
-        other_trade_types,
-        pinned_trade_types,
-    };
-
-    const action_sheet_content = [
-        {
-            id: 1,
-            component: <TradeTypesContent {...trade_type_content_props} />,
-        },
-        {
-            id: 2,
-            component: <Guide show_trigger_button={false} is_open_by_default show_description_in_a_modal={false} />,
-        },
-    ];
 
     const STEPS = [
         {
@@ -302,7 +269,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     color={is_dark_mode_on ? 'white' : 'black'}
                 >
                     <Text size='sm' bold underlined color='var(--component-button-label-color-blackWhite-tertiary)'>
-                        <Localize i18n_default_text='View all' />
+                        {<Localize i18n_default_text='View all' />}
                     </Text>
                 </Button>
             )}
@@ -313,26 +280,57 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                 onClose={handleCloseTradeTypes}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    {is_editing ? (
-                        <React.Fragment>
-                            <ActionSheet.Header
-                                title={
-                                    <div className='trade-types-dialog__title'>
-                                        <Localize i18n_default_text='Trade types' />
-                                    </div>
-                                }
+                    <ActionSheet.Header
+                        title={
+                            <div className='trade-types-dialog__title'>
+                                <Localize i18n_default_text='Trade types' />
+                            </div>
+                        }
+                        icon={!is_editing && <Guide />}
+                    />
+                    <div>
+                        <div className='draggable-list-category-header'>
+                            <Text size='sm' bold className='draggable-list-category-header-title'>
+                                {is_editing && <Localize i18n_default_text='Pinned' />}
+                            </Text>
+                            <Button
+                                color={is_dark_mode_on ? 'white' : 'black'}
+                                variant='secondary'
+                                className='draggable-list-category-header-button'
+                                onClick={is_editing ? savePinnedToLocalStorage : handleCustomizeTradeTypes}
+                            >
+                                {is_editing ? (
+                                    <Localize i18n_default_text='Done' />
+                                ) : (
+                                    <Localize i18n_default_text='Customise' />
+                                )}
+                            </Button>
+                        </div>
+                    </div>
+                    <ActionSheet.Content className='trade-types-dialog__content'>
+                        {is_editing ? (
+                            <DraggableList
+                                categories={pinned_trade_types}
+                                onRightIconClick={handleRemovePinnedClick}
+                                onAction={savePinnedToLocalStorage}
+                                onDrag={handleOnDrag}
                             />
-                            <TradeTypesContent {...trade_type_content_props} />
-                        </React.Fragment>
-                    ) : (
-                        <Carousel
-                            header={CarouselHeader}
-                            pages={action_sheet_content}
-                            title={<Localize i18n_default_text='Trade types' />}
-                            next_icon={LabelPairedPresentationScreenSmRegularIcon}
-                            onNextButtonClick={() => sendOpenGuideToAnalytics(contract_type, 'trade_type_page')}
+                        ) : (
+                            <TradeTypeList
+                                categories={pinned_trade_types}
+                                onTradeTypeClick={handleOnTradeTypeSelect}
+                                isSelected={id => isTradeTypeSelected(id)}
+                                selectable
+                            />
+                        )}
+                        <TradeTypeList
+                            categories={other_trade_types}
+                            onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
+                            onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
+                            isSelected={id => isTradeTypeSelected(id)}
+                            selectable={!is_editing}
                         />
-                    )}
+                    </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>
             {is_open && <TradeTypesSelectionGuide is_dark_mode_on={is_dark_mode_on} />}

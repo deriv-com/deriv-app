@@ -2,16 +2,19 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 import { LanguageLink } from 'App/Components/Routes';
-import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES, WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
 const LanguageSettings = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { has_wallet } = client;
     const { toggleLanguageSettingsModal } = ui;
     const { currentLang } = useTranslations();
 
-    const allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
+    const allowed_languages = Object.keys(
+        getAllowedLanguages(has_wallet ? WALLETS_UNSUPPORTED_LANGUAGES : UNSUPPORTED_LANGUAGES)
+    );
 
     return (
         <div className='settings-language'>

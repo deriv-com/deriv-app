@@ -1,5 +1,4 @@
 import React, { ComponentProps, FC } from 'react';
-import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
 import { WalletDialog } from '../Base';
@@ -29,7 +28,7 @@ const WalletDisabledAccountModal: FC<WalletDisabledAccountModalProps> = ({ accou
                 <Button
                     color='primary'
                     onClick={() => {
-                        Chat.open();
+                        window.LiveChatWidget.call('maximize');
                     }}
                 >
                     <Localize i18n_default_text='Live chat' />

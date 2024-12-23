@@ -119,7 +119,6 @@ const AppNotificationMessages = observer(
                       'poinc_upload_limited',
                       'p2p_advertiser_nickname_added',
                       'p2p_daily_limit_increase',
-                      'reaccept_tnc',
                       'resticted_mt5_with_failed_poa',
                       'resticted_mt5_with_pending_poa',
                       'svg_needs_poa',

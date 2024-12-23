@@ -35,7 +35,8 @@ jest.mock('../../../../../components/Base/ModalStepWrapper', () => ({
 jest.mock('../../../screens/MT5TradeScreen/MT5TradeLink/urlConfig', () => ({
     ...jest.requireActual('../../../screens/MT5TradeScreen/MT5TradeLink/urlConfig'),
     whiteLabelLinks: {
-        huawei: 'https://mock.mt5.huawei.link',
+        android: 'https://mock.mt5.android.link',
+        ios: 'https://mock.mt5.ios.link',
     },
 }));
 
@@ -72,28 +73,20 @@ describe('ModalTradeWrapper', () => {
         expect(screen.getByTestId('dt_modal_footer')).toBeInTheDocument();
     });
 
-    it('opens correct link when app icon is clicked', async () => {
+    it('opens correct link when app icon is clicked', () => {
         const mockOpen = jest.fn();
         window.open = mockOpen;
 
-        render(
-            <ModalTradeWrapper
-                mt5Account={{
-                    // @ts-expect-error - since this is a mock, we only need partial properties of the account
-                    white_label_links: { android: 'https://mock.mt5.android.link', ios: 'https://mock.mt5.ios.link' },
-                }}
-                platform='mt5'
-            />
-        );
+        render(<ModalTradeWrapper platform='mt5' />);
 
         const iosIcon = screen.getByTestId('dt_modal_trade_wrapper_ios_icon');
         const androidIcon = screen.getByTestId('dt_modal_trade_wrapper_android_icon');
 
-        await userEvent.click(iosIcon);
+        userEvent.click(iosIcon);
         expect(mockOpen).toHaveBeenCalledWith('https://mock.mt5.ios.link');
         mockOpen.mockReset();
 
-        await userEvent.click(androidIcon);
+        userEvent.click(androidIcon);
         expect(mockOpen).toHaveBeenCalledWith('https://mock.mt5.android.link');
         mockOpen.mockReset();
     });

@@ -59,7 +59,6 @@ export const MARKET_TYPE_SHORTCODE = {
     FINANCIAL_LABUAN: 'financial_stp_labuan',
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
     FINANCIAL_GOLD: 'financial_gold',
-    CFDS_GOLD: 'CFDs_gold',
     ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
     ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
     ALL_ZS_BVI: 'all_bvi',

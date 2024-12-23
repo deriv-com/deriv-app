@@ -18,16 +18,11 @@ export type TDraggableListCategory = {
 export type TDraggableListProps = {
     categories: TDraggableListCategory[];
     onRightIconClick: (item: TDraggableListItem) => void;
+    onAction?: () => void;
     onDrag?: (categories: TDraggableListCategory[]) => void;
-    show_editing_divider?: boolean;
 };
 
-const DraggableList: React.FC<TDraggableListProps> = ({
-    categories,
-    onRightIconClick,
-    onDrag,
-    show_editing_divider,
-}) => {
+const DraggableList: React.FC<TDraggableListProps> = ({ categories, onRightIconClick, onAction, onDrag }) => {
     const [category_list, setCategoryList] = React.useState(categories);
     const [draggedItemId, setDraggedItemId] = React.useState<string | null>(null);
 
@@ -51,7 +46,7 @@ const DraggableList: React.FC<TDraggableListProps> = ({
                     category={category}
                     draggedItemId={draggedItemId}
                     onRightIconClick={onRightIconClick}
-                    show_editing_divider={show_editing_divider}
+                    onAction={onAction}
                 />
             ))}
         </DragDropContext>
@@ -62,9 +57,9 @@ const DraggableCategory: React.FC<{
     category: TDraggableListCategory;
     draggedItemId: string | null;
     onRightIconClick: (item: TDraggableListItem) => void;
-    show_editing_divider?: boolean;
-}> = ({ category, draggedItemId, onRightIconClick, show_editing_divider }) => (
-    <div className={show_editing_divider ? 'draggable-list-category' : ''}>
+    onAction?: () => void;
+}> = ({ category, draggedItemId, onRightIconClick, onAction }) => (
+    <div className='draggable-list-category'>
         <Droppable droppableId={category.id}>
             {provided => (
                 <div

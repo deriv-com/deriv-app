@@ -24,7 +24,6 @@ import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv/stores';
 import { useLandingCompanyDetails } from '@deriv/hooks';
-import { Chat } from '@deriv/utils';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
@@ -362,7 +361,7 @@ const CFDPersonalDetailsForm = ({
                                                         <span
                                                             key={0}
                                                             className='link link--orange'
-                                                            onClick={Chat.open}
+                                                            onClick={() => window.LiveChatWidget.call('maximize')}
                                                         />,
                                                     ]}
                                                 />

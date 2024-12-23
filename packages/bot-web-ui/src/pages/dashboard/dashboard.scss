@@ -144,7 +144,6 @@
             .subtitle {
                 text-align: center;
                 margin-top: 1.6rem;
-                margin-bottom: 1rem;
                 &__has-list {
                     text-align: center;
                     margin-top: 0;
@@ -315,7 +314,7 @@
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
-                padding: 2.2rem;
+                padding: 3.2rem;
 
                 @include mobile-screen {
                     flex-wrap: wrap;

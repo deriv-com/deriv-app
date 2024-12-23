@@ -13,12 +13,6 @@ jest.mock('@deriv/hooks', () => ({
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 
-jest.mock('@deriv-com/analytics', () => ({
-    Analytics: {
-        trackEvent: jest.fn(),
-    },
-}));
-
 const mock_store = mockStore({});
 
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
@@ -87,11 +81,11 @@ describe('MigrationBanner', () => {
         });
     });
 
-    it('should call upgrade button tracking event on clicking upgrade now button ', async () => {
+    it('should call upgrade button tracking event on clicking upgrade now button ', () => {
         renderComponent();
         const upgrade_button = screen.getByRole('button', { name: /upgrade/i });
         expect(upgrade_button).toBeInTheDocument();
-        await userEvent.click(upgrade_button);
+        userEvent.click(upgrade_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_upgrade_mt5_banner', {
             action: 'push_cta_upgrade',
         });

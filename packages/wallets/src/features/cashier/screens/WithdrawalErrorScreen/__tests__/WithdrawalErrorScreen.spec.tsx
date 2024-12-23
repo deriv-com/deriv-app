@@ -62,9 +62,9 @@ describe('WithdrawalErrorScreen', () => {
 
         render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Refresh page' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 
     it('should show correct withdrawal error screen for crypto suspended currency error', () => {
@@ -158,9 +158,9 @@ describe('WithdrawalErrorScreen', () => {
 
         render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        const ReloadButton = screen.getByRole('button', { name: 'Refresh page' });
+        const ReloadButton = screen.getByRole('button', { name: 'Try again' });
 
         await userEvent.click(ReloadButton);
         expect(reloadMock).toHaveBeenCalled();
@@ -176,7 +176,7 @@ describe('WithdrawalErrorScreen', () => {
 
         expect(screen.getByText('Error')).toBeInTheDocument();
         expect(screen.getByText('Crypto Invalid Address')).toBeInTheDocument();
-        const ReloadButton = screen.getByRole('button', { name: 'Refresh page' });
+        const ReloadButton = screen.getByRole('button', { name: 'Try again' });
 
         await userEvent.click(ReloadButton);
         expect(resetError).toHaveBeenCalledTimes(1);
@@ -191,9 +191,9 @@ describe('WithdrawalErrorScreen', () => {
 
         render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Refresh page' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 
     it('should render without crashing when optional parameters are not received', async () => {

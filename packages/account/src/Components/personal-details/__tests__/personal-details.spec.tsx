@@ -38,12 +38,6 @@ jest.mock('Helpers/utils', () => ({
     isAdditionalDocumentValid: jest.fn(),
 }));
 
-jest.mock('@deriv-com/analytics', () => ({
-    Analytics: {
-        trackEvent: jest.fn(),
-    },
-}));
-
 type TPersonalDetailsSectionForm = ComponentProps<typeof PersonalDetails>['value'];
 
 const mock_warnings = {};
@@ -302,9 +296,9 @@ describe('<PersonalDetails/>', () => {
         const citizenship = screen.getByTestId('citizenship');
         const phone = screen.getByTestId('phone');
 
-        await userEvent.clear(first_name);
+        userEvent.clear(first_name);
         fireEvent.blur(date_of_birth);
-        await userEvent.clear(last_name);
+        userEvent.clear(last_name);
         fireEvent.blur(place_of_birth);
         fireEvent.blur(citizenship);
         fireEvent.blur(phone);
@@ -349,8 +343,8 @@ describe('<PersonalDetails/>', () => {
         const date_of_birth = screen.getByTestId('date_of_birth');
         const phone = screen.getByTestId('phone');
 
-        await userEvent.type(first_name, 'test firstname');
-        await userEvent.type(last_name, 'test lastname');
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
         fireEvent.change(phone, { target: { value: '+931234567890' } });
 
@@ -364,7 +358,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
-        await userEvent.click(next_btn);
+        userEvent.click(next_btn);
 
         await waitFor(() => {
             expect(new_props.onSubmit).toBeCalled();
@@ -432,12 +426,12 @@ describe('<PersonalDetails/>', () => {
         const mrs_radio_btn: HTMLInputElement = screen.getByRole('radio', { name: /ms/i }) as HTMLInputElement;
         expect(mr_radio_btn).toBeInTheDocument();
         expect(mrs_radio_btn).toBeInTheDocument();
-        expect(mr_radio_btn).not.toBeChecked();
+        expect(mr_radio_btn.checked).toEqual(false);
 
         fireEvent.click(mr_radio_btn);
 
-        expect(mr_radio_btn).toBeChecked();
-        expect(mrs_radio_btn).not.toBeChecked();
+        expect(mr_radio_btn.checked).toEqual(true);
+        expect(mrs_radio_btn.checked).toEqual(false);
     });
 
     it('should display the correct field details ', () => {
@@ -614,7 +608,7 @@ describe('<PersonalDetails/>', () => {
         fireEvent.change(date_of_birth, { target: { value: '2000-12-12' } });
         fireEvent.change(phone, { target: { value: '+49123456789012' } });
 
-        expect(mr_radio_btn).toBeChecked();
+        expect(mr_radio_btn.checked).toEqual(true);
         const next_btn = screen.getByRole('button', { name: /next/i });
 
         expect(next_btn).toBeEnabled();

@@ -1,17 +1,15 @@
-import { Chat } from '@deriv/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from '../WithdrawalLockedContent';
 
+window.LiveChatWidget = {
+    call: jest.fn(),
+    get: jest.fn(),
+    init: jest.fn(),
+    on: jest.fn(),
+};
+
 describe('WithdrawalLockedContent', () => {
-    beforeEach(() => {
-        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
-    });
-
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
-
     it('renders title and description as undefined when withdrawal limit is not reached', () => {
         const result = getWithdrawalLimitReachedDesc({
             isVerified: true,
@@ -107,7 +105,7 @@ describe('WithdrawalLockedContent', () => {
         expect(screen.getByRole('link', { name: 'personal details' })).toBeInTheDocument();
     });
 
-    it('renders correct message when noWithdrawalOrTradingStatus status received', async () => {
+    it('renders correct message when noWithdrawalOrTradingStatus status received', () => {
         const result = getWithdrawalLockedDesc({
             noWithdrawalOrTradingStatus: true,
         });
@@ -116,11 +114,11 @@ describe('WithdrawalLockedContent', () => {
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        await userEvent.click(link);
-        expect(Chat.open).toHaveBeenCalledTimes(1);
+        userEvent.click(link);
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
-    it('renders correct message when withdrawalLockedStatus status received', async () => {
+    it('renders correct message when withdrawalLockedStatus status received', () => {
         const result = getWithdrawalLockedDesc({
             withdrawalLockedStatus: true,
         });
@@ -129,7 +127,7 @@ describe('WithdrawalLockedContent', () => {
         expect(screen.getByText(/Unfortunately, you can only make deposits. Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        await userEvent.click(link);
-        expect(Chat.open).toHaveBeenCalledTimes(1);
+        userEvent.click(link);
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 });

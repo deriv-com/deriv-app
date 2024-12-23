@@ -43,7 +43,7 @@ describe('<Dp2pBlockedDescription />', () => {
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
     });
 
-    it('it should return `Please use live chat to contact our Customer Support team for help.` and open live chat when clicking on the `live chat`', async () => {
+    it('it should return `Please use live chat to contact our Customer Support team for help.` and open live chat when clicking on the `live chat`', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_p2p_blocked_for_pa: false,
@@ -58,7 +58,7 @@ describe('<Dp2pBlockedDescription />', () => {
         const live_chat_text = screen.getByText(/live chat/i);
         expect(live_chat_text).toBeInTheDocument();
 
-        await userEvent.click(live_chat_text);
+        userEvent.click(live_chat_text);
         expect(window.LiveChatWidget.call).toHaveBeenCalledTimes(1);
         expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });

@@ -26,15 +26,9 @@
     }
 
     &__wrapper {
-        &__content {
+        &--content {
             padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
             overflow-x: hidden;
-
-            &--separate {
-                padding: 0 var(--component-actionSheet-spacing-padding-lg)
-                    var(--component-actionSheet-spacing-padding-md);
-                overflow-x: hidden;
-            }
         }
     }
 
@@ -46,10 +40,6 @@
 
         &::-webkit-scrollbar {
             display: none;
-        }
-
-        &--without-btn {
-            height: calc(90dvh - 17rem);
         }
     }
 

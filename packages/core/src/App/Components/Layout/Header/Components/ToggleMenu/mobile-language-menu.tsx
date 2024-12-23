@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import { localize } from '@deriv/translations'; // [TODO:] Remove this once deriv-app is configured to use the new translation lib
 import { LanguageLink } from 'App/Components/Routes';
-import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES, WALLETS_UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 type TMobileLanguageMenu = {
     expandSubMenu: (prop: boolean) => void;
@@ -13,11 +13,14 @@ type TMobileLanguageMenu = {
 };
 
 const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLanguageMenu) => {
-    const { common, ui } = useStore();
+    const { client, common, ui } = useStore();
     const { is_language_changing } = common;
+    const { has_wallet } = client;
     const { is_mobile_language_menu_open, setMobileLanguageMenuOpen } = ui;
 
-    const allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
+    const allowed_languages = Object.keys(
+        getAllowedLanguages(has_wallet ? WALLETS_UNSUPPORTED_LANGUAGES : UNSUPPORTED_LANGUAGES)
+    );
 
     return (
         <MobileDrawer.SubMenu

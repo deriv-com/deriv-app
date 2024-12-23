@@ -179,6 +179,8 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
         <div
             className={classNames('trade-container', {

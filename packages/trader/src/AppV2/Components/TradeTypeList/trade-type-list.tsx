@@ -22,7 +22,6 @@ type TTradeTypeListProps = {
     categories?: TTradeTypeCategory[];
     isSelected: (id: string) => boolean;
     selectable?: boolean;
-    show_divider?: boolean;
     onRightIconClick?: (item: TTradeTypeItem) => void;
     onTradeTypeClick?: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 };
@@ -31,7 +30,6 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
     categories,
     isSelected,
     selectable,
-    show_divider,
     onRightIconClick,
     onTradeTypeClick,
 }) => {
@@ -41,14 +39,13 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
         setCategoryList(categories);
     }, [categories]);
 
-    if (!categories?.[0]?.items.length) return null;
     return (
-        <React.Fragment>
+        <div>
             {category_list?.map(category => (
                 <div
                     key={category.id}
                     className={clsx('trade-type-list-category', {
-                        'trade-type-list-category__border': category.items && category.items.length > 0 && show_divider,
+                        'trade-type-list-category__border': category.items && category.items.length > 0,
                     })}
                 >
                     <div className='trade-type-list-category__items'>
@@ -65,7 +62,7 @@ const TradeTypeList: React.FC<TTradeTypeListProps> = ({
                     </div>
                 </div>
             ))}
-        </React.Fragment>
+        </div>
     );
 };
 

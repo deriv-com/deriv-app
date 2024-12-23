@@ -3,7 +3,6 @@ import { Localize, useTranslations, localize } from '@deriv-com/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
 import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { Chat } from '@deriv/utils';
 
 type TSentEmailModal = {
     identifier_title: string;
@@ -94,7 +93,8 @@ const SentEmailModal = ({
 
     const onLiveChatClick = () => {
         onClose();
-        Chat.open();
+
+        window.LiveChatWidget?.call('maximize');
     };
 
     const live_chat = has_live_chat ? (

@@ -11,14 +11,13 @@ import './MT5TradeLink.scss';
 type TMT5TradeLinkProps = {
     app?: keyof ReturnType<typeof getAppToContentMapper>;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
-    mt5TradeAccount?: THooks.MT5AccountsList;
     platform?: TPlatforms.All;
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, mt5TradeAccount, platform }) => {
+const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
     const { localize } = useTranslations();
-    const { icon, link, text, title } = getAppToContentMapper(localize, mt5TradeAccount)[app];
+    const { icon, link, text, title } = getAppToContentMapper(localize)[app];
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({
@@ -35,15 +34,15 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, m
                 url = isDemo ? dxtradeLinks.demo : dxtradeLinks.live;
                 break;
             case CFD_PLATFORMS.CTRADER:
+                await getCtraderToken().then(res => {
+                    ctraderToken = res?.service_token?.ctrader?.token;
+                });
                 ctraderURL = isTestLink || isStaging ? ctraderLinks.staging : ctraderLinks.live;
-                try {
-                    const { service_token: serviceToken } = await getCtraderToken();
-                    ctraderToken = serviceToken?.ctrader?.token;
-                } catch (error) {
-                    /* eslint-disable no-console */
-                    console.error('Failed to fetch cTrader token:', error);
+                if (ctraderToken) {
+                    url = `${ctraderURL}/?token=${ctraderToken}`;
+                } else {
+                    url = ctraderURL;
                 }
-                url = ctraderToken ? `${ctraderURL}/?token=${ctraderToken}` : ctraderURL;
                 break;
             default:
                 url = '';
@@ -81,7 +80,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, m
                     <Button
                         borderWidth='sm'
                         color='black'
-                        onClick={() => window.open(link, '_blank', 'noopener,noreferrer')}
+                        onClick={() => window.open(link)}
                         size='sm'
                         variant='outlined'
                     >

@@ -167,13 +167,13 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
 };
 
 const dark_theme = {
-    bg: '#181c25',
+    bg: '#0e0e0e',
     fg: '#ffffff',
     grey_border: '#6e6e6e',
-    lost: '#e6190e',
-    open: '#2c9aff',
+    lost: '#cc2e3d',
+    open: '#377cfc',
     sold: '#ffad3a',
-    won: '#008832',
+    won: '#00a79e',
 };
 
 const light_theme = {
@@ -181,9 +181,9 @@ const light_theme = {
     fg: '#333333',
     grey_border: '#999999',
     lost: '#ec3f3f',
-    open: '#2c9aff',
+    open: '#377cfc',
     sold: '#ffad3a',
-    won: '#008832',
+    won: '#4bb4b3',
 };
 
 function getColor({ status, profit, is_dark_theme, is_vanilla }) {

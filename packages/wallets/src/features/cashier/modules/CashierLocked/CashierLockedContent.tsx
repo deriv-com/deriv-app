@@ -1,5 +1,4 @@
 import React from 'react';
-import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletLink } from '../../../../components';
@@ -142,7 +141,11 @@ const getCashierLockedDesc = ({
             <Text align='center'>
                 <Localize
                     components={[
-                        <button className='wallets-link wallets-link__variant--bold' key={0} onClick={Chat.open} />,
+                        <button
+                            className='wallets-link wallets-link__variant--bold'
+                            key={0}
+                            onClick={() => window.LiveChatWidget.call('maximize')}
+                        />,
                     ]}
                     i18n_default_text='Please contact us via <0>live chat</0> to enable deposits and withdrawals again.'
                 />

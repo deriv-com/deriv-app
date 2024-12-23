@@ -13,8 +13,7 @@ jest.mock('../MT5TradeLink', () => ({
 
 describe('MT5DesktopRedirectOption', () => {
     it('renders MT5TradeLink components for all desktop apps', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the account
-        render(<MT5DesktopRedirectOption mt5TradeAccount={{ white_label_links: {} }} />);
+        render(<MT5DesktopRedirectOption />);
 
         const expectedApps = ['web', 'windows', 'macos', 'linux'];
         expectedApps.forEach(app => {
@@ -28,8 +27,7 @@ describe('MT5DesktopRedirectOption', () => {
     });
 
     it('renders MT5TradeLink components in the correct order', () => {
-        // @ts-expect-error - since this is a mock, we only need partial properties of the account
-        render(<MT5DesktopRedirectOption mt5TradeAccount={{ white_label_links: {} }} />);
+        render(<MT5DesktopRedirectOption />);
 
         const linkElements = screen.getAllByTestId(/dt_mt5_trade_link_/);
         const renderedOrder = linkElements.map(el => el.textContent);

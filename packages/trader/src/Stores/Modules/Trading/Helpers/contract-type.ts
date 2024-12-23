@@ -19,8 +19,7 @@ import {
     getLocalizedBasis,
     TTradeTypesCategories,
     TRADE_TYPES,
-    isDtraderV2MobileEnabled,
-    isDtraderV2DesktopEnabled,
+    isDTraderV2,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -186,7 +185,6 @@ export const ContractType = (() => {
             long_barriers,
             strike_price_choices,
             v2_params_initial_values,
-            root_store,
         } = store;
 
         if (!contract_type) return {};
@@ -202,9 +200,7 @@ export const ContractType = (() => {
             case 'Call':
             case 'Put':
                 stored_barriers_data =
-                    v2_params_initial_values?.strike &&
-                    (isDtraderV2MobileEnabled(root_store?.ui.is_mobile) ||
-                        isDtraderV2DesktopEnabled(root_store?.ui.is_desktop))
+                    v2_params_initial_values?.strike && isDTraderV2()
                         ? ({
                               ...strike_price_choices,
                               barrier: v2_params_initial_values.strike,
@@ -256,7 +252,7 @@ export const ContractType = (() => {
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
             .filter(
                 type =>
-                    !unsupported_contract_types_list.includes(type as (typeof unsupported_contract_types_list)[number])
+                    !unsupported_contract_types_list.includes(type as typeof unsupported_contract_types_list[number])
             );
         const sortedList = getSortedTradeTypes(filteredList);
 
@@ -405,7 +401,7 @@ export const ContractType = (() => {
     };
 
     const buildMoment = (date: string | number | null, time?: string | null) => {
-        const [hour, minute] = isTimeValid(time ?? '') ? (time?.split(':') ?? []) : [0, 0];
+        const [hour, minute] = isTimeValid(time ?? '') ? time?.split(':') ?? [] : [0, 0];
         return toMoment(date || ServerTime.get())
             .hour(+hour)
             .minute(+minute);

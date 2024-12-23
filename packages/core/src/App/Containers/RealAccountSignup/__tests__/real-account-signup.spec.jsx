@@ -35,12 +35,6 @@ jest.mock('../account-wizard.jsx', () => ({
     default: () => <div>Account Wizard</div>,
 }));
 
-jest.mock('@deriv-com/analytics', () => ({
-    Analytics: {
-        trackEvent: jest.fn(),
-    },
-}));
-
 describe('<RealAccountSignup />', () => {
     const store = mockStore({
         client: {

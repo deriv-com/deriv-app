@@ -1,16 +1,15 @@
-import { Chat } from '@deriv/utils';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import getDepositLockedDesc from '../DepositLockedContent';
 
-describe('DepositLockedContent', () => {
-    beforeEach(() => {
-        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
-    });
+window.LiveChatWidget = {
+    call: jest.fn(),
+    get: jest.fn(),
+    init: jest.fn(),
+    on: jest.fn(),
+};
 
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
+describe('DepositLockedContent', () => {
     it('renders title and description as undefined when deposit is not locked', () => {
         const result = getDepositLockedDesc({});
 
@@ -85,7 +84,7 @@ describe('DepositLockedContent', () => {
         expect(screen.getByRole('link', { name: 'personal details' })).toBeInTheDocument();
     });
 
-    it('renders correct message when selfExclusion status received', async () => {
+    it('renders correct message when selfExclusion status received', () => {
         const result = getDepositLockedDesc({
             excludedUntil: new Date('01/01/2100'),
             selfExclusion: true,
@@ -97,11 +96,11 @@ describe('DepositLockedContent', () => {
         ).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        await userEvent.click(link);
-        expect(Chat.open).toHaveBeenCalledTimes(1);
+        userEvent.click(link);
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 
-    it('renders correct message when unwelcomeStatus status received', async () => {
+    it('renders correct message when unwelcomeStatus status received', () => {
         const result = getDepositLockedDesc({
             unwelcomeStatus: true,
         });
@@ -110,7 +109,7 @@ describe('DepositLockedContent', () => {
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();
         const link = screen.getByText('live chat');
         expect(link).toBeInTheDocument();
-        await userEvent.click(link);
-        expect(Chat.open).toHaveBeenCalledTimes(1);
+        userEvent.click(link);
+        expect(window.LiveChatWidget.call).toHaveBeenCalledWith('maximize');
     });
 });

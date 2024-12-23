@@ -21,10 +21,10 @@ describe('WalletsErrorScreen', () => {
         render(
             <WalletsErrorScreen
                 message='Sorry an error occurred. Please try accessing our cashier again.'
-                title='Something went wrong'
+                title='Oops, something went wrong!'
             />
         );
-        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(
             screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')
         ).toBeInTheDocument();

@@ -184,11 +184,7 @@ const useContractsForCompany = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response]);
 
-    const resetTradeTypes = () => {
-        setTradeTypes([]);
-    };
-
-    return { trade_types, contract_types_list, available_contract_types, is_fetching_ref, resetTradeTypes };
+    return { trade_types, contract_types_list, available_contract_types, is_fetching_ref };
 };
 
 export default useContractsForCompany;

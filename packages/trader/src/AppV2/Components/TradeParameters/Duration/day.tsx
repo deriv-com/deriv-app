@@ -23,50 +23,43 @@ const timeToMinutes = (time: string) => {
 };
 
 const DayInput = ({
+    setEndTime,
+    setEndDate,
+    end_date,
     end_time,
     expiry_time_input,
-    saved_expiry_date_v2,
-    setEndTime,
     setExpiryTimeInput,
-    setUnsavedExpiryDateV2,
-    unsaved_expiry_date_v2,
 }: {
+    setEndTime: (arg: string) => void;
+    setEndDate: (arg: Date) => void;
+    end_date: Date;
     end_time: string;
     expiry_time_input: string;
-    saved_expiry_date_v2: string;
-    setEndTime: (arg: string) => void;
     setExpiryTimeInput: (arg: string) => void;
-    setUnsavedExpiryDateV2: (arg: string) => void;
-    unsaved_expiry_date_v2: string;
 }) => {
     const [current_gmt_time, setCurrentGmtTime] = React.useState<string>('');
     const [open, setOpen] = React.useState(false);
     const [open_timepicker, setOpenTimePicker] = React.useState(false);
     const [trigger_date, setTriggerDate] = useState(false);
     const [is_disabled, setIsDisabled] = useState(false);
-    const [calendar_date_input, setCalendarDateInput] = useState(
-        new Date(saved_expiry_date_v2 || unsaved_expiry_date_v2)
-    );
-    const [payout_per_point, setPayoutPerPoint] = useState<number | undefined>();
-    const [barrier_value, setBarrierValue] = useState<string | undefined>();
+    const [end_date_input, setEndDateInput] = useState(end_date);
     const { common } = useStore();
     const [day, setDay] = useState<number | null>(null);
     const { server_time } = common;
     const {
-        barrier_1,
-        contract_type,
-        duration_min_max,
-        duration_units_list,
-        duration,
         expiry_date,
-        is_turbos,
-        market_close_times,
         market_open_times,
+        market_close_times,
+        duration_units_list,
         start_date,
         start_time,
-        symbol,
-        tick_data,
+        duration_min_max,
         trade_types,
+        contract_type,
+        duration,
+        tick_data,
+        symbol,
+        barrier_1,
     } = useTraderStore();
     const trade_store = useTraderStore();
     const { addSnackbar } = useSnackbar();
@@ -79,8 +72,6 @@ const DayInput = ({
         basis: 'stake',
         amount: '5',
         symbol,
-        ...(payout_per_point && { payout_per_point }),
-        ...(barrier_value && { barrier: barrier_value }),
     };
 
     const proposal_req = getProposalRequestObject({
@@ -90,11 +81,11 @@ const DayInput = ({
     });
 
     const { data: response } = useDtraderQuery<ProposalResponse>(
-        ['proposal', JSON.stringify(day), JSON.stringify(payout_per_point), JSON.stringify(barrier_value)],
+        ['proposal', JSON.stringify(day)],
         {
             ...proposal_req,
             symbol,
-            ...(barrier_1 && !is_turbos && !barrier_value ? { barrier: Math.round(tick_data?.quote as number) } : {}),
+            ...(barrier_1 ? { barrier: Math.round(tick_data?.quote as number) } : {}),
         },
         {
             enabled: trigger_date,
@@ -103,24 +94,6 @@ const DayInput = ({
 
     useEffect(() => {
         if (response) {
-            if (response?.error?.code === 'ContractBuyValidationError') {
-                const details = response.error.details;
-
-                if (details?.field === 'payout_per_point' && details?.payout_per_point_choices) {
-                    const suggested_payout = details?.payout_per_point_choices[0];
-                    setPayoutPerPoint(suggested_payout);
-                    setTriggerDate(true);
-                    return;
-                }
-
-                if (details?.field === 'barrier' && details?.barrier_choices) {
-                    const suggested_barrier = details?.barrier_choices[0];
-                    setBarrierValue(suggested_barrier);
-                    setTriggerDate(true);
-                    return;
-                }
-            }
-
             if (response?.error?.message && response?.error?.details?.field === 'duration') {
                 addSnackbar({
                     message: <Localize i18n_default_text={response?.error?.message} />,
@@ -142,15 +115,10 @@ const DayInput = ({
                 );
             }
 
-            invalidateDTraderCache([
-                'proposal',
-                JSON.stringify(day),
-                JSON.stringify(payout_per_point),
-                JSON.stringify(barrier_value),
-            ]);
+            invalidateDTraderCache(['proposal', JSON.stringify(day)]);
             setTriggerDate(false);
         }
-    }, [response, setExpiryTimeInput, setUnsavedExpiryDateV2]);
+    }, [response, setExpiryTimeInput]);
 
     const moment_expiry_date = toMoment(expiry_date);
     const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
@@ -162,7 +130,7 @@ const DayInput = ({
     const adjusted_start_time =
         boundaries.start[0]?.clone().add(5, 'minutes').format('HH:mm') || getClosestTimeToCurrentGMT(5);
 
-    const formatted_date = new Date(unsaved_expiry_date_v2).toLocaleDateString('en-GB', {
+    const formatted_date = end_date.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'short',
         year: 'numeric',
@@ -181,11 +149,8 @@ const DayInput = ({
         };
         updateCurrentGmtTime();
         const interval = setInterval(updateCurrentGmtTime, 1000);
-        // Adjusts end_time to match adjusted_start_time only if end_time is less than adjusted_start_time
-        // and the difference is exactly 5 minutes, ensuring time remains valid.
         if (
             end_time !== '' &&
-            timeToMinutes(end_time) < timeToMinutes(adjusted_start_time) &&
             Math.abs(timeToMinutes(adjusted_start_time) - timeToMinutes(end_time)) === 5 &&
             !open_timepicker
         ) {
@@ -200,7 +165,7 @@ const DayInput = ({
             setEndTime(adjusted_start_time);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [unsaved_expiry_date_v2]);
+    }, [end_date_input]);
 
     let is_24_hours_contract = false;
 
@@ -218,16 +183,11 @@ const DayInput = ({
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
         setDay(Number(difference_in_days));
-        setCalendarDateInput(date);
+        setEndDateInput(date);
         if (difference_in_days == 0) {
             setEndTime(adjusted_start_time);
-            const today = new Date().toISOString().split('T')[0];
-            setUnsavedExpiryDateV2(today);
         } else {
             setEndTime('');
-            setUnsavedExpiryDateV2(
-                `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
-            );
         }
         setTriggerDate(true);
     };
@@ -276,6 +236,7 @@ const DayInput = ({
                     setOpen(false);
                     setOpenTimePicker(false);
                     setIsDisabled(false);
+                    setEndDateInput(end_date);
                 }}
                 position='left'
                 expandable={false}
@@ -298,7 +259,7 @@ const DayInput = ({
                                 start_time,
                                 duration_min_max
                             )}
-                            end_date={calendar_date_input}
+                            end_date={end_date_input}
                             setEndDate={handleDate}
                         />
                     )}
@@ -318,9 +279,10 @@ const DayInput = ({
                             content: <Localize i18n_default_text='Done' />,
                             onAction: () => {
                                 if (!is_disabled) {
+                                    setEndDate(end_date_input);
                                     setOpen(false);
                                     setOpenTimePicker(false);
-                                    const end_date = new Date(unsaved_expiry_date_v2).toLocaleDateString('en-GB', {
+                                    const end_date = end_date_input.toLocaleDateString('en-GB', {
                                         day: 'numeric',
                                         month: 'short',
                                         year: 'numeric',

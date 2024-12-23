@@ -230,7 +230,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         {isDesktop ? (
-                            <MT5DesktopRedirectOption mt5TradeAccount={details as THooks.MT5AccountsList} />
+                            <MT5DesktopRedirectOption />
                         ) : (
                             <MT5MobileRedirectOption mt5TradeAccount={details as THooks.MT5AccountsList} />
                         )}

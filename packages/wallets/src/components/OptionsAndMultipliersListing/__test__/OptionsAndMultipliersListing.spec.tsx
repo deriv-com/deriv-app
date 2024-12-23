@@ -45,24 +45,24 @@ describe('OptionsAndMultipliersListing', () => {
         expect(screen.getAllByTestId('dt_label_paired_chevron')[0]).toBeInTheDocument();
     });
 
-    it('handles onclick for the TradingAccountCard when loginid is undefined', async () => {
+    it('handles onclick for the TradingAccountCard when loginid is undefined', () => {
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: undefined },
         });
         render(<OptionsAndMultipliersListing />, { wrapper });
         const tradingAccountCard = screen.getAllByTestId('dt_wallets_trading_account_card')[0];
-        await userEvent.click(tradingAccountCard);
+        userEvent.click(tradingAccountCard);
         expect(screen.queryByTestId('dt_label_paired_chevron')).not.toBeInTheDocument();
         expect(mockHistoryPush).not.toHaveBeenCalled();
     });
 
-    it('handles onclick for the TradingAccountCard when loginid is defined', async () => {
+    it('handles onclick for the TradingAccountCard when loginid is defined', () => {
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'CR1' },
         });
         render(<OptionsAndMultipliersListing />, { wrapper });
         const tradingAccountCard = screen.getAllByTestId('dt_wallets_trading_account_card')[0];
-        await userEvent.click(tradingAccountCard);
+        userEvent.click(tradingAccountCard);
         const icon = within(tradingAccountCard).queryByTestId('dt_label_paired_chevron');
         expect(icon).toBeInTheDocument();
         expect(mockHistoryPush).toHaveBeenCalled();

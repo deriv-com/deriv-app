@@ -1,7 +1,6 @@
 import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
-    callback_page: '/callback',
     reset_password: '/',
     error404: '/404',
     index: '/index',

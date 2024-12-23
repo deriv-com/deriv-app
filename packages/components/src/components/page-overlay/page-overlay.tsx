@@ -1,13 +1,11 @@
+import classNames from 'classnames';
 import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import classNames from 'classnames';
-
-import { platforms } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-
-import Button from '../button';
 import Icon from '../icon/icon';
+import Button from '../button';
+import { localize } from '@deriv/translations';
+import { platforms } from '@deriv/shared';
 
 type TPageOverlay = {
     header?: React.ReactNode;

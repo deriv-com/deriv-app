@@ -9,8 +9,6 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
-const PROLONGATED_DURATION = 8000;
-
 const ServicesErrorSnackbar = observer(() => {
     const {
         common: { services_error, resetServicesError },
@@ -26,12 +24,12 @@ const ServicesErrorSnackbar = observer(() => {
     const { code, message } = services_error || {};
     const has_services_error = !isEmptyObject(services_error);
     const is_modal_error = checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
-    const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    const contract_types = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
 
     // Some BO errors comes inside of proposal and we store them inside of proposal_info.
     // Such error have no error_field and it is one of the main differences from trade parameters errors (duration, stake and etc).
     // Another difference is that trade params errors arrays in validation_errors are empty.
-    const { has_error, error_field, message: contract_error_message } = proposal_info[contract_type_object[0]] ?? {};
+    const { has_error, error_field, message: contract_error_message } = proposal_info[contract_types[0]] ?? {};
     const contract_error =
         has_error && !error_field && !Object.keys(validation_errors).some(key => validation_errors[key].length);
 
@@ -51,7 +49,6 @@ const ServicesErrorSnackbar = observer(() => {
             : '48px';
     const action_props = {
         actionText: localize('View'),
-        delay: PROLONGATED_DURATION,
         onActionClick: () => window.open(getStaticUrl('tnc/trading-terms.pdf', true)),
     };
 

@@ -28,6 +28,19 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },
     })),
+    useCurrencyConfig: jest.fn(() => {
+        const config = {
+            USD: {
+                code: 'USD',
+                display_code: 'USD',
+                fractional_digits: 2,
+            },
+        };
+        return {
+            data: config,
+            getConfig: jest.fn((currency: keyof typeof config) => config?.[currency]),
+        };
+    }),
     useIsEuRegion: jest.fn(() => ({
         data: false,
         isLoading: false,
@@ -41,6 +54,14 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
                 balance: 100,
                 currency: 'USD',
             },
+        },
+        isLoading: false,
+    }))
+);
+jest.mock('../../../hooks/useWalletsMFAccountStatus', () =>
+    jest.fn(() => ({
+        data: {
+            client_kyc_status: { status: 'none' },
         },
         isLoading: false,
     }))
@@ -102,7 +123,7 @@ describe('DerivAppsTradingAccount', () => {
     });
     it('renders the component with balance', () => {
         render(<DerivAppsTradingAccount />, { wrapper });
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_deriv_apps_balance')).toHaveTextContent('100.00 USD');
     });
     it('navigates to /wallet/account-transfer when the transfer button is clicked', () => {
         render(<DerivAppsTradingAccount />, { wrapper });

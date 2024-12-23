@@ -1,24 +1,53 @@
-on: 
+name: Reporter
+
+on:
   push:
     branches:
-      - master
+      - master 
   pull_request:
-    types: [opened, synchronize, edited]    
-name: Coveralls
+    types: [opened, synchronize, edited]
+    
 jobs:
-  build:
-    name: Reporter
+  test:
+    name: Run tests in parallel
     runs-on: Runner_16cores_Deriv-app
+    strategy:
+      matrix:
+        shard: [1,2,3,4,5,6,7,8,9,10]
+      fail-fast: true
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Setup Node
         uses: './.github/actions/setup_node'
-      - name: Install dependencies
+      - name: Restore npm cache
+        uses: actions/cache/restore@v4
+        id: cache-npm
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+          key: node_modules-cache-${{ hashFiles('package-lock.json', 'packages/*/package.json') }}
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         uses: "./.github/actions/npm_install_from_cache"
-      - name: Build
-        uses: "./.github/actions/build"
+      - name: Build components package
+        working-directory: packages/components
+        run: npm run build
       - name: Test
-        run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
-      - name: Coveralls
+        run: JEST_MAX_WORKERS=95% SHARD_INDEX=${{ matrix.shard }} SHARD_COUNT=10 npm run test:shard -- --collectCoverage
+      - name: Coveralls Parallel
         uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+        with:
+          flag-name: ${{ matrix.shard }}
+          parallel: true
+
+  finish:
+    name: Coveralls Finished
+    needs: [test]
+    runs-on: Runner_16cores_Deriv-app
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949
+        with:
+          parallel-finished: true

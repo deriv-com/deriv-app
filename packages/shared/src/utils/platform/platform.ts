@@ -47,8 +47,6 @@ export const isNavigationFromP2P = () => window.sessionStorage.getItem('config.p
 
 export const isNavigationFromP2PV2 = () => window.sessionStorage.getItem('config.platform') === 'p2p-v2';
 
-export const isNavigationFromTradersHubOS = () => window.sessionStorage.getItem('config.platform') === 'tradershub_os';
-
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;
@@ -106,7 +104,6 @@ export const getPlatformRedirect = (routing_history: TRoutingHistory) => {
     if (isNavigationFromExternalPlatform(routing_history, routes.cashier_p2p))
         return { name: 'P2P', route: routes.cashier_p2p };
     if (isNavigationFromP2P()) return { name: 'P2P', route: routes.cashier_p2p, ref: 'p2p' };
-    if (isNavigationFromTradersHubOS()) return { name: 'TradersHub', route: 'https://hub.deriv.com/tradershub/cfds' };
     return { name: platform_name.DTrader, route: routes.trade };
 };
 

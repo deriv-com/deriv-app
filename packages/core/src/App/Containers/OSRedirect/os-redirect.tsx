@@ -10,7 +10,6 @@ const OSRedirect = () => {
     const {
         client: { is_logged_in },
     } = useStore();
-    const url_query_string = window.location.search;
     const history = useHistory();
 
     // TODO: remove this after oauth2 migration
@@ -32,36 +31,50 @@ const OSRedirect = () => {
         window.location.reload();
     }
 
-    const route_mappings = [
-        { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
-        { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
-        { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
-        { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
-        { pattern: /proof-of-address/i, route: routes.proof_of_address, platform: 'tradershub_os' },
-        { pattern: /proof-of-identity/i, route: routes.proof_of_identity, platform: 'tradershub_os' },
-        { pattern: /personal-details/i, route: routes.personal_details, platform: 'tradershub_os' },
-        { pattern: /dbot/i, route: routes.bot },
-    ];
-
-    const matched_route = route_mappings.find(({ pattern }) => pattern.test(url_query_string));
-
-    let updated_search = url_query_string;
-    if (matched_route && matched_route.type) {
-        updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
-    }
-    if (matched_route && matched_route.platform) {
-        updated_search = `${url_query_string}&platform=${matched_route.platform}`;
-    }
-
     useEffect(() => {
-        if (is_logged_in) {
-            history.push({
-                pathname: matched_route?.route,
+        const url_query_string = window.location.search;
+        const dtrader_routes = [
+            { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+            { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+            { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+            { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
+        ];
+
+        const params = new URLSearchParams(url_query_string);
+        params.delete('redirect_to');
+
+        const dtrader_route = dtrader_routes.find(({ pattern }) => pattern.test(url_query_string));
+
+        /**
+         * Redirect to dtrader route
+         * Logging in will be handled by dtrader app
+         */
+        if (dtrader_route) {
+            return history.push({
+                pathname: dtrader_route?.route,
                 // @ts-expect-error need to update react-router-dom types
-                search: updated_search,
+                search: params.toString(),
             });
         }
-    }, [history, is_logged_in, matched_route?.route, updated_search]);
+
+        const accounts_routes = [
+            { pattern: /proof-of-address/i, route: routes.proof_of_address },
+            { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+            { pattern: /personal-details/i, route: routes.personal_details },
+        ];
+        const accounts_route = accounts_routes.find(({ pattern }) => pattern.test(url_query_string));
+        /**
+         * Redirect to accounts route if user is logged in
+         * Need to wait logged in state to be updated before redirecting
+         */
+        if (is_logged_in && !dtrader_route && accounts_route) {
+            return history.push({
+                pathname: accounts_route?.route,
+                // @ts-expect-error need to update react-router-dom types
+                search: params.toString(),
+            });
+        }
+    }, [history, is_logged_in]);
 
     return <Loader isFullScreen />;
 };

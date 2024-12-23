@@ -25,7 +25,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { logout } = client;
-    const { is_from_derivgo, is_from_tradershub_os } = common;
+    const { is_from_derivgo } = common;
     const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
@@ -44,16 +44,12 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     }));
 
     const onClickClose = React.useCallback(() => {
-        if (is_from_tradershub_os) {
-            window.location.href = 'https://hub.deriv.com/tradershub/cfds';
-            return;
-        }
         if (location.pathname === shared_routes.passkeys) {
             passkeysMenuCloseActionEventTrack();
         }
 
         history.push(shared_routes.traders_hub);
-    }, [history, is_from_tradershub_os, passkeysMenuCloseActionEventTrack]);
+    }, [history]);
 
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
@@ -81,13 +77,11 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             </PageOverlay>
         );
     }
-
     return (
         <PageOverlay
             header={<Localize i18n_default_text='Settings' />}
             onClickClose={onClickClose}
             is_from_app={is_from_derivgo}
-            is_from_tradershub_os={is_from_tradershub_os}
         >
             <VerticalTab
                 is_floating

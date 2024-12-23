@@ -147,7 +147,7 @@ export default class RunPanelStore {
                 onClick: () => {
                     const contract_type = getSelectedTradeType();
 
-                    const url = new URL(routes.reports, window.location.origin);
+                    const url = new URL(routes.positions, window.location.origin);
                     url.searchParams.set('contract_type_bots', contract_type);
 
                     window.location.href = url.toString();

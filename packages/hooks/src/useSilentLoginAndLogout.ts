@@ -16,12 +16,10 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized,
     isOAuth2Enabled,
     oAuthLogout,
-    isGBLoaded,
 }: {
     is_client_store_initialized: boolean;
     isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
-    isGBLoaded: boolean;
 }) => {
     const loggedState = Cookies.get('logged_state');
 
@@ -31,30 +29,28 @@ const useSilentLoginAndLogout = ({
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
     useEffect(() => {
-        if (isGBLoaded) {
-            if (
-                loggedState === 'true' &&
-                !isClientAccountsPopulated &&
-                isOAuth2Enabled &&
-                is_client_store_initialized &&
-                !isSilentLoginExcluded
-            ) {
-                // Perform silent login
-                requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                });
-            }
+        if (
+            loggedState === 'true' &&
+            !isClientAccountsPopulated &&
+            isOAuth2Enabled &&
+            is_client_store_initialized &&
+            !isSilentLoginExcluded
+        ) {
+            // Perform silent login
+            requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
+        }
 
-            if (
-                loggedState === 'false' &&
-                is_client_store_initialized &&
-                isOAuth2Enabled &&
-                isClientAccountsPopulated &&
-                !window.location.pathname.includes('callback')
-            ) {
-                // Perform single logout
-                oAuthLogout();
-            }
+        if (
+            loggedState === 'false' &&
+            is_client_store_initialized &&
+            isOAuth2Enabled &&
+            isClientAccountsPopulated &&
+            !window.location.pathname.includes('callback')
+        ) {
+            // Perform single logout
+            oAuthLogout();
         }
     }, [
         loggedState,
@@ -63,7 +59,6 @@ const useSilentLoginAndLogout = ({
         isOAuth2Enabled,
         oAuthLogout,
         isSilentLoginExcluded,
-        isGBLoaded,
     ]);
 };
 

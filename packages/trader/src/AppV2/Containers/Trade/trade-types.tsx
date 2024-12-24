@@ -282,7 +282,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
             <GuideContainer
                 should_run={should_run_trade_page_guide && !guide_dtrader_v2?.trade_types_selection}
                 steps={STEPS}
-                callback={() => onCloseGuide()}
+                callback={onCloseGuide}
             />
             {trade_type_chips.map(({ title, id }: TItem) => (
                 <Chip.Selectable

@@ -51,7 +51,7 @@ const OSRedirect = () => {
         const route = routes_list.find(({ pattern }) => pattern.test(url_query_string));
         route?.type && params.set('trade_type', route.type);
         /**
-         * Redirect to accounts route if user is logged in
+         * Redirect to route if user is logged in
          * Need to wait logged in state to be updated before redirecting
          */
         if (is_logged_in && route) {

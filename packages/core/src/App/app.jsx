@@ -1,34 +1,44 @@
 import React from 'react';
-import WS from 'Services/ws-methods';
-import PropTypes from 'prop-types';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Analytics } from '@deriv-com/analytics';
-import { BreakpointProvider } from '@deriv-com/quill-ui';
+import PropTypes from 'prop-types';
+
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import {
-    POIProvider,
     initFormErrorMessages,
+    POIProvider,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
+import { P2PSettingsProvider, StoreProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
-import { withTranslation, useTranslation } from 'react-i18next';
-import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
+import { Analytics } from '@deriv-com/analytics';
+import { BreakpointProvider } from '@deriv-com/quill-ui';
+import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
+
+import WS from 'Services/ws-methods';
+
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+
 import AppContent from './AppContent';
+
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const i18nInstance = initializeI18n({
         cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
     });
+    const [trigger_login_for_hub_country_list, trigger_login_for_hub_country_list_loaded] =
+        useGrowthbookGetFeatureValue({
+            featureFlag: 'trigger_login_for_hub_country_list',
+        });
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -45,6 +55,12 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
     const language = preferred_language ?? getInitialLanguage();
+
+    React.useEffect(() => {
+        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list) {
+            localStorage.setItem('config.app_id', 61554);
+        }
+    }, [trigger_login_for_hub_country_list_loaded, trigger_login_for_hub_country_list]);
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());

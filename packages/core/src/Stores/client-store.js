@@ -7,35 +7,33 @@ import {
     deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
+    getAppId,
     getPropertyValue,
+    getUrlP2P,
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
-    isMobile,
     isEmptyObject,
     isLocal,
+    isMobile,
     isProduction,
     isStaging,
-    isTestLink,
     isTestDerivApp,
+    isTestLink,
     LocalStore,
     redirectToLogin,
     removeCookies,
     routes,
     SessionStore,
     setCurrencies,
+    sortApiData,
     State,
     toMoment,
-    sortApiData,
     urlForLanguage,
-    getAppId,
-    getUrlP2P,
 } from '@deriv/shared';
+import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import { URLConstants } from '@deriv-com/utils';
-import { getCountry } from '@deriv/utils';
-
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
+import { CountryUtils, URLConstants } from '@deriv-com/utils';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -44,6 +42,7 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
+
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -177,7 +176,6 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
-
         makeObservable(this, {
             exchange_rates: observable,
             loginid: observable,
@@ -1527,14 +1525,16 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (search) {
-            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
-                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-                }, 0);
-            });
+            if (window.location.pathname !== routes.callback_page) {
+                if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                        // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                        history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                    }, 0);
+                });
+            }
         }
 
         this.setDeviceData();
@@ -1568,7 +1568,9 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleResetEmailModal(true);
             }
         }
-        const client = this.accounts[this.loginid];
+        const storedToken = localStorage.getItem('config.account1');
+        const client = this.accounts[this.loginid] || (storedToken ? { token: storedToken } : undefined);
+
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -1605,7 +1607,7 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform', 'lang'])}`);
                 }
             }
             runInAction(() => {
@@ -1674,6 +1676,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
+
+            // This was set for the new callback page logic, once the user has logged in, we can remove the tokens and account1 from local storage since client.accounts is handling it already
+            if (localStorage.getItem('config.tokens') && localStorage.getItem('config.account1')) {
+                localStorage.removeItem('config.tokens');
+                localStorage.removeItem('config.account1');
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1816,7 +1824,7 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: await getCountry(),
+                country: await CountryUtils.getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
@@ -2187,7 +2195,7 @@ export default class ClientStore extends BaseStore {
 
         let is_social_signup_provider = false;
 
-        if (search) {
+        if (search && window.location.pathname !== routes.callback_page) {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
@@ -2213,8 +2221,9 @@ export default class ClientStore extends BaseStore {
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+        const is_callback_page_client_logging_in = localStorage.getItem('config.account1') || '';
 
-        if (is_client_logging_in) {
+        if (is_client_logging_in || is_callback_page_client_logging_in) {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
@@ -2234,11 +2243,18 @@ export default class ClientStore extends BaseStore {
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
-            const authorize_response = await BinarySocket.authorize(is_client_logging_in);
+            const authorize_response = await BinarySocket.authorize(
+                is_client_logging_in || is_callback_page_client_logging_in
+            );
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
                 obj_params = login_new_user;
+            }
+
+            if (localStorage.getItem('config.tokens')) {
+                const tokens = JSON.parse(localStorage.getItem('config.tokens'));
+                obj_params = tokens;
             }
 
             if (authorize_response.error) {

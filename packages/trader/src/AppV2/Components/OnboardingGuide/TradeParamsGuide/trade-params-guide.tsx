@@ -14,7 +14,7 @@ const TradeParamsGuide = () => {
         if (!guide_dtrader_v2?.trade_params) {
             const element = document.querySelector('.trade');
             const observer = new MutationObserver(() => {
-                if (document.getElementsByClassName('trade__parameter-tooltip-info').length > 0) {
+                if (document.querySelector('.trade__parameter-tooltip-info')) {
                     const latest_guide_dtrader_v2 = getLocalStorage('guide_dtrader_v2');
                     timerRef.current = setTimeout(() => {
                         setShowGuide(true);

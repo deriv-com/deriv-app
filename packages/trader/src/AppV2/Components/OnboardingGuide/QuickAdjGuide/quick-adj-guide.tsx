@@ -38,7 +38,6 @@ const QuickAdjGuide = ({ is_minimized, is_minimized_visible }: TQuickAdjGuide) =
             content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
             placement: 'top' as Step['placement'],
             target: '.trade-params__options__wrapper--minimized',
-            // target: '.market-selector-info',
             title: <Localize i18n_default_text='Make quick adjustments.' />,
             disableBeacon: true,
             styles: {

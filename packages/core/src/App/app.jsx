@@ -39,6 +39,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         useGrowthbookGetFeatureValue({
             featureFlag: 'trigger_login_for_hub_country_list',
         });
+    const is_app_id_set = localStorage.getItem('config.app_id');
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -57,10 +58,10 @@ const AppWithoutTranslation = ({ root_store }) => {
     const language = preferred_language ?? getInitialLanguage();
 
     React.useEffect(() => {
-        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list) {
+        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list && !is_app_id_set) {
             localStorage.setItem('config.app_id', 61554);
         }
-    }, [trigger_login_for_hub_country_list_loaded, trigger_login_for_hub_country_list]);
+    }, [trigger_login_for_hub_country_list_loaded, trigger_login_for_hub_country_list, is_app_id_set]);
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());

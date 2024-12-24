@@ -49,6 +49,8 @@ export const AnalyticsInitializer = async () => {
                         network_type: navigator.connection?.effectiveType,
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
+                        user_id: localStorage.getItem('active_user_id') || '',
+                        anonymous_id: Analytics.getInstances().tracking.getAnonymousId(),
                     },
                 },
             };

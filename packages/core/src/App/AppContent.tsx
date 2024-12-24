@@ -63,12 +63,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         },
     });
 
-    useSilentLoginAndLogout({
-        is_client_store_initialized,
-        isOAuth2Enabled,
-        oAuthLogout,
-    });
-
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
     });
@@ -81,6 +75,14 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
+
+    useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
+        isGBLoaded,
+    });
+
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();

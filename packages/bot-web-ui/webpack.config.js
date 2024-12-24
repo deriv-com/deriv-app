@@ -154,6 +154,7 @@ module.exports = function (env) {
                 mobx: 'mobx',
                 'mobx-react-lite': 'mobx-react-lite',
                 'react-dom': 'react-dom',
+                '@deriv/utils': '@deriv/utils',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': '@deriv-com/analytics',
             },

@@ -9,8 +9,6 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
-const PROLONGATED_DURATION = 8000;
-
 const ServicesErrorSnackbar = observer(() => {
     const {
         common: { services_error, resetServicesError },
@@ -51,7 +49,6 @@ const ServicesErrorSnackbar = observer(() => {
             : '48px';
     const action_props = {
         actionText: localize('View'),
-        delay: PROLONGATED_DURATION,
         onActionClick: () => window.open(getStaticUrl('tnc/trading-terms.pdf', true)),
     };
 

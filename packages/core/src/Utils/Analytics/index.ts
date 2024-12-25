@@ -55,9 +55,6 @@ export const AnalyticsInitializer = async () => {
                 },
             };
             await Analytics?.initialise(config);
-            const anonymousId = Analytics.getInstances()?.tracking?.getAnonymousId?.();
-            config.growthbookOptions.attributes.anonymous_id = anonymousId;
-            Analytics?.initialise(config);
         }
     }
 };

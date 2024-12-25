@@ -8,7 +8,7 @@ import { Loader } from '@deriv-com/ui';
 
 const OSRedirect = () => {
     const {
-        client: { is_logged_in },
+        client: { is_logged_in, is_logging_in, is_account_setting_loaded },
     } = useStore();
     const history = useHistory();
 
@@ -54,14 +54,14 @@ const OSRedirect = () => {
          * Redirect to route if user is logged in
          * Need to wait logged in state to be updated before redirecting
          */
-        if (is_logged_in && route) {
+        if (is_logged_in && !is_logging_in && is_account_setting_loaded && route) {
             return history.push({
                 pathname: route?.route,
                 // @ts-expect-error need to update react-router-dom types
                 search: params.toString(),
             });
         }
-    }, [history, is_logged_in]);
+    }, [history, is_account_setting_loaded, is_logged_in, is_logging_in]);
 
     return <Loader isFullScreen />;
 };

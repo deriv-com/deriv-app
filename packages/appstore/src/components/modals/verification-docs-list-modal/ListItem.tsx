@@ -16,7 +16,7 @@ type TListItemProps = {
     route: string;
 };
 
-type TAuthStatusCodes = (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
+type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 
 const getBadgeStatus = (status: TAuthStatusCodes) => {
     switch (status) {
@@ -52,6 +52,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
     const { setVerificationModalOpen } = traders_hub;
+    const history = useHistory();
     const is_document_verified = status === AUTH_STATUS_CODES.VERIFIED;
 
     const onClickItem = () => {
@@ -64,7 +65,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         if (id === 'address' && status) {
             localStorage.setItem('mt5_poa_status', String(status));
         }
-        window.location.href = route;
+        history.push(route);
         setVerificationModalOpen(false);
     };
 

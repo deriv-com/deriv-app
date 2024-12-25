@@ -1,14 +1,11 @@
 import React, { Suspense } from 'react';
-
-import { Icon, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
-import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import { CFD_PLATFORMS, routes } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useDevice } from '@deriv-com/ui';
-
+import { Text, Modal, UILoader, MobileDialog, Icon } from '@deriv/components';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
+import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
 import ListItem from './ListItem';
-
 import './verification-docs-list-modal.scss';
 
 type TItems = {
@@ -22,7 +19,6 @@ const VerificationDocsListModalContent = observer(() => {
     const {
         common: { platform },
     } = useStore();
-
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();

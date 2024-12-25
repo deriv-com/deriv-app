@@ -2,15 +2,7 @@ import React, { Suspense } from 'react';
 
 import { Icon, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { useGetStatus, useIsSelectedMT5AccountCreated } from '@deriv/hooks';
-import {
-    ACCOUNTS_OS_POA_URL,
-    ACCOUNTS_OS_POI_STATUS_URL,
-    ACCOUNTS_OS_POI_URL,
-    CFD_PLATFORMS,
-    getAppId,
-    getSocketURL,
-    routes,
-} from '@deriv/shared';
+import { CFD_PLATFORMS, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -29,21 +21,7 @@ type TItems = {
 const VerificationDocsListModalContent = observer(() => {
     const {
         common: { platform },
-        client: { getToken },
     } = useStore();
-
-    const getFormattedURL = (url_link: string) => {
-        const url = new URL(url_link);
-        const token = getToken();
-        const appID = getAppId();
-        const server = getSocketURL();
-        url.searchParams.append('platform', 'deriv_app');
-        url.searchParams.append('appid', appID);
-        url.searchParams.append('lang', 'en');
-        url.searchParams.append('server', server);
-        url.searchParams.append('token', token);
-        return url.toString();
-    };
 
     const { isMobile } = useDevice();
     const { client_kyc_status } = useGetStatus();
@@ -57,13 +35,13 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
-            route: getFormattedURL(poi_status === 'none' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL),
+            route: routes.proof_of_identity,
         },
         poa_status && {
             id: 'address',
             text: 'Proof of address',
             status: poa_status,
-            route: getFormattedURL(ACCOUNTS_OS_POA_URL),
+            route: routes.proof_of_address,
         },
         is_tin_required && {
             id: 'tax',

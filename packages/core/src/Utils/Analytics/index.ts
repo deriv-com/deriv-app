@@ -31,6 +31,7 @@ export const AnalyticsInitializer = async () => {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
+
                 growthbookOptions: {
                     attributes: {
                         loggedIn: !!Cookies.get('clients_information'),
@@ -50,11 +51,13 @@ export const AnalyticsInitializer = async () => {
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
                         user_id: localStorage.getItem('active_user_id') || '',
-                        anonymous_id: Analytics.getInstances().tracking.getAnonymousId(),
                     },
                 },
             };
             await Analytics?.initialise(config);
+            const anonymousId = Analytics.getInstances()?.tracking?.getAnonymousId?.();
+            config.growthbookOptions.attributes.anonymous_id = anonymousId;
+            Analytics?.initialise(config);
         }
     }
 };

@@ -7,6 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
+import { Chat } from '@deriv/utils';
 
 const FIAT_CURRENCY_TYPE = 'fiat';
 
@@ -32,7 +33,7 @@ const ChangeAccountCurrency = observer(
                         className='link link--orange'
                         onClick={() => {
                             closeRealAccountSignup();
-                            window.LiveChatWidget?.call('maximize');
+                            Chat.open();
                         }}
                     />,
                 ]}

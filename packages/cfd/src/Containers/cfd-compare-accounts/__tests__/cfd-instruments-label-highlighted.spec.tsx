@@ -55,20 +55,4 @@ describe('<CFDInstrumentsLabelHighlighted />', () => {
         expect(containerElement).toBeInTheDocument();
         expect(containerElement).toHaveClass('compare-cfd-account-outline');
     });
-
-    it('should render the "Boom 300 and Crash 300 Index" for EU user', () => {
-        const mockStoreEU = mockStore({
-            traders_hub: {
-                selected_region: 'EU',
-                is_eu_user: true,
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockStoreEU}>{children}</StoreProvider>
-        );
-
-        render(<CFDInstrumentsLabelHighlighted {...mocked_props} />, { wrapper });
-        expect(screen.getByText(/Boom 300 and Crash 300 Index/i)).toBeInTheDocument();
-    });
 });

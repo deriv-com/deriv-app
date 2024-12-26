@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
+import { useCreateWallet, useIsEuRegion, useLandingCompany, useWalletAccountsList } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
@@ -27,8 +27,10 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const { localize } = useTranslations();
     const { data: isEuRegion } = useIsEuRegion();
+    const { data: landingCompany } = useLandingCompany();
     const { data: wallets } = useWalletAccountsList();
     const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
+    const shortcode = landingCompany?.financial_company?.shortcode ?? landingCompany?.gaming_company?.shortcode;
 
     useEffect(
         () => {
@@ -87,7 +89,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     if (!currency) return;
 
                     if (isEuRegion || !hasAnyActiveRealWallets) {
-                        return redirectToOutSystems(currency);
+                        return redirectToOutSystems(shortcode, currency);
                     }
 
                     const createAccountResponse = await mutateAsync({

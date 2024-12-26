@@ -1,6 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateWallet, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useCreateWallet,
+    useIsEuRegion,
+    useLandingCompany,
+    useWalletAccountsList,
+} from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -27,6 +33,11 @@ jest.mock('@deriv/api-v2', () => ({
     useCreateWallet: jest.fn(),
     useIsEuRegion: jest.fn(() => ({
         data: false,
+    })),
+    useLandingCompany: jest.fn(() => ({
+        data: {
+            financial_company: { shortcode: 'svg' },
+        },
     })),
     useWalletAccountsList: jest.fn(),
 }));
@@ -272,6 +283,11 @@ describe('WalletsAddMoreCardBanner', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
         });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                financial_company: { shortcode: 'maltainvest' },
+            },
+        }));
 
         Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
 
@@ -300,6 +316,11 @@ describe('WalletsAddMoreCardBanner', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
         });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                financial_company: { shortcode: 'maltainvest' },
+            },
+        }));
 
         Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
 
@@ -359,6 +380,11 @@ describe('WalletsAddMoreCardBanner', () => {
         (useWalletAccountsList as jest.Mock).mockReturnValue({
             data: [{ is_virtual: true, loginid: 'demo123' }],
         });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                gaming_company: { shortcode: 'svg' },
+            },
+        }));
 
         Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
 

@@ -640,7 +640,6 @@ import './common/ic-tour-guide-step2.svg';
 import './common/ic-trade.svg';
 import './common/ic-trading-view-chart.svg';
 import './common/ic-transactions.svg';
-import './common/ic-triangle-exclamation-xl.svg';
 import './common/ic-tutorials-tabs.svg';
 import './common/ic-unarchive.svg';
 import './common/ic-undo.svg';

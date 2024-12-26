@@ -5,11 +5,11 @@ import getFeatureFlag from './getFeatureFlag';
 
 const Chat = {
     isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
-    isIntercom: async () => getFeatureFlag('enable_intercom'),
+    isIntercom: true, //async () => getFeatureFlag('enable_intercom'),
 
     getFlags: async () => {
         try {
-            const [isFreshChat, isIntercom] = await Promise.all([Chat.isFreshChat(), Chat.isIntercom()]);
+            const [isFreshChat, isIntercom] = await Promise.all([Chat.isFreshChat(), Chat.isIntercom]);
             return { isFreshChat, isIntercom };
         } catch (_error) {
             return { isFreshChat: false, isIntercom: false };
@@ -18,7 +18,7 @@ const Chat = {
 
     open: async () => {
         const isFreshChat = await Chat.isFreshChat();
-        const isIntercom = await Chat.isIntercom();
+        const isIntercom = await Chat.isIntercom;
 
         if (isFreshChat) {
             window.fcWidget?.open();

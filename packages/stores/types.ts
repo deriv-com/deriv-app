@@ -27,7 +27,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 import type { FeatureFlagsStore } from './src/stores';
 
@@ -710,6 +710,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    getToken: () => string;
     should_show_trustpilot_notification: boolean;
 };
 

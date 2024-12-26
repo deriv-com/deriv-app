@@ -29,6 +29,7 @@ type TStakeState = {
     proposal_request_values: TNewValues;
     stake_error: string;
     fe_stake_error: string;
+    max_length: number;
     details: {
         commission?: string | number;
         error_1: string;
@@ -48,6 +49,7 @@ type TStakeAction =
     | { type: 'SET_STAKE_ERROR'; payload: string }
     | { type: 'SET_FE_STAKE_ERROR'; payload: string }
     | { type: 'UPDATE_DETAILS'; payload: Partial<TStakeState['details']> }
+    | { type: 'SET_MAX_LENGTH'; payload: number }
     | { type: 'RESET_ERRORS' };
 
 const reducer = (state: TStakeState, action: TStakeAction): TStakeState => {
@@ -78,6 +80,11 @@ const reducer = (state: TStakeState, action: TStakeAction): TStakeState => {
                     ...action.payload,
                 },
             };
+        case 'SET_MAX_LENGTH':
+            return {
+                ...state,
+                max_length: action.payload,
+            };
         case 'RESET_ERRORS':
             return {
                 ...state,
@@ -89,7 +96,7 @@ const reducer = (state: TStakeState, action: TStakeAction): TStakeState => {
     }
 };
 
-const createInitialState = (trade_store: ReturnType<typeof useTraderStore>) => {
+const createInitialState = (trade_store: ReturnType<typeof useTraderStore>, decimals: number) => {
     const {
         amount,
         commission,
@@ -118,6 +125,7 @@ const createInitialState = (trade_store: ReturnType<typeof useTraderStore>) => {
         proposal_request_values: { amount },
         stake_error: '',
         fe_stake_error: '',
+        max_length: calculateMaxLength(amount, decimals),
         details: {
             commission,
             error_1: first_payout_error,
@@ -142,7 +150,6 @@ const calculateMaxLength = (amount: number | string, decimals: number): number =
 const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const trade_store = useTraderStore();
     const {
-        amount,
         contract_type,
         currency,
         barrier_1,
@@ -156,9 +163,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         trade_types,
     } = trade_store;
 
-    const [state, dispatch] = React.useReducer(reducer, null, () => createInitialState(trade_store));
     const decimals = getDecimalPlaces(currency);
-    const [max_length, setMaxLength] = React.useState(() => calculateMaxLength(amount, decimals));
+    const [state, dispatch] = React.useReducer(reducer, null, () => createInitialState(trade_store, decimals));
     const { proposal_request_values, stake_error, fe_stake_error, details } = state;
 
     const contract_types = React.useMemo(
@@ -177,7 +183,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     }, [should_scroll]);
 
     React.useEffect(() => {
-        const initial_state = createInitialState(trade_store);
+        const initial_state = createInitialState(trade_store, decimals);
         dispatch({ type: 'SET_PROPOSAL_VALUES', payload: initial_state.proposal_request_values });
         dispatch({ type: 'UPDATE_DETAILS', payload: initial_state.details });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -323,8 +329,10 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const new_value = e.target.value;
-        const new_max_length = calculateMaxLength(new_value, decimals);
-        setMaxLength(new_max_length);
+        dispatch({
+            type: 'SET_MAX_LENGTH',
+            payload: calculateMaxLength(new_value, decimals),
+        });
         if (new_value.endsWith('.')) {
             dispatch({
                 type: 'SET_FE_STAKE_ERROR',
@@ -341,6 +349,18 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
             type: 'SET_PROPOSAL_VALUES',
             payload: { amount: new_value },
         });
+    };
+
+    const onBeforeInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        if (
+            ['.', ','].includes((e.nativeEvent as InputEvent)?.data ?? '') &&
+            (String(proposal_request_values.amount)?.length ?? 0) <= 10
+        ) {
+            dispatch({
+                type: 'SET_MAX_LENGTH',
+                payload: decimals ? 11 + decimals : 10,
+            });
+        }
     };
 
     const onSave = () => {
@@ -377,11 +397,13 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     decimals={decimals}
                     inputMode='decimal'
                     id={input_id}
+                    maxLength={state.max_length}
                     message={fe_stake_error || (should_show_stake_error && stake_error) || getInputMessage()}
                     minusDisabled={Number(proposal_request_values.amount) - 1 <= 0}
                     name='amount'
                     noStatusIcon
                     onChange={onInputChange}
+                    onBeforeInput={onBeforeInputChange}
                     placeholder={localize('Amount')}
                     regex={/[^0-9.,]/g}
                     status={fe_stake_error || (should_show_stake_error && stake_error) ? 'error' : 'neutral'}
@@ -390,15 +412,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     unitLeft={getCurrencyDisplayCode(currency)}
                     value={proposal_request_values.amount}
                     variant='fill'
-                    onBeforeInput={(e: React.FormEvent<HTMLInputElement>) => {
-                        if (
-                            ['.', ','].includes((e.nativeEvent as InputEvent)?.data ?? '') &&
-                            (String(proposal_request_values.amount)?.length ?? 0) <= 10
-                        ) {
-                            setMaxLength(decimals ? 11 + decimals : 10);
-                        }
-                    }}
-                    maxLength={max_length}
                 />
                 <StakeDetails
                     contract_type={contract_type}

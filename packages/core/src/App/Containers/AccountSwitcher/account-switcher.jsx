@@ -18,7 +18,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useGrowthbookGetFeatureValue, useHasSetCurrency, useOauth2 } from '@deriv/hooks';
+import { useHasSetCurrency, useOauth2 } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -40,7 +40,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         is_high_risk,
         is_logged_in,
         is_virtual,
-        is_wallet_account,
         has_fiat,
         mt5_login_list,
         logout: logoutClient,
@@ -79,13 +78,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid;
     const vrtc_currency = accounts[vrtc_loginid] ? accounts[vrtc_loginid].currency : 'USD';
-    const [trigger_login_for_hub_country_list, trigger_login_for_hub_country_list_loaded] =
-        useGrowthbookGetFeatureValue({
-            featureFlag: 'trigger_login_for_hub_country_list',
-        });
-    const PRODUCTION_URL = 'app.deriv.com';
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
 
     const toggleVisibility = section => {
         switch (section) {
@@ -421,17 +413,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const TradersHubRedirect = () => {
         const TradersHubLink = () => {
             const handleRedirect = async () => {
-                if (
-                    trigger_login_for_hub_country_list_loaded &&
-                    trigger_login_for_hub_country_list &&
-                    is_wallet_account
-                ) {
-                    const is_production = window.location.hostname === PRODUCTION_URL;
-                    const redirect_url = is_production ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-                    window.open(redirect_url, '_blank', 'noopener,noreferrer');
-                    return;
-                }
-
                 if (!is_virtual && isDemoAccountTab) {
                     await switchAccount(virtual_account_loginid);
                 } else if (is_virtual && isRealAccountTab) {

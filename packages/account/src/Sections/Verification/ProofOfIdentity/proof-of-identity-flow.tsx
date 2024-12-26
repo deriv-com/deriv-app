@@ -12,6 +12,7 @@ import ProofOfIdentity from './proof-of-identity';
 const ProofOfIdentityFlow = observer(() => {
     const {
         client: { getToken, residence },
+        common: { is_from_tradershub_os },
     } = useStore();
     const { kyc_auth_status } = useKycAuthStatus({ country: residence });
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
@@ -20,7 +21,7 @@ const ProofOfIdentityFlow = observer(() => {
 
     const getFormattedURL = url_link => {
         const url = new URL(url_link);
-        url.searchParams.append('platform', 'deriv_app');
+        url.searchParams.append('platform', is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
         url.searchParams.append('appid', getAppId());
         url.searchParams.append('lang', 'en');
         url.searchParams.append('server', getSocketURL());

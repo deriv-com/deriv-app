@@ -4,7 +4,7 @@ import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/componen
 import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useGrowthbookGetFeatureValue, useStoreWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
@@ -17,9 +17,18 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const { data: wallet_list } = useStoreWalletAccountsList();
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
+    const { client } = useStore();
+    const { is_wallet_account } = client;
     const history = useHistory();
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const [trigger_login_for_hub_country_list, trigger_login_for_hub_country_list_loaded] =
+        useGrowthbookGetFeatureValue({
+            featureFlag: 'trigger_login_for_hub_country_list',
+        });
+    const PRODUCTION_URL = 'app.deriv.com';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
@@ -39,6 +48,12 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
+        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list && is_wallet_account) {
+            const is_production = window.location.hostname === PRODUCTION_URL;
+            const redirect_url = is_production ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            window.open(redirect_url, '_blank', 'noopener,noreferrer');
+            return;
+        }
         closeAccountsDialog();
         history.push(routes.traders_hub);
     };

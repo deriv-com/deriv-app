@@ -315,6 +315,14 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const new_value = e.target.value;
+
+        if (new_value.endsWith('.')) {
+            dispatch({
+                type: 'SET_FE_STAKE_ERROR',
+                payload: localize('Should be a valid number.'),
+            });
+            return;
+        }
         // If a new value is equal to a previous one, then we won't send API request
         const is_equal = new_value === String(proposal_request_values.amount);
         if (is_equal) return;
@@ -331,7 +339,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         if (
             is_fetching_1 ||
             (should_send_multiple_proposals && is_fetching_2) ||
-            (should_show_stake_error && stake_error)
+            (should_show_stake_error && stake_error) ||
+            fe_stake_error
         )
             return;
         if (proposal_request_values.amount === '') {

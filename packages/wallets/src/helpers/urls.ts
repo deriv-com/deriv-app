@@ -162,5 +162,5 @@ export const redirectToStandaloneP2P = () => {
     const baseUrl = isProduction() ? derivUrls.DERIV_P2P_PRODUCTION : derivUrls.DERIV_P2P_STAGING;
 
     const redirectURL = new URL(baseUrl);
-    return (window.location.href = redirectURL.toString());
+    window.location.href = redirectURL.toString();
 };

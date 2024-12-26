@@ -5,7 +5,7 @@ import getFeatureFlag from './getFeatureFlag';
 
 const Chat = {
     isFreshChat: async () => getFeatureFlag('enable_freshworks_live_chat'),
-    isIntercom: true, //async () => getFeatureFlag('enable_intercom'),
+    isIntercom: async () => getFeatureFlag('enable_intercom'),
 
     getFlags: async () => {
         try {
@@ -16,17 +16,18 @@ const Chat = {
         }
     },
 
-    open: async () => {
-        const isFreshChat = await Chat.isFreshChat();
-        const isIntercom = await Chat.isIntercom;
+    open: () => {
+        // const isFreshChat = await Chat.isFreshChat();
+        // const isIntercom = await Chat.isIntercom;
 
-        if (isFreshChat) {
-            window.fcWidget?.open();
-        } else if (isIntercom) {
-            window.Intercom('show');
-        } else {
-            window.LiveChatWidget?.call('maximize');
-        }
+        // if (isFreshChat) {
+        //     window.fcWidget?.open();
+        // } else if (isIntercom) {
+        //     window.Intercom('show');
+        // } else {
+        //     window.LiveChatWidget?.call('maximize');
+        // }
+        window.Intercom('show');
     },
 
     clear: async () => {

@@ -17,6 +17,7 @@ export const useIntercom = (token: string | null) => {
         let intervalId: NodeJS.Timeout;
 
         const initIntercom = () => {
+            console.log('intercom init');
             window.DerivInterCom.initialize({
                 hideLauncher: true,
                 token,

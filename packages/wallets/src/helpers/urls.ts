@@ -21,6 +21,8 @@ export const derivUrls = Object.freeze({
     DERIV_COM_PRODUCTION_EU: `https://eu.${domainUrl}`,
     DERIV_COM_STAGING: `https://staging.${domainUrl}`,
     DERIV_HOST_NAME: domainUrl,
+    DERIV_P2P_PRODUCTION: `https://p2p.${domainUrl}`,
+    DERIV_P2P_STAGING: `https://staging-p2p.${domainUrl}`,
     SMARTTRADER_PRODUCTION: `https://smarttrader.${domainUrl}`,
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domainUrl}`,
 });
@@ -154,4 +156,31 @@ export const redirectToOutSystems = (currency = '') => {
         redirectURL.search = params.toString();
         return (window.location.href = redirectURL.toString());
     }
+};
+
+export const redirectToStandaloneP2P = () => {
+    const clientAccounts = getAccountsFromLocalStorage() ?? {};
+    if (!Object.keys(clientAccounts).length) return;
+
+    const filteredAccountsWithTokens: Record<string, unknown> = {};
+    Object.keys(clientAccounts).forEach(loginid => {
+        const account = clientAccounts[loginid];
+        if (account.account_category === 'trading' && account?.currency_type === 'fiat' && account.is_virtual === 0) {
+            filteredAccountsWithTokens[loginid] = { token: account.token }; // pass token for real fiat trading account only
+        }
+    });
+    if (!Object.keys(filteredAccountsWithTokens).length) return;
+
+    const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+
+    Cookies.set('authtoken', JSON.stringify(filteredAccountsWithTokens), {
+        domain: URLConstants.baseDomain,
+        expires,
+        secure: true,
+    });
+
+    const baseUrl = isProduction() ? derivUrls.DERIV_P2P_PRODUCTION : derivUrls.DERIV_P2P_STAGING;
+
+    const redirectURL = new URL(`${baseUrl}/redirect?from=tradershub`);
+    return (window.location.href = redirectURL.toString());
 };

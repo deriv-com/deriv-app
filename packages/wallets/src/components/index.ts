@@ -42,6 +42,7 @@ export * from './WalletsContainer';
 export * from './WalletsDisabledAccountsBanner';
 export * from './WalletsDisclaimerBanner';
 export * from './WalletsErrorScreen';
+export * from './WalletsP2PRedirectionBanner';
 export * from './WalletsPercentageSelector';
 export * from './WalletsResetMT5Password';
 export * from './WalletStatusBadge';

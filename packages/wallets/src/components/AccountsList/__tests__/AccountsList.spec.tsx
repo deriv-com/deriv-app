@@ -1,6 +1,6 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
 import { WalletTourGuide } from 'src/components/WalletTourGuide';
-import { APIProvider, useIsEuRegion } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -28,6 +28,7 @@ jest.mock(
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
+    useActiveWalletAccount: jest.fn(),
     useIsEuRegion: jest.fn(),
 }));
 
@@ -41,6 +42,15 @@ const wrapper = ({ children }: PropsWithChildren) => (
 
 describe('AccountsList', () => {
     beforeEach(() => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: {
+                account_type: 'doughflow',
+                currency_config: { display_code: 'USD', fractional_digits: 2 },
+                is_virtual: false,
+                loginid: 'CRW1234',
+                wallet_currency_type: 'USD',
+            },
+        });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useIsEuRegion as jest.Mock).mockReturnValue({
             data: false,
@@ -135,6 +145,19 @@ describe('AccountsList', () => {
         expect(screen.getByTestId('dt_desktop_accounts_list')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
+    });
+
+    it('renders P2P redirection banner in desktop view', () => {
+        render(<AccountsList />, { wrapper });
+
+        expect(screen.getByText('Easily exchange USD with local currency using Deriv P2P.')).toBeInTheDocument();
+    });
+
+    it('renders P2P redirection banner in mobile view', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+        render(<AccountsList />, { wrapper });
+
+        expect(screen.getByText('Easily exchange USD with local currency using Deriv P2P.')).toBeInTheDocument();
     });
 
     it('renders wallet tour guide in mobile view with isWalletSettled set to false', () => {

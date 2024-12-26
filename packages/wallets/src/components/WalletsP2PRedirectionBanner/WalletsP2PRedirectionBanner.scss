@@ -1,0 +1,23 @@
+.wallets-p2p-redirection-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    border-radius: 0.8rem;
+    margin: 2.4rem 0 0;
+    padding: 1.6rem;
+    gap: 1.6rem;
+
+    @include mobile-or-tablet-screen {
+        margin: 1.6rem 1.6rem 0;
+    }
+
+    &:hover {
+        background-color: var(--du-general-hover, #e6e9e9);
+        cursor: pointer;
+    }
+
+    &__description {
+        flex: 1;
+    }
+}

@@ -27,7 +27,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
 
 import type { FeatureFlagsStore } from './src/stores';
 
@@ -453,6 +453,7 @@ export type TClientStore = {
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
     available_onramp_currencies: Array<string>;
+    is_wallet_account: boolean;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;

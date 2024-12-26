@@ -134,9 +134,15 @@ const createInitialState = (trade_store: ReturnType<typeof useTraderStore>) => {
     };
 };
 
+const calculateMaxLength = (amount: number | string, decimals: number): number => {
+    const is_decimal = String(amount).includes('.') || String(amount).includes(',');
+    return is_decimal ? 11 + decimals : 10;
+};
+
 const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     const trade_store = useTraderStore();
     const {
+        amount,
         contract_type,
         currency,
         barrier_1,
@@ -151,6 +157,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
     } = trade_store;
 
     const [state, dispatch] = React.useReducer(reducer, null, () => createInitialState(trade_store));
+    const decimals = getDecimalPlaces(currency);
+    const [max_length, setMaxLength] = React.useState(() => calculateMaxLength(amount, decimals));
     const { proposal_request_values, stake_error, fe_stake_error, details } = state;
 
     const contract_types = React.useMemo(
@@ -315,7 +323,8 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const new_value = e.target.value;
-
+        const new_max_length = calculateMaxLength(new_value, decimals);
+        setMaxLength(new_max_length);
         if (new_value.endsWith('.')) {
             dispatch({
                 type: 'SET_FE_STAKE_ERROR',
@@ -365,7 +374,7 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     className='text-field--custom'
                     customType='commaRemoval'
                     data-testid='dt_input_with_steppers'
-                    decimals={getDecimalPlaces(currency)}
+                    decimals={decimals}
                     inputMode='decimal'
                     id={input_id}
                     message={fe_stake_error || (should_show_stake_error && stake_error) || getInputMessage()}
@@ -381,6 +390,15 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     unitLeft={getCurrencyDisplayCode(currency)}
                     value={proposal_request_values.amount}
                     variant='fill'
+                    onBeforeInput={(e: React.FormEvent<HTMLInputElement>) => {
+                        if (
+                            ['.', ','].includes((e.nativeEvent as InputEvent)?.data ?? '') &&
+                            (String(proposal_request_values.amount)?.length ?? 0) <= 10
+                        ) {
+                            setMaxLength(decimals ? 11 + decimals : 10);
+                        }
+                    }}
+                    maxLength={max_length}
                 />
                 <StakeDetails
                     contract_type={contract_type}

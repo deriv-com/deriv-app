@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
-import { safeParse } from '@deriv/utils';
+import { safeParse, getLocalStorage } from '@deriv/utils';
 import { ActionSheet, Button, Chip, Text } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
 import Carousel from 'AppV2/Components/Carousel';

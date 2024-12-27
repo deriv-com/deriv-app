@@ -31,7 +31,7 @@ const Trade = observer(() => {
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
         client: { is_logged_in, is_switching },
-        common: { current_language },
+        common: { current_language, network_status },
         ui: { is_dark_mode_on },
     } = useStore();
     const {
@@ -92,7 +92,7 @@ const Trade = observer(() => {
         onMount();
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [current_language]);
+    }, [current_language, network_status.class]);
 
     useEffect(() => {
         if (is_switching) {

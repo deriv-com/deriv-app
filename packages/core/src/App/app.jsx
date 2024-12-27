@@ -59,7 +59,8 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list && !is_app_id_set) {
-            localStorage.setItem('config.app_id', 61554);
+            const app_id = window.location.hostname === 'app.deriv.com' ? 61554 : 53503;
+            localStorage.setItem('config.app_id', app_id);
         }
     }, [trigger_login_for_hub_country_list_loaded, trigger_login_for_hub_country_list, is_app_id_set]);
 

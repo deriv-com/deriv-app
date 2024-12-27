@@ -14,6 +14,10 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
+jest.mock('../../AccountsList', () => ({
+    AccountsList: () => <div>Accounts List</div>,
+}));
+
 const wrapper = ({ children }: PropsWithChildren) => {
     return (
         <APIProvider>

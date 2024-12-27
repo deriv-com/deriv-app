@@ -11,6 +11,11 @@ jest.mock('react-router', () => {
     };
 });
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: () => [false, false],
+}));
+
 describe('TradersHubHomeButton', () => {
     const mock_store = mockStore({});
 

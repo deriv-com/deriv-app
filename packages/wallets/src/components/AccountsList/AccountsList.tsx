@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
+import { useActiveWalletAccount, useGrowthbookIsOn, useIsEuRegion } from '@deriv/api-v2';
 import { useTranslations } from '@deriv-com/translations';
 import { Divider, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
@@ -18,6 +18,9 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
     const { localize } = useTranslations();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
+    const [isP2PWalletEnabled, isGBLoaded] = useGrowthbookIsOn({
+        featureFlag: 'p2p_wallet_enabled',
+    });
 
     const optionsAndMultipliersTabTitle = isEuRegion ? localize('Multipliers') : localize('Options');
 
@@ -30,7 +33,9 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
             <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
                 <div className='wallets-accounts-list__content'>
                     <Divider color='var(--border-divider)' height={2} />
-                    {activeWallet?.account_type === 'doughflow' && <WalletsP2PRedirectionBanner />}
+                    {Boolean(isGBLoaded && isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
+                        <WalletsP2PRedirectionBanner />
+                    )}
                     <CFDPlatformsList />
                     <Divider color='var(--border-divider)' height={2} />
                     <OptionsAndMultipliersListing />
@@ -48,7 +53,9 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
 
     return (
         <>
-            {activeWallet?.account_type === 'doughflow' && <WalletsP2PRedirectionBanner />}
+            {Boolean(isGBLoaded && isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
+                <WalletsP2PRedirectionBanner />
+            )}
             <Tabs
                 activeTab={tabs[accountsActiveTabIndex ?? 0]}
                 className='wallets-accounts-list__tabs'

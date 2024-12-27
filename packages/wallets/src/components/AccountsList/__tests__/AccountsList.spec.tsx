@@ -1,6 +1,6 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
 import { WalletTourGuide } from 'src/components/WalletTourGuide';
-import { APIProvider, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useGrowthbookIsOn, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -29,6 +29,7 @@ jest.mock(
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
+    useGrowthbookIsOn: jest.fn(),
     useIsEuRegion: jest.fn(),
 }));
 
@@ -56,6 +57,7 @@ describe('AccountsList', () => {
             data: false,
             isLoading: false,
         });
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
     });
 
     afterAll(() => {
@@ -158,6 +160,13 @@ describe('AccountsList', () => {
         render(<AccountsList />, { wrapper });
 
         expect(screen.getByText('Easily exchange USD with local currency using Deriv P2P.')).toBeInTheDocument();
+    });
+
+    it('does not render P2P redirection banner if growthbook is not loaded', () => {
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([false]);
+        render(<AccountsList />, { wrapper });
+
+        expect(screen.queryByText('Easily exchange USD with local currency using Deriv P2P.')).not.toBeInTheDocument();
     });
 
     it('renders wallet tour guide in mobile view with isWalletSettled set to false', () => {

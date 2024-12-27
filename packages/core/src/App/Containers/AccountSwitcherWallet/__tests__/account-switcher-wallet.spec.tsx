@@ -11,6 +11,11 @@ jest.mock('react-router', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: () => [false, false],
+}));
+
 jest.mock('../account-switcher-wallet-list', () => ({
     AccountSwitcherWalletList: () => <div>AccountSwitcherWalletList</div>,
 }));
@@ -74,12 +79,12 @@ describe('AccountSwitcherWalletComponent', () => {
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
     });
 
-    it('should toggle the switcher on button click', () => {
+    it('should toggle the switcher on button click', async () => {
         const mock = mockStore({});
 
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
         const button = screen.getByTestId('dt_go_to_arrow');
-        userEvent.click(button);
+        await userEvent.click(button);
         expect(props.toggle).toHaveBeenCalledTimes(1);
     });
 });

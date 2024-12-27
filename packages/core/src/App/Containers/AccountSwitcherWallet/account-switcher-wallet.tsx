@@ -17,8 +17,6 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const { data: wallet_list } = useStoreWalletAccountsList();
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
-    const { client } = useStore();
-    const { is_wallet_account } = client;
     const history = useHistory();
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
@@ -48,7 +46,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
-        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list && is_wallet_account) {
+        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list) {
             const is_production = window.location.hostname === PRODUCTION_URL;
             const redirect_url = is_production ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             window.open(redirect_url, '_blank', 'noopener,noreferrer');

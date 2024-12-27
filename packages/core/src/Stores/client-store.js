@@ -514,7 +514,10 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_wallet_account() {
-        return this.account_list.some(account => account.loginid.includes('CRW') || account.loginid.includes('VRW'));
+        return this.account_list.some(
+            account =>
+                account.loginid.includes('CRW') || account.loginid.includes('VRW') || account.loginid.includes('MFW')
+        );
     }
 
     get balance() {

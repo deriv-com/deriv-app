@@ -9,10 +9,10 @@ import {
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
+    cacheTrackEvents,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -259,12 +259,19 @@ const CFDsListing = observer(() => {
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     if (existing_account.action_type === 'get') {
                                         if (is_traders_dashboard_tracking_enabled) {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_get',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_subtitle,
-                                            });
+                                            cacheTrackEvents.loadEvent([
+                                                {
+                                                    event: {
+                                                        name: 'ce_tradershub_dashboard_form',
+                                                        properties: {
+                                                            action: 'account_get',
+                                                            form_name: 'traders_hub_default',
+                                                            account_mode: selected_account_type,
+                                                            account_name: track_account_subtitle,
+                                                        },
+                                                    },
+                                                },
+                                            ]);
                                         }
                                         if (hasUnavailableAccount || hasMaintenanceStatus)
                                             return setServerMaintenanceModal(true);
@@ -288,36 +295,57 @@ const CFDsListing = observer(() => {
                                         setProduct(existing_account.product);
                                         if (button_name === 'transfer-btn') {
                                             if (is_traders_dashboard_tracking_enabled) {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_transfer',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_subtitle,
-                                                });
+                                                cacheTrackEvents.loadEvent([
+                                                    {
+                                                        event: {
+                                                            name: 'ce_tradershub_dashboard_form',
+                                                            properties: {
+                                                                action: 'account_transfer',
+                                                                form_name: 'traders_hub_default',
+                                                                account_mode: selected_account_type,
+                                                                account_name: track_account_subtitle,
+                                                            },
+                                                        },
+                                                    },
+                                                ]);
                                             }
 
                                             toggleAccountTransferModal();
                                             setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
                                             if (is_traders_dashboard_tracking_enabled) {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_topup',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_subtitle,
-                                                });
+                                                cacheTrackEvents.loadEvent([
+                                                    {
+                                                        event: {
+                                                            name: 'ce_tradershub_dashboard_form',
+                                                            properties: {
+                                                                action: 'account_topup',
+                                                                form_name: 'traders_hub_default',
+                                                                account_mode: selected_account_type,
+                                                                account_name: track_account_subtitle,
+                                                            },
+                                                        },
+                                                    },
+                                                ]);
                                             }
 
                                             showTopUpModal(existing_account);
                                             setAppstorePlatform(existing_account.platform);
                                         } else {
                                             if (is_traders_dashboard_tracking_enabled) {
-                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                    action: 'account_open',
-                                                    form_name: 'traders_hub_default',
-                                                    account_mode: selected_account_type,
-                                                    account_name: track_account_subtitle,
-                                                });
+                                                cacheTrackEvents.loadEvent([
+                                                    {
+                                                        event: {
+                                                            name: 'ce_tradershub_dashboard_form',
+                                                            properties: {
+                                                                action: 'account_open',
+                                                                form_name: 'traders_hub_default',
+                                                                account_mode: selected_account_type,
+                                                                account_name: track_account_subtitle,
+                                                            },
+                                                        },
+                                                    },
+                                                ]);
                                             }
 
                                             startTrade(existing_account.platform, existing_account);
@@ -376,35 +404,56 @@ const CFDsListing = observer(() => {
                                             setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_transfer',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_transfer',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 toggleCTraderTransferModal();
                                             } else if (button_name === 'topup-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_topup',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_topup',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_open',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_open',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 startTrade(account.platform, existing_account);
@@ -424,12 +473,19 @@ const CFDsListing = observer(() => {
                                     onAction={() => {
                                         setProduct();
                                         if (is_traders_dashboard_tracking_enabled) {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_get',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_name,
-                                            });
+                                            cacheTrackEvents.loadEvent([
+                                                {
+                                                    event: {
+                                                        name: 'ce_tradershub_dashboard_form',
+                                                        properties: {
+                                                            action: 'account_get',
+                                                            form_name: 'traders_hub_default',
+                                                            account_mode: selected_account_type,
+                                                            account_name: track_account_name,
+                                                        },
+                                                    },
+                                                },
+                                            ]);
                                         }
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();
@@ -489,36 +545,57 @@ const CFDsListing = observer(() => {
                                             setProduct();
                                             if (button_name === 'transfer-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_transfer',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_transfer',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 toggleAccountTransferModal();
                                                 setSelectedAccount(existing_account);
                                             } else if (button_name === 'topup-btn') {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_topup',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_topup',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 showTopUpModal(existing_account);
                                                 setAppstorePlatform(account.platform);
                                             } else {
                                                 if (is_traders_dashboard_tracking_enabled) {
-                                                    Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                        action: 'account_open',
-                                                        form_name: 'traders_hub_default',
-                                                        account_mode: selected_account_type,
-                                                        account_name: track_account_name,
-                                                    });
+                                                    cacheTrackEvents.loadEvent([
+                                                        {
+                                                            event: {
+                                                                name: 'ce_tradershub_dashboard_form',
+                                                                properties: {
+                                                                    action: 'account_open',
+                                                                    form_name: 'traders_hub_default',
+                                                                    account_mode: selected_account_type,
+                                                                    account_name: track_account_name,
+                                                                },
+                                                            },
+                                                        },
+                                                    ]);
                                                 }
 
                                                 startTrade(account.platform, existing_account);
@@ -538,12 +615,19 @@ const CFDsListing = observer(() => {
                                     onAction={() => {
                                         setProduct();
                                         if (is_traders_dashboard_tracking_enabled) {
-                                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                                action: 'account_get',
-                                                form_name: 'traders_hub_default',
-                                                account_mode: selected_account_type,
-                                                account_name: track_account_name,
-                                            });
+                                            cacheTrackEvents.loadEvent([
+                                                {
+                                                    event: {
+                                                        name: 'ce_tradershub_dashboard_form',
+                                                        properties: {
+                                                            action: 'account_get',
+                                                            form_name: 'traders_hub_default',
+                                                            account_mode: selected_account_type,
+                                                            account_name: track_account_name,
+                                                        },
+                                                    },
+                                                },
+                                            ]);
                                         }
                                         if ((has_no_real_account || no_CR_account) && is_real) {
                                             openDerivRealAccountNeededModal();

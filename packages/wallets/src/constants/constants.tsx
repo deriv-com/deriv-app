@@ -26,6 +26,7 @@ export const getOptionsAndMultipliersContent = (
     {
         availability: 'Non-EU',
         description: localize('The ultimate bot trading platform.'),
+        isExternal: true,
         key: 'bot',
         redirect: '/bot',
         title: 'Deriv Bot',
@@ -62,3 +63,11 @@ export const ACCOUNT_VERIFICATION_BADGE_STATUS = {
     IN_REVIEW: 'in_review',
     NEEDS_VERIFICATION: 'needs_verification',
 } as const;
+
+export const LANDING_COMPANIES = Object.freeze({
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTAINVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+});

@@ -37,14 +37,24 @@ describe('CompareAccountsCard', () => {
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
     });
 
-    it('renders the new banner for Zero Spread platform', () => {
-        render(
+    it('renders the new banner for Zero Spread and Gold platforms', () => {
+        const { rerender } = render(
             <CompareAccountsCard
                 {...defaultProps}
                 //@ts-expect-error we only need partial types
                 account={{ ...defaultProps.account, product: PRODUCT.ZEROSPREAD }}
             />,
             { wrapper }
+        );
+
+        expect(screen.getByText('NEW')).toBeInTheDocument();
+
+        rerender(
+            <CompareAccountsCard
+                {...defaultProps}
+                //@ts-expect-error we only need partial types
+                account={{ ...defaultProps.account, product: PRODUCT.GOLD }}
+            />
         );
 
         expect(screen.getByText('NEW')).toBeInTheDocument();
@@ -55,19 +65,5 @@ describe('CompareAccountsCard', () => {
         render(<CompareAccountsCard {...defaultProps} />, { wrapper });
 
         expect(screen.queryByText('NEW')).not.toBeInTheDocument();
-    });
-
-    it('renders the EU clients disclaimer for EU users', () => {
-        //@ts-expect-error we only need partial types
-        render(<CompareAccountsCard {...defaultProps} isEuRegion />, { wrapper });
-
-        expect(screen.getByText('*Boom 300 and Crash 300 Index')).toBeInTheDocument();
-    });
-
-    it('does not render the EU clients disclaimer for non-EU users', () => {
-        //@ts-expect-error we only need partial types
-        render(<CompareAccountsCard {...defaultProps} />, { wrapper });
-
-        expect(screen.queryByText('*Boom 300 and Crash 300 Index')).not.toBeInTheDocument();
     });
 });

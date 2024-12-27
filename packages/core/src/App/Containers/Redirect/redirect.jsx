@@ -7,6 +7,7 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
+import { Chat } from '@deriv/utils';
 
 const Redirect = observer(() => {
     const history = useHistory();
@@ -28,22 +29,26 @@ const Redirect = observer(() => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
+    let redirected_to_route = false;
 
     // TODO: remove this after oauth2 migration
     // get data from cookies and populate local storage for clients
     // to be logged in coming from OS subdomains
     const client_accounts = Cookies.get('client.accounts');
     const active_loginid = Cookies.get('active_loginid');
+    const active_wallet_loginid = Cookies.get('active_wallet_loginid');
 
     if (client_accounts && active_loginid) {
         localStorage.setItem('client.accounts', client_accounts);
         localStorage.setItem('active_loginid', active_loginid);
+        localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
 
         const domain = getDomainName();
 
         // remove cookies after populating local storage
         Cookies.remove('client.accounts', { domain, secure: true });
         Cookies.remove('active_loginid', { domain, secure: true });
+        Cookies.remove('active_wallet_loginid', { domain, secure: true });
 
         if (url_params.get('action') === 'redirect') {
             window.location.href = window.location.origin + url_params.get('redirect_to');
@@ -53,10 +58,9 @@ const Redirect = observer(() => {
     }
 
     const openLivechat = () => {
-        window.LiveChatWidget?.call('maximize');
+        Chat.open();
     };
 
-    let redirected_to_route = false;
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
@@ -307,9 +311,31 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            const route_mappings = [
+                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                { pattern: /personal-details/i, route: routes.personal_details },
+                { pattern: /dbot/i, route: routes.bot },
+            ];
+
+            const default_route = routes.traders_hub;
+
+            const matched_route = route_mappings.find(({ pattern }) =>
+                pattern.test(url_query_string || history.location.search)
+            );
+
+            let updated_search = url_query_string;
+            if (matched_route && matched_route.type) {
+                updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
+            }
+
             history.push({
-                pathname: routes.traders_hub,
-                search: url_query_string,
+                pathname: matched_route ? matched_route.route : default_route,
+                search: updated_search,
             });
         }
     }, [redirected_to_route, url_query_string, history]);

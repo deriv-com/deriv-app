@@ -302,7 +302,7 @@ const ModalManager = () => {
         is_eu &&
         (is_virtual || !is_trading_experience_incomplete) &&
         !should_show_assessment_complete_modal &&
-        is_eligible;
+        (is_eligible || is_real_wallets_upgrade_on);
 
     return (
         <React.Fragment>

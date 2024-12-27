@@ -83,11 +83,18 @@
         }
     }
 }
+
+.quill-action-sheet--portal--wrapper:has(.trade-types-dialog--is_editing) {
+    overflow-y: hidden;
+}
 .trade-types-dialog {
     &__title {
         margin: var(--core-spacing-1200) var(--core-spacing-50);
     }
     &__content {
         padding-top: var(--core-spacing-50);
+    }
+    &--is_editing {
+        overflow: hidden;
     }
 }

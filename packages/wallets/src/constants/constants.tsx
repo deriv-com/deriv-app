@@ -26,6 +26,7 @@ export const getOptionsAndMultipliersContent = (
     {
         availability: 'Non-EU',
         description: localize('The ultimate bot trading platform.'),
+        isExternal: true,
         key: 'bot',
         redirect: '/bot',
         title: 'Deriv Bot',

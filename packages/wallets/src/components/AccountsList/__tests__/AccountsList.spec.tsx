@@ -57,7 +57,7 @@ describe('AccountsList', () => {
             data: false,
             isLoading: false,
         });
-        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true, true]);
     });
 
     afterAll(() => {
@@ -163,7 +163,7 @@ describe('AccountsList', () => {
     });
 
     it('does not render P2P redirection banner if growthbook is not loaded', () => {
-        (useGrowthbookIsOn as jest.Mock).mockReturnValue([false]);
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([false, true]);
         render(<AccountsList />, { wrapper });
 
         expect(screen.queryByText('Easily exchange USD with local currency using Deriv P2P.')).not.toBeInTheDocument();

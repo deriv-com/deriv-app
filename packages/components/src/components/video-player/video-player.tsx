@@ -231,7 +231,7 @@ const VideoPlayer = ({
             if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
             cancelAnimationFrame(animation_ref.current);
-            debouncedRewind.cancel();
+            // debouncedRewind.cancel();
             clearTimeout(replay_animation_timeout.current);
             clearTimeout(toggle_animation_timeout.current);
             setIsAnimated(false);

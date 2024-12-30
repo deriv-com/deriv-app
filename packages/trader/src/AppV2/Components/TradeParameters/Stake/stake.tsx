@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize } from '@deriv/translations';

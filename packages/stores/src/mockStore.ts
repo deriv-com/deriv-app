@@ -109,7 +109,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                     'trading_experience_not_complete',
                 ],
             },
-            is_wallet_account: false,
             balance: '',
             can_change_fiat_currency: false,
             clients_country: '',

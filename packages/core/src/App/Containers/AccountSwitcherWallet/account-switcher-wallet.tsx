@@ -2,9 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useGrowthbookGetFeatureValue, useStoreWalletAccountsList } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useStoreWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
@@ -18,12 +18,12 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const history = useHistory();
+    const { client } = useStore();
+    const { account_settings } = client;
+    const { trading_hub } = account_settings;
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
-    const [trigger_login_for_hub_country_list, trigger_login_for_hub_country_list_loaded] =
-        useGrowthbookGetFeatureValue({
-            featureFlag: 'trigger_login_for_hub_country_list',
-        });
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
     const PRODUCTION_URL = 'app.deriv.com';
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
@@ -46,10 +46,10 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
-        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list) {
+        if (isHubRedirectionEnabled && !!trading_hub) {
             const is_production = window.location.hostname === PRODUCTION_URL;
             const redirect_url = is_production ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            window.open(redirect_url, '_blank', 'noopener,noreferrer');
+            window.location.assign(redirect_url);
             return;
         }
         closeAccountsDialog();

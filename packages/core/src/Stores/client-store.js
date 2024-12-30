@@ -251,7 +251,6 @@ export default class ClientStore extends BaseStore {
             is_country_code_dropdown_enabled: observable,
             passkeys_list: observable,
             should_show_passkey_notification: observable,
-            is_wallet_account: computed,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -511,13 +510,6 @@ export default class ClientStore extends BaseStore {
                     clearInterval(this.wallet_migration_interval_id);
                 }
             }
-        );
-    }
-
-    get is_wallet_account() {
-        return this.account_list.some(
-            account =>
-                account.loginid.includes('CRW') || account.loginid.includes('VRW') || account.loginid.includes('MFW')
         );
     }
 

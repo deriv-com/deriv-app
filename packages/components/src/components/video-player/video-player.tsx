@@ -181,7 +181,7 @@ const VideoPlayer = ({
             video_ref.current.play().catch(() => null);
             is_ended.current = false;
         }
-    }, 200);
+    }, 500);
 
     const onLoadedMetaData = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { ActionSheet } from '@deriv-com/quill-ui';
-import { getLanguage, Localize } from '@deriv/translations';
-import { isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
 import { useHistory } from 'react-router';
-import ServiceErrorDescription from './service-error-description';
+
+import { isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { getLanguage, Localize } from '@deriv/translations';
+import { ActionSheet } from '@deriv-com/quill-ui';
+
 import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import ServiceErrorDescription from './service-error-description';
 
 const ServiceErrorSheet = observer(() => {
     const [is_open, setIsOpen] = useState(false);
@@ -18,8 +21,7 @@ const ServiceErrorSheet = observer(() => {
     const history = useHistory();
 
     const { code, message, type } = services_error || {};
-    const is_insufficient_balance =
-        code === SERVICE_ERROR.INSUFFICIENT_BALANCE || code === SERVICE_ERROR.INVALID_CONTRACT_PROPOSAL;
+    const is_insufficient_balance = code === SERVICE_ERROR.INSUFFICIENT_BALANCE;
     const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
     const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
     const should_show_error_modal =

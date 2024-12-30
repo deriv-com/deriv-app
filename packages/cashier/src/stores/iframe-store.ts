@@ -42,7 +42,12 @@ export default class IframeStore {
 
         this.removeOnIframeLoaded();
 
-        const trusted_origins = ['https://cashier.deriv.com', 'https://doughflow-test.4x.my'];
+        const trusted_origins = [
+            'https://cashier.deriv.com',
+            'https://cashier.deriv.be',
+            'https://cashier.deriv.me',
+            'https://doughflow-test.4x.my',
+        ];
 
         this.onIframeLoaded = (e: MessageEvent) => {
             if (trusted_origins.includes(e.origin)) {

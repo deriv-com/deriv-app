@@ -94,6 +94,9 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
+
+    // Outsystems
+    os_redirect: '/os-redirect',
 };
 
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [

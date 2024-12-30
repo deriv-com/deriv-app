@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { ActionSheet, ToggleSwitch, Text, Heading } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { clickAndKeyEventHandler } from '@deriv/shared';

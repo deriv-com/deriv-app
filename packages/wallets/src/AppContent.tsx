@@ -5,8 +5,7 @@ import {
     useDerivAccountsList,
     useIsEuRegion,
     useSettings,
-    useGrowthbookGetFeatureValue,
-    useClientCountry,
+    useIsHubRedirectionEnabled,
 } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
@@ -20,10 +19,6 @@ type AppContentProps = {
     setPreferredLanguage: (language: TLanguageType | null) => void;
 };
 
-type THubEnabledCountryList = {
-    hub_enabled_country_list: string[];
-};
-
 const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVisible, setPreferredLanguage }) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
@@ -32,32 +27,21 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
     const { data: isEuRegion } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
-        data: { citizen, preferred_language: preferredLanguage, trading_hub: tradingHub },
+        data: { preferred_language: preferredLanguage, trading_hub: tradingHub },
     } = useSettings();
-    const { data: clientCountry } = useClientCountry();
-    const [hubEnabledCountryList] = useGrowthbookGetFeatureValue({
-        featureFlag: 'hub_enabled_country_list',
-    });
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const PRODUCTION_URL = 'app.deriv.com';
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/options';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
 
-    const isGBValueRedirectToHub =
-        typeof hubEnabledCountryList === 'object' &&
-        hubEnabledCountryList !== null &&
-        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        ((citizen && (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(citizen)) ||
-            (clientCountry &&
-                (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry)));
-
     useEffect(() => {
-        if (isGBValueRedirectToHub && !!tradingHub) {
+        if (isHubRedirectionEnabled && !!tradingHub) {
             const redirectUrl =
                 window.location.hostname === PRODUCTION_URL ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             window.location.assign(redirectUrl);
         }
-    }, [isGBValueRedirectToHub, tradingHub]);
+    }, [isHubRedirectionEnabled, tradingHub]);
 
     useEffect(() => {
         if (preferredLanguage) {

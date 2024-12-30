@@ -1,6 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount, useDerivAccountsList, useIsEuRegion, useSettings } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useDerivAccountsList,
+    useIsEuRegion,
+    useSettings,
+    useGrowthbookGetFeatureValue,
+    useClientCountry,
+} from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
@@ -13,6 +20,10 @@ type AppContentProps = {
     setPreferredLanguage: (language: TLanguageType | null) => void;
 };
 
+type THubEnabledCountryList = {
+    hub_enabled_country_list: string[];
+};
+
 const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVisible, setPreferredLanguage }) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
@@ -21,8 +32,33 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
     const { data: isEuRegion } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
-        data: { preferred_language: preferredLanguage },
+        data: { preferred_language: preferredLanguage, tax_residence: taxResidence, trading_hub: tradingHub },
     } = useSettings();
+    const { data: clientCountry } = useClientCountry();
+    const [hubEnabledCountryList] = useGrowthbookGetFeatureValue({
+        featureFlag: 'hub_enabled_country_list',
+    });
+
+    const PRODUCTION_URL = 'app.deriv.com';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/options';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
+
+    const isGBValueRedirectToHub =
+        typeof hubEnabledCountryList === 'object' &&
+        hubEnabledCountryList !== null &&
+        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
+        ((taxResidence &&
+            (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(taxResidence)) ||
+            (clientCountry &&
+                (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry)));
+
+    useEffect(() => {
+        if (isGBValueRedirectToHub && !!tradingHub) {
+            const redirectUrl =
+                window.location.hostname === PRODUCTION_URL ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            window.location.assign(redirectUrl);
+        }
+    }, [isGBValueRedirectToHub, tradingHub]);
 
     useEffect(() => {
         if (preferredLanguage) {

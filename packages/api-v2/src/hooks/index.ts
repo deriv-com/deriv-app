@@ -40,6 +40,7 @@ export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useExchangeRateSubscription } from './useExchangeRateSubscription';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useGetExchangeRate } from './useGetExchangeRate';
+export { default as useGrowthbookGetFeatureValue } from './useGrowthbookGetFeatureValue';
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocumentVerificationAdd';
 export { default as useIsEuRegion } from './useIsEuRegion';

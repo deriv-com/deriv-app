@@ -1129,7 +1129,7 @@ export default class ClientStore extends BaseStore {
             landing_company_shortcode,
             currency,
             residence,
-            account_settings,
+            account_settings = {},
             preferred_language,
             user_id,
         } = this;

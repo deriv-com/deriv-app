@@ -45,7 +45,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         logout,
         email,
         setIsPasskeySupported,
-        account_settings,
+        account_settings = {},
         setIsPhoneNumberVerificationEnabled,
         setIsCountryCodeDropdownEnabled,
         accounts,

@@ -385,7 +385,7 @@ const VideoPlayer = ({
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}
                 playback_rate={playback_rate}
-                onUserActivity={resetInactivityTimer}
+                // onUserActivity={resetInactivityTimer}
             />
         </div>
     );

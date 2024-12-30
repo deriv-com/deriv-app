@@ -32,7 +32,7 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
     const { data: isEuRegion } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
-        data: { preferred_language: preferredLanguage, tax_residence: taxResidence, trading_hub: tradingHub },
+        data: { citizen, preferred_language: preferredLanguage, trading_hub: tradingHub },
     } = useSettings();
     const { data: clientCountry } = useClientCountry();
     const [hubEnabledCountryList] = useGrowthbookGetFeatureValue({
@@ -47,8 +47,7 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
         typeof hubEnabledCountryList === 'object' &&
         hubEnabledCountryList !== null &&
         Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        ((taxResidence &&
-            (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(taxResidence)) ||
+        ((citizen && (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(citizen)) ||
             (clientCountry &&
                 (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry)));
 

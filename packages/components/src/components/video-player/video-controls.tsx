@@ -75,6 +75,7 @@ const VideoControls = ({
             onMouseMove={handleUserInteraction}
             onTouchStart={handleUserInteraction}
             onTouchMove={handleUserInteraction}
+            onClick={handleUserInteraction}
         >
             {is_v2 && (
                 <div

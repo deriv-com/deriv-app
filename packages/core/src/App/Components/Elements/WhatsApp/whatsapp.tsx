@@ -1,12 +1,18 @@
 import React, { Fragment } from 'react';
 
 import { Icon, Popover } from '@deriv/components';
+import { useIsIntercomAvailable, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import { URLConstants } from '@deriv-com/utils';
 
 const WhatsApp = ({ showPopover, onClick }: { showPopover?: boolean; onClick?: () => void }) => {
     const { isDesktop } = useDevice();
+
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
+    const icAvailable = useIsIntercomAvailable();
+
+    if (!is_livechat_available && !icAvailable) return null;
 
     if (!isDesktop)
         return (

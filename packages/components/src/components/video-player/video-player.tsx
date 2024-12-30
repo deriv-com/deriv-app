@@ -92,7 +92,7 @@ const VideoPlayer = ({
 
         video_ref?.current?.pause();
         cancelAnimationFrame(animation_ref.current);
-        debouncedRewind.cancel();
+        // debouncedRewind.cancel();
         setIsPlaying(false);
         setIsAnimated(false);
         is_dragging.current = true;
@@ -115,7 +115,7 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        debouncedRewind.cancel();
+        // debouncedRewind.cancel();
 
         const new_width = calculateNewWidth(e);
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
@@ -134,11 +134,11 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        debouncedRewind.cancel();
+        // debouncedRewind.cancel();
         is_dragging.current = false;
         should_check_time_ref.current = true;
 
-        debouncedRewind();
+        // debouncedRewind();
 
         if (is_mobile) setHasEnlargedDot(false);
     };
@@ -153,7 +153,7 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        debouncedRewind.cancel();
+        // debouncedRewind.cancel();
         setIsAnimated(false);
         video_ref.current.pause();
 
@@ -166,22 +166,22 @@ const VideoPlayer = ({
         setCurrentTime(new_time);
         should_check_time_ref.current = true;
 
-        debouncedRewind();
+        // debouncedRewind();
     };
 
-    const debouncedRewind = useDebounceCallback(() => {
-        if (!video_ref.current) return;
+    // const debouncedRewind = useDebounceCallback(() => {
+    //     if (!video_ref.current) return;
 
-        const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
-        if (!video_ref.current?.ended || !is_rewind_to_the_end) {
-            cancelAnimationFrame(animation_ref.current);
-            setIsAnimated(true);
-            video_ref.current.currentTime = new_time_ref.current;
-            animation_ref.current = requestAnimationFrame(repeat);
-            video_ref.current.play().catch(() => null);
-            is_ended.current = false;
-        }
-    }, 500);
+    //     const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
+    //     if (!video_ref.current?.ended || !is_rewind_to_the_end) {
+    //         cancelAnimationFrame(animation_ref.current);
+    //         setIsAnimated(true);
+    //         video_ref.current.currentTime = new_time_ref.current;
+    //         animation_ref.current = requestAnimationFrame(repeat);
+    //         video_ref.current.play().catch(() => null);
+    //         is_ended.current = false;
+    //     }
+    // }, 500);
 
     const onLoadedMetaData = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
@@ -302,28 +302,28 @@ const VideoPlayer = ({
     }, []);
 
     // logic and effect to cancel/reset timeout to auto close when there's user controls interaction
-    // const resetInactivityTimer = React.useCallback(() => {
-    //     if (inactivity_timeout.current) {
-    //         clearTimeout(inactivity_timeout.current);
-    //     }
+    const resetInactivityTimer = React.useCallback(() => {
+        if (inactivity_timeout.current) {
+            clearTimeout(inactivity_timeout.current);
+        }
 
-    //     if (is_v2 && is_mobile && !is_ended.current) {
-    //         inactivity_timeout.current = setTimeout(() => {
-    //             setShowControls(false);
-    //         }, 3000);
-    //     }
-    // }, [is_v2, is_mobile]);
+        if (is_v2 && is_mobile && !is_ended.current) {
+            inactivity_timeout.current = setTimeout(() => {
+                setShowControls(false);
+            }, 3000);
+        }
+    }, [is_v2, is_mobile]);
 
-    // React.useEffect(() => {
-    //     if (show_controls && is_v2 && is_mobile && !is_ended.current) {
-    //         resetInactivityTimer();
-    //     }
-    //     return () => {
-    //         if (inactivity_timeout.current) {
-    //             clearTimeout(inactivity_timeout.current);
-    //         }
-    //     };
-    // }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
+    React.useEffect(() => {
+        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
+            resetInactivityTimer();
+        }
+        return () => {
+            if (inactivity_timeout.current) {
+                clearTimeout(inactivity_timeout.current);
+            }
+        };
+    }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
 
     return (
         <div
@@ -385,7 +385,7 @@ const VideoPlayer = ({
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}
                 playback_rate={playback_rate}
-                // onUserActivity={resetInactivityTimer}
+                onUserActivity={resetInactivityTimer}
             />
         </div>
     );

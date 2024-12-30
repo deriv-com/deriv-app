@@ -21,11 +21,21 @@ const ProofOfIdentityFlow = observer(() => {
 
     const getFormattedURL = url_link => {
         const url = new URL(url_link);
-        url.searchParams.append('platform', is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
-        url.searchParams.append('appid', getAppId());
-        url.searchParams.append('lang', 'en');
-        url.searchParams.append('server', getSocketURL());
-        url.searchParams.append('token', getToken());
+        const urlParams = new URLSearchParams(location.search);
+        const platform = urlParams.get('platform') || (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+
+        const params = {
+            platform,
+            appid: getAppId(),
+            lang: 'en',
+            server: getSocketURL(),
+            token: getToken(),
+        };
+
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.append(key, value);
+        });
+
         return url.toString();
     };
 

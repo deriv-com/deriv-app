@@ -1,7 +1,12 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useCreateOtherCFDAccount,
+    useIsHubRedirectionEnabled,
+    useSettings,
+} from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
@@ -43,6 +48,14 @@ describe('AvailableCTraderAccountsList', () => {
             isSuccess: false,
             mutate: jest.fn(),
             status: 'idle',
+        });
+        (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
+            isHubRedirectionEnabled: false,
+        });
+        (useSettings as jest.Mock).mockReturnValue({
+            data: {
+                trading_hub: 0,
+            },
         });
         (useIsRtl as jest.Mock).mockReturnValue(false);
     });

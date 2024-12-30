@@ -181,7 +181,7 @@ const VideoPlayer = ({
             video_ref.current.play().catch(() => null);
             is_ended.current = false;
         }
-    }, 500);
+    }, 200);
 
     const onLoadedMetaData = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
@@ -237,22 +237,22 @@ const VideoPlayer = ({
             setIsAnimated(false);
 
             // handle replay by resetting time and progress bar at the end of the video
-            // if (is_ended.current) {
-            //     is_ended.current = false;
-            //     video_ref.current.currentTime = 0;
-            //     new_time_ref.current = 0;
-            //     setCurrentTime(0);
-            //     progress_bar_filled_ref.current.style.setProperty('width', '0%');
+            if (is_ended.current) {
+                is_ended.current = false;
+                video_ref.current.currentTime = 0;
+                new_time_ref.current = 0;
+                setCurrentTime(0);
+                progress_bar_filled_ref.current.style.setProperty('width', '0%');
 
-            //     replay_animation_timeout.current = setTimeout(() => {
-            //         animation_ref.current = requestAnimationFrame(repeat);
-            //         video_ref?.current?.play().catch(() => null);
-            //     }, 500);
-            //     toggle_animation_timeout.current = setTimeout(() => {
-            //         setIsAnimated(true);
-            //     }, 1000);
-            //     return;
-            // }
+                replay_animation_timeout.current = setTimeout(() => {
+                    animation_ref.current = requestAnimationFrame(repeat);
+                    video_ref?.current?.play().catch(() => null);
+                }, 500);
+                toggle_animation_timeout.current = setTimeout(() => {
+                    setIsAnimated(true);
+                }, 1000);
+                return;
+            }
 
             is_ended.current = false;
 

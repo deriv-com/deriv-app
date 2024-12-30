@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -328,12 +328,12 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
         );
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const new_value = e.target.value;
+        const new_value = String(e.target.value);
         dispatch({
             type: 'SET_MAX_LENGTH',
             payload: calculateMaxLength(new_value, decimals),
         });
-        if (new_value.endsWith('.')) {
+        if (new_value.endsWith('.') || new_value.endsWith(',')) {
             dispatch({
                 type: 'SET_FE_STAKE_ERROR',
                 payload: localize('Should be a valid number.'),

@@ -302,28 +302,28 @@ const VideoPlayer = ({
     }, []);
 
     // logic and effect to cancel/reset timeout to auto close when there's user controls interaction
-    const resetInactivityTimer = React.useCallback(() => {
-        if (inactivity_timeout.current) {
-            clearTimeout(inactivity_timeout.current);
-        }
+    // const resetInactivityTimer = React.useCallback(() => {
+    //     if (inactivity_timeout.current) {
+    //         clearTimeout(inactivity_timeout.current);
+    //     }
 
-        if (is_v2 && is_mobile && !is_ended.current) {
-            inactivity_timeout.current = setTimeout(() => {
-                setShowControls(false);
-            }, 3000);
-        }
-    }, [is_v2, is_mobile]);
+    //     if (is_v2 && is_mobile && !is_ended.current) {
+    //         inactivity_timeout.current = setTimeout(() => {
+    //             setShowControls(false);
+    //         }, 3000);
+    //     }
+    // }, [is_v2, is_mobile]);
 
-    React.useEffect(() => {
-        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
-            resetInactivityTimer();
-        }
-        return () => {
-            if (inactivity_timeout.current) {
-                clearTimeout(inactivity_timeout.current);
-            }
-        };
-    }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
+    // React.useEffect(() => {
+    //     if (show_controls && is_v2 && is_mobile && !is_ended.current) {
+    //         resetInactivityTimer();
+    //     }
+    //     return () => {
+    //         if (inactivity_timeout.current) {
+    //             clearTimeout(inactivity_timeout.current);
+    //         }
+    //     };
+    // }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
 
     return (
         <div

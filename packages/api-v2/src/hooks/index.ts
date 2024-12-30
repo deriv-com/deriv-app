@@ -43,6 +43,7 @@ export { default as useGrowthbookGetFeatureValue } from './useGrowthbookGetFeatu
 export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocumentVerificationAdd';
 export { default as useIsEuRegion } from './useIsEuRegion';
+export { default as useIsHubRedirectionEnabled } from './useIsHubRedirectionEnabled';
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';

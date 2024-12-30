@@ -13,7 +13,9 @@ jest.mock('react-router', () => ({
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useGrowthbookGetFeatureValue: () => [false, false],
+    useIsHubRedirectionEnabled: () => ({
+        isHubRedirectionEnabled: false,
+    }),
 }));
 
 jest.mock('../account-switcher-wallet-list', () => ({

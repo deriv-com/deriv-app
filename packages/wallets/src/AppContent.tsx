@@ -36,7 +36,7 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && !!tradingHub) {
+        if (isHubRedirectionEnabled && !tradingHub) {
             const redirectUrl =
                 window.location.hostname === PRODUCTION_URL ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             window.location.assign(redirectUrl);

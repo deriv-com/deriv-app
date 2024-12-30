@@ -92,7 +92,7 @@ const VideoPlayer = ({
 
         video_ref?.current?.pause();
         cancelAnimationFrame(animation_ref.current);
-        // debouncedRewind.cancel();
+        debouncedRewind.cancel();
         setIsPlaying(false);
         setIsAnimated(false);
         is_dragging.current = true;
@@ -115,7 +115,7 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        // debouncedRewind.cancel();
+        debouncedRewind.cancel();
 
         const new_width = calculateNewWidth(e);
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
@@ -134,11 +134,11 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        // debouncedRewind.cancel();
+        debouncedRewind.cancel();
         is_dragging.current = false;
         should_check_time_ref.current = true;
 
-        // debouncedRewind();
+        debouncedRewind();
 
         if (is_mobile) setHasEnlargedDot(false);
     };
@@ -153,7 +153,7 @@ const VideoPlayer = ({
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         cancelAnimationFrame(animation_ref.current);
-        // debouncedRewind.cancel();
+        debouncedRewind.cancel();
         setIsAnimated(false);
         video_ref.current.pause();
 
@@ -166,22 +166,22 @@ const VideoPlayer = ({
         setCurrentTime(new_time);
         should_check_time_ref.current = true;
 
-        // debouncedRewind();
+        debouncedRewind();
     };
 
-    // const debouncedRewind = useDebounceCallback(() => {
-    //     if (!video_ref.current) return;
+    const debouncedRewind = useDebounceCallback(() => {
+        if (!video_ref.current) return;
 
-    //     const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
-    //     if (!video_ref.current?.ended || !is_rewind_to_the_end) {
-    //         cancelAnimationFrame(animation_ref.current);
-    //         setIsAnimated(true);
-    //         video_ref.current.currentTime = new_time_ref.current;
-    //         animation_ref.current = requestAnimationFrame(repeat);
-    //         video_ref.current.play().catch(() => null);
-    //         is_ended.current = false;
-    //     }
-    // }, 500);
+        const is_rewind_to_the_end = Math.round(new_time_ref.current) === Math.round(video_ref.current?.duration);
+        if (!video_ref.current?.ended || !is_rewind_to_the_end) {
+            cancelAnimationFrame(animation_ref.current);
+            setIsAnimated(true);
+            video_ref.current.currentTime = new_time_ref.current;
+            animation_ref.current = requestAnimationFrame(repeat);
+            video_ref.current.play().catch(() => null);
+            is_ended.current = false;
+        }
+    }, 500);
 
     const onLoadedMetaData = () => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
@@ -231,7 +231,7 @@ const VideoPlayer = ({
             if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
             cancelAnimationFrame(animation_ref.current);
-            // debouncedRewind.cancel();
+            debouncedRewind.cancel();
             clearTimeout(replay_animation_timeout.current);
             clearTimeout(toggle_animation_timeout.current);
             setIsAnimated(false);

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { useOauth2 } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
 import { moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -25,13 +25,27 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible,
         notification_messages_ui,
     } = ui;
-    const { has_wallet, logout } = client;
+    const { has_wallet, logout, account_settings, prevent_redirect_to_hub } = client;
+    const { trading_hub } = account_settings;
 
     const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
     const onWalletsOnboardingTourGuideCloseHandler = () => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+
+    const PRODUCTION_URL = 'app.deriv.com';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/options';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
+
+    useEffect(() => {
+        if (isHubRedirectionEnabled && !!trading_hub && !prevent_redirect_to_hub) {
+            const redirectUrl =
+                window.location.hostname === PRODUCTION_URL ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            window.location.assign(redirectUrl);
+        }
+    }, [isHubRedirectionEnabled, trading_hub, prevent_redirect_to_hub]);
 
     return has_wallet ? (
         <Wallets

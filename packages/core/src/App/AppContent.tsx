@@ -6,6 +6,7 @@ import {
     useGrowthbookGetFeatureValue,
     useGrowthbookIsOn,
     useIntercom,
+    useIsHubRedirectionEnabled,
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
@@ -62,6 +63,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             await logout();
         },
     });
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+
+    const is_app_id_set = localStorage.getItem('config.app_id');
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
@@ -107,6 +111,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const token = active_account ? active_account.token : null;
     useFreshChat(token);
     useIntercom(token);
+
+    React.useEffect(() => {
+        if (isHubRedirectionEnabled && !is_app_id_set) {
+            const app_id = window.location.hostname === 'app.deriv.com' ? 61554 : 53503;
+            localStorage.setItem('config.app_id', app_id);
+        }
+    }, [isHubRedirectionEnabled, is_app_id_set]);
 
     React.useEffect(() => {
         switchLanguage(current_language);

@@ -7,7 +7,6 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import {
     initFormErrorMessages,
     POIProvider,
@@ -35,11 +34,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     const i18nInstance = initializeI18n({
         cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
     });
-    const [trigger_login_for_hub_country_list, trigger_login_for_hub_country_list_loaded] =
-        useGrowthbookGetFeatureValue({
-            featureFlag: 'trigger_login_for_hub_country_list',
-        });
-    const is_app_id_set = localStorage.getItem('config.app_id');
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -56,13 +50,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
     const language = preferred_language ?? getInitialLanguage();
-
-    React.useEffect(() => {
-        if (trigger_login_for_hub_country_list_loaded && trigger_login_for_hub_country_list && !is_app_id_set) {
-            const app_id = window.location.hostname === 'app.deriv.com' ? 61554 : 53503;
-            localStorage.setItem('config.app_id', app_id);
-        }
-    }, [trigger_login_for_hub_country_list_loaded, trigger_login_for_hub_country_list, is_app_id_set]);
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());

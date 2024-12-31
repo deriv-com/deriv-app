@@ -1,6 +1,7 @@
 import throttle from 'lodash.throttle';
-import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
-import { computedFn } from 'mobx-utils';
+import { action, computed, makeObservable, observable, override, reaction } from 'mobx';
+
+import { Money } from '@deriv/components';
 import {
     ChartBarrierStore,
     contractCancelled,
@@ -10,29 +11,29 @@ import {
     formatPortfolioPosition,
     getContractPath,
     getCurrentTick,
-    getTotalProfit,
     getDisplayStatus,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    getTotalProfit,
     getTradeNotificationMessage,
     isAccumulatorContract,
     isDtraderV2DesktopEnabled,
     isDtraderV2MobileEnabled,
     isEmptyObject,
     isEnded,
-    isValidToSell,
     isMultiplierContract,
-    WS,
-    TRADE_TYPES,
+    isValidToSell,
     removeBarrier,
     routes,
     setLimitOrderBarriers,
+    TRADE_TYPES,
+    WS,
 } from '@deriv/shared';
-import { Money } from '@deriv/components';
-import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
@@ -52,11 +53,11 @@ export default class PortfolioStore extends BaseStore {
     main_barrier = null;
     contract_type = '';
 
-    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
-
     responseQueue = [];
 
     active_positions = [];
+
+    getPositionByIdCache = observable.map();
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -107,6 +108,17 @@ export default class PortfolioStore extends BaseStore {
         });
 
         this.root_store = root_store;
+    }
+
+    getPositionById(id) {
+        // Check if we already have a cached position for the given ID.
+        if (!this.getPositionByIdCache.has(id)) {
+            // Compute the position and store it in the cache.
+            const position = this.positions.find(position => +position.id === +id);
+            this.getPositionByIdCache.set(id, position);
+        }
+
+        return this.getPositionByIdCache.get(id);
     }
 
     async initializePortfolio() {
@@ -582,6 +594,9 @@ export default class PortfolioStore extends BaseStore {
     }
 
     updatePositions = () => {
+        // Whenever positions are updated, clear the cache to ensure consistency.
+        this.getPositionByIdCache.clear();
+
         this.responseQueue.forEach(res => this.proposalOpenContractHandler(res));
         this.responseQueue = [];
         this.setActivePositions();

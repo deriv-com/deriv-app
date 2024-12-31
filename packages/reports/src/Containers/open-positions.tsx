@@ -191,7 +191,9 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const previous_active_positions = usePrevious(active_positions);
 
     const generateContractTypes = () => {
-        const contract_type_bot = sessionStorage.getItem('contract_type_bots');
+        const queryParams = new URLSearchParams(location.search);
+
+        const contract_type_bot = queryParams.get('contract_type_bots');
 
         if (!contract_type_bot) {
             return [
@@ -209,7 +211,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier_bot },
             { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator_bot },
         ];
-        sessionStorage.removeItem('contract_type_bots');
         return contract_types;
     };
 

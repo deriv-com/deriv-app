@@ -1,32 +1,37 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
-import { useStore } from '@deriv/stores';
-import { Loading, Skeleton } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
+
+import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
-import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
-import { useTraderStore } from 'Stores/useTraderStores';
-import BottomNav from 'AppV2/Components/BottomNav';
-import PurchaseButton from 'AppV2/Components/PurchaseButton';
-import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
-import { TradeParametersContainer, TradeParameters } from 'AppV2/Components/TradeParameters';
-import CurrentSpot from 'AppV2/Components/CurrentSpot';
-import { TradeChart } from '../Chart';
-import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import TradeTypes from './trade-types';
-import MarketSelector from 'AppV2/Components/MarketSelector';
-import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { useStore } from '@deriv/stores';
+
 import AccumulatorStats from 'AppV2/Components/AccumulatorStats';
+import BottomNav from 'AppV2/Components/BottomNav';
+import ClosedMarketMessage from 'AppV2/Components/ClosedMarketMessage';
+import CurrentSpot from 'AppV2/Components/CurrentSpot';
+import MarketSelector from 'AppV2/Components/MarketSelector';
 import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
+import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
-import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
 import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
+import { TradeParameters, TradeParametersContainer } from 'AppV2/Components/TradeParameters';
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
+import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import { sendSelectedTradeTypeToAnalytics } from '../../../Analytics';
+import { TradeChart } from '../Chart';
+
+import TradeTypes from './trade-types';
 
 const Trade = observer(() => {
     const [is_minimized_params_visible, setIsMinimizedParamsVisible] = React.useState(false);
     const chart_ref = React.useRef<HTMLDivElement>(null);
     const {
         client: { is_logged_in, is_switching },
+        common: { current_language },
         ui: { is_dark_mode_on },
     } = useStore();
     const {
@@ -87,7 +92,7 @@ const Trade = observer(() => {
         onMount();
         return onUnmount;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [current_language]);
 
     useEffect(() => {
         if (is_switching) {

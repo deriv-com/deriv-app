@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useIsHubRedirectionEnabled, useStoreWalletAccountsList } from '@deriv/hooks';
@@ -24,9 +24,6 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
-    const PRODUCTION_URL = 'app.deriv.com';
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
@@ -47,9 +44,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const handleTradersHubRedirect = async () => {
         if (isHubRedirectionEnabled && !!trading_hub) {
-            const is_production = window.location.hostname === PRODUCTION_URL;
-            const redirect_url = is_production ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            window.location.assign(redirect_url);
+            window.location.assign(platforms.tradershub_os.url);
             return;
         }
         closeAccountsDialog();

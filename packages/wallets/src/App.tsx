@@ -11,6 +11,7 @@ import './styles/fonts.scss';
 import './index.scss';
 
 type TProps = {
+    isHubRedirectionEnabled: boolean;
     isWalletsOnboardingTourGuideVisible: boolean;
     logout: () => Promise<void>;
     notificationMessagesUi: (props?: {
@@ -25,6 +26,7 @@ type TProps = {
 const LazyWalletTourGuide = lazy(() => import('./components/WalletTourGuide/WalletTourGuide'));
 
 const App: React.FC<TProps> = ({
+    isHubRedirectionEnabled,
     isWalletsOnboardingTourGuideVisible,
     logout,
     notificationMessagesUi: Notifications,
@@ -51,6 +53,7 @@ const App: React.FC<TProps> = ({
                         <ModalProvider>
                             {!isWalletsOnboardingTourGuideVisible && Notifications && <Notifications />}
                             <AppContent
+                                isHubRedirectionEnabled={isHubRedirectionEnabled}
                                 isWalletsOnboardingTourGuideVisible={isWalletsOnboardingTourGuideVisible}
                                 setPreferredLanguage={setPreferredLanguage}
                             />

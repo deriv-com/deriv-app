@@ -11,16 +11,24 @@ import {
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
+type TWalletsListingRouteProps = {
+    isHubRedirectionEnabled: boolean;
+};
+
 const LazyWalletsCarousel = lazy(() => import('../../components/WalletsCarousel/WalletsCarousel'));
 const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWalletsList/DesktopWalletsList'));
 
-const WalletsListingRoute: React.FC = () => {
+const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirectionEnabled }) => {
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
+
+    if (isHubRedirectionEnabled) {
+        return null;
+    }
 
     return (
         <div className='wallets-listing-route'>

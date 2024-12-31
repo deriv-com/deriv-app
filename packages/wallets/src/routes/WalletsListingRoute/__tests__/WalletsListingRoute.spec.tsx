@@ -60,7 +60,7 @@ describe('WalletsListingRoute', () => {
     });
 
     it('renders DesktopWalletsList and WalletsAddMoreCarousel correctly on desktop', async () => {
-        render(<WalletsListingRoute />, { wrapper });
+        render(<WalletsListingRoute isHubRedirectionEnabled={false} />, { wrapper });
         expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.queryByText('WalletsCarousel')).not.toBeInTheDocument();
         expect(await screen.findByText('DesktopWalletsList')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('WalletsListingRoute', () => {
     it('renders WalletsCarousel and WalletsAddMoreCarousel correctly on mobile', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
-        render(<WalletsListingRoute />, { wrapper });
+        render(<WalletsListingRoute isHubRedirectionEnabled={false} />, { wrapper });
         expect(screen.queryByText('WalletListHeader')).not.toBeInTheDocument();
         expect(screen.queryByText('DesktopWalletsList')).not.toBeInTheDocument();
         expect(await screen.findByText('WalletsCarousel')).toBeInTheDocument();
@@ -79,14 +79,14 @@ describe('WalletsListingRoute', () => {
         (useWalletAccountsList as jest.Mock).mockReturnValue({
             data: [{ is_added: true }],
         });
-        render(<WalletsListingRoute />, { wrapper });
+        render(<WalletsListingRoute isHubRedirectionEnabled={false} />, { wrapper });
         expect(screen.queryByText('WalletsAddMoreCarousel')).not.toBeInTheDocument();
     });
 
     it('displays the wallet disclaimer banner if the user is in the EU region and has a non-virtual wallet', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true, isMobile: false });
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
-        render(<WalletsListingRoute />, { wrapper });
+        render(<WalletsListingRoute isHubRedirectionEnabled={false} />, { wrapper });
         expect(screen.getByText('WalletsDisclaimerBanner')).toBeInTheDocument();
     });
 
@@ -94,7 +94,7 @@ describe('WalletsListingRoute', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true, isMobile: false });
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { is_virtual: true } });
         (useIsEuRegion as jest.Mock).mockReturnValue({ data: true });
-        render(<WalletsListingRoute />, { wrapper });
+        render(<WalletsListingRoute isHubRedirectionEnabled={false} />, { wrapper });
         expect(screen.queryByText('WalletsDisclaimerBanner')).not.toBeInTheDocument();
     });
 });

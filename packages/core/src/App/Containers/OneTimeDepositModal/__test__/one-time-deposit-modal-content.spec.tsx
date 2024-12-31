@@ -77,13 +77,13 @@ describe('<OneTimeDepositModalContent />', () => {
         expect(screen.getByText(/CryptoWallet/)).toBeInTheDocument();
     });
 
-    it('should open live chat widget on click', () => {
+    it('should open live chat widget on click', async () => {
         render(<OneTimeDepositModalContent />, {
             wrapper: wrapper(),
         });
 
         const live_chat = screen.getByTestId('dt_live_chat');
         expect(live_chat).toBeInTheDocument();
-        userEvent.click(live_chat);
+        await userEvent.click(live_chat);
     });
 });

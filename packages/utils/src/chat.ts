@@ -17,17 +17,15 @@ const Chat = {
     },
 
     open: async () => {
-        // const isFreshChat = await Chat.isFreshChat();
-        // const isIntercom = await Chat.isIntercom();
+        const { isFreshChat, isIntercom } = await Chat.getFlags();
 
-        // if (isFreshChat) {
-        //     window.fcWidget?.open();
-        // } else if (isIntercom) {
-        //     window.Intercom('show');
-        // } else {
-        //     window.LiveChatWidget?.call('maximize');
-        // }
-        window.Intercom('show');
+        if (isFreshChat) {
+            window.fcWidget?.open();
+        } else if (isIntercom) {
+            window.Intercom('show');
+        } else {
+            window.LiveChatWidget?.call('maximize');
+        }
     },
 
     clear: async () => {

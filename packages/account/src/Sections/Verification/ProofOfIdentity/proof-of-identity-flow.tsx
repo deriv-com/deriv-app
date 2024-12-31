@@ -22,7 +22,7 @@ const ProofOfIdentityFlow = observer(() => {
     const getFormattedURL = url_link => {
         const url = new URL(url_link);
         const urlParams = new URLSearchParams(location.search);
-        const platform = urlParams.get('platform') || (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+        const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
 
         const params = {
             platform,
@@ -40,15 +40,13 @@ const ProofOfIdentityFlow = observer(() => {
     };
 
     if (isRedirectToAccountsOSAppFFLoaded) {
-        if (shouldRedirectToAccountsOSApp) {
-            if (kyc_auth_status) {
-                const { identity } = kyc_auth_status;
-                const redirect_url =
-                    identity.status === 'none' || identity.status === 'required'
-                        ? ACCOUNTS_OS_POI_URL
-                        : ACCOUNTS_OS_POI_STATUS_URL;
-                window.location.href = getFormattedURL(redirect_url);
-            }
+        if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
+            const { identity } = kyc_auth_status;
+            const redirect_url =
+                identity.status === 'none' || identity.status === 'required'
+                    ? ACCOUNTS_OS_POI_URL
+                    : ACCOUNTS_OS_POI_STATUS_URL;
+            window.location.href = getFormattedURL(redirect_url);
         } else {
             return <ProofOfIdentity />;
         }

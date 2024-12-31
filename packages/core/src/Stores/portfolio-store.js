@@ -1,5 +1,6 @@
 import throttle from 'lodash.throttle';
 import { action, computed, makeObservable, observable, override, reaction } from 'mobx';
+import { computedFn } from 'mobx-utils';
 
 import { Money } from '@deriv/components';
 import {
@@ -57,7 +58,7 @@ export default class PortfolioStore extends BaseStore {
 
     active_positions = [];
 
-    getPositionByIdCache = observable.map();
+    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -108,17 +109,6 @@ export default class PortfolioStore extends BaseStore {
         });
 
         this.root_store = root_store;
-    }
-
-    getPositionById(id) {
-        // Check if we already have a cached position for the given ID.
-        if (!this.getPositionByIdCache.has(id)) {
-            // Compute the position and store it in the cache.
-            const position = this.positions.find(position => +position.id === +id);
-            this.getPositionByIdCache.set(id, position);
-        }
-
-        return this.getPositionByIdCache.get(id);
     }
 
     async initializePortfolio() {
@@ -594,9 +584,6 @@ export default class PortfolioStore extends BaseStore {
     }
 
     updatePositions = () => {
-        // Whenever positions are updated, clear the cache to ensure consistency.
-        this.getPositionByIdCache.clear();
-
         this.responseQueue.forEach(res => this.proposalOpenContractHandler(res));
         this.responseQueue = [];
         this.setActivePositions();

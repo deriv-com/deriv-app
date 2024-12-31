@@ -4,6 +4,7 @@ import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
+    useCreateNewVirtualAccount,
     useInvalidateQuery,
     useIsEuRegion,
 } from '@deriv/api-v2';
@@ -21,6 +22,7 @@ jest.mock('@deriv/api-v2', () => ({
         data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },
     })),
     useCreateNewRealAccount: jest.fn(() => ({ isLoading: false })),
+    useCreateNewVirtualAccount: jest.fn(() => ({ isLoading: false })),
     useInvalidateQuery: jest.fn(() => Promise.resolve({})),
     useIsEuRegion: jest.fn(() => ({ isLoading: false })),
 }));
@@ -56,6 +58,9 @@ jest.mock('../../ModalProvider', () => ({
 }));
 
 const mockUseCreateNewRealAccount = useCreateNewRealAccount as jest.MockedFunction<typeof useCreateNewRealAccount>;
+const mockUseCreateNewVirtualAccount = useCreateNewVirtualAccount as jest.MockedFunction<
+    typeof useCreateNewVirtualAccount
+>;
 const mockUseActiveLinkedToTradingAccount = useActiveLinkedToTradingAccount as jest.MockedFunction<
     typeof useActiveLinkedToTradingAccount
 >;
@@ -83,12 +88,31 @@ describe('DerivAppsGetAccount', () => {
         expect(screen.getByRole('button', { name: 'Enable' })).toBeInTheDocument();
     });
 
-    it('calls createTradingAccount function when the Enable button is clicked', async () => {
+    it('calls createTradingAccount function for real account when the Enable button is clicked', async () => {
         const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_real: 'new_account_real' }));
         const mockInvalidate = jest.fn();
         (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({ isLoading: false, mutateAsync: mockMutateAsync });
         (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({ isLoading: false });
         mockUseInvalidateQuery.mockReturnValue(mockInvalidate);
+        render(<DerivAppsGetAccount />, { wrapper });
+        const button = screen.getByRole('button', { name: 'Enable' });
+        await userEvent.click(button);
+        await waitFor(() => expect(mockMutateAsync).toBeCalled());
+        await waitFor(() => expect(mockInvalidate).toBeCalledWith('account_list'));
+    });
+
+    it('calls createTradingAccount function for virtual account when the Enable button is clicked', async () => {
+        const mockMutateAsync = jest.fn(() => Promise.resolve({ new_account_virtual: 'new_account_virtual' }));
+        const mockInvalidate = jest.fn();
+        (mockUseCreateNewVirtualAccount as jest.Mock).mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockMutateAsync,
+        });
+        (mockUseActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({ isLoading: false });
+        mockUseInvalidateQuery.mockReturnValue(mockInvalidate);
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: { is_virtual: true, loginid: 'demo123' },
+        });
         render(<DerivAppsGetAccount />, { wrapper });
         const button = screen.getByRole('button', { name: 'Enable' });
         await userEvent.click(button);
@@ -126,18 +150,6 @@ describe('DerivAppsGetAccount', () => {
         expect(screen.getByRole('button', { name: 'Transfer funds' })).toBeInTheDocument();
     });
 
-    it('does not create a new account when the active wallet is virtual', async () => {
-        const mockMutateAsync = jest.fn();
-        (mockUseCreateNewRealAccount as jest.Mock).mockReturnValue({ isLoading: false, mutateAsync: mockMutateAsync });
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: { is_virtual: true },
-        });
-        render(<DerivAppsGetAccount />, { wrapper });
-        const button = screen.getByRole('button', { name: 'Enable' });
-        await userEvent.click(button);
-        await waitFor(() => expect(mockMutateAsync).not.toBeCalled());
-    });
-
     it('shows Options tab when is_eu is false', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         (useIsEuRegion as jest.Mock).mockReturnValue({
@@ -146,7 +158,7 @@ describe('DerivAppsGetAccount', () => {
         });
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByText('Options')).toBeInTheDocument();
-        expect(screen.queryByText('One options account for all platforms.')).toBeInTheDocument();
+        expect(screen.getByText('One options account for all platforms.')).toBeInTheDocument();
     });
 
     it('shows Multipliers tab when is_eu is true', () => {
@@ -157,6 +169,6 @@ describe('DerivAppsGetAccount', () => {
         });
         render(<DerivAppsGetAccount />, { wrapper });
         expect(screen.getByText('Multipliers')).toBeInTheDocument();
-        expect(screen.queryByText('Expand your potential gains; risk only what you put in.')).toBeInTheDocument();
+        expect(screen.getByText('Expand your potential gains; risk only what you put in.')).toBeInTheDocument();
     });
 });

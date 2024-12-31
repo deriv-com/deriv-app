@@ -14,7 +14,7 @@ type TResetPasswordModalValues = {
 
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
-    const { logout: logoutClient, verification_code, setVerificationCode } = client;
+    const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
     const {
         disableApp,
         enableApp,
@@ -46,7 +46,7 @@ const ResetPasswordModal = observer(() => {
             }
             return;
         }
-
+        setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
             redirectToLogin(false, getLanguage(), false);
@@ -93,6 +93,7 @@ const ResetPasswordModal = observer(() => {
     const reset_initial_values: TResetPasswordModalValues = { password: '' };
 
     const closeResetPasswordModal = () => {
+        setPreventRedirectToHub(false);
         toggleResetPasswordModal(false);
         removeActionParam('reset_password');
     };

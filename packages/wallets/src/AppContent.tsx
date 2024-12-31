@@ -9,11 +9,16 @@ import { TLanguageType } from './types';
 import './AppContent.scss';
 
 type AppContentProps = {
+    isHubRedirectionEnabled: boolean;
     isWalletsOnboardingTourGuideVisible: boolean;
     setPreferredLanguage: (language: TLanguageType | null) => void;
 };
 
-const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVisible, setPreferredLanguage }) => {
+const AppContent: React.FC<AppContentProps> = ({
+    isHubRedirectionEnabled,
+    isWalletsOnboardingTourGuideVisible,
+    setPreferredLanguage,
+}) => {
     const { isSubscribed, subscribeToAllBalance, unsubscribeFromAllBalance } = useAllBalanceSubscription();
     const { data: derivAccountList } = useDerivAccountsList();
     const previousDerivAccountListLengthRef = useRef(0);
@@ -74,7 +79,7 @@ const AppContent: React.FC<AppContentProps> = ({ isWalletsOnboardingTourGuideVis
             ref={appRef}
         >
             <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
-            <Router />
+            <Router isHubRedirectionEnabled={isHubRedirectionEnabled} />
         </div>
     );
 };

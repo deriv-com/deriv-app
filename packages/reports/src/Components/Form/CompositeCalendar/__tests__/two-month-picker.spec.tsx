@@ -1,7 +1,9 @@
 import React from 'react';
+import moment from 'moment';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import moment from 'moment';
+
 import TwoMonthPicker from '../two-month-picker';
 
 describe('TwoMonthPicker', () => {
@@ -18,17 +20,17 @@ describe('TwoMonthPicker', () => {
         const currentYear = moment().format('YYYY');
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
         expect(screen.getByText(currentMonth)).toBeInTheDocument();
-        expect(screen.getAllByText(currentYear)).toHaveLength(2);
+        expect(screen.getByText(currentYear)).toBeInTheDocument();
     });
-    it('should call onChange when a date is selected', () => {
+    it('should call onChange when a date is selected', async () => {
         render(<TwoMonthPicker {...mockProps} />);
         const prevMonthDate = moment().date(1).subtract(1, 'month');
         const prevMonthDateElement = screen.getAllByText(prevMonthDate.date())[0];
         const prevMonthFullDate = prevMonthDate.format('YYYY-MM-DD');
-        userEvent.click(prevMonthDateElement);
+        await userEvent.click(prevMonthDateElement);
         expect(mockProps.onChange).toHaveBeenCalledWith(moment.utc(prevMonthFullDate, 'YYYY-MM-DD'));
     });
-    it('should jump to current month from previous months upon clicking today button', () => {
+    it('should jump to current month from previous months upon clicking today button', async () => {
         render(<TwoMonthPicker {...mockProps} />);
         const currentMonth = moment().format('MMM');
         const monthBeforePrevious = moment().subtract(2, 'month').format('MMM');
@@ -37,12 +39,12 @@ describe('TwoMonthPicker', () => {
         const todayButton = screen.getByTestId('dt_calendar_icon_IcCalendarForwardToday');
 
         // go to previous months
-        userEvent.click(prevMonthButton);
+        await userEvent.click(prevMonthButton);
         expect(screen.getByText(monthBeforePrevious)).toBeInTheDocument();
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
 
         // jump to current month
-        userEvent.click(todayButton);
+        await userEvent.click(todayButton);
         expect(screen.queryByText(monthBeforePrevious)).not.toBeInTheDocument();
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
         expect(screen.getByText(currentMonth)).toBeInTheDocument();

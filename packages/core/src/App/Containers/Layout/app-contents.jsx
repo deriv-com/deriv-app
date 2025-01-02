@@ -19,7 +19,7 @@ const AppContents = observer(({ children }) => {
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const {
         client,
-        common: { platform },
+        common: { platform, is_from_tradershub_os },
         gtm: { pushDataLayer },
         ui,
     } = useStore();
@@ -59,6 +59,9 @@ const AppContents = observer(({ children }) => {
         Analytics.pageView(window.location.href, {
             loggedIn: is_logged_in,
             device_type: isMobile ? 'mobile' : 'desktop',
+            network_rtt: navigator?.connection?.rtt,
+            network_type: navigator?.connection?.effectiveType,
+            network_downlink: navigator?.connection?.downlink,
         });
         // react-hooks/exhaustive-deps
     }, [window.location.href]);
@@ -121,7 +124,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-mobile': isMobile,
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
-                'app-contents--is-hidden': platforms[platform],
+                'app-contents--is-hidden': platforms[platform] && !(is_from_tradershub_os && isMobile),
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
                 'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}

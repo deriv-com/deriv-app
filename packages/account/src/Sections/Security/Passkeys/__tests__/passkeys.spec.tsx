@@ -67,6 +67,12 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: true })),
 }));
 
+jest.mock('@deriv-com/analytics', () => ({
+    Analytics: {
+        trackEvent: jest.fn(),
+    },
+}));
+
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Create passkey';
@@ -162,7 +168,7 @@ describe('Passkeys', () => {
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 
-    it('renders existed passkeys correctly and triggers new passkey creation', () => {
+    it('renders existed passkeys correctly and triggers new passkey creation', async () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
         });
@@ -176,7 +182,7 @@ describe('Passkeys', () => {
         expect(screen.getByText(passkey_name_2)).toBeInTheDocument();
 
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
-        userEvent.click(create_passkey_button);
+        await userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
             tracking_event,
@@ -184,7 +190,7 @@ describe('Passkeys', () => {
         );
     });
 
-    it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", () => {
+    it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", async () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: [],
         });
@@ -196,13 +202,13 @@ describe('Passkeys', () => {
 
         expect(screen.getByText('Experience safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
-        userEvent.click(learn_more_button);
+        await userEvent.click(learn_more_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
 
         expect(screen.getByText('Effortless login with passkeys')).toBeInTheDocument();
         expect(screen.getByText('Tips:')).toBeInTheDocument();
         const create_passkey_button = screen.getByRole('button', { name: create_passkey });
-        userEvent.click(create_passkey_button);
+        await userEvent.click(create_passkey_button);
         expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
             tracking_event,
@@ -223,13 +229,13 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        await userEvent.click(screen.getByRole('button', { name: create_passkey }));
         expect(screen.getByText('Just a reminder')).toBeInTheDocument();
         expect(screen.getByText('Enable screen lock on your device.')).toBeInTheDocument();
         expect(screen.getByText('Enable bluetooth.')).toBeInTheDocument();
         expect(screen.getByText('Sign in to your Google or iCloud account.')).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button', { name: continue_button }));
+        await userEvent.click(screen.getByRole('button', { name: continue_button }));
         expect(mockCreatePasskey).toBeCalledTimes(1);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
             tracking_event,
@@ -252,16 +258,16 @@ describe('Passkeys', () => {
 
         expect(screen.queryByText('Edit passkey')).not.toBeInTheDocument();
 
-        userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
-        userEvent.click(screen.getByText('Rename'));
+        await userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
+        await userEvent.click(screen.getByText('Rename'));
 
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_rename_started'));
         expect(screen.getByText('Edit passkey')).toBeInTheDocument();
 
         const input: HTMLInputElement = screen.getByRole('textbox');
-        userEvent.clear(input);
-        userEvent.type(input, 'new passkey name');
-        userEvent.click(screen.getByRole('button', { name: /save changes/i }));
+        await userEvent.clear(input);
+        await userEvent.type(input, 'new passkey name');
+        await userEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
         await waitFor(() => {
             expect(mockRenamePasskey).toHaveBeenCalledTimes(1);
@@ -283,13 +289,13 @@ describe('Passkeys', () => {
 
         expect(screen.queryByText('Edit passkey')).not.toBeInTheDocument();
 
-        userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
-        userEvent.click(screen.getByText('Remove'));
+        await userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
+        await userEvent.click(screen.getByText('Remove'));
 
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_remove_started'));
         expect(screen.getByText('Are you sure you want to remove this passkey?')).toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('button', { name: /remove/i }));
+        await userEvent.click(screen.getByRole('button', { name: /remove/i }));
         expect(mockRemovePasskey).toHaveBeenCalledTimes(1);
     });
 
@@ -302,15 +308,15 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        userEvent.click(screen.getByRole('button', { name: create_passkey }));
-        userEvent.click(screen.getByRole('button', { name: continue_button }));
+        await userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        await userEvent.click(screen.getByRole('button', { name: continue_button }));
 
         await waitFor(() => {
             expect(screen.getByText(error_message)).toBeInTheDocument();
             expect(screen.getByText(error_title)).toBeInTheDocument();
         });
 
-        userEvent.click(screen.getByRole('button', { name: ok_button }));
+        await userEvent.click(screen.getByRole('button', { name: ok_button }));
 
         await waitFor(() => {
             expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
@@ -331,15 +337,15 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        userEvent.click(screen.getByRole('button', { name: create_passkey }));
-        userEvent.click(screen.getByRole('button', { name: continue_button }));
+        await userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        await userEvent.click(screen.getByRole('button', { name: continue_button }));
 
         await waitFor(() => {
             expect(screen.getByText(error_message)).toBeInTheDocument();
             expect(screen.getByText(error_title)).toBeInTheDocument();
         });
 
-        userEvent.click(screen.getByRole('button', { name: ok_button }));
+        await userEvent.click(screen.getByRole('button', { name: ok_button }));
         expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 });

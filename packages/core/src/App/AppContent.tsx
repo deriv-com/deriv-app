@@ -2,8 +2,10 @@ import React from 'react';
 
 import { useRemoteConfig } from '@deriv/api';
 import {
+    useFreshChat,
     useGrowthbookGetFeatureValue,
     useGrowthbookIsOn,
+    useIntercom,
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
@@ -46,6 +48,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         account_settings,
         setIsPhoneNumberVerificationEnabled,
         setIsCountryCodeDropdownEnabled,
+        accounts,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
@@ -54,16 +57,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
+    const { isOAuth2Enabled } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
-    });
-
-    useSilentLoginAndLogout({
-        is_client_store_initialized,
-        isOAuth2Enabled,
-        oAuthLogout,
     });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
@@ -78,6 +75,17 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
+
+    // NOTE: Commented this out for now due to single logout causing Deriv.app to be logged out continously
+    // There is a case where if logged_state is false coming from other platforms, Deriv app will SLO the user out
+    // TODO: Revert this once OIDC is enabled back for Deriv.app
+    // useSilentLoginAndLogout({
+    //     is_client_store_initialized,
+    //     isOAuth2Enabled,
+    //     oAuthLogout,
+    //     isGBLoaded,
+    // });
+
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
@@ -95,6 +103,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     };
 
     useLiveChat(livechat_client_information);
+    const active_account = accounts?.[loginid ?? ''];
+    const token = active_account ? active_account.token : null;
+    useFreshChat(token);
+    useIntercom(token);
 
     React.useEffect(() => {
         switchLanguage(current_language);

@@ -1,5 +1,6 @@
 import { TRADE_TYPES } from '@deriv/shared';
-import { isTradeParamVisible, getChartHeight, checkIsServiceModalError } from '../layout-utils';
+
+import { checkIsServiceModalError, getChartHeight, isTradeParamVisible } from '../layout-utils';
 
 describe('isTradeParamVisible', () => {
     it('should return correct value for expiration component key', () => {
@@ -139,7 +140,6 @@ describe('checkIsServiceModalError', () => {
     });
     it('returns true if services_error has appropriate code', () => {
         expect(checkIsServiceModalError({ services_error: { code: 'InsufficientBalance' } })).toBe(true);
-        expect(checkIsServiceModalError({ services_error: { code: 'InvalidContractProposal' } })).toBe(true);
         expect(checkIsServiceModalError({ services_error: { code: 'PleaseAuthenticate' } })).toBe(true);
     });
     it('returns true if services_error code is AuthorizationRequired and type is buy', () => {

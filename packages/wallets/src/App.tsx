@@ -13,6 +13,12 @@ import './index.scss';
 type TProps = {
     isWalletsOnboardingTourGuideVisible: boolean;
     logout: () => Promise<void>;
+    notificationMessagesUi: (props?: {
+        is_mt5?: boolean;
+        is_notification_loaded?: boolean;
+        show_trade_notifications?: boolean;
+        stopNotificationLoading?: VoidFunction;
+    }) => JSX.Element;
     onWalletsOnboardingTourGuideCloseHandler: VoidFunction;
 };
 
@@ -21,6 +27,7 @@ const LazyWalletTourGuide = lazy(() => import('./components/WalletTourGuide/Wall
 const App: React.FC<TProps> = ({
     isWalletsOnboardingTourGuideVisible,
     logout,
+    notificationMessagesUi: Notifications,
     onWalletsOnboardingTourGuideCloseHandler,
 }) => {
     const [preferredLanguage, setPreferredLanguage] = useState<TLanguageType | null>(null);
@@ -42,6 +49,7 @@ const App: React.FC<TProps> = ({
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
                     <React.Suspense fallback={<Loader />}>
                         <ModalProvider>
+                            {!isWalletsOnboardingTourGuideVisible && Notifications && <Notifications />}
                             <AppContent
                                 isWalletsOnboardingTourGuideVisible={isWalletsOnboardingTourGuideVisible}
                                 setPreferredLanguage={setPreferredLanguage}

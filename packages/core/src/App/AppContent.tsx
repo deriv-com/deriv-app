@@ -57,10 +57,16 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2({
+    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
+    });
+
+    useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
     });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
@@ -75,16 +81,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
-
-    // NOTE: Commented this out for now due to single logout causing Deriv.app to be logged out continously
-    // There is a case where if logged_state is false coming from other platforms, Deriv app will SLO the user out
-    // TODO: Revert this once OIDC is enabled back for Deriv.app
-    // useSilentLoginAndLogout({
-    //     is_client_store_initialized,
-    //     isOAuth2Enabled,
-    //     oAuthLogout,
-    //     isGBLoaded,
-    // });
 
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;

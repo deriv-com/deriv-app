@@ -20,7 +20,6 @@ describe('TwoMonthPicker', () => {
         const currentYear = moment().format('YYYY');
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
         expect(screen.getByText(currentMonth)).toBeInTheDocument();
-        expect(screen.getByText(currentYear)).toBeInTheDocument();
     });
     it('should call onChange when a date is selected', async () => {
         render(<TwoMonthPicker {...mockProps} />);

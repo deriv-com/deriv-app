@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../ModalProvider';
 import WalletSuccessChangeMT5Password from '../WalletSuccessChangeMT5Password';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../AuthProvider';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -13,7 +15,13 @@ jest.mock('@deriv-com/ui', () => ({
 describe('<WalletSuccessChangeMT5Password/>', () => {
     const mockOnClick = jest.fn();
 
-    const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
+    const wrapper = ({ children }: PropsWithChildren) => (
+        <APIProvider>
+            <WalletsAuthProvider>
+                <ModalProvider>{children}</ModalProvider>
+            </WalletsAuthProvider>
+        </APIProvider>
+    );
 
     beforeEach(() => {
         jest.clearAllMocks();

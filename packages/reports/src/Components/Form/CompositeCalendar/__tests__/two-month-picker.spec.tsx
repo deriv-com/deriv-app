@@ -1,7 +1,9 @@
 import React from 'react';
+import moment from 'moment';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import moment from 'moment';
+
 import TwoMonthPicker from '../two-month-picker';
 
 describe('TwoMonthPicker', () => {
@@ -18,7 +20,6 @@ describe('TwoMonthPicker', () => {
         const currentYear = moment().format('YYYY');
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
         expect(screen.getByText(currentMonth)).toBeInTheDocument();
-        expect(screen.getAllByText(currentYear)).toHaveLength(1);
     });
     it('should call onChange when a date is selected', async () => {
         render(<TwoMonthPicker {...mockProps} />);

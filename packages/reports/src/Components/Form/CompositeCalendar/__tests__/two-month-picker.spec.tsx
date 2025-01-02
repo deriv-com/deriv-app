@@ -21,15 +21,15 @@ describe('TwoMonthPicker', () => {
         expect(screen.getByText(currentMonth)).toBeInTheDocument();
         expect(screen.getAllByText(currentYear)).toHaveLength(2);
     });
-    it('should call onChange when a date is selected', async () => {
+    it('should call onChange when a date is selected', () => {
         render(<TwoMonthPicker {...mockProps} />);
         const prevMonthDate = moment().date(1).subtract(1, 'month');
         const prevMonthDateElement = screen.getAllByText(prevMonthDate.date())[0];
         const prevMonthFullDate = prevMonthDate.format('YYYY-MM-DD');
-        await userEvent.click(prevMonthDateElement);
+        userEvent.click(prevMonthDateElement);
         expect(mockProps.onChange).toHaveBeenCalledWith(moment.utc(prevMonthFullDate, 'YYYY-MM-DD'));
     });
-    it('should jump to current month from previous months upon clicking today button', async () => {
+    it('should jump to current month from previous months upon clicking today button', () => {
         render(<TwoMonthPicker {...mockProps} />);
         const currentMonth = moment().format('MMM');
         const monthBeforePrevious = moment().subtract(2, 'month').format('MMM');
@@ -38,12 +38,12 @@ describe('TwoMonthPicker', () => {
         const todayButton = screen.getByTestId('dt_calendar_icon_IcCalendarForwardToday');
 
         // go to previous months
-        await userEvent.click(prevMonthButton);
+        userEvent.click(prevMonthButton);
         expect(screen.getByText(monthBeforePrevious)).toBeInTheDocument();
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
 
         // jump to current month
-        await userEvent.click(todayButton);
+        userEvent.click(todayButton);
         expect(screen.queryByText(monthBeforePrevious)).not.toBeInTheDocument();
         expect(screen.getByText(prevMonth)).toBeInTheDocument();
         expect(screen.getByText(currentMonth)).toBeInTheDocument();

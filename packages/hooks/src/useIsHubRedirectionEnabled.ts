@@ -18,11 +18,17 @@ const useIsHubRedirectionEnabled = () => {
         typeof hubEnabledCountryList === 'object' &&
         hubEnabledCountryList !== null &&
         Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        ((citizen && (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(citizen)) ||
-            (clientCountry &&
-                (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry)));
+        citizen &&
+        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(citizen);
 
-    return { isHubRedirectionEnabled };
+    const isChangingToHubAppId =
+        typeof hubEnabledCountryList === 'object' &&
+        hubEnabledCountryList !== null &&
+        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
+        clientCountry &&
+        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry);
+
+    return { isHubRedirectionEnabled, isChangingToHubAppId };
 };
 
 export default useIsHubRedirectionEnabled;

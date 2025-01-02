@@ -39,11 +39,11 @@ const RootComponent = observer(props => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && !!trading_hub && !prevent_redirect_to_hub) {
+        if (((isHubRedirectionEnabled && has_wallet) || !!trading_hub) && !prevent_redirect_to_hub) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             window.location.assign(redirectUrl);
         }
-    }, [isHubRedirectionEnabled, trading_hub, prevent_redirect_to_hub]);
+    }, [isHubRedirectionEnabled, has_wallet, trading_hub, prevent_redirect_to_hub]);
 
     return has_wallet ? (
         <Wallets

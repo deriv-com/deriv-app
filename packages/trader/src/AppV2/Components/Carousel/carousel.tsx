@@ -1,7 +1,8 @@
 import React from 'react';
-import CarouselHeader, { TQuillIcon } from './carousel-header';
 import { useSwipeable } from 'react-swipeable';
 import clsx from 'clsx';
+import { getLanguage } from '@deriv/translations';
+import CarouselHeader, { TQuillIcon } from './carousel-header';
 
 type TCarousel = {
     classname?: string;
@@ -38,6 +39,8 @@ const Carousel = ({
 
     const isControlled = current_index !== undefined && setCurrentIndex !== undefined;
     const index = isControlled ? current_index : internalIndex;
+    const lang = getLanguage();
+    const is_rtl = lang === 'AR';
 
     const handleNextClick = () => {
         if (!is_infinite_loop && index + 1 >= pages.length) return;
@@ -76,7 +79,11 @@ const Carousel = ({
                 {...(is_swipeable ? swipe_handlers : {})}
             >
                 {pages.map(({ component, id }) => (
-                    <li className='carousel__item' style={{ transform: `translateX(-${index * 100}%)` }} key={id}>
+                    <li
+                        className='carousel__item'
+                        style={{ transform: is_rtl ? `translateX(${index * 100}%)` : `translateX(-${index * 100}%)` }}
+                        key={id}
+                    >
                         {component}
                     </li>
                 ))}

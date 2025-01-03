@@ -81,7 +81,7 @@ const Carousel = ({
                 {pages.map(({ component, id }) => (
                     <li
                         className='carousel__item'
-                        style={{ transform: is_rtl ? `translateX(${index * 100}%)` : `translateX(-${index * 100}%)` }}
+                        style={{ transform: `translateX(${index * 100 * (is_rtl ? 1 : -1)}%)` }}
                         key={id}
                     >
                         {component}

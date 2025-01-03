@@ -42,19 +42,16 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     };
 
     const logoutHandler = async () => {
-        const clientInformation = Cookies.get('client_information');
-
-        // Remove the 'client_information' cookie
         Cookies.remove('client_information');
-
+        const clientInformation = Cookies.get('client_information');
         // Pass the value to GrowthBook if it exists
-        if (clientInformation) {
-            const analytics_config = {
-                loggedIn: !!clientInformation,
-            };
 
-            Analytics.setAttributes(analytics_config);
-        }
+        const analytics_config = {
+            loggedIn: !!clientInformation,
+        };
+
+        Analytics.setAttributes(analytics_config);
+
         await OAuth2Logout(handleLogout);
     };
 

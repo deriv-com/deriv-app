@@ -63,7 +63,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             await logout();
         },
     });
-    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { isChangingToHubAppId } = useIsHubRedirectionEnabled();
 
     const is_app_id_set = localStorage.getItem('config.app_id');
 
@@ -113,11 +113,11 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     useIntercom(token);
 
     React.useEffect(() => {
-        if (isHubRedirectionEnabled && !is_app_id_set) {
-            const app_id = window.location.hostname === 'app.deriv.com' ? 61554 : 53503;
-            localStorage.setItem('config.app_id', app_id);
+        if (isChangingToHubAppId && !is_app_id_set) {
+            const app_id = process.env.NODE_ENV === 'production' ? 61554 : 53503;
+            localStorage.setItem('config.app_id', app_id.toString());
         }
-    }, [isHubRedirectionEnabled, is_app_id_set]);
+    }, [isChangingToHubAppId, is_app_id_set]);
 
     React.useEffect(() => {
         switchLanguage(current_language);

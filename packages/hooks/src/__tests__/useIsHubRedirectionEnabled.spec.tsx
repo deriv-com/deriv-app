@@ -23,6 +23,7 @@ describe('useIsHubRedirectionEnabled', () => {
         const { result } = renderHook(() => useIsHubRedirectionEnabled());
 
         expect(result.current.isHubRedirectionEnabled).toBe(false);
+        expect(result.current.isChangingToHubAppId).toBe(false);
     });
 
     it('should return false if client country is not in the hub enabled list', () => {
@@ -49,7 +50,7 @@ describe('useIsHubRedirectionEnabled', () => {
         expect(result.current.isHubRedirectionEnabled).toBe(true);
     });
 
-    it('should return true if client country is in the hub enabled list but not in the citizen list', () => {
+    it('should return isChangingToHubAppId true if client country is in the hub enabled list but not in the citizen list', () => {
         (useClientCountry as jest.Mock).mockReturnValue({ data: 'UK' });
         (useSettings as jest.Mock).mockReturnValue({ data: { citizen: 'MY' } });
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
@@ -58,6 +59,6 @@ describe('useIsHubRedirectionEnabled', () => {
             },
         ]);
         const { result } = renderHook(() => useIsHubRedirectionEnabled());
-        expect(result.current.isHubRedirectionEnabled).toBe(true);
+        expect(result.current.isChangingToHubAppId).toBe(true);
     });
 });

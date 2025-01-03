@@ -10,8 +10,7 @@ const useIsHubRedirectionEnabled = () => {
     const [hubEnabledCountryList] = useGrowthbookGetFeatureValue({
         featureFlag: 'hub_enabled_country_list',
     });
-    // const { data: clientCountry } = useClientCountry();
-    const clientCountry = 'id';
+    const { data: clientCountry } = useClientCountry();
     const { data: accountSettings } = useSettings();
     const { citizen } = accountSettings;
 

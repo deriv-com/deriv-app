@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 
 import { Loading } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
@@ -18,6 +18,7 @@ import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
 import { TradeParameters, TradeParametersContainer } from 'AppV2/Components/TradeParameters';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -39,11 +40,15 @@ const Trade = observer(() => {
         contract_type,
         has_cancellation,
         is_accumulator,
+        is_multiplier,
         is_market_closed,
         onChange,
         onMount,
         onUnmount,
         symbol,
+        proposal_info,
+        trade_types: trade_types_store,
+        trade_type_tab,
     } = useTraderStore();
     const { trade_types, resetTradeTypes } = useContractsForCompany();
     const [guide_dtrader_v2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2', {
@@ -51,6 +56,12 @@ const Trade = observer(() => {
         trade_page: false,
         positions_page: false,
     });
+
+    // For handling edge cases of snackbar:
+    const contract_types = getDisplayedContractTypes(trade_types_store, contract_type, trade_type_tab);
+    const is_all_types_with_errors = contract_types.every(item => proposal_info?.[item]?.has_error);
+    // Showing snackbar for all cases, except when it is Rise/Fall or Digits and only one subtype has error
+    const should_show_snackbar = contract_types.length === 1 || is_multiplier || is_all_types_with_errors;
 
     const symbols = React.useMemo(
         () =>
@@ -145,7 +156,10 @@ const Trade = observer(() => {
             )}
             <ServiceErrorSheet />
             <ClosedMarketMessage />
-            <TradeErrorSnackbar error_fields={['stop_loss', 'take_profit', 'date_start']} should_show_snackbar />
+            <TradeErrorSnackbar
+                error_fields={['stop_loss', 'take_profit', 'date_start', 'stake', 'amount']}
+                should_show_snackbar={should_show_snackbar}
+            />
         </BottomNav>
     );
 });

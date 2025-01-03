@@ -1,22 +1,27 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
+import moment from 'moment';
+
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+
+import { getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
+
 import {
     addUnit,
     focusAndOpenKeyboard,
+    getDatePickerStartDate,
+    getOptionPerUnit,
+    getPayoutInfo,
+    getProposalRequestObject,
+    getSmallestDuration,
+    getSnackBarText,
     getTradeParams,
     getTradeTypeTabsList,
-    getSnackBarText,
     isDigitContractWinning,
     isSmallScreen,
-    getOptionPerUnit,
-    getSmallestDuration,
-    getDatePickerStartDate,
-    getProposalRequestObject,
 } from '../trade-params-utils';
-import moment from 'moment';
-import { mockStore } from '@deriv/stores';
 
 describe('getTradeParams', () => {
     it('should return correct object with keys for Rise/Fall', () => {
@@ -96,7 +101,7 @@ describe('isDigitContractWinning', () => {
 });
 
 describe('focusAndOpenKeyboard', () => {
-    it('should apply focus to the passed ReactElement', () => {
+    it('should apply focus to the passed ReactElement', async () => {
         jest.useFakeTimers();
 
         const MockComponent = () => {
@@ -119,7 +124,7 @@ describe('focusAndOpenKeyboard', () => {
         const input = screen.getByRole('spinbutton');
         expect(input).not.toHaveFocus();
 
-        userEvent.click(screen.getByText('Focus'));
+        await userEvent.click(screen.getByText('Focus'));
 
         jest.runAllTimers();
 
@@ -617,6 +622,78 @@ describe('getProposalRequestObject', () => {
             limit_order: { stop_loss: 5 },
             multiplier: 0,
             cancellation: undefined,
+        });
+    });
+});
+
+describe('getPayoutInfo', () => {
+    it('returns contract payout, max payout and empty string instead of error if proposal does not contain error', () => {
+        const proposal_info = {
+            has_error: false,
+            has_error_details: false,
+            payout: 19.53,
+            profit: '9.53',
+            stake: '10.00',
+            validation_params: {
+                payout: {
+                    max: '80000.00',
+                },
+                stake: {
+                    min: '0.50',
+                },
+            },
+        } as ReturnType<typeof getProposalInfo>;
+
+        expect(getPayoutInfo(proposal_info)).toEqual({ contract_payout: 19.53, max_payout: '80000.00', error: '' });
+    });
+
+    it('returns contract payout, max payout equal to 0 if proposal_info was empty', () => {
+        expect(getPayoutInfo({} as ReturnType<typeof getProposalInfo>)).toEqual({
+            contract_payout: 0,
+            max_payout: 0,
+            error: '',
+        });
+    });
+
+    it('returns contract payout, max payout equal to 0 if proposal_info was not defined', () => {
+        expect(getPayoutInfo(undefined as unknown as ReturnType<typeof getProposalInfo>)).toEqual({
+            contract_payout: 0,
+            max_payout: 0,
+            error: '',
+        });
+    });
+
+    it('returns contract payout and max payout values, extracted from error text if it is in proposal_info and has amount field', () => {
+        const proposal_info = {
+            id: '',
+            has_error: true,
+            has_error_details: true,
+            error_code: 'ContractBuyValidationError',
+            error_field: 'amount',
+            message: 'Minimum stake of 0.35 and maximum payout of 5000.00. Current payout is 31263.39.',
+        };
+
+        expect(getPayoutInfo(proposal_info as ReturnType<typeof getProposalInfo>)).toEqual({
+            contract_payout: 31263.39,
+            max_payout: 5000,
+            error: 'Minimum stake of 0.35 and maximum payout of 5000.00. Current payout is 31263.39.',
+        });
+    });
+
+    it('returns contract payout and max payout values, extracted from error text if it is in proposal_info and has stake field', () => {
+        const proposal_info = {
+            id: '',
+            has_error: true,
+            has_error_details: true,
+            error_code: 'ContractBuyValidationError',
+            error_field: 'stake',
+            message: 'Minimum stake of 0.35 and maximum payout of 5000.00. Current payout is 31263.39.',
+        };
+
+        expect(getPayoutInfo(proposal_info as ReturnType<typeof getProposalInfo>)).toEqual({
+            contract_payout: 31263.39,
+            max_payout: 5000,
+            error: 'Minimum stake of 0.35 and maximum payout of 5000.00. Current payout is 31263.39.',
         });
     });
 });

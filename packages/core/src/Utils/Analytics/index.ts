@@ -56,9 +56,9 @@ const initializeGrowthBook = async (flags, client_information) => {
 };
 
 const monitorCookieChanges = flags => {
-    let previousClientInfo = Cookies.getJSON('client_information');
+    let previousClientInfo = !!Cookies.getJSON('client_information');
     setInterval(async () => {
-        const currentClientInfo = Cookies.getJSON('client_information');
+        const currentClientInfo = !!Cookies.getJSON('client_information');
         if (JSON.stringify(previousClientInfo) !== JSON.stringify(currentClientInfo)) {
             previousClientInfo = currentClientInfo;
             await initializeGrowthBook(flags, currentClientInfo);

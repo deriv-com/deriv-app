@@ -53,12 +53,15 @@ const initializeGrowthBook = async (flags, client_information) => {
     };
 
     await Analytics?.initialise(config);
+    console.log('config', config);
 };
 
 const monitorCookieChanges = flags => {
     let previousClientInfo = !!Cookies.getJSON('client_information');
+    console.log('previousClientInfo', previousClientInfo);
     setInterval(async () => {
         const currentClientInfo = !!Cookies.getJSON('client_information');
+        console.log('currentClientInfo', currentClientInfo);
         if (JSON.stringify(previousClientInfo) !== JSON.stringify(currentClientInfo)) {
             previousClientInfo = currentClientInfo;
             await initializeGrowthBook(flags, currentClientInfo);
@@ -72,8 +75,10 @@ export const AnalyticsInitializer = async () => {
         .catch(() => FIREBASE_INIT_DATA);
 
     if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
-        const initialClientInfo = Cookies.getJSON('client_information');
-        await initializeGrowthBook(flags, initialClientInfo); // Initial setup
+        const initialClientInfo = !!Cookies.getJSON('client_information');
+
         monitorCookieChanges(flags); // Monitor and reinitialize on changes
+        await initializeGrowthBook(flags, initialClientInfo); // Initial setup
+        console.log('previousClientInfo', previousClientInfo);
     }
 };

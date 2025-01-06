@@ -134,9 +134,9 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
             if (trading_days) {
                 const all_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
-                new_disabled_days = all_days
-                    .map((day: (typeof all_days)[number], index) => (!trading_days.includes(day) ? index : -1))
-                    .filter(index => index !== -1);
+                new_disabled_days = all_days.reduce<number[]>((disabled, day, index) => {
+                    return trading_days.includes(day) ? disabled : [...disabled, index];
+                }, []);
             }
 
             events?.forEach(evt => {

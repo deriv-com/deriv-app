@@ -453,37 +453,21 @@ export const ContractType = (() => {
     };
 
     const getTradingDays = async (date: string, underlying: string | null = null) => {
-        if (!date || !underlying) {
-            return null;
-        }
+        if (!date || !underlying) return null;
 
-        const trading_times_response: TradingTimesResponse = await WS.tradingTimes(date);
-        const trading_times_data = trading_times_response.trading_times as TradingTimes;
+        const response: TradingTimesResponse = await WS.tradingTimes(date);
+        const trading_times = response.trading_times as TradingTimes;
 
-        type SymbolType = NonNullable<
-            NonNullable<(typeof trading_times_data.markets)[number]['submarkets']>[number]['symbols']
-        >[number];
+        if (!getPropertyValue(response, ['trading_times', 'markets'])) return null;
 
-        if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
-            const symbol_data = trading_times_data.markets.reduce((acc: SymbolType[], market) => {
-                if (!market.submarkets) return acc;
+        const symbol_data = trading_times.markets.flatMap(
+            market =>
+                market.submarkets?.flatMap(
+                    submarket => submarket.symbols?.find(symbol => symbol.symbol === underlying) || []
+                ) || []
+        )[0];
 
-                const submarket_symbols = market.submarkets.reduce((sub_acc: SymbolType[], submarket) => {
-                    if (!submarket.symbols) return sub_acc;
-
-                    const found_symbol = submarket.symbols.find(s => s.symbol === underlying);
-                    return found_symbol ? [...sub_acc, found_symbol] : sub_acc;
-                }, []);
-
-                return [...acc, ...submarket_symbols];
-            }, [])[0];
-
-            if (symbol_data) {
-                return symbol_data.trading_days;
-            }
-        }
-
-        return null;
+        return symbol_data?.trading_days || null;
     };
 
     const getTradingTimes = async (

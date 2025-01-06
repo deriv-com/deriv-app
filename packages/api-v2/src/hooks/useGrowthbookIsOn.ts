@@ -27,11 +27,11 @@ const useGrowthbookIsOn = ({ featureFlag }: UseGrowthbookIsOneArgs) => {
     const analytics_config = {
         residence_country: residence || '',
     };
-    Analytics?.setAttributes(analytics_config);
 
     useEffect(() => {
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
+                Analytics?.setAttributes(analytics_config);
                 const setFeatureValue = () => {
                     const value = Analytics?.isFeatureOn(featureFlag);
                     setFeatureIsOn(value);

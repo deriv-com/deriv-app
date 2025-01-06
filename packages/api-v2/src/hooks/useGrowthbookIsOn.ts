@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Analytics } from '@deriv-com/analytics';
 
@@ -24,17 +24,15 @@ const useGrowthbookIsOn = ({ featureFlag }: UseGrowthbookIsOneArgs) => {
                   ?.residence
             : settings?.country_code;
 
-    const analytics_config = useMemo(() => {
-        return {
-            residence_country: residence || '',
-        };
-    }, [residence]);
+    const analytics_config = {
+        residence_country: residence || '',
+    };
+    Analytics?.setAttributes(analytics_config);
 
     useEffect(() => {
         if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
                 const setFeatureValue = () => {
-                    Analytics.setAttributes(analytics_config);
                     const value = Analytics?.isFeatureOn(featureFlag);
                     setFeatureIsOn(value);
                 };
@@ -45,7 +43,7 @@ const useGrowthbookIsOn = ({ featureFlag }: UseGrowthbookIsOneArgs) => {
                 });
             }
         }
-    }, [isGBLoaded, featureFlag, analytics_config]);
+    }, [isGBLoaded, featureFlag]);
 
     return [featureIsOn, isGBLoaded];
 };

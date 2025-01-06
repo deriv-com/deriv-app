@@ -18,7 +18,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
     const { localize } = useTranslations();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
-    const [isP2PWalletEnabled, isGBLoaded] = useGrowthbookIsOn({
+    const [isP2PWalletEnabled] = useGrowthbookIsOn({
         featureFlag: 'p2p_wallet_enabled',
     });
 
@@ -33,7 +33,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
             <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
                 <div className='wallets-accounts-list__content'>
                     <Divider color='var(--border-divider)' height={2} />
-                    {Boolean(isGBLoaded && isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
+                    {Boolean(isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
                         <WalletsP2PRedirectionBanner />
                     )}
                     <CFDPlatformsList />
@@ -53,7 +53,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, onTabClickHandler })
 
     return (
         <>
-            {Boolean(isGBLoaded && isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
+            {Boolean(isP2PWalletEnabled) && activeWallet?.account_type === 'doughflow' && (
                 <WalletsP2PRedirectionBanner />
             )}
             <Tabs

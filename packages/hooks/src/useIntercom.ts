@@ -8,14 +8,21 @@ export const useIntercom = (token: string | null) => {
     const [enable_intercom] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_intercom',
     });
-    const scriptStatus = useScript(enable_intercom ? intercom_script : null);
+    const scriptStatus = useScript(intercom_script);
 
     useEffect(() => {
-        if (!enable_intercom || scriptStatus !== 'ready' || !window?.DerivInterCom) return;
+        if (!enable_intercom || scriptStatus !== 'ready' || !window?.DerivInterCom) {
+            if (!enable_intercom && window.Intercom) {
+                console.log(`intercom shutdown`);
+                window.Intercom('shutdown');
+            }
+            return;
+        }
 
         let intervalId: NodeJS.Timeout;
 
         const initIntercom = () => {
+            console.log(`intercom init`);
             window.DerivInterCom.initialize({
                 hideLauncher: true,
                 token,

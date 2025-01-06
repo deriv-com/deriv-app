@@ -9,24 +9,25 @@ const Chat = {
 
     getFlags: async () => {
         try {
-            const [isFreshChat, isIntercom] = await Promise.all([Chat.isFreshChat(), Chat.isIntercom()]);
+            const [isFreshChat, isIntercom] = await Promise.all([Chat.isFreshChat(), Chat.isIntercom]);
             return { isFreshChat, isIntercom };
         } catch (_error) {
             return { isFreshChat: false, isIntercom: false };
         }
     },
 
-    open: async () => {
-        const isFreshChat = await Chat.isFreshChat();
-        const isIntercom = await Chat.isIntercom();
+    open: () => {
+        // const isFreshChat = await Chat.isFreshChat();
+        // const isIntercom = await Chat.isIntercom;
 
-        if (isFreshChat) {
-            window.fcWidget?.open();
-        } else if (isIntercom) {
-            window.Intercom('show');
-        } else {
-            window.LiveChatWidget?.call('maximize');
-        }
+        // if (isFreshChat) {
+        //     window.fcWidget?.open();
+        // } else if (isIntercom) {
+        //     window.Intercom('show');
+        // } else {
+        //     window.LiveChatWidget?.call('maximize');
+        // }
+        window.Intercom('show');
     },
 
     clear: async () => {

@@ -10,10 +10,11 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
 
     const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
-    const fcAvailable = useIsFreshchatAvailable();
+    // const fcAvailable = useIsFreshchatAvailable();
     const icAvailable = useIsIntercomAvailable();
+    console.log('icAvailable', icAvailable);
 
-    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !fcAvailable && !icAvailable;
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !icAvailable;
 
     if (isNeitherChatNorLiveChatAvailable) {
         return null;
@@ -22,7 +23,7 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // Quick fix for making sure livechat won't popup if feature flag is late to enable.
     // We will add a refactor after this
     setInterval(() => {
-        if (fcAvailable || icAvailable) {
+        if (icAvailable) {
             window.LiveChatWidget?.call('destroy');
         }
     }, 10);

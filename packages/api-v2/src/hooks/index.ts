@@ -22,6 +22,7 @@ export { default as useCancelCryptoTransaction } from './useCancelCryptoTransact
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
+export { default as useCreateNewVirtualAccount } from './useCreateNewVirtualAccount';
 export { default as useCreateWallet } from './useCreateWallet';
 export { default as useCryptoConfig } from './useCryptoConfig';
 export { default as useCryptoEstimations } from './useCryptoEstimations';

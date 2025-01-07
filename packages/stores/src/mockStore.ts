@@ -208,6 +208,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 document_status: '',
                 identity_status: '',
             },
+            getToken: jest.fn(),
             phone_settings: {
                 carriers: [],
                 countries: [

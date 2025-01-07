@@ -23,7 +23,9 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
     // We will add a refactor after this
     setInterval(() => {
         if (fcAvailable || icAvailable) {
-            window.LiveChatWidget?.call('destroy');
+            if (window.LiveChatWidget && typeof window.LiveChatWidget.call === 'function') {
+                window.LiveChatWidget.call('destroy');
+            }
         }
     }, 10);
 

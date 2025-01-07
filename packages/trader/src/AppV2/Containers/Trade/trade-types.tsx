@@ -1,22 +1,23 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import clsx from 'clsx';
+
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, Chip, Text, ActionSheet } from '@deriv-com/quill-ui';
-import { DraggableList } from 'AppV2/Components/DraggableList';
-import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
-import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
-import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
 import { Localize, localize } from '@deriv/translations';
 import { safeParse, getLocalStorage } from '@deriv/utils';
+import { ActionSheet, Button, Chip, Text } from '@deriv-com/quill-ui';
 import { useLocalStorageData } from '@deriv/hooks';
-import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
 import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
-import TradeTypesContent from './trade-types-content';
-import Guide from '../../Components/Guide';
+import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
+import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
+import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
 import GuideContainer from '../../Components/OnboardingGuide/GuideForPages/guide-container';
 import useGuideStates from 'AppV2/Hooks/useGuideStates';
 import { sendOpenGuideToAnalytics } from '../../../Analytics';
+import Guide from '../../Components/Guide';
+
+import TradeTypesContent from './trade-types-content';
 
 type TTradeTypesProps = {
     onTradeTypeSelect: (
@@ -307,7 +308,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                 </Button>
             )}
             <ActionSheet.Root
-                className='trade-types-dialog'
+                className={clsx('trade-types-dialog', {
+                    'trade-types-dialog--is_editing': is_editing,
+                })}
                 isOpen={is_open}
                 expandable={false}
                 onClose={handleCloseTradeTypes}

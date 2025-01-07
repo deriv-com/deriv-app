@@ -1,14 +1,11 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useState, useContext, useCallback, useEffect, useMemo } from 'react';
+import { useAPIContext } from './APIProvider';
 
 import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
-import { AppIDConstants } from '@deriv-com/utils';
-
-import { TSocketRequestPayload, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
-
-import { useAPIContext } from './APIProvider';
-import { API_ERROR_CODES } from './constants';
-import useAPI from './useAPI';
 import useMutation from './useMutation';
+import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
+import useAPI from './useAPI';
+import { API_ERROR_CODES } from './constants';
 
 // Define the type for the context state
 type AuthContextType = {
@@ -28,7 +25,6 @@ type AuthContextType = {
         name: T,
         payload?: TSocketRequestPayload<T>
     ) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscribe: (onData: (response: any) => void) => Promise<{ unsubscribe: () => Promise<void> }>;
     };
 };
@@ -112,7 +108,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient, setOnReconnected, setOnConnected, wsClient, createNewWSConnection } = useAPIContext();
+    const { queryClient, setOnReconnected, setOnConnected, wsClient } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -129,7 +125,6 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
     const subscribe = useCallback(
         <T extends TSocketSubscribableEndpointNames>(name: T, payload?: TSocketRequestPayload<T>) => {
             return {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 subscribe: (onData: (response: any) => void) => {
                     return wsClient?.subscribe(name, payload, onData);
                 },
@@ -154,15 +149,8 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             if (!activeAccount) return;
 
             localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
-            const isDemo = activeAccount.is_virtual;
-            const shouldCreateNewWSConnection =
-                (isDemo && wsClient?.endpoint === AppIDConstants.environments.real) ||
-                (!isDemo && wsClient?.endpoint === AppIDConstants.environments.demo);
-            if (shouldCreateNewWSConnection) {
-                createNewWSConnection();
-            }
         },
-        [loginIDKey, wsClient?.endpoint, createNewWSConnection]
+        [loginIDKey]
     );
 
     useEffect(() => {
@@ -279,21 +267,8 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isInitializing,
             subscribe,
             logout,
-            createNewWSConnection,
         };
-    }, [
-        data,
-        switchAccount,
-        refetch,
-        isLoading,
-        isError,
-        isFetching,
-        isSuccess,
-        loginid,
-        logout,
-        createNewWSConnection,
-        subscribe,
-    ]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, logout, subscribe]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

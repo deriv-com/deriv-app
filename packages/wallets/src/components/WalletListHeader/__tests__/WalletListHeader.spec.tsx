@@ -9,6 +9,11 @@ const mockRedirectToOutSystems = jest.fn();
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { is_virtual: false, loginid: 'real1' } })),
+    useLandingCompany: jest.fn(() => ({
+        data: {
+            financial_company: { shortcode: 'svg' },
+        },
+    })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
             { is_virtual: false, loginid: 'real1' },

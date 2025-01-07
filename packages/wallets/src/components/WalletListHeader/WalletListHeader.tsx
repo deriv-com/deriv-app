@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useLandingCompany, useWalletAccountsList } from '@deriv/api-v2';
 import { getInitialLanguage, Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { redirectToOutSystems } from '../../helpers/urls';
@@ -12,6 +12,7 @@ const WalletListHeader: React.FC = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
+    const { data: landingCompany } = useLandingCompany();
     const demoTextRef = useRef<HTMLDivElement>(null);
     const realTextRef = useRef<HTMLDivElement>(null);
     const language = getInitialLanguage();
@@ -23,6 +24,7 @@ const WalletListHeader: React.FC = () => {
     const shouldShowSwitcher = (demoAccount && firstRealAccount) || !hasAnyActiveRealWallets;
     const isDemo = activeWallet?.is_virtual;
     const shouldDisableSwitcher = hasAnyRealWallets && !hasAnyActiveRealWallets;
+    const shortcode = landingCompany?.financial_company?.shortcode ?? landingCompany?.gaming_company?.shortcode;
 
     const [isChecked, setIsChecked] = useState(!isDemo);
 
@@ -49,7 +51,7 @@ const WalletListHeader: React.FC = () => {
     const handleToggle = () => {
         setIsChecked(prev => !prev);
         if (!hasAnyActiveRealWallets && isDemo) {
-            return redirectToOutSystems();
+            return redirectToOutSystems(shortcode);
         }
         if (firstRealAccount && activeWallet?.loginid === demoAccount) {
             switchWalletAccount(firstRealAccount);

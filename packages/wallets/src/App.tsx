@@ -44,7 +44,7 @@ const App: React.FC<TProps> = ({
     const defaultLanguage = preferredLanguage ?? language;
 
     return (
-        <APIProvider platform='wallets' standalone>
+        <APIProvider standalone>
             <WalletsAuthProvider logout={logout}>
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
                     <React.Suspense fallback={<Loader />}>

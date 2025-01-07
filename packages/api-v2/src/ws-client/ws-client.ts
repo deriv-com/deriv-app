@@ -1,12 +1,11 @@
+import SubscriptionsManager from './subscriptions-manager';
+import request from './request';
 import {
-    TSocketEndpointNames,
-    TSocketRequestPayload,
     TSocketResponse,
+    TSocketRequestPayload,
+    TSocketEndpointNames,
     TSocketSubscribableEndpointNames,
 } from '../../types';
-
-import request from './request';
-import SubscriptionsManager from './subscriptions-manager';
 
 /**
  * WSClient as main instance
@@ -16,7 +15,6 @@ export default class WSClient {
     subscriptionManager: SubscriptionsManager;
     isAuthorized = false;
     onAuthorized?: () => void;
-    endpoint?: string;
 
     constructor(onAuthorized?: () => void) {
         this.onAuthorized = onAuthorized;
@@ -28,10 +26,6 @@ export default class WSClient {
             this.isAuthorized = false;
             this.ws = ws;
         }
-    }
-
-    setEndpoint(endpoint: string) {
-        this.endpoint = endpoint;
     }
 
     private onWebsocketAuthorized() {
@@ -53,7 +47,7 @@ export default class WSClient {
             return Promise.reject(new Error('WS is not set'));
         }
         return request(this.ws, name, payload).then((response: TSocketResponse<TSocketEndpointNames>) => {
-            if ('msg_type' in response && response.msg_type === 'authorize') {
+            if ((response as unknown as any).msg_type === 'authorize') {
                 this.onWebsocketAuthorized();
             }
 

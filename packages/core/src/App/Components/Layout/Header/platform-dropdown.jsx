@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
-import { routes, getActivePlatform } from '@deriv/shared';
+import { routes, getActivePlatform, platforms } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
@@ -50,12 +52,20 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, setTogglePlatformType }) => {
     const history = useHistory();
     const { isDesktop } = useDevice();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { client } = useStore();
+    const { account_settings } = client;
+    const { trading_hub } = account_settings;
 
     const TradersHubRedirect = () => {
         return (
             <div className='platform-dropdown__cta'>
                 <BinaryLink
                     onClick={() => {
+                        if (isHubRedirectionEnabled || !!trading_hub) {
+                            window.location.assign(platforms.tradershub_os.url);
+                            return;
+                        }
                         if (!isDesktop) {
                             history.push(routes.traders_hub);
                             setTogglePlatformType('cfd');

@@ -9,6 +9,9 @@ jest.mock('@deriv/hooks', () => ({
     useWalletAccountsList: jest.fn(() => ({
         data: [{ loginid: 'CR007', dtrade_loginid: 'CR008' }],
     })),
+    useIsHubRedirectionEnabled: jest.fn(() => ({
+        isHubRedirectionEnabled: false,
+    })),
 }));
 
 jest.mock('react-router', () => ({
@@ -93,7 +96,7 @@ describe('AccountSwitcherWalletMobile', () => {
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
     });
 
-    it('should toggle the switcher on footer click', () => {
+    it('should toggle the switcher on footer click', async () => {
         const store = mockStore({
             client: {
                 accounts: {
@@ -107,7 +110,7 @@ describe('AccountSwitcherWalletMobile', () => {
         });
         render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
         const footer = screen.getByText('Looking for CFDs? Go to Trader’s Hub');
-        userEvent.click(footer);
+        await userEvent.click(footer);
         expect(props.toggle).toHaveBeenCalledTimes(1);
     });
 });

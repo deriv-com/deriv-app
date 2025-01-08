@@ -26,6 +26,7 @@ type TLoginUrl = {
 
 export const loginUrl = ({ language }: TLoginUrl) => {
     const server_url = LocalStore.get('config.server_url');
+    const change_login_app_id = LocalStore.get('change_login_app_id');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const signup_device_cookie = new (CookieStorage as any)('signup_device');
     const signup_device = signup_device_cookie.get('signup_device');
@@ -38,7 +39,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     const getOAuthUrl = () => {
         return `https://oauth.${
             deriv_urls.DERIV_HOST_NAME
-        }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        }/oauth2/authorize?app_id=${change_login_app_id || getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
     if (server_url && /qa/.test(server_url)) {

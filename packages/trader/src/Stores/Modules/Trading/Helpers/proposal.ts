@@ -80,7 +80,7 @@ export const getProposalErrorField = (response: PriceProposalResponse) => {
 export const getProposalInfo = (
     store: TTradeStore,
     response: PriceProposalResponse & TError,
-    obj_prev_contract_basis: TObjContractBasis
+    obj_prev_contract_basis?: TObjContractBasis
 ) => {
     const proposal: ExpandedProposal = response.proposal || ({} as ExpandedProposal);
     const profit = (proposal.payout || 0) - (proposal.ask_price || 0);

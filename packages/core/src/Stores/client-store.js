@@ -382,6 +382,7 @@ export default class ClientStore extends BaseStore {
             setNewEmail: action.bound,
             setDeviceData: action.bound,
             getSignupParams: action.bound,
+            getToken: action.bound,
             onSetResidence: action.bound,
             onSetCitizen: action.bound,
             onSignup: action.bound,

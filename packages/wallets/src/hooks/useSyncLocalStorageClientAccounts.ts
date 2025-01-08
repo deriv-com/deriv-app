@@ -1,10 +1,18 @@
 import { useCallback } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useCreateNewRealAccount, useCreateWallet, useMutation, useSettings } from '@deriv/api-v2';
+import {
+    useCreateNewRealAccount,
+    useCreateNewVirtualAccount,
+    useCreateWallet,
+    useMutation,
+    useSettings,
+} from '@deriv/api-v2';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
 
 type TNewWalletAccount = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
-type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>['data']>;
+type TNewRealAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>['data']>;
+type TNewVirtualAccount = NonNullable<ReturnType<typeof useCreateNewVirtualAccount>['data']>;
+type TNewTradingAccount = TNewRealAccount | TNewVirtualAccount;
 
 const useSyncLocalStorageClientAccounts = () => {
     const { mutateAsync } = useMutation('account_list');
@@ -52,7 +60,7 @@ const useSyncLocalStorageClientAccounts = () => {
     );
 
     const addTradingAccountToLocalStorage = useCallback(
-        async (newAccount: TNewTradingAccount) => {
+        async (newAccount: TNewTradingAccount, isVirtual: boolean) => {
             if (!newAccount) return;
 
             const data = await mutateAsync();
@@ -61,24 +69,41 @@ const useSyncLocalStorageClientAccounts = () => {
             if (!account || !account.loginid) return;
 
             if (newAccount) {
-                const dataToStore = {
-                    accepted_bch: 0,
-                    account_category: 'trading',
-                    account_type: 'standard',
-                    balance: 0,
-                    created_at: account.created_at,
-                    currency: newAccount.currency,
-                    email: settingsData.email,
-                    excluded_until: account.excluded_until,
-                    is_disabled: Number(account.is_disabled),
-                    is_virtual: Number(account.is_virtual),
-                    landing_company_name: newAccount.landing_company_shortcode,
-                    landing_company_shortcode: newAccount.landing_company_shortcode,
-                    linked_to: account.linked_to,
-                    residence: settingsData.citizen || settingsData.country_code,
-                    session_start: Math.floor(Date.now() / 1000),
-                    token: newAccount.oauth_token,
-                };
+                const dataToStore = isVirtual
+                    ? {
+                          accepted_bch: 0,
+                          account_category: 'trading',
+                          account_type: 'standard',
+                          balance: 0,
+                          created_at: account.created_at,
+                          currency: newAccount.currency,
+                          email: settingsData.email,
+                          excluded_until: account.excluded_until,
+                          is_disabled: Number(account.is_disabled),
+                          is_virtual: Number(account.is_virtual),
+                          linked_to: account.linked_to,
+                          residence: settingsData.citizen || settingsData.country_code,
+                          session_start: Math.floor(Date.now() / 1000),
+                          token: newAccount.oauth_token,
+                      }
+                    : {
+                          accepted_bch: 0,
+                          account_category: 'trading',
+                          account_type: 'standard',
+                          balance: 0,
+                          created_at: account.created_at,
+                          currency: newAccount.currency,
+                          email: settingsData.email,
+                          excluded_until: account.excluded_until,
+                          is_disabled: Number(account.is_disabled),
+                          is_virtual: Number(account.is_virtual),
+                          landing_company_name: (newAccount as TNewRealAccount).landing_company_shortcode,
+                          landing_company_shortcode: (newAccount as TNewRealAccount).landing_company_shortcode,
+                          linked_to: account.linked_to,
+                          residence: settingsData.citizen || settingsData.country_code,
+                          session_start: Math.floor(Date.now() / 1000),
+                          token: newAccount.oauth_token,
+                      };
 
                 const clientAccounts = getAccountsFromLocalStorage() ?? {};
 

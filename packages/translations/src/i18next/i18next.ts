@@ -1,8 +1,8 @@
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { isProduction } from '../../../shared/src/utils/config/config';
-import { UNSUPPORTED_LANGUAGES } from '../../../shared/src/utils/constants/default-options';
+import { isProduction } from '@deriv/shared/src/utils/config/config';
+import { UNSUPPORTED_LANGUAGES } from '@deriv/shared/src/utils/constants/default-options';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -139,7 +139,7 @@ const initial_language = getInitialLanguage();
 const i18n_config = {
     react: {
         hashTransKey(defaultValue: string) {
-            return crc32(defaultValue);
+            return crc32(defaultValue ?? '');
         },
         useSuspense: false,
     },

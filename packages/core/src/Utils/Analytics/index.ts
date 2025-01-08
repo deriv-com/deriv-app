@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-
 import FIREBASE_INIT_DATA from '@deriv/api/src/remote_config.json';
 import { getAppId, LocalStore } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -7,6 +6,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { CountryUtils } from '@deriv-com/utils';
 
 import { MAX_MOBILE_WIDTH } from '../../Constants';
+import React from 'react';
 
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
@@ -56,6 +56,14 @@ export const AnalyticsInitializer = async () => {
                 },
             };
             await Analytics?.initialise(config);
+            let lastURL = window.location.href;
+            setInterval(() => {
+                const currentURL = window.location.href;
+                if (currentURL !== lastURL) {
+                    lastURL = currentURL;
+                    Analytics.getInstances().ab.reapplyExperiment();
+                }
+            }, 100);
         }
     }
 };

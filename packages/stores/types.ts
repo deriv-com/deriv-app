@@ -27,7 +27,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract';
+import { TContractInfo } from '../shared/src/utils/contract';
 
 import type { FeatureFlagsStore } from './src/stores';
 

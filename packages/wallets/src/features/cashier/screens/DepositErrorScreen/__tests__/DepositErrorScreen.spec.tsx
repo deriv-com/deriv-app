@@ -21,9 +21,9 @@ describe('DepositErrorScreen', () => {
 
         render(<DepositErrorScreen error={error} />);
 
-        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Refresh page' })).toBeInTheDocument();
     });
 
     it('should show correct deposit error screen for crypto suspended currency error', () => {
@@ -89,9 +89,9 @@ describe('DepositErrorScreen', () => {
 
         render(<DepositErrorScreen error={error} />);
 
-        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        const ReloadButton = screen.getByRole('button', { name: 'Try again' });
+        const ReloadButton = screen.getByRole('button', { name: 'Refresh page' });
 
         fireEvent.click(ReloadButton);
         expect(reloadMock).toHaveBeenCalled();
@@ -106,8 +106,8 @@ describe('DepositErrorScreen', () => {
 
         render(<DepositErrorScreen error={error} />);
 
-        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(screen.getByText('Something went wrong')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Refresh page' })).toBeInTheDocument();
     });
 });

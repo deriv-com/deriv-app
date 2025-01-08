@@ -39,6 +39,7 @@ export { default as useInputATMFormatter } from './useInputATMFormatter';
 export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
 export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
+export { default as useIsHubRedirectionEnabled } from './useIsHubRedirectionEnabled';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
 export { default as useIsRtl } from './useIsRtl';

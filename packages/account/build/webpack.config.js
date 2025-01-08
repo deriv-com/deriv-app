@@ -83,7 +83,7 @@ module.exports = function (env) {
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
                 '@deriv/utils': '@deriv/utils',
-                '@deriv/quill-icons': `@deriv/quill-icons`,
+                '@deriv/quill-icons': '@deriv/quill-icons',
                 '@deriv-com/utils': '@deriv-com/utils',
                 '@deriv-com/translations': '@deriv-com/translations',
             },

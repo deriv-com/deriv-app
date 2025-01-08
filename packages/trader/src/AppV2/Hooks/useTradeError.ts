@@ -1,8 +1,9 @@
 import React from 'react';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 
-export type TErrorFields = 'take_profit' | 'stop_loss' | 'date_start';
+import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+export type TErrorFields = 'take_profit' | 'stop_loss' | 'date_start' | 'stake' | 'amount';
 
 const useTradeError = ({ error_fields }: { error_fields: TErrorFields[] }) => {
     const { contract_type, proposal_info, validation_errors, trade_type_tab, trade_types } = useTraderStore();

@@ -5,7 +5,7 @@ import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     PersonalDetails,
-    ProofOfIdentity,
+    ProofOfIdentityFlow,
     ProofOfAddress,
     ProofOfOwnership,
     Account,
@@ -155,7 +155,7 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
+                        component: ProofOfIdentityFlow,
                         getTitle: () => localize('Proof of identity'),
                     },
                     {

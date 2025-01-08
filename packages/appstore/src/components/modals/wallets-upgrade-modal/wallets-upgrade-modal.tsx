@@ -1,15 +1,18 @@
 import React from 'react';
-import { Analytics, TEvents } from '@deriv-com/analytics';
 import classNames from 'classnames';
-import { Button, Text, Modal, VideoPlayer } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+
+import { Button, Modal, Text, VideoPlayer } from '@deriv/components';
+import { useGrowthbookGetFeatureValue, useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { useWalletMigration } from '@deriv/hooks';
+import { Localize, localize } from '@deriv/translations';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { SectionMessage } from '@deriv-com/ui';
+
 import {
     getWalletMigrationVideoTranslations,
     WALLET_MIGRATION_VIDEO_TRANSLATIONS,
 } from 'Constants/wallet-migration-video-translations';
+
 import './wallets-upgrade-modal.scss';
 
 const trackAnalyticsEvent = (
@@ -30,21 +33,27 @@ const WalletsUpgradeModal = observer(() => {
     const { current_language } = common;
     const { is_demo, is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_desktop, is_mobile } = ui;
-    const { is_eligible, startMigration } = useWalletMigration();
+    const { is_eligible, is_migrating, is_in_progress, startMigration } = useWalletMigration();
+    const [is_wallet_force_migration_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'wallet_force_migration',
+        defaultValue: false,
+    });
     const account_mode = is_demo ? 'demo' : 'real';
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
-    const is_open = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
+    const is_modal_open_for_force_migration = is_wallet_force_migration_enabled && !(is_in_progress || is_migrating);
+    const is_modal_open_for_non_force_migration = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
+    const is_modal_open = is_modal_open_for_force_migration || is_modal_open_for_non_force_migration;
 
     const video_src = getWalletMigrationVideoTranslations(
         current_language as keyof typeof WALLET_MIGRATION_VIDEO_TRANSLATIONS
     );
 
     React.useEffect(() => {
-        if (is_open) {
+        if (is_modal_open) {
             trackAnalyticsEvent('open', account_mode);
         }
-    }, [account_mode, is_open]);
+    }, [account_mode, is_modal_open]);
 
     const closeModal = () => {
         setModalOpen(false);
@@ -66,7 +75,8 @@ const WalletsUpgradeModal = observer(() => {
     return (
         <Modal
             className='wallets-upgrade-modal'
-            is_open={is_open}
+            has_close_icon={!is_wallet_force_migration_enabled}
+            is_open={is_modal_open}
             width={is_desktop ? '77.6rem' : '32.8rem'}
             title=' '
             toggleModal={onToggleModalHandler}

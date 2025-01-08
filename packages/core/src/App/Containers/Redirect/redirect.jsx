@@ -166,20 +166,20 @@ const Redirect = observer(() => {
                 switch (redirect_to) {
                     case '1':
                     case '2':
-                        pathname = routes.redirect_page;
+                        pathname = routes.traders_hub;
                         break;
                     case '10':
                     case '20':
-                        pathname = routes.redirect_page;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '11':
                     case '21':
-                        pathname = routes.redirect_page;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
-                        pathname = routes.redirect_page;
+                        pathname = routes.traders_hub;
                         break;
                     default:
                         break;

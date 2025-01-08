@@ -16,8 +16,6 @@ const UpdateEmailModal = observer(() => {
     const [update_email_error, setUpdateEmailMessage] = React.useState(null);
 
     const redirectToLogout = () => {
-        sessionStorage.removeItem('redirect_url');
-        removeActionParam('reset_password');
         window.location.href = loginUrl({ language: getLanguage() });
     };
 

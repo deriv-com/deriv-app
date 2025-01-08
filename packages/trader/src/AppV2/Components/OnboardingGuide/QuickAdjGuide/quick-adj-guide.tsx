@@ -21,7 +21,7 @@ const QuickAdjGuide = ({ is_minimized, is_minimized_visible }: TQuickAdjGuide) =
             timerRef.current = setTimeout(() => {
                 setShowGuide(true);
                 setGuideDtraderV2({ ...latest_guide_dtrader_v2, trade_param_quick_adjustment: true });
-            }, 300);
+            }, 800);
         }
 
         return () => {

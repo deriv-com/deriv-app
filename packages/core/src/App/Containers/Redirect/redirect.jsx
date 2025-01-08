@@ -93,6 +93,12 @@ const Redirect = observer(() => {
             break;
         }
         case 'reset_password': {
+            history.push({
+                pathname: routes.redirect_page,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
+
             toggleResetPasswordModal(true);
             break;
         }
@@ -104,6 +110,11 @@ const Redirect = observer(() => {
                 redirectToLogin(is_logged_in, getLanguage(), true);
                 redirected_to_route = true;
             } else {
+                history.push({
+                    pathname: routes.redirect_page,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
                 if (!verification_code[action_param]) {
                     const request_email_code = sessionStorage.getItem('request_email_code');
                     setVerificationCode(request_email_code, action_param);
@@ -114,10 +125,20 @@ const Redirect = observer(() => {
             break;
         }
         case 'social_email_change': {
+            history.push({
+                pathname: routes.redirect_page,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
             toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {
+            history.push({
+                pathname: routes.redirect_page,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
             toggleUpdateEmailModal(true);
             break;
         }
@@ -145,20 +166,20 @@ const Redirect = observer(() => {
                 switch (redirect_to) {
                     case '1':
                     case '2':
-                        pathname = routes.traders_hub;
+                        pathname = routes.redirect_page;
                         break;
                     case '10':
                     case '20':
-                        pathname = routes.traders_hub;
+                        pathname = routes.redirect_page;
                         hash = 'real';
                         break;
                     case '11':
                     case '21':
-                        pathname = routes.traders_hub;
+                        pathname = routes.redirect_page;
                         hash = 'demo';
                         break;
                     case '3':
-                        pathname = routes.traders_hub;
+                        pathname = routes.redirect_page;
                         break;
                     default:
                         break;

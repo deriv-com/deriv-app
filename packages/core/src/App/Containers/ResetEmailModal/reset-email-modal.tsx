@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikErrors } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Text, Input } from '@deriv/components';
-import { validEmail, getErrorMessages } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { validEmail, getErrorMessages, loginUrl, routes } from '@deriv/shared';
+import { Localize, localize, getLanguage } from '@deriv/translations';
 import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal';
 import { observer, useStore } from '@deriv/stores';
 
@@ -13,8 +14,9 @@ type TResetEmailInitValues = {
 
 const ResetEmailModal = observer(() => {
     const { ui, client } = useStore();
+    const history = useHistory();
     const { disableApp, enableApp, is_loading, is_reset_email_modal_visible: is_visible, toggleResetEmailModal } = ui;
-    const { email } = client;
+    const { email, is_logged_in } = client;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState('');
     const [email_value, setEmailValue] = React.useState('');
@@ -50,7 +52,14 @@ const ResetEmailModal = observer(() => {
             />
         );
     }
-
+    const onCancel = () => {
+        toggleResetEmailModal(false);
+        if (is_logged_in) {
+            history.push(routes.passwords);
+        } else {
+            window.location.href = loginUrl({ language: getLanguage() });
+        }
+    };
     return (
         <Formik
             initialValues={reset_initial_values}
@@ -67,6 +76,8 @@ const ResetEmailModal = observer(() => {
                     dismissable={status.error_msg || email_error_msg}
                     onConfirm={() => toggleResetEmailModal(false)}
                     is_closed_on_cancel={false}
+                    has_close_icon={!!errors.email || !!email_error_msg}
+                    onClose={onCancel}
                 >
                     <div className='reset-email'>
                         <Form>

@@ -84,6 +84,7 @@ export const routes = {
     traders_hub: '/',
     onboarding: '/onboarding',
     compare_cfds: '/cfd-compare-accounts',
+    redirect_page: '/redirect-page',
 
     // Wallets
     wallets: '/wallet',
@@ -102,6 +103,7 @@ export const routes = {
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.trade,
     routes.onboarding,
+    routes.redirect_page,
     routes.compare_cfds,
     routes.reports,
     routes.bot,

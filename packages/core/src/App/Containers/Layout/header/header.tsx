@@ -76,6 +76,7 @@ const Header = observer(() => {
         let result;
         switch (true) {
             case pathname === routes.onboarding:
+            case pathname === routes.redirect_page:
                 result = null;
                 break;
             case traders_hub_routes:
@@ -93,7 +94,7 @@ const Header = observer(() => {
                 break;
         }
         return result;
-    } else if (pathname === routes.onboarding) {
+    } else if (pathname === routes.onboarding || pathname === routes.redirect_page) {
         return null;
     }
     return has_wallet ? <DefaultHeaderWallets /> : <DefaultHeader />;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Text, Icon, Loading } from '@deriv/components';
 import { localize, Localize, getLanguage } from '@deriv/translations';
-import { redirectToLogin, removeActionParam } from '@deriv/shared';
+import { loginUrl, removeActionParam } from '@deriv/shared';
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
 
@@ -15,15 +15,22 @@ const UpdateEmailModal = observer(() => {
     const [is_email_updated, setIsEmailUpdated] = React.useState(false);
     const [update_email_error, setUpdateEmailMessage] = React.useState(null);
 
+    const redirectToLogout = () => {
+        sessionStorage.removeItem('redirect_url');
+        removeActionParam('reset_password');
+        window.location.href = loginUrl({ language: getLanguage() });
+    };
+
     const onClickButton = () => {
-        toggleUpdateEmailModal(false);
+        sessionStorage.removeItem('redirect_url');
         removeActionParam('system_email_change');
+        toggleUpdateEmailModal(false);
         if (is_logged_in) {
             logoutClient().then(() => {
-                redirectToLogin(false, getLanguage(), false);
+                redirectToLogout();
             });
         } else {
-            redirectToLogin(false, getLanguage(), false);
+            redirectToLogout();
         }
     };
 
@@ -61,6 +68,7 @@ const UpdateEmailModal = observer(() => {
             toggleModal={toggleUpdateEmailModal}
             width='440px'
             minHeight='400px'
+            should_close_on_click_outside={false}
         >
             {is_email_updated ? (
                 <div className='change-email-update'>

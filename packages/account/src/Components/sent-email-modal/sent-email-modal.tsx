@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Localize, useTranslations, localize } from '@deriv-com/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
-import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
+import { getPlatformSettings, CFD_PLATFORMS, routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { Chat } from '@deriv/utils';
 
@@ -151,15 +151,21 @@ const SentEmailModal = ({
         );
     }
 
+    const should_show_close_icon =
+        identifier_title !== 'Change_Email' ||
+        (window.location.pathname === routes.passwords && identifier_title === 'Change_Email');
+    identifier_title !== 'Change_Email';
+
     return (
         <Modal
             className={'sent-email__modal'}
             is_open={is_open}
-            has_close_icon
+            has_close_icon={should_show_close_icon}
             should_header_stick_body
             title=''
             toggleModal={onClose}
             width='440px'
+            should_close_on_click_outside={should_show_close_icon}
         >
             <Div100vhContainer
                 className='account__scrollbars_container-wrapper'
@@ -167,13 +173,15 @@ const SentEmailModal = ({
                 height_offset='80px'
             >
                 <Modal.Body>
-                    <div
-                        onClick={onClose}
-                        className='send-email-template__close'
-                        data-testid='dt_send_email_template_close'
-                    >
-                        <Icon icon='IcCross' />
-                    </div>
+                    {should_show_close_icon && (
+                        <div
+                            onClick={onClose}
+                            className='send-email-template__close'
+                            data-testid='dt_send_email_template_close'
+                        >
+                            <Icon icon='IcCross' />
+                        </div>
+                    )}
                     {sent_email_template}
                 </Modal.Body>
             </Div100vhContainer>

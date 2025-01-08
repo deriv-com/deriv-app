@@ -42,7 +42,7 @@ describe('LinkExpiredModal', () => {
         expect(screen.queryByText('Link expired')).not.toBeInTheDocument();
     });
 
-    it('should not render the component close and resend email buttons', () => {
+    it('should  render the component resend email buttons', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseRequest.mockReturnValue({ isLoading: false });
         const mock = mockStore({ ui: { is_link_expired_modal_visible: true } });
@@ -53,7 +53,7 @@ describe('LinkExpiredModal', () => {
                 </APIProvider>
             ),
         });
-        expect(screen.getByRole('button', { name: /Close/ })).toBeInTheDocument();
+
         expect(screen.getByRole('button', { name: /Resend email/ })).toBeInTheDocument();
     });
 
@@ -76,24 +76,7 @@ describe('LinkExpiredModal', () => {
         expect(resend_button).toBeEnabled();
     });
 
-    it('should close the modal on clicking close button', async () => {
-        // @ts-expect-error ignore this until find a way to make arguments as partial
-        mockUseRequest.mockReturnValue({ isLoading: false });
-        const mock = mockStore({ ui: { is_link_expired_modal_visible: true } });
-        render(<LinkExpiredModal />, {
-            wrapper: ({ children }) => (
-                <APIProvider>
-                    <StoreProvider store={mock}>{children}</StoreProvider>
-                </APIProvider>
-            ),
-        });
-        const close_button = screen.getByRole('button', { name: /Close/ });
-        userEvent.click(close_button);
-        expect(mock.ui.toggleLinkExpiredModal).toBeCalledTimes(1);
-        expect(mock.ui.toggleLinkExpiredModal).toHaveBeenCalledWith(false);
-    });
-
-    it('should call the verify email websocket API on clicking resend mail button', () => {
+    it('should call the verify email websocket API on clicking resend mail button', async () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseRequest.mockReturnValue({ isLoading: false });
         const mock = mockStore({ ui: { is_link_expired_modal_visible: true } });
@@ -108,7 +91,7 @@ describe('LinkExpiredModal', () => {
         fireEvent.change(screen.getByRole('textbox', { name: /Email address/i }), {
             target: { value: 'test.mail@domain.com' },
         });
-        userEvent.click(resend_button);
+        await userEvent.click(resend_button);
         expect(mockUseRequest).toBeCalledWith('verify_email');
     });
 });

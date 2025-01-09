@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
 import { useCashierFiatAddress } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';
 import './WithdrawalFiat.scss';
@@ -32,7 +32,7 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setResendEmail, setVeri
         setError(undefined);
     };
 
-    if (isWithdrawalFiatLoading) return <Loader />;
+    if (isWithdrawalFiatLoading) return <WalletLoader />;
 
     if (error) {
         return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;
@@ -40,7 +40,7 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setResendEmail, setVeri
 
     return (
         <React.Fragment>
-            {isIframeLoading && <Loader />}
+            {isIframeLoading && <WalletLoader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-withdrawal-fiat__iframe'

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount, useCurrencyConfig, useDepositCryptoAddress } from '@deriv/api-v2';
-import { Divider, Loader, useDevice } from '@deriv-com/ui';
+import { Divider, useDevice } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
@@ -21,7 +22,7 @@ const DepositCrypto = () => {
     const isTUSDT = activeWallet?.currency && getConfig(activeWallet.currency)?.is_tUSDT;
     const isOnrampAvailable = activeWallet?.currency_config && activeWallet.currency_config.platform.ramp.length > 0;
 
-    if (isLoading) return <Loader />;
+    if (isLoading) return <WalletLoader />;
 
     if (isServerError(depositCryptoError)) {
         return <DepositErrorScreen error={depositCryptoError} />;

@@ -53,7 +53,7 @@ const RootComponent = observer(props => {
             }}
             notificationMessagesUi={notification_messages_ui}
             onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
-            isHubRedirectionEnabled={isHubRedirectionEnabled && !!trading_hub}
+            isHubRedirectionEnabled={isHubRedirectionEnabled || !!trading_hub}
         />
     ) : (
         <AppStore {...props} />

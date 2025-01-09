@@ -46,7 +46,7 @@ const ProofOfIdentityFlow = observer(() => {
                 identity.status === 'none' || identity.status === 'required'
                     ? ACCOUNTS_OS_POI_URL
                     : ACCOUNTS_OS_POI_STATUS_URL;
-            window.location.href = getFormattedURL(redirect_url);
+            window.location.replace(getFormattedURL(redirect_url));
         } else {
             return <ProofOfIdentity />;
         }

@@ -1,5 +1,8 @@
+import Cookies from 'js-cookie';
+
 import { redirectToLogin } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import {
     OAuth2Logout,
     requestOidcAuthentication,
@@ -39,6 +42,35 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     };
 
     const logoutHandler = async () => {
+        const current_client_info = Cookies.getJSON('client_information') || {};
+        Cookies.remove('client_information', { path: '/', domain: window.location.hostname });
+        localStorage.removeItem('active_loginid');
+
+        const analytics_config = {
+            loggedIn: false,
+            country: '',
+            residence_country: current_client_info.residence ? '' : current_client_info.residence, // Explicitly override the previous value
+            account_type: 'unlogged',
+        };
+
+        Analytics.setAttributes(analytics_config);
+        const config = {
+            growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+            growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+            rudderstackKey: process.env.RUDDERSTACK_KEY,
+            growthbookOptions: {
+                attributes: {
+                    ...analytics_config,
+                    // Force override residence_country again
+                    country: '',
+                    residence_country: '',
+                },
+            },
+        };
+        // Reinitialize analytics with complete config
+
+        Analytics.setAttributes(analytics_config);
+        await Analytics.initialise(config);
         await OAuth2Logout(handleLogout);
     };
 

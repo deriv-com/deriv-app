@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 import { WithdrawalNoBalance } from '../../screens';
@@ -42,7 +42,7 @@ const WalletWithdrawal = () => {
     }, [activeWallet?.loginid, switchAccount]);
 
     if (!activeWallet || isBalanceLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (balanceData && !isBalanceLoading && balanceData[activeWallet?.loginid ?? 'USD'].balance <= 0) {

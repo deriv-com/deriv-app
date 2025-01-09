@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useCryptoTransactions } from '@deriv/api-v2';
-import { Loader, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
+import { WalletLoader } from '../../../../../../components';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsPendingRow } from '../TransactionsPendingRow';
 import { TransactionsTable } from '../TransactionsTable';
@@ -23,7 +24,7 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
         return () => unsubscribe();
     }, [filter, resetData, subscribe, unsubscribe]);
 
-    if (!isSubscribed || isLoading) return <Loader />;
+    if (!isSubscribed || isLoading) return <WalletLoader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 

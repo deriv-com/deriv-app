@@ -1,11 +1,11 @@
 import React, { lazy, useMemo, useState } from 'react';
 import { APIProvider } from '@deriv/api-v2';
 import { initializeI18n, TranslationProvider } from '@deriv-com/translations';
-import { Loader } from '@deriv-com/ui';
 import { ModalProvider } from './components/ModalProvider';
 import useLanguage from './hooks/useLanguage';
 import AppContent from './AppContent';
 import WalletsAuthProvider from './AuthProvider';
+import { WalletLoader } from './components';
 import { TLanguageType } from './types';
 import './styles/fonts.scss';
 import './index.scss';
@@ -44,10 +44,10 @@ const App: React.FC<TProps> = ({
     const defaultLanguage = preferredLanguage ?? language;
 
     return (
-        <APIProvider standalone>
+        <APIProvider platform='wallets' standalone>
             <WalletsAuthProvider logout={logout}>
                 <TranslationProvider defaultLang={defaultLanguage} i18nInstance={i18nInstance}>
-                    <React.Suspense fallback={<Loader />}>
+                    <React.Suspense fallback={<WalletLoader />}>
                         <ModalProvider>
                             {!isWalletsOnboardingTourGuideVisible && Notifications && <Notifications />}
                             <AppContent
@@ -57,7 +57,7 @@ const App: React.FC<TProps> = ({
                         </ModalProvider>
                     </React.Suspense>
                     {isWalletsOnboardingTourGuideVisible && (
-                        <React.Suspense fallback={<Loader />}>
+                        <React.Suspense fallback={<WalletLoader />}>
                             <LazyWalletTourGuide
                                 onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
                             />

@@ -1,6 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateWallet, useIsEuRegion } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useCreateWallet,
+    useIsEuRegion,
+    useLandingCompany,
+    useWalletAccountsList,
+} from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
@@ -28,6 +34,12 @@ jest.mock('@deriv/api-v2', () => ({
     useIsEuRegion: jest.fn(() => ({
         data: false,
     })),
+    useLandingCompany: jest.fn(() => ({
+        data: {
+            financial_company: { shortcode: 'svg' },
+        },
+    })),
+    useWalletAccountsList: jest.fn(),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -101,7 +113,12 @@ describe('WalletsAddMoreCardBanner', () => {
             mutateAsync: mockMutate,
             status: 'idle',
         });
-
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [
+                { is_disabled: false, is_virtual: false, loginid: 'real1' },
+                { is_virtual: true, loginid: 'demo123' },
+            ],
+        });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (useSyncLocalStorageClientAccounts as jest.Mock).mockReturnValue({
             addWalletAccountToLocalStorage: mockAddWalletAccountToLocalStorage,
@@ -266,6 +283,11 @@ describe('WalletsAddMoreCardBanner', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
         });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                financial_company: { shortcode: 'maltainvest' },
+            },
+        }));
 
         Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
 
@@ -294,6 +316,75 @@ describe('WalletsAddMoreCardBanner', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'VRW1' },
         });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                financial_company: { shortcode: 'maltainvest' },
+            },
+        }));
+
+        Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
+
+        const originalWindowLocation = window;
+        Object.defineProperty(window, 'location', {
+            value: { href: '' },
+        });
+
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
+
+        const addButton = screen.getByText('Add');
+        fireEvent.click(addButton);
+        expect(window.location.href).toBe(
+            'https://hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest'
+        );
+
+        Object.defineProperty(window, 'location', {
+            value: originalWindowLocation,
+        });
+        process.env.NODE_ENV = ORIGINAL_NODE_ENV;
+    });
+
+    it('redirects to OutSystems staging for demo only ROW account on staging', async () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: { loginid: 'VRW1' },
+        });
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [{ is_virtual: true, loginid: 'demo123' }],
+        });
+
+        Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
+
+        const originalWindowLocation = window;
+        Object.defineProperty(window, 'location', {
+            value: { href: '' },
+        });
+
+        render(<WalletsAddMoreCardBanner currency='USD' is_added={false} is_crypto={false} />, { wrapper });
+
+        const addButton = screen.getByText('Add');
+        fireEvent.click(addButton);
+        expect(window.location.href).toBe(
+            'https://staging-hub.deriv.com/tradershub/redirect?action=real-account-signup&currency=USD&target=maltainvest'
+        );
+
+        Object.defineProperty(window, 'location', {
+            value: originalWindowLocation,
+        });
+    });
+
+    it('redirects to OutSystems production for demo only ROW account on production', async () => {
+        const ORIGINAL_NODE_ENV = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: { loginid: 'VRW1' },
+        });
+        (useWalletAccountsList as jest.Mock).mockReturnValue({
+            data: [{ is_virtual: true, loginid: 'demo123' }],
+        });
+        (useLandingCompany as jest.Mock).mockReturnValue(() => ({
+            data: {
+                gaming_company: { shortcode: 'svg' },
+            },
+        }));
 
         Analytics.getFeatureValue = jest.fn().mockReturnValue(true);
 

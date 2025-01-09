@@ -12,7 +12,7 @@ const Footer = () => {
     const is_dtrader_route = pathname === routes.trade;
     const show_in_tablet_routes = [routes.contract];
 
-    if (pathname === routes.onboarding) {
+    if (pathname === routes.onboarding || pathname === routes.redirect_page) {
         return null;
     }
 

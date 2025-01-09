@@ -125,7 +125,8 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform] && !(is_from_tradershub_os && isMobile),
-                'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
+                'app-contents--is-onboarding':
+                    window.location.pathname === routes.onboarding || window.location.pathname === routes.redirect_page,
                 'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}
             ref={scroll_ref}

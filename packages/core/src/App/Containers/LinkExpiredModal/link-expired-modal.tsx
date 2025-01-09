@@ -59,7 +59,6 @@ const LinkExpiredModal = observer(() => {
                 disableApp={disableApp}
                 enableApp={enableApp}
                 title={is_email_sent ? '' : localize('Link expired')}
-                has_close_icon
                 onConfirm={() => toggleLinkExpiredModal(false)}
             >
                 <div className='link-expired'>
@@ -92,9 +91,6 @@ const LinkExpiredModal = observer(() => {
                                 />
                             </fieldset>
                             <FormSubmitButton
-                                has_cancel
-                                cancel_label={localize('Close')}
-                                onCancel={() => toggleLinkExpiredModal(false)}
                                 is_disabled={!values.email || !!errors.email || isSubmitting}
                                 is_loading={isSubmitting}
                                 label={localize('Resend email')}

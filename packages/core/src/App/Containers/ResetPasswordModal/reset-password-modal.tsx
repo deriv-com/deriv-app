@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { redirectToLogin, validPassword, validLength, getErrorMessages, WS, removeActionParam } from '@deriv/shared';
+import { validPassword, validLength, getErrorMessages, WS, removeActionParam, loginUrl } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
@@ -49,7 +49,9 @@ const ResetPasswordModal = observer(() => {
 
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            redirectToLogin(false, getLanguage(), false);
+            sessionStorage.removeItem('redirect_url');
+            removeActionParam('reset_password');
+            window.location.href = loginUrl({ language: getLanguage() });
         });
     };
 
@@ -114,7 +116,6 @@ const ResetPasswordModal = observer(() => {
                     dismissable={status.error_msg}
                     onConfirm={closeResetPasswordModal}
                     title={localize('Reset your password')}
-                    has_close_icon
                     is_closed_on_cancel={false}
                 >
                     <div className='reset-password'>

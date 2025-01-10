@@ -146,8 +146,11 @@ export default class RunPanelStore {
                 label: localize('Reports'),
                 onClick: () => {
                     const contract_type = getSelectedTradeType();
-                    sessionStorage.setItem('contract_type_bots', contract_type);
-                    window.location.href = routes.reports;
+
+                    const url = new URL(routes.positions, window.location.origin);
+                    url.searchParams.set('contract_type_bots', contract_type);
+
+                    window.location.href = url.toString();
                 },
             });
     };

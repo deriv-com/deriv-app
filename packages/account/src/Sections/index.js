@@ -1,5 +1,5 @@
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
-import { ProofOfIdentityContainer, ProofOfIdentity } from 'Sections/Verification/ProofOfIdentity';
+import { ProofOfIdentityContainer, ProofOfIdentity, ProofOfIdentityFlow } from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
@@ -11,6 +11,7 @@ export {
     PersonalDetails,
     ProofOfIdentityContainer,
     ProofOfIdentity,
+    ProofOfIdentityFlow,
     ProofOfAddress,
     ProofOfOwnership,
     ProofOfIncome,

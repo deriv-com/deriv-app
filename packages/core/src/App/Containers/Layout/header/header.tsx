@@ -42,8 +42,9 @@ const TradersHubHeaderWallets = makeLazyLoader(
 )();
 
 const Header = observer(() => {
-    const { client } = useStore();
+    const { client, common } = useStore();
     const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
+    const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
@@ -71,7 +72,6 @@ const Header = observer(() => {
             }
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
-
     if (is_logged_in) {
         let result;
         switch (true) {
@@ -80,6 +80,13 @@ const Header = observer(() => {
                 break;
             case traders_hub_routes:
                 result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
+                break;
+            case pathname.includes(routes.account):
+                if (is_from_tradershub_os) {
+                    result = <DTraderHeader />;
+                } else {
+                    result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;
+                }
                 break;
             default:
                 result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;

@@ -1,4 +1,5 @@
 import { TCommonStoreServicesError } from '@deriv/stores/types';
+
 import { getTradeParams } from './trade-params-utils';
 
 export const HEIGHT = {
@@ -72,8 +73,7 @@ export const checkIsServiceModalError = ({
 }) => {
     const { code, type } = services_error || {};
     // Error modal is shown only for next four types. For the rest - snackbar.
-    const is_insufficient_balance =
-        code === SERVICE_ERROR.INSUFFICIENT_BALANCE || code === SERVICE_ERROR.INVALID_CONTRACT_PROPOSAL;
+    const is_insufficient_balance = code === SERVICE_ERROR.INSUFFICIENT_BALANCE;
     const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
     const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
     return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
 import { localize, Localize } from '@deriv/translations';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
@@ -199,6 +199,13 @@ const BarrierInput = observer(
                             if (!show_hidden_error && value !== '') {
                                 onChange({ target: { name: 'barrier_1', value: `${prefix || ''}${value}` } });
                                 onClose();
+                                // if (validation_errors.barrier_1.length === 0) {
+                                //     onClose(true);
+
+                                //     // This is a workaround to re-trigger any validation errors that were hidden behind the action sheet
+                                //     handleOnChange({
+                                //         target: { name: 'barrier_1', value: barrier_1.replace(/[+-]/g, '') },
+                                //     });
                             } else {
                                 setShouldShowError(true);
                             }

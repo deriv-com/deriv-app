@@ -32,9 +32,8 @@ import {
     urlForLanguage,
 } from '@deriv/shared';
 import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
-import { getCountry } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
-import { URLConstants } from '@deriv-com/utils';
+import { CountryUtils, URLConstants } from '@deriv-com/utils';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -177,7 +176,6 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
-
         makeObservable(this, {
             exchange_rates: observable,
             loginid: observable,
@@ -384,6 +382,7 @@ export default class ClientStore extends BaseStore {
             setNewEmail: action.bound,
             setDeviceData: action.bound,
             getSignupParams: action.bound,
+            getToken: action.bound,
             onSetResidence: action.bound,
             onSetCitizen: action.bound,
             onSignup: action.bound,
@@ -1125,16 +1124,11 @@ export default class ClientStore extends BaseStore {
             : window.location.hostname;
 
         // eslint-disable-next-line max-len
-        const {
-            loginid,
-            email,
-            landing_company_shortcode,
-            currency,
-            residence,
-            account_settings,
-            preferred_language,
-            user_id,
-        } = this;
+        const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
+
+        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const email = this.email || client_accounts[loginid]?.email;
+        const residence = this.residence || client_accounts[loginid]?.residence;
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1608,7 +1602,7 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform', 'lang'])}`);
                 }
             }
             runInAction(() => {
@@ -1817,15 +1811,31 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(async () => {
+            let residence_country = '';
+            if (this.residence) {
+                residence_country = this.residence;
+            } else {
+                try {
+                    const { country_code } = (await WS.authorized.cache.getSettings())?.get_settings || {
+                        country_code: '',
+                    };
+                    residence_country = country_code;
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error('Error getting residence country', error);
+                }
+            }
+
             const analytics_config = {
+                loggedIn: this.is_logged_in,
                 account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country: this.residence,
+                residence_country,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: await getCountry(),
+                country: await CountryUtils.getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,

@@ -17,7 +17,7 @@ type ResponseData = {
 };
 type Event = {
     name: string;
-    properties: Record<string, string>;
+    properties: Record<string, unknown>;
     cache?: boolean;
 };
 type Item = {

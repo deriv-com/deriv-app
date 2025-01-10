@@ -49,15 +49,16 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                 .then(res => res.json())
                 .catch(() => FIREBASE_INIT_DATA);
             if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
+                const utm_cookie = Cookies.get('utm_data');
                 const ppc_campaign_cookies =
-                    Cookies.getJSON('utm_data') === 'null'
+                    utm_cookie === 'null' || !utm_cookie
                         ? {
                               utm_source: 'no source',
                               utm_medium: 'no medium',
                               utm_campaign: 'no campaign',
                               utm_content: 'no content',
                           }
-                        : Cookies.getJSON('utm_data');
+                        : JSON.parse(utm_cookie);
 
                 const analytics_config_config = {
                     loggedIn: false,

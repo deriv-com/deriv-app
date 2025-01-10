@@ -51,10 +51,11 @@ export const AnalyticsInitializer = async () => {
                         network_type: navigator.connection?.effectiveType,
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
-                        residence_country: client_information?.residence,
+                        residence_country: client_information ? client_information.residence : '',
                     },
                 },
             };
+
             await Analytics?.initialise(config);
         }
     }

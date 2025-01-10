@@ -114,6 +114,7 @@ export default class ClientStore extends BaseStore {
         amount_dxtrade: undefined,
         currency: '',
     };
+    prevent_redirect_to_hub = false;
 
     verification_code = {
         signup: '',
@@ -239,6 +240,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            prevent_redirect_to_hub: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -331,6 +333,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
+            setPreventRedirectToHub: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -925,6 +928,10 @@ export default class ClientStore extends BaseStore {
         if (should_redirect) {
             window.location.replace(url);
         }
+    };
+
+    setPreventRedirectToHub = value => {
+        this.prevent_redirect_to_hub = value;
     };
 
     getIsMarketTypeMatching = (account, market_type) => {

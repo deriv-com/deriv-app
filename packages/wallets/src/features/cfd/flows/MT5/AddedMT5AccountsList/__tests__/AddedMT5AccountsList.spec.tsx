@@ -5,6 +5,8 @@ import { ModalProvider } from '../../../../../../components/ModalProvider';
 import { MT5_ACCOUNT_STATUS, PlatformDetails } from '../../../../constants';
 import AddedMT5AccountsList from '../AddedMT5AccountsList';
 import { useAddedMT5Account } from '../hooks';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../../../AuthProvider';
 
 // mock function to check if correct props are passed to the modal components
 const mockPropsFn = jest.fn();
@@ -92,7 +94,13 @@ const mockUseAddedMT5AccountData = {
     showMT5TradeModal: true,
 };
 
-const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => <ModalProvider>{children}</ModalProvider>;
+const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
+    <APIProvider>
+        <WalletsAuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+        </WalletsAuthProvider>
+    </APIProvider>
+);
 
 describe('AddedMT5AccountsList', () => {
     // const mockShow = jest.fn();

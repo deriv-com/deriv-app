@@ -26,6 +26,10 @@ type TWalletsRoute =
 
 export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
 
+type TRouterProps = {
+    isHubRedirectionEnabled: boolean;
+};
+
 // wallets routes which have their states
 interface WalletsRouteState {
     '/': { accountsActiveTabIndex: number };
@@ -71,7 +75,7 @@ declare module 'react-router-dom' {
     export function useRouteMatch(path: TRoute): boolean;
 }
 
-const Router: React.FC = () => {
+const Router: React.FC<TRouterProps> = ({ isHubRedirectionEnabled }) => {
     return (
         <Switch>
             <Route
@@ -96,7 +100,7 @@ const Router: React.FC = () => {
                 path={'/'}
                 render={() => (
                     <React.Suspense fallback={<WalletLoader />}>
-                        <LazyWalletsListingRoute />
+                        <LazyWalletsListingRoute isHubRedirectionEnabled={isHubRedirectionEnabled} />
                     </React.Suspense>
                 )}
             />

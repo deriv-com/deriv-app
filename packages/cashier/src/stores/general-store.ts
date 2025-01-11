@@ -1,9 +1,13 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { isCryptocurrency, routes } from '@deriv/shared';
+
 import Constants from 'Constants/constants';
+
+import type { TRootStore, TWebSocket } from '../types';
+
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
-import type { TRootStore, TWebSocket } from '../types';
 
 export default class GeneralStore extends BaseStore {
     constructor(
@@ -41,11 +45,14 @@ export default class GeneralStore extends BaseStore {
         });
 
         reaction(
-            () => [
-                this.root_store.client.switched,
-                this.root_store.client.is_logged_in,
-                this.root_store.client.currency,
-            ],
+            () => {
+                return [
+                    this.root_store.common.current_language,
+                    this.root_store.client.switched,
+                    this.root_store.client.is_logged_in,
+                    this.root_store.client.currency,
+                ];
+            },
             () => {
                 this.init();
             }

@@ -177,6 +177,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             pre_switch_broadcast: false,
             residence: '',
             is_svg: false,
+            is_p2p_available: false,
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
             setFinancialAndTradingAssessment: jest.fn(),

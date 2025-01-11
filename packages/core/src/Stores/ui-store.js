@@ -792,6 +792,9 @@ export default class UIStore extends BaseStore {
     }
 
     toggleResetEmailModal(state_change = !this.is_reset_email_modal_visible) {
+        if (!state_change) {
+            this.root_store.client.setPreventRedirectToHub(false);
+        }
         this.is_reset_email_modal_visible = state_change;
     }
 
@@ -800,6 +803,9 @@ export default class UIStore extends BaseStore {
     }
 
     setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
+        if (!is_reset_trading_password_modal_visible) {
+            this.root_store.client.setPreventRedirectToHub(false);
+        }
         this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
     }
 

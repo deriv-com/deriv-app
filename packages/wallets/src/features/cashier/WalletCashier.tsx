@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
@@ -21,7 +21,7 @@ const WalletCashier = () => {
         [onCashierScroll]
     );
 
-    if (isLoading) return <Loader />;
+    if (isLoading) return <WalletLoader />;
 
     return (
         <div className='wallets-cashier'>

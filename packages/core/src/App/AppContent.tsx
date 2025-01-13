@@ -186,7 +186,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <SmartTraderIFrame />}
             {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />

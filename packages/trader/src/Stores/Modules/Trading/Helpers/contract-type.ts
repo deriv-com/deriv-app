@@ -452,6 +452,24 @@ export const ContractType = (() => {
         return trading_events[date][underlying as string];
     };
 
+    const getTradingDays = async (date: string, underlying: string | null = null) => {
+        if (!date || !underlying) return null;
+
+        const response: TradingTimesResponse = await WS.tradingTimes(date);
+        const trading_times = response.trading_times as TradingTimes;
+
+        if (!getPropertyValue(response, ['trading_times', 'markets'])) return null;
+
+        const symbol_data = trading_times.markets.flatMap(
+            market =>
+                market.submarkets?.flatMap(
+                    submarket => submarket.symbols?.find(symbol => symbol.symbol === underlying) || []
+                ) || []
+        )[0];
+
+        return symbol_data?.trading_days || null;
+    };
+
     const getTradingTimes = async (
         date: string | null,
         underlying: string | null = null
@@ -719,6 +737,7 @@ export const ContractType = (() => {
         getStartTime,
         getStartType,
         getTradingEvents,
+        getTradingDays,
         getTradingTimes,
         getContractCategories: () => ({
             contract_types_list: available_categories,

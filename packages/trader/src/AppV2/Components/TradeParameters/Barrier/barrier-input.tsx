@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+
+import { Localize, localize } from '@deriv/translations';
 import { ActionSheet, Chip, Text, TextField, TextFieldAddon } from '@deriv-com/quill-ui';
 
-import { localize, Localize } from '@deriv/translations';
-import { observer } from 'mobx-react-lite';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { useDtraderQuery } from 'AppV2/Hooks/useDtraderQuery';
+import { getProposalRequestObject } from 'AppV2/Utils/trade-params-utils';
 import { ProposalResponse } from 'Stores/Modules/Trading/trade-store';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const chips_options = [
     {
@@ -24,9 +25,11 @@ const BarrierInput = observer(
         const trade_store = useTraderStore();
         const { barrier_1, onChange, tick_data, trade_types } = trade_store;
         const [value, setValue] = useState(String(barrier_1.replace(/[+-]/g, '')));
+        const [input_value, setInputValue] = useState<{ [key: string]: string }>({});
         const [option, setOption] = React.useState(0);
         const [should_show_error, setShouldShowError] = React.useState(false);
         const [is_focused, setIsFocused] = React.useState(false);
+        const [is_processing, setIsProcessing] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
         const prefix = (option === 0 && '+') || (option === 1 && '-');
@@ -46,7 +49,7 @@ const BarrierInput = observer(
                 ...new_values,
             },
             {
-                enabled: is_open && barrier_1 !== '',
+                enabled: (is_open && barrier_1 !== '') || is_processing,
             }
         );
 
@@ -83,13 +86,16 @@ const BarrierInput = observer(
         }, [is_focused]);
 
         const handleChipSelect = (index: number) => {
+            const input = { ...input_value, ...{ [option]: value } };
+            setInputValue(input);
             // On each change have to check if its =,- as per the barrier_1. If yes , then set the value or else just don't
             // and make it empty
             setOption(index);
             setShouldShowError(false);
             const sign = barrier_1[0];
-
-            if (sign === '+' && index === 0) {
+            if (input_value[index]) {
+                setValue(input_value[index]);
+            } else if (sign === '+' && index === 0) {
                 setValue(barrier_1.replace(/[+-]/g, ''));
             } else if (sign === '-' && index === 1) {
                 setValue(barrier_1.replace(/[+-]/g, ''));
@@ -98,14 +104,20 @@ const BarrierInput = observer(
             } else {
                 setValue('');
             }
+            setTimeout(() => {
+                setIsProcessing(false);
+            }, 0);
         };
 
         const getErrorMessage = () => {
-            if (should_show_error) {
-                return required_error;
+            if (is_processing) {
+                return '';
             }
             if (show_hidden_error) {
                 return response?.error?.message;
+            }
+            if (should_show_error) {
+                return required_error;
             }
             return '';
         };
@@ -126,7 +138,10 @@ const BarrierInput = observer(
                                 {chips_options.map((item, index) => (
                                     <Chip.Selectable
                                         key={index}
-                                        onClick={() => handleChipSelect(index)}
+                                        onClick={() => {
+                                            setIsProcessing(true);
+                                            handleChipSelect(index);
+                                        }}
                                         selected={index == option}
                                     >
                                         <Text size='sm'>{item.name}</Text>
@@ -199,13 +214,6 @@ const BarrierInput = observer(
                             if (!show_hidden_error && value !== '') {
                                 onChange({ target: { name: 'barrier_1', value: `${prefix || ''}${value}` } });
                                 onClose();
-                                // if (validation_errors.barrier_1.length === 0) {
-                                //     onClose(true);
-
-                                //     // This is a workaround to re-trigger any validation errors that were hidden behind the action sheet
-                                //     handleOnChange({
-                                //         target: { name: 'barrier_1', value: barrier_1.replace(/[+-]/g, '') },
-                                //     });
                             } else {
                                 setShouldShowError(true);
                             }

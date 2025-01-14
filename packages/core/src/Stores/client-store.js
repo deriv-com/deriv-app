@@ -631,6 +631,8 @@ export default class ClientStore extends BaseStore {
     }
 
     get available_onramp_currencies() {
+        if (!this.website_status?.currencies_config) return [];
+
         return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
             if (values.platform.ramp.length > 0) {
                 currencies.push(currency);

@@ -1,6 +1,7 @@
 import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
+    callback_page: '/callback',
     reset_password: '/',
     error404: '/404',
     index: '/index',
@@ -93,6 +94,9 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
+
+    // Outsystems
+    os_redirect: '/os-redirect',
 };
 
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
@@ -115,3 +119,12 @@ export const isDisabledLandscapeBlockerRoute = (path: string) => {
     if (path === routes.traders_hub) return true;
     return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
 };
+
+export const ACCOUNTS_OS_POI_URL =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/Accounts/ProofOfIdentity'
+        : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentity';
+export const ACCOUNTS_OS_POI_STATUS_URL =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/Accounts/ProofOfIdentityStatus'
+        : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus';

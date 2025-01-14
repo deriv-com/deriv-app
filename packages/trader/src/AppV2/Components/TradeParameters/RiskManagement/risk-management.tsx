@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { localize, Localize } from '@deriv/translations';
@@ -12,6 +12,7 @@ import { addUnit, isSmallScreen } from 'AppV2/Utils/trade-params-utils';
 import RiskManagementPicker from './risk-management-picker';
 import RiskManagementContent from './risk-management-content';
 import { TTradeParametersProps } from '../trade-parameters';
+import useTradeError from 'AppV2/Hooks/useTradeError';
 
 const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -26,6 +27,10 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
         take_profit,
         stop_loss,
     } = useTraderStore();
+
+    const { is_error_matching_field: has_error } = useTradeError({
+        error_fields: ['stop_loss', 'take_profit'],
+    });
 
     const closeActionSheet = React.useCallback(() => setIsOpen(false), []);
     const getRiskManagementText = () => {
@@ -82,6 +87,7 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
                 readOnly
                 value={getRiskManagementText()}
                 variant='fill'
+                status={has_error ? 'error' : 'neutral'}
             />
             <ActionSheet.Root
                 isOpen={is_open}

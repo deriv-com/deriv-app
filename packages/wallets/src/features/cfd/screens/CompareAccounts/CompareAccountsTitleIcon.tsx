@@ -1,104 +1,122 @@
 import React from 'react';
-import { useIsEuRegion } from '@deriv/api-v2';
+import { LegacyInfo1pxIcon } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
-import { Divider, Text, Tooltip } from '@deriv-com/ui';
-import InfoIcon from '../../../../public/images/ic-info-outline.svg';
+import { Divider, Text, Tooltip, useDevice } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../../constants';
-import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
+import { CFD_PLATFORMS } from '../../constants';
+import { ACCOUNT_ICONS, MT5_PRODUCT } from './constants';
 import './CompareAccountsTitleIcon.scss';
-
-type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
     isDemo: boolean;
-    marketType: TMarketType;
+    isEuRegion: boolean;
     platform: TPlatforms.All;
-    product?: THooks.AvailableMT5Accounts['product'];
-    shortCode: THooks.AvailableMT5Accounts['shortcode'];
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp';
 };
 
-const getAccountIcon = (
-    platform: TPlatforms.All,
-    marketType: TMarketType,
-    product?: THooks.AvailableMT5Accounts['product'],
-    isEuRegion?: boolean
-) => {
-    if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
-        return ACCOUNT_ICONS[platform];
-    }
-    if (isEuRegion && marketType === MARKET_TYPE.FINANCIAL) {
-        return ACCOUNT_ICONS[marketType].Eu;
-    }
-
-    if (marketType === MARKET_TYPE.FINANCIAL) {
-        return ACCOUNT_ICONS[marketType].NonEU;
-    }
-    return (
-        (product === PRODUCT.ZEROSPREAD && ACCOUNT_ICONS[product]) ||
-        (marketType && ACCOUNT_ICONS[marketType]) ||
-        ACCOUNT_ICONS.default
-    );
+type TGetAccountIconValues = {
+    isEuRegion: boolean;
+    platform: TPlatforms.All;
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp';
 };
 
-type TMarketWithShortCode = `${TMarketType}_${string}`;
+type TGetAccountCardTitleValues = {
+    isDemo?: boolean;
+    isEuRegion: boolean;
+    platform: TPlatforms.All;
+    product: THooks.AvailableMT5Accounts['product'] | TPlatforms.OtherAccounts | 'gold' | 'stp';
+};
 
-const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
-    switch (shortCode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return isDemo ? localize('Standard Demo') : localize('Standard - SVG');
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return localize('Standard - BVI');
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return localize('Standard - Vanuatu');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return isDemo ? localize('Financial Demo') : localize('Financial - SVG');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            return localize('Financial - BVI');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            return localize('Financial - Vanuatu');
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            return localize('Financial - Labuan');
-        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
-            return isDemo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
-        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return isDemo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
+const getAccountIcon = (values: TGetAccountIconValues) => {
+    const { isEuRegion, platform, product } = values;
+
+    switch (platform) {
         case CFD_PLATFORMS.DXTRADE:
-            return isDemo ? localize('Deriv X Demo') : localize('Deriv X');
+            return ACCOUNT_ICONS[platform];
         case CFD_PLATFORMS.CTRADER:
-            return isDemo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
+            return ACCOUNT_ICONS[platform];
+        case CFD_PLATFORMS.MT5:
+            switch (product) {
+                case MT5_PRODUCT.STANDARD:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.STANDARD];
+                case MT5_PRODUCT.FINANCIAL:
+                    return isEuRegion
+                        ? ACCOUNT_ICONS[MT5_PRODUCT.FINANCIAL].Eu
+                        : ACCOUNT_ICONS[MT5_PRODUCT.FINANCIAL].NonEU;
+                case MT5_PRODUCT.STP:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.FINANCIAL].NonEU;
+                case MT5_PRODUCT.SWAP_FREE:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.SWAP_FREE];
+                case MT5_PRODUCT.ZERO_SPREAD:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.ZERO_SPREAD];
+                case MT5_PRODUCT.GOLD:
+                    return ACCOUNT_ICONS[MT5_PRODUCT.GOLD];
+                default:
+                    return ACCOUNT_ICONS.default;
+            }
         default:
-            return isDemo ? localize('CFDs Demo') : localize('CFDs');
+            return ACCOUNT_ICONS.default;
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, shortCode }: TCompareAccountsTitleIcon) => {
+const getAccountCardTitle = (values: TGetAccountCardTitleValues) => {
+    const { isDemo, isEuRegion, platform, product } = values;
+
+    if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
+        switch (platform) {
+            case CFD_PLATFORMS.DXTRADE:
+                return isDemo ? localize('Deriv X Demo') : localize('Deriv X');
+            case CFD_PLATFORMS.CTRADER:
+                return isDemo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
+            default:
+                return '';
+        }
+    }
+
+    if (platform === CFD_PLATFORMS.MT5) {
+        switch (product) {
+            case MT5_PRODUCT.STANDARD:
+                return isDemo ? localize('Standard Demo') : localize('Standard');
+            case MT5_PRODUCT.FINANCIAL: {
+                if (isEuRegion) {
+                    return isDemo ? localize('CFDs Demo') : localize('CFDs');
+                }
+                return isDemo ? localize('Financial Demo') : localize('Financial');
+            }
+            case MT5_PRODUCT.STP:
+                return localize('Financial - STP');
+            case MT5_PRODUCT.SWAP_FREE:
+                return isDemo ? localize('Swap-Free Demo') : localize('Swap-Free');
+            case MT5_PRODUCT.ZERO_SPREAD:
+                return isDemo ? localize('Zero Spread Demo') : localize('Zero Spread');
+            case MT5_PRODUCT.GOLD:
+                return isDemo ? localize('Gold Demo') : localize('Gold');
+            default:
+                return '';
+        }
+    }
+};
+
+const CompareAccountsTitleIcon = ({ isDemo, isEuRegion, platform, product }: TCompareAccountsTitleIcon) => {
     const { localize } = useTranslations();
-    const { data: isEuRegion } = useIsEuRegion();
-    const marketTypeShortCode: TMarketWithShortCode =
-        platform === CFD_PLATFORMS.MT5 && marketType === MARKET_TYPE.ALL
-            ? `${marketType}_${product}_${shortCode}`
-            : `${marketType}_${shortCode}`;
+    const { isDesktop } = useDevice();
 
-    const jurisdictionCardIcon = getAccountIcon(platform, marketType, product, isEuRegion);
-
-    const jurisdictionCardTitle =
-        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
-            ? getAccountCardTitle(platform, isDemo)
-            : getAccountCardTitle(marketTypeShortCode, isDemo);
+    const jurisdictionCardIcon = getAccountIcon({ isEuRegion, platform, product });
+    const jurisdictionCardTitle = getAccountCardTitle({ isDemo, isEuRegion, platform, product });
     const labuanJurisdictionMessage = localize(
-        'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
+        'This account gives you direct market price access and tighter spreads.'
     );
+    const iconSize = { height: isDesktop ? 48 : 32, width: isDesktop ? 48 : 32 };
 
     return (
         <React.Fragment>
             <div className='wallets-compare-accounts-title'>
-                {jurisdictionCardIcon}
+                {jurisdictionCardIcon(iconSize)}
                 <div className='wallets-compare-accounts-title__separator'>
                     <Text align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </Text>
-                    {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
+                    {product === MT5_PRODUCT.STP && (
                         <Tooltip
                             as='div'
                             data-testid='dt_wallets_compare_accounts_title__tooltip'
@@ -106,7 +124,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, product, short
                             tooltipContent={labuanJurisdictionMessage}
                             tooltipPosition='bottom-start'
                         >
-                            <InfoIcon />
+                            <LegacyInfo1pxIcon width={16} />
                         </Tooltip>
                     )}
                 </div>

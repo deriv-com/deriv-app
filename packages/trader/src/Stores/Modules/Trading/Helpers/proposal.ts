@@ -80,7 +80,7 @@ export const getProposalErrorField = (response: PriceProposalResponse) => {
 export const getProposalInfo = (
     store: TTradeStore,
     response: PriceProposalResponse & TError,
-    obj_prev_contract_basis: TObjContractBasis
+    obj_prev_contract_basis?: TObjContractBasis
 ) => {
     const proposal: ExpandedProposal = response.proposal || ({} as ExpandedProposal);
     const profit = (proposal.payout || 0) - (proposal.ask_price || 0);
@@ -208,7 +208,7 @@ export const createProposalRequestForContract = (store: TTradeStore, type_of_con
         ...((store.barrier_count > 0 || store.form_components.indexOf('last_digit') !== -1) &&
             !isAccumulatorContract(type_of_contract) &&
             !isTurbosContract(type_of_contract) && {
-                barrier: store.barrier_1 || store.last_digit,
+                barrier: store.barrier || store.barrier_1 || store.last_digit,
             }),
         ...(store.barrier_count === 2 && !isAccumulatorContract(type_of_contract) && { barrier2: store.barrier_2 }),
         ...(isTurbosContract(type_of_contract) && {

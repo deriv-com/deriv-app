@@ -104,6 +104,7 @@ export default class GoogleDriveStore {
                     this.setIsAuthorized(true);
                     localStorage.setItem('google_access_token', response.access_token);
                     this.setGoogleDriveTokenExpiry(response?.expires_in);
+                    this.setGoogleDriveTokenValid(true);
                 }
             },
         });
@@ -137,8 +138,10 @@ export default class GoogleDriveStore {
     async signOut() {
         if (this.access_token) {
             await window?.gapi?.client?.setToken({ access_token: '' });
-            await window?.google?.accounts?.oauth2?.revoke(this.access_token);
-            localStorage?.removeItem('google_access_token');
+            if (localStorage.getItem('google_access_token')) {
+                await window?.google?.accounts?.oauth2?.revoke(this.access_token);
+                localStorage?.removeItem('google_access_token');
+            }
             this.access_token = '';
         }
         this.setIsAuthorized(false);

@@ -3,6 +3,7 @@ import {
     useActiveLinkedToTradingAccount,
     useActiveWalletAccount,
     useCreateNewRealAccount,
+    useCreateNewVirtualAccount,
     useInvalidateQuery,
     useIsEuRegion,
     useSettings,
@@ -29,6 +30,11 @@ const DerivAppsGetAccount: React.FC = () => {
         isSuccess: isAccountCreationSuccess,
         mutateAsync: createNewRealAccount,
     } = useCreateNewRealAccount();
+    const {
+        isLoading: isVirtualAccountCreationLoading,
+        isSuccess: isVirtualAccountCreationSuccess,
+        mutateAsync: createNewVirtualAccount,
+    } = useCreateNewVirtualAccount();
     const {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
     } = useSettings();
@@ -61,14 +67,22 @@ const DerivAppsGetAccount: React.FC = () => {
 
             if (!newAccountReal) return;
 
-            await addTradingAccountToLocalStorage(newAccountReal);
+            await addTradingAccountToLocalStorage(newAccountReal, false);
 
+            invalidate('account_list');
+        } else {
+            const createAccountResponse = await createNewVirtualAccount();
+            const newAccountVirtual = createAccountResponse?.new_account_virtual;
+
+            if (!newAccountVirtual) return;
+
+            await addTradingAccountToLocalStorage(newAccountVirtual, true);
             invalidate('account_list');
         }
     };
 
     useEffect(() => {
-        if (isAccountCreationSuccess) {
+        if (isAccountCreationSuccess || isVirtualAccountCreationSuccess) {
             const displayBalance = displayMoney(
                 balanceData?.[activeWallet?.loginid ?? '']?.balance,
                 activeWallet?.currency,
@@ -106,7 +120,7 @@ const DerivAppsGetAccount: React.FC = () => {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, isVirtualAccountCreationSuccess]);
 
     return (
         <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
@@ -134,7 +148,11 @@ const DerivAppsGetAccount: React.FC = () => {
                     <Button
                         borderWidth='sm'
                         color='black'
-                        disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
+                        disabled={
+                            isAccountCreationLoading ||
+                            isVirtualAccountCreationLoading ||
+                            isActiveLinkedToTradingAccountLoading
+                        }
                         onClick={createTradingAccount}
                         rounded='md'
                         variant='outlined'

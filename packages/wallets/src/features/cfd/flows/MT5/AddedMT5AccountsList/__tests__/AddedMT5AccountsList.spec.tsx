@@ -2,9 +2,11 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
-import { PlatformDetails } from '../../../../constants';
+import { MT5_ACCOUNT_STATUS, PlatformDetails } from '../../../../constants';
 import AddedMT5AccountsList from '../AddedMT5AccountsList';
 import { useAddedMT5Account } from '../hooks';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../../../AuthProvider';
 
 // mock function to check if correct props are passed to the modal components
 const mockPropsFn = jest.fn();
@@ -22,6 +24,30 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../../../../components', () => ({
     ...jest.requireActual('../../../../components'),
+    PlatformStatusBadge: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>PlatformStatusBadge</div>;
+    }),
+}));
+
+jest.mock('../../../../modals', () => ({
+    ...jest.requireActual('../../../../modals'),
+    MT5TradeModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>MT5TradeModal</div>;
+    }),
+    TradingPlatformStatusModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>TradingPlatformStatusModal</div>;
+    }),
+}));
+
+jest.mock('../../../../../../components', () => ({
+    ...jest.requireActual('../../../../../../components'),
+    ClientVerificationModal: jest.fn(props => {
+        mockPropsFn(props);
+        return <div>ClientVerificationModal</div>;
+    }),
     ClientVerificationStatusBadge: jest.fn(props => {
         mockPropsFn(props.variant);
         return (
@@ -35,30 +61,6 @@ jest.mock('../../../../components', () => ({
             </div>
         );
     }),
-    PlatformStatusBadge: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>PlatformStatusBadge</div>;
-    }),
-}));
-
-jest.mock('../../../../modals', () => ({
-    ...jest.requireActual('../../../../modals'),
-    ClientVerificationModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>ClientVerificationModal</div>;
-    }),
-    MT5TradeModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>MT5TradeModal</div>;
-    }),
-    TradingPlatformStatusModal: jest.fn(props => {
-        mockPropsFn(props);
-        return <div>TradingPlatformStatusModal</div>;
-    }),
-}));
-
-jest.mock('../../../../../../components', () => ({
-    ...jest.requireActual('../../../../../../components'),
     WalletDisabledAccountModal: jest.fn(props => {
         mockPropsFn(props);
         return <div>WalletDisabledAccountModal</div>;
@@ -88,16 +90,16 @@ const mockUseAddedMT5AccountData = {
         ),
         title: 'Financial',
     },
-    isServerMaintenance: false,
-    showClientVerificationModal: false,
+    hasDisabledPlatformStatus: false,
     showMT5TradeModal: true,
-    showPlatformStatus: false,
 };
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
-    <>
-        <ModalProvider>{children}</ModalProvider>
-    </>
+    <APIProvider>
+        <WalletsAuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+        </WalletsAuthProvider>
+    </APIProvider>
 );
 
 describe('AddedMT5AccountsList', () => {
@@ -146,9 +148,8 @@ describe('AddedMT5AccountsList', () => {
     it('shows the disabled badge when the account MT5 account is disabled', () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
+            hasDisabledPlatformStatus: true,
             isAccountDisabled: true,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
@@ -181,8 +182,8 @@ describe('AddedMT5AccountsList', () => {
     it('shows TradingPlatformStatusModal when platform is under maintenance', async () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
+            hasDisabledPlatformStatus: true,
+            platformStatus: MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account
@@ -193,7 +194,7 @@ describe('AddedMT5AccountsList', () => {
         await waitFor(() => {
             expect(screen.getByText('TradingPlatformStatusModal')).toBeInTheDocument();
             expect(mockPropsFn).toBeCalledWith({
-                isServerMaintenance: true,
+                status: 'under_maintenance',
             });
         });
     });
@@ -201,9 +202,8 @@ describe('AddedMT5AccountsList', () => {
     it('shows the WalletDisabledAccountModal when a disabled account MT5 account is clicked', async () => {
         (useAddedMT5Account as jest.Mock).mockReturnValue({
             ...mockUseAddedMT5AccountData,
+            hasDisabledPlatformStatus: true,
             isAccountDisabled: true,
-            isServerMaintenance: true,
-            showPlatformStatus: true,
         });
 
         // @ts-expect-error - since this is a mock, we only need partial properties of the account

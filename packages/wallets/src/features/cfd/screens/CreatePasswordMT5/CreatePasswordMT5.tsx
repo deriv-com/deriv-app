@@ -3,10 +3,9 @@ import { DerivLightDmt5PasswordIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
-import { TPlatforms } from '../../../../types';
+import { TAvailableMT5Account, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
-import { TAvailableMT5Account } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './CreatePasswordMT5.scss';
 
@@ -65,7 +64,7 @@ const CreatePasswordMT5: React.FC<TProps> = ({
                 />
                 {!isVirtual && <MT5LicenceMessage account={account} />}
                 {!isVirtual && account.shortcode !== 'svg' && (
-                    <MT5PasswordModalTnc checked={isTncChecked} onChange={onTncChange} />
+                    <MT5PasswordModalTnc checked={isTncChecked} companyName={account.name} onChange={onTncChange} />
                 )}
             </div>
 

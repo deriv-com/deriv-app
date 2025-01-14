@@ -10,7 +10,7 @@ import {
 import { Localize, localize } from '@deriv/translations';
 import { Moment } from 'moment';
 import React from 'react';
-import { createProposalRequestForContract } from 'Stores/Modules/Trading/Helpers/proposal';
+import { createProposalRequestForContract, getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
 import { TTradeStore } from 'Types';
 
 export const DURATION_UNIT = {
@@ -422,7 +422,7 @@ export const getDatePickerStartDate = (
 
     const getMomentContractStartDateTime = () => {
         const minDurationDate = getMinDuration(server_time, duration_units_list);
-        const time = isTimeValid(start_time ?? '') ? start_time : server_time?.toISOString().substr(11, 8) ?? '';
+        const time = isTimeValid(start_time ?? '') ? start_time : (server_time?.toISOString().substr(11, 8) ?? '');
         return setMinTime(minDurationDate, time ?? '');
     };
 
@@ -449,9 +449,41 @@ export const getProposalRequestObject = ({
     const request = createProposalRequestForContract(
         store as Parameters<typeof createProposalRequestForContract>[0],
         trade_type
-    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & { subscribe?: number };
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & {
+        subscribe?: number;
+        limit_order:
+            | {
+                  take_profit?: number;
+                  stop_loss?: number;
+              }
+            | undefined;
+    };
 
     if (!should_subscribe) delete request.subscribe;
 
     return request;
+};
+
+export const getPayoutInfo = (proposal_info: ReturnType<typeof getProposalInfo>) => {
+    // getting current payout
+    const { has_error, message = '', payout = 0, error_field } = proposal_info ?? {};
+    const float_number_search_regex = /\d+(\.\d+)?/g;
+    const is_error_matching = has_error && (error_field === 'amount' || error_field === 'stake');
+    const proposal_error_message = is_error_matching ? message : '';
+    /* TODO: stop using error text for getting the payout value, need API changes */
+    // Extracting the value of exceeded payout from error text
+    const error_payout = proposal_error_message
+        ? Number(proposal_error_message.match(float_number_search_regex)?.[2])
+        : 0;
+    const contract_payout = payout || error_payout;
+
+    // getting max allowed payout
+    const { payout: validation_payout } = (proposal_info?.validation_params || proposal_info?.validation_params) ?? {};
+    const { max } = validation_payout ?? {};
+    /* TODO: stop using error text for getting the max payout value, need API changes */
+    // Extracting the value of max payout from error text
+    const error_max_payout = is_error_matching && message ? Number(message.match(float_number_search_regex)?.[1]) : 0;
+    const max_payout = max || error_max_payout;
+
+    return { contract_payout, max_payout, error: proposal_error_message };
 };

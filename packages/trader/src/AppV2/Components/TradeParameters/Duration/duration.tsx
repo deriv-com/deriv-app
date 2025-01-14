@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
 import { getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -13,22 +13,26 @@ import { TTradeParametersProps } from '../trade-parameters';
 
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
-        duration,
+        contract_type,
+        duration_min_max,
         duration_unit,
+        duration_units_list,
+        duration,
+        expiry_epoch,
         expiry_time,
         expiry_type,
-        contract_type,
         is_market_closed,
-        trade_types,
-        proposal_info,
-        trade_type_tab,
         onChangeMultiple,
-        duration_min_max,
-        symbol,
-        duration_units_list,
-        expiry_epoch,
-        validation_errors,
+        proposal_info,
+        saved_expiry_date_v2,
+        setSavedExpiryDateV2,
+        setUnsavedExpiryDateV2,
         start_time,
+        symbol,
+        trade_type_tab,
+        trade_types,
+        unsaved_expiry_date_v2,
+        validation_errors,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
@@ -36,6 +40,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
     const [expiry_time_string, setExpiryTimeString] = useState('');
+    const [expiry_date_string, setExpiryDateString] = useState('');
     const [end_date, setEndDate] = useState<Date>(new Date());
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
@@ -54,6 +59,10 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             setExpiryTimeString(
                 new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
             );
+
+            const new_date_string = new Date((expiry_epoch as number) * 1000).toISOString().split('T')[0];
+            setExpiryDateString(new Date((expiry_epoch as number) * 1000).toISOString().split('T')[0]);
+            setSavedExpiryDateV2(new_date_string);
         }
     }, [expiry_epoch]);
 
@@ -97,17 +106,22 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const onClose = React.useCallback(() => setOpen(false), []);
 
     const getInputValues = () => {
-        const formatted_date = end_date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        });
+        const formatted_date = saved_expiry_date_v2
+            ? new Date(saved_expiry_date_v2).toLocaleDateString('en-GB', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+              })
+            : '';
         if (expiry_type == 'duration') {
             if (duration_unit === 'm' && duration > 59) {
                 const hours = Math.floor(duration / 60);
                 const minutes = duration % 60;
                 return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
             } else if (duration_unit === 'd') {
+                if (!formatted_date) {
+                    return '';
+                }
                 return `${localize('Ends on')} ${formatted_date}, ${expiry_time_string || '23:59:59'} GMT`;
             }
             return `${duration} ${duration_unit_text}`;
@@ -187,12 +201,14 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
                         setSelectedHour={setSelectedHour}
                         unit={unit}
                         setUnit={setUnit}
-                        end_date={end_date}
-                        setEndDate={setEndDate}
                         expiry_time_string={expiry_time_string}
                         setExpiryTimeString={setExpiryTimeString}
                         end_time={end_time}
                         setEndTime={setEndTime}
+                        saved_expiry_date_v2={saved_expiry_date_v2}
+                        setSavedExpiryDateV2={setSavedExpiryDateV2}
+                        unsaved_expiry_date_v2={unsaved_expiry_date_v2}
+                        setUnsavedExpiryDateV2={setUnsavedExpiryDateV2}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

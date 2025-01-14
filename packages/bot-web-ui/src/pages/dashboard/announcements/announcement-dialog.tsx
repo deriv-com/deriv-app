@@ -33,6 +33,9 @@ const AnnouncementDialog = ({
         content,
         numbered_content,
         plain_text,
+        unordered_list,
+        media,
+        event_name,
     } = announcement;
     return (
         <Dialog
@@ -49,7 +52,7 @@ const AnnouncementDialog = ({
                 setIsAnnounceDialogOpen(false);
                 rudderStackSendCloseEvent({
                     subform_name: 'announcements',
-                    announcement_name: main_title,
+                    announcement_name: event_name,
                 });
             }}
             className={is_tablet ? `${base_classname} ${base_classname}--tablet` : base_classname}
@@ -58,6 +61,13 @@ const AnnouncementDialog = ({
                 <div className={`${base_classname}__body-icon--${id.toLowerCase()}`}>
                     <IconAnnounceModal announce_id={id} />
                 </div>
+                {Array.isArray(media) && (
+                    <>
+                        {media.map((src, index) => (
+                            <img className={`${base_classname}__image`} key={index} src={src} alt={src} />
+                        ))}
+                    </>
+                )}
                 <div className={`${base_classname}__body-main-content`}>
                     <Text as='p' size='xs' className={`${base_classname}__title--${id.toLowerCase()}`}>
                         {title}
@@ -75,6 +85,17 @@ const AnnouncementDialog = ({
                                 </div>
                             );
                         })}
+                    {Array.isArray(unordered_list) && (
+                        <ul className={`${base_classname}__unordered_list`} key={0}>
+                            {unordered_list.map((content_item: TContentItem) => (
+                                <li key={content_item?.id}>
+                                    <Text as='p' line_height='l' size='xs'>
+                                        {content_item?.text}
+                                    </Text>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     {Array.isArray(numbered_content) && (
                         <ol className={`${base_classname}__body-item--numbered`}>
                             {numbered_content.map((content: TContentItem) => (

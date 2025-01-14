@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Button, useSnackbar } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
@@ -68,7 +68,6 @@ const TakeProfitAndStopLossContainer = observer(({ closeActionSheet }: TTakeProf
                     switching_tp_sl: true,
                 }),
                 hasCloseButton: true,
-                delay: 100,
             });
         }
 

@@ -12,6 +12,7 @@ import {
     platforms,
     routes,
     toMoment,
+    isNavigationFromTradersHubOS,
 } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -39,6 +40,7 @@ export default class CommonStore extends BaseStore {
             has_error: observable,
             init: action.bound,
             is_from_derivgo: computed,
+            is_from_tradershub_os: computed,
             is_language_changing: observable,
             is_network_online: observable,
             is_socket_opened: observable,
@@ -174,6 +176,13 @@ export default class CommonStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get is_from_outside_cashier() {
         return !window.location.pathname.startsWith(routes.cashier);
+    }
+
+    get is_from_tradershub_os() {
+        return (
+            platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name ||
+            isNavigationFromTradersHubOS()
+        );
     }
 
     setInitialRouteHistoryItem(location) {

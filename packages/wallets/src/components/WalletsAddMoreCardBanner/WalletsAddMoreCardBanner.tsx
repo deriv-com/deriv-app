@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet } from '@deriv/api-v2';
+import { useCreateWallet, useIsEuRegion, useLandingCompany, useWalletAccountsList } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
+import { redirectToOutSystems } from '../../helpers/urls';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { TWalletCarouselItem } from '../../types';
@@ -25,6 +26,11 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
     const { localize } = useTranslations();
+    const { data: isEuRegion } = useIsEuRegion();
+    const { data: landingCompany } = useLandingCompany();
+    const { data: wallets } = useWalletAccountsList();
+    const hasAnyActiveRealWallets = wallets?.some(wallet => !wallet.is_virtual && !wallet.is_disabled);
+    const shortcode = landingCompany?.financial_company?.shortcode ?? landingCompany?.gaming_company?.shortcode;
 
     useEffect(
         () => {
@@ -81,6 +87,10 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                     e.stopPropagation();
 
                     if (!currency) return;
+
+                    if (isEuRegion || !hasAnyActiveRealWallets) {
+                        return redirectToOutSystems(shortcode, currency);
+                    }
 
                     const createAccountResponse = await mutateAsync({
                         account_type: isCrypto ? 'crypto' : 'doughflow',

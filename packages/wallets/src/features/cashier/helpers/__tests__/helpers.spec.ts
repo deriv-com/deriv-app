@@ -1,25 +1,7 @@
 import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../../constants';
-import { getAccountName, getLandingCompanyNameOfMT5Account, getMarketType } from '../helpers';
+import { getAccountName, getLandingCompanyNameOfMT5Account } from '../helpers';
 
 describe('Cashier Helpers', () => {
-    describe('getMarketType', () => {
-        it('returns correct market type for financial', () => {
-            expect(getMarketType('financial_svg')).toBe(MT5MarketTypeDetails.financial.name);
-        });
-
-        it('returns correct market type for synthetic', () => {
-            expect(getMarketType('synthetic_svg')).toBe(MT5MarketTypeDetails.synthetic.name);
-        });
-
-        it('returns correct market type for all', () => {
-            expect(getMarketType('all_svg')).toBe(MT5MarketTypeDetails.all.name);
-        });
-
-        it('returns undefined for unknown market type', () => {
-            expect(getMarketType('unknown_svg')).toBeUndefined();
-        });
-    });
-
     describe('getLandingCompanyNameOfMT5Account', () => {
         it('returns correct landing company name for BVI', () => {
             expect(getLandingCompanyNameOfMT5Account('financial_bvi')).toBe(LandingCompanyDetails.bvi.name);
@@ -105,6 +87,18 @@ describe('Cashier Helpers', () => {
                     product: 'stp',
                 })
             ).toBe(MT5MarketTypeDetails.financial.product?.stp?.title);
+        });
+
+        it('returns correct name for MT5 financial GOLD account', () => {
+            expect(
+                getAccountName({
+                    accountCategory: 'trading',
+                    accountType: PlatformDetails.mt5.name,
+                    landingCompanyName: 'svg',
+                    mt5MarketType: MT5MarketTypeDetails.financial.name,
+                    product: 'gold',
+                })
+            ).toBe(MT5MarketTypeDetails.financial.product?.gold?.title);
         });
 
         it('returns correct name for MT5 synthetic account', () => {

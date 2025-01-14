@@ -103,6 +103,11 @@ const BinarySocketGeneral = (() => {
                     gtm_store.eventHandler(response.get_settings);
                 }
                 break;
+            case 'phone_settings':
+                if (response.phone_settings) {
+                    client_store.setPhoneSettings(response.phone_settings);
+                }
+                break;
             case 'set_account_currency':
                 WS.forgetAll('balance').then(subscribeBalances);
                 break;
@@ -278,6 +283,7 @@ const BinarySocketGeneral = (() => {
 
     const authorizeAccount = response => {
         client_store.responseAuthorize(response);
+        WS.getPhoneSettings();
         subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();

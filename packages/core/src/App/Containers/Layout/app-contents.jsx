@@ -1,15 +1,16 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
-import { Analytics } from '@deriv-com/analytics';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+
 import { ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import { CookieStorage, platforms, routes, TRACKING_STATUS_KEY, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
-// import cacheTrackEvents from 'Utils/Analytics/analytics.ts';
+
+import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
@@ -18,7 +19,7 @@ const AppContents = observer(({ children }) => {
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const {
         client,
-        common: { platform },
+        common: { platform, is_from_tradershub_os },
         gtm: { pushDataLayer },
         ui,
     } = useStore();
@@ -42,8 +43,11 @@ const AppContents = observer(({ children }) => {
     const scroll_ref = React.useRef(null);
     const child_ref = React.useRef(null);
 
-    const [dtrader_v2_enabled] = useGrowthbookGetFeatureValue({
+    const [dtrader_v2_enabled_mobile] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled',
+    });
+    const [dtrader_v2_enabled_desktop] = useGrowthbookGetFeatureValue({
+        featureFlag: 'dtrader_v2_enabled_desktop',
     });
 
     React.useEffect(() => {
@@ -55,6 +59,9 @@ const AppContents = observer(({ children }) => {
         Analytics.pageView(window.location.href, {
             loggedIn: is_logged_in,
             device_type: isMobile ? 'mobile' : 'desktop',
+            network_rtt: navigator?.connection?.rtt,
+            network_type: navigator?.connection?.effectiveType,
+            network_downlink: navigator?.connection?.downlink,
         });
         // react-hooks/exhaustive-deps
     }, [window.location.href]);
@@ -117,9 +124,9 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-mobile': isMobile,
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
-                'app-contents--is-hidden': platforms[platform],
+                'app-contents--is-hidden': platforms[platform] && !(is_from_tradershub_os && isMobile),
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
-                'app-contents--is-dtrader-v2': dtrader_v2_enabled,
+                'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}
             ref={scroll_ref}
         >

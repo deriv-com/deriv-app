@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { WalletPasswordFieldLazy } from '../../../../components/Base';
-import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
+import { validatePassword } from '../../../../components/Base/WalletPasswordField/WalletPasswordField';
+import { getPasswordErrorMessage } from '../../../../constants/password';
+import { TAvailableMT5Account, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, PlatformDetails } from '../../constants';
-import { TAvailableMT5Account } from '../../types';
 import { MT5LicenceMessage, MT5PasswordModalTnc } from '../components';
 import './EnterPassword.scss';
 
@@ -51,15 +52,20 @@ const EnterPassword: React.FC<TProps> = ({
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
     const { data } = useActiveWalletAccount();
+    const { data: isEuRegion } = useIsEuRegion();
 
     const isMT5 = platform === CFD_PLATFORMS.MT5;
-    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
+    const { validationErrorMessage } = validatePassword(password, isMT5, localize);
+    const disableButton = isMT5
+        ? !validPasswordMT5(password) &&
+          validationErrorMessage !== getPasswordErrorMessage(localize).missingCharacterMT5
+        : !validPassword(password);
     const accountType = data?.is_virtual ? localize('Demo') : localize('Real');
     const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform
             ? accountType
-            : getMarketTypeDetails(localize, product)[marketType].title;
+            : getMarketTypeDetails(localize, product, isEuRegion)[marketType].title;
     const passwordErrorHints = localize(
         'Hint: You may have entered your Deriv password, which is different from your {{title}} password.',
         { title }
@@ -80,19 +86,31 @@ const EnterPassword: React.FC<TProps> = ({
             )}
             <div className='wallets-enter-password__content'>
                 <Text align='start' className='wallets-enter-password__description' size={isDesktop ? 'sm' : 'md'}>
-                    <Localize
-                        i18n_default_text='Enter your {{title}} password to add a {{accountTitle}} {{marketTypeTitle}} account'
-                        values={{
-                            accountTitle:
-                                platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
-                                    ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
-                                    : title,
-                            marketTypeTitle,
-                            title,
-                        }}
-                    />
+                    {isMT5 ? (
+                        <Localize
+                            i18n_default_text='Enter your {{title}} password to add an {{accountTitle}} {{marketTypeTitle}} account'
+                            values={{
+                                accountTitle: CFD_PLATFORMS.MT5.toLocaleUpperCase(),
+                                marketTypeTitle: isVirtual
+                                    ? `${marketTypeTitle} ${accountType.toLocaleLowerCase()}`
+                                    : marketTypeTitle,
+                                title,
+                            }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Enter your {{title}} password to add a {{title}} {{marketTypeTitle}} account'
+                            values={{
+                                marketTypeTitle: isVirtual
+                                    ? `${marketTypeTitle} ${accountType.toLocaleLowerCase()}`
+                                    : marketTypeTitle,
+                                title,
+                            }}
+                        />
+                    )}
                 </Text>
                 <WalletPasswordFieldLazy
+                    hideWarning
                     label={localize('{{title}} password', { title })}
                     onChange={onPasswordChange}
                     password={password}
@@ -106,7 +124,11 @@ const EnterPassword: React.FC<TProps> = ({
                 )}
                 {account && !isVirtual && <MT5LicenceMessage account={account} />}
                 {account && account.shortcode !== JURISDICTION.SVG && platform === CFD_PLATFORMS.MT5 && !isVirtual && (
-                    <MT5PasswordModalTnc checked={isTncChecked} onChange={() => onTncChange?.()} />
+                    <MT5PasswordModalTnc
+                        checked={isTncChecked}
+                        companyName={account.name}
+                        onChange={() => onTncChange?.()}
+                    />
                 )}
             </div>
             {isDesktop && (
@@ -119,7 +141,7 @@ const EnterPassword: React.FC<TProps> = ({
                         textSize='sm'
                         variant='outlined'
                     >
-                        <Localize i18n_default_text='Forgot password?' />
+                        <Localize i18n_default_text='Forgot password' />
                     </Button>
                     <Button
                         disabled={!password || isLoading || disableButton || !isTncChecked}

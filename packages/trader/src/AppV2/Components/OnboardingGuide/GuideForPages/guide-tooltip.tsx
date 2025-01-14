@@ -40,7 +40,7 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                             {step.title}
                         </CaptionText>
                         <IconButton
-                            {...skipProps}
+                            onClick={skipProps.onClick}
                             icon={
                                 <LabelPairedXmarkSmBoldIcon
                                     fill='var(--component-textIcon-inverse-prominent)'
@@ -57,7 +57,6 @@ const GuideTooltip = ({ isLastStep, primaryProps, skipProps, step, tooltipProps,
                 {step.content && <CaptionText className='guide-tooltip__content'>{step.content}</CaptionText>}
             </div>
             <Button
-                {...primaryProps}
                 onClick={e => {
                     setStepIndex((prev: number) => prev + 1);
                     primaryProps.onClick(e);

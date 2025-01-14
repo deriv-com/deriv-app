@@ -9,6 +9,11 @@ import TransferForm from '../TransferForm';
 const mockAccounts = ['CR1', 'CR2'];
 let mockFormikValues: unknown;
 
+jest.mock('../../../../../../../components', () => ({
+    ...jest.requireActual('../../../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
+}));
+
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({})),
@@ -59,12 +64,13 @@ describe('<TransferForm />', () => {
 
         render(<TransferForm />, { wrapper });
 
-        expect(screen.getByTestId('dt_derivs-loader')).toBeInTheDocument();
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should test that transfer button is disabled when fromAmount is 0', async () => {
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: jest.fn(),
         });
@@ -88,6 +94,7 @@ describe('<TransferForm />', () => {
     it('should test that transfer button is disabled when toAmount is 0', async () => {
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: jest.fn(),
         });
@@ -122,6 +129,7 @@ describe('<TransferForm />', () => {
 
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
+            hasPlatformStatus: jest.fn(),
             isLoading: false,
             requestTransferBetweenAccounts: dummyRequest,
         });

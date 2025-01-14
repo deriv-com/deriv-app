@@ -1,5 +1,8 @@
+import Cookies from 'js-cookie';
+
 import { redirectToLogin } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import {
     OAuth2Logout,
     requestOidcAuthentication,
@@ -39,6 +42,16 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     };
 
     const logoutHandler = async () => {
+        Cookies.remove('client_information');
+        const clientInformation = Cookies.get('client_information');
+        // Pass the value to GrowthBook if it exists
+
+        const analytics_config = {
+            loggedIn: !!clientInformation,
+        };
+
+        Analytics.setAttributes(analytics_config);
+
         await OAuth2Logout(handleLogout);
     };
 

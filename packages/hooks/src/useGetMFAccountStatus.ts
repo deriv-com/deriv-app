@@ -4,13 +4,13 @@ import { ACCOUNT_BADGE_STATUS } from '@deriv/shared';
 
 const useGetMFAccountStatus = () => {
     const { client } = useStore();
-    const { account_status, updateAccountStatus } = client || {};
+    const { account_status, is_logged_in, updateAccountStatus } = client || {};
 
     useEffect(() => {
         async function fetchData() {
             await updateAccountStatus();
         }
-        fetchData();
+        if (is_logged_in) fetchData();
     }, []);
     const authentication = account_status?.authentication;
     const poi_status = authentication?.identity?.status;

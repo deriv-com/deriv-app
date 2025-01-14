@@ -1,22 +1,25 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
+
+import { CFDCompareAccountsCarousel, Icon, PageOverlay, Text } from '@deriv/components';
 import { useIsRtl } from '@deriv/hooks';
-import CFDCompareAccountsCard from './cfd-compare-accounts-card';
+import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import {
-    getSortedCFDAvailableAccounts,
+    ctrader_data,
+    dxtrade_data,
+    getCtraderDemoData,
+    getDxtradeDemoData,
     getEUAvailableAccounts,
     getMT5DemoData,
-    getDxtradeDemoData,
-    getCtraderDemoData,
-    dxtrade_data,
-    ctrader_data,
+    getSortedCFDAvailableAccounts,
 } from '../../Helpers/compare-accounts-config';
+
+import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 
 const CompareCFDs = observer(() => {
     const { isDesktop } = useDevice();
@@ -147,7 +150,7 @@ const CompareCFDs = observer(() => {
                     {all_cfd_available_accounts.map(item => (
                         <CFDCompareAccountsCard
                             trading_platforms={item}
-                            key={item.market_type + item.shortcode}
+                            key={item.market_type + item.shortcode + (item?.product || '')}
                             is_eu_user={is_eu_user}
                             is_demo={is_demo}
                         />

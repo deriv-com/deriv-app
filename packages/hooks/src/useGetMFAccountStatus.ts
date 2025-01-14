@@ -5,11 +5,12 @@ import { useStore } from '@deriv/stores';
 
 const useGetMFAccountStatus = () => {
     const { client } = useStore();
-    const { account_status, updateAccountStatus } = client || {};
+    const { account_status, is_logged_in, updateAccountStatus } = client || {};
 
     useEffect(() => {
         async function fetchData() {
-            if (!account_status || !window.location.pathname.startsWith(routes.trade)) await updateAccountStatus();
+            if (is_logged_in && (!account_status || !window.location.pathname.startsWith(routes.trade)))
+                await updateAccountStatus();
         }
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps

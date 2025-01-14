@@ -76,7 +76,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                     network_type: navigator.connection?.effectiveType,
                     network_rtt: navigator.connection?.rtt,
                     network_downlink: navigator.connection?.downlink,
-                    residence_country: undefined,
+                    residence_country: 'undefined',
                 };
                 const config = {
                     growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
@@ -87,7 +87,6 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                     growthbookOptions: {
                         attributes: {
                             ...analytics_config_config,
-                            residence_country: undefined,
                         },
                     },
                 };

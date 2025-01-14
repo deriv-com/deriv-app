@@ -6,8 +6,6 @@ import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { CountryUtils } from '@deriv-com/utils';
 
-import { MAX_MOBILE_WIDTH } from '../../Constants';
-
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
         ?.match(/[a-zA-Z]+/g)
@@ -28,9 +26,16 @@ export const AnalyticsInitializer = async () => {
                       }
                     : JSON.parse(utm_cookie);
 
+            let residence_country;
             const client_information = Cookies.get('client_information')
                 ? JSON.parse(Cookies.get('client_information') || '{}')
                 : null;
+            if (client_information) {
+                residence_country = client_information.residence;
+            } else {
+                residence_country = '';
+            }
+
             const analytics_config_config = {
                 loggedIn: !!client_information,
                 account_type: account_type === 'null' ? 'unlogged' : account_type,
@@ -47,7 +52,7 @@ export const AnalyticsInitializer = async () => {
                 network_type: navigator.connection?.effectiveType,
                 network_rtt: navigator.connection?.rtt,
                 network_downlink: navigator.connection?.downlink,
-                residence_country: client_information ? client_information.residence : '',
+                residence_country,
             };
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,

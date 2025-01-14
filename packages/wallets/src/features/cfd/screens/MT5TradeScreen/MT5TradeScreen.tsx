@@ -1,13 +1,24 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api-v2';
-import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
+import {
+    LabelPairedArrowUpArrowDownMdBoldIcon,
+    LabelPairedCircleExclamationMdFillIcon,
+    StandaloneArrowUpRightRegularIcon,
+    StandaloneChartAreaRegularIcon,
+} from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
-import { WalletBadge, WalletListCardBadge } from '../../../../components';
+import { InformationBanner, WalletBadge, WalletListCardBadge } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { TAddedMT5Account, THooks } from '../../../../types';
-import { CFD_PLATFORMS, getMarketTypeDetails, getServiceMaintenanceMessages, PlatformDetails } from '../../constants';
+import {
+    CFD_PLATFORMS,
+    getMarketTypeDetails,
+    getServiceMaintenanceMessages,
+    PlatformDetails,
+    PRODUCT,
+} from '../../constants';
 import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
 import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
@@ -225,6 +236,18 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         }
                     </Text>
                 </div>
+
+                {isDesktop && details?.platform === mt5Platform && marketTypeTitle.toLowerCase() !== PRODUCT.GOLD && (
+                    <InformationBanner
+                        description={
+                            <Localize i18n_default_text='Tailor your indicators with expert-driven trend analysis.' />
+                        }
+                        informationIcon={<StandaloneChartAreaRegularIcon fill='#095A66' iconSize='sm' />}
+                        link='https://docs.deriv.com/misc/alpha_generation_guide.pdf'
+                        redirectIcon={<StandaloneArrowUpRightRegularIcon fill='#000000' iconSize='sm' />}
+                        title={<Localize i18n_default_text='Alpha Generation guide' />}
+                    />
+                )}
             </div>
             <div className='wallets-mt5-trade-screen__links'>
                 {platform === mt5Platform && (

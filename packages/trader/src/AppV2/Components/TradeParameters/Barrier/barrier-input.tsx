@@ -29,7 +29,6 @@ const BarrierInput = observer(
         const [option, setOption] = React.useState(0);
         const [should_show_error, setShouldShowError] = React.useState(false);
         const [is_focused, setIsFocused] = React.useState(false);
-        const [is_processing, setIsProcessing] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
         const prefix = (option === 0 && '+') || (option === 1 && '-');
@@ -49,7 +48,7 @@ const BarrierInput = observer(
                 ...new_values,
             },
             {
-                enabled: (is_open && barrier_1 !== '') || is_processing,
+                enabled: is_open && barrier_1 !== '' && value !== '',
             }
         );
 
@@ -104,15 +103,9 @@ const BarrierInput = observer(
             } else {
                 setValue('');
             }
-            setTimeout(() => {
-                setIsProcessing(false);
-            }, 0);
         };
 
         const getErrorMessage = () => {
-            if (is_processing) {
-                return '';
-            }
             if (show_hidden_error) {
                 return response?.error?.message;
             }
@@ -139,7 +132,6 @@ const BarrierInput = observer(
                                     <Chip.Selectable
                                         key={index}
                                         onClick={() => {
-                                            setIsProcessing(true);
                                             handleChipSelect(index);
                                         }}
                                         selected={index == option}

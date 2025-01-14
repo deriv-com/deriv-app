@@ -95,7 +95,7 @@
     },
     "dependencies": {
         "@datadog/browser-rum": "^5.11.0",
-        "@deriv-com/analytics": "1.27.1",
+        "@deriv-com/analytics": "1.28.2",
         "@deriv-com/quill-tokens": "2.0.4",
         "@deriv-com/quill-ui": "1.24.4",
         "@deriv-com/translations": "1.3.9",

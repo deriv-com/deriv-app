@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
+
+import { ACCOUNT_BADGE_STATUS, routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { ACCOUNT_BADGE_STATUS } from '@deriv/shared';
 
 const useGetMFAccountStatus = () => {
     const { client } = useStore();
@@ -8,9 +9,10 @@ const useGetMFAccountStatus = () => {
 
     useEffect(() => {
         async function fetchData() {
-            await updateAccountStatus();
+            if (!account_status || !window.location.pathname.startsWith(routes.trade)) await updateAccountStatus();
         }
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const authentication = account_status?.authentication;
     const poi_status = authentication?.identity?.status;

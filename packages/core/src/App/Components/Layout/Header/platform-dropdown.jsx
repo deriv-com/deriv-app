@@ -54,7 +54,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
     const { isDesktop } = useDevice();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
     const { client } = useStore();
-    const { account_settings } = client;
+    const { account_settings, has_wallet } = client;
     const { trading_hub } = account_settings;
 
     const TradersHubRedirect = () => {
@@ -62,7 +62,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
             <div className='platform-dropdown__cta'>
                 <BinaryLink
                     onClick={() => {
-                        if (isHubRedirectionEnabled || !!trading_hub) {
+                        if (isHubRedirectionEnabled && has_wallet && !!trading_hub) {
                             window.location.assign(platforms.tradershub_os.url);
                             return;
                         }

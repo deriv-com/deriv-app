@@ -12,6 +12,7 @@ import {
     platforms,
     routes,
     toMoment,
+    isNavigationFromTradersHubOS,
 } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -178,7 +179,10 @@ export default class CommonStore extends BaseStore {
     }
 
     get is_from_tradershub_os() {
-        return platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name;
+        return (
+            platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name ||
+            isNavigationFromTradersHubOS()
+        );
     }
 
     setInitialRouteHistoryItem(location) {

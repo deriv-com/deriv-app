@@ -3,8 +3,6 @@ import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon';
-import Button from '../button';
-import { localize } from '@deriv/translations';
 import { platforms } from '@deriv/shared';
 
 type TPageOverlay = {
@@ -39,28 +37,19 @@ const PageOverlay = ({
         window.location.href = platforms.tradershub_os.url ?? '';
     };
 
-    const RedirectionComponent = () => {
-        if (is_from_tradershub_os) {
-            return (
-                <Button
-                    className='dc-page-overlay__header-redirect'
-                    has_effect
-                    onClick={onClickTraderHub}
-                    text={localize(`Back to Trader's Hub`)}
-                    primary
-                />
-            );
-        }
-        return (
-            <div
-                data-testid='dt_page_overlay_header_close'
-                className='dc-page-overlay__header-close'
-                onClick={(onClickClose as unknown as MouseEventHandler<HTMLDivElement>) || window.history.back}
-            >
-                <Icon icon='IcCross' />
-            </div>
-        );
-    };
+    const RedirectionComponent = () => (
+        <div
+            data-testid='dt_page_overlay_header_close'
+            className='dc-page-overlay__header-close'
+            onClick={
+                is_from_tradershub_os
+                    ? onClickTraderHub
+                    : (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) || window.history.back
+            }
+        >
+            <Icon icon='IcCross' />
+        </div>
+    );
 
     const el_page_overlay = (
         <div

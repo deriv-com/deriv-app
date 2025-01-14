@@ -66,11 +66,6 @@ const getHighlightedIconLabel = (values: TValues) => {
                   { highlighted: shouldHighlight('Basket indices'), icon: 'Baskets', text: localize('Basket indices') },
               ] as const)
             : []),
-        ...(!isEuRegion
-            ? ([
-                  { highlighted: shouldHighlight('Derived FX'), icon: 'DerivedFX', text: localize('Derived FX') },
-              ] as const)
-            : []),
     ] as const;
 };
 

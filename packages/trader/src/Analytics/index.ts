@@ -29,7 +29,7 @@ export const sendSelectedTradeTypeToAnalytics = (
                     trade_name,
                     subform_name,
                     market_name,
-                    trade_type_count: trade_type_count.toString(),
+                    trade_type_count,
                 },
             },
         },

@@ -1,6 +1,8 @@
 import throttle from 'lodash.throttle';
-import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction } from 'mobx';
 import { computedFn } from 'mobx-utils';
+
+import { Money } from '@deriv/components';
 import {
     ChartBarrierStore,
     contractCancelled,
@@ -10,29 +12,29 @@ import {
     formatPortfolioPosition,
     getContractPath,
     getCurrentTick,
-    getTotalProfit,
     getDisplayStatus,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    getTotalProfit,
     getTradeNotificationMessage,
     isAccumulatorContract,
     isDtraderV2DesktopEnabled,
     isDtraderV2MobileEnabled,
     isEmptyObject,
     isEnded,
-    isValidToSell,
     isMultiplierContract,
-    WS,
-    TRADE_TYPES,
+    isValidToSell,
     removeBarrier,
     routes,
     setLimitOrderBarriers,
+    TRADE_TYPES,
+    WS,
 } from '@deriv/shared';
-import { Money } from '@deriv/components';
-import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
@@ -52,11 +54,11 @@ export default class PortfolioStore extends BaseStore {
     main_barrier = null;
     contract_type = '';
 
-    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
-
     responseQueue = [];
 
     active_positions = [];
+
+    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call

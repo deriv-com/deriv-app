@@ -114,6 +114,7 @@ export default class ClientStore extends BaseStore {
         amount_dxtrade: undefined,
         currency: '',
     };
+    prevent_redirect_to_hub = false;
 
     verification_code = {
         signup: '',
@@ -239,6 +240,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            prevent_redirect_to_hub: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -331,6 +333,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
+            setPreventRedirectToHub: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -382,6 +385,7 @@ export default class ClientStore extends BaseStore {
             setNewEmail: action.bound,
             setDeviceData: action.bound,
             getSignupParams: action.bound,
+            getToken: action.bound,
             onSetResidence: action.bound,
             onSetCitizen: action.bound,
             onSignup: action.bound,
@@ -926,6 +930,10 @@ export default class ClientStore extends BaseStore {
         }
     };
 
+    setPreventRedirectToHub = value => {
+        this.prevent_redirect_to_hub = value;
+    };
+
     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
@@ -1123,16 +1131,11 @@ export default class ClientStore extends BaseStore {
             : window.location.hostname;
 
         // eslint-disable-next-line max-len
-        const {
-            loginid,
-            email,
-            landing_company_shortcode,
-            currency,
-            residence,
-            account_settings,
-            preferred_language,
-            user_id,
-        } = this;
+        const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
+
+        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const email = this.email || client_accounts[loginid]?.email;
+        const residence = this.residence || client_accounts[loginid]?.residence;
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1815,9 +1818,25 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(async () => {
+            let residence_country = '';
+            if (this.residence) {
+                residence_country = this.residence;
+            } else {
+                try {
+                    const { country_code } = (await WS.authorized.cache.getSettings())?.get_settings || {
+                        country_code: '',
+                    };
+                    residence_country = country_code;
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error('Error getting residence country', error);
+                }
+            }
+
             const analytics_config = {
+                loggedIn: this.is_logged_in,
                 account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country: this.residence,
+                residence_country,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),

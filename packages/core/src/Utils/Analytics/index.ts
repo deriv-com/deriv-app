@@ -27,6 +27,8 @@ export const AnalyticsInitializer = async () => {
                       }
                     : Cookies.getJSON('utm_data');
 
+            const client_information = Cookies.getJSON('client_information');
+
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
@@ -34,7 +36,7 @@ export const AnalyticsInitializer = async () => {
 
                 growthbookOptions: {
                     attributes: {
-                        loggedIn: !!Cookies.get('clients_information'),
+                        loggedIn: !!client_information,
                         account_type: account_type === 'null' ? 'unlogged' : account_type,
                         app_id: String(getAppId()),
                         device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
@@ -51,6 +53,7 @@ export const AnalyticsInitializer = async () => {
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
                         user_id: localStorage.getItem('active_user_id') || '',
+                        residence_country: client_information?.residence,
                     },
                 },
             };

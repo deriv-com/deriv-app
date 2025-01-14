@@ -6,6 +6,7 @@ import {
     useGrowthbookGetFeatureValue,
     useGrowthbookIsOn,
     useIntercom,
+    useIsHubRedirectionEnabled,
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
@@ -62,6 +63,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             await logout();
         },
     });
+    const { isChangingToHubAppId } = useIsHubRedirectionEnabled();
+
+    const is_app_id_set = localStorage.getItem('config.app_id');
+    const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
 
     useSilentLoginAndLogout({
         is_client_store_initialized,
@@ -81,6 +86,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
+
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
@@ -102,6 +108,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const token = active_account ? active_account.token : null;
     useFreshChat(token);
     useIntercom(token);
+
+    React.useEffect(() => {
+        if (isChangingToHubAppId && !is_app_id_set) {
+            const app_id = process.env.NODE_ENV === 'production' ? 61554 : 53503;
+            localStorage.setItem('change_login_app_id', app_id.toString());
+            return;
+        }
+        is_change_login_app_id_set && localStorage.removeItem('change_login_app_id');
+    }, [isChangingToHubAppId, is_app_id_set, is_change_login_app_id_set]);
 
     React.useEffect(() => {
         switchLanguage(current_language);
@@ -167,7 +182,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <SmartTraderIFrame />}
             {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />

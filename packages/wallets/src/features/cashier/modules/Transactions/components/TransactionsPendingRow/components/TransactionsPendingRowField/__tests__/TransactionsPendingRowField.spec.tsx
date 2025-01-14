@@ -3,6 +3,8 @@ import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../../../components/ModalProvider';
 import TransactionsPendingRowField from '../TransactionsPendingRowField';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../../../../../../AuthProvider';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -50,9 +52,13 @@ describe('TransactionsPendingRowField', () => {
             value: 'Test Value',
         };
         render(
-            <ModalProvider>
-                <TransactionsPendingRowField {...props} />
-            </ModalProvider>
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionsPendingRowField {...props} />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>
         );
 
         expect(screen.getByText('Test Name')).toBeInTheDocument();
@@ -73,9 +79,13 @@ describe('TransactionsPendingRowField', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(
-            <ModalProvider>
-                <TransactionsPendingRowField {...props} />
-            </ModalProvider>,
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionsPendingRowField {...props} />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>,
             { container: $root }
         );
         fireEvent.click(screen.getByText('Test Value'));
@@ -96,9 +106,13 @@ describe('TransactionsPendingRowField', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(
-            <ModalProvider>
-                <TransactionsPendingRowField {...props} />
-            </ModalProvider>,
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TransactionsPendingRowField {...props} />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>,
             { container: $root }
         );
         fireEvent.click(screen.getByText('Test Value'));

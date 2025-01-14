@@ -22,7 +22,7 @@ export const ConfirmEmailModal = observer(
         const [is_modal_open, setIsModalOpen] = React.useState(is_open);
 
         const { client } = useStore();
-        const { verification_code, setVerificationCode } = client;
+        const { verification_code, setVerificationCode, setPreventRedirectToHub } = client;
 
         const handleSubmit = () => {
             const api_request: TSocketRequest<'change_email'> = {
@@ -57,7 +57,10 @@ export const ConfirmEmailModal = observer(
             return (
                 <SentEmailModal
                     is_open={is_send_email_modal_open}
-                    onClose={() => setIsSendEmailModalOpen(false)}
+                    onClose={() => {
+                        setIsSendEmailModalOpen(false);
+                        setPreventRedirectToHub(false);
+                    }}
                     identifier_title={'Change_Email'}
                     onClickSendEmail={resendEmail}
                     has_live_chat

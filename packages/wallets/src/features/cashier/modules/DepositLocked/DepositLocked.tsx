@@ -8,7 +8,8 @@ import {
     useSettings,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { ActionScreen, Loader } from '@deriv-com/ui';
+import { ActionScreen } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import getDepositLockedDesc from './DepositLockedContent';
 import './DepositLocked.scss';
 
@@ -42,7 +43,7 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const tradingExperienceNotComplete = accountStatus?.is_trading_experience_not_complete;
 
     if (isAccountStatusLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (isDepositLocked) {

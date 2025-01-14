@@ -1,7 +1,7 @@
 import React from 'react';
 import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 import { useDevice } from '@deriv-com/ui';
-import { Text, Icon, Money, StatusBadge } from '@deriv/components';
+import { Text, Icon, Money, StatusBadge, InformationBanner } from '@deriv/components';
 import getMT5StatusBadgeConfig from '@deriv/account/src/Configs/get-mt5-status-badge-config';
 import { getCFDAccountKey, MT5_ACCOUNT_STATUS, PRODUCT, Jurisdiction } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -15,6 +15,7 @@ import PasswordBox from '../Components/passwordbox';
 import SpecBox from '../Components/specbox';
 import { TCFDPasswordReset } from './props.types';
 import { TProducts, TTradingPlatformAccounts } from '../Components/props.types';
+import { StandaloneChartAreaRegularIcon, StandaloneArrowUpRightRegularIcon } from '@deriv/quill-icons';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: TAdditionalDetailsOfEachMT5Loginid;
@@ -207,6 +208,17 @@ const DMT5TradeModal = observer(
                             <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                         </div>
                     </div>
+                    {isDesktop && mt5_trade_account.product !== PRODUCT.GOLD && (
+                        <InformationBanner
+                            information_icon={<StandaloneChartAreaRegularIcon fill='#095A66' iconSize='sm' />}
+                            title={<Localize i18n_default_text='Alpha Generation guide' />}
+                            description={
+                                <Localize i18n_default_text='Tailor your indicators with expert-driven trend analysis.' />
+                            }
+                            redirect_icon={<StandaloneArrowUpRightRegularIcon fill='#000000' iconSize='sm' />}
+                            link='https://docs.deriv.com/misc/alpha_generation_guide.pdf'
+                        />
+                    )}
                 </div>
                 {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
 

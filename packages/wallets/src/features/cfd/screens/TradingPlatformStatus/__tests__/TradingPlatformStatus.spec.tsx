@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import TradingPlatformStatus from '../TradingPlatformStatus';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../../AuthProvider';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -26,9 +28,13 @@ describe('TradingPlatformStatus', () => {
 
     it('renders default content for maintenance status', () => {
         render(
-            <ModalProvider>
-                <TradingPlatformStatus status='under_maintenance' />
-            </ModalProvider>
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TradingPlatformStatus status='under_maintenance' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>
         );
 
         expect(screen.getByText('Server Maintenance')).toBeInTheDocument();
@@ -40,9 +46,13 @@ describe('TradingPlatformStatus', () => {
 
     it('renders default content for unavailable status', () => {
         render(
-            <ModalProvider>
-                <TradingPlatformStatus status='unavailable' />
-            </ModalProvider>
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TradingPlatformStatus status='unavailable' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>
         );
 
         expect(screen.getByText('Account Unavailable')).toBeInTheDocument();
@@ -55,9 +65,13 @@ describe('TradingPlatformStatus', () => {
     it('calls hide when clicking on OK button', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         render(
-            <ModalProvider>
-                <TradingPlatformStatus status='under_maintenance' />
-            </ModalProvider>
+            <APIProvider>
+                <WalletsAuthProvider>
+                    <ModalProvider>
+                        <TradingPlatformStatus status='under_maintenance' />
+                    </ModalProvider>
+                </WalletsAuthProvider>
+            </APIProvider>
         );
 
         await userEvent.click(screen.getByRole('button', { name: 'OK' }));

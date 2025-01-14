@@ -20,6 +20,7 @@ global.HTMLElement.prototype.scrollIntoView = jest.fn();
 jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
     ContractType: {
         getTradingEvents: jest.fn(),
+        getTradingDays: jest.fn(),
     },
 }));
 

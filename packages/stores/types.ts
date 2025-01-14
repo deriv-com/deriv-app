@@ -540,6 +540,8 @@ export type TClientStore = {
         trading_platform_accounts: DetailsOfEachMT5Loginid[];
     }) => DetailsOfEachMT5Loginid[];
     standpoint: TStandPoint;
+    prevent_redirect_to_hub: boolean;
+    setPreventRedirectToHub: (value: boolean) => void;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
@@ -710,6 +712,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    getToken: () => string;
     should_show_trustpilot_notification: boolean;
 };
 

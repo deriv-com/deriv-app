@@ -90,8 +90,9 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                         },
                     },
                 };
-                Analytics.setAttributes(analytics_config_config);
                 await Analytics?.initialise(config);
+                Analytics.setAttributes(analytics_config_config);
+
                 // Set attributes one final time to ensure the override took effect
             }
         }

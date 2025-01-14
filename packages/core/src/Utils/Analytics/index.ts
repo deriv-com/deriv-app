@@ -6,6 +6,8 @@ import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { CountryUtils } from '@deriv-com/utils';
 
+import { MAX_MOBILE_WIDTH } from '../../Constants';
+
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
         ?.match(/[a-zA-Z]+/g)
@@ -26,20 +28,16 @@ export const AnalyticsInitializer = async () => {
                       }
                     : JSON.parse(utm_cookie);
 
-            let residence_country;
             const client_information = Cookies.get('client_information')
-                ? JSON.parse(Cookies.get('client_information') || '{}')
+                ? JSON.parse(Cookies.get('client_information') || '')
                 : null;
-            if (client_information) {
-                residence_country = client_information.residence;
-            } else {
-                residence_country = '';
-            }
+            const residence_country = client_information?.residence || '';
 
             const analytics_config_config = {
                 loggedIn: !!client_information,
                 account_type: account_type === 'null' ? 'unlogged' : account_type,
                 app_id: String(getAppId()),
+                device_type: window.innerWidth <= MAX_MOBILE_WIDTH ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: await CountryUtils.getCountry(),
@@ -64,8 +62,8 @@ export const AnalyticsInitializer = async () => {
                     },
                 },
             };
-            Analytics.setAttributes(analytics_config_config);
             await Analytics?.initialise(config);
+            Analytics.setAttributes(analytics_config_config);
         }
     }
 };

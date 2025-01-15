@@ -10,7 +10,8 @@ import {
     usePOI,
 } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
-import { ActionScreen, Loader } from '@deriv-com/ui';
+import { ActionScreen } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
@@ -44,7 +45,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const remainder = accountLimits?.remainder;
     const fractionalDigits = activeWallet?.currency_config?.fractional_digits
-        ? Math.pow(10, -activeWallet.currency_config.fractional_digits)
+        ? 10 ** -activeWallet.currency_config.fractional_digits
         : 0.01;
     const minimumWithdrawal = isCryptoProvider ? cryptoConfig?.minimum_withdrawal : fractionalDigits;
 
@@ -56,7 +57,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const isLoading = isCurrencyConfigLoading || isAccountStatusLoading;
 
     if (isLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (withdrawalLimitReached) {

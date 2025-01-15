@@ -9,9 +9,9 @@ import {
     useVerifyEmail,
 } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Button, Loader, useDevice } from '@deriv-com/ui';
+import { Button, useDevice } from '@deriv-com/ui';
 import { SentEmailContent } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper, WalletLoader } from '../../../../components/Base';
 import { validatePassword } from '../../../../components/Base/WalletPasswordField/WalletPasswordField';
 import { useModal } from '../../../../components/ModalProvider';
 import { WalletSuccessChangeMT5Password } from '../../../../components/WalletsChangeMT5Password';
@@ -275,7 +275,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     ]);
 
     const PasswordComponent = useMemo(() => {
-        if (isLoading) return <Loader />;
+        if (isLoading) return <WalletLoader />;
 
         if (isMT5PasswordNotSet && platform !== CFD_PLATFORMS.MT5)
             return (
@@ -368,7 +368,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     ]);
 
     if (accountStatusLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (emailVerificationStatus === 'error') {

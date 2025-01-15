@@ -4,8 +4,9 @@ import { render, screen } from '@testing-library/react';
 import { CashierLocked } from '../../../modules';
 import WalletTransfer from '../WalletTransfer';
 
-jest.mock('@deriv-com/ui', () => ({
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../../../modules', () => ({

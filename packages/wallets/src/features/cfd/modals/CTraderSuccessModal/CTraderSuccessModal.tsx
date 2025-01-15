@@ -1,8 +1,8 @@
 import React from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { Loader, useDevice } from '@deriv-com/ui';
-import { ModalStepWrapper, ModalWrapper } from '../../../../components';
+import { useDevice } from '@deriv-com/ui';
+import { ModalStepWrapper, ModalWrapper, WalletLoader } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
@@ -24,7 +24,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     const cTraderAccount = cTraderAccounts?.find(account => account.login);
     const isLoading = !cTraderAccounts || isCtraderAccountsListLoading || !cTraderAccount;
 
-    if (isLoading) return <Loader />;
+    if (isLoading) return <WalletLoader />;
 
     const description = isDemo
         ? localize('Practise trading with {{ctraderBalance}} virtual funds.', {

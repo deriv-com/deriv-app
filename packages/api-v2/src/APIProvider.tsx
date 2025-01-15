@@ -1,10 +1,14 @@
-import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useEffect, useRef, useState } from 'react';
+
 import { getAppId, getSocketURL } from '@deriv/shared';
 import { getInitialLanguage } from '@deriv-com/translations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { TSocketRequestPayload, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
-import { hashObject } from './utils';
+
 import WSClient from './ws-client/ws-client';
+import { PLATFORMS } from './constants';
+import { hashObject } from './utils';
 
 type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
     name: T,
@@ -27,14 +31,14 @@ type APIContextData = {
     setOnConnected: (onConnected: () => void) => void;
     connection: WebSocket;
     wsClient: WSClient;
+    createNewWSConnection: () => void;
 };
 
 /**
  * Retrieves the WebSocket URL based on the current environment.
  * @returns {string} The WebSocket URL.
  */
-const getWebSocketURL = () => {
-    const endpoint = getSocketURL();
+const getWebSocketURL = (endpoint: string) => {
     const app_id = getAppId();
     const language = getInitialLanguage();
     return `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=deriv`;
@@ -45,8 +49,8 @@ const APIContext = createContext<APIContextData | null>(null);
 /**
  * @returns {WebSocket} The initialized WebSocket instance.
  */
-const initializeConnection = (onWSClose: () => void, onOpen?: () => void): WebSocket => {
-    const wss_url = getWebSocketURL();
+const initializeConnection = (endpoint: string, onWSClose: () => void, onOpen?: () => void): WebSocket => {
+    const wss_url = getWebSocketURL(endpoint);
 
     const connection = new WebSocket(wss_url);
     connection.addEventListener('close', () => {
@@ -67,12 +71,13 @@ const initializeConnection = (onWSClose: () => void, onOpen?: () => void): WebSo
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
+    platform?: string;
 };
 
 type SubscribeReturnType = ReturnType<TSubscribeFunction>; // This captures the entire return type of TSubscribeFunction
 type UnwrappedSubscription = Awaited<SubscribeReturnType>;
 
-const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
+const APIProvider = ({ children, platform }: PropsWithChildren<TAPIProviderProps>) => {
     const [reconnect, setReconnect] = useState(false);
     const connectionRef = useRef<WebSocket>();
     const subscriptionsRef = useRef<Record<string, UnwrappedSubscription['subscription']>>();
@@ -87,6 +92,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     const language = getInitialLanguage();
     const [prevLanguage, setPrevLanguage] = useState<string>(language);
+    const endpoint = getSocketURL(platform === PLATFORMS.WALLETS);
 
     useEffect(() => {
         isMounted.current = true;
@@ -109,6 +115,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!connectionRef.current) {
         connectionRef.current = initializeConnection(
+            endpoint,
             () => {
                 if (isMounted.current) setReconnect(true);
             },
@@ -118,6 +125,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 }
 
                 wsClientRef.current.setWs(connectionRef.current);
+                wsClientRef.current.setEndpoint(endpoint);
                 if (isMounted.current) {
                     isOpenRef.current = true;
                     if (onConnectedRef.current) {
@@ -197,6 +205,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         let reconnectTimerId: NodeJS.Timeout;
         if (reconnect) {
             connectionRef.current = initializeConnection(
+                endpoint,
                 () => {
                     reconnectTimerId = setTimeout(() => {
                         if (isMounted.current) {
@@ -209,6 +218,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                         throw new Error('Connection is not set');
                     }
                     wsClientRef.current.setWs(connectionRef.current);
+                    wsClientRef.current.setEndpoint(endpoint);
                     if (onReconnectedRef.current) {
                         onReconnectedRef.current();
                     }
@@ -218,7 +228,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         }
 
         return () => clearTimeout(reconnectTimerId);
-    }, [reconnect]);
+    }, [endpoint, reconnect]);
 
     // reconnects to latest WS url for new language only when language changes
     useEffect(() => {
@@ -229,10 +239,15 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [language]);
 
+    const createNewWSConnection = useCallback(() => {
+        setReconnect(true);
+    }, []);
+
     return (
         <APIContext.Provider
             value={{
                 subscribe,
+                createNewWSConnection,
                 unsubscribe,
                 queryClient: reactQueryRef.current,
                 setOnReconnected,

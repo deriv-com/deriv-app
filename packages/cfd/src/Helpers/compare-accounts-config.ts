@@ -1,6 +1,8 @@
 import { localize } from '@deriv/translations';
+
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
-import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
+
+import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, MARKET_TYPE_SHORTCODE, PRODUCT, REGION } from './cfd-config';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
@@ -40,8 +42,6 @@ const getHighlightedIconLabel = (
                 return 'forex';
             } else if (item === 'ETFs') {
                 return 'ETFs'; // Preserve the original form for ETFs
-            } else if (item === 'Derived FX') {
-                return 'derived_FX'; // Handle FX case
             }
             return item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
         });
@@ -67,12 +67,6 @@ const getHighlightedIconLabel = (
             id: 'basket_indices',
             icon: 'Baskets',
             text: localize('Basket indices'),
-            is_available: selected_region === REGION.NON_EU,
-        },
-        {
-            id: 'derived_FX',
-            icon: 'DerivedFX',
-            text: localize('Derived FX'),
             is_available: selected_region === REGION.NON_EU,
         },
     ];

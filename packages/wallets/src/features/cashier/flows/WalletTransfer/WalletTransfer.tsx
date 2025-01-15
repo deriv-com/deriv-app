@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { TransferModule } from '../../modules';
 import { TransferNotAvailable } from '../../screens/TransferNotAvailable';
 
@@ -13,7 +13,7 @@ const WalletTransfer = () => {
         requestTransferAccounts();
     }, [requestTransferAccounts]);
 
-    if (isTransferAccountsLoading || !data?.accounts) return <Loader />;
+    if (isTransferAccountsLoading || !data?.accounts) return <WalletLoader />;
 
     return (
         <TransferNotAvailable accounts={data.accounts}>

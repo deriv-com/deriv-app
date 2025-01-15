@@ -39,7 +39,7 @@ const RootComponent = observer(props => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
 
     useEffect(() => {
-        if (((isHubRedirectionEnabled && has_wallet) || !!trading_hub) && !prevent_redirect_to_hub) {
+        if (isHubRedirectionEnabled && has_wallet && !!trading_hub && !prevent_redirect_to_hub) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             window.location.assign(redirectUrl);
         }
@@ -53,7 +53,7 @@ const RootComponent = observer(props => {
             }}
             notificationMessagesUi={notification_messages_ui}
             onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}
-            isHubRedirectionEnabled={isHubRedirectionEnabled || !!trading_hub}
+            isHubRedirectionEnabled={isHubRedirectionEnabled && !!trading_hub}
         />
     ) : (
         <AppStore {...props} />

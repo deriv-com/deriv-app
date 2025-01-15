@@ -11,7 +11,6 @@ export * from './FadedAnimatedList';
 export * from './FlowProvider';
 export * from './FormDropdown';
 export * from './FormField';
-export * from './InformationBanner';
 export * from './OptionsAndMultipliersListing';
 export * from './SentEmailContent';
 export * from './SkeletonLoader';

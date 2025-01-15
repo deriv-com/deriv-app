@@ -124,7 +124,6 @@ export { default as UnhandledErrorModal } from './components/unhandled-error-mod
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';
 export { default as VideoPlayer } from './components/video-player';
-export { default as InformationBanner } from './components/information-banner';
 export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export * from './components/app-linked-with-wallet-icon';

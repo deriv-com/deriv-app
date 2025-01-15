@@ -154,27 +154,4 @@ describe('<DMT5TradeModal/>', () => {
         renderComponent({ props: new_mock_props });
         expect(screen.queryByText(/MockMigrateBanner/)).toBeInTheDocument();
     });
-
-    it('should render information banner for non-gold account', () => {
-        const new_mock_props = {
-            ...mock_props,
-            mt5_trade_account: {
-                product: 'svg',
-            },
-        };
-        renderComponent({ props: new_mock_props });
-        expect(screen.getByText(/Alpha Generation guide/)).toBeInTheDocument();
-        expect(screen.getByText(/Tailor your indicators with expert-driven trend analysis./)).toBeInTheDocument();
-    });
-
-    it('should not render information banner for gold account', () => {
-        const new_mock_props = {
-            ...mock_props,
-            mt5_trade_account: {
-                product: 'gold',
-            },
-        };
-        renderComponent({ props: new_mock_props });
-        expect(screen.queryByText(/Alpha Generation guide/)).not.toBeInTheDocument();
-    });
 });

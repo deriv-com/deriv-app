@@ -300,6 +300,7 @@ export default class ClientStore extends BaseStore {
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
             is_financial_account: computed,
+            is_p2p_available: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_logged_in: computed,
@@ -630,6 +631,8 @@ export default class ClientStore extends BaseStore {
     }
 
     get available_onramp_currencies() {
+        if (!this.website_status?.currencies_config) return [];
+
         return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
             if (values.platform.ramp.length > 0) {
                 currencies.push(currency);
@@ -692,6 +695,19 @@ export default class ClientStore extends BaseStore {
 
     get account_title() {
         return getAccountTitle(this.loginid);
+    }
+
+    get is_p2p_available() {
+        const localstorage_p2p_settings = JSON.parse(localStorage.getItem('p2p_settings'));
+
+        const p2p_supported_currencies =
+            localstorage_p2p_settings?.supported_currencies || this.website_status?.p2p_config?.supported_currencies;
+
+        return (
+            p2p_supported_currencies?.includes(this.currency.toLocaleLowerCase()) &&
+            !this.is_virtual &&
+            !this.root_store.traders_hub.is_low_risk_cr_eu_real
+        );
     }
 
     get currency() {
@@ -1619,8 +1635,8 @@ export default class ClientStore extends BaseStore {
                 authorize_response.authorize.preferred_language,
                 this.is_new_session
             );
-            const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (stored_language && language !== stored_language) {
+            const stored_language_without_double_quotes = LocalStore.get(LANGUAGE_KEY).replace(/"/g, '');
+            if (stored_language_without_double_quotes && language !== stored_language_without_double_quotes) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }

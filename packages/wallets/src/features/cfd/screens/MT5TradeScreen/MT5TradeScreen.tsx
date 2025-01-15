@@ -24,6 +24,7 @@ import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
+import { OSDetect } from '@deriv/shared';
 
 type MT5TradeScreenProps = {
     mt5Account?: TAddedMT5Account;
@@ -93,6 +94,8 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         ctraderPlatform,
         marketType,
     ]);
+
+    const isWindows = OSDetect() === 'windows';
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
@@ -237,17 +240,20 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     </Text>
                 </div>
 
-                {isDesktop && details?.platform === mt5Platform && marketTypeTitle.toLowerCase() !== PRODUCT.GOLD && (
-                    <InformationBanner
-                        description={
-                            <Localize i18n_default_text='Tailor your indicators with expert-driven trend analysis.' />
-                        }
-                        informationIcon={<StandaloneChartAreaRegularIcon fill='#095A66' iconSize='sm' />}
-                        link='https://docs.deriv.com/misc/alpha_generation_guide.pdf'
-                        redirectIcon={<StandaloneArrowUpRightRegularIcon fill='#000000' iconSize='sm' />}
-                        title={<Localize i18n_default_text='Alpha Generation guide' />}
-                    />
-                )}
+                {isDesktop &&
+                    details?.platform === mt5Platform &&
+                    isWindows &&
+                    marketTypeTitle.toLowerCase() !== PRODUCT.GOLD && (
+                        <InformationBanner
+                            description={
+                                <Localize i18n_default_text='Tailor your indicators with expert-driven trend analysis.' />
+                            }
+                            informationIcon={<StandaloneChartAreaRegularIcon fill='#095A66' iconSize='sm' />}
+                            link='https://docs.deriv.com/misc/alpha_generation_guide.pdf'
+                            redirectIcon={<StandaloneArrowUpRightRegularIcon fill='#000000' iconSize='sm' />}
+                            title={<Localize i18n_default_text='Alpha Generation guide' />}
+                        />
+                    )}
             </div>
             <div className='wallets-mt5-trade-screen__links'>
                 {platform === mt5Platform && (

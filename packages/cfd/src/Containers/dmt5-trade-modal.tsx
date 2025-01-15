@@ -3,7 +3,7 @@ import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 import { useDevice } from '@deriv-com/ui';
 import { Text, Icon, Money, StatusBadge, InformationBanner } from '@deriv/components';
 import getMT5StatusBadgeConfig from '@deriv/account/src/Configs/get-mt5-status-badge-config';
-import { getCFDAccountKey, MT5_ACCOUNT_STATUS, PRODUCT, Jurisdiction } from '@deriv/shared';
+import { getCFDAccountKey, MT5_ACCOUNT_STATUS, PRODUCT, Jurisdiction, OSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../Helpers/cfd-config';
@@ -98,7 +98,7 @@ const DMT5TradeModal = observer(
                     return null;
             }
         };
-
+        const is_window = OSDetect() === 'windows';
         return (
             <div className='cfd-trade-modal-container'>
                 <div className='cfd-trade-modal'>
@@ -208,7 +208,7 @@ const DMT5TradeModal = observer(
                             <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                         </div>
                     </div>
-                    {isDesktop && mt5_trade_account.product !== PRODUCT.GOLD && (
+                    {isDesktop && mt5_trade_account.product && is_window !== PRODUCT.GOLD && (
                         <InformationBanner
                             information_icon={<StandaloneChartAreaRegularIcon fill='#095A66' iconSize='sm' />}
                             title={<Localize i18n_default_text='Alpha Generation guide' />}

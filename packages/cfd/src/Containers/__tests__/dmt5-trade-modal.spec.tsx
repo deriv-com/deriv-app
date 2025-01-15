@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import DMT5TradeModal from '../dmt5-trade-modal';
+import { OSDetect } from '@deriv/shared';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -11,6 +12,7 @@ jest.mock('@deriv/components', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getCFDAccountDisplay: jest.fn(),
+    OSDetect: jest.fn(),
 }));
 
 jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTradingPlatformIcon'));
@@ -156,6 +158,7 @@ describe('<DMT5TradeModal/>', () => {
     });
 
     it('should render information banner for non-gold account', () => {
+        (OSDetect as jest.Mock).mockResolvedValue('windows');
         const new_mock_props = {
             ...mock_props,
             mt5_trade_account: {

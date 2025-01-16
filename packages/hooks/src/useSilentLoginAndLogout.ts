@@ -33,13 +33,6 @@ const useSilentLoginAndLogout = ({
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
         if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
-            const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
-            Cookies.set('logged_state', 'true', {
-                expires: 30,
-                path: '/',
-                domain: currentDomain,
-                secure: true,
-            });
             return;
         }
 

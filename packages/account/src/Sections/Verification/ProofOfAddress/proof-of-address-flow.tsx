@@ -14,7 +14,7 @@ const ProofOfAddressFlow = observer(() => {
         client: { getToken, residence },
         common: { is_from_tradershub_os },
     } = useStore();
-    const { kyc_auth_status } = useKycAuthStatus({ country: residence });
+    const { kyc_auth_status, isLoading: isKYCLoading } = useKycAuthStatus({ country: residence });
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poa_in_accounts_os',
     });
@@ -39,7 +39,7 @@ const ProofOfAddressFlow = observer(() => {
         return url.toString();
     };
 
-    if (isRedirectToAccountsOSAppFFLoaded) {
+    if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {
         if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
             window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
         } else {

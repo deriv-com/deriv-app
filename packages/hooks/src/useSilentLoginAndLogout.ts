@@ -32,15 +32,19 @@ const useSilentLoginAndLogout = ({
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && isOAuth2Enabled) {
-            const tokens = Object.fromEntries(params.entries());
-            localStorage.setItem('config.tokens', JSON.stringify(tokens));
-            localStorage.setItem('config.account1', tokens.token1);
-            localStorage.setItem('active_loginid', tokens.acct1);
+        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+            const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+            Cookies.set('logged_state', 'true', {
+                expires: 30,
+                path: '/',
+                domain: currentDomain,
+                secure: true,
+            });
             return;
         }
 
         if (
+            !isUsingLegacyFlow &&
             loggedState === 'true' &&
             !isClientAccountsPopulated &&
             isOAuth2Enabled &&
@@ -54,6 +58,7 @@ const useSilentLoginAndLogout = ({
         }
 
         if (
+            !isUsingLegacyFlow &&
             loggedState === 'false' &&
             is_client_store_initialized &&
             isOAuth2Enabled &&

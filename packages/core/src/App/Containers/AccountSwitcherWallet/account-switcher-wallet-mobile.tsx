@@ -30,7 +30,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     }, [toggle]);
 
     const handleTradersHubRedirect = () => {
-        if (isHubRedirectionEnabled || !!trading_hub) {
+        if (isHubRedirectionEnabled && !!trading_hub) {
             window.location.assign(platforms.tradershub_os.url);
             return;
         }

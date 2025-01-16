@@ -40,7 +40,7 @@ const ProofOfAddressFlow = observer(() => {
     };
 
     if (isRedirectToAccountsOSAppFFLoaded) {
-        if (!shouldRedirectToAccountsOSApp && kyc_auth_status) {
+        if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
             window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
         } else {
             return <ProofOfAddress />;

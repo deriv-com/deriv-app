@@ -158,7 +158,7 @@ describe('<DMT5TradeModal/>', () => {
     });
 
     it('should render information banner for non-gold account', () => {
-        (OSDetect as jest.Mock).mockResolvedValue('windows');
+        (OSDetect as jest.Mock).mockReturnValue('windows');
         const new_mock_props = {
             ...mock_props,
             mt5_trade_account: {

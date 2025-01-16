@@ -20,14 +20,7 @@ const useIsHubRedirectionEnabled = () => {
         clients_country &&
         (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clients_country);
 
-    const isChangingToHubAppId =
-        typeof hubEnabledCountryList === 'object' &&
-        hubEnabledCountryList !== null &&
-        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        clients_country &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clients_country);
-
-    return { isHubRedirectionEnabled, isChangingToHubAppId };
+    return { isHubRedirectionEnabled };
 };
 
 export default useIsHubRedirectionEnabled;

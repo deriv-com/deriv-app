@@ -31,8 +31,14 @@ const useSilentLoginAndLogout = ({
     useEffect(() => {
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
-        const isUsingLegacyFlow = params.has('token1');
-        if (isUsingLegacyFlow) return;
+        const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
+        if (isUsingLegacyFlow && isOAuth2Enabled) {
+            const tokens = Object.fromEntries(params.entries());
+            localStorage.setItem('config.tokens', JSON.stringify(tokens));
+            localStorage.setItem('config.account1', tokens.token1);
+            localStorage.setItem('active_loginid', tokens.acct1);
+            return;
+        }
 
         if (
             loggedState === 'true' &&

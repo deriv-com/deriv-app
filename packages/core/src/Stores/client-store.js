@@ -1542,10 +1542,6 @@ export default class ClientStore extends BaseStore {
                         domain: currentDomain,
                         secure: true,
                     });
-                    const tokens = Object.fromEntries(params.entries());
-                    localStorage.setItem('config.tokens', JSON.stringify(tokens));
-                    localStorage.setItem('config.account1', tokens.token1);
-                    localStorage.setItem('active_loginid', tokens.acct1);
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {

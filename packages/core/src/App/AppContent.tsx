@@ -6,6 +6,7 @@ import {
     useGrowthbookGetFeatureValue,
     useGrowthbookIsOn,
     useIntercom,
+    useIsHubRedirectionEnabled,
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
@@ -57,10 +58,20 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2({
+    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
+    });
+    const { isChangingToHubAppId } = useIsHubRedirectionEnabled();
+
+    const is_app_id_set = localStorage.getItem('config.app_id');
+    const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
+
+    useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
     });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
@@ -75,16 +86,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
-
-    // NOTE: Commented this out for now due to single logout causing Deriv.app to be logged out continously
-    // There is a case where if logged_state is false coming from other platforms, Deriv app will SLO the user out
-    // TODO: Revert this once OIDC is enabled back for Deriv.app
-    // useSilentLoginAndLogout({
-    //     is_client_store_initialized,
-    //     isOAuth2Enabled,
-    //     oAuthLogout,
-    //     isGBLoaded,
-    // });
 
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
@@ -107,6 +108,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const token = active_account ? active_account.token : null;
     useFreshChat(token);
     useIntercom(token);
+
+    React.useEffect(() => {
+        if (isChangingToHubAppId && !is_app_id_set) {
+            const app_id = process.env.NODE_ENV === 'production' ? 61554 : 53503;
+            localStorage.setItem('change_login_app_id', app_id.toString());
+            return;
+        }
+        is_change_login_app_id_set && localStorage.removeItem('change_login_app_id');
+    }, [isChangingToHubAppId, is_app_id_set, is_change_login_app_id_set]);
 
     React.useEffect(() => {
         switchLanguage(current_language);
@@ -172,7 +182,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <SmartTraderIFrame />}
             {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />

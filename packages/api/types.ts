@@ -281,7 +281,7 @@ type KycAuthStatus = {
         /**
          * Current POI status.
          */
-        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected' | 'required';
         /**
          * Supported documents per service.
          */
@@ -3105,18 +3105,19 @@ export type TSocketPaginatateableRequestCleaned<T extends TSocketPaginateableEnd
 };
 
 export type TSocketRequestPayload<
-    T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames
-> = Partial<TSocketRequestCleaned<T>> extends TSocketRequestCleaned<T>
-    ? {
-          payload?: T extends TSocketPaginateableEndpointNames
-              ? TSocketPaginatateableRequestCleaned<T>
-              : TSocketRequestCleaned<T>;
-      }
-    : {
-          payload: T extends TSocketPaginateableEndpointNames
-              ? TSocketPaginatateableRequestCleaned<T>
-              : TSocketRequestCleaned<T>;
-      };
+    T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames,
+> =
+    Partial<TSocketRequestCleaned<T>> extends TSocketRequestCleaned<T>
+        ? {
+              payload?: T extends TSocketPaginateableEndpointNames
+                  ? TSocketPaginatateableRequestCleaned<T>
+                  : TSocketRequestCleaned<T>;
+          }
+        : {
+              payload: T extends TSocketPaginateableEndpointNames
+                  ? TSocketPaginatateableRequestCleaned<T>
+                  : TSocketRequestCleaned<T>;
+          };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, TSocketError<T>>
@@ -3133,7 +3134,7 @@ export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Para
 type TSocketRequestWithOptions<
     T extends TSocketEndpointNames,
     O extends boolean = false,
-    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery',
 > = Omit<
     TSocketRequestPayload<T> & {
         options?: OT extends 'useQuery' ? TSocketRequestQueryOptions<T> : TSocketRequestInfiniteQueryOptions<T>;
@@ -3148,18 +3149,19 @@ type TNever<T> = T extends Record<string, never> ? never : T;
 type TSocketRequestProps<
     T extends TSocketEndpointNames,
     O extends boolean = false,
-    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery',
 > = TNever<TSocketRequestWithOptions<T, O, OT>>;
 
 export type TSocketAcceptableProps<
     T extends TSocketEndpointNames,
     O extends boolean = false,
-    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery'
-> = TSocketRequestProps<T, O, OT> extends never
-    ? [undefined?]
-    : Partial<TSocketRequestProps<T, O, OT>> extends TSocketRequestProps<T, O, OT>
-    ? [TSocketRequestProps<T, O, OT>?]
-    : [TSocketRequestProps<T, O, OT>];
+    OT extends 'useQuery' | 'useInfiniteQuery' = 'useQuery',
+> =
+    TSocketRequestProps<T, O, OT> extends never
+        ? [undefined?]
+        : Partial<TSocketRequestProps<T, O, OT>> extends TSocketRequestProps<T, O, OT>
+          ? [TSocketRequestProps<T, O, OT>?]
+          : [TSocketRequestProps<T, O, OT>];
 
 export type TSocketPaginateableEndpointNames = KeysMatching<
     TSocketEndpoints,

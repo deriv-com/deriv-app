@@ -33,6 +33,7 @@ export const AnalyticsInitializer = async () => {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
+
                 growthbookOptions: {
                     attributes: {
                         loggedIn: !!client_information,
@@ -51,6 +52,7 @@ export const AnalyticsInitializer = async () => {
                         network_type: navigator.connection?.effectiveType,
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
+                        user_id: localStorage.getItem('active_user_id') || '',
                         residence_country: client_information?.residence,
                     },
                 },

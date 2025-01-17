@@ -114,6 +114,7 @@ export default class ClientStore extends BaseStore {
         amount_dxtrade: undefined,
         currency: '',
     };
+    prevent_redirect_to_hub = false;
 
     verification_code = {
         signup: '',
@@ -239,6 +240,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            prevent_redirect_to_hub: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -298,6 +300,7 @@ export default class ClientStore extends BaseStore {
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
             is_financial_account: computed,
+            is_p2p_available: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_logged_in: computed,
@@ -331,6 +334,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
+            setPreventRedirectToHub: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -382,6 +386,7 @@ export default class ClientStore extends BaseStore {
             setNewEmail: action.bound,
             setDeviceData: action.bound,
             getSignupParams: action.bound,
+            getToken: action.bound,
             onSetResidence: action.bound,
             onSetCitizen: action.bound,
             onSignup: action.bound,
@@ -626,6 +631,8 @@ export default class ClientStore extends BaseStore {
     }
 
     get available_onramp_currencies() {
+        if (!this.website_status?.currencies_config) return [];
+
         return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
             if (values.platform.ramp.length > 0) {
                 currencies.push(currency);
@@ -688,6 +695,19 @@ export default class ClientStore extends BaseStore {
 
     get account_title() {
         return getAccountTitle(this.loginid);
+    }
+
+    get is_p2p_available() {
+        const localstorage_p2p_settings = JSON.parse(localStorage.getItem('p2p_settings'));
+
+        const p2p_supported_currencies =
+            localstorage_p2p_settings?.supported_currencies || this.website_status?.p2p_config?.supported_currencies;
+
+        return (
+            p2p_supported_currencies?.includes(this.currency.toLocaleLowerCase()) &&
+            !this.is_virtual &&
+            !this.root_store.traders_hub.is_low_risk_cr_eu_real
+        );
     }
 
     get currency() {
@@ -924,6 +944,10 @@ export default class ClientStore extends BaseStore {
         if (should_redirect) {
             window.location.replace(url);
         }
+    };
+
+    setPreventRedirectToHub = value => {
+        this.prevent_redirect_to_hub = value;
     };
 
     getIsMarketTypeMatching = (account, market_type) => {
@@ -1521,6 +1545,21 @@ export default class ClientStore extends BaseStore {
         if (search) {
             if (window.location.pathname !== routes.callback_page) {
                 if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+                // NOTE: Remove this logic once social signup is intergated with OIDC
+                const params = new URLSearchParams(window.location.search);
+                const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
+                const loggedState = Cookies.get('logged_state');
+
+                if (isUsingLegacyFlow && loggedState === 'false') {
+                    const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+                    Cookies.set('logged_state', 'true', {
+                        expires: 30,
+                        path: '/',
+                        domain: currentDomain,
+                        secure: true,
+                    });
+                }
+
                 document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         // timeout is needed to get the token (code) from the URL before we hide it from the URL
@@ -1611,8 +1650,8 @@ export default class ClientStore extends BaseStore {
                 authorize_response.authorize.preferred_language,
                 this.is_new_session
             );
-            const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (stored_language && language !== stored_language) {
+            const stored_language_without_double_quotes = LocalStore.get(LANGUAGE_KEY).replace(/"/g, '');
+            if (stored_language_without_double_quotes && language !== stored_language_without_double_quotes) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }

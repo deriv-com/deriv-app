@@ -13,8 +13,16 @@ const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
 
-    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
-        client;
+    const {
+        currency,
+        has_wallet,
+        is_logged_in,
+        is_logging_in,
+        setNewEmail,
+        setVerificationCode,
+        verification_code,
+        setPreventRedirectToHub,
+    } = client;
 
     const {
         openRealAccountSignup,
@@ -93,6 +101,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'reset_password': {
+            setPreventRedirectToHub(true);
             toggleResetPasswordModal(true);
             break;
         }
@@ -109,15 +118,18 @@ const Redirect = observer(() => {
                     setVerificationCode(request_email_code, action_param);
                     sessionStorage.removeItem('request_email_code');
                 }
+                setPreventRedirectToHub(true);
                 toggleResetEmailModal(true);
             }
             break;
         }
         case 'social_email_change': {
+            setPreventRedirectToHub(true);
             toggleResetPasswordModal(true);
             break;
         }
         case 'system_email_change': {
+            setPreventRedirectToHub(true);
             toggleUpdateEmailModal(true);
             break;
         }
@@ -173,7 +185,7 @@ const Redirect = observer(() => {
                     redirected_to_route = true;
                 }
             }
-
+            setPreventRedirectToHub(true);
             setResetTradingPasswordModalOpen(true);
             break;
         }

@@ -3,6 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../ModalProvider';
 import ModalStepWrapper from '../ModalStepWrapper';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../AuthProvider';
 
 const mockhideFn = jest.fn();
 jest.mock('../../../ModalProvider', () => ({
@@ -19,11 +21,15 @@ beforeEach(() => {
 
 describe('ModalStepWrapper', () => {
     const MockComponent = (props: React.ComponentProps<typeof ModalStepWrapper>) => (
-        <ModalProvider>
-            <ModalStepWrapper {...props}>
-                <div>test</div>
-            </ModalStepWrapper>
-        </ModalProvider>
+        <APIProvider>
+            <WalletsAuthProvider>
+                <ModalProvider>
+                    <ModalStepWrapper {...props}>
+                        <div>test</div>
+                    </ModalStepWrapper>
+                </ModalProvider>
+            </WalletsAuthProvider>
+        </APIProvider>
     );
 
     it('should render ModalStepWrapper on default values', () => {

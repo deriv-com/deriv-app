@@ -1529,6 +1529,7 @@ export default class ClientStore extends BaseStore {
         if (search) {
             if (window.location.pathname !== routes.callback_page) {
                 if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+
                 document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         // timeout is needed to get the token (code) from the URL before we hide it from the URL
@@ -2225,6 +2226,18 @@ export default class ClientStore extends BaseStore {
                 if (is_account_param) {
                     obj_params[key] = value;
                     is_social_signup_provider = true;
+                    // NOTE: Remove this logic once social signup is intergated with OIDC
+                    const loggedState = Cookies.get('logged_state');
+                    console.log('setting logged state to false if cookies are false');
+                    if (loggedState === 'false') {
+                        const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+                        Cookies.set('logged_state', 'true', {
+                            expires: 30,
+                            path: '/',
+                            domain: currentDomain,
+                            secure: true,
+                        });
+                    }
                 }
             });
 

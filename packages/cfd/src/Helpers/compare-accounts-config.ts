@@ -98,7 +98,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case CFD_PLATFORMS.CTRADER:
             return is_demo ? localize('Deriv cTrader demo') : localize('Deriv cTrader');
         default:
-            return is_demo ? localize('CFDs demo') : localize('CFDs');
+            return is_demo ? localize('Standard demo') : localize('Standard');
     }
 };
 
@@ -129,6 +129,7 @@ const platformsHeaderLabel = {
 const getAccountIcon = (shortcode: string, product?: TProducts) => {
     switch (shortcode) {
         case MARKET_TYPE.SYNTHETIC:
+        case MARKET_TYPE.GAMING:
             return 'Standard';
         case MARKET_TYPE.FINANCIAL:
             switch (product) {
@@ -276,7 +277,6 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
     const financial_accounts = available_accounts
         .filter(
             item =>
-                item.market_type === MARKET_TYPE.FINANCIAL &&
                 item.shortcode === JURISDICTION.MALTA_INVEST &&
                 item.is_default_jurisdiction === 'true' &&
                 item.product !== PRODUCT.GOLD
@@ -355,9 +355,7 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item =>
             item.market_type === MARKET_TYPE.FINANCIAL && item.product !== PRODUCT.STP && item.product !== PRODUCT.GOLD
     );
-    const gaming_demo_accounts = available_accounts.filter(
-        item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
-    );
+    const gaming_demo_accounts = available_accounts.filter(item => item.market_type === MARKET_TYPE.GAMING);
 
     const gold_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.FINANCIAL && item.product === PRODUCT.GOLD

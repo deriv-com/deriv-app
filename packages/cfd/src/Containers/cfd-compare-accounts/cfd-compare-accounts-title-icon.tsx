@@ -15,9 +15,9 @@ import {
     getMarketType,
 } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
+const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const { isDesktop } = useDevice();
-    const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
+    const market_type = getMarketType(trading_platforms);
 
     const market_type_shortcode = generateMarketTypeShortcode(trading_platforms, market_type);
 

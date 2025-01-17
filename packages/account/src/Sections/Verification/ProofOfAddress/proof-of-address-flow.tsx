@@ -2,21 +2,21 @@ import React from 'react';
 
 import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getAppId, getSocketURL } from '@deriv/shared';
+import { ACCOUNTS_OS_POA_URL, getAppId, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 import { useKycAuthStatus } from '../../../hooks';
 
-import ProofOfIdentity from './proof-of-identity';
+import ProofOfAddress from './proof-of-address';
 
-const ProofOfIdentityFlow = observer(() => {
+const ProofOfAddressFlow = observer(() => {
     const {
         client: { getToken, residence },
         common: { is_from_tradershub_os },
     } = useStore();
     const { kyc_auth_status, isLoading: isKYCLoading } = useKycAuthStatus({ country: residence });
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'redirect_to_poi_in_accounts_os',
+        featureFlag: 'redirect_to_poa_in_accounts_os',
     });
 
     const getFormattedURL = url_link => {
@@ -41,18 +41,13 @@ const ProofOfIdentityFlow = observer(() => {
 
     if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {
         if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
-            const { identity } = kyc_auth_status;
-            const redirect_url =
-                identity.status === 'none' || identity.status === 'required'
-                    ? ACCOUNTS_OS_POI_URL
-                    : ACCOUNTS_OS_POI_STATUS_URL;
-            window.location.replace(getFormattedURL(redirect_url));
+            window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
         } else {
-            return <ProofOfIdentity />;
+            return <ProofOfAddress />;
         }
     }
 
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
 
-export default ProofOfIdentityFlow;
+export default ProofOfAddressFlow;

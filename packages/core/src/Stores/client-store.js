@@ -2258,7 +2258,6 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                     // NOTE: Remove this logic once social signup is intergated with OIDC
                     const loggedState = Cookies.get('logged_state');
-                    console.log('setting logged state to false if cookies are false');
                     if (loggedState === 'false') {
                         const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
                         Cookies.set('logged_state', 'true', {

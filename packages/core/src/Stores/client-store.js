@@ -1545,20 +1545,6 @@ export default class ClientStore extends BaseStore {
         if (search) {
             if (window.location.pathname !== routes.callback_page) {
                 if (code_param && action_param) this.setVerificationCode(code_param, action_param);
-                // NOTE: Remove this logic once social signup is intergated with OIDC
-                const params = new URLSearchParams(window.location.search);
-                const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-                const loggedState = Cookies.get('logged_state');
-
-                if (isUsingLegacyFlow && loggedState === 'false') {
-                    const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
-                    Cookies.set('logged_state', 'true', {
-                        expires: 30,
-                        path: '/',
-                        domain: currentDomain,
-                        secure: true,
-                    });
-                }
 
                 document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
@@ -2256,6 +2242,17 @@ export default class ClientStore extends BaseStore {
                 if (is_account_param) {
                     obj_params[key] = value;
                     is_social_signup_provider = true;
+                    // NOTE: Remove this logic once social signup is intergated with OIDC
+                    const loggedState = Cookies.get('logged_state');
+                    if (loggedState === 'false') {
+                        const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+                        Cookies.set('logged_state', 'true', {
+                            expires: 30,
+                            path: '/',
+                            domain: currentDomain,
+                            secure: true,
+                        });
+                    }
                 }
             });
 

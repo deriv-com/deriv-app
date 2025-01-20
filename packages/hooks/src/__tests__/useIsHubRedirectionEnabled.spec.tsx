@@ -1,9 +1,11 @@
 import React from 'react';
+
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 
+import useAuthorize from '../useAuthorize';
 import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';
 import useIsHubRedirectionEnabled from '../useIsHubRedirectionEnabled';
-import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('../useGrowthbookGetFeatureValue', () =>
     jest.fn(() => [
@@ -11,6 +13,14 @@ jest.mock('../useGrowthbookGetFeatureValue', () =>
             hub_enabled_country_list: [''],
         },
     ])
+);
+
+jest.mock('../useAuthorize', () =>
+    jest.fn(() => ({
+        data: {
+            country: 'UK',
+        },
+    }))
 );
 
 describe('useIsHubRedirectionEnabled', () => {
@@ -24,9 +34,14 @@ describe('useIsHubRedirectionEnabled', () => {
         mock_store.client.clients_country = 'US';
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {
-                hub_enabled_country_list: ['AU'],
+                hub_enabled_country_list: ['US', 'AU', 'UK'],
             },
         ]);
+        (useAuthorize as jest.Mock).mockReturnValue({
+            data: {
+                country: 'UK',
+            },
+        });
     });
 
     const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -34,19 +49,36 @@ describe('useIsHubRedirectionEnabled', () => {
     );
 
     it('should return initial state correctly', () => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
+            {
+                hub_enabled_country_list: ['AU'],
+            },
+        ]);
         const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
 
         expect(result.current.isHubRedirectionEnabled).toBe(false);
     });
 
-    it('should return true if client country is in the hub enabled list', () => {
-        mock_store.client.clients_country = 'UK';
+    it('should return true if authorize country is in the hub enabled list', () => {
+        const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
+        expect(result.current.isHubRedirectionEnabled).toBe(true);
+    });
+
+    it('should return true if client country is in the hub enabled list and authorize is undefined', () => {
+        (useAuthorize as jest.Mock).mockReturnValue({
+            data: undefined,
+        });
+        const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
+        expect(result.current.isHubRedirectionEnabled).toBe(true);
+    });
+
+    it('should return false if authorize and client country is not in the hub enabled list', () => {
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {
-                hub_enabled_country_list: ['US', 'AU', 'UK'],
+                hub_enabled_country_list: ['AU'],
             },
         ]);
         const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
-        expect(result.current.isHubRedirectionEnabled).toBe(true);
+        expect(result.current.isHubRedirectionEnabled).toBe(false);
     });
 });

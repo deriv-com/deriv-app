@@ -89,7 +89,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         }));
         // We need to add this check here because wallets account is coming from Low-Code tradershub.
         // This condition is to reload the page when the modal is closed.
-        if (isHubRedirectionEnabled || !!tradingHub) {
+        if (isHubRedirectionEnabled && !!tradingHub) {
             window.location.reload();
         }
     };

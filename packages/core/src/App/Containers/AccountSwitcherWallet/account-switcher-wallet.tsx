@@ -43,7 +43,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
-        if (isHubRedirectionEnabled || !!trading_hub) {
+        if (isHubRedirectionEnabled && !!trading_hub) {
             window.location.assign(platforms.tradershub_os.url);
             return;
         }

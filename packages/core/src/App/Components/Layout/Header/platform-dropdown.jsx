@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
-import { routes, getActivePlatform, platforms } from '@deriv/shared';
-import { BinaryLink } from 'App/Components/Routes';
-import 'Sass/app/_common/components/platform-dropdown.scss';
-import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { useDevice } from '@deriv-com/ui';
+
+import { Div100vhContainer, Icon, Text, useOnClickOutside } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { getActivePlatform, platforms, routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import { BinaryLink } from 'App/Components/Routes';
+
+import 'Sass/app/_common/components/platform-dropdown.scss';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
@@ -54,15 +57,14 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
     const { isDesktop } = useDevice();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
     const { client } = useStore();
-    const { account_settings, has_wallet } = client;
-    const { trading_hub } = account_settings;
+    const { has_wallet } = client;
 
     const TradersHubRedirect = () => {
         return (
             <div className='platform-dropdown__cta'>
                 <BinaryLink
                     onClick={() => {
-                        if (isHubRedirectionEnabled && has_wallet && !!trading_hub) {
+                        if (isHubRedirectionEnabled && has_wallet) {
                             window.location.assign(platforms.tradershub_os.url);
                             return;
                         }

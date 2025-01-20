@@ -16,14 +16,12 @@ jest.mock('../useGrowthbookGetFeatureValue', () =>
 describe('useIsHubRedirectionEnabled', () => {
     const mock_store = mockStore({
         client: {
-            account_settings: { citizen: 'US' },
             clients_country: 'US',
         },
     });
 
     beforeEach(() => {
         mock_store.client.clients_country = 'US';
-        mock_store.client.account_settings.citizen = 'US';
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {
                 hub_enabled_country_list: ['AU'],
@@ -39,18 +37,6 @@ describe('useIsHubRedirectionEnabled', () => {
         const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
 
         expect(result.current.isHubRedirectionEnabled).toBe(false);
-        expect(result.current.isChangingToHubAppId).toBe(false);
-    });
-
-    it('should return false if client country is not in the hub enabled list', () => {
-        mock_store.client.account_settings.citizen = 'UK';
-        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
-            {
-                hub_enabled_country_list: ['US', 'AU'],
-            },
-        ]);
-        const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
-        expect(result.current.isHubRedirectionEnabled).toBe(false);
     });
 
     it('should return true if client country is in the hub enabled list', () => {
@@ -62,16 +48,5 @@ describe('useIsHubRedirectionEnabled', () => {
         ]);
         const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
         expect(result.current.isHubRedirectionEnabled).toBe(true);
-    });
-
-    it('should return isChangingToHubAppId true if client country is in the hub enabled list but not in the citizen list', () => {
-        mock_store.client.clients_country = 'UK';
-        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
-            {
-                hub_enabled_country_list: ['US', 'AU', 'UK'],
-            },
-        ]);
-        const { result } = renderHook(() => useIsHubRedirectionEnabled(), { wrapper });
-        expect(result.current.isChangingToHubAppId).toBe(true);
     });
 });

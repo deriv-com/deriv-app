@@ -1,3 +1,4 @@
+import useAuthorize from './useAuthorize';
 import useClientCountry from './useClientCountry';
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
@@ -10,13 +11,15 @@ const useIsHubRedirectionEnabled = () => {
         featureFlag: 'hub_enabled_country_list',
     });
     const { data: clientCountry } = useClientCountry();
+    const { data: authorize } = useAuthorize();
+    const country = authorize?.country ? authorize.country : clientCountry;
 
     const isHubRedirectionEnabled =
         typeof hubEnabledCountryList === 'object' &&
         hubEnabledCountryList !== null &&
         Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        clientCountry &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clientCountry);
+        country &&
+        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(country);
 
     return { isHubRedirectionEnabled };
 };

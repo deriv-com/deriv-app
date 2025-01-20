@@ -9,7 +9,8 @@ type TQuickAdjGuide = {
     is_minimized?: boolean;
     is_minimized_visible: boolean;
 };
-const QuickAdjGuide = ({ is_minimized, is_minimized_visible }: TQuickAdjGuide) => {
+
+const QuickAdjGuide = React.memo(({ is_minimized, is_minimized_visible }: TQuickAdjGuide) => {
     const is_minimized_and_visible = is_minimized && is_minimized_visible;
     const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const [show_guide, setShowGuide] = React.useState(false);
@@ -33,25 +34,33 @@ const QuickAdjGuide = ({ is_minimized, is_minimized_visible }: TQuickAdjGuide) =
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_minimized_and_visible]);
 
-    const STEPS = [
-        {
-            content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
-            placement: 'top' as Step['placement'],
-            target: '.trade-params__options__wrapper--minimized',
-            offset: 0,
-            title: <Localize i18n_default_text='Make quick adjustments.' />,
-            disableBeacon: true,
-            styles: {
-                spotlight: {
-                    height: 73,
+    const STEPS = React.useMemo(
+        () => [
+            {
+                content: <Localize i18n_default_text='Scroll left or right to adjust your trade parameters.' />,
+                placement: 'top' as Step['placement'],
+                target: '.trade-params__options__wrapper--minimized',
+                offset: 0,
+                title: <Localize i18n_default_text='Make quick adjustments.' />,
+                disableBeacon: true,
+                styles: {
+                    spotlight: {
+                        height: 73,
+                    },
                 },
+                spotlightPadding: 2,
             },
-            spotlightPadding: 2,
-        },
-    ];
-    return show_guide ? (
-        <GuideContainer should_run={show_guide} steps={STEPS} callback={() => setShowGuide(false)} />
-    ) : null;
-};
+        ],
+        []
+    );
+
+    const handleCallback = React.useCallback(() => {
+        setShowGuide(false);
+    }, []);
+
+    return show_guide ? <GuideContainer should_run={show_guide} steps={STEPS} callback={handleCallback} /> : null;
+});
+
+QuickAdjGuide.displayName = 'QuickAdjGuide';
 
 export default QuickAdjGuide;

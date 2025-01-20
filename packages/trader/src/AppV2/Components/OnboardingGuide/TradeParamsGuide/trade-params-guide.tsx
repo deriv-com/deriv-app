@@ -5,7 +5,7 @@ import React from 'react';
 import { Step } from 'react-joyride';
 import GuideContainer from '../GuideForPages/guide-container';
 
-const TradeParamsGuide = () => {
+const TradeParamsGuide = React.memo(() => {
     const [guide_dtrader_v2, setGuideDtraderV2] = useLocalStorageData<Record<string, boolean>>('guide_dtrader_v2');
     const [show_guide, setShowGuide] = React.useState(false);
     const timerRef = React.useRef<NodeJS.Timeout>();
@@ -30,21 +30,30 @@ const TradeParamsGuide = () => {
                 clearTimeout(timerRef.current);
             }
         };
+    }, [guide_dtrader_v2, setGuideDtraderV2]);
+
+    const STEPS = React.useMemo(
+        () => [
+            {
+                content: <Localize i18n_default_text='Define your trade parameters.' />,
+                placement: 'top' as Step['placement'],
+                target: '.trade__parameter-tooltip-info',
+                spotlightPadding: 4,
+                title: <Localize i18n_default_text='Set your trade' />,
+                disableBeacon: true,
+                offset: 0,
+            },
+        ],
+        []
+    );
+
+    const handleCallback = React.useCallback(() => {
+        setShowGuide(false);
     }, []);
 
-    const STEPS = [
-        {
-            content: <Localize i18n_default_text='Define your trade parameters.' />,
-            placement: 'top' as Step['placement'],
-            target: '.trade__parameter-tooltip-info',
-            spotlightPadding: 4,
-            title: <Localize i18n_default_text='Set your trade' />,
-            disableBeacon: true,
-            offset: 0,
-        },
-    ];
+    return <GuideContainer should_run={show_guide} steps={STEPS} callback={handleCallback} />;
+});
 
-    return <GuideContainer should_run={show_guide} steps={STEPS} callback={() => setShowGuide(false)} />;
-};
+TradeParamsGuide.displayName = 'TradeParamsGuide';
 
 export default TradeParamsGuide;

@@ -602,7 +602,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
         .cq-chart-controls {
-            transition: max-width 0.25s ease, transform 0.25s ease;
+            transition:
+                max-width 0.25s ease,
+                transform 0.25s ease;
         }
         .sc-navigation-widget,
         .stx-panel-control {
@@ -821,15 +823,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 z-index: 102 !important;
             }
         }
-    }
-    /* TODO: Remove this override once the issue is fixed in smartcharts */
-    /* postcss-bem-linter: ignore */
-    @at-root body.theme--light & .chart-line.horizontal .title-wrapper {
-        background-image: linear-gradient(
-            rgba(255, 255, 255, 0.001) 30%,
-            var(--general-main-1) 50%,
-            rgba(255, 255, 255, 0.001) 75%
-        );
     }
 }
 /*rtl:end:ignore*/

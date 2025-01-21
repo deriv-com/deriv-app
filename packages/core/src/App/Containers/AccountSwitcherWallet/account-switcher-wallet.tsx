@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { platforms, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useStoreWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
@@ -18,8 +18,12 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
 
     const history = useHistory();
+    const { client } = useStore();
+    const { account_settings } = client;
+    const { trading_hub } = account_settings;
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
@@ -39,6 +43,10 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
+        if (isHubRedirectionEnabled && !!trading_hub) {
+            window.location.assign(platforms.tradershub_os.url);
+            return;
+        }
         closeAccountsDialog();
         history.push(routes.traders_hub);
     };

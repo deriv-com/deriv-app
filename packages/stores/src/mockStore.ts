@@ -176,6 +176,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             pre_switch_broadcast: false,
             residence: '',
             is_svg: false,
+            is_p2p_available: false,
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
             setFinancialAndTradingAssessment: jest.fn(),
@@ -197,6 +198,8 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trading_platform_dxtrade_password_reset: '',
                 trading_platform_mt5_password_reset: '',
             },
+            prevent_redirect_to_hub: false,
+            setPreventRedirectToHub: jest.fn(),
             email: '',
             fetchStatesList: jest.fn(),
             setVerificationCode: jest.fn(),
@@ -207,6 +210,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 document_status: '',
                 identity_status: '',
             },
+            getToken: jest.fn(),
             phone_settings: {
                 carriers: [],
                 countries: [
@@ -793,7 +797,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 payout_choices: [],
                 requestProposal: jest.fn(),
                 resetPreviousSymbol: jest.fn(),
-                setHoveredBarrier: jest.fn(),
                 setIsTradeParamsExpanded: jest.fn(),
                 setTradeTypeTab: jest.fn(),
                 setV2ParamsInitialValues: jest.fn(),

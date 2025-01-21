@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
-import { Loader, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { FormatUtils } from '@deriv-com/utils';
+import { WalletLoader } from '../../../../../../components';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -33,7 +34,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
         (a, b) => (b.transaction_time ?? 0) - (a.transaction_time ?? 0)
     );
 
-    if (!wallet || isLoading) return <Loader />;
+    if (!wallet || isLoading) return <WalletLoader />;
 
     if (!resetBalanceTransactions.length) return <TransactionsNoDataState />;
 

@@ -8,8 +8,9 @@ jest.mock('@deriv/api-v2', () => ({
     useCashierFiatAddress: jest.fn(),
 }));
 
-jest.mock('@deriv-com/ui', () => ({
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../../../screens', () => ({

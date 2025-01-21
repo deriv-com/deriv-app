@@ -1,23 +1,25 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv/components';
-import { routes } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
+
+import { CFDCompareAccountsCarousel, Icon, PageOverlay, Text } from '@deriv/components';
 import { useIsRtl } from '@deriv/hooks';
-import CFDCompareAccountsCard from './cfd-compare-accounts-card';
+import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import {
-    getSortedCFDAvailableAccounts,
+    ctrader_data,
+    dxtrade_data,
+    getCtraderDemoData,
+    getDxtradeDemoData,
     getEUAvailableAccounts,
     getMT5DemoData,
-    getDxtradeDemoData,
-    getCtraderDemoData,
-    dxtrade_data,
-    ctrader_data,
+    getSortedCFDAvailableAccounts,
 } from '../../Helpers/compare-accounts-config';
-import { REGION } from '../../Helpers/cfd-config';
+
+import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 
 const CompareCFDs = observer(() => {
     const { isDesktop } = useDevice();
@@ -26,8 +28,7 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region, available_ctrader_accounts } =
-        traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, available_ctrader_accounts } = traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
@@ -64,20 +65,12 @@ const CompareCFDs = observer(() => {
             ? all_cfd_available_accounts.length + 1
             : all_cfd_available_accounts.length;
 
-    const getCompareAccountsHeader = () =>
-        selected_region === REGION.EU ? (
-            <Localize
-                i18n_default_text='Deriv MT5 CFDs {{title}} account'
-                values={{
-                    title: is_demo ? localize('demo') : localize('real'),
-                }}
-            />
-        ) : (
-            <Localize
-                i18n_default_text='Compare CFDs {{title}} accounts'
-                values={{ title: is_demo ? localize('demo') : '' }}
-            />
-        );
+    const getCompareAccountsHeader = () => (
+        <Localize
+            i18n_default_text='Compare CFDs {{title}} accounts'
+            values={{ title: is_demo ? localize('demo') : '' }}
+        />
+    );
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -93,7 +86,7 @@ const CompareCFDs = observer(() => {
                 </Text>
             </div>
             <h1 className='compare-cfd-header-title'>
-                <Text size='m' weight='bold' color='prominent'>
+                <Text size='m' weight='bold' color='prominent' align='center'>
                     {getCompareAccountsHeader()}
                 </Text>
             </h1>
@@ -157,7 +150,7 @@ const CompareCFDs = observer(() => {
                     {all_cfd_available_accounts.map(item => (
                         <CFDCompareAccountsCard
                             trading_platforms={item}
-                            key={item.market_type + item.shortcode}
+                            key={item.market_type + item.shortcode + (item?.product || '')}
                             is_eu_user={is_eu_user}
                             is_demo={is_demo}
                         />

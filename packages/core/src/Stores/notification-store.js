@@ -28,6 +28,7 @@ import {
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { Chat } from '@deriv/utils';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -733,7 +734,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to unlock it.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -955,7 +956,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1172,7 +1173,7 @@ export default class NotificationStore extends BaseStore {
                     ),
                     action: {
                         onClick: () => {
-                            window.LiveChatWidget?.call('maximize');
+                            Chat.open();
                         },
                         text: localize('Go to live chat'),
                     },
@@ -1285,7 +1286,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1297,7 +1298,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1472,7 +1473,7 @@ export default class NotificationStore extends BaseStore {
                 ),
                 action: {
                     onClick: async () => {
-                        window.LiveChatWidget?.call('maximize');
+                        Chat.open();
                     },
                     text: localize('Go to LiveChat'),
                 },
@@ -1632,7 +1633,7 @@ export default class NotificationStore extends BaseStore {
             : {
                   text: localize('Contact live chat'),
                   onClick: () => {
-                      window.LiveChatWidget?.call('maximize');
+                      Chat.open();
                   },
               };
 

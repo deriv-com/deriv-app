@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 import { clickAndKeyEventHandler } from '@deriv/shared';
 import { getDescriptionVideoIds } from 'AppV2/Utils/contract-description-utils';
 import GuideContent from './guide-content';
+import ReactDOM from 'react-dom';
 
 type TGuideDescriptionModal = {
     contract_list: { tradeType: React.ReactNode; id: string }[];
@@ -16,6 +17,23 @@ type TGuideDescriptionModal = {
     selected_contract_type: string;
     show_guide_for_selected_contract?: boolean;
     show_description_in_a_modal?: boolean;
+};
+
+const PortalModal = ({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) => {
+    if (!isOpen) return null;
+
+    return ReactDOM.createPortal(
+        <div className='modal-player' aria-modal='true'>
+            <div
+                className='modal-player__container'
+                onClick={e => e.stopPropagation()}
+                onKeyDown={e => e.stopPropagation()}
+            >
+                {children}
+            </div>
+        </div>,
+        document.body
+    );
 };
 
 const GuideDescriptionModal = ({
@@ -83,25 +101,17 @@ const GuideDescriptionModal = ({
                     <GuideContent {...guide_content_props} />
                 </div>
             )}
-            {is_video_player_opened && (
-                <dialog
-                    ref={modal_ref}
-                    onClick={toggleVideoPlayer}
-                    onKeyDown={toggleVideoPlayer}
-                    className='modal-player'
-                >
-                    <div onClick={e => e.stopPropagation()} onKeyDown={e => e.stopPropagation()}>
-                        <VideoPlayer
-                            className='modal-player__wrapper'
-                            data_testid='dt_video_player'
-                            height='180px'
-                            is_mobile
-                            increased_drag_area
-                            src={video_src}
-                        />
-                    </div>
-                </dialog>
-            )}
+            <PortalModal isOpen={is_video_player_opened}>
+                <VideoPlayer
+                    className='modal-player__wrapper'
+                    data_testid='dt_video_player'
+                    is_v2
+                    is_mobile
+                    increased_drag_area
+                    src={video_src}
+                    onModalClose={toggleVideoPlayer}
+                />
+            </PortalModal>
         </React.Fragment>
     );
 };

@@ -25,7 +25,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import { TContractInfo } from '../shared/src/utils/contract';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 
 import type { FeatureFlagsStore } from './src/stores';
 
@@ -537,6 +537,9 @@ export type TClientStore = {
         trading_platform_accounts: DetailsOfEachMT5Loginid[];
     }) => DetailsOfEachMT5Loginid[];
     standpoint: TStandPoint;
+    is_p2p_available: boolean;
+    prevent_redirect_to_hub: boolean;
+    setPreventRedirectToHub: (value: boolean) => void;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
@@ -705,6 +708,7 @@ export type TClientStore = {
         poi_status: string;
         valid_tin: 0 | 1;
     };
+    getToken: () => string;
     should_show_trustpilot_notification: boolean;
 };
 
@@ -1015,6 +1019,7 @@ type TBarriers = Array<{
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;
+    updateColor: ({ barrier_color, shade_color }: { barrier_color?: string; shade_color?: string }) => void;
 }>;
 type TContractTradeStore = {
     accountSwitchListener: () => Promise<void>;

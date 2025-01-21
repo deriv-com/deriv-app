@@ -9,6 +9,9 @@ import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
+import OSRedirect from '../Containers/OSRedirect';
+import CallbackPage from '../../Modules/Callback/CallbackPage.tsx';
+
 const CFDCompareAccounts = React.lazy(
     () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
 );
@@ -319,6 +322,12 @@ const getModules = () => {
             is_authenticated: false,
             getTitle: () => localize("Trader's Hub"),
         },
+        {
+            path: routes.callback_page,
+            component: CallbackPage,
+            is_authenticated: false,
+            getTitle: () => 'Callback',
+        },
     ];
 
     return modules;
@@ -334,7 +343,9 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 const initRoutesConfig = () => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.traders_hub },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
+    { path: routes.os_redirect, component: OSRedirect, getTitle: () => localize('Redirect') },
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
+    { path: routes.callback_page, component: CallbackPage, getTitle: () => 'Callback' },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

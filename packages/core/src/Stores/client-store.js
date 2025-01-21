@@ -7,35 +7,33 @@ import {
     deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
+    getAppId,
     getPropertyValue,
+    getUrlP2P,
     getUrlSmartTrader,
     isCryptocurrency,
     isDesktopOs,
-    isMobile,
     isEmptyObject,
     isLocal,
+    isMobile,
     isProduction,
     isStaging,
-    isTestLink,
     isTestDerivApp,
+    isTestLink,
     LocalStore,
     redirectToLogin,
     removeCookies,
     routes,
     SessionStore,
     setCurrencies,
+    sortApiData,
     State,
     toMoment,
-    sortApiData,
     urlForLanguage,
-    getAppId,
-    getUrlP2P,
 } from '@deriv/shared';
+import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import { URLConstants } from '@deriv-com/utils';
-import { getCountry } from '@deriv/utils';
-
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
+import { CountryUtils, URLConstants } from '@deriv-com/utils';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -44,6 +42,7 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
+
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -115,6 +114,7 @@ export default class ClientStore extends BaseStore {
         amount_dxtrade: undefined,
         currency: '',
     };
+    prevent_redirect_to_hub = false;
 
     verification_code = {
         signup: '',
@@ -176,7 +176,6 @@ export default class ClientStore extends BaseStore {
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
         super({ root_store, local_storage_properties, store_name });
-
         makeObservable(this, {
             exchange_rates: observable,
             loginid: observable,
@@ -240,6 +239,7 @@ export default class ClientStore extends BaseStore {
             dxtrade_trading_servers: observable,
             prev_real_account_loginid: observable,
             prev_account_type: observable,
+            prevent_redirect_to_hub: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             real_account_signup_form_data: observable,
@@ -298,6 +298,7 @@ export default class ClientStore extends BaseStore {
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
             is_financial_account: computed,
+            is_p2p_available: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_logged_in: computed,
@@ -331,6 +332,7 @@ export default class ClientStore extends BaseStore {
             setPreferredLanguage: action.bound,
             setCookieAccount: action.bound,
             setCFDScore: action.bound,
+            setPreventRedirectToHub: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
@@ -382,6 +384,7 @@ export default class ClientStore extends BaseStore {
             setNewEmail: action.bound,
             setDeviceData: action.bound,
             getSignupParams: action.bound,
+            getToken: action.bound,
             onSetResidence: action.bound,
             onSetCitizen: action.bound,
             onSignup: action.bound,
@@ -625,6 +628,8 @@ export default class ClientStore extends BaseStore {
     }
 
     get available_onramp_currencies() {
+        if (!this.website_status?.currencies_config) return [];
+
         return Object.entries(this.website_status?.currencies_config).reduce((currencies, [currency, values]) => {
             if (values.platform.ramp.length > 0) {
                 currencies.push(currency);
@@ -687,6 +692,19 @@ export default class ClientStore extends BaseStore {
 
     get account_title() {
         return getAccountTitle(this.loginid);
+    }
+
+    get is_p2p_available() {
+        const localstorage_p2p_settings = JSON.parse(localStorage.getItem('p2p_settings'));
+
+        const p2p_supported_currencies =
+            localstorage_p2p_settings?.supported_currencies || this.website_status?.p2p_config?.supported_currencies;
+
+        return (
+            p2p_supported_currencies?.includes(this.currency.toLocaleLowerCase()) &&
+            !this.is_virtual &&
+            !this.root_store.traders_hub.is_low_risk_cr_eu_real
+        );
     }
 
     get currency() {
@@ -925,6 +943,10 @@ export default class ClientStore extends BaseStore {
         }
     };
 
+    setPreventRedirectToHub = value => {
+        this.prevent_redirect_to_hub = value;
+    };
+
     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
@@ -1122,16 +1144,11 @@ export default class ClientStore extends BaseStore {
             : window.location.hostname;
 
         // eslint-disable-next-line max-len
-        const {
-            loginid,
-            email,
-            landing_company_shortcode,
-            currency,
-            residence,
-            account_settings,
-            preferred_language,
-            user_id,
-        } = this;
+        const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
+
+        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const email = this.email || client_accounts[loginid]?.email;
+        const residence = this.residence || client_accounts[loginid]?.residence;
 
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1523,14 +1540,17 @@ export default class ClientStore extends BaseStore {
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (search) {
-            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
-                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-                }, 0);
-            });
+            if (window.location.pathname !== routes.callback_page) {
+                if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                        // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                        history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+                    }, 0);
+                });
+            }
         }
 
         this.setDeviceData();
@@ -1564,7 +1584,9 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleResetEmailModal(true);
             }
         }
-        const client = this.accounts[this.loginid];
+        const storedToken = localStorage.getItem('config.account1');
+        const client = this.accounts[this.loginid] || (storedToken ? { token: storedToken } : undefined);
+
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
@@ -1601,7 +1623,7 @@ export default class ClientStore extends BaseStore {
                         window.location.replace(`${redirect_route}/redirect?${query_string}`);
                     }
                 } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform', 'lang'])}`);
                 }
             }
             runInAction(() => {
@@ -1611,8 +1633,8 @@ export default class ClientStore extends BaseStore {
                 authorize_response.authorize.preferred_language,
                 this.is_new_session
             );
-            const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (stored_language && language !== stored_language) {
+            const stored_language_without_double_quotes = LocalStore.get(LANGUAGE_KEY).replace(/"/g, '');
+            if (stored_language_without_double_quotes && language !== stored_language_without_double_quotes) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }
@@ -1670,6 +1692,12 @@ export default class ClientStore extends BaseStore {
                 await this.fetchStatesList();
             }
             if (!this.is_virtual) await this.getLimits();
+
+            // This was set for the new callback page logic, once the user has logged in, we can remove the tokens and account1 from local storage since client.accounts is handling it already
+            if (localStorage.getItem('config.tokens') && localStorage.getItem('config.account1')) {
+                localStorage.removeItem('config.tokens');
+                localStorage.removeItem('config.account1');
+            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1804,15 +1832,31 @@ export default class ClientStore extends BaseStore {
             ?.match(/[a-zA-Z]+/g)
             ?.join('');
         setTimeout(async () => {
+            let residence_country = '';
+            if (this.residence) {
+                residence_country = this.residence;
+            } else {
+                try {
+                    const { country_code } = (await WS.authorized.cache.getSettings())?.get_settings || {
+                        country_code: '',
+                    };
+                    residence_country = country_code;
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error('Error getting residence country', error);
+                }
+            }
+
             const analytics_config = {
+                loggedIn: this.is_logged_in,
                 account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country: this.residence,
+                residence_country,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: await getCountry(),
+                country: await CountryUtils.getCountry(),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
@@ -2183,7 +2227,7 @@ export default class ClientStore extends BaseStore {
 
         let is_social_signup_provider = false;
 
-        if (search) {
+        if (search && window.location.pathname !== routes.callback_page) {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
@@ -2195,6 +2239,17 @@ export default class ClientStore extends BaseStore {
                 if (is_account_param) {
                     obj_params[key] = value;
                     is_social_signup_provider = true;
+                    // NOTE: Remove this logic once social signup is intergated with OIDC
+                    const loggedState = Cookies.get('logged_state');
+                    if (loggedState === 'false') {
+                        const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+                        Cookies.set('logged_state', 'true', {
+                            expires: 30,
+                            path: '/',
+                            domain: currentDomain,
+                            secure: true,
+                        });
+                    }
                 }
             });
 
@@ -2209,8 +2264,9 @@ export default class ClientStore extends BaseStore {
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+        const is_callback_page_client_logging_in = localStorage.getItem('config.account1') || '';
 
-        if (is_client_logging_in) {
+        if (is_client_logging_in || is_callback_page_client_logging_in) {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
@@ -2230,11 +2286,18 @@ export default class ClientStore extends BaseStore {
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
-            const authorize_response = await BinarySocket.authorize(is_client_logging_in);
+            const authorize_response = await BinarySocket.authorize(
+                is_client_logging_in || is_callback_page_client_logging_in
+            );
 
             if (login_new_user) {
                 // overwrite obj_params if login is for new virtual account
                 obj_params = login_new_user;
+            }
+
+            if (localStorage.getItem('config.tokens')) {
+                const tokens = JSON.parse(localStorage.getItem('config.tokens'));
+                obj_params = tokens;
             }
 
             if (authorize_response.error) {

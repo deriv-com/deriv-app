@@ -42,7 +42,7 @@ import { isFieldImmutable } from '../../../Helpers/utils';
 import { useScrollElementToTop } from '../../../hooks';
 import { PersonalDetailsValueTypes } from '../../../Types';
 
-import { account_opening_reason_list } from './constants';
+import { account_opening_reason_list, account_opening_reason_new_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import { VerifyButton } from './verify-button';
@@ -379,6 +379,18 @@ const PersonalDetailsForm = observer(() => {
         isCountryCodeDropdownEnabled
     );
 
+    const getAccountOpeningReason = () => {
+        const result = account_opening_reason_new_list.find(
+            item => item.value === initialValues?.account_opening_reason
+        );
+
+        if (result) return account_opening_reason_new_list;
+
+        const item = account_opening_reason_list.find(item => item.value === initialValues?.account_opening_reason);
+
+        return item ? [item, ...account_opening_reason_new_list] : account_opening_reason_new_list;
+    };
+
     return (
         <Formik
             initialValues={initialValues}
@@ -642,12 +654,9 @@ const PersonalDetailsForm = observer(() => {
                                             )}
                                         </fieldset>
                                         <AccountOpeningReasonField
-                                            account_opening_reason_list={account_opening_reason_list}
+                                            account_opening_reason_list={getAccountOpeningReason()}
                                             setFieldValue={setFieldValue}
-                                            disabled={
-                                                isFieldDisabled('account_opening_reason') ||
-                                                Boolean(account_settings?.account_opening_reason)
-                                            }
+                                            disabled={isFieldDisabled('account_opening_reason')}
                                             required
                                             fieldFocused={
                                                 !account_settings.account_opening_reason &&

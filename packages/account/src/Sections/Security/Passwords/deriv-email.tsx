@@ -106,8 +106,8 @@ const DerivEmail = observer(() => {
                     width='440px'
                     height='200px'
                 >
-                    <div className='unhandled-error'>
-                        <Text className='account__email-error_text' as='p' line_height='xxl' size='xs'>
+                    <div className='account__email-unhandled-error'>
+                        <Text className='account__email-unhandled-error-error_text' as='p' size='xs'>
                             {(error as VerifyEmailError)?.code === 'EmailChangeFailP2PActive' ? (
                                 <Localize i18n_default_text='Complete P2P orders and deactivate ads to proceed.' />
                             ) : (

@@ -98,7 +98,7 @@ const Trade = observer(() => {
     const onScroll = React.useCallback(() => {
         const current_chart_ref = chart_ref?.current;
         if (current_chart_ref) {
-            const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom;
+            const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom + (is_accumulator ? 150 : 65);
             const container_bottom_Y = window.innerHeight - HEIGHT.BOTTOM_NAV;
             setIsMinimizedParamsVisible(chart_bottom_Y <= container_bottom_Y);
         }

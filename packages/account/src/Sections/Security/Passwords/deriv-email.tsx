@@ -39,7 +39,7 @@ const DerivEmail = observer(() => {
         } else if (isSuccess) {
             setIsSendEmailModalOpen(true);
         }
-    }, [isError, error, isSuccess]);
+    }, [isError, isSuccess]);
 
     const onClickChangeEmail = () => {
         if (is_social_signup) {
@@ -57,6 +57,11 @@ const DerivEmail = observer(() => {
 
     const onClose = () => {
         setIsErrorModalOpen(false);
+    };
+
+    type VerifyEmailError = {
+        code?: string;
+        message?: string;
     };
 
     return (
@@ -91,7 +96,7 @@ const DerivEmail = observer(() => {
                     is_modal_when_mobile={true}
                 />
             </div>
-            {is_error_modal_open && (
+            {is_error_modal_open && error && (
                 <Modal
                     is_open={is_error_modal_open}
                     has_close_icon
@@ -102,11 +107,11 @@ const DerivEmail = observer(() => {
                     height='200px'
                 >
                     <div className='unhandled-error'>
-                        <Text className='account__email-error_text' as='p' line_height='xxl'>
-                            {error?.code === 'EmailChangeFailP2PActive' ? (
+                        <Text className='account__email-error_text' as='p' line_height='xxl' size='xs'>
+                            {(error as VerifyEmailError)?.code === 'EmailChangeFailP2PActive' ? (
                                 <Localize i18n_default_text='Complete P2P orders and deactivate ads to proceed.' />
                             ) : (
-                                <Localize i18n_default_text={error?.message} />
+                                <Localize i18n_default_text={(error as VerifyEmailError)?.message || ''} />
                             )}
                         </Text>
 

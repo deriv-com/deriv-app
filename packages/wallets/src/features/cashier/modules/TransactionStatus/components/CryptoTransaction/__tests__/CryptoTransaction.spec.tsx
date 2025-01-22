@@ -24,11 +24,6 @@ jest.mock('@deriv/api-v2', () => ({
     useIsHubRedirectionEnabled: jest.fn(() => ({
         isHubRedirectionEnabled: false,
     })),
-    useSettings: jest.fn(() => ({
-        data: {
-            trading_hub: 0,
-        },
-    })),
 }));
 
 const mockModalHide = jest.fn();

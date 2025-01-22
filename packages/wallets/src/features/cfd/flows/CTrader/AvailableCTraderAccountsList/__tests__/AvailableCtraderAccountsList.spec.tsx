@@ -1,7 +1,12 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useActiveWalletAccount, useCreateOtherCFDAccount, useIsHubRedirectionEnabled } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useCreateOtherCFDAccount,
+    useIsHubRedirectionEnabled,
+    useSettings,
+} from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
@@ -47,6 +52,11 @@ describe('AvailableCTraderAccountsList', () => {
         (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
             isHubRedirectionEnabled: false,
         });
+        (useSettings as jest.Mock).mockReturnValue({
+            data: {
+                trading_hub: 0,
+            },
+        });
         (useIsRtl as jest.Mock).mockReturnValue(false);
     });
 
@@ -71,7 +81,7 @@ describe('AvailableCTraderAccountsList', () => {
         expect(screen.getByText('CFDs on financial and derived instruments with copy trading.')).toBeInTheDocument();
     });
 
-    it('calls mutate function when card is clicked', async () => {
+    it('calls mutate function when card is clicked', () => {
         const mutateMock = jest.fn();
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
             isLoading: false,
@@ -85,7 +95,7 @@ describe('AvailableCTraderAccountsList', () => {
                 <AvailableCTraderAccountsList />
             </ModalProvider>
         );
-        await userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
+        userEvent.click(screen.getByTestId('dt_wallets_trading_account_card'));
 
         expect(mutateMock).toHaveBeenCalledWith({
             payload: {
@@ -116,7 +126,7 @@ describe('AvailableCTraderAccountsList', () => {
         expect(screen.getByTestId('dt_ctrader_success_modal')).toBeInTheDocument();
     });
 
-    it('shows error modal when account creation fails', async () => {
+    it('shows error modal when account creation fails', () => {
         (useCreateOtherCFDAccount as jest.Mock).mockReturnValue({
             error: { error: { message: 'Test error' } },
             isLoading: false,
@@ -137,7 +147,7 @@ describe('AvailableCTraderAccountsList', () => {
         expect(screen.getAllByText('Test error')[0]).toBeInTheDocument();
         expect(screen.getByText('Try again')).toBeInTheDocument();
 
-        await userEvent.click(screen.getByText('Try again'));
+        userEvent.click(screen.getByText('Try again'));
         expect(screen.queryByTestId('dt_wallet_error')).not.toBeInTheDocument();
     });
 

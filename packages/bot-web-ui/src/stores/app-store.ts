@@ -284,7 +284,7 @@ export default class AppStore {
                 if (ApiHelpers.instance) {
                     const { active_symbols, contracts_for } = ApiHelpers.instance;
 
-                    if (window.Blockly.derivWorkspace) {
+                    if (window.Blockly.derivWorkspace && active_symbols) {
                         active_symbols.retrieveActiveSymbols(true).then(() => {
                             contracts_for.disposeCache();
                             window.Blockly.derivWorkspace

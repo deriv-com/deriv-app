@@ -57,7 +57,7 @@ Blockly.Blocks.trade_definition_market = {
 
         this.enforceLimitations();
 
-        const { active_symbols } = ApiHelpers.instance;
+        const active_symbols = ApiHelpers?.instance?.active_symbols;
         const market_dropdown = this.getField('MARKET_LIST');
         const submarket_dropdown = this.getField('SUBMARKET_LIST');
         const symbol_dropdown = this.getField('SYMBOL_LIST');
@@ -67,6 +67,7 @@ Blockly.Blocks.trade_definition_market = {
 
         // Temporary solution to remove Crytocurrencies from
         // market options until multipliers are available for DBot
+        if (!active_symbols) return;
         const market_options = active_symbols
             .getMarketDropdownOptions()
             .filter(option => option[1] !== 'cryptocurrency');

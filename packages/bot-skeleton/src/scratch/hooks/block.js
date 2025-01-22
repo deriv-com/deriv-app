@@ -190,3 +190,38 @@ Blockly.FieldDropdown.prototype.doClassValidation_ = function (newValue) {
     this.setText(text ?? '');
     return newValue;
 };
+
+Blockly.FieldDropdown.prototype.doClassValidation_1 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};
+
+Blockly.FieldDropdown.prototype.doClassValidation_2 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};
+
+Blockly.FieldDropdown.prototype.doClassValidation_3 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};
+
+Blockly.FieldDropdown.prototype.doClassValidation_4 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};
+
+Blockly.FieldDropdown.prototype.doClassValidation_5 = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};

@@ -32,13 +32,11 @@ const TransactionItem = ({ row, is_new_row = false, onClickTransaction, active_t
         case transaction_elements.CONTRACT: {
             const { data: contract } = row;
             return (
-                <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
-                    <Transaction
-                        contract={contract}
-                        onClickTransaction={onClickTransaction}
-                        active_transaction_id={active_transaction_id}
-                    />
-                </CSSTransition>
+                <Transaction
+                    contract={contract}
+                    onClickTransaction={onClickTransaction}
+                    active_transaction_id={active_transaction_id}
+                />
             );
         }
         case transaction_elements.DIVIDER: {

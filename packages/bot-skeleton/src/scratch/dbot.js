@@ -46,7 +46,8 @@ class DBot {
                 const is_trade_type_cat_list_change = name === 'TRADETYPECAT_LIST';
 
                 if (is_symbol_list_change || is_trade_type_cat_list_change) {
-                    const { contracts_for } = ApiHelpers.instance;
+                    const contracts_for = ApiHelpers.instance?.contracts_for;
+                    if (!contracts_for) return;
                     const top_parent_block = this.getTopParent();
                     const market_block = top_parent_block.getChildByType('trade_definition_market');
                     const market = market_block.getFieldValue('MARKET_LIST');

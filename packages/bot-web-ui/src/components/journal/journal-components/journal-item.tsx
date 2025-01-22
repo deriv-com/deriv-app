@@ -39,14 +39,14 @@ const JournalItem = ({ row, is_new_row, measure }: TJournalItemProps) => {
     const date_el = DateItem({ date, time });
 
     return (
-        <CSSTransition in={in_prop} timeout={500} classNames='list__animation' data-testid='mock-css-transition'>
+        <div>
             <div className='journal__item' dir={isDbotRTL() ? 'rtl' : 'ltr'}>
                 <div className='journal__item-content'>
                     {getJournalItemContent(message, message_type, className, extra as TJournalItemExtra, measure)}
                 </div>
                 <div className='journal__text-datetime'>{date_el}</div>
             </div>
-        </CSSTransition>
+        </div>
     );
 };
 

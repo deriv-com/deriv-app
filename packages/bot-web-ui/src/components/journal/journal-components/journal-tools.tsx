@@ -26,25 +26,14 @@ const JournalTools = ({
                     <Icon icon='IcFilter' size={16} />
                 </div>
             </div>
-            <CSSTransition
-                in={is_filter_dialog_visible}
-                classNames={{
-                    enter: 'filter-dialog--enter',
-                    enterDone: 'filter-dialog--enter-done',
-                    exit: 'filter-dialog--exit',
-                }}
-                timeout={150}
-                unmountOnExit
-            >
-                <FilterDialog
-                    toggle_ref={toggle_ref}
-                    checked_filters={checked_filters}
-                    filters={filters}
-                    filterMessage={filterMessage}
-                    is_filter_dialog_visible={is_filter_dialog_visible}
-                    toggleFilterDialog={toggleFilterDialog}
-                />
-            </CSSTransition>
+            <FilterDialog
+                toggle_ref={toggle_ref}
+                checked_filters={checked_filters}
+                filters={filters}
+                filterMessage={filterMessage}
+                is_filter_dialog_visible={is_filter_dialog_visible}
+                toggleFilterDialog={toggleFilterDialog}
+            />
         </>
     );
 };

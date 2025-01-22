@@ -4,9 +4,10 @@ import {
     useActiveWalletAccount,
     useCreateWallet,
     useIsEuRegion,
-    useIsHubRedirectionEnabled,
     useLandingCompany,
     useWalletAccountsList,
+    useIsHubRedirectionEnabled,
+    useSettings,
 } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
@@ -41,6 +42,11 @@ jest.mock('@deriv/api-v2', () => ({
     useLandingCompany: jest.fn(() => ({
         data: {
             financial_company: { shortcode: 'svg' },
+        },
+    })),
+    useSettings: jest.fn(() => ({
+        data: {
+            trading_hub: 0,
         },
     })),
     useWalletAccountsList: jest.fn(),
@@ -129,6 +135,11 @@ describe('WalletsAddMoreCardBanner', () => {
         });
         (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
             isHubRedirectionEnabled: false,
+        });
+        (useSettings as jest.Mock).mockReturnValue({
+            data: {
+                trading_hub: 0,
+            },
         });
         (useWalletAccountSwitcher as jest.Mock).mockReturnValue(mockSwitchWalletAccount);
         (useHistory as jest.Mock).mockReturnValue({ push: mockHistoryPush });

@@ -16,14 +16,14 @@ jest.mock('../useGrowthbookGetFeatureValue', () =>
 describe('useIsHubRedirectionEnabled', () => {
     const mock_store = mockStore({
         client: {
-            account_settings: { citizen: 'US' },
+            account_settings: { country_code: 'US' },
             clients_country: 'US',
         },
     });
 
     beforeEach(() => {
         mock_store.client.clients_country = 'US';
-        mock_store.client.account_settings.citizen = 'US';
+        mock_store.client.account_settings.country_code = 'US';
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {
                 hub_enabled_country_list: ['AU'],
@@ -43,7 +43,7 @@ describe('useIsHubRedirectionEnabled', () => {
     });
 
     it('should return false if client country is not in the hub enabled list', () => {
-        mock_store.client.account_settings.citizen = 'UK';
+        mock_store.client.account_settings.country_code = 'UK';
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {
                 hub_enabled_country_list: ['US', 'AU'],
@@ -64,7 +64,7 @@ describe('useIsHubRedirectionEnabled', () => {
         expect(result.current.isHubRedirectionEnabled).toBe(true);
     });
 
-    it('should return isChangingToHubAppId true if client country is in the hub enabled list but not in the citizen list', () => {
+    it('should return isChangingToHubAppId true if client country is in the hub enabled list but not in the country_code list', () => {
         mock_store.client.clients_country = 'UK';
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([
             {

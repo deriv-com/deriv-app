@@ -14,7 +14,12 @@ const CallbackPage = () => {
                 localStorage.setItem('config.account1', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
 
-                window.location.href = routes.traders_hub;
+                const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
+                if (redirectTo) {
+                    window.location.href = redirectTo;
+                } else {
+                    window.location.href = routes.traders_hub;
+                }
             }}
             renderReturnButton={() => {
                 return (

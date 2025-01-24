@@ -27,7 +27,7 @@ const ResetPasswordModal = observer(() => {
     } = ui;
 
     const { isDesktop } = useDevice();
-    const { isOAuth2Enabled } = useOauth2({});
+    const { isOAuth2Enabled } = useOauth2({ handleLogout: async () => {} });
 
     const onResetComplete = (
         error: TSocketError<'reset_password'>['error'] | null,
@@ -56,7 +56,7 @@ const ResetPasswordModal = observer(() => {
             if (isOAuth2Enabled) {
                 requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,
-                }).then(() => redirectToLogin(false, getLanguage(), false));
+                });
             } else {
                 redirectToLogin(false, getLanguage(), false);
             }

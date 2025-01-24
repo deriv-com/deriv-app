@@ -35,8 +35,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/options';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/options';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
 
     useEffect(() => {
         if (isHubRedirectionEnabled && has_wallet && !!trading_hub && !prevent_redirect_to_hub) {

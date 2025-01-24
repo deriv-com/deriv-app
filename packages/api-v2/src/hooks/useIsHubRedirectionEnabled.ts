@@ -12,14 +12,14 @@ const useIsHubRedirectionEnabled = () => {
     });
     const { data: clientCountry } = useClientCountry();
     const { data: accountSettings } = useSettings();
-    const { citizen } = accountSettings;
+    const { country_code: countryCode } = accountSettings;
 
     const isHubRedirectionEnabled =
         typeof hubEnabledCountryList === 'object' &&
         hubEnabledCountryList !== null &&
         Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        citizen &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(citizen);
+        countryCode &&
+        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(countryCode);
 
     const isChangingToHubAppId =
         typeof hubEnabledCountryList === 'object' &&

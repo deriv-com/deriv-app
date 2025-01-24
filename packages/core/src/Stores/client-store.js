@@ -2249,7 +2249,8 @@ export default class ClientStore extends BaseStore {
                     // NOTE: Remove this logic once social signup is intergated with OIDC
                     // NOTE: We only set logged_state to true when the params has acct1, token1 params
                     const loggedState = Cookies.get('logged_state');
-                    if (loggedState === 'false' && is_acct_token_params) {
+
+                    if (loggedState === 'false' && is_acct_token_params && !search_params.get('action') === 'signup') {
                         const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
                         Cookies.set('logged_state', 'true', {
                             expires: 30,

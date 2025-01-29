@@ -39,7 +39,11 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     };
 
     const logoutHandler = async () => {
-        await OAuth2Logout(handleLogout);
+        await OAuth2Logout({
+            WSLogoutAndRedirect: handleLogout,
+            redirectCallbackUri: '',
+            postLogoutRedirectUri: '',
+        });
     };
 
     return { isOAuth2Enabled, oAuthLogout: logoutHandler, loginHandler };

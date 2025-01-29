@@ -41,8 +41,8 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     const logoutHandler = async () => {
         await OAuth2Logout({
             WSLogoutAndRedirect: handleLogout,
-            redirectCallbackUri: '',
-            postLogoutRedirectUri: '',
+            redirectCallbackUri: `${window.location.origin}/callback`,
+            postLogoutRedirectUri: `${window.location.origin}/`,
         });
     };
 

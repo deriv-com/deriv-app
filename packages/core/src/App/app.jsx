@@ -17,7 +17,6 @@ import {
 } from '@deriv/shared';
 import { P2PSettingsProvider, StoreProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv-com/quill-ui';
 import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
 
@@ -83,12 +82,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     };
 
     setWebsocket(WS);
-
-    React.useEffect(() => {
-        if (!root_store.client.email) {
-            Analytics.reset();
-        }
-    }, [root_store.client.email]);
 
     React.useEffect(() => {
         const html = document?.querySelector('html');

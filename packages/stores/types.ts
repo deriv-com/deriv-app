@@ -540,6 +540,7 @@ export type TClientStore = {
         trading_platform_accounts: DetailsOfEachMT5Loginid[];
     }) => DetailsOfEachMT5Loginid[];
     standpoint: TStandPoint;
+    is_p2p_available: boolean;
     prevent_redirect_to_hub: boolean;
     setPreventRedirectToHub: (value: boolean) => void;
     setAccountStatus: (status?: GetAccountStatus) => void;

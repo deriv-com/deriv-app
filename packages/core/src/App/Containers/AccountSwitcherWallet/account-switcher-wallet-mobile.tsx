@@ -5,7 +5,7 @@ import { platforms, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import { useIsHubRedirectionEnabled, useIsRtl, useStoreWalletAccountsList } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import './account-switcher-wallet-mobile.scss';
 
 type TAccountSwitcherWalletMobile = {
@@ -18,9 +18,6 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     const history = useHistory();
     const isRtl = useIsRtl();
     const { data: wallet_list } = useStoreWalletAccountsList();
-    const { client } = useStore();
-    const { account_settings } = client;
-    const { trading_hub } = account_settings;
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
@@ -30,7 +27,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     }, [toggle]);
 
     const handleTradersHubRedirect = () => {
-        if (isHubRedirectionEnabled || !!trading_hub) {
+        if (isHubRedirectionEnabled) {
             window.location.assign(platforms.tradershub_os.url);
             return;
         }

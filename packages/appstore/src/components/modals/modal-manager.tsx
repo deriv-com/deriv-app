@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 import { Loading } from '@deriv/components';
-import { useWalletMigration } from '@deriv/hooks';
+import { useIsTNCNeeded, useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 
 import { useStores } from 'Stores';
@@ -249,6 +249,8 @@ const ModalManager = () => {
         selected_server: '',
     });
 
+    const is_tnc_needed = useIsTNCNeeded();
+
     const togglePasswordManagerModal = (
         login?: string,
         title?: string,
@@ -296,7 +298,7 @@ const ModalManager = () => {
         is_sent_email_modal_enabled;
 
     const should_show_wallets_non_eu_upgrade_modal =
-        !is_eu && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
+        !is_eu && !is_tnc_needed && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
 
     const should_show_wallets_eu_upgrade_modal =
         is_eu &&

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import { useDevice } from '@deriv-com/ui';
 import { THooks, TMarketTypes, TPlatforms } from '../../types';
-import { useIsHubRedirectionEnabled, useSettings } from '@deriv/api-v2';
+import { useIsHubRedirectionEnabled } from '@deriv/api-v2';
 
 type TModalState = {
     accountId?: string;
@@ -48,8 +48,6 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { isDesktop } = useDevice();
     const history = useHistory();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
-    const { data: accountSettings } = useSettings();
-    const { trading_hub: tradingHub } = accountSettings;
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
     const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
@@ -89,7 +87,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         }));
         // We need to add this check here because wallets account is coming from Low-Code tradershub.
         // This condition is to reload the page when the modal is closed.
-        if (isHubRedirectionEnabled && !!tradingHub) {
+        if (isHubRedirectionEnabled) {
             window.location.reload();
         }
     };

@@ -15,9 +15,12 @@ import {
     getMarketType,
 } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
+const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const { isDesktop } = useDevice();
-    const market_type = getMarketType(trading_platforms);
+    const market_type =
+        is_eu_user && trading_platforms.market_type === 'financial'
+            ? 'CFDs' // this is for backwards compatibility with BE
+            : getMarketType(trading_platforms);
 
     const market_type_shortcode = generateMarketTypeShortcode(trading_platforms, market_type);
 

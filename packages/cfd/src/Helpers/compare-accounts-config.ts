@@ -10,6 +10,7 @@ const getHighlightedIconLabel = (
     selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
+
     const market_type_shortcode =
         trading_platforms.product === PRODUCT.GOLD
             ? market_type.concat('_', trading_platforms.product)
@@ -98,7 +99,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case CFD_PLATFORMS.CTRADER:
             return is_demo ? localize('Deriv cTrader demo') : localize('Deriv cTrader');
         default:
-            return is_demo ? localize('Standard demo') : localize('Standard');
+            return is_demo ? localize('CFDs demo') : localize('CFDs');
     }
 };
 

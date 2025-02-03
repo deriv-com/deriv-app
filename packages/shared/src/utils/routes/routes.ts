@@ -128,3 +128,8 @@ export const ACCOUNTS_OS_POI_STATUS_URL =
     process.env.NODE_ENV === 'production'
         ? 'https://hub.deriv.com/Accounts/ProofOfIdentityStatus'
         : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus';
+
+export const ACCOUNTS_OS_POA_URL =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/Accounts/ProofOfAddress'
+        : 'https://staging-hub.deriv.com/Accounts/ProofOfAddress';

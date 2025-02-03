@@ -29,7 +29,15 @@ const useSilentLoginAndLogout = ({
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
     useEffect(() => {
+        // NOTE: Remove this logic once social signup is intergated with OIDC
+        const params = new URLSearchParams(window.location.search);
+        const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
+        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+            return;
+        }
+
         if (
+            !isUsingLegacyFlow &&
             loggedState === 'true' &&
             !isClientAccountsPopulated &&
             isOAuth2Enabled &&
@@ -43,6 +51,7 @@ const useSilentLoginAndLogout = ({
         }
 
         if (
+            !isUsingLegacyFlow &&
             loggedState === 'false' &&
             is_client_store_initialized &&
             isOAuth2Enabled &&

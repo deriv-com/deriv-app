@@ -50,6 +50,10 @@ const OSRedirect = () => {
         ];
         const route = routes_list.find(({ pattern }) => pattern.test(url_query_string));
         route?.type && params.set('trade_type', route.type);
+
+        if (route) {
+            sessionStorage.setItem('tradershub_redirect_to', `${route?.route}?${params.toString()}`);
+        }
         /**
          * Redirect to route if user is logged in
          * Need to wait logged in state to be updated before redirecting

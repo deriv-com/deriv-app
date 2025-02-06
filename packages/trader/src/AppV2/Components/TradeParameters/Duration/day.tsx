@@ -128,6 +128,7 @@ const DayInput = ({
                     hasCloseButton: true,
                     style: { marginBottom: '48px' },
                 });
+                setIsDisabled(false);
             } else {
                 setIsDisabled(false);
             }

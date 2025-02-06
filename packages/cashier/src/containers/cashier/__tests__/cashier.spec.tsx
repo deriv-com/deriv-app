@@ -4,7 +4,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 
 import { APIProvider } from '@deriv/api';
 import { routes } from '@deriv/shared';
-import { mockStore, P2PSettingsProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import getRoutesConfig from 'Constants/routes-config';
@@ -17,8 +17,6 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/p2p', () => jest.fn(() => <div>P2P</div>));
-
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
@@ -26,11 +24,6 @@ jest.mock('@deriv/hooks', () => {
             data: true,
             isLoading: false,
             isSuccess: true,
-        })),
-        useIsP2PEnabled: jest.fn(() => ({
-            is_p2p_enabled: true,
-            is_p2p_enabled_loading: false,
-            is_p2p_enabled_success: true,
         })),
     };
 });
@@ -125,9 +118,7 @@ describe('<Cashier />', () => {
             ...render(<Router history={history}>{component}</Router>, {
                 wrapper: ({ children }) => (
                     <APIProvider>
-                        <CashierProviders store={mock_root_store}>
-                            <P2PSettingsProvider>{children}</P2PSettingsProvider>
-                        </CashierProviders>
+                        <CashierProviders store={mock_root_store}>{children}</CashierProviders>
                     </APIProvider>
                 ),
             }),

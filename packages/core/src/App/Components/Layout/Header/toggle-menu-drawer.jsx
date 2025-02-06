@@ -6,10 +6,10 @@ import { useRemoteConfig } from '@deriv/api';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useAccountTransferVisible,
-    useAuthorize,
+    // useAuthorize,
     useOauth2,
     useOnrampVisible,
-    useP2PSettings,
+    // useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
@@ -43,7 +43,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         account_status,
         has_wallet,
-        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -63,7 +62,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
-    const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
 
@@ -87,19 +85,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const timeout = React.useRef();
     const history = useHistory();
-    const {
-        subscribe,
-        rest: { isSubscribed },
-        p2p_settings,
-    } = useP2PSettings();
-
     const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
-    React.useEffect(() => {
-        if (isSuccess && !isSubscribed && is_authorize) {
-            subscribe();
-        }
-    }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -128,7 +114,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_trading_hub_category,
         is_mobile,
         is_passkey_supported,
-        is_p2p_available,
     ]);
 
     const toggleDrawer = React.useCallback(() => {

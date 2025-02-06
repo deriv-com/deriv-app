@@ -54,13 +54,6 @@ const Bot = React.lazy(() =>
     })
 );
 
-const P2P = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
-    })
-);
-
 const RedirectToNewTradersHub = () => {
     return <Redirect to={routes.traders_hub} />;
 };
@@ -290,39 +283,7 @@ const getModules = () => {
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
-                    routes: [
-                        {
-                            path: routes.p2p_buy_sell,
-                            component: P2P,
-                            getTitle: () => localize('Buy / Sell'),
-                            default: true,
-                        },
-                        {
-                            path: routes.p2p_advertiser_page,
-                            component: P2P,
-                            getTitle: () => localize("Advertiser's page"),
-                        },
-                        {
-                            path: routes.p2p_orders,
-                            component: P2P,
-                            getTitle: () => localize('Orders'),
-                        },
-                        {
-                            path: routes.p2p_my_ads,
-                            component: P2P,
-                            getTitle: () => localize('My ads'),
-                        },
-                        {
-                            path: routes.p2p_my_profile,
-                            component: P2P,
-                            getTitle: () => localize('My profile'),
-                        },
-                        {
-                            path: routes.p2p_verification,
-                            component: P2P,
-                            getTitle: () => localize('P2P verification'),
-                        },
-                    ],
+                    routes: [],
                 },
                 {
                     id: 'gtm-onramp-tab',

@@ -5,11 +5,9 @@ import { withRouter } from 'react-router-dom';
 import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, VerticalTab } from '@deriv/components';
 import {
     useAccountTransferVisible,
-    useAuthorize,
-    useIsP2PEnabled,
+    // useAuthorize,
     useOnrampVisible,
-    useP2PNotificationCount,
-    useP2PSettings,
+    // useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
 import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS } from '@deriv/shared';
@@ -71,14 +69,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
-    const p2p_notification_count = useP2PNotificationCount();
-    const {
-        subscribe,
-        p2p_settings,
-        rest: { isSubscribed },
-    } = useP2PSettings();
-    const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
-    const { isSuccess } = useAuthorize();
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = useMemo(() => {
@@ -88,12 +78,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 !route.is_invisible &&
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
                 (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
                 options.push({
-                    ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),
                     default: route.default,
                     icon: route.icon_component,
                     label: route.getTitle(),
@@ -108,10 +96,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     }, [
         is_account_transfer_visible,
         is_onramp_visible,
-        is_p2p_enabled,
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
-        p2p_notification_count,
         account_settings.preferred_language,
         current_language,
         routes_config,
@@ -181,12 +167,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
-    React.useEffect(() => {
-        if (isSuccess && !isSubscribed) {
-            subscribe();
-        }
-    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
-
     useEffect(() => {
         if (
             is_payment_agent_transfer_visible_is_success &&
@@ -203,44 +183,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         }
     }, [history, is_onramp_visible]);
 
-    useEffect(() => {
-        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
-            const url_params = new URLSearchParams(history.location.search);
-            const advert_id = url_params.get('advert_id');
-
-            history.push(routes.cashier_deposit);
-
-            if (advert_id) {
-                if (is_virtual) {
-                    toggleReadyToDepositModal();
-                } else {
-                    error.setErrorMessage({
-                        code: 'ShareMyAdsError',
-                        message:
-                            currency !== 'USD' && is_svg
-                                ? localize('Deriv P2P is currently unavailable in this currency.')
-                                : localize('Deriv P2P is currently unavailable in your country.'),
-                    });
-                }
-            }
-        }
-    }, [
-        currency,
-        error,
-        history,
-        is_p2p_enabled,
-        is_p2p_enabled_success,
-        is_svg,
-        is_virtual,
-        toggleReadyToDepositModal,
-    ]);
-
-    const is_p2p_loading = is_p2p_enabled_loading && !is_p2p_enabled_success;
     const is_cashier_loading =
         ((!is_logged_in || isMobile) && is_logging_in) ||
         !is_account_setting_loaded ||
-        is_payment_agent_transfer_checking ||
-        is_p2p_loading;
+        is_payment_agent_transfer_checking;
 
     if (is_cashier_loading) {
         return <Loading is_fullscreen />;

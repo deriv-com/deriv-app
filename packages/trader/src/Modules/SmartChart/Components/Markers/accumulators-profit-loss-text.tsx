@@ -46,7 +46,7 @@ const AccumulatorsProfitLossText = ({
     const sign = profit_value > 0 ? '+' : '';
 
     const runThroughTenthDigit = (
-        action: typeof ACTIONS[keyof typeof ACTIONS],
+        action: (typeof ACTIONS)[keyof typeof ACTIONS],
         interval_ms: number,
         start: number,
         end: number

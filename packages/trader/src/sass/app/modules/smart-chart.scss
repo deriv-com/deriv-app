@@ -452,8 +452,11 @@ $solid-blue-700: #2c9aff;
             top: -4%;
             z-index: -1;
             background-color: rgba(0, 167, 158, 0.1);
-            box-shadow: 0 -8px 11px 0 rgba(0, 167, 158, 0.08), 0 8px 11px 0 rgba(0, 167, 158, 0.08),
-                0 0 11px -5px rgba(0, 167, 158, 0.08), 0 0 11px -5px rgba(0, 167, 158, 0.08);
+            box-shadow:
+                0 -8px 11px 0 rgba(0, 167, 158, 0.08),
+                0 8px 11px 0 rgba(0, 167, 158, 0.08),
+                0 0 11px -5px rgba(0, 167, 158, 0.08),
+                0 0 11px -5px rgba(0, 167, 158, 0.08);
 
             @include mobile {
                 width: calc(100% - 2.3rem);

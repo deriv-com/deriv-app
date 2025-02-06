@@ -602,7 +602,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
         .cq-chart-controls {
-            transition: max-width 0.25s ease, transform 0.25s ease;
+            transition:
+                max-width 0.25s ease,
+                transform 0.25s ease;
         }
         .sc-navigation-widget,
         .stx-panel-control {

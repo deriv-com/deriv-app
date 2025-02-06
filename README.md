@@ -10,28 +10,31 @@ This repository contains the various platforms of the Deriv application.
 
 **In this document**:
 
--   [Other Documents](#other-documents)
--   [Pre-installation](#Pre-installation)
--   [Quick start](#Quick-start)
--   [Packages](#packages)
--   [Working With This Repo](#working-with-this-repo)
-    -   [Package names](#package-names)
-    -   [Usage](#usage)
-        -   [Starting a Development Server](#starting-a-dev-server)
-        -   [How to Clean Packages](#how-to-clean-packages)
-        -   [Examples of Script Usage](#examples-of-script-usage)
-        -   [Release](#release)
--   [PR Guidelines](#pr-guidelines)
--   [FAQ](#faq)
+- [Other documents:](#other-documents)
+- [Pre-installation](#pre-installation)
+- [Quick start](#quick-start)
+- [Packages](#packages)
+- [Working With This Repo](#working-with-this-repo)
+- [Package names](#package-names)
+    - [Usage](#usage)
+    - [Starting a Development Server](#starting-a-development-server)
+    - [How to Clean Packages](#how-to-clean-packages)
+    - [How to clear cache](#how-to-clear-cache)
+- [Servable packages](#servable-packages)
+    - [Examples of Script Usage](#examples-of-script-usage)
+- [Release](#release)
+- [PR format recommendations](#pr-format-recommendations)
+- [Test link deployment](#test-link-deployment)
+- [FAQ](#faq)
 
 ## Other documents:
 
--   [General](docs/README.md) - Contains general philosophy and overview of this package
--   [Stylesheet guidelines](docs/Stylesheet/README.md) - Contains rules for CSS/SASS code style
--   [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
--   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
--   [e2e and performance testing docs](e2e_tests/README.md) - Contains documents for create and running e2e and performance tests
--   [Manage dependencies](docs/Dependencies/README.md)
+- [General](docs/README.md) - Contains general philosophy and overview of this package
+- [Stylesheet guidelines](docs/Stylesheet/README.md) - Contains rules for CSS/SASS code style
+- [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
+- [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+- [e2e and performance testing docs](e2e_tests/README.md) - Contains documents for create and running e2e and performance tests
+- [Manage dependencies](docs/Dependencies/README.md)
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 
@@ -39,9 +42,9 @@ This repository contains the various platforms of the Deriv application.
 
 Before running or contribute to this project, you need to have the setup of the following package in your environment.
 
--   node >=16.16.0
--   npm >=7.21.0
--   git (for `contribution`)
+- node >=16.16.0
+- npm >=7.21.0
+- git (for `contribution`)
 
 ## Quick start
 
@@ -57,8 +60,8 @@ Before running or contribute to this project, you need to have the setup of the 
 
 > **Internal**: NX and Lerna integration
 >
-> -   Find and copy nx-cloud accessToken
-> -   Make a copy of `nx-cloud.env.example` from root directory of the project and name it `nx-cloud.env` and replace the `<token>` with provided token.
+> - Find and copy nx-cloud accessToken
+> - Make a copy of `nx-cloud.env.example` from root directory of the project and name it `nx-cloud.env` and replace the `<token>` with provided token.
 
 3.  **Enter project directory**
 
@@ -162,15 +165,15 @@ You can read more on the various lerna commands (and the [`clean` command](https
 
 ## Servable packages
 
--   account
--   appstore
--   bot-web-ui
--   cashier
--   cfd
--   components
--   core
--   p2p
--   trader
+- account
+- appstore
+- bot-web-ui
+- cashier
+- cfd
+- components
+- core
+- p2p
+- trader
 
 <br />
 
@@ -238,9 +241,9 @@ Upon creating PR, [Vercel](https://vercel.com/) will auto-generate a test link i
 
 If preferable to use manual deployment, you can use [gh-pages](https://pages.github.com/) functionality to create a test link. here are ways to do it:
 
--   You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`.
--   You can clean (remove `br_` folders and clear root\) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
--   You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`))
+- You can simply deploy to root of the `gh-pages` branch with: `npm run deploy`.
+- You can clean (remove `br_` folders and clear root\) your `gh-pages` branch and deploy to root in a single command with `npm run deploy:clean`
+- You can deploy to a folder in your `gh-pages` branch in order to separate from root app deployment and other folder deployments with: `npm run deploy:folder br_test_folder` (folder name must be prefixed with `br_`))
 
 <br />
 

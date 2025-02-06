@@ -128,7 +128,6 @@ const DayInput = ({
                     hasCloseButton: true,
                     style: { marginBottom: '48px' },
                 });
-                setIsDisabled(true);
             } else {
                 setIsDisabled(false);
             }
@@ -253,7 +252,7 @@ const DayInput = ({
                 readOnly
                 textAlignment='center'
                 name='time'
-                value={`${(is_24_hours_contract ? end_time : expiry_time_input) || '23:59:59'} GMT`}
+                value={`${(is_24_hours_contract ? end_time : isSameDate && expiry_time_input) || '23:59:59'} GMT`}
                 disabled={!is_24_hours_contract}
                 onClick={() => {
                     setOpenTimePicker(true);

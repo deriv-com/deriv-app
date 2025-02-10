@@ -1925,7 +1925,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
+        if (!this.switched || !this.switched.length) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1940,6 +1940,12 @@ export default class ClientStore extends BaseStore {
             // switch to default account.
             this.switchAccount(this.all_loginids[0]);
             await this.switchAccountHandler();
+            return;
+        }
+
+        const switched_account = this.getAccount(this.switched);
+        if (!switched_account?.token) {
+            this.handleNotFoundLoginId();
             return;
         }
 
@@ -1959,7 +1965,7 @@ export default class ClientStore extends BaseStore {
             await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
-            await BinarySocket.authorize(this.getToken());
+            await BinarySocket.authorize(switched_account.token);
         }
         if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');

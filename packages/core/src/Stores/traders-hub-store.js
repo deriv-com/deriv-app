@@ -857,18 +857,33 @@ export default class TradersHubStore extends BaseStore {
             } else {
                 this.combined_cfd_mt5_accounts = [
                     ...this.combined_cfd_mt5_accounts,
-                    {
-                        icon: account.icon,
-                        name: account.name,
-                        platform: account.platform,
-                        description: account.description,
-                        key: `trading_app_card_${account.name}`,
-                        action_type: 'get',
-                        availability: this.selected_region,
-                        market_type: account.market_type,
-                        product: account.product,
-                        tracking_name: account.tracking_name,
-                    },
+                    this.is_eu_user
+                        ? {
+                              // This is for backward compatibility
+                              // before BE change, EU market_type is financial. With BE change, EU market_type becomes standard
+                              icon: account.market_type === 'financial' ? account.icon : 'Standard',
+                              name: account.market_type === 'financial' ? account.name : 'Standard',
+                              platform: account.platform,
+                              description: account.description,
+                              key: `trading_app_card_${account.name}`,
+                              action_type: 'get',
+                              availability: this.selected_region,
+                              market_type: account.market_type,
+                              product: account.product,
+                              tracking_name: account.tracking_name,
+                          }
+                        : {
+                              icon: account.icon,
+                              name: account.name,
+                              platform: account.platform,
+                              description: account.description,
+                              key: `trading_app_card_${account.name}`,
+                              action_type: 'get',
+                              availability: this.selected_region,
+                              market_type: account.market_type,
+                              product: account.product,
+                              tracking_name: account.tracking_name,
+                          },
                 ];
             }
         });

@@ -65,7 +65,7 @@ export const personal_details_config = ({
         },
         calling_country_code: {
             supported_in: ['svg', 'maltainvest'],
-            default_value: selected_phone_code,
+            default_value: selected_phone_code ?? account_settings?.calling_country_code,
         },
         phone: {
             supported_in: ['svg', 'maltainvest'],

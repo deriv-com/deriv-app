@@ -861,8 +861,8 @@ export default class TradersHubStore extends BaseStore {
                         ? {
                               // This is for backward compatibility
                               // before BE change, EU market_type is financial. With BE change, EU market_type becomes standard
-                              icon: account.market_type === 'financial' ? account.icon : 'Standard',
-                              name: account.market_type === 'financial' ? account.name : 'Standard',
+                              icon: account.market_type === 'synthetic' ? 'Standard' : account.icon,
+                              name: account.market_type === 'synthetic' ? 'Standard' : account.name,
                               platform: account.platform,
                               description: account.description,
                               key: `trading_app_card_${account.name}`,

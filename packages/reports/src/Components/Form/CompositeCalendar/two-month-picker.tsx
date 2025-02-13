@@ -1,5 +1,6 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
+
 import { Calendar } from '@deriv/components';
 import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv/shared';
 
@@ -74,7 +75,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
 
     return (
         <React.Fragment>
-            <div className='first-month'>
+            <div className='first-month' data-testid='first-month'>
                 <Calendar.Header
                     calendar_date={left_pane_date}
                     calendar_view='date'
@@ -92,7 +93,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }: TTwoMo
                     updateSelected={updateSelectedDate}
                 />
             </div>
-            <div className='second-month'>
+            <div className='second-month' data-testid='second-month'>
                 <Calendar.Header
                     calendar_date={right_pane_date}
                     calendar_view='date'

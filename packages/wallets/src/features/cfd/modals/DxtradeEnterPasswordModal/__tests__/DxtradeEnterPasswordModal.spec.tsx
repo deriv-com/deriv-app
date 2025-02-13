@@ -5,7 +5,6 @@ import {
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
     useIsHubRedirectionEnabled,
-    useSettings,
 } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -135,11 +134,6 @@ describe('DxtradeEnterPasswordModal', () => {
         });
         (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
             isHubRedirectionEnabled: false,
-        });
-        (useSettings as jest.Mock).mockReturnValue({
-            data: {
-                trading_hub: 0,
-            },
         });
     });
 

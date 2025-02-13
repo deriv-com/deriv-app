@@ -726,6 +726,28 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+
+        &-unhandled-error {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0.8rem 0;
+            .dc-btn {
+                margin-top: 2.4rem;
+            }
+            &-error_text {
+                align-self: flex-start;
+                padding-inline-start: 2.4rem;
+            }
+            @include mobile {
+                height: calc(100vh - 80px);
+                padding: 0.4rem 0;
+                .dc-btn {
+                    margin-top: 1.6rem;
+                }
+            }
+        }
     }
 
     &__password-wrapper {

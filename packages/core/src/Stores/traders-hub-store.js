@@ -857,33 +857,21 @@ export default class TradersHubStore extends BaseStore {
             } else {
                 this.combined_cfd_mt5_accounts = [
                     ...this.combined_cfd_mt5_accounts,
-                    this.is_eu_user
-                        ? {
-                              // This is for backward compatibility
-                              // before BE change, EU market_type is financial. With BE change, EU market_type becomes standard
-                              icon: account.market_type === 'synthetic' ? 'Standard' : account.icon,
-                              name: account.market_type === 'synthetic' ? 'Standard' : account.name,
-                              platform: account.platform,
-                              description: account.description,
-                              key: `trading_app_card_${account.name}`,
-                              action_type: 'get',
-                              availability: this.selected_region,
-                              market_type: account.market_type,
-                              product: account.product,
-                              tracking_name: account.tracking_name,
-                          }
-                        : {
-                              icon: account.icon,
-                              name: account.name,
-                              platform: account.platform,
-                              description: account.description,
-                              key: `trading_app_card_${account.name}`,
-                              action_type: 'get',
-                              availability: this.selected_region,
-                              market_type: account.market_type,
-                              product: account.product,
-                              tracking_name: account.tracking_name,
-                          },
+
+                    {
+                        // This is for backward compatibility
+                        // before BE change, EU market_type is financial. With BE change, EU market_type becomes synthetic
+                        icon: this.is_eu_user && account.market_type === 'synthetic' ? 'Standard' : account.icon,
+                        name: this.is_eu_user && account.market_type === 'synthetic' ? 'Standard' : account.name,
+                        platform: account.platform,
+                        description: account.description,
+                        key: `trading_app_card_${account.name}`,
+                        action_type: 'get',
+                        availability: this.selected_region,
+                        market_type: account.market_type,
+                        product: account.product,
+                        tracking_name: account.tracking_name,
+                    },
                 ];
             }
         });

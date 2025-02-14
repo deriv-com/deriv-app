@@ -128,6 +128,14 @@ const ApiToken = observer(() => {
                 is_success: true,
                 api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
             });
+            if (window.Intercom) {
+                const metadata = {
+                    token_name: token_response.echo_req.new_token,
+                    token_scopes: token_response.echo_req.new_token_scopes,
+                };
+                window.Intercom('trackEvent', 'created-token', metadata);
+            }
+
             handle_submit_timeout_ref.current = setTimeout(() => {
                 setState({ is_success: false });
             }, 500);

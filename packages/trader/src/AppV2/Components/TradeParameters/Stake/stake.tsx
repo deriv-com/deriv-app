@@ -59,6 +59,7 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-small' />
                     <ActionSheet.Header title={<Localize i18n_default_text='Stake' />} />
                     <StakeInput onClose={onClose} is_open={is_open} />
                 </ActionSheet.Portal>

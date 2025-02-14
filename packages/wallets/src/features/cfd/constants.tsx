@@ -96,7 +96,7 @@ export const getMarketTypeDetails = (
             title: getMarketTypeDetailsTitle(product, isEuRegion),
         },
         synthetic: {
-            availability: 'Non-EU',
+            availability: 'All',
             description: localize('CFDs on derived and financial instruments'),
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',

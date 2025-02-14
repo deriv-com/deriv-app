@@ -18,7 +18,7 @@ const useDtraderV2Flag = () => {
 
     useEffect(() => {
         if (is_growthbook_loaded || is_dtrader_v2_mobile) {
-            setDtraderV2EnabledMobile(is_dtrader_v2_mobile);
+            setDtraderV2EnabledMobile(false);
         }
         if (is_growthbook_loaded || is_dtrader_v2_desktop) {
             setDtraderV2EnabledDesktop(is_dtrader_v2_desktop);

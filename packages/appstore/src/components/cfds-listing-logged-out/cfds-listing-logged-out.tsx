@@ -30,7 +30,7 @@ const CFDsListingLoggedOut = observer(() => {
             {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                 // This is for backward compatibility
                 // before BE change, EU market_type is financial. With BE change, EU market_type becomes synthetic
-                const is_eu_standard = !is_eu_user && existing_account.market_type !== 'financial';
+                const is_eu_standard = is_eu_user && existing_account.market_type !== 'financial';
 
                 const list_size = combined_cfd_mt5_accounts.length;
 

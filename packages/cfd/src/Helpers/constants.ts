@@ -42,11 +42,13 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 const { is_staging, is_test_link } = getPlatformFromUrl();
 
 const STRATEGY_PROVIDER_NOTES = [
-    'When setting up a strategy, you have the option to impose fees.',
-    'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.',
-    'Free strategies do not require an ‘Account For Fees’.',
-    'An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.',
-    'An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.',
+    localize('When setting up a strategy, you have the option to impose fees.'),
+    localize(
+        'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.'
+    ),
+    localize('Free strategies do not require an ‘Account For Fees’.'),
+    localize('An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.'),
+    localize('An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.'),
 ];
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';

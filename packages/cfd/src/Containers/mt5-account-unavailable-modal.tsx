@@ -20,7 +20,7 @@ const MT5AccountUnavailableModal = observer(() => {
             has_close_icon
             width={isDesktop ? '440px' : '328px'}
         >
-            <Modal.Body>
+            <Modal.Body className='dc-modal__container_cfd-password-modal__body'>
                 <Localize i18n_default_text='Check back in a few minutes by refreshing the page.' />
             </Modal.Body>
             <Modal.Footer>

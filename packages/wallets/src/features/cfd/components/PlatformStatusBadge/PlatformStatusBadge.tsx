@@ -17,7 +17,7 @@ const getBadgeText = (status: TProps['status'], localize: (key: string) => strin
             return localize('Server maintenance');
         case TRADING_PLATFORM_STATUS.UNAVAILABLE:
         case MT5_ACCOUNT_STATUS.UNAVAILABLE:
-            return localize('Temporarily Unavailable');
+            return localize('Temporarily unavailable');
         default:
             return '';
     }

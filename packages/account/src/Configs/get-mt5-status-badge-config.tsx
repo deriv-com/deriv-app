@@ -43,7 +43,7 @@ const getMT5StatusBadgeConfig = (mt5_account_status: TMT5AccountStatus) => {
             };
         case TRADING_PLATFORM_STATUS.UNAVAILABLE:
             return {
-                text: <Localize i18n_default_text='<0>Temporarily Unavailable</0>' components={[BadgeTextComponent]} />,
+                text: <Localize i18n_default_text='<0>Temporarily unavailable</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
             };
         default:

@@ -80,7 +80,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
                     icon='IcAlertWarning'
-                    text='Temporarily Unavailable'
+                    text='Temporarily unavailable'
                 />
             );
         }

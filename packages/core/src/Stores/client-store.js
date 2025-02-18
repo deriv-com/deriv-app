@@ -1822,6 +1822,26 @@ export default class ClientStore extends BaseStore {
         const is_virtual = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : this.account_title;
 
+        setTimeout(async () => {
+            const analytics_config = await this.getAnalyticsConfig();
+            if (this.user_id) analytics_config.user_id = this.user_id;
+            Analytics.setAttributes(analytics_config);
+        }, 4);
+
+        return {
+            loginid,
+            is_disabled,
+            is_virtual,
+            icon: account_type.toLowerCase(), // TODO: display the icon
+            title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
+        };
+    }
+
+    async getAnalyticsConfig(isLoggedOut = false) {
+        const broker = LocalStore?.get('active_loginid')
+            ?.match(/[a-zA-Z]+/g)
+            ?.join('');
+
         const ppc_campaign_cookies =
             Cookies.getJSON('utm_data') === 'null'
                 ? {
@@ -1831,11 +1851,9 @@ export default class ClientStore extends BaseStore {
                       utm_content: 'no content',
                   }
                 : Cookies.getJSON('utm_data');
-        const broker = LocalStore?.get('active_loginid')
-            ?.match(/[a-zA-Z]+/g)
-            ?.join('');
-        setTimeout(async () => {
-            let residence_country = '';
+
+        let residence_country = '';
+        if (!isLoggedOut) {
             if (this.residence) {
                 residence_country = this.residence;
             } else {
@@ -1849,35 +1867,28 @@ export default class ClientStore extends BaseStore {
                     console.error('Error getting residence country', error);
                 }
             }
-
-            const analytics_config = {
-                loggedIn: this.is_logged_in,
-                account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country,
-                app_id: String(getAppId()),
-                device_type: isMobile() ? 'mobile' : 'desktop',
-                language: getLanguage(),
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: await CountryUtils.getCountry(),
-                utm_source: ppc_campaign_cookies?.utm_source,
-                utm_medium: ppc_campaign_cookies?.utm_medium,
-                utm_campaign: ppc_campaign_cookies?.utm_campaign,
-                utm_content: ppc_campaign_cookies?.utm_content,
-                domain: window.location.hostname,
-                url: window.location.href,
-            };
-
-            if (this.user_id) analytics_config.user_id = this.user_id;
-            Analytics.setAttributes(analytics_config);
-        }, 4);
+        }
+        let login_status = false;
+        if (!isLoggedOut && this.is_logged_in) {
+            login_status = true;
+        }
 
         return {
-            loginid,
-            is_disabled,
-            is_virtual,
-            icon: account_type.toLowerCase(), // TODO: display the icon
-            title: account_type.toLowerCase() === 'virtual' ? localize('DEMO') : account_type,
+            loggedIn: login_status,
+            account_type: broker === 'null' ? 'unlogged' : broker,
+            residence_country,
+            app_id: String(getAppId()),
+            device_type: isMobile() ? 'mobile' : 'desktop',
+            language: getLanguage(),
+            device_language: navigator?.language || 'en-EN',
+            user_language: getLanguage().toLowerCase(),
+            country: await CountryUtils.getCountry(),
+            utm_source: ppc_campaign_cookies?.utm_source,
+            utm_medium: ppc_campaign_cookies?.utm_medium,
+            utm_campaign: ppc_campaign_cookies?.utm_campaign,
+            utm_content: ppc_campaign_cookies?.utm_content,
+            domain: window.location.hostname,
+            url: window.location.href,
         };
     }
 
@@ -1914,7 +1925,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
+        if (!this.switched || !this.switched.length) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1929,6 +1940,12 @@ export default class ClientStore extends BaseStore {
             // switch to default account.
             this.switchAccount(this.all_loginids[0]);
             await this.switchAccountHandler();
+            return;
+        }
+
+        const switched_account = this.getAccount(this.switched);
+        if (!switched_account?.token) {
+            this.handleNotFoundLoginId();
             return;
         }
 
@@ -1948,7 +1965,7 @@ export default class ClientStore extends BaseStore {
             await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
-            await BinarySocket.authorize(this.getToken());
+            await BinarySocket.authorize(switched_account.token);
         }
         if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
@@ -2093,7 +2110,7 @@ export default class ClientStore extends BaseStore {
         this.initialized_broadcast = is_initialized;
     }
 
-    cleanUp() {
+    async cleanUp() {
         // delete all notifications keys for this account when logout
         const notification_messages = LocalStore.getObject('notification_messages');
         if (notification_messages && this.loginid) {
@@ -2102,6 +2119,9 @@ export default class ClientStore extends BaseStore {
                 ...notification_messages,
             });
         }
+        // update growthbook
+        const analytics_config = await this.getAnalyticsConfig(true);
+        Analytics.setAttributes(analytics_config);
 
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
@@ -2135,7 +2155,7 @@ export default class ClientStore extends BaseStore {
         const response = await requestLogout();
 
         if (response?.logout === 1) {
-            this.cleanUp();
+            await this.cleanUp();
 
             this.setLogout(true);
         }

@@ -11,6 +11,8 @@ import Endpoint from 'Modules/Endpoint';
 
 import OSRedirect from '../Containers/OSRedirect';
 import CallbackPage from '../../Modules/Callback/CallbackPage.tsx';
+import FrontChannelPage from '../../Modules/FrontChannel';
+import SilentCallbackPage from '../../Modules/SilentCallback';
 
 const CFDCompareAccounts = React.lazy(
     () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
@@ -367,6 +369,18 @@ const getModules = () => {
             is_authenticated: false,
             getTitle: () => 'Callback',
         },
+        {
+            path: routes.front_channel_page,
+            component: FrontChannelPage,
+            is_authenticated: false,
+            getTitle: () => 'FrontChannel',
+        },
+        {
+            path: routes.silent_callback_page,
+            component: SilentCallbackPage,
+            is_authenticated: false,
+            getTitle: () => 'Silent Callback',
+        },
     ];
 
     return modules;
@@ -385,6 +399,12 @@ const initRoutesConfig = () => [
     { path: routes.os_redirect, component: OSRedirect, getTitle: () => localize('Redirect') },
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
     { path: routes.callback_page, component: CallbackPage, getTitle: () => 'Callback' },
+    { path: routes.front_channel_page, component: FrontChannelPage, getTitle: () => 'FrontChannel' },
+    {
+        path: routes.silent_callback_page,
+        component: SilentCallbackPage,
+        getTitle: () => 'Silent Callback',
+    },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

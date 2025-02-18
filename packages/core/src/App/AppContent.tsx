@@ -167,11 +167,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
     const isCallBackPage = window.location.pathname.includes('callback');
+    const isOauthFlowPage =
+        window.location.pathname.includes('front-channel') || window.location.pathname.includes('silent-callback');
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
-            <LandscapeBlocker />
-            {!isCallBackPage && <Header />}
+            {!isOauthFlowPage && <LandscapeBlocker />}
+            {!isCallBackPage && !isOauthFlowPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
                     {/* TODO: [trader-remove-client-base] */}

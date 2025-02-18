@@ -46,7 +46,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
         });
     };
 
-    return { isOAuth2Enabled, oAuthLogout: logoutHandler, loginHandler };
+    return { isOAuth2Enabled: true, oAuthLogout: logoutHandler, loginHandler };
 };
 
 export default useOauth2;

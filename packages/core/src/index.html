@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" translate="no" dir="auto">
     <head>
         <!-- Set skeleton theme color properties -->
@@ -85,7 +85,10 @@
                 var antiClickjack = document.getElementById('antiClickjack');
                 antiClickjack.parentNode.removeChild(antiClickjack);
             } else {
-                top.location = self.location;
+                const isAuthFlow = /\/(silent-callback|front-channel)($|\/)/.test(self.location.pathname);
+                if (!isAuthFlow) {
+                    top.location = self.location;
+                }
             }
         </script>
         <!-- End Anti-Clickjack -->

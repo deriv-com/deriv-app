@@ -197,7 +197,7 @@ const AccountWizard = observer(props => {
 
     React.useEffect(() => {
         if (residence_list.length) {
-            const setDefaultPhone = country_code => {
+            const setDefaultPhone = () => {
                 let items;
                 if (state_items.length) {
                     items = state_items;
@@ -206,7 +206,7 @@ const AccountWizard = observer(props => {
                 }
 
                 if (items.length > 1 && 'phone' in items[1]?.form_value && !isCountryCodeDropdownEnabled) {
-                    items[1].form_value.phone = items[1].form_value.phone || country_code || '';
+                    items[1].form_value.phone = items[1].form_value.phone || '';
                     setStateItems(items);
                     setRealAccountSignupFormData(items);
                 }

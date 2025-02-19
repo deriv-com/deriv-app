@@ -115,11 +115,11 @@ const copyConfig = base => {
             to: 'localstorage-sync.html',
             toType: 'file',
         },
-        {
-            from: path.resolve(__dirname, '../src/root_files/front-channel.html'),
-            to: 'front-channel.html',
-            toType: 'file',
-        },
+        // {
+        //     from: path.resolve(__dirname, '../src/root_files/front-channel.html'),
+        //     to: 'front-channel.html',
+        //     toType: 'file',
+        // },
         {
             from: path.resolve(__dirname, '../src/root_files/silent-callback.html'),
             to: 'silent-callback.html',

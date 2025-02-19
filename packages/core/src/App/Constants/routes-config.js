@@ -11,7 +11,7 @@ import Endpoint from 'Modules/Endpoint';
 
 import OSRedirect from '../Containers/OSRedirect';
 import CallbackPage from '../../Modules/Callback/CallbackPage.tsx';
-import FrontChannelPage from '../../Modules/FrontChannel';
+import { FrontChannelPage } from '../../Modules/FrontChannel';
 import SilentCallbackPage from '../../Modules/SilentCallback';
 
 const CFDCompareAccounts = React.lazy(

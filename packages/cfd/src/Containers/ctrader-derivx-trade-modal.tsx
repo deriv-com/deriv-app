@@ -120,7 +120,7 @@ const CTraderDerivXTradeModal = ({
                     />
                 </Text>
                 <ul className='cfd-trade-modal__expansion-panel--unordered-list'>
-                    {STRATEGY_PROVIDER_NOTES.map(note => (
+                    {STRATEGY_PROVIDER_NOTES().map(note => (
                         <Text
                             key={note}
                             as='li'

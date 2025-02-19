@@ -1,17 +1,20 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+
 import { Text } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize } from '@deriv/translations';
-import { getHasDivider } from 'Constants/utils';
+
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import CFDsDescription from 'Components/elements/cfds-description';
 import CFDsTitle from 'Components/elements/cfds-title';
+import { getHasDivider } from 'Constants/utils';
+
 import './cfds-listing-logged-out.scss';
 
 const CFDsListingLoggedOut = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, client } = useStore();
     const {
         available_dxtrade_accounts,
         available_ctrader_accounts,
@@ -19,6 +22,7 @@ const CFDsListingLoggedOut = observer(() => {
         selected_region,
         is_eu_user,
     } = traders_hub;
+    const { is_eu } = client;
 
     return (
         <ListingContainer title={<CFDsTitle />} description={<CFDsDescription />}>
@@ -30,7 +34,7 @@ const CFDsListingLoggedOut = observer(() => {
             {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                 // This is for backward compatibility
                 // before BE change, EU market_type is financial. With BE change, EU market_type becomes synthetic
-                const is_eu_standard = is_eu_user && existing_account.market_type !== 'financial';
+                const is_eu_standard = is_eu && existing_account.market_type === 'synthetic';
 
                 const list_size = combined_cfd_mt5_accounts.length;
 

@@ -32,6 +32,7 @@ import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import { FrontChannelIframe } from 'Modules/FrontChannel';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
@@ -184,6 +185,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
+            <FrontChannelIframe />
             {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />

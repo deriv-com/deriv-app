@@ -1,3 +1,4 @@
 import FrontChannelPage from './FrontChannelPage';
+import FrontChannelIframe from './FrontChannelIFrame';
 
-export default FrontChannelPage;
+export { FrontChannelPage, FrontChannelIframe };

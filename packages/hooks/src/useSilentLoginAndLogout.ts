@@ -22,8 +22,6 @@ const useSilentLoginAndLogout = ({
     isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
-    const loggedState = Cookies.get('logged_state');
-
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
     const isSilentLoginExcluded =
@@ -32,37 +30,38 @@ const useSilentLoginAndLogout = ({
         window.location.pathname.includes('endpoint');
 
     useEffect(() => {
-        window.addEventListener(
-            'message',
-            message => {
-                if (message.data?.event === 'login_required') {
-                    console.log('OIDC: prompt none says we are logged out');
-                    if (isClientAccountsPopulated) {
-                        oAuthLogout();
-                    }
-                } else if (message.data?.event === 'sso_required') {
-                    console.log('OIDC: we need to SSO NOW');
-                    // requestOidcAuthentication({
-                    //     redirectCallbackUri: `${window.location.origin}/callback`,
-                    // });
-                }
-            },
-            false
-        );
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+        if (isUsingLegacyFlow && isOAuth2Enabled) {
             return;
         }
 
         if (isOAuth2Enabled && !isUsingLegacyFlow && !isClientAccountsPopulated && !isSilentLoginExcluded) {
+            window.addEventListener(
+                'message',
+                message => {
+                    if (message.data?.event === 'login_required') {
+                        console.log('OIDC: prompt none says we are logged out');
+                        if (isClientAccountsPopulated) {
+                            oAuthLogout();
+                        }
+                    } else if (message.data?.event === 'sso_required' || message.data?.event === 'login_successful') {
+                        console.log('OIDC: we need to SSO NOW', message.data?.event);
+                        // requestOidcAuthentication({
+                        //     redirectCallbackUri: `${window.location.origin}/callback`,
+                        // });
+                    }
+                },
+                false
+            );
+
             console.log('OIDC: checking if we need SSO...');
             const userManager = new UserManager({
                 authority: 'https://qa20.deriv.dev',
                 client_id: '1000005',
-                redirect_uri: 'https://localhost:8443/callback',
-                silent_redirect_uri: 'https://localhost:8443/silent-callback',
+                redirect_uri: 'https://qa110.deriv.dev/callback',
+                silent_redirect_uri: 'https://qa110.deriv.dev/silent-callback',
                 response_type: 'code',
                 scope: 'openid',
                 stateStore: new WebStorageStateStore({ store: window.localStorage }),

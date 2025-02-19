@@ -62,6 +62,8 @@ const AccountWizard = observer(props => {
     });
     const { selected_phone_code } = useGetPhoneNumberList();
 
+    const is_phone_number_required = client.account_settings.immutable_fields.includes('phone');
+
     const { is_eu_user } = traders_hub;
 
     const modifiedProps = {
@@ -321,6 +323,10 @@ const AccountWizard = observer(props => {
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
         delete clone?.calling_country_code;
+
+        if (is_phone_number_required && clone?.phone) {
+            delete clone.phone;
+        }
 
         if (is_residence_self_declaration_required && clone?.resident_self_declaration)
             clone.resident_self_declaration = 1;

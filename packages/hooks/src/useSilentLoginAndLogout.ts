@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
-import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -22,7 +19,9 @@ const useSilentLoginAndLogout = ({
     isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
-    const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const clientAccounts = JSON.parse(
+        localStorage.getItem('client.accounts') || localStorage.getItem('config.tokens') || '{}'
+    );
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') ||
@@ -41,41 +40,19 @@ const useSilentLoginAndLogout = ({
             window.addEventListener(
                 'message',
                 message => {
-                    if (message.data?.event === 'login_required') {
-                        console.log('OIDC: prompt none says we are logged out');
-                        if (isClientAccountsPopulated) {
-                            oAuthLogout();
-                        }
-                    } else if (message.data?.event === 'sso_required' || message.data?.event === 'login_successful') {
-                        console.log('OIDC: we need to SSO NOW', message.data?.event);
-                        // requestOidcAuthentication({
-                        //     redirectCallbackUri: `${window.location.origin}/callback`,
-                        // });
+                    if (message.data?.event === 'login_successful') {
+                        requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                        });
                     }
                 },
                 false
             );
 
-            console.log('OIDC: checking if we need SSO...');
-            const userManager = new UserManager({
-                authority: 'https://qa20.deriv.dev',
-                client_id: '1000005',
-                redirect_uri: 'https://qa110.deriv.dev/callback',
-                silent_redirect_uri: 'https://qa110.deriv.dev/silent-callback',
-                response_type: 'code',
-                scope: 'openid',
-                stateStore: new WebStorageStateStore({ store: window.localStorage }),
-                // this is enabled by default, it runs a silent renew service in the background which triggers the prompt=none auth calls
-                // Source: https://github.com/authts/oidc-client-ts/blob/9ccae8f87b3e9e2df349aaf6f007964ced287b02/src/UserManagerSettings.ts#L140
-                // Notable issue: https://github.com/authts/oidc-client-ts/issues/1174
-                automaticSilentRenew: false,
-            });
-            userManager.signinSilent({
-                extraQueryParams: {
-                    brand: 'deriv',
-                },
-                silentRequestTimeoutInSeconds: 60000,
-            });
+            // requestOidcSilentAuthentication({
+            //     redirectSilentCallbackUri: `${window.location.origin}/silent-callback.html`,
+            //     redirectCallbackUri: `${window.location.origin}/callback`,
+            // });
         }
     }, [isOAuth2Enabled]);
 };

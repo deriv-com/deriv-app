@@ -3,19 +3,18 @@
     <head>
         <title>Deriv</title>
         <meta charset="utf-8" />
-        <meta name="referrer" content="origin" />
         <script>
             const params = new URLSearchParams(window.location.search);
             const oneTimeCode = params.get('code');
             const errorType = params.get('error');
 
-            if (errorType === 'login_required') {
+            if (errorType) {
                 window.parent.postMessage({
-                    event: 'login_required',
+                    event: errorType,
                 });
-            } else if (errorType === 'consent_required' || oneTimeCode) {
+            } else if (oneTimeCode) {
                 window.parent.postMessage({
-                    event: 'sso_required',
+                    event: 'login_successful',
                 });
             }
         </script>

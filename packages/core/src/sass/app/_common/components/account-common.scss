@@ -83,7 +83,9 @@
     &__status-message {
         background-color: var(--transparent-correct-message);
         justify-content: flex-start;
-        transition: transform 0.35s ease, opacity 0.35s linear;
+        transition:
+            transform 0.35s ease,
+            opacity 0.35s linear;
         transform-origin: top;
         opacity: 1;
         width: 98%;
@@ -160,7 +162,9 @@
             }
 
             &_wrapper {
-                transition: transform 0.35s ease, opacity 0.35s linear;
+                transition:
+                    transform 0.35s ease,
+                    opacity 0.35s linear;
                 transform-origin: top;
                 opacity: 1;
                 padding: 1.6rem;
@@ -242,6 +246,35 @@
 
         &__poi-additional-information {
             margin-top: 2rem;
+        }
+
+        &__phone-container {
+            display: flex;
+            .dc-autocomplete {
+                width: 40%;
+                .dc-input__container {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+            }
+
+            @include mobile-or-tablet-screen {
+                .dc-select-native {
+                    width: 40%;
+
+                    &__container {
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                }
+            }
+
+            &--input {
+                .dc-input__container {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
         }
 
         &__section {

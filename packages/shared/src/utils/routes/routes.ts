@@ -2,8 +2,6 @@ import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
     callback_page: '/callback',
-    front_channel_page: '/front-channel',
-    silent_callback_page: '/silent-callback',
     reset_password: '/',
     error404: '/404',
     index: '/index',
@@ -130,3 +128,8 @@ export const ACCOUNTS_OS_POI_STATUS_URL =
     process.env.NODE_ENV === 'production'
         ? 'https://hub.deriv.com/Accounts/ProofOfIdentityStatus'
         : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus';
+
+export const ACCOUNTS_OS_POA_URL =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/Accounts/ProofOfAddress'
+        : 'https://staging-hub.deriv.com/Accounts/ProofOfAddress';

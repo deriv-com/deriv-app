@@ -80,7 +80,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
                     icon='IcAlertWarning'
-                    text='Unavailable'
+                    text='Temporarily unavailable'
                 />
             );
         }
@@ -410,9 +410,7 @@ const AccountTransferForm = observer(
             if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else if (is_unavailable_status_present) {
-                hint_text = (
-                    <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
-                );
+                hint_text = <Localize i18n_default_text='Check back in a few minutes by refreshing the page.' />;
             } else if (is_maintenance_status_present) {
                 hint_text = (
                     <Localize

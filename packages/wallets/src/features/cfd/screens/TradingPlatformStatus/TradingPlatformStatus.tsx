@@ -15,15 +15,14 @@ const getContentConfig = (localize: ReturnType<typeof useTranslations>['localize
         title: localize('Server Maintenance'),
     };
     const unavailableConfig = {
-        content: localize('The server is temporarily unavailable for this account. We’re working to resolve this.'),
-        title: localize('Account Unavailable'),
+        content: localize('Check back in a few minutes by refreshing the page.'),
+        title: localize('Account temporarily unavailable'),
     };
 
     return {
         [MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE]: maintenanceConfig,
         [TRADING_PLATFORM_STATUS.MAINTENANCE]: maintenanceConfig,
         [MT5_ACCOUNT_STATUS.UNAVAILABLE]: unavailableConfig,
-        [TRADING_PLATFORM_STATUS.UNAVAILABLE]: unavailableConfig,
     };
 };
 
@@ -31,7 +30,6 @@ const TradingPlatformStatus: React.FC<TradingPlatformStatusModalProps> = ({ stat
     const { hide } = useModal();
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
-
     const { content, title } = getContentConfig(localize)[status];
 
     return (

@@ -8,11 +8,11 @@
             const oneTimeCode = params.get('code');
             const errorType = params.get('error');
 
-            if (errorType) {
+            if (errorType === 'login_required') {
                 window.parent.postMessage({
                     event: errorType,
                 });
-            } else if (oneTimeCode) {
+            } else if (errorType === 'consent_required' || oneTimeCode) {
                 window.parent.postMessage({
                     event: 'login_successful',
                 });

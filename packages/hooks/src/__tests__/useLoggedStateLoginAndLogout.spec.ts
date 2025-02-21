@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { renderHook } from '@testing-library/react-hooks';
 
-import useSilentLoginAndLogout from '../useSilentLoginAndLogout';
+import useLoggedStateLoginAndLogout from '../useLoggedStateLoginAndLogout';
 
 jest.mock('js-cookie', () => ({
     get: jest.fn(),
@@ -13,7 +13,7 @@ jest.mock('@deriv-com/auth-client', () => ({
     requestOidcAuthentication: jest.fn(),
 }));
 
-describe('useSilentLoginAndLogout', () => {
+describe('useLoggedStateLoginAndLogout', () => {
     const mockOAuthLogout = jest.fn();
 
     beforeEach(() => {
@@ -43,7 +43,7 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
         renderHook(() =>
-            useSilentLoginAndLogout({
+            useLoggedStateLoginAndLogout({
                 is_client_store_initialized: true,
                 isOAuth2Enabled: true,
                 oAuthLogout: mockOAuthLogout,
@@ -62,7 +62,7 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
         renderHook(() =>
-            useSilentLoginAndLogout({
+            useLoggedStateLoginAndLogout({
                 is_client_store_initialized: true,
                 isOAuth2Enabled: true,
                 oAuthLogout: mockOAuthLogout,
@@ -84,7 +84,7 @@ describe('useSilentLoginAndLogout', () => {
         });
 
         renderHook(() =>
-            useSilentLoginAndLogout({
+            useLoggedStateLoginAndLogout({
                 is_client_store_initialized: true,
                 isOAuth2Enabled: true,
                 oAuthLogout: mockOAuthLogout,
@@ -101,7 +101,7 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
         renderHook(() =>
-            useSilentLoginAndLogout({
+            useLoggedStateLoginAndLogout({
                 is_client_store_initialized: true,
                 isOAuth2Enabled: true,
                 oAuthLogout: mockOAuthLogout,
@@ -118,7 +118,7 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
         renderHook(() =>
-            useSilentLoginAndLogout({
+            useLoggedStateLoginAndLogout({
                 is_client_store_initialized: true,
                 isOAuth2Enabled: true,
                 oAuthLogout: mockOAuthLogout,

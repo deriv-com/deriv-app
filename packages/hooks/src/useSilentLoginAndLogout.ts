@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { requestOidcAuthentication, requestOidcSilentAuthentication } from '@deriv-com/auth-client';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -26,6 +26,7 @@ const useSilentLoginAndLogout = ({
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') ||
         window.location.pathname.includes('silent-callback') ||
+        window.location.pathname.includes('front-channel') ||
         window.location.pathname.includes('endpoint');
 
     useEffect(() => {
@@ -49,10 +50,10 @@ const useSilentLoginAndLogout = ({
                 false
             );
 
-            // requestOidcSilentAuthentication({
-            //     redirectSilentCallbackUri: `${window.location.origin}/silent-callback.html`,
-            //     redirectCallbackUri: `${window.location.origin}/callback`,
-            // });
+            requestOidcSilentAuthentication({
+                redirectSilentCallbackUri: `${window.location.origin}/silent-callback.html`,
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
         }
     }, [isOAuth2Enabled]);
 };

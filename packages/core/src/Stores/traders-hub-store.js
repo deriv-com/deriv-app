@@ -410,17 +410,6 @@ export default class TradersHubStore extends BaseStore {
             is_logged_in,
             is_trading_platform_available_account_loaded,
         } = this.root_store.client;
-        const getAccountDesc = () => {
-            return !this.is_eu_user || this.is_demo_low_risk
-                ? localize('CFDs on financial instruments.')
-                : localize('CFDs on derived and financial instruments.');
-        };
-        const getSwapFreeAccountDesc = () => {
-            return localize('Swap-free CFDs on selected financial and derived instruments.');
-        };
-        const getZeroSpreadAccountDesc = () => {
-            return localize('Zero spread CFDs on financial and derived instruments');
-        };
 
         const getMT5Accounts = [
             {
@@ -433,13 +422,22 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'Non-EU',
             },
             {
-                name: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
-                description: getAccountDesc(),
+                name: 'Financial',
+                description: localize('CFDs on financial instruments.'),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
                 product: 'financial',
-                icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
-                availability: 'All',
+                icon: 'Financial',
+                availability: 'Non-EU',
+            },
+            {
+                name: 'Standard',
+                description: localize('CFDs on derived and financial instruments.'),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'synthetic',
+                product: 'financial',
+                icon: 'Standard',
+                availability: 'EU',
             },
             ...(this.is_real
                 ? [
@@ -456,7 +454,7 @@ export default class TradersHubStore extends BaseStore {
                 : []),
             {
                 name: 'Swap-Free',
-                description: getSwapFreeAccountDesc(),
+                description: localize('Swap-free CFDs on selected financial and derived instruments.'),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
                 product: 'swap_free',
@@ -465,7 +463,7 @@ export default class TradersHubStore extends BaseStore {
             },
             {
                 name: localize('Zero Spread'),
-                description: getZeroSpreadAccountDesc(),
+                description: localize('Zero spread CFDs on financial and derived instruments'),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
                 product: 'zero_spread',

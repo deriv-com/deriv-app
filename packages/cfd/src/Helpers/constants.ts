@@ -41,7 +41,7 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 
 const { is_staging, is_test_link } = getPlatformFromUrl();
 
-const STRATEGY_PROVIDER_NOTES = [
+const STRATEGY_PROVIDER_NOTES = () => [
     localize('When setting up a strategy, you have the option to impose fees.'),
     localize(
         'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.'

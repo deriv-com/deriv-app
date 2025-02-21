@@ -13,6 +13,10 @@ jest.mock('@deriv-com/auth-client', () => ({
     requestOidcAuthentication: jest.fn(),
 }));
 
+jest.mock('@deriv/shared', () => ({
+    isSafari: jest.fn().mockReturnValue(true),
+}));
+
 describe('useLoggedStateLoginAndLogout', () => {
     const mockOAuthLogout = jest.fn();
 

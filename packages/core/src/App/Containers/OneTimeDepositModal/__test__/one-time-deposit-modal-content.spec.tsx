@@ -13,6 +13,7 @@ jest.mock('@deriv-com/ui', () => ({
 jest.mock('@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe', () =>
     jest.fn(() => <div>FiatIframe</div>)
 );
+
 jest.mock(
     '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-wallet-address/deposit-crypto-wallet-address',
     () => jest.fn(() => <div>CryptoWallet</div>)

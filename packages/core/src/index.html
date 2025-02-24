@@ -85,10 +85,7 @@
                 var antiClickjack = document.getElementById('antiClickjack');
                 antiClickjack.parentNode.removeChild(antiClickjack);
             } else {
-                const isAuthFlow = /\/(silent-callback|front-channel)($|\/)/.test(self.location.pathname);
-                if (!isAuthFlow) {
-                    top.location = self.location;
-                }
+                top.location = self.location;
             }
         </script>
         <!-- End Anti-Clickjack -->

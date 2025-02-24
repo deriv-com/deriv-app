@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { isSafari } from '@deriv/shared';
+import { isSafari, isSafariBrowser } from '@deriv/shared';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 /**
@@ -25,15 +25,12 @@ const useLoggedStateLoginAndLogout = ({
 
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-    const isSilentLoginExcluded =
-        window.location.pathname.includes('callback') ||
-        window.location.pathname.includes('silent-callback') ||
-        window.location.pathname.includes('front-channel') ||
-        window.location.pathname.includes('endpoint');
+    const isSilentLoginExcluded = ['callback', 'silent-callback', 'front-channel', 'endpoint'].some(path =>
+        window.location.pathname.includes(path)
+    );
 
     useEffect(() => {
-        const isSafariBrowser = isSafari();
-        if (!isSafariBrowser) return;
+        if (!isSafari() || !isSafariBrowser()) return;
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);

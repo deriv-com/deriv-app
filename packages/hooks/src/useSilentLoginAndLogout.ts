@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { requestOidcAuthentication, requestOidcSilentAuthentication } from '@deriv-com/auth-client';
-import { isSafari } from '@deriv/shared';
+import { isSafari, isSafariBrowser } from '@deriv/shared';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -18,19 +18,14 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     isOAuth2Enabled: boolean;
 }) => {
-    const clientAccounts = JSON.parse(
-        localStorage.getItem('client.accounts') || localStorage.getItem('config.tokens') || '{}'
-    );
-    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-    const isSilentLoginExcluded =
-        window.location.pathname.includes('callback') ||
-        window.location.pathname.includes('silent-callback') ||
-        window.location.pathname.includes('front-channel') ||
-        window.location.pathname.includes('endpoint');
-
     useEffect(() => {
-        const isSafariBrowser = isSafari();
-        if (isSafariBrowser) return;
+        if (isSafari() || isSafariBrowser()) return;
+
+        const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+        const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+        const isSilentLoginExcluded = ['callback', 'silent-callback', 'front-channel', 'endpoint'].some(path =>
+            window.location.pathname.includes(path)
+        );
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { requestOidcAuthentication, requestOidcSilentAuthentication } from '@deriv-com/auth-client';
-import { isSafari, isSafariBrowser } from '@deriv/shared';
+import { isSafariBrowser } from '@deriv/shared';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -19,7 +19,7 @@ const useSilentLoginAndLogout = ({
     isOAuth2Enabled: boolean;
 }) => {
     useEffect(() => {
-        if (isSafari() || isSafariBrowser()) return;
+        if (isSafariBrowser()) return;
 
         const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
         const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;

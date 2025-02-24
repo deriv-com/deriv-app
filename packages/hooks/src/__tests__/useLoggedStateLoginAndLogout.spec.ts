@@ -14,7 +14,7 @@ jest.mock('@deriv-com/auth-client', () => ({
 }));
 
 jest.mock('@deriv/shared', () => ({
-    isSafari: jest.fn().mockReturnValue(true),
+    isSafariBrowser: jest.fn().mockReturnValue(true),
 }));
 
 describe('useLoggedStateLoginAndLogout', () => {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { isSafari, isSafariBrowser } from '@deriv/shared';
+import { isSafariBrowser } from '@deriv/shared';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 /**
@@ -30,7 +30,7 @@ const useLoggedStateLoginAndLogout = ({
     );
 
     useEffect(() => {
-        if (!isSafari() || !isSafariBrowser()) return;
+        if (!isSafariBrowser()) return;
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);

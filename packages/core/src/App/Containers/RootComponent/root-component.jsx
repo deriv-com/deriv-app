@@ -40,7 +40,9 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            window.location.assign(redirectUrl);
+            logout().then(() => {
+                window.location.assign(redirectUrl);
+            });
         }
     }, [isHubRedirectionEnabled, has_wallet, prevent_redirect_to_hub]);
 

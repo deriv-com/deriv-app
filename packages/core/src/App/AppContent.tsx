@@ -8,6 +8,7 @@ import {
     useIntercom,
     useIsHubRedirectionEnabled,
     useLiveChat,
+    useLoggedStateLoginAndLogout,
     useOauth2,
     useSilentLoginAndLogout,
 } from '@deriv/hooks';
@@ -68,7 +69,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
 
+    // use prompt=none silent login checks for Chrome and Firefox
     useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+    });
+    // use logged_state cookie login checks for Safari
+    useLoggedStateLoginAndLogout({
         is_client_store_initialized,
         isOAuth2Enabled,
         oAuthLogout,
@@ -166,12 +173,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         }
     }, [has_wallet, current_language, changeSelectedLanguage, is_dark_mode_on, setDarkMode]);
 
-    const isCallBackPage = window.location.pathname.includes('callback');
+    const isOauthFlowPage =
+        window.location.pathname.includes('front-channel') ||
+        window.location.pathname.includes('callback') ||
+        window.location.pathname.includes('silent-callback');
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
-            <LandscapeBlocker />
-            {!isCallBackPage && <Header />}
+            {!isOauthFlowPage && <LandscapeBlocker />}
+            {!isOauthFlowPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
                     {/* TODO: [trader-remove-client-base] */}

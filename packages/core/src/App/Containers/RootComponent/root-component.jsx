@@ -38,7 +38,7 @@ const RootComponent = observer(props => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
 
     useEffect(() => {
-        if (true) {
+        if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
             localStorage.removeItem('active_loginid');

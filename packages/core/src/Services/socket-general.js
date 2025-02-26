@@ -332,7 +332,7 @@ const ResponseHandlers = (() => {
             // The maximum delay is capped at 10 minutes (600k ms).
             if (is_server_down) {
                 const reconnectionDelay =
-                    Math.min(2 ** (reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
+                    Math.min(Math.pow(2, reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
 
                 window.setTimeout(() => {
                     reconnectionCounter++;

@@ -149,7 +149,7 @@ const BinarySocketGeneral = (() => {
                         sessionStorage.removeItem('session_start_time');
                     },
                     redirectCallbackUri: `${window.location.origin}/callback`,
-                    postLogoutRedirectUri: `${window.location.origin}/`
+                    postLogoutRedirectUri: `${window.location.origin}/`,
                 });
             }, remaining_session_time);
         } else if (!duration) {

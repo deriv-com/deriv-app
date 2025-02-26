@@ -13,6 +13,7 @@ import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
+import { OAuth2Logout } from '@deriv-com/analytics';
 
 let client_store, common_store, gtm_store;
 let reconnectionCounter = 1;
@@ -141,9 +142,15 @@ const BinarySocketGeneral = (() => {
             const current_session_duration = session_duration_limit ? ServerTime.get() - moment(session_start_time) : 0;
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             clearTimeout(session_timeout);
-            session_timeout = setTimeout(() => {
-                client_store.logout();
-                sessionStorage.removeItem('session_start_time');
+            session_timeout = setTimeout(async () => {
+                await OAuth2Logout({
+                    WSLogoutAndRedirect: () => {
+                        client_store.logout();
+                        sessionStorage.removeItem('session_start_time');
+                    },
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLogoutRedirectUri: `${window.location.origin}/`,
+                });
             }, remaining_session_time);
         } else if (!duration) {
             clearTimeout(session_timeout);
@@ -326,7 +333,7 @@ const ResponseHandlers = (() => {
             // The maximum delay is capped at 10 minutes (600k ms).
             if (is_server_down) {
                 const reconnectionDelay =
-                    Math.min(Math.pow(2, reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
+                    Math.min(2 ** (reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
 
                 window.setTimeout(() => {
                     reconnectionCounter++;

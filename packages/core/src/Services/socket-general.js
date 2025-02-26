@@ -13,7 +13,6 @@ import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
-import { OAuth2Logout } from '@deriv-com/auth-client';
 
 let client_store, common_store, gtm_store;
 let reconnectionCounter = 1;
@@ -143,14 +142,8 @@ const BinarySocketGeneral = (() => {
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {
-                OAuth2Logout({
-                    WSLogoutAndRedirect: () => {
-                        client_store.logout();
-                        sessionStorage.removeItem('session_start_time');
-                    },
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                    postLogoutRedirectUri: `${window.location.origin}/`
-                });
+                client_store.logout();
+                sessionStorage.removeItem('session_start_time');
             }, remaining_session_time);
         } else if (!duration) {
             clearTimeout(session_timeout);

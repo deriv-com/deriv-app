@@ -11,20 +11,10 @@ import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import { TTradeParametersProps } from '../trade-parameters';
 
 const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
-    const {
-        barrier_1,
-        onChange,
-        duration_unit,
-        is_market_closed,
-        setV2ParamsInitialValues,
-        v2_params_initial_values,
-        validation_errors,
-        proposal_info,
-        trade_type_tab,
-    } = useTraderStore();
+    const { barrier_1, duration_unit, is_market_closed, validation_errors, proposal_info, trade_type_tab } =
+        useTraderStore();
     const [is_open, setIsOpen] = React.useState(false);
-    const [initialBarrierValue, setInitialBarrierValue] = React.useState('');
-    const isDays = duration_unit == 'd';
+    const is_days = duration_unit == 'd';
     const has_error =
         validation_errors.barrier_1.length > 0 ||
         (proposal_info?.[trade_type_tab]?.has_error && proposal_info?.[trade_type_tab]?.error_field === 'barrier');
@@ -32,17 +22,13 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const [barrier_error_shown, setBarrierErrorShown] = React.useState(false);
 
     const onClose = React.useCallback(
-        (is_saved = false) => {
+        () => {
             if (is_open) {
-                if (!is_saved) {
-                    onChange({ target: { name: 'barrier_1', value: initialBarrierValue } });
-                }
-                setV2ParamsInitialValues({ value: '', name: 'barrier_1' });
                 setIsOpen(false);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [initialBarrierValue, is_open]
+        [is_open]
     );
 
     React.useEffect(() => {
@@ -70,13 +56,11 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
     const barrier_carousel_pages = [
         {
             id: 1,
-            component: (
-                <BarrierInput isDays={isDays} setInitialBarrierValue={setInitialBarrierValue} onClose={onClose} />
-            ),
+            component: <BarrierInput is_open={is_open} is_days={is_days} onClose={onClose} />,
         },
         {
             id: 2,
-            component: <BarrierDescription isDays={isDays} />,
+            component: <BarrierDescription is_days={is_days} />,
         },
     ];
 
@@ -89,7 +73,7 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
                 readOnly
                 noStatusIcon
                 label={<Localize i18n_default_text='Barrier' key={`barrier${is_minimized ? '-minimized' : ''}`} />}
-                value={v2_params_initial_values.barrier_1 || barrier_1}
+                value={barrier_1}
                 onClick={() => setIsOpen(true)}
                 status={has_error && !is_open ? 'error' : undefined}
             />

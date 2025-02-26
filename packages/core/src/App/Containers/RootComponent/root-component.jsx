@@ -40,6 +40,14 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
+            localStorage.removeItem('active_loginid');
+            localStorage.removeItem('active_user_id');
+            localStorage.removeItem('client.accounts');
+            localStorage.removeItem('active_wallet_loginid');
+            // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
+            localStorage.removeItem('config.account1');
+            localStorage.removeItem('config.tokens');
             window.location.assign(redirectUrl);
         }
     }, [isHubRedirectionEnabled, has_wallet, prevent_redirect_to_hub]);

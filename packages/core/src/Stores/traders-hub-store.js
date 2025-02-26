@@ -422,6 +422,16 @@ export default class TradersHubStore extends BaseStore {
             return localize('Zero spread CFDs on financial and derived instruments');
         };
 
+        const getFinancialName = () => {
+            if (!this.is_eu_user || this.is_demo_low_risk) {
+                return 'Financial';
+            }
+            if (is_logged_in) {
+                return 'CFDs';
+            }
+            return 'Standard';
+        };
+
         const getMT5Accounts = [
             {
                 name: 'Standard',
@@ -433,12 +443,12 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'Non-EU',
             },
             {
-                name: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
+                name: getFinancialName(),
                 description: getAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
                 product: 'financial',
-                icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
+                icon: getFinancialName(),
                 availability: 'All',
             },
             ...(this.is_real
@@ -857,6 +867,7 @@ export default class TradersHubStore extends BaseStore {
             } else {
                 this.combined_cfd_mt5_accounts = [
                     ...this.combined_cfd_mt5_accounts,
+
                     {
                         icon: account.icon,
                         name: account.name,

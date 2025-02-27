@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { requestOidcAuthentication, requestOidcSilentAuthentication } from '@deriv-com/auth-client';
+import { isSafariBrowser } from '@deriv/shared';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -15,60 +14,51 @@ import { requestOidcAuthentication } from '@deriv-com/auth-client';
 const useSilentLoginAndLogout = ({
     is_client_store_initialized,
     isOAuth2Enabled,
-    oAuthLogout,
 }: {
     is_client_store_initialized: boolean;
     isOAuth2Enabled: boolean;
-    oAuthLogout: () => Promise<void>;
 }) => {
-    const loggedState = Cookies.get('logged_state');
-
-    const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-    const isSilentLoginExcluded =
-        window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
-
     useEffect(() => {
+        if (isSafariBrowser()) return;
+
+        const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+        const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+        const isSilentLoginExcluded = ['callback', 'silent-callback', 'front-channel', 'endpoint'].some(path =>
+            window.location.pathname.includes(path)
+        );
+
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+        if (isUsingLegacyFlow && isOAuth2Enabled) {
             return;
         }
 
         if (
-            !isUsingLegacyFlow &&
-            loggedState === 'true' &&
-            !isClientAccountsPopulated &&
             isOAuth2Enabled &&
-            is_client_store_initialized &&
-            !isSilentLoginExcluded
+            !isUsingLegacyFlow &&
+            !isClientAccountsPopulated &&
+            !isSilentLoginExcluded &&
+            is_client_store_initialized
         ) {
-            // Perform silent login
-            requestOidcAuthentication({
+            window.addEventListener(
+                'message',
+                message => {
+                    if (message.data?.event === 'login_successful') {
+                        requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                        });
+                    }
+                },
+                false
+            );
+
+            requestOidcSilentAuthentication({
+                redirectSilentCallbackUri: `${window.location.origin}/silent-callback.html`,
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
-
-        if (
-            !isUsingLegacyFlow &&
-            loggedState === 'false' &&
-            is_client_store_initialized &&
-            isOAuth2Enabled &&
-            isClientAccountsPopulated &&
-            !window.location.pathname.includes('callback')
-        ) {
-            // Perform single logout
-            oAuthLogout();
-        }
-    }, [
-        loggedState,
-        isClientAccountsPopulated,
-        is_client_store_initialized,
-        isOAuth2Enabled,
-        oAuthLogout,
-        isSilentLoginExcluded,
-    ]);
+    }, [isOAuth2Enabled, is_client_store_initialized]);
 };
 
 export default useSilentLoginAndLogout;

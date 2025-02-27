@@ -97,6 +97,7 @@ const RiskManagement = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-large' />
                     <Carousel
                         classname={clsx(
                             'risk-management__carousel',

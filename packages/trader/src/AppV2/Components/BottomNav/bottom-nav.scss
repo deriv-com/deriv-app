@@ -14,7 +14,7 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
     }
     &-selection {
         flex: 1;
-        overflow: auto;
+        overflow: auto !important;
         -ms-overflow-style: none;
         scrollbar-width: none;
     }

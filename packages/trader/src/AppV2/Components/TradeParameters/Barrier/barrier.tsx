@@ -101,6 +101,7 @@ const Barrier = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-small' />
                     <Carousel
                         header={CarouselHeader}
                         title={<Localize i18n_default_text='Barrier' />}

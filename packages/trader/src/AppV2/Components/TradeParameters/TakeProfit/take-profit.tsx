@@ -58,6 +58,7 @@ const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
                 shouldBlurOnClose={is_open}
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
+                    <div className='trade__parameter-tooltip-info trade__parameter-tooltip-info-small' />
                     <Carousel
                         header={CarouselHeader}
                         pages={action_sheet_content}

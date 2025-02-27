@@ -88,8 +88,8 @@ export const getSocketURL = (is_wallets = false) => {
         active_loginid_from_url = params.get('acct1');
     }
     const local_storage_loginid = is_wallets
-        ? window.localStorage.getItem('active_wallet_loginid')
-        : window.localStorage.getItem('active_loginid');
+        ? window.sessionStorage.getItem('active_wallet_loginid') || window.localStorage.getItem('active_wallet_loginid')
+        : window.sessionStorage.getItem('active_loginid') || window.localStorage.getItem('active_loginid');
     const loginid = local_storage_loginid || active_loginid_from_url;
     const is_real = loginid && !/^(VRT|VRW)/.test(loginid);
 

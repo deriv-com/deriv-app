@@ -5,7 +5,7 @@
  * @deprecated Please use 'WebSocketUtils.getActiveLoginid' from '@deriv-com/utils' instead of this.
  */
 const getActiveLoginIDFromLocalStorage = (loginid_key = 'active_loginid') => {
-    const active_custom_loginid = localStorage.getItem(loginid_key);
+    const active_custom_loginid = sessionStorage.getItem(loginid_key) || localStorage.getItem(loginid_key);
     return active_custom_loginid ?? undefined;
 };
 

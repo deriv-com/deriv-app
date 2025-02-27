@@ -123,7 +123,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         }
     };
 
-    const getAccountItem = (item: typeof account_list[0], is_demo?: boolean) => (
+    const getAccountItem = (item: (typeof account_list)[0], is_demo?: boolean) => (
         <AccountListDTraderV2
             key={item.loginid}
             balance={accounts[item?.loginid ?? '']?.balance}

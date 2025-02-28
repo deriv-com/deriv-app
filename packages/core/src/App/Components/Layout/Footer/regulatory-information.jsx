@@ -7,7 +7,7 @@ const MFRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Financial products in the EU are offered by {{legal_entity_name}}, licensed as a Category 3 Investment Services provider by the Malta Financial Services Authority (<0>Licence no. IS/70156</0>).'
+                i18n_default_text='{{legal_entity_name}} is licensed in Malta and regulated by the Malta Financial Services Authority, under the Investment Services Act, to provide investment services (<0>view licence</0>).'
                 components={[
                     <a
                         href={`https://${deriv_urls.DERIV_HOST_NAME}/regulatory/Deriv_Investments_(Europe)_Limited.pdf`}

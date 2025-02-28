@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
@@ -78,7 +78,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status='under_maintenance'
                     icon='IcAlertWarning'
-                    text={<Localize i18n_default_text='Server Maintenance' />}
+                    text={<Localize i18n_default_text='<0>Server Maintenance</0>' components={[Fragment]} />}
                 />
             );
         } else if (is_account_unavailable) {
@@ -86,7 +86,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
                     icon='IcAlertWarning'
-                    text={<Localize i18n_default_text='Temporarily unavailable' />}
+                    text={<Localize i18n_default_text='<0>Temporarily unavailable</0>' components={[Fragment]} />}
                 />
             );
         }

@@ -78,7 +78,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status='under_maintenance'
                     icon='IcAlertWarning'
-                    text={<Localize i18n_default_text='<0>Server Maintenance</0>' components={[Fragment]} />}
+                    text={<Localize i18n_default_text='<0>Server Maintenance</0>' components={[<span key={0} />]} />}
                 />
             );
         } else if (is_account_unavailable) {
@@ -86,7 +86,9 @@ const AccountOption = ({
                 <StatusBadge
                     account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
                     icon='IcAlertWarning'
-                    text={<Localize i18n_default_text='<0>Temporarily unavailable</0>' components={[Fragment]} />}
+                    text={
+                        <Localize i18n_default_text='<0>Temporarily unavailable</0>' components={[<span key={0} />]} />
+                    }
                 />
             );
         }

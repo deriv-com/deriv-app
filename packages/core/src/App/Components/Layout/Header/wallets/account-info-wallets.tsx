@@ -116,7 +116,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { isDesktop } = useDevice();
 
     const active_account = accounts?.[loginid ?? ''];
-    const wallet_loginid = localStorage.getItem('active_wallet_loginid');
+    const wallet_loginid =
+        sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid');
     const active_wallet =
         wallet_list?.find(wallet => wallet.loginid === wallet_loginid) ??
         wallet_list?.find(wallet => wallet.loginid === loginid);
@@ -126,7 +127,9 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet
         linked_dtrade_trading_account_loginid =
-            active_wallet.dtrade_loginid || linked_wallets_accounts.dtrade?.[0]?.loginid;
+            sessionStorage.getItem('active_loginid') ||
+            active_wallet.dtrade_loginid ||
+            linked_wallets_accounts.dtrade?.[0]?.loginid;
 
         // switch to dtrade account
         if (linked_dtrade_trading_account_loginid && linked_dtrade_trading_account_loginid !== loginid) {

@@ -323,6 +323,28 @@ const Redirect = observer(() => {
     }
     useEffect(() => {
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+            const account_currency = url_params.get('account');
+            const client_account_lists = JSON.parse(localStorage.getItem('client.accounts'));
+
+            if (account_currency) {
+                let matching_loginid;
+
+                const converted_account_currency = account_currency.toUpperCase();
+
+                if (converted_account_currency === 'DEMO') {
+                    matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
+                } else {
+                    matching_loginid = Object.keys(client_account_lists).find(
+                        loginid =>
+                            client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                            client_account_lists[loginid].account_category === 'trading'
+                    );
+                }
+
+                if (matching_loginid) {
+                    sessionStorage.setItem('active_loginid', matching_loginid);
+                }
+            }
             const route_mappings = [
                 { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },

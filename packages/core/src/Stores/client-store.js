@@ -359,6 +359,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setUrlParams: action.bound,
             setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
@@ -1065,9 +1066,20 @@ export default class ClientStore extends BaseStore {
     resetLocalStorageValues(loginid) {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
-        LocalStore.set('active_loginid', loginid);
+        sessionStorage.setItem('active_loginid', loginid);
+        this.setUrlParams();
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+    }
+
+    setUrlParams() {
+        const url = new URL(window.location.href);
+        const loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
+        const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
+        if (account_param) {
+            url.searchParams.set('account', account_param);
+            window.history.replaceState({}, '', url.toString());
+        }
     }
 
     setIsAuthorize(value) {
@@ -1576,7 +1588,7 @@ export default class ClientStore extends BaseStore {
 
         if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
             this.setLoginId(loginid_param);
-        else this.setLoginId(LocalStore.get('active_loginid'));
+        else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
@@ -2005,11 +2017,15 @@ export default class ClientStore extends BaseStore {
 
             //temporary workaround to sync this.loginid with selected wallet loginid
             if (window.location.pathname.includes(routes.wallets)) {
-                this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
+                this.resetLocalStorageValues(
+                    window.sessionStorage.getItem('active_loginid') ??
+                        localStorage.getItem('active_loginid') ??
+                        this.loginid
+                );
                 return;
             }
 
-            this.resetLocalStorageValues(this.loginid);
+            this.resetLocalStorageValues(window.sessionStorage.getItem('active_loginid') ?? this.loginid);
         }
     }
 
@@ -2232,11 +2248,12 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+                sessionStorage.setItem('active_wallet_loginid', active_wallet_loginid);
                 if (verification_code) {
                     localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
-
+            sessionStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);

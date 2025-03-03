@@ -78,7 +78,7 @@ const AccountOption = ({
                 <StatusBadge
                     account_status='under_maintenance'
                     icon='IcAlertWarning'
-                    text={<Localize i18n_default_text='<0>Server Maintenance</0>' components={[<span key={0} />]} />}
+                    text={<Localize i18n_default_text='<0>Server maintenance</0>' components={[<span key={0} />]} />}
                 />
             );
         } else if (is_account_unavailable) {

@@ -32,6 +32,7 @@ const useAuthorize = () => {
         (loginid: string) => {
             const active_loginid = getActiveLoginIDFromLocalStorage();
             if (active_loginid !== loginid) {
+                sessionStorage.setItem('active_loginid', loginid);
                 localStorage.setItem('active_loginid', loginid);
                 switchEnvironment(active_loginid);
                 // whenever we change the loginid, we need to invalidate all queries

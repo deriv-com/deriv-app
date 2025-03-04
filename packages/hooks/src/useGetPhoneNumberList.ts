@@ -65,7 +65,7 @@ const useGetPhoneNumberList = () => {
                 id: `${country.calling_country_code}_${country.country_code}`,
                 carriers: country.carriers,
                 disabled: false,
-            })),
+            })) ?? [],
         [countries]
     );
 

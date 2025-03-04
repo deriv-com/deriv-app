@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TradeTypesSelectionGuide from '../trade-types-selection-guide';
 
-const modal_text = 'Pin, rearrange, or remove your favorite trade types for easy access.';
+const modal_text = 'Manage your preferred trade types for easy access on the trade page.';
 const localStorage_key = 'guide_dtrader_v2';
 const video = 'Video';
 
@@ -43,6 +43,14 @@ describe('TradeTypesSelectionGuide', () => {
 
     it('should close the Modal and set flag to localStorage equal to true after user clicks on "Got it" button', async () => {
         const field = 'trade_types_selection';
+
+        localStorage.setItem(
+            localStorage_key,
+            JSON.stringify({
+                [field]: false,
+            })
+        );
+
         jest.useFakeTimers();
         render(<TradeTypesSelectionGuide />);
 
@@ -50,14 +58,18 @@ describe('TradeTypesSelectionGuide', () => {
 
         expect(screen.getByText(video)).toBeInTheDocument();
         expect(screen.getByText(modal_text)).toBeInTheDocument();
-        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(false);
 
-        userEvent.click(screen.getByRole('button'));
+        const initialState = JSON.parse(localStorage.getItem(localStorage_key) || '{}');
+        expect(initialState[field]).toBe(false);
+
+        await userEvent.click(screen.getByRole('button'));
         await waitFor(() => jest.advanceTimersByTime(300));
 
         expect(screen.queryByText(video)).not.toBeInTheDocument();
         expect(screen.queryByText(modal_text)).not.toBeInTheDocument();
-        expect(JSON.parse(localStorage.getItem(localStorage_key) as string)[field]).toBe(true);
+
+        const finalState = JSON.parse(localStorage.getItem(localStorage_key) || '{}');
+        expect(finalState[field]).toBe(true);
 
         jest.useRealTimers();
     });

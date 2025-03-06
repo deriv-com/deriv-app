@@ -542,7 +542,9 @@ export type TClientStore = {
     standpoint: TStandPoint;
     is_p2p_available: boolean;
     prevent_redirect_to_hub: boolean;
+    prevent_single_login: boolean;
     setPreventRedirectToHub: (value: boolean) => void;
+    setPreventSingleLogin: (value: boolean) => void;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;

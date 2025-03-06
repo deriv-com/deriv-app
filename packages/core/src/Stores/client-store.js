@@ -115,6 +115,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
     };
     prevent_redirect_to_hub = false;
+    prevent_single_login = false;
 
     verification_code = {
         signup: '',
@@ -241,6 +242,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             prevent_redirect_to_hub: observable,
+            prevent_single_login: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -949,6 +951,10 @@ export default class ClientStore extends BaseStore {
 
     setPreventRedirectToHub = value => {
         this.prevent_redirect_to_hub = value;
+    };
+
+    setPreventSingleLogin = value => {
+        this.prevent_single_login = value;
     };
 
     getIsMarketTypeMatching = (account, market_type) => {

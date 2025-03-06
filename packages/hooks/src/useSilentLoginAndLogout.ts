@@ -21,7 +21,7 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
-    prevent_single_login: boolean;
+    prevent_single_login?: boolean;
 }) => {
     const loggedState = Cookies.get('logged_state');
 

@@ -54,7 +54,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     const account_currency = url_params.get('account');
-    const client_account_lists = JSON.parse(localStorage.getItem('client.accounts'));
+    const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') ?? '{}');
 
     if (account_currency) {
         let matching_loginid, matching_wallet_loginid;

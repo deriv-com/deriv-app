@@ -16,6 +16,7 @@ const CallbackPage = () => {
 
                 const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
                 if (redirectTo) {
+                    sessionStorage.removeItem('tradershub_redirect_to');
                     window.location.href = redirectTo;
                 } else {
                     window.location.href = routes.traders_hub;

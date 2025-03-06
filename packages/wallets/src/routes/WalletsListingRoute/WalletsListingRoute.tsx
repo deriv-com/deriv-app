@@ -3,6 +3,7 @@ import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@de
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
+    WalletLoader,
     WalletsAddMoreCarousel,
     WalletsCardLoader,
     WalletsDisclaimerBanner,
@@ -27,7 +28,7 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
 
     if (isHubRedirectionEnabled) {
-        return null;
+        return <WalletLoader />;
     }
 
     return (

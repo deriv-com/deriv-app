@@ -59,6 +59,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    authorize_accounts_list = [];
     is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
@@ -1472,6 +1473,7 @@ export default class ClientStore extends BaseStore {
     };
 
     updateAccountList(account_list) {
+        this.authorize_accounts_list = account_list;
         account_list.forEach(account => {
             if (this.accounts[account.loginid]) {
                 this.accounts[account.loginid].excluded_until = account.excluded_until || '';

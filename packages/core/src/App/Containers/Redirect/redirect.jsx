@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
@@ -17,8 +17,10 @@ const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
     const { isOAuth2Enabled } = useOauth2({});
+    const [queryCurrency, setQueryCurrency] = useState('USD');
 
     const {
+        authorize_accounts_list,
         currency,
         has_wallet,
         is_logged_in,
@@ -328,16 +330,23 @@ const Redirect = observer(() => {
         default:
             break;
     }
+
     useEffect(() => {
         const account_currency = url_params.get('account');
-        if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
+        setQueryCurrency(account_currency);
+    }, []);
+
+    useEffect(() => {
+        const account_currency = queryCurrency;
+        if (!redirected_to_route && history.location.pathname !== routes.traders_hub && is_client_store_initialized) {
             const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+            const is_correct_currency = authorize_accounts_list.some(
+                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
+            );
             const currency_exists = Object.values(client_account_lists).some(
                 account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
             );
-
-            if (!currency_exists) {
-                //&& !!Object.keys(client_account_lists).length
+            if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
                 if (isOAuth2Enabled) {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -383,23 +392,23 @@ const Redirect = observer(() => {
             );
 
             let updated_search = url_query_string;
+            const params = new URLSearchParams(url_query_string);
+            params.set('account', queryCurrency);
             if (matched_route && matched_route.type) {
-                updated_search = `${url_query_string}`; //&trade_type=${matched_route.type}
+                updated_search = `${params.toString()}`;
             }
 
             sessionStorage.setItem(
                 'tradershub_redirect_to',
-                matched_route ? `redirect${updated_search}` : default_route
+                matched_route ? `redirect?${updated_search}` : default_route
             );
 
-            if (is_client_store_initialized) {
-                history.push({
-                    pathname: matched_route ? matched_route.route : default_route,
-                    search: updated_search,
-                });
-            }
+            history.push({
+                pathname: matched_route ? matched_route.route : default_route,
+                search: updated_search,
+            });
         }
-    }, [redirected_to_route, url_query_string, history, is_client_store_initialized]);
+    }, [redirected_to_route, url_query_string, history, is_client_store_initialized, authorize_accounts_list]);
 
     return null;
 });

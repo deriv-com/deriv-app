@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Deriv</title>
+        <meta charset="utf-8" />
+        <script>
+            try {
+                // we check if we can access the top.location, if we can't it will throw an error
+                // and this means this front-channel is not rendered on the same window as the application which is logging out
+                let isSameOrigin = top.location.hostname === self.location.hostname;
+            } catch (err) {
+                localStorage.removeItem('closed_toast_notifications');
+                localStorage.removeItem('is_wallet_migration_modal_closed');
+                localStorage.removeItem('active_wallet_loginid');
+                localStorage.removeItem('config.account1');
+                localStorage.removeItem('config.tokens');
+                localStorage.removeItem('client.accounts');
+                localStorage.removeItem('verification_code.system_email_change');
+                localStorage.removeItem('verification_code.request_email');
+                localStorage.removeItem('new_email.system_email_change');
+            }
+        </script>
+    </head>
+
+    <body></body>
+</html>

@@ -32,7 +32,7 @@ const RootComponent = observer(props => {
     const onWalletsOnboardingTourGuideCloseHandler = () => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
-    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/home';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
@@ -56,10 +56,16 @@ const RootComponent = observer(props => {
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
-        if (is_client_store_initialized && shouldStayInDerivApp) {
+        if (isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
             setPreventSingleLogin(false);
         }
-    }, [isHubRedirectionEnabled, has_wallet, prevent_redirect_to_hub, is_client_store_initialized]);
+    }, [
+        isHubRedirectionLoaded,
+        isHubRedirectionEnabled,
+        has_wallet,
+        prevent_redirect_to_hub,
+        is_client_store_initialized,
+    ]);
 
     return has_wallet ? (
         <Wallets

@@ -1,17 +1,22 @@
 import { useEffect } from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore, getDomainName } from '@deriv/shared';
+
+import { useOauth2 } from '@deriv/hooks';
+import { getDomainName, loginUrl, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { WS } from 'Services';
-import { Analytics } from '@deriv-com/analytics';
-import Cookies from 'js-cookie';
 import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+
+import { WS } from 'Services';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
+    const { isOAuth2Enabled } = useOauth2({});
 
     const {
         currency,
@@ -22,6 +27,8 @@ const Redirect = observer(() => {
         setVerificationCode,
         verification_code,
         setPreventRedirectToHub,
+        switchAccount,
+        is_client_store_initialized,
     } = client;
 
     const {
@@ -322,9 +329,21 @@ const Redirect = observer(() => {
             break;
     }
     useEffect(() => {
+        const account_currency = url_params.get('account');
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            const account_currency = url_params.get('account');
-            const client_account_lists = JSON.parse(localStorage.getItem('client.accounts'));
+            const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+            const currency_exists = Object.values(client_account_lists).some(
+                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
+            );
+
+            if (!currency_exists) {
+                //&& !!Object.keys(client_account_lists).length
+                if (isOAuth2Enabled) {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                    });
+                }
+            }
 
             if (account_currency) {
                 let matching_loginid;
@@ -341,7 +360,8 @@ const Redirect = observer(() => {
                     );
                 }
 
-                if (matching_loginid) {
+                if (matching_loginid && is_client_store_initialized) {
+                    switchAccount(matching_loginid);
                     sessionStorage.setItem('active_loginid', matching_loginid);
                 }
             }
@@ -364,15 +384,22 @@ const Redirect = observer(() => {
 
             let updated_search = url_query_string;
             if (matched_route && matched_route.type) {
-                updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
+                updated_search = `${url_query_string}`; //&trade_type=${matched_route.type}
             }
 
-            history.push({
-                pathname: matched_route ? matched_route.route : default_route,
-                search: updated_search,
-            });
+            sessionStorage.setItem(
+                'tradershub_redirect_to',
+                matched_route ? `redirect${updated_search}` : default_route
+            );
+
+            if (is_client_store_initialized) {
+                history.push({
+                    pathname: matched_route ? matched_route.route : default_route,
+                    search: updated_search,
+                });
+            }
         }
-    }, [redirected_to_route, url_query_string, history]);
+    }, [redirected_to_route, url_query_string, history, is_client_store_initialized]);
 
     return null;
 });

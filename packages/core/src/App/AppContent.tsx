@@ -73,7 +73,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         is_client_store_initialized,
         isOAuth2Enabled,
         oAuthLogout,
-        prevent_single_login,
     });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({

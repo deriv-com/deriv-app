@@ -3,10 +3,6 @@ import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useStore } from '@deriv/stores';
-import { useDebounceCallback } from 'usehooks-ts';
-
-const DEFAULT_DEBOUNCE_TIME = 10000;
-
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -33,33 +29,9 @@ const useSilentLoginAndLogout = ({
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
-    // state to manage and ensure OIDC callback functions are invoked once
+    // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const debouncedOidcAuthentication = useDebounceCallback(
-        () => {
-            if (isAuthenticating.current) return;
-            isAuthenticating.current = true;
-            requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-            });
-        },
-        DEFAULT_DEBOUNCE_TIME,
-        {
-            leading: true,
-        }
-    );
-    const debouncedOidcLogout = useDebounceCallback(
-        () => {
-            if (isLoggingOut.current) return;
-            isLoggingOut.current = true;
-            oAuthLogout();
-        },
-        DEFAULT_DEBOUNCE_TIME,
-        {
-            leading: true,
-        }
-    );
     const { prevent_single_login } = client;
 
     useEffect(() => {
@@ -73,12 +45,18 @@ const useSilentLoginAndLogout = ({
 
         if (!isUsingLegacyFlow && loggedState === 'true' && !isClientAccountsPopulated) {
             // Perform silent login
-            debouncedOidcAuthentication();
+            if (isAuthenticating.current) return;
+            isAuthenticating.current = true;
+            requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
         }
 
         if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
             // Perform single logout
-            debouncedOidcLogout();
+            if (isLoggingOut.current) return;
+            isLoggingOut.current = true;
+            oAuthLogout();
         }
     }, [
         loggedState,

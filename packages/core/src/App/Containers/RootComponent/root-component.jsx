@@ -25,7 +25,14 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible,
         notification_messages_ui,
     } = ui;
-    const { has_wallet, logout, prevent_redirect_to_hub, is_client_store_initialized, setPreventSingleLogin } = client;
+    const {
+        has_wallet,
+        logout,
+        prevent_redirect_to_hub,
+        is_client_store_initialized,
+        prevent_single_login,
+        setPreventSingleLogin,
+    } = client;
 
     const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
@@ -56,7 +63,7 @@ const RootComponent = observer(props => {
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
-        if (isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
+        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
             setPreventSingleLogin(false);
         }
     }, [
@@ -64,6 +71,7 @@ const RootComponent = observer(props => {
         isHubRedirectionEnabled,
         has_wallet,
         prevent_redirect_to_hub,
+        prevent_single_login,
         is_client_store_initialized,
     ]);
 

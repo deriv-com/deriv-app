@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { useStore } from '@deriv/stores';
+import { useDebounceCallback } from 'usehooks-ts';
 
 /**
  * Handles silent login and single logout logic for OAuth2.
@@ -30,7 +32,37 @@ const useSilentLoginAndLogout = ({
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
+    const isAuthenticating = useRef(false);
+    const isLoggingOut = useRef(false);
+    const debouncedOidcAuthentication = useDebounceCallback(
+        async () => {
+            if (isAuthenticating.current) return;
+            isAuthenticating.current = true;
+            await requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            });
+        },
+        60000,
+        {
+            leading: true,
+        }
+    );
+
+    const debouncedOidcLogout = useDebounceCallback(
+        () => {
+            if (isLoggingOut.current) return;
+            isLoggingOut.current = true;
+            oAuthLogout();
+        },
+        60000,
+        {
+            leading: true,
+        }
+    );
+    const { client } = useStore();
+
     useEffect(() => {
+        const { prevent_single_login } = client;
         if (prevent_single_login) return;
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
@@ -48,9 +80,7 @@ const useSilentLoginAndLogout = ({
             !isSilentLoginExcluded
         ) {
             // Perform silent login
-            requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-            });
+            debouncedOidcAuthentication();
         }
 
         if (
@@ -59,20 +89,12 @@ const useSilentLoginAndLogout = ({
             is_client_store_initialized &&
             isOAuth2Enabled &&
             isClientAccountsPopulated &&
-            !window.location.pathname.includes('callback')
+            !isSilentLoginExcluded
         ) {
             // Perform single logout
-            oAuthLogout();
+            debouncedOidcLogout();
         }
-    }, [
-        loggedState,
-        isClientAccountsPopulated,
-        is_client_store_initialized,
-        isOAuth2Enabled,
-        oAuthLogout,
-        isSilentLoginExcluded,
-        prevent_single_login,
-    ]);
+    }, [loggedState, isClientAccountsPopulated, is_client_store_initialized, isOAuth2Enabled, isSilentLoginExcluded]);
 };
 
 export default useSilentLoginAndLogout;

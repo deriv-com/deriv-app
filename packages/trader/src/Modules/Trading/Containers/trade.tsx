@@ -96,6 +96,14 @@ const Trade = observer(() => {
     }, [try_synthetic_indices, try_open_markets, category, subcategory]);
 
     React.useEffect(() => {
+        const has_session_storage = !!sessionStorage.getItem('tradershub_redirect_to');
+
+        if (has_session_storage) {
+            sessionStorage.removeItem('tradershub_redirect_to');
+        }
+    }, []);
+
+    React.useEffect(() => {
         const html = document.querySelector('html');
         if (isTabletPortrait && isTabletOs) {
             setShouldShowPortraitLoader(true);

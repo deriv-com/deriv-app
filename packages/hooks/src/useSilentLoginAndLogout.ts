@@ -16,10 +16,12 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized,
     isOAuth2Enabled,
     oAuthLogout,
+    prevent_single_login,
 }: {
     is_client_store_initialized: boolean;
     isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
+    prevent_single_login?: boolean;
 }) => {
     const loggedState = Cookies.get('logged_state');
 
@@ -29,6 +31,7 @@ const useSilentLoginAndLogout = ({
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
     useEffect(() => {
+        if (prevent_single_login) return;
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
@@ -68,6 +71,7 @@ const useSilentLoginAndLogout = ({
         isOAuth2Enabled,
         oAuthLogout,
         isSilentLoginExcluded,
+        prevent_single_login,
     ]);
 };
 

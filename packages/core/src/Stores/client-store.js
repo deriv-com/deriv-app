@@ -59,6 +59,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    authorize_accounts_list = [];
     is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
@@ -115,6 +116,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
     };
     prevent_redirect_to_hub = false;
+    prevent_single_login = false;
 
     verification_code = {
         signup: '',
@@ -241,6 +243,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             prevent_redirect_to_hub: observable,
+            prevent_single_login: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -951,6 +954,10 @@ export default class ClientStore extends BaseStore {
         this.prevent_redirect_to_hub = value;
     };
 
+    setPreventSingleLogin = value => {
+        this.prevent_single_login = value;
+    };
+
     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
@@ -1466,6 +1473,7 @@ export default class ClientStore extends BaseStore {
     };
 
     updateAccountList(account_list) {
+        this.authorize_accounts_list = account_list;
         account_list.forEach(account => {
             if (this.accounts[account.loginid]) {
                 this.accounts[account.loginid].excluded_until = account.excluded_until || '';

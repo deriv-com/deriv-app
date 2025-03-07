@@ -69,6 +69,18 @@
         &--with-button {
             min-height: 13.6rem;
         }
+
+        &-tooltip-info {
+            position: fixed;
+            bottom: 8rem;
+            width: 100%;
+            &-large {
+                height: 38rem;
+            }
+            &-small {
+                height: 30rem;
+            }
+        }
     }
 }
 

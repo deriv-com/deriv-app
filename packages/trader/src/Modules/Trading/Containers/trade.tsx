@@ -67,7 +67,7 @@ const Trade = observer(() => {
         is_dark_mode_on: is_dark_theme,
         notification_messages_ui: NotificationMessages,
     } = ui;
-    const { is_eu } = client;
+    const { is_eu, is_logged_in } = client;
     const { network_status } = common;
     const { isDesktop, isMobile, isTabletPortrait } = useDevice();
 
@@ -94,6 +94,14 @@ const Trade = observer(() => {
         }
         return null;
     }, [try_synthetic_indices, try_open_markets, category, subcategory]);
+
+    React.useEffect(() => {
+        const has_session_storage = !!sessionStorage.getItem('tradershub_redirect_to');
+
+        if (has_session_storage && is_logged_in) {
+            sessionStorage.removeItem('tradershub_redirect_to');
+        }
+    }, []);
 
     React.useEffect(() => {
         const html = document.querySelector('html');

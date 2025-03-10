@@ -1168,7 +1168,7 @@ export default class ClientStore extends BaseStore {
         // eslint-disable-next-line max-len
         const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
 
-        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const client_accounts = JSON.parse(LocalStore.get(storage_key) || '{}');
         const email = this.email || client_accounts[loginid]?.email;
         const residence = this.residence || client_accounts[loginid]?.residence;
 

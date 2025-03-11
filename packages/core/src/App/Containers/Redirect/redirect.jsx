@@ -394,7 +394,8 @@ const Redirect = observer(() => {
             let updated_search = url_query_string;
             const params = new URLSearchParams(url_query_string);
             params.set('account', queryCurrency);
-            if (matched_route && matched_route.type) {
+            params.set('trade_type', matched_route?.type);
+            if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
             }
 

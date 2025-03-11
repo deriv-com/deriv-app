@@ -57,7 +57,9 @@ const RootComponent = observer(props => {
             // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
             localStorage.removeItem('active_loginid');
             localStorage.removeItem('active_user_id');
-            localStorage.removeItem('client.accounts');
+            sessionStorage.removeItem('active_loginid');
+            sessionStorage.removeItem('active_wallet_loginid');
+            localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
             window.location.assign(redirectUrl);
         }

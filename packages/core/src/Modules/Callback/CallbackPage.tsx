@@ -25,11 +25,11 @@ const CallbackPage = () => {
                             if (key.startsWith('cur') && tokens[key] === queryAccount) {
                                 const sequence = key.replace('cur', '');
                                 const isNotCRWallet =
-                                    tokens[`acct${sequence}`].startsWith('CR') &&
-                                    !tokens[`acct${sequence}`].startsWith('CRW');
+                                    tokens[`acct${sequence}`]?.startsWith('CR') &&
+                                    !tokens[`acct${sequence}`]?.startsWith('CRW');
                                 const isNotMFWallet =
-                                    tokens[`acct${sequence}`].startsWith('MF') &&
-                                    !tokens[`acct${sequence}`].startsWith('MFW');
+                                    tokens[`acct${sequence}`]?.startsWith('MF') &&
+                                    !tokens[`acct${sequence}`]?.startsWith('MFW');
                                 if (isNotCRWallet || isNotMFWallet) {
                                     if (!matchingLoginId) matchingLoginId = tokens[`acct${sequence}`];
                                 }
@@ -38,9 +38,9 @@ const CallbackPage = () => {
                     } else {
                         Object.keys(tokens).find(key => {
                             if (key.startsWith('cur') && tokens[key] === queryAccount) {
-                                // get number, e.g. cur1=1, cur2=2
+                                // get currency sequence number, e.g. cur1=1, cur2=2
                                 const sequence = key.replace('cur', '');
-                                const isDemo = tokens[`acct${sequence}`].startsWith('VRTC');
+                                const isDemo = tokens[`acct${sequence}`]?.startsWith('VRTC');
 
                                 if (isDemo) {
                                     matchingLoginId = tokens[`acct${sequence}`];

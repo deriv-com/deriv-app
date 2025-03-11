@@ -29,7 +29,7 @@ const useIsHubRedirectionEnabled = () => {
         clients_country &&
         (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clients_country);
 
-    return { isHubRedirectionEnabled, isChangingToHubAppId, isHubRedirectionLoaded };
+    return { isHubRedirectionEnabled: true, isChangingToHubAppId, isHubRedirectionLoaded: true };
 };
 
 export default useIsHubRedirectionEnabled;

@@ -333,11 +333,13 @@ const Redirect = observer(() => {
 
     useEffect(() => {
         const account_currency = url_params.get('account');
+        console.log('oidc: getting query params', account_currency);
         setQueryCurrency(account_currency);
     }, []);
 
     useEffect(() => {
         const account_currency = queryCurrency;
+        console.log('oidc: redirect useeffect before', redirected_to_route);
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub && is_client_store_initialized) {
             const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
             const is_correct_currency = authorize_accounts_list.some(
@@ -348,6 +350,7 @@ const Redirect = observer(() => {
             );
             if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
                 if (isOAuth2Enabled) {
+                    console.log('oidc: requesint oidc authentication...');
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
                     });
@@ -362,14 +365,16 @@ const Redirect = observer(() => {
                 if (converted_account_currency === 'DEMO') {
                     matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
                 } else {
+                    console.log('oidc: client_account_lists', client_account_lists, converted_account_currency);
                     matching_loginid = Object.keys(client_account_lists).find(
                         loginid =>
                             client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
                             client_account_lists[loginid].account_category === 'trading'
                     );
                 }
-
+                console.log('oidc: did we match', matching_loginid, queryCurrency);
                 if (matching_loginid && is_client_store_initialized) {
+                    console.log('switching account with', matching_loginid, client_account_lists[matching_loginid]);
                     switchAccount(matching_loginid);
                     sessionStorage.setItem('active_loginid', matching_loginid);
                 }
@@ -399,6 +404,10 @@ const Redirect = observer(() => {
                 updated_search = `${params.toString()}`;
             }
 
+            console.log(
+                'oidc: setting session storage to',
+                matched_route ? `/redirect?${updated_search}` : default_route
+            );
             sessionStorage.setItem(
                 'tradershub_redirect_to',
                 matched_route ? `redirect?${updated_search}` : default_route

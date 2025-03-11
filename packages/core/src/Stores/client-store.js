@@ -2032,7 +2032,12 @@ export default class ClientStore extends BaseStore {
                 );
                 return;
             }
-
+            console.log(
+                'before resetting local storage values, active_loginid',
+                window.sessionStorage.getItem('active_loginid'),
+                localStorage.getItem('active_loginid'),
+                this.loginid
+            );
             this.resetLocalStorageValues(window.sessionStorage.getItem('active_loginid') ?? this.loginid);
         }
     }
@@ -2160,6 +2165,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
+        sessionStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2194,6 +2200,11 @@ export default class ClientStore extends BaseStore {
 
     /* eslint-disable */
     storeClientAccounts(obj_params, account_list) {
+        console.log(
+            'storeClientAccounts',
+            sessionStorage.getItem('active_loginid'),
+            localStorage.getItem('active_loginid')
+        );
         // store consistent names with other API calls
         // API_V4: send consistent names
         const map_names = {
@@ -2204,7 +2215,10 @@ export default class ClientStore extends BaseStore {
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
-        let active_loginid;
+
+        console.log('what is stupid in session', sessionStorage.getItem('active_loginid'));
+
+        let active_loginid = sessionStorage.getItem('active_loginid');
         let active_wallet_loginid;
 
         if (selected_account) {
@@ -2214,6 +2228,7 @@ export default class ClientStore extends BaseStore {
             active_loginid = obj_params.selected_acct;
         }
 
+        console.log('after selected_account check', active_loginid, obj_params);
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
@@ -2236,6 +2251,8 @@ export default class ClientStore extends BaseStore {
             });
         });
 
+        console.log('after stupid 1', active_loginid);
+
         let i = 1;
         while (obj_params[`acct${i}`]) {
             const loginid = obj_params[`acct${i}`];
@@ -2245,6 +2262,8 @@ export default class ClientStore extends BaseStore {
             }
             i++;
         }
+
+        console.log('after stupid 2', active_loginid);
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
@@ -2261,6 +2280,7 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
+            console.log('storeClientAccounts after if', active_loginid);
             sessionStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));

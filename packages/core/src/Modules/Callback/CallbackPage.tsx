@@ -16,6 +16,50 @@ const CallbackPage = () => {
 
                 const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
                 if (redirectTo) {
+                    const params = new URLSearchParams(redirectTo);
+                    const queryAccount = params.get('account');
+
+                    let matchingLoginId;
+                    if (queryAccount?.toLowerCase() !== 'demo') {
+                        Object.keys(tokens).find(key => {
+                            if (key.startsWith('cur') && tokens[key] === queryAccount) {
+                                console.log('matched with', key, tokens[key], JSON.stringify(tokens));
+                                // get number, e.g. cur1=1, cur2=2
+                                const sequence = key.replace('cur', '');
+                                const isNotCRWallet =
+                                    tokens[`acct${sequence}`].startsWith('CR') &&
+                                    !tokens[`acct${sequence}`].startsWith('CRW');
+                                const isNotMFWallet =
+                                    tokens[`acct${sequence}`].startsWith('MF') &&
+                                    !tokens[`acct${sequence}`].startsWith('MFW');
+                                // @ts-ignore
+                                if (isNotCRWallet) {
+                                    if (!matchingLoginId) matchingLoginId = tokens[`acct${sequence}`];
+                                }
+                            }
+                        });
+                    } else {
+                        Object.keys(tokens).find(key => {
+                            if (key.startsWith('cur') && tokens[key] === queryAccount) {
+                                // get number, e.g. cur1=1, cur2=2
+                                const sequence = key.replace('cur', '');
+                                const isDemo = tokens[`acct${sequence}`].startsWith('VRTC');
+
+                                // @ts-ignore
+                                if (isDemo) {
+                                    matchingLoginId = tokens[`acct${sequence}`];
+                                }
+                            }
+                        });
+                    }
+
+                    console.log('got matching login id?', matchingLoginId);
+                    if (matchingLoginId) {
+                        sessionStorage.setItem('active_loginid', matchingLoginId);
+                    } else {
+                        sessionStorage.setItem('active_loginid', tokens.acct1);
+                    }
+
                     sessionStorage.removeItem('tradershub_redirect_to');
                     window.location.href = redirectTo;
                 } else {

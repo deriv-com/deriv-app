@@ -47,6 +47,8 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
+            // Do your session storage checks and sets here, etc
+            // ....
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });

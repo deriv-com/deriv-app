@@ -1,45 +1,50 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors
 
-import clsx from 'clsx';
 import React from 'react';
-import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
-import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv/components';
-import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
+import clsx from 'clsx';
+import { Formik, FormikHelpers } from 'formik';
+
+import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
+import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { ACCOUNTS_OS_DFA_URL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useTranslations, Localize } from '@deriv-com/translations';
-import LeaveConfirm from 'Components/leave-confirm';
-import IconMessageContent from 'Components/icon-message-content';
+import type { TCoreStores } from '@deriv/stores/types';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import DemoMessage from 'Components/demo-message';
-import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
-import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
+import FormSubHeader from 'Components/form-sub-header';
+import { EmploymentStatusField } from 'Components/forms/form-fields';
+import IconMessageContent from 'Components/icon-message-content';
+import LeaveConfirm from 'Components/leave-confirm';
+import LoadErrorMessage from 'Components/load-error-message';
+import { getFormattedOccupationList } from 'Configs/financial-details-config';
+import { TFinancialInformationForm } from 'Types';
+
 import {
     getAccountTurnoverList,
-    getEducationLevelList,
-    getEmploymentIndustryList,
-    getEstimatedWorthList,
-    getIncomeSourceList,
-    getNetIncomeList,
-    getSourceOfWealthList,
     getBinaryOptionsTradingExperienceList,
     getBinaryOptionsTradingFrequencyList,
     getCfdTradingExperienceList,
     getCfdTradingFrequencyList,
+    getEducationLevelList,
+    getEmploymentIndustryList,
+    getEstimatedWorthList,
     getForexTradingExperienceList,
     getForexTradingFrequencyList,
+    getIncomeSourceList,
+    getNetIncomeList,
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
+    getSourceOfWealthList,
 } from '../../../Constants/financial-information-list';
-import type { TCoreStores } from '@deriv/stores/types';
-import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
-import { getFormattedOccupationList } from 'Configs/financial-details-config';
-import { TFinancialInformationForm } from 'Types';
-import { EmploymentStatusField } from 'Components/forms/form-fields';
-import { useDevice } from '@deriv-com/ui';
+
 import NavigateToPersonalDetails from './NavigateToPersonalDetails';
 
 type TConfirmationPage = {
@@ -201,6 +206,9 @@ const FinancialAssessment = observer(() => {
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
     const is_mf = landing_company_shortcode === 'maltainvest';
+    const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'redirect_to_poi_in_accounts_os',
+    });
 
     const history = useHistory();
     const { localize } = useTranslations();
@@ -356,7 +364,8 @@ const FinancialAssessment = observer(() => {
         return '8rem';
     };
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (is_loading || !isRedirectToAccountsOSAppFFLoaded)
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
     if (isMobile && is_authentication_needed && !is_mf && is_submit_success)
@@ -403,6 +412,32 @@ const FinancialAssessment = observer(() => {
         !account_settings.tax_identification_number
     ) {
         return <NavigateToPersonalDetails />;
+    }
+
+    const getFormattedURL = url_link => {
+        const url = new URL(url_link);
+        const urlParams = new URLSearchParams(location.search);
+        const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+
+        const params = {
+            platform,
+            appid: getAppId(),
+            lang: 'en',
+            server: getSocketURL(),
+            token: getToken(),
+        };
+
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.append(key, value);
+        });
+
+        return url.toString();
+    };
+
+    if (isRedirectToAccountsOSAppFFLoaded) {
+        if (shouldRedirectToAccountsOSApp) {
+            window.location.replace(getFormattedURL(ACCOUNTS_OS_DFA_URL));
+        }
     }
 
     return (

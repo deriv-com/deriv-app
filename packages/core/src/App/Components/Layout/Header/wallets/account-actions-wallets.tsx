@@ -28,7 +28,7 @@ const AccountActionsWallets = observer(() => {
     const history = useHistory();
 
     const handleManageFundsRedirect = () => {
-        sessionStorage.setItem('redirect_to', 'wallet');
+        sessionStorage.setItem('redirect_to_th_os', 'wallet');
         history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
     };
 

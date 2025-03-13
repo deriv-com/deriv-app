@@ -62,14 +62,19 @@ const RootComponent = observer(props => {
             localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
 
-            const redirect_to_lowcode = sessionStorage.getItem('redirect_to');
+            const redirect_to_lowcode = sessionStorage.getItem('redirect_to_th_os');
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const accountCurrency = url_params.get('account');
 
             switch (redirect_to_lowcode) {
                 case 'wallet':
-                    window.location.assign(`${redirectUrl}/wallets/recent-transactions`);
+                    sessionStorage.removeItem('redirect_to_th_os');
+                    window.location.assign(`${redirectUrl}/wallets/recent-transactions?account=${accountCurrency}`);
                     break;
                 default:
-                    window.location.assign(`${redirectUrl}/home`);
+                    sessionStorage.removeItem('redirect_to_th_os');
+                    window.location.assign(`${redirectUrl}/home?account=${accountCurrency}`);
                     break;
             }
         }

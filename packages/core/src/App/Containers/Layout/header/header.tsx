@@ -77,16 +77,6 @@ const Header = observer(() => {
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
 
-    const loggedState = Cookies.get('logged_state');
-    const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
-
-    const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
-    const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
-    if (isOAuth2Enabled && (!is_client_store_initialized || willEventuallySSO || willEventuallySLO)) {
-        return <HeaderFallback />;
-    }
-
     if (is_logged_in) {
         let result;
         switch (true) {

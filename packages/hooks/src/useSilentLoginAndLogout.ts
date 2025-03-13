@@ -33,7 +33,17 @@ const useSilentLoginAndLogout = ({
     // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const { prevent_single_login } = client;
+    const { prevent_single_login, setIsSingleLoggingIn } = client;
+
+    useEffect(() => {
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
+        if (willEventuallySSO || willEventuallySLO) {
+            setIsSingleLoggingIn(true);
+        } else {
+            setIsSingleLoggingIn(false);
+        }
+    }, [isClientAccountsPopulated, loggedState]);
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useStore } from '@deriv/stores';
+import { useHistory, useLocation } from 'react-router';
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -32,7 +33,7 @@ const useSilentLoginAndLogout = ({
     // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const { prevent_single_login } = client;
+    const { prevent_single_login, setIsLoggingIn } = client;
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
@@ -47,6 +48,7 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
+            setIsLoggingIn(true);
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
@@ -56,6 +58,7 @@ const useSilentLoginAndLogout = ({
             // Perform single logout
             if (isLoggingOut.current) return;
             isLoggingOut.current = true;
+            setIsLoggingIn(true);
             oAuthLogout();
         }
     }, [

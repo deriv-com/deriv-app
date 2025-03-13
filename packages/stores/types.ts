@@ -541,6 +541,7 @@ export type TClientStore = {
     }) => DetailsOfEachMT5Loginid[];
     standpoint: TStandPoint;
     is_p2p_available: boolean;
+    is_single_logging_in: boolean;
     prevent_redirect_to_hub: boolean;
     prevent_single_login: boolean;
     setPreventRedirectToHub: (value: boolean) => void;
@@ -550,6 +551,7 @@ export type TClientStore = {
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
     setIsClientStoreInitialized: () => void;
+    setIsSingleLoggingIn: (value: boolean) => void;
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;

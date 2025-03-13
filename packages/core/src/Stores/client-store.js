@@ -87,6 +87,7 @@ export default class ClientStore extends BaseStore {
     has_logged_out = false;
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
+    is_single_logging_in = false;
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
@@ -212,6 +213,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_single_logging_in: observable,
             is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -365,6 +367,7 @@ export default class ClientStore extends BaseStore {
             setUrlParams: action.bound,
             setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
+            setIsSingleLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
             switchAccountHandler: action.bound,
@@ -957,6 +960,10 @@ export default class ClientStore extends BaseStore {
     setPreventSingleLogin = value => {
         this.prevent_single_login = value;
     };
+
+    setIsSingleLoggingIn(value) {
+        this.is_single_logging_in = value;
+    }
 
     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {

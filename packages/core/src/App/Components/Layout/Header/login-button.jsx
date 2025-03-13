@@ -6,9 +6,19 @@ import { useOauth2 } from '@deriv/hooks';
 import { redirectToLogin } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { observer, useStore } from '@deriv/stores';
 
-const LoginButton = ({ className }) => {
+import './login-button.scss';
+
+const LoginButton = observer(({ className }) => {
     const { isOAuth2Enabled } = useOauth2({});
+    const { client } = useStore();
+    const { is_client_store_initialized, is_single_logging_in } = client;
+
+    if (isOAuth2Enabled && (!is_client_store_initialized || is_single_logging_in)) {
+        return <div className='skeleton-loader' />;
+    }
+
     return (
         <Button
             id='dt_login_button'
@@ -27,7 +37,7 @@ const LoginButton = ({ className }) => {
             tertiary
         />
     );
-};
+});
 
 LoginButton.propTypes = {
     className: PropTypes.string,

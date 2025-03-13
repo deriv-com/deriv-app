@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { useStores } from 'Stores';
 import Chat from '../chat';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 const mock_store: ReturnType<typeof useStores> = {
     order_store: {
@@ -18,8 +19,16 @@ jest.mock('Stores', () => ({
 }));
 
 describe('<Chat />', () => {
+    const mockStoreData = mockStore({
+        client: { prevent_single_login: false },
+    });
+
     it('should remove order id and active order during unmount', () => {
-        const { unmount } = render(<Chat />);
+        const { unmount } = render(
+            <StoreProvider store={mockStoreData}>
+                <Chat />
+            </StoreProvider>
+        );
         unmount();
         expect(mock_store.order_store.onPageReturn).toHaveBeenCalled();
     });

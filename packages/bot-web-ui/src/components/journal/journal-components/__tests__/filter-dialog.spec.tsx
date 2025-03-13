@@ -13,7 +13,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     unHighlightAllBlocks: jest.fn(),
 }));
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
+jest.mock('@jimdanielswasswa/test-chart', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 
@@ -61,9 +61,9 @@ describe('FilterDialog', () => {
         expect(filterMessageElement).toBeInTheDocument();
     });
 
-    test('should call toggleFilterDialog when clicking outside the dialog', () => {
+    test('should call toggleFilterDialog when clicking outside the dialog', async () => {
         const { container } = render(<FilterDialog {...mockProps} />, { wrapper });
-        userEvent.click(container);
+        await userEvent.click(container);
         expect(mockProps.toggleFilterDialog).toHaveBeenCalled();
     });
 });

@@ -18,6 +18,14 @@ const ChartSettingContainer = Loadable({
     loading: () => <UILoader />,
 });
 
+const ThemeSettingContainer = Loadable({
+    loader: () =>
+        import(
+            /* webpackChunkName: "settings-theme", webpackPrefetch: true */ 'App/Containers/SettingsModal/settings-theme'
+        ),
+    loading: () => <UILoader />,
+});
+
 const renderItemValue = <T extends object>(props: T, store: TCoreStores) => (
     <TraderProviders store={store}>
         <ChartSettingContainer {...props} />
@@ -33,6 +41,15 @@ const TradeSettingsExtensions = observer(({ store }: TTradeSettingsExtensionsPro
                 icon: 'IcChart',
                 label: localize('Charts'),
                 value: props => renderItemValue(props, store),
+            },
+            {
+                icon: 'IcTheme',
+                label: localize('Theme'),
+                value: props => (
+                    <TraderProviders store={store}>
+                        <ThemeSettingContainer {...props} />
+                    </TraderProviders>
+                ),
             },
         ];
         populateSettingsExtensions(menu_items);

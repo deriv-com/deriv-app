@@ -28,30 +28,8 @@ export const getIncomeSourceList = () => [
 ];
 
 export const getEmploymentStatusList = (version?: string) =>
-    version === 'v2'
+    version === 'v1'
         ? [
-              {
-                  text: localize('Employed full-time'),
-                  value: 'Employed full-time',
-              },
-              {
-                  text: localize('Employed part-time'),
-                  value: 'Employed part-time',
-              },
-              {
-                  text: localize('Pensioner'),
-                  value: 'Pensioner',
-              },
-              {
-                  text: localize('Self-employed'),
-                  value: 'Self-employed',
-              },
-              {
-                  text: localize('Unemployed'),
-                  value: 'Unemployed',
-              },
-          ]
-        : [
               {
                   text: localize('Employed'),
                   value: 'Employed',
@@ -67,6 +45,28 @@ export const getEmploymentStatusList = (version?: string) =>
               {
                   text: localize('Student'),
                   value: 'Student',
+              },
+              {
+                  text: localize('Unemployed'),
+                  value: 'Unemployed',
+              },
+          ]
+        : [
+              {
+                  text: localize('Employed full-time'),
+                  value: 'Employed full-time',
+              },
+              {
+                  text: localize('Employed part-time'),
+                  value: 'Employed part-time',
+              },
+              {
+                  text: localize('Pensioner'),
+                  value: 'Pensioner',
+              },
+              {
+                  text: localize('Self-employed'),
+                  value: 'Self-employed',
               },
               {
                   text: localize('Unemployed'),

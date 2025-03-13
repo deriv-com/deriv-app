@@ -136,5 +136,5 @@ export const ACCOUNTS_OS_POA_URL =
 
 export const ACCOUNTS_OS_DFA_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/Accounts/DynamicFA'
-        : 'https://staging-hub.deriv.com/Accounts/DynamicFA';
+        ? 'https://hub.deriv.com/Accounts/Financial-Assessment'
+        : 'https://staging-hub.deriv.com/Accounts/Financial-Assessment';

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader } from '@deriv/shared';
+import { isSafariBrowser, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -45,27 +45,32 @@ const RootComponent = observer(props => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
 
     useEffect(() => {
-        setPreventSingleLogin(true);
+        if (isSafariBrowser()) setPreventSingleLogin(true);
     }, []);
 
     useEffect(() => {
         if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub && is_client_store_initialized) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
-            localStorage.removeItem('config.account1');
-            localStorage.removeItem('config.tokens');
-            // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
-            localStorage.removeItem('active_loginid');
-            localStorage.removeItem('active_user_id');
-            sessionStorage.removeItem('active_loginid');
-            sessionStorage.removeItem('active_wallet_loginid');
-            localStorage.setItem('client.accounts', '{}');
-            localStorage.removeItem('active_wallet_loginid');
+            if (isSafariBrowser()) {
+                // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
+                localStorage.removeItem('config.account1');
+                localStorage.removeItem('config.tokens');
+                // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
+                localStorage.removeItem('active_loginid');
+                localStorage.removeItem('active_user_id');
+                sessionStorage.removeItem('active_loginid');
+                sessionStorage.removeItem('active_wallet_loginid');
+                localStorage.setItem('client.accounts', '{}');
+                localStorage.removeItem('active_wallet_loginid');
+            }
             window.location.assign(redirectUrl);
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
-        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
+        if (
+            !isSafariBrowser() ||
+            (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp)
+        ) {
             setPreventSingleLogin(false);
         }
     }, [

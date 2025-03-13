@@ -120,6 +120,11 @@ const copyConfig = base => {
             to: 'front-channel.html',
             toType: 'file',
         },
+        {
+            from: path.resolve(__dirname, '../src/root_files/silent-callback.html'),
+            to: 'silent-callback.html',
+            toType: 'file',
+        },
         { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
         { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
         {

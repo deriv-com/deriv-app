@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Deriv</title>
+        <meta charset="utf-8" />
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const oneTimeCode = params.get('code');
+            const errorType = params.get('error');
+
+            if (errorType === 'login_required') {
+                window.parent.postMessage({
+                    event: errorType,
+                });
+            } else if (errorType === 'consent_required' || oneTimeCode) {
+                window.parent.postMessage({
+                    event: 'login_successful',
+                });
+            }
+        </script>
+    </head>
+
+    <body></body>
+</html>

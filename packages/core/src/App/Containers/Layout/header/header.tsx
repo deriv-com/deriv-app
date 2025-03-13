@@ -5,8 +5,6 @@ import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
-import Cookies from 'js-cookie';
-import { useOauth2 } from '@deriv/hooks';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -45,11 +43,9 @@ const TradersHubHeaderWallets = makeLazyLoader(
 
 const Header = observer(() => {
     const { client, common } = useStore();
-    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount, is_client_store_initialized } =
-        client;
+    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
-    const { isOAuth2Enabled } = useOauth2({ handleLogout: () => Promise.resolve() });
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -76,7 +72,6 @@ const Header = observer(() => {
             }
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
-
     if (is_logged_in) {
         let result;
         switch (true) {

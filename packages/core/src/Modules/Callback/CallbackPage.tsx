@@ -13,6 +13,7 @@ const CallbackPage = () => {
                 localStorage.setItem('config.tokens', JSON.stringify(tokens));
                 localStorage.setItem('config.account1', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
+                sessionStorage.setItem('active_loginid', tokens.acct1);
 
                 const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
                 if (redirectTo) {
@@ -48,11 +49,9 @@ const CallbackPage = () => {
                             }
                         });
                     }
-
                     if (matchingLoginId) {
                         sessionStorage.setItem('active_loginid', matchingLoginId);
-                    } else {
-                        sessionStorage.setItem('active_loginid', tokens.acct1);
+                        localStorage.setItem('active_loginid', matchingLoginId);
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');

@@ -9,8 +9,8 @@
         "@deriv/deriv-api": "^1.0.15",
         "@deriv/shared": "^1.0.0",
         "@deriv/utils": "^1.0.0",
-        "@tanstack/react-query": "4.28.0",
-        "@tanstack/react-query-devtools": "4.28.0",
+        "@tanstack/react-query": "^4.28.0",
+        "@tanstack/react-query-devtools": "^4.28.0",
         "md5": "^2.2.1",
         "react": "^17.0.2",
         "uuid": "^9.0.1"

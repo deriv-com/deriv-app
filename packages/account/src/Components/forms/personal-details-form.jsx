@@ -2,17 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
+
 import { Autocomplete, Checkbox, InlineMessage, RadioGroup, SelectNative, Text } from '@deriv/components';
+import { useGetPhoneNumberList, useGrowthbookGetFeatureValue, useResidenceList } from '@deriv/hooks';
 import { routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import FormBodySection from '../form-body-section';
-import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { useResidenceList } from '@deriv/hooks';
-import { useDevice } from '@deriv-com/ui';
+
 import AccountOpeningReasonField from './form-fields/account-opening-reason';
+import { DateOfBirthField, FormInputField } from './form-fields';
 
 const PersonalDetailsForm = props => {
     const { isDesktop } = useDevice();
@@ -40,9 +43,15 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
+
     const { errors, touched, values, setFieldValue, handleChange, handleBlur } = useFormikContext();
 
     const { data: residence_list } = useResidenceList();
+
+    const { legacy_core_countries_list } = useGetPhoneNumberList();
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_rendered_for_idv;
@@ -381,6 +390,10 @@ const PersonalDetailsForm = props => {
                         )}
                         {!is_svg_only && 'phone' in values && (
                             <PhoneField
+                                is_country_code_dropdown_enabled={isCountryCodeLoaded && isCountryCodeDropdownEnabled}
+                                handleChange={handleChange}
+                                setFieldValue={setFieldValue}
+                                country_code_list={legacy_core_countries_list}
                                 value={values.phone}
                                 editable_fields={editable_fields}
                                 has_real_account={has_real_account}
@@ -421,6 +434,10 @@ const PersonalDetailsForm = props => {
                     <FormSubHeader title={localize('Additional information')} />
                     {'phone' in values && (
                         <PhoneField
+                            is_country_code_dropdown_enabled={isCountryCodeLoaded && isCountryCodeDropdownEnabled}
+                            handleChange={handleChange}
+                            setFieldValue={setFieldValue}
+                            country_code_list={legacy_core_countries_list}
                             value={values.phone}
                             editable_fields={editable_fields}
                             has_real_account={has_real_account}
@@ -458,19 +475,100 @@ const PersonalDetailsForm = props => {
 
 export default PersonalDetailsForm;
 
-const PhoneField = ({ value, editable_fields, has_real_account, required }) => (
-    <FormInputField
-        name='phone'
-        label={required ? localize('Phone number*') : localize('Phone number')}
-        placeholder={required ? localize('Phone number*') : localize('Phone number')}
-        disabled={
-            isFieldImmutable('phone', editable_fields) ||
-            (value && has_real_account && validPhone(value) && value?.length >= 9 && value?.length <= 35)
-        }
-        maxLength={50}
-        data-testid='phone'
-    />
+const PhoneField = ({
+    handleChange,
+    setFieldValue,
+    country_code_list,
+    value,
+    editable_fields,
+    has_real_account,
+    required,
+    is_country_code_dropdown_enabled,
+}) => (
+    <React.Fragment>
+        <div className='account-form__phone-container'>
+            {is_country_code_dropdown_enabled && (
+                <CountryCodeDropdown
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                    disabled={
+                        isFieldImmutable('phone', editable_fields) ||
+                        (value && has_real_account && validPhone(value) && value?.length >= 9 && value?.length <= 35)
+                    }
+                    country_code_list={country_code_list}
+                    required
+                />
+            )}
+            <FormInputField
+                className='account-form__phone-container--input'
+                name='phone'
+                label={required ? localize('Phone number*') : localize('Phone number')}
+                placeholder={required ? localize('Phone number*') : localize('Phone number')}
+                disabled={
+                    isFieldImmutable('phone', editable_fields) ||
+                    (value && has_real_account && validPhone(value) && value?.length >= 9 && value?.length <= 35)
+                }
+                {...(is_country_code_dropdown_enabled && {
+                    onChange: e => {
+                        const phone_number = e.target.value.replace(/\D/g, '');
+                        setFieldValue('phone', phone_number, true);
+                    },
+                })}
+                maxLength={50}
+                data-testid='phone'
+            />
+        </div>
+    </React.Fragment>
 );
+
+const CountryCodeDropdown = ({ handleChange, setFieldValue, disabled, country_code_list, required }) => {
+    const { isDesktop } = useDevice();
+    return (
+        <Field name='calling_country_code'>
+            {({ field, meta }) => (
+                <React.Fragment>
+                    {isDesktop ? (
+                        <Autocomplete
+                            {...field}
+                            disabled={disabled}
+                            data-lpignore='true'
+                            autoComplete='new-password' // prevent chrome autocomplete
+                            label={required ? localize('Code*') : localize('Code')}
+                            error={meta.touched && meta.error}
+                            list_items={country_code_list}
+                            onItemSelection={country_list => {
+                                setFieldValue('calling_country_code', country_list.value, true);
+                            }}
+                            required
+                            data-testid='calling_country_code'
+                        />
+                    ) : (
+                        <SelectNative
+                            placeholder={required ? localize('Code*') : localize('Code')}
+                            name={field.name}
+                            disabled={disabled}
+                            label={required ? localize('Code*') : localize('Code')}
+                            list_items={country_code_list}
+                            value={field.value}
+                            use_text
+                            error={meta.touched && meta.error}
+                            onChange={e => {
+                                handleChange(e);
+                                setFieldValue('calling_country_code', e.target.value, true);
+                            }}
+                            {...field}
+                            list_portal_id='modal_root'
+                            required
+                            is_country_code_dropdown
+                            should_hide_disabled_options={false}
+                            data_testid='calling_country_code_mobile'
+                        />
+                    )}
+                </React.Fragment>
+            )}
+        </Field>
+    );
+};
 
 const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_list, required }) => {
     const { isDesktop } = useDevice();

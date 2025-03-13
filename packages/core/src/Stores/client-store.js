@@ -59,6 +59,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    authorize_accounts_list = [];
     is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
@@ -115,6 +116,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
     };
     prevent_redirect_to_hub = false;
+    prevent_single_login = false;
 
     verification_code = {
         signup: '',
@@ -241,6 +243,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             prevent_redirect_to_hub: observable,
+            prevent_single_login: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -359,6 +362,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setUrlParams: action.bound,
             setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
@@ -950,6 +954,10 @@ export default class ClientStore extends BaseStore {
         this.prevent_redirect_to_hub = value;
     };
 
+    setPreventSingleLogin = value => {
+        this.prevent_single_login = value;
+    };
+
     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
@@ -1065,9 +1073,20 @@ export default class ClientStore extends BaseStore {
     resetLocalStorageValues(loginid) {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
-        LocalStore.set('active_loginid', loginid);
+        sessionStorage.setItem('active_loginid', loginid);
+        this.setUrlParams();
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+    }
+
+    setUrlParams() {
+        const url = new URL(window.location.href);
+        const loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
+        const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
+        if (account_param) {
+            url.searchParams.set('account', account_param);
+            window.history.replaceState({}, '', url.toString());
+        }
     }
 
     setIsAuthorize(value) {
@@ -1149,7 +1168,7 @@ export default class ClientStore extends BaseStore {
         // eslint-disable-next-line max-len
         const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
 
-        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const client_accounts = JSON.parse(LocalStore.get(storage_key) || '{}');
         const email = this.email || client_accounts[loginid]?.email;
         const residence = this.residence || client_accounts[loginid]?.residence;
 
@@ -1454,6 +1473,7 @@ export default class ClientStore extends BaseStore {
     };
 
     updateAccountList(account_list) {
+        this.authorize_accounts_list = account_list;
         account_list.forEach(account => {
             if (this.accounts[account.loginid]) {
                 this.accounts[account.loginid].excluded_until = account.excluded_until || '';
@@ -1576,7 +1596,7 @@ export default class ClientStore extends BaseStore {
 
         if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
             this.setLoginId(loginid_param);
-        else this.setLoginId(LocalStore.get('active_loginid'));
+        else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
@@ -2005,11 +2025,15 @@ export default class ClientStore extends BaseStore {
 
             //temporary workaround to sync this.loginid with selected wallet loginid
             if (window.location.pathname.includes(routes.wallets)) {
-                this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
+                this.resetLocalStorageValues(
+                    window.sessionStorage.getItem('active_loginid') ??
+                        localStorage.getItem('active_loginid') ??
+                        this.loginid
+                );
                 return;
             }
 
-            this.resetLocalStorageValues(this.loginid);
+            this.resetLocalStorageValues(window.sessionStorage.getItem('active_loginid') ?? this.loginid);
         }
     }
 
@@ -2136,6 +2160,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
+        sessionStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2180,7 +2205,7 @@ export default class ClientStore extends BaseStore {
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
-        let active_loginid;
+        let active_loginid = sessionStorage.getItem('active_loginid');
         let active_wallet_loginid;
 
         if (selected_account) {
@@ -2224,7 +2249,7 @@ export default class ClientStore extends BaseStore {
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
-        if (!active_loginid || !client_object[active_loginid].token) {
+        if (!active_loginid || !client_object[active_loginid]?.token) {
             active_loginid = obj_params.acct1;
         }
 
@@ -2232,11 +2257,12 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+                sessionStorage.setItem('active_wallet_loginid', active_wallet_loginid);
                 if (verification_code) {
                     localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
-
+            sessionStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);

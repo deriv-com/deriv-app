@@ -19,14 +19,14 @@ const CFDServerMaintenanceModal = observer(() => {
             has_close_icon
             width={isDesktop() ? '440px' : '328px'}
         >
-            <Modal.Body>
+            <Modal.Body className='dc-modal__container_cfd-password-modal__body'>
                 <Localize
                     i18n_default_text='We’re currently performing server maintenance. Service may be affected.'
                     components={[<strong key={0} />]}
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => setServerMaintenanceModal(false)} secondary medium>
+                <Button onClick={() => setServerMaintenanceModal(false)} secondary large>
                     <Localize i18n_default_text='OK' />
                 </Button>
             </Modal.Footer>

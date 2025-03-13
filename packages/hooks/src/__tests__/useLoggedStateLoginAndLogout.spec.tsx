@@ -1,7 +1,9 @@
+import React from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { renderHook } from '@testing-library/react-hooks';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 import useLoggedStateLoginAndLogout from '../useLoggedStateLoginAndLogout';
 
@@ -19,6 +21,12 @@ jest.mock('@deriv/shared', () => ({
 
 describe('useLoggedStateLoginAndLogout', () => {
     const mockOAuthLogout = jest.fn();
+    const mockStoreData = mockStore({
+        client: { prevent_single_login: false },
+    });
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mockStoreData}>{children}</StoreProvider>
+    );
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -46,12 +54,16 @@ describe('useLoggedStateLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
-        renderHook(() =>
-            useLoggedStateLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useLoggedStateLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            {
+                wrapper,
+            }
         );
 
         expect(requestOidcAuthentication).toHaveBeenCalledWith({
@@ -65,12 +77,16 @@ describe('useLoggedStateLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
-        renderHook(() =>
-            useLoggedStateLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useLoggedStateLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            {
+                wrapper,
+            }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -87,12 +103,16 @@ describe('useLoggedStateLoginAndLogout', () => {
             value: { pathname: '/callback' },
         });
 
-        renderHook(() =>
-            useLoggedStateLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useLoggedStateLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            {
+                wrapper,
+            }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -104,12 +124,14 @@ describe('useLoggedStateLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
-        renderHook(() =>
-            useLoggedStateLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useLoggedStateLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -121,12 +143,14 @@ describe('useLoggedStateLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
-        renderHook(() =>
-            useLoggedStateLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useLoggedStateLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();

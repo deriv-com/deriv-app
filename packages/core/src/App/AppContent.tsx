@@ -51,6 +51,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         setIsPhoneNumberVerificationEnabled,
         setIsCountryCodeDropdownEnabled,
         accounts,
+        prevent_single_login,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;

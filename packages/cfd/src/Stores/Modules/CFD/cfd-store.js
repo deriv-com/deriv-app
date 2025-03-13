@@ -293,6 +293,10 @@ export default class CFDStore extends BaseStore {
                     trading_platform_available_accounts_list_response
                 );
                 this.setCFDSuccessDialog(true);
+                window.sessionStorage.setItem(
+                    'cfd_transfer_to_login_id',
+                    response.trading_platform_new_account.account_id
+                );
                 this.setIsAccountBeingCreated(false);
                 WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER);
                 setPerformanceValue('create_ctrader_account_time');
@@ -591,6 +595,7 @@ export default class CFDStore extends BaseStore {
                 actions?.setSubmitting(false);
                 this.setError(false);
                 this.setIsMt5PasswordChangedModalVisible(false);
+                window.sessionStorage.setItem('cfd_transfer_to_login_id', response.mt5_new_account.login);
                 this.setCFDSuccessDialog(true);
                 await this.getAccountStatus(CFD_PLATFORMS.MT5);
 
@@ -650,6 +655,7 @@ export default class CFDStore extends BaseStore {
         actions.setSubmitting(false);
         this.setError(false);
         this.setCFDSuccessDialog(true);
+        window.sessionStorage.setItem('cfd_transfer_to_login_id', response.trading_platform_new_account.account_id);
         await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
 
         const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);

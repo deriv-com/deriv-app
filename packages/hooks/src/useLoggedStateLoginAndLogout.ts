@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
-import { isSafariBrowser } from '@deriv/shared';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { useStore } from '@deriv/stores';
+import { isSafariBrowser } from '@deriv/shared';
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -12,7 +13,7 @@ import { requestOidcAuthentication } from '@deriv-com/auth-client';
  *   oAuthLogout: () => Promise<void>; // Function to handle OAuth2 logout
  * }} params - The arguments required for silent login and logout management
  */
-const useLoggedStateLoginAndLogout = ({
+const useSilentLoginAndLogout = ({
     is_client_store_initialized,
     isOAuth2Enabled,
     oAuthLogout,
@@ -23,15 +24,27 @@ const useLoggedStateLoginAndLogout = ({
 }) => {
     const loggedState = Cookies.get('logged_state');
 
+    const { client } = useStore();
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
     const isSilentLoginExcluded = ['callback', 'silent-callback', 'front-channel', 'endpoint'].some(path =>
         window.location.pathname.includes(path)
     );
 
-    useEffect(() => {
-        if (!isSafariBrowser()) return;
+    // state to manage and ensure OIDC callback functions are invoked once only
+    const isAuthenticating = useRef(false);
+    const isLoggingOut = useRef(false);
+    const { prevent_single_login } = client;
 
+    useEffect(() => {
+        if (
+            !isSafariBrowser() ||
+            prevent_single_login ||
+            !isOAuth2Enabled ||
+            !is_client_store_initialized ||
+            isSilentLoginExcluded
+        )
+            return;
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
@@ -39,29 +52,19 @@ const useLoggedStateLoginAndLogout = ({
             return;
         }
 
-        if (
-            !isUsingLegacyFlow &&
-            loggedState === 'true' &&
-            !isClientAccountsPopulated &&
-            isOAuth2Enabled &&
-            is_client_store_initialized &&
-            !isSilentLoginExcluded
-        ) {
+        if (!isUsingLegacyFlow && loggedState === 'true' && !isClientAccountsPopulated) {
             // Perform silent login
+            if (isAuthenticating.current) return;
+            isAuthenticating.current = true;
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
         }
 
-        if (
-            !isUsingLegacyFlow &&
-            loggedState === 'false' &&
-            is_client_store_initialized &&
-            isOAuth2Enabled &&
-            isClientAccountsPopulated &&
-            !window.location.pathname.includes('callback')
-        ) {
+        if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
             // Perform single logout
+            if (isLoggingOut.current) return;
+            isLoggingOut.current = true;
             oAuthLogout();
         }
     }, [
@@ -69,9 +72,9 @@ const useLoggedStateLoginAndLogout = ({
         isClientAccountsPopulated,
         is_client_store_initialized,
         isOAuth2Enabled,
-        oAuthLogout,
         isSilentLoginExcluded,
+        prevent_single_login,
     ]);
 };
 
-export default useLoggedStateLoginAndLogout;
+export default useSilentLoginAndLogout;

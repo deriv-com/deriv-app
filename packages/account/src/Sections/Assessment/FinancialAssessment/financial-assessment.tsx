@@ -207,7 +207,7 @@ const FinancialAssessment = observer(() => {
     const { refreshNotifications } = notifications;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'redirect_to_poi_in_accounts_os',
+        featureFlag: 'redirect_to_fa_in_account_os',
     });
 
     const history = useHistory();

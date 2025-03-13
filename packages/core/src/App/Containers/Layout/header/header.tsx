@@ -49,7 +49,7 @@ const Header = observer(() => {
         client;
     const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
-    const { isOauth2Enabled } = useOauth2({ handleLogout: () => Promise.resolve() });
+    const { isOAuth2Enabled } = useOauth2({ handleLogout: () => Promise.resolve() });
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -83,7 +83,7 @@ const Header = observer(() => {
 
     const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
     const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
-    if (isOauth2Enabled && (!is_client_store_initialized || willEventuallySSO || willEventuallySLO)) {
+    if (isOAuth2Enabled && (!is_client_store_initialized || willEventuallySSO || willEventuallySLO)) {
         return <HeaderFallback />;
     }
 

@@ -18,7 +18,7 @@ jest.mock('../chart-modal-desktop', () => ({
     default: () => <div>Desktop Chart Modal</div>,
 }));
 
-jest.mock('@deriv/deriv-charts', () => ({
+jest.mock('@jimdanielswasswa/test-chart', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 

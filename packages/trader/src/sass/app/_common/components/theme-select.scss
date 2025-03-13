@@ -8,50 +8,6 @@
         margin-bottom: 16px;
         color: var(--text-prominent);
     }
-    &__content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        width: 100%;
-    }
-    &__option {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 234px;
-        height: 207px;
-
-        &__title {
-            margin-top: 9px;
-            font-size: 14px;
-            line-height: 1.43;
-            color: var(--text-general);
-
-            &--selected {
-                font-weight: bold;
-                color: var(--text-prominent);
-            }
-        }
-        &__icon {
-            width: 234px;
-            height: 178px;
-            cursor: pointer;
-            border-radius: 4px;
-            border: 1px solid var(--border-normal);
-
-            &:hover:not(&--active) {
-                border-color: var(--border-hover);
-            }
-            &--active {
-                border-color: var(--border-active);
-            }
-            &--disabled {
-                opacity: 0.16 !important; // TODO: [disable-dark-bot] Delete this when Bot is ready
-                cursor: not-allowed !important;
-            }
-        }
-    }
 
     // Theme variants section
     &__variants {
@@ -67,17 +23,24 @@
         align-items: center;
         padding: 12px 16px;
         border-radius: 4px;
-        border: 1px solid var(--border-normal);
+        border: 2px solid var(--border-normal);
         cursor: pointer;
-        transition: border-color 0.3s;
+        transition: all 0.3s;
         min-width: 150px;
+        position: relative;
 
         &:hover:not(&--active) {
             border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         &--active {
             border-color: var(--border-active);
+            border-width: 3px;
+            background-color: rgba(var(--border-active-rgb), 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
     }
 
@@ -89,11 +52,11 @@
 
         &--default {
             background: linear-gradient(135deg, #181c25 0%, #181c25 100%);
+            border: 1px solid var(--border-normal);
         }
 
         &--deriv {
             background: linear-gradient(135deg, #de0040 0%, #de0040 100%);
-            border: 1px solid var(--border-normal);
         }
 
         &--champion {

@@ -41,8 +41,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/home';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
         setPreventSingleLogin(true);
@@ -61,7 +61,17 @@ const RootComponent = observer(props => {
             sessionStorage.removeItem('active_wallet_loginid');
             localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
-            window.location.assign(redirectUrl);
+
+            const redirect_to_lowcode = sessionStorage.getItem('redirect_to');
+
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    window.location.assign(`${redirectUrl}/wallets/recent-transactions`);
+                    break;
+                default:
+                    window.location.assign(`${redirectUrl}/home`);
+                    break;
+            }
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;

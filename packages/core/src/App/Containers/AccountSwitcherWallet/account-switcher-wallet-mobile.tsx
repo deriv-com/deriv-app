@@ -37,6 +37,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
 
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
+        sessionStorage.setItem('redirect_to', 'wallet');
         history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
     };
 

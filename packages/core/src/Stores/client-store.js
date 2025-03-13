@@ -1168,7 +1168,7 @@ export default class ClientStore extends BaseStore {
         // eslint-disable-next-line max-len
         const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
 
-        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const client_accounts = JSON.parse(LocalStore.get(storage_key) || '{}');
         const email = this.email || client_accounts[loginid]?.email;
         const residence = this.residence || client_accounts[loginid]?.residence;
 
@@ -2160,6 +2160,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
+        sessionStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2204,7 +2205,7 @@ export default class ClientStore extends BaseStore {
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
-        let active_loginid;
+        let active_loginid = sessionStorage.getItem('active_loginid');
         let active_wallet_loginid;
 
         if (selected_account) {
@@ -2248,7 +2249,7 @@ export default class ClientStore extends BaseStore {
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
-        if (!active_loginid || !client_object[active_loginid].token) {
+        if (!active_loginid || !client_object[active_loginid]?.token) {
             active_loginid = obj_params.acct1;
         }
 

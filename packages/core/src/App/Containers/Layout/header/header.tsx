@@ -5,6 +5,7 @@ import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
+import Cookies from 'js-cookie';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -43,7 +44,8 @@ const TradersHubHeaderWallets = makeLazyLoader(
 
 const Header = observer(() => {
     const { client, common } = useStore();
-    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
+    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount, is_client_store_initialized } =
+        client;
     const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
 
@@ -72,6 +74,17 @@ const Header = observer(() => {
             }
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
+
+    const loggedState = Cookies.get('logged_state');
+    const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+
+    const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+    const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
+    if (!is_client_store_initialized || willEventuallySSO || willEventuallySLO) {
+        return <HeaderFallback />;
+    }
+
     if (is_logged_in) {
         let result;
         switch (true) {

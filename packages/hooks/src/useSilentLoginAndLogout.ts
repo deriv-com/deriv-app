@@ -33,7 +33,7 @@ const useSilentLoginAndLogout = ({
     // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const { prevent_single_login, setIsSingleLoggingIn } = client;
+    const { prevent_single_login, setIsLoggingIn } = client;
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
@@ -48,7 +48,7 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
-            setIsSingleLoggingIn(true);
+            setIsLoggingIn(true);
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
             });
@@ -58,7 +58,7 @@ const useSilentLoginAndLogout = ({
             // Perform single logout
             if (isLoggingOut.current) return;
             isLoggingOut.current = true;
-            setIsSingleLoggingIn(true);
+            setIsLoggingIn(true);
             oAuthLogout();
         }
     }, [

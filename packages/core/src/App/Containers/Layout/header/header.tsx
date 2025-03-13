@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
+import { useOauth2 } from '@deriv/hooks';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -48,6 +49,7 @@ const Header = observer(() => {
         client;
     const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
+    const { isOauth2Enabled } = useOauth2({ handleLogout: () => Promise.resolve() });
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -81,7 +83,7 @@ const Header = observer(() => {
 
     const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
     const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated;
-    if (!is_client_store_initialized || willEventuallySSO || willEventuallySLO) {
+    if (isOauth2Enabled && (!is_client_store_initialized || willEventuallySSO || willEventuallySLO)) {
         return <HeaderFallback />;
     }
 

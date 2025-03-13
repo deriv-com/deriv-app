@@ -15,6 +15,8 @@ import OnboardingGuide from 'AppV2/Components/OnboardingGuide/GuideForPages';
 import PurchaseButton from 'AppV2/Components/PurchaseButton';
 import ServiceErrorSheet from 'AppV2/Components/ServiceErrorSheet';
 import TradeErrorSnackbar from 'AppV2/Components/TradeErrorSnackbar';
+import TradeParamsGuide from 'AppV2/Components/OnboardingGuide/TradeParamsGuide/trade-params-guide';
+import QuickAdjGuide from 'AppV2/Components/OnboardingGuide/QuickAdjGuide/quick-adj-guide';
 import { TradeParameters, TradeParametersContainer } from 'AppV2/Components/TradeParameters';
 import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
 import { getChartHeight, HEIGHT } from 'AppV2/Utils/layout-utils';
@@ -55,6 +57,9 @@ const Trade = observer(() => {
         trade_types_selection: false,
         trade_page: false,
         positions_page: false,
+        market_selector: false,
+        trade_param_quick_adjustment: false,
+        trade_params: false,
     });
 
     // For handling edge cases of snackbar:
@@ -93,7 +98,7 @@ const Trade = observer(() => {
     const onScroll = React.useCallback(() => {
         const current_chart_ref = chart_ref?.current;
         if (current_chart_ref) {
-            const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom;
+            const chart_bottom_Y = current_chart_ref.getBoundingClientRect().bottom + (is_accumulator ? 150 : 65);
             const container_bottom_Y = window.innerHeight - HEIGHT.BOTTOM_NAV;
             setIsMinimizedParamsVisible(chart_bottom_Y <= container_bottom_Y);
         }
@@ -147,8 +152,10 @@ const Trade = observer(() => {
                         </TradeParametersContainer>
                         {!is_market_closed && <PurchaseButton />}
                     </div>
-                    {!guide_dtrader_v2?.trade_page && is_logged_in && (
-                        <OnboardingGuide type='trade_page' is_dark_mode_on={is_dark_mode_on} />
+                    {!guide_dtrader_v2?.trade_page && is_logged_in && <OnboardingGuide type='trade_page' />}
+                    {!guide_dtrader_v2?.trade_params && is_logged_in && <TradeParamsGuide />}
+                    {!guide_dtrader_v2?.trade_param_quick_adjustment && is_logged_in && (
+                        <QuickAdjGuide is_minimized_visible={is_minimized_params_visible} is_minimized />
                     )}
                 </React.Fragment>
             ) : (

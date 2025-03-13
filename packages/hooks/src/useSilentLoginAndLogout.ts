@@ -32,7 +32,7 @@ const useSilentLoginAndLogout = ({
     // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const { prevent_single_login, has_logged_out } = client;
+    const { prevent_single_login } = client;
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
@@ -52,7 +52,7 @@ const useSilentLoginAndLogout = ({
             });
         }
 
-        if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated && !has_logged_out) {
+        if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
             // Perform single logout
             if (isLoggingOut.current) return;
             isLoggingOut.current = true;

@@ -56,7 +56,7 @@ const CallbackPage = () => {
                     if (matchingLoginId && matchingToken) {
                         sessionStorage.setItem('active_loginid', matchingLoginId);
                         localStorage.setItem('config.account1', matchingToken);
-                        localStorage.setItem('active_loginid', tokens.acct1);
+                        localStorage.setItem('active_loginid', matchingLoginId);
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');

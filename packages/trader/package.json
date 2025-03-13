@@ -96,7 +96,7 @@
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@jimdanielswasswa/test-chart": "^0.0.0-semantic-00",
+        "@jimdanielswasswa/test-chart": "^0.0.0-semantic-01",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

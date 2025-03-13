@@ -91,7 +91,7 @@ describe('LoadModal', () => {
         expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
     });
 
-    it('should render load modal preview on file upload and on click of close should close the preview', () => {
+    it('should render load modal preview on file upload and on click of close should close the preview', async () => {
         mock_store.ui.is_desktop = true;
         render(<LoadModal />, { wrapper });
 
@@ -101,7 +101,7 @@ describe('LoadModal', () => {
         const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
         expect(close_button).toBeInTheDocument();
 
-        userEvent.click(close_button);
+        await userEvent.click(close_button);
 
         expect(close_button).not.toBeInTheDocument();
     });
@@ -130,23 +130,23 @@ describe('LoadModal', () => {
 
         //open file upload
         const get_file_input = screen.getByTestId('dt_load-strategy__local-upload');
-        userEvent.click(get_file_input);
+        await userEvent.click(get_file_input);
 
         //simulate behaviour of file upload
         const fileInput = screen.getByTestId('dt-load-strategy-file-input');
         const file = new File(['file content'], 'file.xml', { type: 'application/xml' });
-        userEvent.upload(fileInput, file);
+        await userEvent.upload(fileInput, file);
 
         zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });
 
     // [Important] Close Modal should be at the end
-    it('should close preview if close is clicked', () => {
+    it('should close preview if close is clicked', async () => {
         mock_store.ui.is_desktop = false;
         render(<LoadModal />, { wrapper });
 
         const close_button = screen.getByTestId('dt_page_overlay_header_close');
-        userEvent.click(close_button);
+        await userEvent.click(close_button);
 
         expect(mock_DBot_store?.dashboard.is_preview_on_popup).toBeFalsy();
     });

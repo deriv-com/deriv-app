@@ -81,7 +81,9 @@ const ContractDetails = ({
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
     const show_strike_barrier = is_vanilla || isAsiansContract(contract_type) || isResetContract(contract_type);
-    const ticks_duration_text = `${tick_count} ${ticks_label}`;
+    const ticks_duration_text = isAccumulatorContract(contract_type)
+        ? `${tick_passed} ${ticks_label}`
+        : `${tick_count} ${ticks_label}`;
 
     const INDICATIVE_HIGH = 'H';
     const INDICATIVE_LOW = 'L';

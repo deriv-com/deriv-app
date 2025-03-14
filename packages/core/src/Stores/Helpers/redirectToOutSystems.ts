@@ -7,10 +7,8 @@ import { URLConstants } from '@deriv-com/utils';
 const isBrowser = () => typeof window !== 'undefined';
 
 const derivComUrl = 'deriv.com';
-const derivMeUrl = 'deriv.me';
-const derivBeUrl = 'deriv.be';
 
-const supportedDomains = [derivComUrl, derivMeUrl, derivBeUrl];
+const supportedDomains = [derivComUrl];
 const domainUrlInitial = (isBrowser() && window.location.hostname.split('app.')[1]) || '';
 const domainUrl = supportedDomains.includes(domainUrlInitial) ? domainUrlInitial : derivComUrl;
 

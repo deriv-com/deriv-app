@@ -29,7 +29,7 @@ export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
     STAGING: `https://staging-hub.${domainUrl}/tradershub`,
 });
 
-export const redirectToOutSystems = (landingCompany?: string, currency = '') => {
+export const redirectToOutSystems = (landingCompany?: string) => {
     // redirect to OS Tradershub if feature is enabled
     const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
         'trigger_os_real_account_creation',
@@ -48,7 +48,6 @@ export const redirectToOutSystems = (landingCompany?: string, currency = '') => 
         Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
         const params = new URLSearchParams({
             action: 'real-account-signup',
-            ...(currency ? { currency } : {}),
             target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
         });
         const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;

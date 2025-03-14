@@ -1,9 +1,17 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import FinancialAssessment from '../financial-assessment';
+
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { WS } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen, waitFor } from '@testing-library/react';
+
+import FinancialAssessment from '../financial-assessment';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: jest.fn(),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -44,6 +52,9 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('<FinancialAssessment/>', () => {
+    beforeEach(() => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, true]);
+    });
     const mock = mockStore({
         client: {
             account_settings: {

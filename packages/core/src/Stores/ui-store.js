@@ -5,7 +5,7 @@ import { Analytics } from '@deriv-com/analytics';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 
-import { redirectToOutSystems } from './Helpers/redirectToOutSystems';
+import { isOutsystemsSupported, redirectToOutSystems } from './Helpers/redirectToOutSystems';
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
@@ -679,7 +679,7 @@ export default class UIStore extends BaseStore {
         );
 
         if (target) {
-            if (isOutSystemsRealAccountCreationEnabled) {
+            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported) {
                 redirectToOutSystems(target);
             } else {
                 this.is_real_acc_signup_on = true;

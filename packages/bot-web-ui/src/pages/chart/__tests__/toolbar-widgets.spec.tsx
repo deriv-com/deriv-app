@@ -19,8 +19,8 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 // // Mocking the imports from @deriv/deriv-charts
-jest.mock('@deriv/deriv-charts', () => ({
-    ...jest.requireActual('@deriv/deriv-charts'),
+jest.mock('@jimdanielswasswa/test-chart', () => ({
+    ...jest.requireActual('@jimdanielswasswa/test-chart'),
     __esModule: true,
     ChartMode: jest.fn(() => <div>Mocked ChartMode</div>),
     DrawTools: jest.fn(() => <div>Mocked DrawTools</div>),

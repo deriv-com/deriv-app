@@ -71,7 +71,7 @@ const PersonalDetailsForm = observer(() => {
     });
 
     const [isDynamicFAEnabled, isDynamicFALoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'dynamic_fa_enabled',
+        featureFlag: 'redirect_to_fa_in_account_os',
     });
 
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();

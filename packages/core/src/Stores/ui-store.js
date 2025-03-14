@@ -673,10 +673,7 @@ export default class UIStore extends BaseStore {
     }
 
     openRealAccountSignup(target) {
-        const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
-            'trigger_os_real_account_creation',
-            false
-        );
+        const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue('dynamic_fa_os_real_account', false);
 
         if (target) {
             if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported) {

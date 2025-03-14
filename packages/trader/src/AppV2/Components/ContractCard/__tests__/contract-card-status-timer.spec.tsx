@@ -23,9 +23,9 @@ describe('ContractCardStatusTimer', () => {
         expect(screen.getByText('00:16:40')).toBeInTheDocument();
     });
     it('should render ticks progress if currentTick and tick_count are passed', () => {
-        render(<ContractCardStatusTimer {...mockProps} currentTick={2} tick_count={10} />);
+        render(<ContractCardStatusTimer {...mockProps} currentTick={2} />);
 
-        expect(screen.getByText('2/10 ticks')).toBeInTheDocument();
+        expect(screen.getByText('2 ticks')).toBeInTheDocument();
     });
     it('should render Closed status if isSold === true', () => {
         render(<ContractCardStatusTimer {...mockProps} isSold />);

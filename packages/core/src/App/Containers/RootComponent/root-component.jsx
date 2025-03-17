@@ -70,14 +70,10 @@ const RootComponent = observer(props => {
 
             switch (redirect_to_lowcode) {
                 case 'wallet':
-                    window.location.assign(
-                        `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`
-                    );
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
                     break;
                 default:
-                    window.location.assign(
-                        `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`
-                    );
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
                     break;
             }
         }

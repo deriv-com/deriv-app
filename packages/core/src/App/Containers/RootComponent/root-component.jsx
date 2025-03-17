@@ -61,7 +61,7 @@ const RootComponent = observer(props => {
             sessionStorage.removeItem('active_wallet_loginid');
             localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
-            window.location.assign(redirectUrl);
+            window.location.href = redirectUrl;
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;

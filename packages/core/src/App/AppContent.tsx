@@ -14,12 +14,11 @@ import {
 import { getUrlBase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useTranslations } from '@deriv-com/translations';
+import { useTranslations, localize } from '@deriv-com/translations';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import P2PIFrame from 'Modules/P2PIFrame';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 
 import initDatadog from '../Utils/Datadog';
 import initHotjar from '../Utils/Hotjar';
@@ -183,7 +182,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                             height={234}
                             alt='loader'
                         />
-                        <h3 className='callback__title'>Getting your account ready</h3>
+                        <h3 className='callback__title'>{localize('Getting your account ready')}</h3>
                     </div>
                 </div>
             )}

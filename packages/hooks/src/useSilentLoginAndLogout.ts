@@ -26,7 +26,9 @@ const useSilentLoginAndLogout = ({
 
     const { client } = useStore();
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const clientTokens = JSON.parse(localStorage.getItem('config.tokens') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+    const isClientTokensPopulated = Object.keys(clientTokens).length > 0;
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
@@ -36,13 +38,13 @@ const useSilentLoginAndLogout = ({
     const { prevent_single_login } = client;
 
     useEffect(() => {
-        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated;
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
         if (willEventuallySSO && !isSilentLoginExcluded) {
             setIsSingleLoggingIn(true);
         } else {
             setIsSingleLoggingIn(false);
         }
-    }, [isClientAccountsPopulated, loggedState]);
+    }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;

@@ -41,8 +41,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/home';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
         setPreventSingleLogin(true);
@@ -61,7 +61,21 @@ const RootComponent = observer(props => {
             sessionStorage.removeItem('active_wallet_loginid');
             localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
-            window.location.href = redirectUrl;
+
+            const redirect_to_lowcode = sessionStorage.getItem('redirect_to_th_os');
+            sessionStorage.removeItem('redirect_to_th_os');
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const accountCurrency = url_params.get('account');
+
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
+                    break;
+                default:
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
+                    break;
+            }
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;

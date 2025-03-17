@@ -174,7 +174,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
             {!isCallBackPage && !is_single_logging_in && <Header />}
-            {is_single_logging_in ? (
+            {is_single_logging_in && (
                 <div className='callback'>
                     <div className='callback__content'>
                         <img
@@ -186,13 +186,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                         <h3 className='callback__title'>Getting your account ready</h3>
                     </div>
                 </div>
-            ) : (
-                <ErrorBoundary root_store={store}>
-                    <AppContents>
-                        <Routes passthrough={passthrough} />
-                    </AppContents>
-                </ErrorBoundary>
             )}
+            <ErrorBoundary root_store={store}>
+                <AppContents>
+                    <Routes passthrough={passthrough} />
+                </AppContents>
+            </ErrorBoundary>
             {!is_single_logging_in && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />

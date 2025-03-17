@@ -1,0 +1,28 @@
+.callback {
+    font-family: 'Ubuntu', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    align-items: center;
+    background-color: #ffffff;
+    z-index: 99999;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        gap: 40px;
+    }
+
+    &__title {
+        color: #000000;
+        font-size: 24px;
+        text-align: center;
+        font-weight: bold;
+        margin: 0;
+    }
+}

@@ -9,7 +9,15 @@ import { Formik, FormikHelpers } from 'formik';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_DFA_URL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
+import {
+    ACCOUNTS_OS_DFA_URL,
+    getAppId,
+    getSocketURL,
+    platforms,
+    routes,
+    shouldHideOccupationField,
+    WS,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
@@ -191,6 +199,7 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
 const FinancialAssessment = observer(() => {
     const { client, common, notifications } = useStore();
     const {
+        getToken,
         landing_company_shortcode,
         is_virtual,
         is_financial_account,

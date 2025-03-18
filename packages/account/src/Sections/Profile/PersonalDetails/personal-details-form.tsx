@@ -702,6 +702,7 @@ const PersonalDetailsForm = observer(() => {
                                             tin_validation_config={tin_validation_config}
                                             should_display_long_message={is_mf_account}
                                             should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
+                                            version={versionRef.current}
                                         />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                         <FormSubHeader title={localize('Address')} />

@@ -226,7 +226,7 @@ const PersonalDetailsForm = observer(() => {
         setStatus({ msg: '' });
         const request = {
             ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
-            ...(isDynamicFAEnabled && { financial_information_version: versionRef.current }),
+            ...(isDynamicFAEnabled && { financial_information_version: versionRef.current || 'v2' }),
         };
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);

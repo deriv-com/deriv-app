@@ -1,5 +1,6 @@
 import { isBot } from '../platform';
 import { isStaging } from '../url/helpers';
+import Cookies from 'js-cookie';
 
 /*
  * Configuration values needed in js codes
@@ -56,6 +57,8 @@ export const getAppId = () => {
     window.localStorage.removeItem('config.platform'); // Remove config stored in localstorage if there's any.
     const platform = window.sessionStorage.getItem('config.platform');
     const is_bot = isBot();
+    const has_wallet_cookie = Cookies.get('wallet_account');
+
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
         app_id = platform_app_ids[platform as keyof typeof platform_app_ids];
@@ -69,6 +72,12 @@ export const getAppId = () => {
         app_id = is_bot ? 19112 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 36300;
+    } else if (has_wallet_cookie) {
+        if (isProduction()) {
+            app_id = 61554;
+        } else {
+            app_id = 53503;
+        }
     } else {
         window.localStorage.removeItem('config.default_app_id');
         app_id = is_bot ? 19111 : domain_app_ids[current_domain as keyof typeof domain_app_ids] || 16929;

@@ -447,7 +447,7 @@ const FinancialAssessment = observer(() => {
         setTimeout(() => {
             window.location.replace(getFormattedURL(ACCOUNTS_OS_DFA_URL));
         }, 0);
-        return <Loading is_fullscreen />;
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
     return (

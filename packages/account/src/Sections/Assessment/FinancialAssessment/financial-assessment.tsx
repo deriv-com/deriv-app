@@ -203,7 +203,7 @@ const FinancialAssessment = observer(() => {
         account_settings,
     } = client;
     const { isMobile, isTablet, isDesktop } = useDevice();
-    const { platform, routeBackInApp } = common;
+    const { is_from_tradershub_os, platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({

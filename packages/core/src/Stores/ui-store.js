@@ -1,11 +1,9 @@
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
 import { isMobile, isTouchDevice, routes } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 
-import { isOutsystemsSupported, redirectToOutSystems } from './Helpers/redirectToOutSystems';
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
@@ -673,14 +671,8 @@ export default class UIStore extends BaseStore {
     }
 
     openRealAccountSignup(target) {
-        const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue('dynamic_fa_os_real_account', false);
-
         if (target) {
-            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported) {
-                redirectToOutSystems(target);
-            } else {
-                this.is_real_acc_signup_on = true;
-            }
+            this.is_real_acc_signup_on = true;
             this.real_account_signup_target = target;
             this.is_accounts_switcher_on = false;
             localStorage.removeItem('current_question_index');

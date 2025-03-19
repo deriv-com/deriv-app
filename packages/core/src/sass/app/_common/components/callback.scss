@@ -10,6 +10,10 @@
     margin: 48px 0 36px;
     z-index: 99999;
 
+    @include mobile {
+        margin-top: 40px;
+    }
+
     &__content {
         display: flex;
         flex-direction: column;

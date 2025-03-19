@@ -62,8 +62,8 @@ const RootComponent = observer(props => {
             localStorage.setItem('client.accounts', '{}');
             localStorage.removeItem('active_wallet_loginid');
 
-            const redirect_to_lowcode = sessionStorage.getItem('redirect_to_th_os');
-            sessionStorage.removeItem('redirect_to_th_os');
+            const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
+            localStorage.removeItem('redirect_to_th_os');
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
             const accountCurrency = url_params.get('account');

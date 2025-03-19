@@ -1597,9 +1597,10 @@ export default class ClientStore extends BaseStore {
         if (
             ['crypto_transactions_withdraw', 'payment_withdraw', 'payment_agent_withdraw'].includes(action_param) &&
             loginid_param
-        )
+        ) {
+            sessionStorage.setItem('active_loginid', loginid_param);
             this.setLoginId(loginid_param);
-        else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
+        } else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');

@@ -123,7 +123,7 @@ const PersonalDetailsForm = observer(() => {
                 .then((data: GetFinancialAssessmentResponse) => {
                     if (data?.get_financial_assessment) {
                         // @ts-expect-error new key not updated in api types
-                        versionRef.current = data.get_financial_assessment.financial_information_version;
+                        versionRef.current = data.get_financial_assessment.financial_information_version ?? '';
                     }
                 })
                 .catch((error: unknown) => {
@@ -703,6 +703,7 @@ const PersonalDetailsForm = observer(() => {
                                             should_display_long_message={is_mf_account}
                                             should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
                                             version={versionRef.current}
+                                            is_feature_flag_disabled={isDynamicFALoaded && !isDynamicFAEnabled}
                                         />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                         <FormSubHeader title={localize('Address')} />

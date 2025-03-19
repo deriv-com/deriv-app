@@ -13,9 +13,16 @@ type TEmploymentStatusFieldProps = {
     is_disabled: boolean;
     fieldFocused?: boolean;
     version?: string;
+    is_feature_flag_disabled?: boolean;
 };
 
-const EmploymentStatusField = ({ required, is_disabled, fieldFocused, version }: TEmploymentStatusFieldProps) => {
+const EmploymentStatusField = ({
+    required,
+    is_feature_flag_disabled,
+    is_disabled,
+    fieldFocused,
+    version,
+}: TEmploymentStatusFieldProps) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
@@ -29,7 +36,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused, version }:
                             placeholder={required ? localize('Employment status*') : localize('Employment status')}
                             is_align_text_left
                             name={field.name}
-                            list={getEmploymentStatusList(version)}
+                            list={getEmploymentStatusList(version, is_feature_flag_disabled)}
                             value={field.value}
                             onChange={(e: { target: { name: string; value: string } }) => {
                                 setFieldValue('tin_skipped', 0, true);
@@ -47,7 +54,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused, version }:
                             placeholder={localize('Please select')}
                             name={field.name}
                             label={required ? localize('Employment status*') : localize('Employment status')}
-                            list_items={getEmploymentStatusList(version)}
+                            list_items={getEmploymentStatusList(version, is_feature_flag_disabled)}
                             value={field.value}
                             error={meta.touched ? meta.error : undefined}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

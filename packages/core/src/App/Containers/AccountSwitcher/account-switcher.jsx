@@ -419,6 +419,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                     await switchAccount(first_real_login_id);
                 }
                 toggleAccountsDialog(false);
+                localStorage.setItem('redirect_to_th_os', 'home');
                 history.push(routes.traders_hub);
                 setTogglePlatformType('cfd');
             };

@@ -62,7 +62,7 @@ describe('useSilentLoginAndLogout', () => {
 
         expect(requestOidcAuthentication).toHaveBeenCalledWith({
             redirectCallbackUri: `${window.location.origin}/callback`,
-            postLoginRedirectUri: `${window.location.origin}${window.location.pathname}`,
+            postLoginRedirectUri: window.location.href,
         });
         expect(mockOAuthLogout).not.toHaveBeenCalled();
     });

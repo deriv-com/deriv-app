@@ -51,6 +51,10 @@ const MenuLink = observer(
 
         if (is_hidden) return null;
 
+        if (traders_hub_path) {
+            localStorage.setItem('redirect_to_th_os', 'home');
+        }
+
         if (is_languages_link_on_responsive) {
             return (
                 <div

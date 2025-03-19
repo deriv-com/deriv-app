@@ -1,5 +1,6 @@
 import { isBot } from '../platform';
 import { isStaging } from '../url/helpers';
+
 /*
  * Configuration values needed in js codes
  *
@@ -55,7 +56,6 @@ export const getAppId = () => {
     window.localStorage.removeItem('config.platform'); // Remove config stored in localstorage if there's any.
     const platform = window.sessionStorage.getItem('config.platform');
     const is_bot = isBot();
-
     // Added platform at the top since this should take precedence over the config_app_id
     if (platform && platform_app_ids[platform as keyof typeof platform_app_ids]) {
         app_id = platform_app_ids[platform as keyof typeof platform_app_ids];

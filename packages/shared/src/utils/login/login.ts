@@ -1,9 +1,8 @@
 import { website_name } from '../config/app-config';
-import { domain_app_ids, getAppId, isProduction } from '../config/config';
+import { domain_app_ids, getAppId } from '../config/config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 import { deriv_urls } from '../url/constants';
-import Cookies from 'js-cookie';
 
 export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
     if (!is_logged_in && isStorageSupported(sessionStorage)) {
@@ -37,15 +36,6 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
-
-    const has_wallet_cookie = Cookies.get('wallet_account');
-    if (has_wallet_cookie) {
-        if (isProduction()) {
-            location.href = 'https://hub.deriv.com/tradershub/login';
-        } else {
-            location.href = 'https://staging-hub.deriv.com/tradershub/login';
-        }
-    }
 
     const getOAuthUrl = () => {
         return `https://oauth.${

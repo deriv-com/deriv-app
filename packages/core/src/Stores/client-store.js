@@ -1603,7 +1603,7 @@ export default class ClientStore extends BaseStore {
         ) {
             this.setUrlParams(loginid_param);
             this.setLoginId(loginid_param);
-        } else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid')); // TODO: switching accounts in highcode
+        } else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');

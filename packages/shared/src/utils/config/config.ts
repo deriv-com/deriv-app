@@ -1,7 +1,5 @@
 import { isBot } from '../platform';
 import { isStaging } from '../url/helpers';
-import Cookies from 'js-cookie';
-
 /*
  * Configuration values needed in js codes
  *
@@ -119,15 +117,6 @@ export const checkAndSetEndpointFromUrl = () => {
 
             const params = url_params.toString();
             const hash = location.hash;
-
-            const has_wallet_cookie = Cookies.get('wallet_account');
-            if (has_wallet_cookie) {
-                if (isProduction()) {
-                    location.href = 'https://hub.deriv.com/tradershub/login';
-                } else {
-                    location.href = 'https://staging-hub.deriv.com/tradershub/login';
-                }
-            }
 
             location.href = `${location.protocol}//${location.hostname}${location.pathname}${
                 params ? `?${params}` : ''

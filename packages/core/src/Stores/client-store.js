@@ -1079,9 +1079,12 @@ export default class ClientStore extends BaseStore {
         this.loginid = loginid;
     }
 
-    setUrlParams() {
+    setUrlParams(url_param_loginid) {
         const url = new URL(window.location.href);
-        const loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
+        const loginid =
+            url_param_loginid ||
+            sessionStorage.getItem('active_wallet_loginid') ||
+            sessionStorage.getItem('active_loginid');
         const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
         if (account_param) {
             url.searchParams.set('account', account_param);
@@ -1594,9 +1597,13 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
+        if (
+            ['crypto_transactions_withdraw', 'payment_withdraw', 'payment_agent_withdraw'].includes(action_param) &&
+            loginid_param
+        ) {
+            this.setUrlParams(loginid_param);
             this.setLoginId(loginid_param);
-        else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
+        } else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid')); // TODO: switching accounts in highcode
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');

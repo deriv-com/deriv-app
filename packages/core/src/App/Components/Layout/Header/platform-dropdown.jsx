@@ -62,6 +62,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
                 <BinaryLink
                     onClick={() => {
                         if (isHubRedirectionEnabled && has_wallet) {
+                            localStorage.setItem('redirect_to_th_os', 'home');
                             window.location.assign(platforms.tradershub_os.url);
                             return;
                         }

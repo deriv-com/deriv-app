@@ -674,9 +674,10 @@ export default class UIStore extends BaseStore {
 
     openRealAccountSignup(target) {
         const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue('dynamic_fa_os_real_account', false);
+        const acceptedTargets = target === 'maltainvest' || target === 'svg';
 
         if (target) {
-            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported) {
+            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported && acceptedTargets) {
                 redirectToOutSystems(target);
             } else {
                 this.is_real_acc_signup_on = true;

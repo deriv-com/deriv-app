@@ -1,7 +1,9 @@
+import React from 'react';
 import { requestOidcAuthentication, requestOidcSilentAuthentication } from '@deriv-com/auth-client';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useSilentLoginAndLogout from '../useSilentLoginAndLogout';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('@deriv-com/auth-client', () => ({
     requestOidcAuthentication: jest.fn(),
@@ -13,6 +15,12 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('useSilentLoginAndLogout', () => {
+    const mockStoreData = mockStore({
+        client: { prevent_single_login: false },
+    });
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mockStoreData}>{children}</StoreProvider>
+    );
     beforeEach(() => {
         jest.clearAllMocks();
 
@@ -36,11 +44,13 @@ describe('useSilentLoginAndLogout', () => {
     it('should call requestOidcSilentAuthentication for silent login if conditions are met', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcSilentAuthentication).toHaveBeenCalledWith({

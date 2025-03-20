@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
@@ -23,10 +23,13 @@ const useSilentLoginAndLogout = ({
     oAuthLogout: () => Promise<void>;
 }) => {
     const loggedState = Cookies.get('logged_state');
+    const [is_single_logging_in, setIsSingleLoggingIn] = useState(false);
 
     const { client } = useStore();
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const clientTokens = JSON.parse(localStorage.getItem('config.tokens') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+    const isClientTokensPopulated = Object.keys(clientTokens).length > 0;
     const isSilentLoginExcluded = ['callback', 'silent-callback', 'front-channel', 'endpoint'].some(path =>
         window.location.pathname.includes(path)
     );
@@ -35,6 +38,15 @@ const useSilentLoginAndLogout = ({
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
     const { prevent_single_login } = client;
+
+    useEffect(() => {
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
+        if (willEventuallySSO && !isSilentLoginExcluded) {
+            setIsSingleLoggingIn(true);
+        } else {
+            setIsSingleLoggingIn(false);
+        }
+    }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
     useEffect(() => {
         if (
@@ -75,6 +87,8 @@ const useSilentLoginAndLogout = ({
         isSilentLoginExcluded,
         prevent_single_login,
     ]);
+
+    return { is_single_logging_in };
 };
 
 export default useSilentLoginAndLogout;

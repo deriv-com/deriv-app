@@ -19,6 +19,7 @@ const LoginButton = ({ className }) => {
                 if (isOAuth2Enabled) {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
+                        postLoginRedirectUri: window.location.href,
                     });
                 }
                 window.LiveChatWidget?.call('hide');

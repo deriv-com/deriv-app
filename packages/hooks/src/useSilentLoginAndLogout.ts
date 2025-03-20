@@ -61,6 +61,7 @@ const useSilentLoginAndLogout = ({
             isAuthenticating.current = true;
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
+                postLoginRedirectUri: window.location.href,
             });
         }
 

@@ -174,15 +174,15 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <LandscapeBlocker />
             {!isCallBackPage && !is_single_logging_in && <Header />}
             {is_single_logging_in && (
-                <div className='callback'>
-                    <div className='callback__content'>
+                <div className='initial-callback'>
+                    <div className='initial-callback__content'>
                         <img
                             src={getUrlBase('/public/images/common/callback_loader.gif')}
                             width={234}
                             height={234}
                             alt='loader'
                         />
-                        <h3 className='callback__title'>{localize('Getting your account ready')}</h3>
+                        <h3 className='initial-callback__title'>{localize('Getting your account ready')}</h3>
                     </div>
                 </div>
             )}

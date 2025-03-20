@@ -105,6 +105,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
 
     const handleRedirect = () => {
         toggleAccountsDialog(false);
+        localStorage.setItem('redirect_to_th_os', 'home');
         history.push(routes.traders_hub);
         setTogglePlatformType('cfd');
     };

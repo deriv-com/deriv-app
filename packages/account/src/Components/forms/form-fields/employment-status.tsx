@@ -1,18 +1,28 @@
 import React from 'react';
+import clsx from 'clsx';
 import { Field, FieldProps } from 'formik';
+
 import { Dropdown, SelectNative } from '@deriv/components';
 import { useTranslations } from '@deriv-com/translations';
-import { getEmploymentStatusList } from '../../../Constants/financial-information-list';
 import { useDevice } from '@deriv-com/ui';
-import clsx from 'clsx';
+
+import { getEmploymentStatusList } from '../../../Constants/financial-information-list';
 
 type TEmploymentStatusFieldProps = {
     required: boolean;
     is_disabled: boolean;
     fieldFocused?: boolean;
+    version?: string;
+    is_feature_flag_disabled?: boolean;
 };
 
-const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploymentStatusFieldProps) => {
+const EmploymentStatusField = ({
+    required,
+    is_feature_flag_disabled,
+    is_disabled,
+    fieldFocused,
+    version,
+}: TEmploymentStatusFieldProps) => {
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
 
@@ -26,7 +36,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploym
                             placeholder={required ? localize('Employment status*') : localize('Employment status')}
                             is_align_text_left
                             name={field.name}
-                            list={getEmploymentStatusList()}
+                            list={getEmploymentStatusList(version, is_feature_flag_disabled)}
                             value={field.value}
                             onChange={(e: { target: { name: string; value: string } }) => {
                                 setFieldValue('tin_skipped', 0, true);
@@ -44,7 +54,7 @@ const EmploymentStatusField = ({ required, is_disabled, fieldFocused }: TEmploym
                             placeholder={localize('Please select')}
                             name={field.name}
                             label={required ? localize('Employment status*') : localize('Employment status')}
-                            list_items={getEmploymentStatusList()}
+                            list_items={getEmploymentStatusList(version, is_feature_flag_disabled)}
                             value={field.value}
                             error={meta.touched ? meta.error : undefined}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

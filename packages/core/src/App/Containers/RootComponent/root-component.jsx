@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-
+import Cookies from 'js-cookie';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader } from '@deriv/shared';
+import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -67,6 +67,11 @@ const RootComponent = observer(props => {
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
             const accountCurrency = url_params.get('account');
+
+            const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
+                ? deriv_urls.DERIV_HOST_NAME
+                : window.location.hostname;
+            Cookies.set('wallet_account', true, { domain });
 
             switch (redirect_to_lowcode) {
                 case 'wallet':

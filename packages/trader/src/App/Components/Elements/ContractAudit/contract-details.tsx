@@ -82,7 +82,7 @@ const ContractDetails = ({
     const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
     const show_strike_barrier = is_vanilla || isAsiansContract(contract_type) || isResetContract(contract_type);
     const ticks_duration_text = isAccumulatorContract(contract_type)
-        ? `${tick_passed}/${tick_count} ${localize('ticks')}`
+        ? `${tick_passed} ${ticks_label}`
         : `${tick_count} ${ticks_label}`;
 
     const INDICATIVE_HIGH = 'H';

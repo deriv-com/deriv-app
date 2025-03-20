@@ -41,8 +41,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/home';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/home';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
         if (isSafariBrowser()) setPreventSingleLogin(true);
@@ -51,19 +51,31 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub && is_client_store_initialized) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            if (isSafariBrowser()) {
-                // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
-                localStorage.removeItem('config.account1');
-                localStorage.removeItem('config.tokens');
-                // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
-                localStorage.removeItem('active_loginid');
-                localStorage.removeItem('active_user_id');
-                sessionStorage.removeItem('active_loginid');
-                sessionStorage.removeItem('active_wallet_loginid');
-                localStorage.setItem('client.accounts', '{}');
-                localStorage.removeItem('active_wallet_loginid');
+            // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
+            localStorage.removeItem('config.account1');
+            localStorage.removeItem('config.tokens');
+            // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
+            localStorage.removeItem('active_loginid');
+            localStorage.removeItem('active_user_id');
+            sessionStorage.removeItem('active_loginid');
+            sessionStorage.removeItem('active_wallet_loginid');
+            localStorage.setItem('client.accounts', '{}');
+            localStorage.removeItem('active_wallet_loginid');
+
+            const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
+            localStorage.removeItem('redirect_to_th_os');
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const accountCurrency = url_params.get('account');
+
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
+                    break;
+                default:
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
+                    break;
             }
-            window.location.assign(redirectUrl);
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader } from '@deriv/shared';
+import { isSafariBrowser, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -45,7 +45,7 @@ const RootComponent = observer(props => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
-        setPreventSingleLogin(true);
+        if (isSafariBrowser()) setPreventSingleLogin(true);
     }, []);
 
     useEffect(() => {
@@ -79,7 +79,10 @@ const RootComponent = observer(props => {
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
-        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
+        if (
+            !isSafariBrowser() ||
+            (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp)
+        ) {
             setPreventSingleLogin(false);
         }
     }, [

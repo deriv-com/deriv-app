@@ -33,6 +33,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
         if (isOAuth2Enabled) {
             await requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
+                postLoginRedirectUri: window.location.href,
             });
         }
         redirectToLogin(false, getLanguage());

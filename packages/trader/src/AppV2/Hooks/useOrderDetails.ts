@@ -60,7 +60,7 @@ const getCommonFields = (data: TContractInfo, CARD_LABELS: TCardLabels) => {
     const { tick_count, tick_passed, contract_type } = data;
     const ticks_label = Number(tick_count) < 2 ? CARD_LABELS.TICK : CARD_LABELS.TICKS;
     const ticks_duration_text = isAccumulatorContract(contract_type)
-        ? `${tick_passed}/${tick_count} ${CARD_LABELS.TICKS}`
+        ? `${tick_passed} ${CARD_LABELS.TICKS}`
         : `${tick_count} ${ticks_label}`;
 
     return {

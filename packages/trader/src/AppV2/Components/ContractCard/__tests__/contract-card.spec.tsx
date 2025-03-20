@@ -389,12 +389,12 @@ describe('ContractCard', () => {
         expect(screen.getByText('Accumulators')).toBeInTheDocument();
         expect(screen.getByText(symbolName)).toBeInTheDocument();
         expect(screen.getByText('9.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('9/230 ticks')).toBeInTheDocument();
+        expect(screen.getByText('9 ticks')).toBeInTheDocument();
         expect(screen.getByText('0.84 USD')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: CLOSE })).toBeEnabled();
         expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
     });
-    it('should show loader when a Close button is clicked and isSellRequested === true', () => {
+    it('should show loader when a Close button is clicked and isSellRequested === true', async () => {
         const mockedOnClose = jest.fn();
         const { rerender } = render(
             mockedContractCard({
@@ -404,7 +404,7 @@ describe('ContractCard', () => {
             })
         );
         const closeButton = screen.getByRole('button', { name: getCardLabels().CLOSE });
-        userEvent.click(closeButton);
+        await userEvent.click(closeButton);
         expect(mockedOnClose).toHaveBeenCalledTimes(1);
 
         rerender(
@@ -417,7 +417,7 @@ describe('ContractCard', () => {
         expect(screen.getByTestId(buttonLoaderId)).toBeInTheDocument();
         expect(closeButton).toBeDisabled();
     });
-    it('should show loader when a Cancel button is clicked and isSellRequested === true', () => {
+    it('should show loader when a Cancel button is clicked and isSellRequested === true', async () => {
         const mockedOnCancel = jest.fn();
         const { rerender } = render(
             mockedContractCard({
@@ -427,7 +427,7 @@ describe('ContractCard', () => {
             })
         );
         const cancelButton = screen.getByRole('button', { name: CANCEL });
-        userEvent.click(cancelButton);
+        await userEvent.click(cancelButton);
         expect(mockedOnCancel).toHaveBeenCalledTimes(1);
 
         rerender(
@@ -452,7 +452,7 @@ describe('ContractCard', () => {
         expect(screen.queryByRole('button', { name: CLOSE })).not.toBeInTheDocument();
         expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
     });
-    it('should call onClick when a card is clicked, and should redirect to a correct route if redirectTo is passed', () => {
+    it('should call onClick when a card is clicked, and should redirect to a correct route if redirectTo is passed', async () => {
         const mockedOnClick = jest.fn();
         const redirectTo = getContractPath(Number(closedPositions[0].contract_info.contract_id));
         render(
@@ -464,11 +464,11 @@ describe('ContractCard', () => {
             })
         );
         const card = screen.getByText('Turbos Up');
-        userEvent.click(card);
+        await userEvent.click(card);
         expect(mockedOnClick).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(redirectTo);
     });
-    it('should call onClick when a card is clicked, but should not redirect anywhere if redirectTo prop is missing', () => {
+    it('should call onClick when a card is clicked, but should not redirect anywhere if redirectTo prop is missing', async () => {
         const mockedOnClick = jest.fn();
         const redirectTo = getContractPath(Number(closedPositions[0].contract_info.contract_id));
         render(
@@ -479,7 +479,7 @@ describe('ContractCard', () => {
             })
         );
         const card = screen.getByText('Turbos Up');
-        userEvent.click(card);
+        await userEvent.click(card);
         expect(mockedOnClick).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).not.toBe(redirectTo);
     });

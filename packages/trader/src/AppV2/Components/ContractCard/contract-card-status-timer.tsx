@@ -17,11 +17,10 @@ export const ContractCardStatusTimer = ({
     date_expiry,
     isSold,
     serverTime,
-    tick_count,
 }: TContractCardStatusTimerProps) => {
     const getDisplayedDuration = () => {
-        if (tick_count) {
-            return `${currentTick ?? 0}/${tick_count} ${getCardLabels().TICKS.toLowerCase()}`;
+        if (currentTick) {
+            return `${currentTick ?? 0} ${getCardLabels().TICKS.toLowerCase()}`;
         }
         if (date_expiry && serverTime) {
             return (

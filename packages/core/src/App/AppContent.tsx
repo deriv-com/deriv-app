@@ -11,14 +11,14 @@ import {
     useOauth2,
     useSilentLoginAndLogout,
 } from '@deriv/hooks';
+import { getUrlBase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
+import { useTranslations, localize } from '@deriv-com/translations';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import P2PIFrame from 'Modules/P2PIFrame';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 
 import initDatadog from '../Utils/Datadog';
 import initHotjar from '../Utils/Hotjar';
@@ -69,7 +69,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
 
-    useSilentLoginAndLogout({
+    const { is_single_logging_in } = useSilentLoginAndLogout({
         is_client_store_initialized,
         isOAuth2Enabled,
         oAuthLogout,
@@ -172,14 +172,26 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
-            {!isCallBackPage && <Header />}
+            {!isCallBackPage && !is_single_logging_in && <Header />}
+            {is_single_logging_in && (
+                <div className='initial-callback'>
+                    <div className='initial-callback__content'>
+                        <img
+                            src={getUrlBase('/public/images/common/callback_loader.gif')}
+                            width={234}
+                            height={234}
+                            alt='loader'
+                        />
+                        <h3 className='initial-callback__title'>{localize('Getting your account ready')}</h3>
+                    </div>
+                </div>
+            )}
             <ErrorBoundary root_store={store}>
                 <AppContents>
-                    {/* TODO: [trader-remove-client-base] */}
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <Footer />
+            {!is_single_logging_in && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

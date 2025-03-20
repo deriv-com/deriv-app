@@ -25,17 +25,21 @@ type TEmploymentTaxDetailsContainerProps = {
     handleChange: (value: string) => void;
     tin_validation_config: TinValidations;
     id?: string;
+    is_feature_flag_disabled?: boolean;
     should_focus_fields?: boolean;
+    version?: string;
 };
 
 const EmploymentTaxDetailsContainer = observer(
     ({
         editable_fields,
+        is_feature_flag_disabled,
         parent_ref,
         should_display_long_message,
         tin_validation_config,
         handleChange,
         should_focus_fields,
+        version,
     }: TEmploymentTaxDetailsContainerProps) => {
         const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
         const { isDesktop } = useDevice();
@@ -147,8 +151,10 @@ const EmploymentTaxDetailsContainer = observer(
             <div id={'employment-tax-section'}>
                 <EmploymentStatusField
                     required={is_employment_status_mandatory}
+                    is_feature_flag_disabled={is_feature_flag_disabled}
                     is_disabled={isFieldDisabled('employment_status')}
                     fieldFocused={should_focus_fields && !account_settings.employment_status}
+                    version={version}
                 />
 
                 {!account_settings.tax_identification_number && should_show_no_tax_details_checkbox && (

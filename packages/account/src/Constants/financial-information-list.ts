@@ -27,28 +27,57 @@ export const getIncomeSourceList = () => [
     },
 ];
 
-export const getEmploymentStatusList = () => [
-    {
-        text: localize('Employed'),
-        value: 'Employed',
-    },
-    {
-        text: localize('Pensioner'),
-        value: 'Pensioner',
-    },
-    {
-        text: localize('Self-Employed'),
-        value: 'Self-Employed',
-    },
-    {
-        text: localize('Student'),
-        value: 'Student',
-    },
-    {
-        text: localize('Unemployed'),
-        value: 'Unemployed',
-    },
-];
+export const getEmploymentStatusList = (version?: string, isFeatureDisabled: boolean = true) => {
+    // If the feature is disabled OR if version is 'v1' or undefined, return the first dropdown
+    if (isFeatureDisabled || version === 'v1' || version === undefined) {
+        return [
+            {
+                text: localize('Employed'),
+                value: 'Employed',
+            },
+            {
+                text: localize('Pensioner'),
+                value: 'Pensioner',
+            },
+            {
+                text: localize('Self-Employed'),
+                value: 'Self-Employed',
+            },
+            {
+                text: localize('Student'),
+                value: 'Student',
+            },
+            {
+                text: localize('Unemployed'),
+                value: 'Unemployed',
+            },
+        ];
+    }
+
+    // If the feature is enabled and version is 'v2' OR an empty string (""), return the second dropdown
+    return [
+        {
+            text: localize('Employed full-time'),
+            value: 'Employed full-time',
+        },
+        {
+            text: localize('Employed part-time'),
+            value: 'Employed part-time',
+        },
+        {
+            text: localize('Pensioner'),
+            value: 'Pensioner',
+        },
+        {
+            text: localize('Self-employed'),
+            value: 'Self-employed',
+        },
+        {
+            text: localize('Unemployed'),
+            value: 'Unemployed',
+        },
+    ];
+};
 
 export const getEmploymentIndustryList = () => [
     {

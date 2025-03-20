@@ -1,12 +1,14 @@
 import React from 'react';
-import { cleanup, render, waitFor, screen } from '@testing-library/react';
-import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
+
 import { APIProvider } from '@deriv/api';
-import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import PersonalDetailsForm from '../personal-details-form';
 import { useGrowthbookGetFeatureValue, useResidenceList } from '@deriv/hooks';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import PersonalDetailsForm from '../personal-details-form';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -18,6 +20,30 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     WS: {
         send: jest.fn().mockResolvedValue({ time: 1620000000 }),
         wait: (...payload: []) => Promise.resolve([...payload]),
+        authorized: {
+            storage: {
+                getFinancialAssessment: jest.fn(() =>
+                    Promise.resolve({
+                        get_financial_assessment: {
+                            account_turnover: '',
+                            cfd_score: 0,
+                            education_level: '',
+                            employment_industry: '',
+                            employment_status: 'Employed',
+                            estimated_worth: '',
+                            financial_information_score: '',
+                            financial_information_version: '',
+                            income_source: '',
+                            net_income: '',
+                            occupation: '',
+                            source_of_wealth: '',
+                            total_score: '',
+                            trading_score: '',
+                        },
+                    })
+                ),
+            },
+        },
     },
     useWS: () => undefined,
 }));

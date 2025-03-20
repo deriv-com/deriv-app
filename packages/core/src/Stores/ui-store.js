@@ -18,6 +18,7 @@ export default class UIStore extends BaseStore {
     reports_route_tab_index = 0;
     is_cashier_visible = false;
     is_history_tab_active = false;
+    login_code = '';
     // TODO: [cleanup ui-store]
     // Take profit, Stop loss & Deal cancellation checkbox
     should_show_cancellation_warning = true;
@@ -675,10 +676,11 @@ export default class UIStore extends BaseStore {
     openRealAccountSignup(target) {
         const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue('dynamic_fa_os_real_account', false);
         const acceptedTargets = target === 'maltainvest' || target === 'svg';
-
+        console.log('are we called before login code?');
         if (target) {
-            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported && acceptedTargets) {
-                redirectToOutSystems(target);
+            console.log('got login code before redirectToOutSystems?', this.root_store.client.login_code);
+            if (true) {
+                redirectToOutSystems(target, this.root_store.client.login_code);
             } else {
                 this.is_real_acc_signup_on = true;
             }

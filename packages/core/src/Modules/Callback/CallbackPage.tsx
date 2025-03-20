@@ -62,7 +62,12 @@ const CallbackPage = () => {
                     sessionStorage.removeItem('tradershub_redirect_to');
                     window.location.href = redirectTo;
                 } else {
-                    window.location.href = routes.traders_hub;
+                    const postLoginRedirectUri = localStorage.getItem('config.post_login_redirect_uri');
+                    if (postLoginRedirectUri) {
+                        window.location.href = postLoginRedirectUri;
+                    } else {
+                        window.location.href = routes.traders_hub;
+                    }
                 }
             }}
             renderReturnButton={() => {

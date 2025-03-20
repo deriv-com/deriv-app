@@ -68,6 +68,7 @@ describe('useLoggedStateLoginAndLogout', () => {
 
         expect(requestOidcAuthentication).toHaveBeenCalledWith({
             redirectCallbackUri: `${window.location.origin}/callback`,
+            postLoginRedirectUri: window.location.href,
         });
         expect(mockOAuthLogout).not.toHaveBeenCalled();
     });

@@ -28,7 +28,7 @@ export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
     STAGING: `https://staging-hub.deriv.com/tradershub`,
 });
 
-export const redirectToOutSystems = (landingCompany?: string) => {
+export const redirectToOutSystems = (landingCompany?: string, loginCode?: string) => {
     const clientAccounts = getAccountsFromLocalStorage() ?? {};
     if (!Object.keys(clientAccounts).length) return;
     const accountsWithTokens: Record<string, unknown> = {};
@@ -38,9 +38,21 @@ export const redirectToOutSystems = (landingCompany?: string) => {
     });
     const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
     Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
+
+    const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
+    console.log('do we have login code?', loginCode);
+    if (loginCode) {
+        Cookies.set('logged_state', 'true', {
+            expires: 30,
+            path: '/',
+            domain: currentDomain,
+            secure: true,
+        });
+    }
     const params = new URLSearchParams({
         action: 'real-account-signup',
         target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
+        login_code: loginCode || '',
     });
     const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
     const redirectURL = new URL(`${baseUrl}/redirect`);

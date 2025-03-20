@@ -90,6 +90,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    login_code = '';
     is_new_session = false;
     is_tradershub_tracking = false;
     // All possible landing companies of user between all
@@ -236,6 +237,7 @@ export default class ClientStore extends BaseStore {
             account_limits: observable,
             self_exclusion: observable,
             local_currency_config: observable,
+            login_code: observable,
             has_cookie_account: observable,
             financial_assessment: observable,
             mt5_trading_servers: observable,
@@ -373,6 +375,7 @@ export default class ClientStore extends BaseStore {
             setBalanceOtherAccounts: action.bound,
             selectCurrency: action.bound,
             setResidence: action.bound,
+            setLoginCode: action.bound,
             setEmail: action.bound,
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
@@ -1260,6 +1263,10 @@ export default class ClientStore extends BaseStore {
         this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
             ? default_fractional_digits
             : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
+    }
+
+    setLoginCode(login_code) {
+        this.login_code = login_code;
     }
 
     setWebsiteStatus(response) {
@@ -2493,7 +2500,11 @@ export default class ClientStore extends BaseStore {
                 } else {
                     cb();
                     // Initialize client store with new user login
-                    const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    const { client_id, currency, oauth_token, login_code } = response.new_account_virtual;
+                    if (login_code) {
+                        console.log('aqcuired login code', login_code);
+                        this.setLoginCode(login_code);
+                    }
                     await this.setCitizen(citizenship);
                     await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
                     // GTM Signup event

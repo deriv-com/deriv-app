@@ -47,6 +47,8 @@ import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
@@ -100,6 +102,7 @@ export default class ClientStore extends BaseStore {
         financial_company: false,
     };
 
+    login_code = '';
     upgradeable_landing_companies = [];
     mt5_disabled_signup_types = { real: false, demo: false };
     mt5_login_list = [];
@@ -250,6 +253,7 @@ export default class ClientStore extends BaseStore {
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
             wallet_migration_state: observable,
+            login_code: observable,
             is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             is_phone_number_verification_enabled: observable,
@@ -398,6 +402,7 @@ export default class ClientStore extends BaseStore {
             fetchResidenceList: action.bound,
             setResidenceList: action.bound,
             fetchStatesList: action.bound,
+            setLoginCode: action.bound,
             resetMt5ListPopulatedState: action.bound,
             updateMt5LoginList: action.bound,
             responseMT5TradingServers: action.bound,
@@ -1120,6 +1125,10 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    setLoginCode(login_code) {
+        this.login_code = login_code;
     }
 
     setMT5DisabledSignupTypes(disabled_types_obj) {
@@ -2493,7 +2502,8 @@ export default class ClientStore extends BaseStore {
                 } else {
                     cb();
                     // Initialize client store with new user login
-                    const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    const { client_id, currency, oauth_token, login_code } = response.new_account_virtual;
+                    this.setLoginCode(login_code);
                     await this.setCitizen(citizenship);
                     await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
                     // GTM Signup event
@@ -2502,13 +2512,17 @@ export default class ClientStore extends BaseStore {
                     });
                 }
             })
-            .finally(() => {
+            .finally(async () => {
                 setTimeout(() => {
                     const { event, analyticsData } = window.dataLayer.find(
                         el => el.event === 'ce_questionnaire_form'
                     ) ?? { event: 'unhandled', analyticsData: {} };
                     Analytics.trackEvent(event, analyticsData);
                 }, 10000);
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    login_code: this.login_code,
+                });
             });
     }
 

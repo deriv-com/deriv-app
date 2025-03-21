@@ -57,11 +57,11 @@
         "postcss": "^8.4.24",
         "prettier": "^3.0.0",
         "storybook": "^8.3.5",
-        "stylelint": "^13.13.1",
+        "stylelint": "^16.14.1",
         "stylelint-config-prettier": "^8.0.2",
         "stylelint-formatter-pretty": "^2.1.1",
         "stylelint-no-unsupported-browser-features": "^4.0.0",
-        "stylelint-selector-bem-pattern": "^2.1.0",
+        "stylelint-selector-bem-pattern": "^4.0.1",
         "stylelint-webpack-plugin": "^2.1.1",
         "ts-jest": "^29.2.5"
     },

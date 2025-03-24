@@ -31,10 +31,15 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
 
     const loginHandler = async () => {
         if (isOAuth2Enabled) {
-            await requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                postLoginRedirectUri: window.location.href,
-            });
+            try {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLoginRedirectUri: window.location.href,
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            }
         }
         redirectToLogin(false, getLanguage());
     };

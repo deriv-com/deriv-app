@@ -826,10 +826,7 @@ export default class TradersHubStore extends BaseStore {
 
             let region = '';
             if (this.hasMultipleSVGAccounts()) {
-                region =
-                    account.market_type !== 'financial' && account.landing_company_short !== 'bvi'
-                        ? ` - ${this.getServerName(account)}`
-                        : '';
+                region = '';
             }
             short_code_and_region = `${short_code}${region}`;
         }

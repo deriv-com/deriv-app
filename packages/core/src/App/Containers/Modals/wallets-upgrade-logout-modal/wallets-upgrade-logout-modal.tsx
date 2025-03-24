@@ -34,9 +34,14 @@ const WalletsUpgradeLogoutModal = observer(() => {
         handleLogout: async () => {
             await logout();
             if (isOAuth2Enabled) {
-                await requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                });
+                try {
+                    await requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
             } else {
                 redirectToLogin(false, getLanguage());
             }

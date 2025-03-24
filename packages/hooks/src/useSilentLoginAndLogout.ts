@@ -59,10 +59,15 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
-            requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                postLoginRedirectUri: window.location.href,
-            });
+            try {
+                requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLoginRedirectUri: window.location.href,
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            }
         }
 
         if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {

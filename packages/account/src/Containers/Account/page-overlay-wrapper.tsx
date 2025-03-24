@@ -24,7 +24,7 @@ type PageOverlayWrapperProps = {
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
     const { client, common, ui } = useStore();
-    const { logout } = client;
+    const { logout, setIsLoggingOut } = client;
     const { is_from_derivgo, is_from_tradershub_os } = common;
     const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
@@ -55,6 +55,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = async () => {
+        setIsLoggingOut(true);
         if (window.location.pathname.startsWith(shared_routes.phone_verification)) {
             setIsForcedToExitPnv(true);
             // Add a small delay to ensure state is updated before navigation because adding await doesn't work here

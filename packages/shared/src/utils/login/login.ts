@@ -36,6 +36,7 @@ export const loginUrl = ({ language }: TLoginUrl) => {
     const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
+
     const getOAuthUrl = () => {
         return `https://oauth.${
             deriv_urls.DERIV_HOST_NAME

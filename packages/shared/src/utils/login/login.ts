@@ -17,7 +17,6 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 };
 
 export const redirectToSignUp = () => {
-    // console.log(getHubSignupUrl());
     window.open(getHubSignupUrl());
 };
 

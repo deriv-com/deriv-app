@@ -53,7 +53,10 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
-    const account_currency = url_params.get('account');
+    const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+    if (url_params.get('account')) sessionStorage.setItem('account', url_params.get('account'));
+
     const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') ?? '{}');
 
     if (account_currency) {

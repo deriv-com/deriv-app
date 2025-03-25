@@ -27,7 +27,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
         featureFlag: 'hydra_be',
     }) as unknown as [TOAuth2EnabledAppList, boolean];
 
-    const isOAuth2Enabled = true;
+    const isOAuth2Enabled = useIsOAuth2Enabled(oAuth2EnabledApps, OAuth2EnabledAppsInitialised);
 
     const loginHandler = async () => {
         if (isOAuth2Enabled) {

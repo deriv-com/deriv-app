@@ -824,11 +824,7 @@ export default class TradersHubStore extends BaseStore {
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
 
-            let region = '';
-            if (this.hasMultipleSVGAccounts()) {
-                region = '';
-            }
-            short_code_and_region = `${short_code}${region}`;
+            short_code_and_region = `${short_code}`;
         }
         return short_code_and_region;
     }

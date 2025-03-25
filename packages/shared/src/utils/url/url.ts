@@ -161,13 +161,8 @@ export const getStaticUrl = (path = '', is_document = false, is_eu_url = false) 
 
 export const getHubSignupUrl = () => {
     const current_domain = process.env.NODE_ENV === 'production' ? deriv_urls.HUB_PRODUCTION : deriv_urls.HUB_STAGING;
-    let lang = default_language?.toLowerCase();
 
-    if (lang && lang !== 'en') {
-        lang = `?lang=${lang}`;
-    } else {
-        lang = `?lang=en`;
-    }
+    const lang = `?lang=${default_language?.toLowerCase() || 'en'}`;
 
     return `${current_domain}/signup${lang}`;
 };

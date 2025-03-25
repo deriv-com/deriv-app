@@ -27,7 +27,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
         featureFlag: 'hydra_be',
     }) as unknown as [TOAuth2EnabledAppList, boolean];
 
-    const isOAuth2Enabled = useIsOAuth2Enabled(oAuth2EnabledApps, OAuth2EnabledAppsInitialised);
+    const isOAuth2Enabled = true;
 
     const loginHandler = async () => {
         if (isOAuth2Enabled) {
@@ -35,6 +35,9 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                 await requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,
                     postLoginRedirectUri: window.location.href,
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
                 });
             } catch (err) {
                 // eslint-disable-next-line no-console

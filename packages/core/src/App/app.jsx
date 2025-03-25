@@ -96,7 +96,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         initCashierStore();
         initCFDStore();
         const loadSmartchartsStyles = () => {
-            import('@deriv/deriv-charts/dist/smartcharts.css');
+            import('@jimdanielswasswa/test-chart/dist/smartcharts.css');
         };
 
         initializeTranslations();

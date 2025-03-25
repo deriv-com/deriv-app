@@ -77,7 +77,7 @@
         "@deriv/api-types": "1.0.172",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "^2.8.0",
+        "@jimdanielswasswa/test-chart": "0.0.0-semantic-06",
         "@deriv/hooks": "^1.0.0",
         "@deriv/quill-icons": "2.2.1",
         "@deriv/shared": "^1.0.0",

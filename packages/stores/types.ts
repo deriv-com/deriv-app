@@ -514,6 +514,8 @@ export type TClientStore = {
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
+    is_logging_out: boolean;
+    setIsLoggingOut: (value: boolean) => void;
     is_switching: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;

@@ -29,6 +29,9 @@ const LoginButton = ({ className }) => {
                         await requestOidcAuthentication({
                             redirectCallbackUri: `${window.location.origin}/callback`,
                             postLoginRedirectUri: window.location.href,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
                         });
                     } catch (err) {
                         // eslint-disable-next-line no-console

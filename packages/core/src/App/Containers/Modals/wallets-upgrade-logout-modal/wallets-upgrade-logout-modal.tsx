@@ -37,6 +37,9 @@ const WalletsUpgradeLogoutModal = observer(() => {
                 try {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
                     });
                 } catch (err) {
                     // eslint-disable-next-line no-console

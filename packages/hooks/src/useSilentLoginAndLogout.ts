@@ -46,6 +46,21 @@ const useSilentLoginAndLogout = ({
         }
     }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
+    const requestOidcLogin = async () => {
+        try {
+            await requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                postLoginRedirectUri: window.location.href,
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+        }
+    };
+
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
         // NOTE: Remove this logic once social signup is intergated with OIDC
@@ -59,15 +74,7 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
-            try {
-                requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                    postLoginRedirectUri: window.location.href,
-                });
-            } catch (err) {
-                // eslint-disable-next-line no-console
-                console.error(err);
-            }
+            requestOidcLogin();
         }
 
         if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {

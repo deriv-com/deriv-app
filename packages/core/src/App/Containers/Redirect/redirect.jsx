@@ -348,9 +348,17 @@ const Redirect = observer(() => {
             );
             if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
                 if (isOAuth2Enabled) {
-                    requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                    });
+                    try {
+                        requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
+                        });
+                    } catch (err) {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    }
                 }
             }
 

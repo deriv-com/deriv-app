@@ -77,6 +77,7 @@ export default class ClientStore extends BaseStore {
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
     is_populating_ctrader_account_list = true;
+    is_logging_out = false;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -206,6 +207,7 @@ export default class ClientStore extends BaseStore {
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
             is_populating_ctrader_account_list: observable,
+            is_logging_out: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -358,6 +360,7 @@ export default class ClientStore extends BaseStore {
             resetMt5AccountListPopulation: action.bound,
             responseWebsiteStatus: action.bound,
             responseLandingCompany: action.bound,
+            setIsLoggingOut: action.bound,
             setStandpoint: action.bound,
             setLoginId: action.bound,
             setAccounts: action.bound,
@@ -929,6 +932,10 @@ export default class ClientStore extends BaseStore {
 
     get is_bot_allowed() {
         return this.isBotAllowed();
+    }
+
+    setIsLoggingOut(is_logging_out) {
+        this.is_logging_out = is_logging_out;
     }
 
     setPhoneSettings(phone_settings) {
@@ -2187,6 +2194,7 @@ export default class ClientStore extends BaseStore {
             await this.cleanUp();
 
             this.setLogout(true);
+            this.setIsLoggingOut(false);
         }
 
         return response;

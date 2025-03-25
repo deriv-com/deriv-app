@@ -54,9 +54,17 @@ const ResetPasswordModal = observer(() => {
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
             if (isOAuth2Enabled) {
-                requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                });
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
             } else {
                 redirectToLogin(false, getLanguage(), false);
             }

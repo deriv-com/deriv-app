@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-
+import Cookies from 'js-cookie';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader } from '@deriv/shared';
+import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -31,6 +31,8 @@ const RootComponent = observer(props => {
         prevent_redirect_to_hub,
         is_client_store_initialized,
         prevent_single_login,
+        is_logging_out,
+        is_logged_in,
         setPreventSingleLogin,
     } = client;
 
@@ -49,7 +51,14 @@ const RootComponent = observer(props => {
     }, []);
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub && is_client_store_initialized) {
+        if (
+            isHubRedirectionEnabled &&
+            has_wallet &&
+            !is_logging_out &&
+            is_logged_in &&
+            !prevent_redirect_to_hub &&
+            is_client_store_initialized
+        ) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
             // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
             localStorage.removeItem('config.account1');
@@ -67,6 +76,11 @@ const RootComponent = observer(props => {
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
             const accountCurrency = url_params.get('account');
+
+            const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
+                ? deriv_urls.DERIV_HOST_NAME
+                : window.location.hostname;
+            Cookies.set('wallet_account', true, { domain });
 
             switch (redirect_to_lowcode) {
                 case 'wallet':
@@ -86,6 +100,8 @@ const RootComponent = observer(props => {
         isHubRedirectionLoaded,
         isHubRedirectionEnabled,
         has_wallet,
+        is_logging_out,
+        is_logged_in,
         prevent_redirect_to_hub,
         prevent_single_login,
         is_client_store_initialized,

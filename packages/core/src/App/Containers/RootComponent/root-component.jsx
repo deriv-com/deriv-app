@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -35,8 +35,6 @@ const RootComponent = observer(props => {
         is_logged_in,
         setPreventSingleLogin,
     } = client;
-
-    const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
     const onWalletsOnboardingTourGuideCloseHandler = () => {
         setIsWalletsOnboardingTourGuideVisible(false);
@@ -111,7 +109,7 @@ const RootComponent = observer(props => {
         <Wallets
             isWalletsOnboardingTourGuideVisible={is_wallets_onboarding_tour_guide_visible}
             logout={async () => {
-                await oAuthLogout();
+                await logout();
             }}
             notificationMessagesUi={notification_messages_ui}
             onWalletsOnboardingTourGuideCloseHandler={onWalletsOnboardingTourGuideCloseHandler}

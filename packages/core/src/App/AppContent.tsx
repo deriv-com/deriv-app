@@ -59,21 +59,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
-        handleLogout: async () => {
-            await logout();
-        },
-    });
     const { isChangingToHubAppId } = useIsHubRedirectionEnabled();
 
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
 
-    const { is_single_logging_in } = useSilentLoginAndLogout({
-        is_client_store_initialized,
-        isOAuth2Enabled,
-        oAuthLogout,
-    });
+    const { is_single_logging_in } = useSilentLoginAndLogout();
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',

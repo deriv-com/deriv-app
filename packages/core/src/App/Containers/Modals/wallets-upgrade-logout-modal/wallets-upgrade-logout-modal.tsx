@@ -7,7 +7,6 @@ import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, Localize, localize } from '@deriv/translations';
 import { Analytics, TEvents } from '@deriv-com/analytics';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 import './wallets-upgrade-logout-modal.scss';
 
@@ -30,27 +29,6 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
 
-    const { oAuthLogout, isOAuth2Enabled } = useOauth2({
-        handleLogout: async () => {
-            await logout();
-            if (isOAuth2Enabled) {
-                try {
-                    await requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                    }).catch(err => {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    });
-                } catch (err) {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                }
-            } else {
-                redirectToLogin(false, getLanguage());
-            }
-        },
-    });
-
     React.useEffect(() => {
         trackAnalyticsEvent('open', account_mode);
     }, [account_mode]);
@@ -61,7 +39,8 @@ const WalletsUpgradeLogoutModal = observer(() => {
             expires: 0.5, // 12 hours expiration time
             secure: true,
         });
-        await oAuthLogout();
+        await logout();
+        redirectToLogin(false, getLanguage());
         trackAnalyticsEvent('click_cta', account_mode);
     };
 

@@ -7,7 +7,6 @@ import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/comp
 import {
     useAccountTransferVisible,
     useAuthorize,
-    useOauth2,
     useOnrampVisible,
     useP2PSettings,
     usePaymentAgentTransferVisible,
@@ -154,8 +153,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         history.push(routes.traders_hub);
         await logoutClient();
     }, [history, logoutClient, toggleDrawer]);
-
-    const { oAuthLogout } = useOauth2({ handleLogout });
 
     const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -455,7 +452,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item onClick={oAuthLogout} className='dc-mobile-drawer__item'>
+                                    <MobileDrawer.Item onClick={handleLogout} className='dc-mobile-drawer__item'>
                                         <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}

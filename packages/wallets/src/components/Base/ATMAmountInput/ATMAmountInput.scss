@@ -12,7 +12,6 @@
 
     &__input {
         all: unset;
-        position: absolute;
         inset: 0;
         text-align: start;
         color: var(--system-light-2-general-text, #333);
@@ -34,5 +33,13 @@
         height: 3rem;
         position: relative;
         flex-grow: 1;
+    }
+
+    &__value {
+        display: flex;
+    }
+
+    &__field {
+        display: flex;
     }
 }

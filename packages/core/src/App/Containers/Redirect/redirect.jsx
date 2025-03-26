@@ -3,20 +3,17 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
-import { useOauth2 } from '@deriv/hooks';
 import { getDomainName, loginUrl, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 import { WS } from 'Services';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { isOAuth2Enabled } = useOauth2({});
     const [queryCurrency, setQueryCurrency] = useState('USD');
 
     const {
@@ -347,19 +344,7 @@ const Redirect = observer(() => {
                 account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
             );
             if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
-                if (isOAuth2Enabled) {
-                    try {
-                        requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                        }).catch(err => {
-                            // eslint-disable-next-line no-console
-                            console.error(err);
-                        });
-                    } catch (err) {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    }
-                }
+                redirectToLogin(is_logged_in, getLanguage());
             }
 
             if (account_currency) {

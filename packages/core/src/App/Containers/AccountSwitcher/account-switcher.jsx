@@ -18,7 +18,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency, useOauth2 } from '@deriv/hooks';
+import { useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -110,15 +110,13 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         }
     };
 
-    const { oAuthLogout } = useOauth2({ handleLogout: logoutHandler });
-
     const handleLogout = async () => {
         closeAccountsDialog();
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        await oAuthLogout();
+        await logoutHandler();
     };
 
     const closeAccountsDialog = () => {

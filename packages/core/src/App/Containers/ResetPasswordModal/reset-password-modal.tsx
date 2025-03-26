@@ -3,12 +3,10 @@ import classNames from 'classnames';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS, removeActionParam } from '@deriv/shared';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 import { useDevice } from '@deriv-com/ui';
-import { useOauth2 } from '@deriv/hooks';
 
 type TResetPasswordModalValues = {
     password: string;
@@ -27,7 +25,6 @@ const ResetPasswordModal = observer(() => {
     } = ui;
 
     const { isDesktop } = useDevice();
-    const { isOAuth2Enabled } = useOauth2({ handleLogout: async () => {} });
 
     const onResetComplete = (
         error: TSocketError<'reset_password'>['error'] | null,
@@ -53,21 +50,7 @@ const ResetPasswordModal = observer(() => {
         setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            if (isOAuth2Enabled) {
-                try {
-                    requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                    }).catch(err => {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    });
-                } catch (err) {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
-                }
-            } else {
-                redirectToLogin(false, getLanguage(), false);
-            }
+            redirectToLogin(false, getLanguage(), false);
         });
     };
 

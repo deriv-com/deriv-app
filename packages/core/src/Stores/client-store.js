@@ -46,6 +46,7 @@ import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { OAuth2Logout } from '@deriv-com/auth-client';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -2183,21 +2184,34 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
-        // makes sure to clear the cached traders-hub data when logging out
-        localStorage.removeItem('traders_hub_store');
-        localStorage.removeItem('trade_store');
+        const logoutWS = async () => {
+            // makes sure to clear the cached traders-hub data when logging out
+            localStorage.removeItem('traders_hub_store');
+            localStorage.removeItem('trade_store');
 
-        // TODO: [add-client-action] - Move logout functionality to client store
-        const response = await requestLogout();
+            try {
+                // TODO: [add-client-action] - Move logout functionality to client store
+                await requestLogout();
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            }
 
-        if (response?.logout === 1) {
             await this.cleanUp();
 
             this.setLogout(true);
             this.setIsLoggingOut(false);
+        };
+        try {
+            await OAuth2Logout({
+                WSLogoutAndRedirect: logoutWS,
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                postLogoutRedirectUri: `${window.location.origin}/`,
+            });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
         }
-
-        return response;
     }
 
     setLogout(is_logged_out) {

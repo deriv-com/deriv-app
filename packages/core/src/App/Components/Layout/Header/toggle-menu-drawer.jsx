@@ -48,6 +48,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logging_in,
         is_virtual,
         logout: logoutClient,
+        setIsLoggingOut,
         should_allow_authentication,
         should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
@@ -145,6 +146,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
 
     const handleLogout = React.useCallback(async () => {
+        setIsLoggingOut(true);
         toggleDrawer();
         if (window.location.pathname.startsWith(routes.phone_verification)) {
             setIsForcedToExitPnv(true);

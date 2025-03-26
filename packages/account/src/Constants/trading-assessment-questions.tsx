@@ -2,9 +2,7 @@ import { localize } from '@deriv/translations';
 
 export const getTradingAssessmentQuestions = () => [
     {
-        question_text: localize(
-            'Do you understand that you could potentially lose 100% of the money you use to trade?'
-        ),
+        question_text: localize('Do you understand that you can lose all the money you use for trading?'),
         section: 'risk_tolerance',
         answer_options: [
             { text: localize('Yes'), value: 'Yes' },
@@ -14,7 +12,7 @@ export const getTradingAssessmentQuestions = () => [
         field_type: 'radio',
     },
     {
-        question_text: localize('How much knowledge and experience do you have in relation to online trading?'),
+        question_text: localize('What expertise and experience do you have in online trading?'),
         section: 'source_of_experience',
         form_control: 'source_of_experience',
         answer_options: [
@@ -99,7 +97,7 @@ export const getTradingAssessmentQuestions = () => [
                 ],
             },
             {
-                question_text: localize('How much experience do you have with other financial instruments?'),
+                question_text: localize('How long have you been trading financial products other than CFDs?'),
                 field_type: 'dropdown',
                 form_control: 'trading_experience_financial_instruments',
                 answer_options: [
@@ -123,7 +121,7 @@ export const getTradingAssessmentQuestions = () => [
             },
             {
                 question_text: localize(
-                    'How many trades have you placed with other financial instruments in the past 12 months?'
+                    'In the past 12 months, how many trades have you placed with financial products other than CFDs?'
                 ),
                 form_control: 'trading_frequency_financial_instruments',
                 field_type: 'dropdown',
@@ -203,7 +201,7 @@ export const getTradingAssessmentQuestions = () => [
     },
     {
         question_text: localize(
-            "Leverage trading is high-risk, so it's a good idea to use risk management features such as stop loss. Stop loss allows you to"
+            'Leverage trading carries significant risks, making risk management tools like stop loss essential. What can stop loss do?'
         ),
         section: 'trading_knowledge',
         form_control: 'leverage_trading_high_risk_stop_loss',

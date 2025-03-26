@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import type { TBinaryRoutes, TRoute } from 'Types';
+import Cookies from 'js-cookie';
 
 type TRouteWithSubRoutes = TRoute & TBinaryRoutes;
 
@@ -19,6 +20,11 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutes) => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
+        } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
+            const loggedState = Cookies.get('logged_state');
+            if (loggedState === 'false') {
+                redirectToLogin(route.is_logged_in, getLanguage());
+            }
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : { path: '' };
             const has_default_subroute = !isEmptyObject(default_subroute);

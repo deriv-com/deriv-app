@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import classnames from 'classnames';
 // import unFormatLocaleString from '@deriv/utils/src/unFormatLocaleString';
 import { Text } from '@deriv-com/ui';
@@ -21,6 +21,7 @@ type TProps = {
 const WalletTransferFormInputField: React.FC<TProps> = ({
     currency,
     disabled,
+    fractionDigits,
     isError,
     label,
     onBlur,
@@ -56,6 +57,9 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     }, [onBlur]);
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (fractionDigits && e.currentTarget.value.split('.').pop().length > fractionDigits) {
+            return;
+        }
         onChange?.(e);
     };
 

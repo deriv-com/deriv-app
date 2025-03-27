@@ -1,10 +1,9 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
-import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import type { TBinaryRoutes, TRoute } from 'Types';
-import Cookies from 'js-cookie';
 
 type TRouteWithSubRoutes = TRoute & TBinaryRoutes;
 
@@ -21,9 +20,17 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutes) => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
-            const loggedState = Cookies.get('logged_state');
-            if (loggedState === 'false') {
-                redirectToLogin(route.is_logged_in, getLanguage());
+            try {
+                requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLoginRedirectUri: window.location.href,
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
             }
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : { path: '' };

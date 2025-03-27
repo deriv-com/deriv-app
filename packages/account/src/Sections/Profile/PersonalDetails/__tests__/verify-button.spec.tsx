@@ -1,13 +1,15 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { screen, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+
+import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { VerifyButton } from '../verify-button';
-import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -63,12 +65,14 @@ describe('VerifyButton', () => {
             <Router history={history}>
                 <StoreProvider store={mock_store}>
                     <VerifyButton
+                        is_dynamic_fa_enabled={false}
                         is_verify_button_disabled={false}
                         next_email_otp_request_timer={mock_next_email_otp_request_timer}
                         values={mockAccountSettings}
                         residence_list={mockResidenceList}
                         states_list={mockStatesList}
                         setStatus={mock_set_status}
+                        version=''
                     />
                 </StoreProvider>
             </Router>
@@ -84,7 +88,7 @@ describe('VerifyButton', () => {
         expect(screen.getByText('Verify')).toBeInTheDocument();
     });
 
-    it('should redirect user to phone-verification page when clicked on Verify Button', () => {
+    it('should redirect user to phone-verification page when clicked on Verify Button', async () => {
         (useVerifyEmail as jest.Mock).mockReturnValue({
             sendPhoneNumberVerifyEmail: jest.fn(),
             WS: {
@@ -93,11 +97,11 @@ describe('VerifyButton', () => {
         });
         renderWithRouter();
         const verifyButton = screen.getByText('Verify');
-        userEvent.click(verifyButton);
+        await userEvent.click(verifyButton);
         expect(history.location.pathname).toBe(routes.phone_verification);
     });
 
-    it('should setStatus with error returned by WS', () => {
+    it('should setStatus with error returned by WS', async () => {
         (useVerifyEmail as jest.Mock).mockReturnValue({
             sendPhoneNumberVerifyEmail: jest.fn(),
             WS: {
@@ -110,7 +114,7 @@ describe('VerifyButton', () => {
         });
         renderWithRouter();
         const verifyButton = screen.getByText('Verify');
-        userEvent.click(verifyButton);
+        await userEvent.click(verifyButton);
         expect(mock_set_status).toBeCalledWith({ msg: 'Phone Taken', code: 'PhoneNumberTaken' });
     });
 

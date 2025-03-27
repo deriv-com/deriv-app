@@ -56,10 +56,12 @@ const RouteWithSubRoutes = observer(route => {
                                 redirectCallbackUri: `${window.location.origin}/callback`,
                                 postLoginRedirectUri: window.location.href,
                             }).catch(err => {
+                                setPreventSingleLogin(false);
                                 // eslint-disable-next-line no-console
                                 console.error(err);
                             });
                         } catch (err) {
+                            setPreventSingleLogin(false);
                             // eslint-disable-next-line no-console
                             console.error(err);
                         }
@@ -72,10 +74,12 @@ const RouteWithSubRoutes = observer(route => {
                         redirectCallbackUri: `${window.location.origin}/callback`,
                         postLoginRedirectUri: window.location.href,
                     }).catch(err => {
+                        setPreventSingleLogin(false);
                         // eslint-disable-next-line no-console
                         console.error(err);
                     });
                 } catch (err) {
+                    setPreventSingleLogin(true);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }

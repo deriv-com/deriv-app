@@ -35,8 +35,8 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         validation_errors,
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
-    const { name_plural, name } = getUnitMap()[duration_unit] ?? {};
-    const duration_unit_text = name_plural ?? name;
+    const { name_plural, name, name_singular } = getUnitMap()[duration_unit] ?? {};
+    const duration_unit_text = duration_unit === 't' && duration === 1 ? name_singular : (name_plural ?? name);
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
     const [expiry_time_string, setExpiryTimeString] = useState('');

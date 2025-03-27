@@ -516,7 +516,6 @@ export type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_logging_out: boolean;
-    setIsLoggingIn: (value: boolean) => void;
     setIsSingleLoggingIn: (value: boolean) => void;
     setIsLoggingOut: (value: boolean) => void;
     is_switching: boolean;

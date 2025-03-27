@@ -51,17 +51,14 @@ const RouteWithSubRoutes = observer(route => {
                 if (!is_single_logging_in) {
                     setTimeout(() => {
                         try {
-                            client.setIsLoggingIn(true);
                             requestOidcAuthentication({
                                 redirectCallbackUri: `${window.location.origin}/callback`,
                                 postLoginRedirectUri: window.location.href,
                             }).catch(err => {
-                                client.setIsLoggingIn(false);
                                 // eslint-disable-next-line no-console
                                 console.error(err);
                             });
                         } catch (err) {
-                            client.setIsLoggingIn(false);
                             // eslint-disable-next-line no-console
                             console.error(err);
                         }
@@ -69,17 +66,14 @@ const RouteWithSubRoutes = observer(route => {
                 }
             } else if (!is_single_logging_in) {
                 try {
-                    client.setIsLoggingIn(true);
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
                         postLoginRedirectUri: window.location.href,
                     }).catch(err => {
-                        client.setIsLoggingIn(false);
                         // eslint-disable-next-line no-console
                         console.error(err);
                     });
                 } catch (err) {
-                    client.setIsLoggingIn(false);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }

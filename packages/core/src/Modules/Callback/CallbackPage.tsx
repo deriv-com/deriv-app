@@ -18,7 +18,9 @@ const CallbackPage = () => {
                 const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
                 if (redirectTo) {
                     const params = new URLSearchParams(redirectTo);
-                    const queryAccount = params.get('account');
+                    const queryAccount = sessionStorage.getItem('account')
+                        ? sessionStorage.getItem('account')
+                        : params.get('account');
 
                     let matchingLoginId: string | undefined, matchingToken: string | undefined;
                     if (queryAccount?.toLowerCase() !== 'demo') {

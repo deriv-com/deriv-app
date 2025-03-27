@@ -9,7 +9,7 @@ const RouteWithSubRoutes = observer(route => {
     const { common, client } = useStore();
 
     const { checkAppId } = common;
-    const { is_single_logging_in } = client;
+    const { is_single_logging_in, setPreventSingleLogin } = client;
 
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
@@ -51,6 +51,7 @@ const RouteWithSubRoutes = observer(route => {
                 if (!is_single_logging_in) {
                     setTimeout(() => {
                         try {
+                            setPreventSingleLogin(true);
                             requestOidcAuthentication({
                                 redirectCallbackUri: `${window.location.origin}/callback`,
                                 postLoginRedirectUri: window.location.href,
@@ -66,6 +67,7 @@ const RouteWithSubRoutes = observer(route => {
                 }
             } else if (!is_single_logging_in) {
                 try {
+                    setPreventSingleLogin(true);
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
                         postLoginRedirectUri: window.location.href,

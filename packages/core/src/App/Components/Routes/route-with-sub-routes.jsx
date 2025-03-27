@@ -10,7 +10,7 @@ const RouteWithSubRoutes = observer(route => {
     const { common, client } = useStore();
 
     const { checkAppId } = common;
-    const { setPreventSingleLogin } = client;
+    const { setPreventSingleLogin, prevent_single_login } = client;
 
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
@@ -46,7 +46,13 @@ const RouteWithSubRoutes = observer(route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
+        } else if (
+            is_valid_route &&
+            route.is_authenticated &&
+            !route.is_logged_in &&
+            !route.is_logging_in &&
+            !prevent_single_login
+        ) {
             const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
             const clientTokens = JSON.parse(localStorage.getItem('config.tokens') || '{}');
             const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
@@ -88,7 +94,7 @@ const RouteWithSubRoutes = observer(route => {
                         console.error(err);
                     });
                 } catch (err) {
-                    setPreventSingleLogin(true);
+                    setPreventSingleLogin(false);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }

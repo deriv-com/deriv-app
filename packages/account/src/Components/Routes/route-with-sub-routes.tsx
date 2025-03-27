@@ -1,8 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
-import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { TBinaryRoutes, TRoute, TRouteConfig } from '../../Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & TBinaryRoutes;
@@ -20,8 +19,6 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute: TRoute = (route.routes ?? []).reduce(
                 (acc: TRoute, cur: TRoute) => ({

@@ -124,9 +124,9 @@ const renderField = (
     const FORM_VALUES: TInitialTransferFormValues = {
         activeAmountFieldName: type,
         fromAccount: undefined,
-        fromAmount: 0,
+        fromAmount: '',
         toAccount: undefined,
-        toAmount: 0,
+        toAmount: '',
         [type.replace('Amount', 'Account')]: ACCOUNTS.find(acc => acc.currency === currency),
         ...optionalConfig,
     };
@@ -149,104 +149,46 @@ const renderField = (
     );
 };
 
-const getField = () => screen.getByDisplayValue(/^\d+\.\d+$/u);
-
 describe('TransferFormAmountInput', () => {
-    it('renders 2 inputs in case of fiat currency', () => {
+    it('renders 1 input in case of fiat currency and toAccount is not provided', () => {
         renderField('fromAmount', 'USD');
 
         const fields = screen.getAllByRole('textbox');
-        expect(fields).toHaveLength(2);
+        expect(fields).toHaveLength(1);
     });
 
-    it('renders 2 inputs in case of crypto currency', () => {
+    it('renders 1 input in case of crypto currency and toAccount is not provided', () => {
         renderField('toAmount', 'BTC');
 
         const fields = screen.getAllByRole('textbox');
-        expect(fields).toHaveLength(2);
+        expect(fields).toHaveLength(1);
     });
 
-    it('has 2 decimal places in case of USD', () => {
+    it('has 2 decimal places placeholder in case of USD', () => {
         renderField('fromAmount', 'USD');
 
-        const field = getField();
-        expect(field).toHaveValue('0.00');
+        const field = screen.getByPlaceholderText('0.00 USD');
+        expect(field).toBeInTheDocument();
     });
 
-    it('has 8 decimal places in case of BTC', () => {
+    it('has 8 decimal places placeholder in case of BTC', () => {
         renderField('fromAmount', 'BTC');
 
-        const field = getField();
-        expect(field).toHaveValue('0.00000000');
+        const field = screen.getByPlaceholderText('0.00000000 BTC');
+        expect(field).toBeInTheDocument();
     });
 
-    it('has 8 max digits restriction in case of USD', async () => {
+    it('should paste an parsed value without commas', async () => {
         renderField('fromAmount', 'USD');
 
-        const field = getField();
-        await userEvent.type(field, '9999999999999999999999999999');
-        expect(field).toHaveValue('999,999.99');
-    });
-
-    it('has 9 max digits restriction in case of BTC', async () => {
-        renderField('fromAmount', 'BTC');
-
-        const field = getField();
-        await userEvent.type(field, '9999999999999999999999999999');
-        expect(field).toHaveValue('9.99999999');
-    });
-
-    it('should not react to pasting when exceeding max value in case of USD', async () => {
-        renderField('fromAmount', 'USD');
-
-        const field = getField();
-        const pastedVal = '9999999';
+        const field = screen.getByRole('textbox');
+        const pastedVal = '123,456.78';
         await userEvent.paste(field, pastedVal, {
             clipboardData: {
-                getData: (format: string) => (format === 'Text' ? pastedVal : ''),
+                getData: (format: string) => (format === 'text' ? pastedVal : ''),
             } as DataTransfer,
         });
-        expect(field).toHaveValue('0.00');
-    });
-
-    it('should not react to pasting when exceeding max value in case of BTC', async () => {
-        renderField('fromAmount', 'BTC');
-
-        const field = getField();
-        const pastedVal = '9999999999';
-        await userEvent.paste(field, pastedVal, {
-            clipboardData: {
-                getData: (format: string) => (format === 'Text' ? pastedVal : ''),
-            } as DataTransfer,
-        });
-        expect(field).toHaveValue('0.00000000');
-    });
-
-    it('should paste an integer value as an integer in case of fiat (USD)', async () => {
-        renderField('fromAmount', 'USD');
-
-        const field = getField();
-        const pastedVal = '123';
-        await userEvent.paste(field, pastedVal, {
-            clipboardData: {
-                getData: (format: string) => (format === 'Text' ? pastedVal : ''),
-            } as DataTransfer,
-        });
-        expect(field).toHaveValue('123.00');
-    });
-
-    it('should paste an integer value as a fraction in case of crypto (BTC)', async () => {
-        renderField('fromAmount', 'BTC');
-
-        const field = getField();
-        const pastedVal = '123';
-        await userEvent.paste(field, pastedVal, {
-            clipboardData: {
-                getData: (format: string) => (format === 'Text' ? pastedVal : ''),
-            } as DataTransfer,
-        });
-        await userEvent.tab();
-        expect(field).toHaveValue('0.00000123');
+        expect(field).toHaveValue('123456.78');
     });
 
     it('refetches exchangeRatesAndLimits when the countdown is complete', async () => {
@@ -270,67 +212,5 @@ describe('TransferFormAmountInput', () => {
         };
         renderField('toAmount', 'USD', config);
         expect(screen.getByText('Estimated amount')).toBeInTheDocument();
-    });
-
-    it('calls setValues with the same amount for the fromAmount and toAmount when the currency is the same for both accounts', () => {
-        const mockSetValues = jest.fn((callback: unknown) => {
-            if (typeof callback === 'function') {
-                return callback();
-            }
-        });
-        const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');
-        (useFormikContextSpy as jest.Mock).mockImplementation(() => ({
-            errors: {},
-            isSubmitting: false,
-            isValidating: false,
-            setValues: mockSetValues,
-            submitCount: 0,
-            touched: {},
-            values: {
-                activeAmountFieldName: 'fromAmount',
-                fromAmount: 1.1,
-                toAmount: 0.00000001,
-            },
-        }));
-        const config = {
-            toAccount: ACCOUNTS[0], // USD account
-        };
-        renderField('fromAmount', 'USD', config);
-        expect(mockSetValues).toHaveBeenCalled();
-        expect(mockSetValues.mock.calls[0][0]).toBeInstanceOf(Function);
-        const { fromAmount: returnedFromAmount, toAmount: returnedToAmount } = mockSetValues.mock.results[1].value;
-        expect(returnedFromAmount).toEqual(1.1);
-        expect(returnedToAmount).toEqual(1.1);
-    });
-
-    it('sets the toAmount when isFromAmountField is true', async () => {
-        const toAccount = ACCOUNTS[1]; // BTC account
-        const mockSetFieldValue = jest.fn();
-        const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');
-        (useFormikContextSpy as jest.Mock).mockImplementationOnce(() => ({
-            errors: {},
-            isSubmitting: false,
-            isValidating: false,
-            setFieldValue: mockSetFieldValue,
-            setValues: jest.fn(),
-            submitCount: 0,
-            touched: {},
-            values: {
-                activeAmountFieldName: 'fromAmount',
-                fromAccount: ACCOUNTS[0], // USD account
-                fromAmount: 1000,
-                toAccount,
-                toAmount: 0.1,
-            },
-        }));
-        const config = {
-            fromAmount: 1000,
-            toAccount,
-        };
-        await act(async () => {
-            renderField('fromAmount', 'USD', config);
-        });
-
-        expect(mockSetFieldValue).toHaveBeenCalledWith('toAmount', 0.015);
     });
 });

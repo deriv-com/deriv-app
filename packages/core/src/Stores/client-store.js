@@ -84,6 +84,7 @@ export default class ClientStore extends BaseStore {
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_single_logging_in = false;
     is_client_store_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
@@ -214,6 +215,7 @@ export default class ClientStore extends BaseStore {
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_single_logging_in: observable,
             is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -368,6 +370,7 @@ export default class ClientStore extends BaseStore {
             setUrlParams: action.bound,
             setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
+            setIsSingleLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
             switchAccountHandler: action.bound,
@@ -1925,6 +1928,10 @@ export default class ClientStore extends BaseStore {
 
     setIsLoggingIn(bool) {
         this.is_logging_in = bool;
+    }
+
+    setIsSingleLoggingIn(bool) {
+        this.is_single_logging_in = bool;
     }
 
     setPreSwitchAccount(is_pre_switch) {

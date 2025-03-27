@@ -36,7 +36,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     } = useTraderStore();
     const { addSnackbar } = useSnackbar();
     const { name_plural, name, name_singular } = getUnitMap()[duration_unit] ?? {};
-    const duration_unit_text = duration_unit === 't' && duration === 1 ? name_singular : (name_plural ?? name);
+    const duration_unit_text = (duration === 1 ? name_singular : name_plural) ?? name;
     const [selected_hour, setSelectedHour] = useState<number[]>([]);
     const [is_open, setOpen] = useState(false);
     const [expiry_time_string, setExpiryTimeString] = useState('');
@@ -117,7 +117,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             if (duration_unit === 'm' && duration > 59) {
                 const hours = Math.floor(duration / 60);
                 const minutes = duration % 60;
-                return `${hours} ${localize('hours')} ${minutes ? `${minutes} ${localize('minutes')}` : ''} `;
+                return `${hours} ${hours > 1 ? localize('hours') : localize('hour')} ${minutes ? `${minutes} ${minutes > 1 ? localize('minutes') : localize('minute')}` : ''} `;
             } else if (duration_unit === 'd') {
                 if (!formatted_date) {
                     return '';

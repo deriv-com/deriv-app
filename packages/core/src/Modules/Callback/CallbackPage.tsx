@@ -10,6 +10,7 @@ const CallbackPage = () => {
     return (
         <Callback
             onSignInSuccess={(tokens: Record<string, string>) => {
+                localStorage.removeItem('is_single_logging_in');
                 localStorage.setItem('config.tokens', JSON.stringify(tokens));
                 localStorage.setItem('config.account1', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);

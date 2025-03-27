@@ -35,7 +35,7 @@ const useSilentLoginAndLogout = ({
     // state to manage and ensure OIDC callback functions are invoked once only
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
-    const { prevent_single_login } = client;
+    const { prevent_single_login, setIsSingleLoggingIn: setClientIsSingleLoggingIn } = client;
 
     useEffect(() => {
         const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
@@ -52,10 +52,12 @@ const useSilentLoginAndLogout = ({
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 postLoginRedirectUri: window.location.href,
             }).catch(err => {
+                setClientIsSingleLoggingIn(false);
                 // eslint-disable-next-line no-console
                 console.error(err);
             });
         } catch (err) {
+            setClientIsSingleLoggingIn(false);
             // eslint-disable-next-line no-console
             console.error(err);
         }
@@ -74,6 +76,7 @@ const useSilentLoginAndLogout = ({
             // Perform silent login
             if (isAuthenticating.current) return;
             isAuthenticating.current = true;
+            setClientIsSingleLoggingIn(true);
             requestOidcLogin();
         }
 

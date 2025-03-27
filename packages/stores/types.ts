@@ -505,6 +505,7 @@ export type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_single_logging_in: boolean;
     is_low_risk: boolean;
     is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
@@ -515,6 +516,8 @@ export type TClientStore = {
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
     is_logging_out: boolean;
+    setIsLoggingIn: (value: boolean) => void;
+    setIsSingleLoggingIn: (value: boolean) => void;
     setIsLoggingOut: (value: boolean) => void;
     is_switching: boolean;
     is_high_risk: boolean;

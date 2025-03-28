@@ -43,7 +43,7 @@ const CallbackPage = () => {
                         });
                     } else {
                         Object.keys(tokens).find(key => {
-                            if (key.startsWith('cur') && tokens[key] === queryAccount) {
+                            if (key.startsWith('cur') && tokens[key] === 'USD') {
                                 // get currency sequence number, e.g. cur1=1, cur2=2
                                 const sequence = key.replace('cur', '');
                                 const isDemo = tokens[`acct${sequence}`]?.startsWith('VRTC');

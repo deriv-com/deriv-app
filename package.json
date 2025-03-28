@@ -9,8 +9,7 @@
     },
     "overrides": {
         "eslint": "^8.57.1",
-        "react-dom": "^17.0.2",
-        "use-sync-external-store": "^1.2.0"
+        "react-dom": "^17.0.2"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
@@ -75,9 +74,9 @@
         "test:eslint-all": "nx run-many --target=test:eslint",
         "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
         "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
-        "bootstrap:ci": "npm ci --force --verbose",
+        "bootstrap:ci": "npm ci --strict-peer-deps --verbose",
         "bootstrap": "npm ci --strict-peer-deps --verbose",
-        "bootstrap:dev": "npm install --force --verbose",
+        "bootstrap:dev": "npm install --strict-peer-deps --verbose",
         "build:publish": "npm run build:publish --workspace=@deriv/* --",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
         "build:travis": "nx run-many --projects=@deriv/shared,@deriv/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/p2p,@deriv/cfd,@deriv/reports --target=build:travis",
@@ -115,7 +114,8 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-toastify": "^9.1.3",
-        "typescript": "^4.6.3"
+        "typescript": "^4.6.3",
+        "@jimdanielswasswa/test-chart": "0.0.0-semantic-08"
     },
     "optionalDependencies": {
         "fsevents": "^2.3.2"

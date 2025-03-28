@@ -14,62 +14,62 @@ describe('AccumulatorsTradeDescription', () => {
 
         expect(
             screen.getByText(
-                /Your stake will continue to grow as long as the current spot price remains within a specified/i
+                /Your payout will continue to grow as long as the current spot price remains within a specified/i
             )
         ).toBeInTheDocument();
         expect(screen.getByText(/This feature is unavailable for ongoing accumulator contracts./i)).toBeInTheDocument();
     });
 
-    it('should call onTermClick if user clicks on term "growth rate"', () => {
+    it('should call onTermClick if user clicks on term "growth rate"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().GROWTH_RATE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
 
-    it('should call onTermClick if user clicks on term "range"', () => {
+    it('should call onTermClick if user clicks on term "range"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().RANGE.toLowerCase() }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().RANGE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
 
-    it('should call onTermClick if user clicks on term "previous spot price"', () => {
+    it('should call onTermClick if user clicks on term "previous spot price"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().PREVIOUS_SPOT_PRICE.toLowerCase() }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().PREVIOUS_SPOT_PRICE.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
 
-    it('should call onTermClick if user clicks on term "payout"', () => {
+    it('should call onTermClick if user clicks on term "payout"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
 
-    it('should call onTermClick if user clicks on term "Take profit"', () => {
+    it('should call onTermClick if user clicks on term "Take profit"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().TAKE_PROFIT }));
 
         expect(onTermClick).toHaveBeenCalled();
     });
 
-    it('should call onTermClick if user clicks on term "slippage risk"', () => {
+    it('should call onTermClick if user clicks on term "slippage risk"', async () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.toLowerCase() }));
+        await userEvent.click(screen.getByRole('button', { name: getTerm().SLIPPAGE_RISK.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

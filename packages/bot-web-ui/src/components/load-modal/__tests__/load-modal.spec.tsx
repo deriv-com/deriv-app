@@ -121,7 +121,7 @@ describe('LoadModal', () => {
         zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
     });
 
-    it('should open and upload a file when we select a file from local on load modal preview', () => {
+    it('should open and upload a file when we select a file from local on load modal preview', async () => {
         mock_store.ui.is_desktop = true;
         render(<LoadModal />, { wrapper });
 

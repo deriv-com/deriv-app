@@ -802,6 +802,9 @@ type TUiStore = {
     is_from_signup_account: boolean;
     is_from_success_deposit_modal: boolean;
     is_dark_mode_on: boolean;
+    theme_variant: 'default' | 'deriv' | 'champion';
+    is_colourblind_mode_on: boolean;
+    is_glass_crosshair_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
     is_reset_password_modal_visible: boolean;
@@ -848,6 +851,9 @@ type TUiStore = {
     setAppContentsScrollRef: (ref: React.MutableRefObject<null | HTMLDivElement>) => void;
     setCurrentFocus: (value: string | null) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setThemeVariant: (variant: 'default' | 'deriv' | 'champion') => string;
+    setColourblindMode: (is_colourblind_mode_on: boolean) => boolean;
+    toggleGlassCrosshairMode: () => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
     setIsForcedToExitPnv: (value: boolean) => void;
     setIsPhoneVerificationCompleted: (value: boolean) => void;

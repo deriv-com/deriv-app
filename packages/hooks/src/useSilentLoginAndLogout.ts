@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
@@ -22,7 +22,6 @@ const useSilentLoginAndLogout = ({
     oAuthLogout: () => Promise<void>;
 }) => {
     const loggedState = Cookies.get('logged_state');
-    const [is_single_logging_in, setIsSingleLoggingIn] = useState(false);
 
     const { client } = useStore();
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
@@ -40,9 +39,9 @@ const useSilentLoginAndLogout = ({
     useEffect(() => {
         const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
         if (willEventuallySSO && !isSilentLoginExcluded) {
-            setIsSingleLoggingIn(true);
+            setClientIsSingleLoggingIn(true);
         } else {
-            setIsSingleLoggingIn(false);
+            setClientIsSingleLoggingIn(false);
         }
     }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
@@ -65,6 +64,7 @@ const useSilentLoginAndLogout = ({
 
     useEffect(() => {
         if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
+
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
@@ -84,6 +84,7 @@ const useSilentLoginAndLogout = ({
             // Perform single logout
             if (isLoggingOut.current) return;
             isLoggingOut.current = true;
+            setClientIsSingleLoggingIn(true);
             oAuthLogout();
         }
     }, [
@@ -94,8 +95,6 @@ const useSilentLoginAndLogout = ({
         isSilentLoginExcluded,
         prevent_single_login,
     ]);
-
-    return { is_single_logging_in };
 };
 
 export default useSilentLoginAndLogout;

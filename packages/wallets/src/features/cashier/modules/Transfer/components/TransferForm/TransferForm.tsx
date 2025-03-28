@@ -18,10 +18,10 @@ const TransferForm = () => {
     const initialValues: TInitialTransferFormValues = {
         activeAmountFieldName: undefined,
         fromAccount: activeWallet,
-        fromAmount: 0,
+        fromAmount: '',
         isError: false,
         toAccount: undefined,
-        toAmount: 0,
+        toAmount: '',
     };
 
     const onSubmit = useCallback(
@@ -37,7 +37,10 @@ const TransferForm = () => {
                 {({ handleSubmit, values }) => {
                     const { fromAccount, fromAmount, isError, toAccount, toAmount } = values;
                     const isTransferBtnDisabled =
-                        !fromAmount || !toAmount || isError || [fromAccount, toAccount].some(hasPlatformStatus);
+                        !Number(fromAmount) ||
+                        !Number(toAmount) ||
+                        isError ||
+                        [fromAccount, toAccount].some(hasPlatformStatus);
 
                     return (
                         <form className='wallets-transfer__form' onSubmit={handleSubmit}>

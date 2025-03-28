@@ -256,45 +256,61 @@ export const getClosestTimeToCurrentGMT = (interval: number): string => {
     return `${newHours}:${newMinutes}`;
 };
 
-export const getOptionPerUnit = (
-    unit: string,
-    duration_min_max: Record<string, { min: number; max: number }>
-): { value: number; label: React.ReactNode }[][] => {
-    const generateOptions = (start: number, end: number, label: React.ReactNode) => {
-        return Array.from({ length: end - start + 1 }, (_, i) => ({
-            value: start + i,
+type TDurationOption = {
+    value: number;
+    label: React.ReactNode;
+};
+
+const generateOptions = (
+    startValue: number,
+    endValue: number,
+    singularLabel: React.ReactNode,
+    pluralLabel: React.ReactNode
+): TDurationOption[] => {
+    const length = endValue - startValue + 1;
+    return Array.from({ length }, (_, index): TDurationOption => {
+        const value = startValue + index;
+        return {
+            value,
             label: (
-                <React.Fragment key={start + i}>
-                    {start + i} {label}
+                <React.Fragment key={value}>
+                    {value} {value > 1 ? pluralLabel : singularLabel}
                 </React.Fragment>
             ),
-        }));
-    };
+        };
+    });
+};
 
+export const getOptionPerUnit = (unit: string, duration_min_max: Record<string, { min: number; max: number }>) => {
     const { intraday, tick, daily } = duration_min_max;
     const unitConfig: Record<
         string,
-        { start: number; end: number; label: React.ReactNode } | (() => { value: number; label: React.ReactNode }[][])
+        | { start: number; end: number; labelSingle: React.ReactNode; labelPlural: React.ReactNode }
+        | (() => { value: number; label: React.ReactNode }[][])
     > = {
         m: {
             start: Math.max(1, intraday?.min / 60),
             end: Math.min(59, intraday?.max / 60),
-            label: <Localize i18n_default_text='min' />,
+            labelSingle: <Localize i18n_default_text='min' />,
+            labelPlural: <Localize i18n_default_text='min' />,
         },
         s: {
             start: Math.max(15, intraday?.min),
             end: Math.min(59, intraday?.max),
-            label: <Localize i18n_default_text='sec' />,
+            labelSingle: <Localize i18n_default_text='sec' />,
+            labelPlural: <Localize i18n_default_text='sec' />,
         },
         d: {
             start: Math.max(1, daily?.min / 86400),
             end: Math.min(365, daily?.max / 86400),
-            label: <Localize i18n_default_text='days' />,
+            labelSingle: <Localize i18n_default_text='days' />,
+            labelPlural: <Localize i18n_default_text='days' />,
         },
         t: {
             start: Math.max(1, tick?.min),
             end: Math.min(10, tick?.max),
-            label: <Localize i18n_default_text='tick' />,
+            labelSingle: <Localize i18n_default_text='tick' />,
+            labelPlural: <Localize i18n_default_text='ticks' />,
         },
     };
 
@@ -305,8 +321,8 @@ export const getOptionPerUnit = (
     }
 
     if (config) {
-        const { start, end, label } = config;
-        return [generateOptions(Math.ceil(start), Math.floor(end), label)];
+        const { start, end, labelSingle, labelPlural } = config;
+        return [generateOptions(Math.ceil(start), Math.floor(end), labelSingle, labelPlural)];
     }
 
     return [[]];

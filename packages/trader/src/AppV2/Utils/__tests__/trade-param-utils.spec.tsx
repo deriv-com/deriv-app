@@ -339,7 +339,7 @@ describe('getOptionPerUnit', () => {
         const result = getOptionPerUnit('t', duration_min_max);
         const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(view).toEqual([...Array(6)].map((_, i) => `${i + 5} tick`));
+        expect(view).toEqual([...Array(6)].map((_, i) => `${i + 5} ticks`));
     });
 
     test('returns correct options for ticks (t) when 5 ticks are required', () => {
@@ -347,7 +347,7 @@ describe('getOptionPerUnit', () => {
         const result = getOptionPerUnit('t', modifiedDuration);
         const view = renderOptions(result[0]);
         expect(result).toHaveLength(1);
-        expect(view).toEqual([...Array(10)].map((_, i) => `${i + 1} tick`));
+        expect(view).toEqual([...Array(10)].map((_, i) => `${i + 1} ${i + 1 > 1 ? 'ticks' : 'tick'}`));
     });
 });
 

@@ -25,6 +25,10 @@ import { usePrevious } from '@deriv/components';
 import { checkIsServiceModalError } from 'AppV2/Utils/layout-utils';
 import { sendDtraderV2PurchaseToAnalytics } from '../../../Analytics';
 
+const BASIS_STAKE = 'stake';
+const BASIS_PAYOUT = 'payout';
+const BASIS_NAME = 'basis';
+
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
     const { isMobile } = useDevice();
@@ -36,6 +40,8 @@ const PurchaseButton = observer(() => {
         ui: { is_mf_verification_pending_modal_visible, setIsMFVericationPendingModal },
     } = useStore();
     const {
+        basis,
+        basis_list,
         contract_type,
         currency,
         has_open_accu_contract,
@@ -50,6 +56,7 @@ const PurchaseButton = observer(() => {
         proposal_info,
         purchase_info,
         onPurchaseV2,
+        onChange,
         symbol,
         trade_type_tab,
         trade_types,
@@ -64,12 +71,11 @@ const PurchaseButton = observer(() => {
             )
     );
     const mf_account_status = useMFAccountStatus();
+    const basis_options = React.useMemo(
+        () => (basis_list.length ? basis_list.map(item => item.value) : []),
+        [basis_list]
+    );
 
-    /*TODO: add error handling when design will be ready. validation_errors can be taken from useTraderStore
-    const hasError = (info: TTradeStore['proposal_info'][string]) => {
-        const has_validation_error = Object.values(validation_errors).some(e => e.length);
-        return has_validation_error || info?.has_error
-    };*/
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
     const purchase_button_content_props = {
         currency,
@@ -126,6 +132,15 @@ const PurchaseButton = observer(() => {
     React.useEffect(() => {
         if (is_purchase_enabled) setLoadingButtonIndex(null);
     }, [is_purchase_enabled]);
+
+    React.useEffect(() => {
+        const shouldSwitchToStake =
+            basis === BASIS_PAYOUT && basis_options.length > 1 && basis_options.includes(BASIS_STAKE);
+        if (shouldSwitchToStake) {
+            onChange({ target: { value: BASIS_STAKE, name: BASIS_NAME } });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [basis, basis_options]);
 
     React.useEffect(() => {
         const is_animated =

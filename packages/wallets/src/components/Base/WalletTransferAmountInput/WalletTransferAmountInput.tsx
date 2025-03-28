@@ -76,6 +76,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                             onChange(pastedValue);
                         }}
                         placeholder={placeholder}
+                        type='tel'
                         value={value}
                     />
                 </Text>

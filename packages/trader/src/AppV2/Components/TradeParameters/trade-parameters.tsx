@@ -41,7 +41,6 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
             {is_minimized && (
                 <React.Fragment>
                     {isVisible('expiration') && <MultipliersExpirationInfo />}
-                    {isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
                     {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
                     {isVisible('allow_equals') && <AllowEquals />}
                     {isVisible('payout') && <PayoutInfo />}
@@ -70,8 +69,8 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
                 {isVisible('payout') && !is_minimized && <PayoutInfo />}
-                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
+            {isVisible('mult_info_display') && <MultipliersDealCancellationInfo is_minimized={is_minimized} />}
         </div>
     );
 });

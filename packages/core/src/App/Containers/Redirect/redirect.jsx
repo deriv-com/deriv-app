@@ -373,7 +373,8 @@ const Redirect = observer(() => {
                     matching_loginid = Object.keys(client_account_lists).find(
                         loginid =>
                             client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
-                            client_account_lists[loginid].account_category === 'trading'
+                            client_account_lists[loginid].account_category === 'trading' &&
+                            !client_account_lists[loginid]?.is_virtual
                     );
                 }
 

@@ -654,6 +654,7 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                                 {isPhoneNumberVerificationEnabled && (
                                                     <VerifyButton
+                                                        is_dynamic_fa_enabled={isDynamicFAEnabled}
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||
                                                             !isValid ||
@@ -669,6 +670,7 @@ const PersonalDetailsForm = observer(() => {
                                                         states_list={states_list}
                                                         next_email_otp_request_timer={next_email_otp_request_timer}
                                                         setStatus={setStatus}
+                                                        version={versionRef.current}
                                                     />
                                                 )}
                                             </div>

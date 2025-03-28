@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
-import { Analytics } from '@deriv-com/analytics';
 import { LocalStorageUtils, URLConstants, URLUtils } from '@deriv-com/utils';
 import { LANDING_COMPANIES } from '../constants/constants';
 
@@ -125,33 +124,25 @@ export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
 });
 
 export const redirectToOutSystems = (landingCompany?: string, currency = '') => {
-    // redirect to OS Tradershub if feature is enabled
-    const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
-        'trigger_os_real_account_creation',
-        false
-    );
+    const clientAccounts = getAccountsFromLocalStorage() ?? {};
+    if (!Object.keys(clientAccounts).length) return;
+    const accountsWithTokens: Record<string, unknown> = {};
+    Object.keys(clientAccounts).forEach(loginid => {
+        const account = clientAccounts[loginid];
+        accountsWithTokens[loginid] = { token: account.token };
+    });
+    const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
 
-    if (isOutSystemsRealAccountCreationEnabled) {
-        const clientAccounts = getAccountsFromLocalStorage() ?? {};
-        if (!Object.keys(clientAccounts).length) return;
-        const accountsWithTokens: Record<string, unknown> = {};
-        Object.keys(clientAccounts).forEach(loginid => {
-            const account = clientAccounts[loginid];
-            accountsWithTokens[loginid] = { token: account.token };
-        });
-        const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+    Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
 
-        Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
+    const params = new URLSearchParams({
+        action: 'real-account-signup',
+        ...(currency ? { currency } : {}),
+        target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
+    });
+    const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
 
-        const params = new URLSearchParams({
-            action: 'real-account-signup',
-            ...(currency ? { currency } : {}),
-            target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
-        });
-        const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
-
-        const redirectURL = new URL(`${baseUrl}/redirect`);
-        redirectURL.search = params.toString();
-        return (window.location.href = redirectURL.toString());
-    }
+    const redirectURL = new URL(`${baseUrl}/redirect`);
+    redirectURL.search = params.toString();
+    return (window.location.href = redirectURL.toString());
 };

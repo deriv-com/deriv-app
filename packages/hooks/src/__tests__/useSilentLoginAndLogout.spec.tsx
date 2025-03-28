@@ -18,7 +18,7 @@ jest.mock('@deriv-com/auth-client', () => ({
 describe('useSilentLoginAndLogout', () => {
     const mockOAuthLogout = jest.fn();
     const mockStoreData = mockStore({
-        client: { prevent_single_login: false },
+        client: { prevent_single_login: false, is_single_logging_in: false, setIsSingleLoggingIn: jest.fn() },
     });
     const wrapper = ({ children }: { children: JSX.Element }) => (
         <StoreProvider store={mockStoreData}>{children}</StoreProvider>

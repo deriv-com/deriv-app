@@ -18,8 +18,6 @@ import { useTranslations, localize } from '@deriv-com/translations';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
-import P2PIFrame from 'Modules/P2PIFrame';
-
 import initDatadog from '../Utils/Datadog';
 import initHotjar from '../Utils/Hotjar';
 
@@ -50,7 +48,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         setIsPhoneNumberVerificationEnabled,
         setIsCountryCodeDropdownEnabled,
         accounts,
-        prevent_single_login,
     } = store.client;
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
@@ -195,7 +192,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

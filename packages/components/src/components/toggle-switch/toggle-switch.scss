@@ -7,7 +7,6 @@
         display: flex;
         align-items: center;
         margin-left: auto;
-        margin-right: 1.6rem;
         padding-left: 0.4rem;
         cursor: pointer;
         width: 4.9rem;
@@ -15,6 +14,7 @@
         background: var(--general-disabled);
         border-radius: 4.9rem;
         transition: background-color 0.25s;
+        position: relative;
     }
     &__button {
         width: 1.9rem;
@@ -22,11 +22,12 @@
         border-radius: 1.9rem;
         transition: transform 0.25s;
         background: var(--text-colored-background);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     }
     &:checked + &__label {
         background: var(--text-profit-success);
     }
     &:checked + &__label &__button {
-        transform: translateX(2.25rem);
+        transform: translateX(1.25rem);
     }
 }

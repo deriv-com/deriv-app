@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv/components';
+import { Text, ToggleSwitch } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
@@ -8,7 +8,14 @@ type TPrimaryVariant = 'default' | 'deriv' | 'champion';
 
 const ThemeSelectSettings = observer(() => {
     const { ui } = useStore();
-    const { theme_variant, is_colourblind_mode_on, setThemeVariant, setColourblindMode } = ui;
+    const {
+        theme_variant,
+        is_colourblind_mode_on,
+        is_glass_crosshair_on,
+        setThemeVariant,
+        setColourblindMode,
+        toggleGlassCrosshairMode,
+    } = ui;
 
     // Handle selecting a primary variant (radio button behavior)
     const handlePrimaryVariantSelect = (variant: TPrimaryVariant) => {
@@ -20,11 +27,46 @@ const ThemeSelectSettings = observer(() => {
         setColourblindMode(!is_colourblind_mode_on);
     };
 
+    // Handle toggling glass crosshair mode
+    const handleGlassCrosshairToggle = () => {
+        toggleGlassCrosshairMode();
+        // Force a re-render to update the toggle state
+        // setForceUpdate(prev => !prev);
+    };
+
+    // Use a state to force re-render when the toggle is clicked
+    // const [forceUpdate, setForceUpdate] = React.useState(false);
+
     return (
         <React.Fragment>
             <div className='theme-select-settings'>
-                {/* Theme Variants Section */}
+                {/* Chart Settings Section */}
                 <Text as='h4' weight='bold' size='xs' className='theme-select-settings__title'>
+                    <Localize i18n_default_text='Chart settings' />
+                </Text>
+                <div className='theme-select-settings__chart-settings'>
+                    <div className='theme-select-settings__chart-setting-item'>
+                        <Text size='xs'>
+                            <Localize i18n_default_text='Glass crosshair' />
+                        </Text>
+                        <ToggleSwitch
+                            id='dt_glass_crosshair_toggle'
+                            classNameButton='theme-select-settings__button'
+                            classNameLabel='theme-select-settings__label'
+                            is_enabled={is_glass_crosshair_on}
+                            handleToggle={handleGlassCrosshairToggle}
+                        />
+                    </div>
+                </div>
+
+                {/* Theme Variants Section */}
+                <Text
+                    as='h4'
+                    weight='bold'
+                    size='xs'
+                    className='theme-select-settings__title'
+                    style={{ marginTop: '24px' }}
+                >
                     <Localize i18n_default_text='Theme variant' />
                 </Text>
                 <div className='theme-select-settings__variants'>

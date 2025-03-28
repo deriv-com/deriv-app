@@ -64,6 +64,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
         theme: is_dark_mode_on ? 'dark' : 'light',
         themeVariant: ui.theme_variant,
         isColourblindModeOn: ui.is_colourblind_mode_on,
+        isGlassCrosshairOn: ui.is_glass_crosshair_on,
         ...(is_accumulator ? { whitespace: 190, minimumLeftBars: isMobile ? 3 : undefined } : {}),
         ...(has_barrier ? { whitespace: 110 } : {}),
     };

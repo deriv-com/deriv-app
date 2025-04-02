@@ -43,7 +43,7 @@ const TradersHubHeaderWallets = makeLazyLoader(
 
 const Header = observer(() => {
     const { client, common } = useStore();
-    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
+    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount, is_single_logging_in } = client;
     const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
 
@@ -72,7 +72,7 @@ const Header = observer(() => {
             }
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
-    if (is_logged_in) {
+    if (is_logged_in && !is_single_logging_in) {
         let result;
         switch (true) {
             case pathname === routes.onboarding:

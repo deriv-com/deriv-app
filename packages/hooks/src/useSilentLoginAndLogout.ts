@@ -38,7 +38,8 @@ const useSilentLoginAndLogout = ({
 
     useEffect(() => {
         const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
-        if (willEventuallySSO && !isSilentLoginExcluded) {
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
+        if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded) {
             setClientIsSingleLoggingIn(true);
         } else {
             setClientIsSingleLoggingIn(false);

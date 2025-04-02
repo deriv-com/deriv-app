@@ -1,7 +1,6 @@
 import { action, autorun, computed, makeObservable, observable } from 'mobx';
 
 import { isMobile, isTouchDevice, routes } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 
@@ -673,11 +672,11 @@ export default class UIStore extends BaseStore {
     }
 
     openRealAccountSignup(target) {
-        const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue('dynamic_fa_os_real_account', false);
         const acceptedTargets = target === 'maltainvest' || target === 'svg';
+        const hasRealAccount = this.root_store.client.has_active_real_account;
 
         if (target) {
-            if (isOutSystemsRealAccountCreationEnabled && isOutsystemsSupported && acceptedTargets) {
+            if (isOutsystemsSupported && acceptedTargets && !hasRealAccount) {
                 redirectToOutSystems(target);
             } else {
                 this.is_real_acc_signup_on = true;

@@ -3,16 +3,19 @@ import classnames from 'classnames';
 import { Text } from '@deriv-com/ui';
 import './WalletTransferAmountInput.scss';
 
+const DASH_VALUE = '--';
+
 type TProps = {
     currency?: string;
     disabled?: boolean;
     fractionDigits?: number;
     isError?: boolean;
+    isLastFocusedField?: boolean;
     label: string;
-    maxDigits?: number;
-    onBlur?: VoidFunction;
+    maxDigits: number;
+    onBlur: VoidFunction;
     onChange: (value: string) => void;
-    onFocus?: VoidFunction;
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => void;
     value: string;
 };
 
@@ -21,6 +24,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     disabled,
     fractionDigits = 0,
     isError,
+    isLastFocusedField,
     label,
     maxDigits,
     onBlur,
@@ -29,15 +33,27 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     value,
 }) => {
     const placeholder = currency ? `${(0).toFixed(fractionDigits)} ${currency}` : '0';
+    const displayValue = !disabled && isError && !isLastFocusedField ? DASH_VALUE : value.substring(0, maxDigits);
 
     const onBlurHandler = useCallback(() => {
-        onBlur?.();
+        onBlur();
 
-        // Show proper value with decimal point
-        const displayValue =
-            value === '.' || Number(value) === 0 ? '' : Number.parseFloat(value).toFixed(fractionDigits ?? 0);
+        // Show proper value with decimal point on blur
+        const isDotOrZero = value === '.' || Number(value) === 0;
+        const displayValue = isDotOrZero ? '' : Number.parseFloat(value).toFixed(fractionDigits ?? 0);
+
         onChange(displayValue);
     }, [onBlur, onChange, value, fractionDigits]);
+
+    const onPasteHandler = useCallback(
+        (e: React.ClipboardEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            let pastedValue = e.clipboardData.getData('text').substring(0, maxDigits);
+            pastedValue = pastedValue.replace(/,/g, '');
+            onChange(Number(pastedValue).toFixed(fractionDigits));
+        },
+        [maxDigits, onChange, fractionDigits]
+    );
 
     return (
         <div className='wallets-atm-amount-input'>
@@ -54,7 +70,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                             disabled={disabled}
                             maxLength={maxDigits}
                             readOnly
-                            value={`${value} ${currency ?? ''}`}
+                            value={`${displayValue} ${currency ?? ''}`}
                         />
                     ) : null}
                     <input
@@ -68,16 +84,10 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                             onChange(e.currentTarget.value);
                         }}
                         onFocus={onFocus}
-                        onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => {
-                            e.preventDefault();
-                            let pastedValue = e.clipboardData.getData('text');
-                            // Remove commas
-                            pastedValue = pastedValue.replace(/,/g, '');
-                            onChange(pastedValue);
-                        }}
+                        onPaste={onPasteHandler}
                         placeholder={placeholder}
                         type='tel'
-                        value={value}
+                        value={displayValue}
                     />
                 </Text>
             </div>

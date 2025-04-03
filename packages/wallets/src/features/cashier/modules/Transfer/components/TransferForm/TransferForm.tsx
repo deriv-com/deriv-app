@@ -20,6 +20,7 @@ const TransferForm = () => {
         fromAccount: activeWallet,
         fromAmount: '',
         isError: false,
+        lastFocusedField: undefined,
         toAccount: undefined,
         toAmount: '',
     };

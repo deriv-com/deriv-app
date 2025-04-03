@@ -194,8 +194,8 @@ describe('TransferFormAmountInput', () => {
     it('refetches exchangeRatesAndLimits when the countdown is complete', async () => {
         const config = {
             fromAccount: ACCOUNTS[1], // BTC account
-            fromAmount: 100,
-            toAmount: 0.00000001,
+            fromAmount: '100',
+            toAmount: '0.00000001',
         };
 
         await act(async () => {
@@ -207,8 +207,8 @@ describe('TransferFormAmountInput', () => {
 
     it('renders the component when the currency of the fromAccount is not provided', () => {
         const config = {
-            fromAmount: 100,
-            toAmount: 0.00000001,
+            fromAmount: '100',
+            toAmount: '0.00000001',
         };
         renderField('toAmount', 'USD', config);
         expect(screen.getByText('Estimated amount')).toBeInTheDocument();

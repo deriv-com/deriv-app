@@ -10,6 +10,7 @@ export type TInitialTransferFormValues = {
     fromAccount?: TAccount;
     fromAmount: string;
     isError?: boolean;
+    lastFocusedField?: 'fromAmount' | 'toAmount';
     toAccount?: TToAccount;
     toAmount: string;
 };

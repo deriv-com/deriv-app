@@ -67,7 +67,7 @@
             width: 9rem;
         }
         @include mobile-screen {
-            width: 14rem;
+            width: 23rem;
             height: 4rem;
             top: -0.3rem;
 
@@ -243,7 +243,9 @@
         @include tablet-screen {
             position: unset;
         }
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+        transition:
+            transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+            opacity 0.25s linear;
         box-shadow: 0 8px 16px 0 var(--shadow-menu);
         right: 0;
         top: calc(100% + 4px);

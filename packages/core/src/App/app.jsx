@@ -72,13 +72,13 @@ const AppWithoutTranslation = ({ root_store }) => {
                 loginid =>
                     client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
                     client_account_lists[loginid].account_category === 'trading' &&
-                    client_account_lists[loginid]?.landing_company !== 'virtual'
+                    !client_account_lists[loginid]?.is_virtual
             );
             matching_wallet_loginid = Object.keys(client_account_lists).find(
                 loginid =>
                     client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
                     client_account_lists[loginid].account_category === 'wallet' &&
-                    client_account_lists[loginid]?.landing_company !== 'virtual'
+                    !client_account_lists[loginid]?.is_virtual
             );
         }
 

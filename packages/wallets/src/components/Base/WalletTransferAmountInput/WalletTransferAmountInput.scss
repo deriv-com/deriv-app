@@ -25,12 +25,15 @@
             color: var(--system-light-4-disabled-text, #d6d6d6);
         }
 
-        &--error {
-            color: var(--status-light-danger, #ec3f3f);
-        }
-
         &::placeholder {
             color: var(--system-light-4-disabled-text, #d6d6d6);
+        }
+
+        &--error {
+            color: var(--status-light-danger, #ec3f3f);
+            &::placeholder {
+                color: var(--status-light-danger, #ec3f3f);
+            }
         }
     }
 

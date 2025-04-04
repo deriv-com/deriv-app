@@ -33,7 +33,8 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     value,
 }) => {
     const placeholder = currency ? `${(0).toFixed(fractionDigits)} ${currency}` : '0';
-    const displayValue = !disabled && isError && !isLastFocusedField ? DASH_VALUE : value.substring(0, maxDigits);
+    const shouldShowDash = !disabled && isError && !isLastFocusedField && value !== '';
+    const displayValue = shouldShowDash ? DASH_VALUE : value.substring(0, maxDigits);
 
     const onBlurHandler = useCallback(() => {
         onBlur();
@@ -75,7 +76,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                     ) : null}
                     <input
                         className={classnames('wallets-atm-amount-input__input', {
-                            'wallets-atm-amount-input__input--error': isError,
+                            'wallets-atm-amount-input__input--error': !disabled && isError,
                         })}
                         disabled={disabled}
                         maxLength={maxDigits}

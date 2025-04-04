@@ -8,10 +8,11 @@ export type TToAccount = TAccountsList[keyof TAccountsList][number] | undefined;
 export type TInitialTransferFormValues = {
     activeAmountFieldName?: 'fromAmount' | 'toAmount';
     fromAccount?: TAccount;
-    fromAmount: number;
+    fromAmount: string;
     isError?: boolean;
+    lastFocusedField?: 'fromAmount' | 'toAmount';
     toAccount?: TToAccount;
-    toAmount: number;
+    toAmount: string;
 };
 
 type TAction = {

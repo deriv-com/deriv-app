@@ -149,7 +149,7 @@ const mockTrading = {
 const mockWalletsTransfer = {
     accountLimits: {},
     activeWalletExchangeRates: {},
-    formData: { fromAmount: 100, toAmount: 200 },
+    formData: { fromAmount: '100', toAmount: '200' },
     fromAccount: mockWallets,
     toAccount: mockWallets,
     USDExchangeRates: {},
@@ -164,7 +164,7 @@ describe('useTransferMessages', () => {
         const mockInsufficientBalanceTransfer = {
             accountLimits: {},
             activeWalletExchangeRates: {},
-            formData: { fromAmount: 100, toAmount: 200 },
+            formData: { fromAmount: '100', toAmount: '200' },
             fromAccount: mockTrading,
             toAccount: mockWallets,
             USDExchangeRates: {},
@@ -223,7 +223,7 @@ describe('useTransferMessages', () => {
         const mockWalletsToTradingTransfer = {
             accountLimits: {},
             activeWalletExchangeRates: {},
-            formData: { fromAmount: 100, toAmount: 200 },
+            formData: { fromAmount: '100', toAmount: '200' },
             fromAccount: mockWallets,
             toAccount: mockTrading,
             USDExchangeRates: {},

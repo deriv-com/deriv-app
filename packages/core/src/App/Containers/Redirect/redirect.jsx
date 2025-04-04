@@ -346,11 +346,36 @@ const Redirect = observer(() => {
             const currency_exists = Object.values(client_account_lists).some(
                 account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
             );
+            const route_mappings = [
+                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
+                { pattern: /proof-of-address/i, route: routes.proof_of_address },
+                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                { pattern: /personal-details/i, route: routes.personal_details },
+                { pattern: /dbot/i, route: routes.bot },
+            ];
+
+            const default_route = routes.traders_hub;
+
+            const matched_route = route_mappings.find(({ pattern }) =>
+                pattern.test(url_query_string || history.location.search)
+            );
+
+            let updated_search = url_query_string;
+            const params = new URLSearchParams(url_query_string);
+            params.set('account', queryCurrency);
+            params.set('trade_type', matched_route?.type);
+            if (matched_route && matched_route?.type) {
+                updated_search = `${params.toString()}`;
+            }
             if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
                 if (isOAuth2Enabled) {
                     try {
                         requestOidcAuthentication({
                             redirectCallbackUri: `${window.location.origin}/callback`,
+                            postLoginRedirectUri: `redirect?${updated_search}`,
                         }).catch(err => {
                             // eslint-disable-next-line no-console
                             console.error(err);
@@ -382,30 +407,6 @@ const Redirect = observer(() => {
                     switchAccount(matching_loginid);
                     sessionStorage.setItem('active_loginid', matching_loginid);
                 }
-            }
-            const route_mappings = [
-                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
-                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
-                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
-                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
-                { pattern: /proof-of-address/i, route: routes.proof_of_address },
-                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
-                { pattern: /personal-details/i, route: routes.personal_details },
-                { pattern: /dbot/i, route: routes.bot },
-            ];
-
-            const default_route = routes.traders_hub;
-
-            const matched_route = route_mappings.find(({ pattern }) =>
-                pattern.test(url_query_string || history.location.search)
-            );
-
-            let updated_search = url_query_string;
-            const params = new URLSearchParams(url_query_string);
-            params.set('account', queryCurrency);
-            params.set('trade_type', matched_route?.type);
-            if (matched_route && matched_route?.type) {
-                updated_search = `${params.toString()}`;
             }
 
             sessionStorage.setItem(

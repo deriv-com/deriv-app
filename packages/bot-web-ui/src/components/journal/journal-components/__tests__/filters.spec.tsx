@@ -7,7 +7,7 @@ import Filters from '../filters';
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
-jest.mock('@deriv/deriv-charts', () => ({
+jest.mock('@jimdanielswasswa/test-chart', () => ({
     setSmartChartsPublicPath: jest.fn(),
 }));
 
@@ -22,7 +22,7 @@ const mockFilterMessage = jest.fn();
 const createMockRef = React.createRef<HTMLDivElement>() as React.RefObject<HTMLDivElement>;
 
 describe('<Filters />', () => {
-    it('should render filter component', () => {
+    it('should render filter component', async () => {
         render(
             <Filters
                 wrapper_ref={createMockRef}
@@ -35,7 +35,7 @@ describe('<Filters />', () => {
             />
         );
         const el = screen.getByText('Errors');
-        userEvent.click(el);
+        await userEvent.click(el);
         // eslint-disable-next-line testing-library/no-node-access
         const element = document.querySelector('.dc-checkbox__box.dc-checkbox__box--active');
         expect(element).toHaveClass('dc-checkbox__box--active');

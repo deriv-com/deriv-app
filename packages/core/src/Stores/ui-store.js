@@ -28,6 +28,9 @@ export default class UIStore extends BaseStore {
     notification_messages_ui = undefined;
 
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
+    theme_variant = 'default'; // 'default', 'deriv', 'champion'
+    is_colourblind_mode_on = false;
+    is_glass_crosshair_on = false;
     is_settings_modal_on = false;
     is_language_settings_modal_on = false;
     is_mobile_language_menu_open = false;
@@ -211,6 +214,9 @@ export default class UIStore extends BaseStore {
             'is_chart_countdown_visible',
             'is_chart_layout_default',
             'is_dark_mode_on',
+            'theme_variant',
+            'is_colourblind_mode_on',
+            'is_glass_crosshair_on',
             'is_positions_drawer_on',
             'is_reports_visible',
             // 'is_purchase_confirm_on',
@@ -270,6 +276,8 @@ export default class UIStore extends BaseStore {
 
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
+            theme_variant: observable,
+            is_colourblind_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
             is_from_signup_account: observable,
             is_redirected_from_email: observable,
@@ -302,6 +310,7 @@ export default class UIStore extends BaseStore {
             is_mt5_migration_modal_open: observable,
             is_mt5_migration_modal_enabled: observable,
             is_tnc_update_modal_open: observable,
+            is_glass_crosshair_on: observable,
             isUrlUnavailableModalVisible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -375,6 +384,9 @@ export default class UIStore extends BaseStore {
             setChartLayout: action.bound,
             setCurrentFocus: action.bound,
             setDarkMode: action.bound,
+            setThemeVariant: action.bound,
+            setColourblindMode: action.bound,
+            toggleGlassCrosshairMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
             setIsForcedToExitPnv: action.bound,
@@ -639,6 +651,31 @@ export default class UIStore extends BaseStore {
         }
 
         return this.is_dark_mode_on;
+    }
+
+    setThemeVariant(variant) {
+        if (this.theme_variant !== variant) {
+            this.theme_variant = variant;
+            // This GTM call is here instead of the GTM store due to frequency of use
+            this.root_store.gtm.pushDataLayer({ event: 'switch theme variant', variant });
+        }
+
+        return this.theme_variant;
+    }
+
+    setColourblindMode(is_colourblind_mode_on) {
+        if (this.is_colourblind_mode_on !== is_colourblind_mode_on) {
+            this.is_colourblind_mode_on = is_colourblind_mode_on;
+            // This GTM call is here instead of the GTM store due to frequency of use
+            this.root_store.gtm.pushDataLayer({ event: 'toggle colourblind mode', is_on: is_colourblind_mode_on });
+        }
+
+        return this.is_colourblind_mode_on;
+    }
+
+    toggleGlassCrosshairMode() {
+        this.is_glass_crosshair_on = !this.is_glass_crosshair_on;
+        // return this.is_glass_crosshair_on;
     }
 
     setMobileLanguageMenuOpen(is_mobile_language_menu_open) {

@@ -55,7 +55,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 !toAccount?.currency ||
                 !fromAccount?.currency ||
                 !activeWalletExchangeRates?.rates ||
-                !isAmountFieldActive
+                !isAmountFieldActive ||
+                values.isError
             )
                 return;
 
@@ -83,6 +84,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             setFieldValue,
             toAccount?.currency,
             toAccount?.currencyConfig?.fractional_digits,
+            values.isError,
         ]
     );
 
@@ -178,7 +180,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const onTimerCompleteHandler = useCallback(() => {
         refetchExchangeRatesAndLimits().then(res => {
             const newRates = res.data?.exchange_rates;
-            if (!newRates?.rates || !fromAccount?.currency || !toAccount?.currency) return;
+            if (!newRates?.rates || !fromAccount?.currency || !toAccount?.currency || values.isError) return;
 
             const fromRate = newRates.rates[fromAccount.currency];
             const toRate = newRates.rates[toAccount.currency];
@@ -205,6 +207,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         toAccount?.currencyConfig?.fractional_digits,
         toAmount,
         fromAmount,
+        values.isError,
         values.activeAmountFieldName,
         setFieldValue,
     ]);

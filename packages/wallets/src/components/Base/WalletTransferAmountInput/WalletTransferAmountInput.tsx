@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import classnames from 'classnames';
 import { Text } from '@deriv-com/ui';
 import './WalletTransferAmountInput.scss';
 
@@ -65,9 +64,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                 <Text align='start' size='lg' weight='bold'>
                     {value !== '' ? (
                         <input
-                            className={classnames('wallets-atm-amount-input__input', {
-                                'wallets-atm-amount-input__input--error': isError,
-                            })}
+                            className='wallets-atm-amount-input__input'
                             disabled={disabled}
                             maxLength={maxDigits}
                             readOnly
@@ -75,9 +72,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         />
                     ) : null}
                     <input
-                        className={classnames('wallets-atm-amount-input__input', {
-                            'wallets-atm-amount-input__input--error': !disabled && isError,
-                        })}
+                        className='wallets-atm-amount-input__input'
                         disabled={disabled}
                         maxLength={maxDigits}
                         onBlur={onBlurHandler}

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import classnames from 'classnames';
 import { Formik } from 'formik';
 import { Localize } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
@@ -46,7 +47,11 @@ const TransferForm = () => {
                     return (
                         <form className='wallets-transfer__form' onSubmit={handleSubmit}>
                             <div className='wallets-transfer__fields'>
-                                <div className='wallets-transfer__fields-section'>
+                                <div
+                                    className={classnames('wallets-transfer__fields-section', {
+                                        'wallets-transfer__fields-section--error': isError,
+                                    })}
+                                >
                                     <TransferFormAmountInput fieldName='fromAmount' />
                                     <TransferFormDropdown
                                         fieldName='fromAccount'
@@ -54,7 +59,11 @@ const TransferForm = () => {
                                     />
                                 </div>
                                 <TransferMessages />
-                                <div className='wallets-transfer__fields-section'>
+                                <div
+                                    className={classnames('wallets-transfer__fields-section', {
+                                        'wallets-transfer__fields-section--error': isError,
+                                    })}
+                                >
                                     <TransferFormAmountInput fieldName='toAmount' />
                                     <TransferFormDropdown
                                         fieldName='toAccount'

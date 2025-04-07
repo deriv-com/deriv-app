@@ -223,7 +223,7 @@ const Content = observer(({ landing_company_shortcode }) => {
                         title: localize('4.1. What is considered a complaint?'),
                         text: (
                             <Localize
-                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products or services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a formal complaint, we will still respond to your message and handle it in accordance with our internal processes.'
+                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products and services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a formal complaint, we will still respond to your message and handle it in accordance with our internal processes.'
                                 components={[<br key={0} />, <br key={1} />]}
                             />
                         ),

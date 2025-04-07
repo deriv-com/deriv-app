@@ -216,7 +216,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum daily turnover' />
                                             </AccountLimitsTableHeader>
                                             <AccountLimitsTableHeader align='right'>
-                                                <Localize i18n_default_text='Limit' />
+                                                <Localize i18n_default_text={`Limit (${currency})`} />
                                             </AccountLimitsTableHeader>
                                         </tr>
                                     </thead>

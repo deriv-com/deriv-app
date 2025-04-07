@@ -14,16 +14,13 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
             <ActionScreen
                 actionButtons={
                     <Button onClick={sendEmail} size='lg' textSize='md'>
-                        <Localize i18n_default_text='Send email' />
+                        <Localize i18n_default_text='Send link' />
                     </Button>
                 }
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
                         <Text align='center'>
-                            <Localize i18n_default_text="Press the button below, and we'll email you a verification link." />
-                        </Text>
-                        <Text align='center'>
-                            <Localize i18n_default_text="This is to confirm that it's you making the withdrawal request." />
+                            <Localize i18n_default_text="To continue withdrawal, verify it's you. We will send a verification link to your email." />
                         </Text>
                     </div>
                 }
@@ -35,7 +32,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         <DerivLightEmailVerificationIcon height={102} width={102} />
                     </div>
                 }
-                title={<Localize i18n_default_text='Confirm your identity to make a withdrawal.' />}
+                title={<Localize i18n_default_text='Verification needed' />}
             />
         </div>
     );

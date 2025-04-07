@@ -47,15 +47,15 @@ describe('MultipliersDealCancellationInfo', () => {
         default_mock_store.modules.trade.proposal_info = {};
         mockMultipliersDealCancellationInfo();
 
-        expect(screen.getByTestId('dt_skeleton')).toBeInTheDocument();
+        expect(screen.getAllByTestId('dt_skeleton')).toHaveLength(2);
     });
 
     it('renders component with title and value', () => {
         mockMultipliersDealCancellationInfo();
 
-        const title = screen.getByText('Deal cancellation fee');
-        expect(title).toBeInTheDocument();
-        expect(title).not.toHaveClass('trade-params__text--disabled');
+        const upTitle = screen.getByText('DC fee (Up)');
+        expect(upTitle).toBeInTheDocument();
+        expect(upTitle).not.toHaveClass('trade-params__text--disabled');
         expect(screen.getByText(/4.00 USD/)).toBeInTheDocument();
     });
 
@@ -63,6 +63,6 @@ describe('MultipliersDealCancellationInfo', () => {
         default_mock_store.modules.trade.is_market_closed = true;
         mockMultipliersDealCancellationInfo();
 
-        expect(screen.getByText('Deal cancellation fee')).toHaveClass('trade-params__text--disabled');
+        expect(screen.getByText('DC fee (Up)')).toHaveClass('trade-params__text--disabled');
     });
 });

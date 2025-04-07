@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import { removeBranchName, routes, isEmptyObject, default_title } from '@deriv/shared';
 import Page404 from 'Modules/Page404';
 import { observer, useStore } from '@deriv/stores';
@@ -9,7 +10,7 @@ const RouteWithSubRoutes = observer(route => {
     const { common, client } = useStore();
 
     const { checkAppId } = common;
-    const { is_single_logging_in, setPreventSingleLogin } = client;
+    const { setPreventSingleLogin, prevent_single_login } = client;
 
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
@@ -45,10 +46,24 @@ const RouteWithSubRoutes = observer(route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
+        } else if (
+            is_valid_route &&
+            route.is_authenticated &&
+            !route.is_logged_in &&
+            !route.is_logging_in &&
+            !prevent_single_login
+        ) {
+            const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+            const clientTokens = JSON.parse(localStorage.getItem('config.tokens') || '{}');
+            const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+            const isClientTokensPopulated = Object.keys(clientTokens).length > 0;
+            const isLoggedStateFalsy = !Cookies.get('logged_state') || Cookies.get('logged_state') === 'false';
+            const isTotallyLoggedOut = isLoggedStateFalsy && !isClientAccountsPopulated && !isClientTokensPopulated;
+
             if (window.localStorage.getItem('is_redirecting') === 'true') {
                 window.localStorage.removeItem('is_redirecting');
-                if (!is_single_logging_in) {
+
+                if (isTotallyLoggedOut) {
                     setTimeout(() => {
                         try {
                             setPreventSingleLogin(true);
@@ -67,7 +82,7 @@ const RouteWithSubRoutes = observer(route => {
                         }
                     }, 3000);
                 }
-            } else if (!is_single_logging_in) {
+            } else if (isTotallyLoggedOut) {
                 try {
                     setPreventSingleLogin(true);
                     requestOidcAuthentication({
@@ -79,7 +94,7 @@ const RouteWithSubRoutes = observer(route => {
                         console.error(err);
                     });
                 } catch (err) {
-                    setPreventSingleLogin(true);
+                    setPreventSingleLogin(false);
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }

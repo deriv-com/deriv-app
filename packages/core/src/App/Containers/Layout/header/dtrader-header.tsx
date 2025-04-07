@@ -28,6 +28,7 @@ const DTraderHeader = observer(() => {
         is_dxtrade_allowed,
         is_logged_in,
         is_logging_in,
+        is_single_logging_in,
         is_mt5_allowed,
         is_virtual,
         is_switching,
@@ -126,7 +127,7 @@ const DTraderHeader = observer(() => {
                             <div className='header__menu--dtrader--separator' />
                         </div>
                     )}
-                    {(is_logging_in || is_switching) && (
+                    {(is_logging_in || is_single_logging_in || is_switching) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader__dtrader', {

@@ -223,9 +223,8 @@ const Content = observer(({ landing_company_shortcode }) => {
                         title: localize('4.1. What is considered a complaint?'),
                         text: (
                             <Localize
-                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products or services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a complaint, we may reclassify it as a query and forward it to the relevant department for handling. However, if you believe that your query should be classified as a complaint due to its relevance to the investment services provided by {{legal_entity_name}}, you may request that we reclassify it accordingly.'
+                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products or services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a formal complaint, we will still respond to your message and handle it in accordance with our internal processes.'
                                 components={[<br key={0} />, <br key={1} />]}
-                                values={{ legal_entity_name: getLegalEntityName(landing_company_shortcode) }}
                             />
                         ),
                     },
@@ -306,7 +305,7 @@ const Content = observer(({ landing_company_shortcode }) => {
                             />,
                             <Localize
                                 key={2}
-                                i18n_default_text='<0>&bull;</0>If the complaint is accepted by the Arbiter, you will receive another email with further details relating to the payment of the €25 complaint fee and the processes that follow.'
+                                i18n_default_text='<0>&bull;</0>If the complaint is accepted by the Arbiter, you will receive another email with further details relating to the processes that follow.'
                                 components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                             />,
                         ],

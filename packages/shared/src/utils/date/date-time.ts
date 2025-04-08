@@ -312,3 +312,21 @@ export const getTimeSince = (timestamp: number) => {
     }
     return localize('{{days_passed}}d ago', { days_passed: Math.floor(seconds_passed / (3600 * 24)) });
 };
+
+/**
+ * Get tomorrow's date in YYYY-MM-DD format
+ * @param {moment.MomentInput} server_time - Server time to calculate tomorrow from
+ * @return {string} Tomorrow's date in YYYY-MM-DD format
+ */
+export const getTomorrowDate = (server_time: moment.MomentInput): string => {
+    return toMoment(server_time).clone().add(1, 'day').format('YYYY-MM-DD');
+};
+
+/**
+ * Get tomorrow's date as Date object
+ * @param {moment.MomentInput} server_time - Server time to calculate tomorrow from
+ * @return {Date} Tomorrow's date as Date object
+ */
+export const getTomorrowAsDate = (server_time: moment.MomentInput): Date => {
+    return toMoment(server_time).clone().add(1, 'day').toDate();
+};

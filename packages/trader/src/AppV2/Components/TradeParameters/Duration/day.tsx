@@ -7,7 +7,7 @@ import DaysDatepicker from './datepicker';
 import EndTimePicker from './timepicker';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { hasIntradayDurationUnit, setTime, toMoment } from '@deriv/shared';
+import { getTomorrowAsDate, hasIntradayDurationUnit, setTime, toMoment } from '@deriv/shared';
 import { getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
 import {
     getClosestTimeToCurrentGMT,
@@ -231,6 +231,11 @@ const DayInput = ({
         }
         setTriggerDate(true);
     };
+
+    React.useEffect(() => {
+        handleDate(getTomorrowAsDate(server_time));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='duration-container__days-input'>

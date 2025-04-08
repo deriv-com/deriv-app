@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
-import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
+import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment, getTomorrowDate } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
@@ -71,7 +71,7 @@ const AdvancedDuration = observer(
     }: TAdvancedDuration) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, duration_min_max, validation_errors } = useTraderStore();
+        const { contract_expiry_type, duration_min_max, validation_errors, onChangeMultiple } = useTraderStore();
 
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, advanced_duration_unit);
         let is_24_hours_contract = false;
@@ -90,7 +90,16 @@ const AdvancedDuration = observer(
         const changeExpiry = ({ target }: { target: { name: string; value: unknown } }) => {
             const { name, value } = target;
 
-            onChange({ target: { name: 'expiry_type', value } });
+            if (value === 'endtime') {
+                // Set expiry date to tomorrow when switching to end time
+                onChangeMultiple({
+                    expiry_date: getTomorrowDate(server_time),
+                    expiry_type: value,
+                });
+            } else {
+                onChange({ target: { name: 'expiry_type', value } });
+            }
+
             onChangeUiStore({ name, value });
         };
 
@@ -98,6 +107,14 @@ const AdvancedDuration = observer(
 
         const { name_plural, name } = getUnitMap()[advanced_duration_unit];
         const duration_unit_text = name_plural ?? name;
+
+        React.useEffect(() => {
+            if (expiry_type === 'endtime') {
+                // Set expiry date to tomorrow when switching to end time
+                onChange({ target: { name: 'expiry_date', value: getTomorrowDate(server_time) } });
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
 
         return (
             <>

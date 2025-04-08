@@ -66,7 +66,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
 
-    const { is_single_logging_in } = useSilentLoginAndLogout({
+    useSilentLoginAndLogout({
         is_client_store_initialized,
         isOAuth2Enabled,
         oAuthLogout,
@@ -169,26 +169,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
-            {!isCallBackPage && !is_single_logging_in && <Header />}
-            {is_single_logging_in && (
-                <div className='initial-callback'>
-                    <div className='initial-callback__content'>
-                        <img
-                            src={getUrlBase('/public/images/common/callback_loader.gif')}
-                            width={234}
-                            height={234}
-                            alt='loader'
-                        />
-                        <h3 className='initial-callback__title'>{localize('Getting your account ready')}</h3>
-                    </div>
-                </div>
-            )}
+            {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            {!is_single_logging_in && <Footer />}
+            <Footer />
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

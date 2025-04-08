@@ -8,9 +8,9 @@ import type { TInitialTransferFormValues } from '../types';
 type TReceipt = {
     feeAmount?: string;
     fromAccount: TInitialTransferFormValues['fromAccount'];
-    fromAmount: TInitialTransferFormValues['fromAmount'];
+    fromAmount: number;
     toAccount: TInitialTransferFormValues['toAccount'];
-    toAmount: TInitialTransferFormValues['toAmount'];
+    toAmount: number;
 };
 
 export type TTransferContext = {
@@ -84,10 +84,14 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
     const requestTransferBetweenAccounts = useCallback(
         (values: TInitialTransferFormValues) => {
             const { fromAccount, fromAmount, toAccount, toAmount } = values;
+
+            const parsedFromAmount = Number.parseFloat(fromAmount);
+            const parsedToAmount = Number.parseFloat(toAmount);
+
             mutateAsync({
                 account_from: fromAccount?.loginid,
                 account_to: toAccount?.loginid,
-                amount: fromAmount,
+                amount: parsedFromAmount,
                 currency: fromAccount?.currency,
             }).then(() => {
                 const isSameCurrency = fromAccount?.currency === toAccount?.currency;
@@ -96,7 +100,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 if (!isSameCurrency) {
                     feePercentage =
                         fromAccount?.currencyConfig?.transfer_between_accounts.fees[toAccount?.currency || ''] || 0;
-                    feeAmount = ((feePercentage / 100) * fromAmount).toFixed(
+                    feeAmount = ((feePercentage / 100) * parsedFromAmount).toFixed(
                         fromAccount?.currencyConfig?.fractional_digits
                     );
                 }
@@ -104,9 +108,9 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 setReceipt({
                     feeAmount,
                     fromAccount,
-                    fromAmount,
+                    fromAmount: parsedFromAmount,
                     toAccount,
-                    toAmount,
+                    toAmount: parsedToAmount,
                 });
             });
         },

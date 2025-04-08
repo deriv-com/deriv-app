@@ -13,11 +13,20 @@ const CallbackPage = () => {
                 localStorage.setItem('config.tokens', JSON.stringify(tokens));
                 localStorage.setItem('config.account1', tokens.token1);
                 localStorage.setItem('active_loginid', tokens.acct1);
-                if (!sessionStorage.getItem('active_loginid')) sessionStorage.setItem('active_loginid', tokens.acct1);
-
+                if (!sessionStorage.getItem('active_loginid') && /^(CR|MF|VRTC)\d/.test(tokens.acct1)) {
+                    sessionStorage.setItem('active_loginid', tokens.acct1);
+                }
+                if (!sessionStorage.getItem('active_wallet_loginid') && /^(CRW|MFW|VRW)\d/.test(tokens.acct1)) {
+                    sessionStorage.setItem('active_wallet_loginid', tokens.acct1);
+                }
                 const redirectTo = sessionStorage.getItem('tradershub_redirect_to');
-                if (redirectTo) {
-                    const params = new URLSearchParams(redirectTo);
+                const postLoginRedirectUri = localStorage.getItem('config.post_login_redirect_uri') || '';
+                const params = new URLSearchParams(postLoginRedirectUri);
+                const containsAccount = params.get('account');
+
+                //added a check for postLoginRedirectUri to basically sync account when user created a new currency from Tradershub and redirected back to DTrader
+                if (redirectTo || (postLoginRedirectUri && !!containsAccount)) {
+                    const params = new URLSearchParams(redirectTo || postLoginRedirectUri);
                     const queryAccount = sessionStorage.getItem('account')
                         ? sessionStorage.getItem('account')
                         : params.get('account');
@@ -62,7 +71,7 @@ const CallbackPage = () => {
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');
-                    window.location.href = redirectTo;
+                    window.location.href = redirectTo || postLoginRedirectUri;
                 } else {
                     const postLoginRedirectUri = localStorage.getItem('config.post_login_redirect_uri');
                     if (postLoginRedirectUri) {

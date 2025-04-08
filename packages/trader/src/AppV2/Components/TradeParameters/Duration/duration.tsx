@@ -55,7 +55,21 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const { server_time } = common;
 
     useEffect(() => {
-        if (expiry_epoch) {
+        if (expiry_epoch && duration_unit !== 'd') {
+            // Set expiry time to end of day
+            setExpiryTimeString('23:59:59');
+
+            // Get tomorrow's date
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            tomorrow.setHours(23, 59, 59, 0);
+            const tomorrow_date = tomorrow.toISOString().split('T')[0];
+
+            setExpiryDateString(tomorrow_date);
+            setSavedExpiryDateV2(tomorrow_date);
+        }
+        if (expiry_epoch && duration_unit === 'd' && !expiry_time_string) {
             setExpiryTimeString(
                 new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
             );

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { getUnitMap } from '@deriv/shared';
+import { getTomorrowDate, getUnitMap, toMoment } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
@@ -60,12 +60,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             setExpiryTimeString('23:59:59');
 
             // Get tomorrow's date
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-            tomorrow.setHours(23, 59, 59, 0);
-            const tomorrow_date = tomorrow.toISOString().split('T')[0];
-
+            const tomorrow_date = getTomorrowDate(server_time);
             setExpiryDateString(tomorrow_date);
             setSavedExpiryDateV2(tomorrow_date);
         }

@@ -26,6 +26,7 @@
         }
     }
     &__item {
+        position: relative;
         align-items: center;
         border-radius: 8px;
         display: inline-flex;
@@ -96,15 +97,9 @@
         display: none;
     }
     &__popover {
-        position: relative;
-        left: 4.8rem;
-        top: -4.8rem;
-        margin-top: -16px;
-
-        @include mobile-or-tablet-screen {
-            right: 0;
-            top: -5.8rem;
-        }
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
     }
 
     &__loading-wrapper {

@@ -1,8 +1,11 @@
 import { useContext } from 'react';
 import clsx from 'clsx';
-import { URLUtils } from '@deriv-com/utils';
-import { Localize, useTranslations } from '@deriv-com/translations';
+
 import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
+import { Chat } from '@deriv/utils';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { URLUtils } from '@deriv-com/utils';
+
 import SelfExclusionContext from './self-exclusion-context';
 
 type TSelfExclusionArticleItems = Record<'is_eu' | 'is_app_settings', boolean | undefined>;
@@ -50,15 +53,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                 component: (
                     <Localize
                         i18n_default_text='If you want to adjust your limits, <0>contact us via live chat</0>. We’ll make the adjustments within 24 hours.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href={URLUtils.getDerivStaticURL('/contact_us')}
-                            />,
-                        ]}
+                        components={[<span className='link link--orange' key={0} onClick={Chat.open} />]}
                     />
                 ),
             });

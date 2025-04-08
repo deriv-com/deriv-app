@@ -1,9 +1,12 @@
-import { Localize, useTranslations } from '@deriv-com/translations';
-import FormInputField from './form-input-field';
-import { Popover } from '@deriv/components';
-import { OECD_TIN_FORMAT_URL } from '../../../Constants/external-urls';
-import { useDevice } from '@deriv-com/ui';
 import clsx from 'clsx';
+
+import { Popover } from '@deriv/components';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import { OECD_TIN_FORMAT_URL } from '../../../Constants/external-urls';
+
+import FormInputField from './form-input-field';
 
 type TTaxIdentificationNumberFieldProps = {
     required?: boolean;

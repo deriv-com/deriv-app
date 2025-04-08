@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Loading } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
-import { useContentFlag, useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
+
 import BookBanner from 'Components/banners/book-banner';
 import WalletsBanner from 'Components/banners/wallets-banner';
 
@@ -63,7 +65,7 @@ const TradersHubBanners = observer(() => {
             {should_show_real_account_creation_banner && <RealAccountCreationBanner />}
             {should_show_deposit_now_banner && <DepositNowBanner />}
             <BookBanner />
-            <WalletsBanner />
+            {!should_show_deposit_now_banner && <WalletsBanner />}
         </React.Fragment>
     );
 });

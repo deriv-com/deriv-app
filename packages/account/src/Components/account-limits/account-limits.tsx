@@ -131,7 +131,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Trading limits' />
                                             </AccountLimitsTableHeader>
                                             <AccountLimitsTableHeader align='right'>
-                                                <Localize i18n_default_text={`Limit (${currency})`} />
+                                                <Localize i18n_default_text='Limit' />
                                             </AccountLimitsTableHeader>
                                         </tr>
                                     </thead>

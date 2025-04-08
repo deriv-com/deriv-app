@@ -99,7 +99,7 @@
     &__popover {
         position: absolute;
         top: 0.8rem;
-        right: 0.8rem;
+        inset-inline-end: 0.8rem;
     }
 
     &__loading-wrapper {

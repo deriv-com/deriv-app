@@ -31,6 +31,19 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
+/**
+ * Appends current URL search parameters to a given URL
+ * @param url - The base URL to append parameters to
+ * @returns The URL with search parameters appended
+ */
+export const appendSearchParamsToUrl = (url: string): string => {
+    const search_params = new URLSearchParams(window.location.search);
+    if (search_params.toString()) {
+        return `${url}?${search_params.toString()}`;
+    }
+    return url;
+};
+
 export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
@@ -40,13 +53,13 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('dbot').name,
         app_desc: localize('The ultimate bot trading platform.'),
-        link_to: routes.bot,
+        link_to: appendSearchParamsToUrl(routes.bot),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
         app_desc: localize('The legacy options trading platform.'),
-        link_to: getUrlSmartTrader(),
+        link_to: appendSearchParamsToUrl(getUrlSmartTrader()),
         is_external: true,
     },
     {

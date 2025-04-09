@@ -108,12 +108,15 @@ const AdvancedDuration = observer(
         const { name_plural, name } = getUnitMap()[advanced_duration_unit];
         const duration_unit_text = name_plural ?? name;
 
-        React.useLayoutEffect(() => {
+        React.useEffect(() => {
             if (expiry_type === 'endtime') {
-                setTimeout(() => onChange({ target: { name: 'expiry_date', value: getTomorrowDate(server_time) } }));
+                setTimeout(
+                    () => onChange({ target: { name: 'expiry_date', value: getTomorrowDate(server_time) } }),
+                    100
+                );
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [contract_type, expiry_type]);
+        }, [expiry_type]);
 
         return (
             <>

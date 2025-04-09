@@ -71,8 +71,7 @@ const AdvancedDuration = observer(
     }: TAdvancedDuration) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, duration_min_max, validation_errors, onChangeMultiple, contract_type } =
-            useTraderStore();
+        const { contract_expiry_type, duration_min_max, validation_errors, onChangeMultiple } = useTraderStore();
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, advanced_duration_unit);
         let is_24_hours_contract = false;
 

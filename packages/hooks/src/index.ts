@@ -35,8 +35,6 @@ export { default as useHasP2PSupportedCurrencies } from './useHasP2PSupportedCur
 export { default as useHasSetCurrency } from './useHasSetCurrency';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
-export { default as useInputATMFormatter } from './useInputATMFormatter';
-export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
 export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useIsHubRedirectionEnabled } from './useIsHubRedirectionEnabled';

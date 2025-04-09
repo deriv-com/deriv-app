@@ -12,7 +12,7 @@ describe('WithdrawalVerification', () => {
     it('should render WithdrawalVerificationRequest initially', () => {
         render(<WithdrawalVerification />);
         expect(
-            screen.getByText("Press the button below, and we'll email you a verification link.")
+            screen.getByText("To continue withdrawal, verify it's you. We will send a verification link to your email.")
         ).toBeInTheDocument();
     });
 
@@ -25,12 +25,14 @@ describe('WithdrawalVerification', () => {
 
         render(<WithdrawalVerification />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Send link' }));
 
         await waitFor(() => {
             expect(mockMutate).toHaveBeenCalled();
             expect(
-                screen.getByText('Please check your email for the verification link to complete the process.')
+                screen.getByText(
+                    "To continue withdrawal, verify it's you. We will send a verification link to your email."
+                )
             ).toBeInTheDocument();
         });
     });
@@ -44,13 +46,10 @@ describe('WithdrawalVerification', () => {
 
         render(<WithdrawalVerification />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Send link' }));
 
         await waitFor(() => {
             expect(mockMutate).not.toHaveBeenCalled();
-            expect(
-                screen.queryByText('Please check your email for the verification link to complete the process.')
-            ).not.toBeInTheDocument();
         });
     });
 

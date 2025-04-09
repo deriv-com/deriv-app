@@ -850,7 +850,7 @@ export default class ClientStore extends BaseStore {
             !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
-            this.accounts[this.loginid].token
+            this.accounts[this.loginid]?.token
         );
     }
 
@@ -1083,7 +1083,8 @@ export default class ClientStore extends BaseStore {
     resetLocalStorageValues(loginid) {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
-        sessionStorage.setItem('active_loginid', loginid);
+        if (/^(CR|MF|VRTC)\d/.test(loginid)) sessionStorage.setItem('active_loginid', loginid);
+        if (/^(CRW|MFW|VRW)\d/.test(loginid)) sessionStorage.setItem('active_wallet_loginid', loginid);
         this.setUrlParams();
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
@@ -1608,9 +1609,15 @@ export default class ClientStore extends BaseStore {
             ['crypto_transactions_withdraw', 'payment_withdraw', 'payment_agent_withdraw'].includes(action_param) &&
             loginid_param
         ) {
-            sessionStorage.setItem('active_loginid', loginid_param);
+            if (/^(CR|MF|VRTC)\d/.test(loginid_param)) sessionStorage.setItem('active_loginid', loginid_param);
+            if (/^(CRW|MFW|VRW)\d/.test(loginid_param)) sessionStorage.setItem('active_wallet_loginid', loginid_param);
             this.setLoginId(loginid_param);
-        } else this.setLoginId(window.sessionStorage.getItem('active_loginid') || LocalStore.get('active_loginid'));
+        } else
+            this.setLoginId(
+                window.sessionStorage.getItem('active_loginid') ||
+                    window.sessionStorage.getItem('active_wallet_loginid') ||
+                    LocalStore.get('active_loginid')
+            );
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
@@ -2046,6 +2053,7 @@ export default class ClientStore extends BaseStore {
                 this.resetLocalStorageValues(
                     window.sessionStorage.getItem('active_loginid') ??
                         localStorage.getItem('active_loginid') ??
+                        sessionStorage.getItem('active_wallet_loginid') ??
                         this.loginid
                 );
                 return;
@@ -2178,7 +2186,7 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
-        sessionStorage.setItem('active_loginid', this.loginid);
+        sessionStorage.removeItem('active_loginid');
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -2281,7 +2289,9 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
-            sessionStorage.setItem('active_loginid', active_loginid);
+            if (/^(CR|MF|VRTC)\d/.test(active_loginid)) sessionStorage.setItem('active_loginid', active_loginid);
+            if (/^(CRW|MFW|VRW)\d/.test(active_loginid))
+                sessionStorage.setItem('active_wallet_loginid', active_loginid);
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);

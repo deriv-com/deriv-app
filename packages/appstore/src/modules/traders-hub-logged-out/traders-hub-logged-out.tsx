@@ -14,7 +14,7 @@ import './traders-hub-logged-out.scss';
 const TradersHubLoggedOut = observer(() => {
     const { isDesktop } = useDevice();
     const { traders_hub, client } = useStore();
-    const { clients_country } = client;
+    const { clients_country, is_single_logging_in } = client;
     const { setTogglePlatformType, selectRegion, is_eu_user } = traders_hub;
 
     React.useEffect(() => {
@@ -28,7 +28,7 @@ const TradersHubLoggedOut = observer(() => {
         }
     }, [clients_country, setTogglePlatformType]);
 
-    if (!clients_country) return <Loading is_fullscreen />;
+    if (!clients_country || is_single_logging_in) return <Loading is_fullscreen />;
 
     return (
         <React.Fragment>

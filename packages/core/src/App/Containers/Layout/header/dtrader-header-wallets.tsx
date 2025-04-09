@@ -65,7 +65,7 @@ const MenuLeft = observer(() => {
 
 const MenuRight = observer(() => {
     const { client, ui } = useStore();
-    const { is_logged_in, is_logging_in, is_switching, accounts, loginid, is_crypto } = client;
+    const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid, is_crypto } = client;
     const { is_mobile } = ui;
 
     const active_account = accounts?.[loginid ?? ''];
@@ -73,7 +73,7 @@ const MenuRight = observer(() => {
 
     return (
         <div className='header__menu-right'>
-            {is_logging_in || is_switching ? (
+            {is_logging_in || is_single_logging_in || is_switching ? (
                 <div
                     id='dt_core_header_acc-info-preloader'
                     className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {

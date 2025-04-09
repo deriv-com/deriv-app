@@ -71,8 +71,8 @@ const AdvancedDuration = observer(
     }: TAdvancedDuration) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, duration_min_max, validation_errors, onChangeMultiple } = useTraderStore();
-
+        const { contract_expiry_type, duration_min_max, validation_errors, onChangeMultiple, contract_type } =
+            useTraderStore();
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, advanced_duration_unit);
         let is_24_hours_contract = false;
 
@@ -108,13 +108,12 @@ const AdvancedDuration = observer(
         const { name_plural, name } = getUnitMap()[advanced_duration_unit];
         const duration_unit_text = name_plural ?? name;
 
-        React.useEffect(() => {
+        React.useLayoutEffect(() => {
             if (expiry_type === 'endtime') {
-                // Set expiry date to tomorrow when switching to end time
-                onChange({ target: { name: 'expiry_date', value: getTomorrowDate(server_time) } });
+                setTimeout(() => onChange({ target: { name: 'expiry_date', value: getTomorrowDate(server_time) } }));
             }
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []);
+        }, [contract_type, expiry_type]);
 
         return (
             <>

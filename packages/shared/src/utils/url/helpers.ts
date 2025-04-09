@@ -38,6 +38,24 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
+export const getUrlBot = () => {
+    const { is_staging_deriv_app } = getPlatformFromUrl();
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
+
+    let base_link = '';
+
+    if (is_staging_deriv_app) {
+        base_link = deriv_urls.BOT_STAGING;
+    } else {
+        base_link = deriv_urls.BOT_PRODUCTION;
+    }
+
+    const url = `${base_link}?lang=${i18n_language.toLowerCase()}`;
+    return url;
+};
+
 export const getUrlP2P = (is_language_required = true) => {
     const { is_staging_deriv_app } = getPlatformFromUrl();
 

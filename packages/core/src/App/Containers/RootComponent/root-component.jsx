@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader, deriv_urls } from '@deriv/shared';
+import { moduleLoader, deriv_urls, isSafariBrowser } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -60,16 +60,19 @@ const RootComponent = observer(props => {
             is_client_store_initialized
         ) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
-            localStorage.removeItem('config.account1');
-            localStorage.removeItem('config.tokens');
-            // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
-            localStorage.removeItem('active_loginid');
-            localStorage.removeItem('active_user_id');
-            sessionStorage.removeItem('active_loginid');
-            sessionStorage.removeItem('active_wallet_loginid');
-            localStorage.setItem('client.accounts', '{}');
-            localStorage.removeItem('active_wallet_loginid');
+            // NOTE: Clear OIDC related local storage, when user is in Safari browser as Safari browser doesn't support IFrame for Frontchannel logout
+            if (isSafariBrowser()) {
+                // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
+                localStorage.removeItem('config.account1');
+                localStorage.removeItem('config.tokens');
+                // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
+                localStorage.removeItem('active_loginid');
+                localStorage.removeItem('active_user_id');
+                sessionStorage.removeItem('active_loginid');
+                sessionStorage.removeItem('active_wallet_loginid');
+                localStorage.setItem('client.accounts', '{}');
+                localStorage.removeItem('active_wallet_loginid');
+            }
 
             const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
             localStorage.removeItem('redirect_to_th_os');

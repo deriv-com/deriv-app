@@ -18,7 +18,7 @@ const LoginButton = ({ className }) => {
             text={localize('Log in')}
             onClick={async () => {
                 if (has_wallet_cookie) {
-                    if (isStaging) {
+                    if (isStaging()) {
                         location.href = 'https://staging-hub.deriv.com/tradershub/login';
                     } else {
                         location.href = 'https://hub.deriv.com/tradershub/login';
@@ -29,6 +29,9 @@ const LoginButton = ({ className }) => {
                         await requestOidcAuthentication({
                             redirectCallbackUri: `${window.location.origin}/callback`,
                             postLoginRedirectUri: window.location.href,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
                         });
                     } catch (err) {
                         // eslint-disable-next-line no-console

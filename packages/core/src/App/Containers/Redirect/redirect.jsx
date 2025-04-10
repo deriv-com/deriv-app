@@ -346,39 +346,6 @@ const Redirect = observer(() => {
             const currency_exists = Object.values(client_account_lists).some(
                 account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
             );
-            if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
-                if (isOAuth2Enabled) {
-                    try {
-                        requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                        });
-                    } catch (err) {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    }
-                }
-            }
-
-            if (account_currency) {
-                let matching_loginid;
-
-                const converted_account_currency = account_currency.toUpperCase();
-
-                if (converted_account_currency === 'DEMO') {
-                    matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
-                } else {
-                    matching_loginid = Object.keys(client_account_lists).find(
-                        loginid =>
-                            client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
-                            client_account_lists[loginid].account_category === 'trading'
-                    );
-                }
-
-                if (matching_loginid && is_client_store_initialized) {
-                    switchAccount(matching_loginid);
-                    sessionStorage.setItem('active_loginid', matching_loginid);
-                }
-            }
             const route_mappings = [
                 { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
@@ -402,6 +369,44 @@ const Redirect = observer(() => {
             params.set('trade_type', matched_route?.type);
             if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
+            }
+            if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
+                if (isOAuth2Enabled) {
+                    try {
+                        requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                            postLoginRedirectUri: `redirect?${updated_search}`,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
+                        });
+                    } catch (err) {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    }
+                }
+            }
+
+            if (account_currency) {
+                let matching_loginid;
+
+                const converted_account_currency = account_currency.toUpperCase();
+
+                if (converted_account_currency === 'DEMO') {
+                    matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
+                } else {
+                    matching_loginid = Object.keys(client_account_lists).find(
+                        loginid =>
+                            client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                            client_account_lists[loginid].account_category === 'trading' &&
+                            !client_account_lists[loginid]?.is_virtual
+                    );
+                }
+
+                if (matching_loginid && is_client_store_initialized) {
+                    switchAccount(matching_loginid);
+                    sessionStorage.setItem('active_loginid', matching_loginid);
+                }
             }
 
             sessionStorage.setItem(

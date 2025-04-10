@@ -25,7 +25,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { logout, setIsLoggingOut } = client;
-    const { is_from_derivgo, is_from_tradershub_os } = common;
+    const { is_from_derivgo, is_from_tradershub_os, is_from_derivp2p } = common;
     const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
@@ -72,6 +72,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 header={selected_route?.getTitle?.()}
                 onClickClose={onClickClose}
                 is_from_app={is_from_derivgo}
+                is_from_derivp2p={is_from_derivp2p}
                 is_from_tradershub_os={is_from_tradershub_os}
             >
                 <RouteComponent component_icon={selected_route.icon_component} />
@@ -84,6 +85,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             header={<Localize i18n_default_text='Settings' />}
             onClickClose={onClickClose}
             is_from_app={is_from_derivgo}
+            is_from_derivp2p={is_from_derivp2p}
             is_from_tradershub_os={is_from_tradershub_os}
         >
             <VerticalTab

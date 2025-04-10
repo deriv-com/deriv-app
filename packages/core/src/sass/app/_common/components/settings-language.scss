@@ -66,7 +66,9 @@
             &--active {
                 border: 1px solid var(--border-active);
                 color: var(--text-prominent);
-
+                @include mobile-or-tablet-screen {
+                    order: -1;
+                }
                 & * {
                     cursor: not-allowed;
                 }

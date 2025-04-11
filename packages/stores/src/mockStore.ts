@@ -346,6 +346,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             is_from_outside_cashier: false,
+            is_from_derivp2p: false,
             is_from_tradershub_os: false,
             is_socket_opened: false,
             has_error: false,

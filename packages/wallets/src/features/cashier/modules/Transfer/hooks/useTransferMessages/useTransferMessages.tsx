@@ -9,6 +9,7 @@ import {
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    minimumTransferLimitMessageFn,
     tradingPlatformStatusMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
@@ -65,6 +66,7 @@ const useTransferMessages = ({
 
         // messageFns.push(validateNumber);
 
+        messageFns.push(minimumTransferLimitMessageFn);
         messageFns.push(insufficientBalanceMessageFn);
         messageFns.push(countLimitMessageFn);
 

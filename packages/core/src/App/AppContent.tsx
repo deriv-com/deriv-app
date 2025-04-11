@@ -11,14 +11,12 @@ import {
     useOauth2,
     useSilentLoginAndLogout,
 } from '@deriv/hooks';
+import { getUrlBase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useTranslations } from '@deriv-com/translations';
-import { useDevice } from '@deriv-com/ui';
+import { useTranslations, localize } from '@deriv-com/translations';
+import { Loader, useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
-
-import P2PIFrame from 'Modules/P2PIFrame';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 
 import initDatadog from '../Utils/Datadog';
 import initHotjar from '../Utils/Hotjar';
@@ -58,7 +56,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled } = useOauth2({
+    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
@@ -67,6 +65,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
+
+    useSilentLoginAndLogout({
+        is_client_store_initialized,
+        isOAuth2Enabled,
+        oAuthLogout,
+    });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
@@ -80,16 +84,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
-
-    // NOTE: Commented this out for now due to single logout causing Deriv.app to be logged out continously
-    // There is a case where if logged_state is false coming from other platforms, Deriv app will SLO the user out
-    // TODO: Revert this once OIDC is enabled back for Deriv.app
-    // useSilentLoginAndLogout({
-    //     is_client_store_initialized,
-    //     isOAuth2Enabled,
-    //     oAuthLogout,
-    //     isGBLoaded,
-    // });
 
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
@@ -178,7 +172,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
-                    {/* TODO: [trader-remove-client-base] */}
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
@@ -186,8 +179,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <SmartTraderIFrame />}
-            {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

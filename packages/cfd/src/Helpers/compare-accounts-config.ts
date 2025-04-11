@@ -1,6 +1,8 @@
 import { localize } from '@deriv/translations';
+
 import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
-import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
+
+import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, MARKET_TYPE_SHORTCODE, PRODUCT, REGION } from './cfd-config';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
@@ -8,6 +10,7 @@ const getHighlightedIconLabel = (
     selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
+
     const market_type_shortcode =
         trading_platforms.product === PRODUCT.GOLD
             ? market_type.concat('_', trading_platforms.product)
@@ -40,8 +43,6 @@ const getHighlightedIconLabel = (
                 return 'forex';
             } else if (item === 'ETFs') {
                 return 'ETFs'; // Preserve the original form for ETFs
-            } else if (item === 'Derived FX') {
-                return 'derived_FX'; // Handle FX case
             }
             return item.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
         });
@@ -67,12 +68,6 @@ const getHighlightedIconLabel = (
             id: 'basket_indices',
             icon: 'Baskets',
             text: localize('Basket indices'),
-            is_available: selected_region === REGION.NON_EU,
-        },
-        {
-            id: 'derived_FX',
-            icon: 'DerivedFX',
-            text: localize('Derived FX'),
             is_available: selected_region === REGION.NON_EU,
         },
     ];
@@ -135,6 +130,7 @@ const platformsHeaderLabel = {
 const getAccountIcon = (shortcode: string, product?: TProducts) => {
     switch (shortcode) {
         case MARKET_TYPE.SYNTHETIC:
+        case MARKET_TYPE.GAMING:
             return 'Standard';
         case MARKET_TYPE.FINANCIAL:
             switch (product) {
@@ -282,7 +278,6 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
     const financial_accounts = available_accounts
         .filter(
             item =>
-                item.market_type === MARKET_TYPE.FINANCIAL &&
                 item.shortcode === JURISDICTION.MALTA_INVEST &&
                 item.is_default_jurisdiction === 'true' &&
                 item.product !== PRODUCT.GOLD
@@ -361,9 +356,7 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item =>
             item.market_type === MARKET_TYPE.FINANCIAL && item.product !== PRODUCT.STP && item.product !== PRODUCT.GOLD
     );
-    const gaming_demo_accounts = available_accounts.filter(
-        item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
-    );
+    const gaming_demo_accounts = available_accounts.filter(item => item.market_type === MARKET_TYPE.GAMING);
 
     const gold_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.FINANCIAL && item.product === PRODUCT.GOLD

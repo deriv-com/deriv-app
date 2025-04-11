@@ -51,6 +51,45 @@ const AppWithoutTranslation = ({ root_store }) => {
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
     const language = preferred_language ?? getInitialLanguage();
 
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+    if (url_params.get('account')) sessionStorage.setItem('account', url_params.get('account'));
+
+    const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') ?? '{}');
+
+    if (account_currency) {
+        let matching_loginid, matching_wallet_loginid;
+
+        const converted_account_currency = account_currency.toUpperCase();
+
+        if (converted_account_currency === 'DEMO') {
+            matching_loginid = Object.keys(client_account_lists).find(loginid => /^VRTC/.test(loginid));
+            matching_wallet_loginid = Object.keys(client_account_lists).find(loginid => /^VRW/.test(loginid));
+        } else {
+            matching_loginid = Object.keys(client_account_lists).find(
+                loginid =>
+                    client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                    client_account_lists[loginid].account_category === 'trading' &&
+                    !client_account_lists[loginid]?.is_virtual
+            );
+            matching_wallet_loginid = Object.keys(client_account_lists).find(
+                loginid =>
+                    client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                    client_account_lists[loginid].account_category === 'wallet' &&
+                    !client_account_lists[loginid]?.is_virtual
+            );
+        }
+
+        if (matching_loginid) {
+            sessionStorage.setItem('active_loginid', matching_loginid);
+        }
+        if (matching_wallet_loginid) {
+            sessionStorage.setItem('active_wallet_loginid', matching_wallet_loginid);
+        }
+    }
+
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
         document.documentElement.dir = dir;

@@ -18,21 +18,22 @@ export const AnalyticsInitializer = async () => {
             .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
             const ppc_campaign_cookies =
-                Cookies.getJSON('utm_data') === 'null'
+                JSON.parse(Cookies.get('utm_data') || 'null') === 'null'
                     ? {
                           utm_source: 'no source',
                           utm_medium: 'no medium',
                           utm_campaign: 'no campaign',
                           utm_content: 'no content',
                       }
-                    : Cookies.getJSON('utm_data');
+                    : JSON.parse(Cookies.get('utm_data') || 'null');
 
-            const client_information = Cookies.getJSON('client_information');
+            const client_information = JSON.parse(Cookies.get('client_information') || 'null');
 
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
                 growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
+
                 growthbookOptions: {
                     attributes: {
                         loggedIn: !!client_information,
@@ -51,6 +52,7 @@ export const AnalyticsInitializer = async () => {
                         network_type: navigator.connection?.effectiveType,
                         network_rtt: navigator.connection?.rtt,
                         network_downlink: navigator.connection?.downlink,
+                        user_id: localStorage.getItem('active_user_id') || '',
                         residence_country: client_information?.residence,
                     },
                 },

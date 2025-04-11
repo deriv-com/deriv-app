@@ -21,7 +21,9 @@ const usePaymentAgentTransferVisible = () => {
         checkAuthorize();
     }, [is_authorize, is_logged_in]);
 
-    const { data, ...rest } = useFetch('get_settings', { options: { enabled: Boolean(is_websocket_authorized) } });
+    const { data, ...rest } = useFetch('get_settings', {
+        options: { enabled: Boolean(is_websocket_authorized), refetchOnWindowFocus: false },
+    });
     const is_payment_agent_transfer_visible = Boolean(data?.get_settings?.is_authenticated_payment_agent);
 
     return {

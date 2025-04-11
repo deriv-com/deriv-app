@@ -4,6 +4,7 @@ import { isMobile, isTouchDevice, routes } from '@deriv/shared';
 
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 
+import { isOutsystemsSupported, redirectToOutSystems } from './Helpers/redirectToOutSystems';
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
@@ -671,8 +672,15 @@ export default class UIStore extends BaseStore {
     }
 
     openRealAccountSignup(target) {
+        const acceptedTargets = target === 'maltainvest' || target === 'svg';
+        const hasRealAccount = this.root_store.client.has_active_real_account;
+
         if (target) {
-            this.is_real_acc_signup_on = true;
+            if (isOutsystemsSupported && acceptedTargets && !hasRealAccount) {
+                redirectToOutSystems(target);
+            } else {
+                this.is_real_acc_signup_on = true;
+            }
             this.real_account_signup_target = target;
             this.is_accounts_switcher_on = false;
             localStorage.removeItem('current_question_index');

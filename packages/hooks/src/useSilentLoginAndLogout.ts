@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
-
+import { useStore } from '@deriv/stores';
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -23,33 +23,69 @@ const useSilentLoginAndLogout = ({
 }) => {
     const loggedState = Cookies.get('logged_state');
 
+    const { client } = useStore();
     const clientAccounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const clientTokens = JSON.parse(localStorage.getItem('config.tokens') || '{}');
     const isClientAccountsPopulated = Object.keys(clientAccounts).length > 0;
+    const isClientTokensPopulated = Object.keys(clientTokens).length > 0;
     const isSilentLoginExcluded =
         window.location.pathname.includes('callback') || window.location.pathname.includes('endpoint');
 
+    // state to manage and ensure OIDC callback functions are invoked once only
+    const isAuthenticating = useRef(false);
+    const isLoggingOut = useRef(false);
+    const { prevent_single_login, setIsSingleLoggingIn: setClientIsSingleLoggingIn } = client;
+
     useEffect(() => {
-        if (
-            loggedState === 'true' &&
-            !isClientAccountsPopulated &&
-            isOAuth2Enabled &&
-            is_client_store_initialized &&
-            !isSilentLoginExcluded
-        ) {
-            // Perform silent login
-            requestOidcAuthentication({
+        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
+        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
+        if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded) {
+            setClientIsSingleLoggingIn(true);
+        } else {
+            setClientIsSingleLoggingIn(false);
+        }
+    }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
+
+    const requestOidcLogin = async () => {
+        try {
+            await requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,
+                postLoginRedirectUri: window.location.href,
+            }).catch(err => {
+                setClientIsSingleLoggingIn(false);
+                // eslint-disable-next-line no-console
+                console.error(err);
             });
+        } catch (err) {
+            setClientIsSingleLoggingIn(false);
+            // eslint-disable-next-line no-console
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
+
+        // NOTE: Remove this logic once social signup is intergated with OIDC
+        const params = new URLSearchParams(window.location.search);
+        const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
+        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+            return;
         }
 
-        if (
-            loggedState === 'false' &&
-            is_client_store_initialized &&
-            isOAuth2Enabled &&
-            isClientAccountsPopulated &&
-            !window.location.pathname.includes('callback')
-        ) {
+        if (!isUsingLegacyFlow && loggedState === 'true' && !isClientAccountsPopulated) {
+            // Perform silent login
+            if (isAuthenticating.current) return;
+            isAuthenticating.current = true;
+            setClientIsSingleLoggingIn(true);
+            requestOidcLogin();
+        }
+
+        if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
             // Perform single logout
+            if (isLoggingOut.current) return;
+            isLoggingOut.current = true;
+            setClientIsSingleLoggingIn(true);
             oAuthLogout();
         }
     }, [
@@ -57,8 +93,8 @@ const useSilentLoginAndLogout = ({
         isClientAccountsPopulated,
         is_client_store_initialized,
         isOAuth2Enabled,
-        oAuthLogout,
         isSilentLoginExcluded,
+        prevent_single_login,
     ]);
 };
 

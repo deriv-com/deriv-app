@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import {
     PersonalDetails,
     ProofOfIdentityFlow,
-    ProofOfAddress,
+    ProofOfAddressFlow,
     ProofOfOwnership,
     Account,
     DeactivateAccount,
@@ -160,7 +160,7 @@ const initRoutesConfig = () => [
                     },
                     {
                         path: routes.proof_of_address,
-                        component: ProofOfAddress,
+                        component: ProofOfAddressFlow,
                         getTitle: () => localize('Proof of address'),
                     },
                     {

@@ -30,6 +30,32 @@ const BarrierInput = observer(
         const [option, setOption] = React.useState(0);
         const [should_show_error, setShouldShowError] = React.useState(false);
         const [previous_value, setPreviousValue] = React.useState(barrier_1);
+
+        // Constants for localStorage keys
+        const SPOT_BARRIER_KEY = 'deriv_spot_barrier_value';
+        const FIXED_BARRIER_KEY = 'deriv_fixed_barrier_value';
+
+        // Helper functions for localStorage
+        const getStoredValue = (key: string) => {
+            try {
+                const storedValue = localStorage.getItem(key);
+                return storedValue || '';
+            } catch (e) {
+                return '';
+            }
+        };
+
+        const storeValue = (key: string, value: string) => {
+            try {
+                localStorage.setItem(key, value);
+            } catch (e) {
+                // Ignore errors (e.g., localStorage not available)
+            }
+        };
+
+        // Add separate state variables for different barrier types
+        const [spot_barrier_value, setSpotBarrierValue] = React.useState(getStoredValue(SPOT_BARRIER_KEY) || '');
+        const [fixed_barrier_value, setFixedBarrierValue] = React.useState(getStoredValue(FIXED_BARRIER_KEY) || '');
         const [is_focused, setIsFocused] = React.useState(false);
         const { pip_size } = tick_data ?? {};
         const barrier_ref = React.useRef<HTMLInputElement | null>(null);
@@ -38,14 +64,35 @@ const BarrierInput = observer(
         React.useEffect(() => {
             setInitialBarrierValue(barrier_1);
             setV2ParamsInitialValues({ name: 'barrier_1', value: barrier_1 });
+
+            // Initialize the appropriate barrier value based on the initial barrier_1
             if (barrier_1.includes('-')) {
                 setOption(1);
+                const valueWithoutSign = barrier_1.replace(/^[+-]/, '');
+                setSpotBarrierValue(valueWithoutSign);
+                // Store in localStorage if not already there
+                if (!spot_barrier_value) {
+                    storeValue(SPOT_BARRIER_KEY, valueWithoutSign);
+                }
             } else if (barrier_1.includes('+')) {
                 setOption(0);
+                const valueWithoutSign = barrier_1.replace(/^[+-]/, '');
+                setSpotBarrierValue(valueWithoutSign);
+                // Store in localStorage if not already there
+                if (!spot_barrier_value) {
+                    storeValue(SPOT_BARRIER_KEY, valueWithoutSign);
+                }
             } else {
                 setOption(2);
+                setFixedBarrierValue(barrier_1);
+                // Store in localStorage if not already there
+                if (!fixed_barrier_value) {
+                    storeValue(FIXED_BARRIER_KEY, barrier_1);
+                }
             }
+
             onChange({ target: { name: 'barrier_1', value: barrier_1 } });
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         React.useEffect(() => {
@@ -69,17 +116,32 @@ const BarrierInput = observer(
         }, [is_focused]);
 
         const handleChipSelect = (index: number) => {
+            const previousOption = option; // Store the previous option before updating
             setOption(index);
-            const current_value = barrier_1.replace(/^[+-]/, '');
-            let newValue = previous_value.replace(/^[+-]/, '');
+            let newValue = '';
 
-            if (index === 0) {
-                newValue = `+${newValue}`;
-            } else if (index === 1) {
-                newValue = `-${newValue}`;
+            // Save current value to the appropriate state variable and localStorage
+            if (previousOption === 0 || previousOption === 1) {
+                // Coming from Above/Below spot, save to spot_barrier_value
+                const valueWithoutSign = barrier_1.replace(/^[+-]/, '');
+                setSpotBarrierValue(valueWithoutSign);
+                // Store in localStorage
+                storeValue(SPOT_BARRIER_KEY, valueWithoutSign);
+            } else if (previousOption === 2) {
+                // Coming from Fixed barrier, save to fixed_barrier_value
+                setFixedBarrierValue(barrier_1);
+                // Store in localStorage
+                storeValue(FIXED_BARRIER_KEY, barrier_1);
+            }
+
+            // Restore the appropriate value based on the tab we're switching to
+            if (index === 0 || index === 1) {
+                // Switching to Above/Below spot
+                const valueToUse = spot_barrier_value || '';
+                newValue = index === 0 ? `+${valueToUse}` : `-${valueToUse}`;
             } else if (index === 2) {
-                newValue = '';
-                setPreviousValue(current_value);
+                // Switching to Fixed barrier
+                newValue = fixed_barrier_value || '';
             }
 
             if ((newValue.startsWith('+') || newValue.startsWith('-')) && newValue.charAt(1) === '.') {
@@ -88,6 +150,7 @@ const BarrierInput = observer(
                 newValue = `0${newValue}`;
             }
 
+            setPreviousValue(newValue);
             onChange({ target: { name: 'barrier_1', value: newValue } });
         };
 
@@ -95,6 +158,21 @@ const BarrierInput = observer(
             let value = e.target.value;
             if (option === 0) value = `+${value}`;
             if (option === 1) value = `-${value}`;
+
+            // Update the appropriate state variable based on the current tab
+            if (option === 0 || option === 1) {
+                // Above/Below spot - store without sign
+                const valueWithoutSign = value.replace(/^[+-]/, '');
+                setSpotBarrierValue(valueWithoutSign);
+                // Store in localStorage
+                storeValue(SPOT_BARRIER_KEY, valueWithoutSign);
+            } else if (option === 2) {
+                // Fixed barrier
+                setFixedBarrierValue(value);
+                // Store in localStorage
+                storeValue(FIXED_BARRIER_KEY, value);
+            }
+
             onChange({ target: { name: 'barrier_1', value } });
             setV2ParamsInitialValues({ name: 'barrier_1', value });
             setPreviousValue(value);
@@ -180,6 +258,14 @@ const BarrierInput = observer(
                         content: <Localize i18n_default_text='Save' />,
                         onAction: () => {
                             if (validation_errors.barrier_1.length === 0) {
+                                // Save the current values to localStorage before closing
+                                if (option === 0 || option === 1) {
+                                    const valueWithoutSign = barrier_1.replace(/^[+-]/, '');
+                                    storeValue(SPOT_BARRIER_KEY, valueWithoutSign);
+                                } else if (option === 2) {
+                                    storeValue(FIXED_BARRIER_KEY, barrier_1);
+                                }
+
                                 onClose(true);
 
                                 // This is a workaround to re-trigger any validation errors that were hidden behind the action sheet

@@ -1773,6 +1773,9 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
+        @include mobile-or-tablet-screen {
+            padding: 0.8rem 1.6rem;
+        }
     }
     .dc-input {
         &__label {

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
 
 import { useInvalidateQuery } from '@deriv/api';
+import { GetFinancialAssessmentResponse } from '@deriv/api-types';
 import {
     Button,
     Checkbox,
@@ -42,7 +43,7 @@ import { isFieldImmutable } from '../../../Helpers/utils';
 import { useScrollElementToTop } from '../../../hooks';
 import { PersonalDetailsValueTypes } from '../../../Types';
 
-import { account_opening_reason_list } from './constants';
+import { account_opening_reason_list, account_opening_reason_new_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import { VerifyButton } from './verify-button';
@@ -61,11 +62,16 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
+    const versionRef = useRef('');
     const [isPhoneNumberVerificationEnabled, isPhoneNumberVerificationLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'phone_number_verification',
     });
     const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
+    });
+
+    const [isDynamicFAEnabled, isDynamicFALoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'redirect_to_fa_in_account_os',
     });
 
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
@@ -110,6 +116,26 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
+    const account_opening_reason_list_array = account_opening_reason_list();
+
+    const account_opening_reason_new_list_array = account_opening_reason_new_list();
+    useEffect(() => {
+        if (isDynamicFAEnabled) {
+            WS.authorized.storage
+                .getFinancialAssessment()
+                .then((data: GetFinancialAssessmentResponse) => {
+                    if (data?.get_financial_assessment) {
+                        // @ts-expect-error new key not updated in api types
+                        versionRef.current = data.get_financial_assessment.financial_information_version ?? '';
+                    }
+                })
+                .catch((error: unknown) => {
+                    // eslint-disable-next-line no-console
+                    console.error('Error fetching financial assessment:', error);
+                });
+        }
+    }, [isDynamicFAEnabled]);
+
     const {
         refreshNotifications,
         showPOAAddressMismatchSuccessNotification,
@@ -141,7 +167,8 @@ const PersonalDetailsForm = observer(() => {
         is_loading ||
         is_loading_residence_list ||
         !isPhoneNumberVerificationLoaded ||
-        !isCountryCodeLoaded;
+        !isCountryCodeLoaded ||
+        !isDynamicFALoaded;
 
     useEffect(() => {
         const init = async () => {
@@ -200,7 +227,10 @@ const PersonalDetailsForm = observer(() => {
         { setStatus, setSubmitting }: FormikHelpers<PersonalDetailsValueTypes>
     ) => {
         setStatus({ msg: '' });
-        const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
+        const request = {
+            ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
+            ...(isDynamicFAEnabled && { financial_information_version: versionRef.current || 'v2' }),
+        };
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);
 
@@ -378,6 +408,20 @@ const PersonalDetailsForm = observer(() => {
         checkForInitialCarriersSupported(),
         isCountryCodeDropdownEnabled
     );
+
+    const getAccountOpeningReason = () => {
+        const result = account_opening_reason_new_list_array.find(
+            item => item.value === initialValues?.account_opening_reason
+        );
+
+        if (result) return account_opening_reason_new_list_array;
+
+        const item = account_opening_reason_list_array.find(
+            item => item.value === initialValues?.account_opening_reason
+        );
+
+        return item ? [item, ...account_opening_reason_new_list_array] : account_opening_reason_new_list_array;
+    };
 
     return (
         <Formik
@@ -615,6 +659,7 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                                 {isPhoneNumberVerificationEnabled && (
                                                     <VerifyButton
+                                                        is_dynamic_fa_enabled={isDynamicFAEnabled}
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||
                                                             !isValid ||
@@ -630,6 +675,7 @@ const PersonalDetailsForm = observer(() => {
                                                         states_list={states_list}
                                                         next_email_otp_request_timer={next_email_otp_request_timer}
                                                         setStatus={setStatus}
+                                                        version={versionRef.current}
                                                     />
                                                 )}
                                             </div>
@@ -642,12 +688,9 @@ const PersonalDetailsForm = observer(() => {
                                             )}
                                         </fieldset>
                                         <AccountOpeningReasonField
-                                            account_opening_reason_list={account_opening_reason_list}
+                                            account_opening_reason_list={getAccountOpeningReason()}
                                             setFieldValue={setFieldValue}
-                                            disabled={
-                                                isFieldDisabled('account_opening_reason') ||
-                                                Boolean(account_settings?.account_opening_reason)
-                                            }
+                                            disabled={isFieldDisabled('account_opening_reason')}
                                             required
                                             fieldFocused={
                                                 !account_settings.account_opening_reason &&
@@ -666,6 +709,8 @@ const PersonalDetailsForm = observer(() => {
                                             tin_validation_config={tin_validation_config}
                                             should_display_long_message={is_mf_account}
                                             should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
+                                            version={versionRef.current}
+                                            is_feature_flag_disabled={isDynamicFALoaded && !isDynamicFAEnabled}
                                         />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                         <FormSubHeader title={localize('Address')} />
@@ -858,6 +903,7 @@ const PersonalDetailsForm = observer(() => {
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
                                             disabled={isFieldDisabled('email_consent') && !is_virtual}
+                                            label_line_height={'m'}
                                         />
                                     </fieldset>
                                 </Fragment>

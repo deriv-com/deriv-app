@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
@@ -57,13 +57,17 @@ const useGetPhoneNumberList = () => {
         carriers: country.carriers,
     }));
 
-    const legacy_core_countries_list = countries?.map(country => ({
-        text: `${country.display_name} (${country.calling_country_code})`,
-        value: country.calling_country_code,
-        id: `${country.calling_country_code}_${country.country_code}`,
-        carriers: country.carriers,
-        disabled: false,
-    }));
+    const legacy_core_countries_list = useMemo(
+        () =>
+            countries?.map(country => ({
+                text: `${country.display_name} (${country.calling_country_code})`,
+                value: country.calling_country_code,
+                id: `${country.calling_country_code}_${country.country_code}`,
+                carriers: country.carriers,
+                disabled: false,
+            })) ?? [],
+        [countries]
+    );
 
     //@ts-expect-error will remove this once the account_settings is updated
     const selected_phone_code = account_settings?.calling_country_code || getSelectedPhoneCode();

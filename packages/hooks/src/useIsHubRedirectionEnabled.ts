@@ -7,7 +7,7 @@ type THubEnabledCountryList = {
 };
 
 const useIsHubRedirectionEnabled = () => {
-    const [hubEnabledCountryList] = useGrowthbookGetFeatureValue({
+    const [hubEnabledCountryList, isHubRedirectionLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'hub_enabled_country_list',
     });
     const { client } = useStore();
@@ -17,8 +17,10 @@ const useIsHubRedirectionEnabled = () => {
         typeof hubEnabledCountryList === 'object' &&
         hubEnabledCountryList !== null &&
         Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        account_settings.citizen &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(account_settings.citizen);
+        account_settings.country_code &&
+        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(
+            account_settings.country_code
+        );
 
     const isChangingToHubAppId =
         typeof hubEnabledCountryList === 'object' &&
@@ -27,7 +29,7 @@ const useIsHubRedirectionEnabled = () => {
         clients_country &&
         (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clients_country);
 
-    return { isHubRedirectionEnabled, isChangingToHubAppId };
+    return { isHubRedirectionEnabled, isChangingToHubAppId, isHubRedirectionLoaded };
 };
 
 export default useIsHubRedirectionEnabled;

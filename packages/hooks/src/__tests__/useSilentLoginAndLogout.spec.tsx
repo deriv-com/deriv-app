@@ -1,9 +1,11 @@
+import React from 'react';
 import Cookies from 'js-cookie';
 
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useSilentLoginAndLogout from '../useSilentLoginAndLogout';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('js-cookie', () => ({
     get: jest.fn(),
@@ -15,6 +17,12 @@ jest.mock('@deriv-com/auth-client', () => ({
 
 describe('useSilentLoginAndLogout', () => {
     const mockOAuthLogout = jest.fn();
+    const mockStoreData = mockStore({
+        client: { prevent_single_login: false, is_single_logging_in: false, setIsSingleLoggingIn: jest.fn() },
+    });
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mockStoreData}>{children}</StoreProvider>
+    );
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -42,16 +50,19 @@ describe('useSilentLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).toHaveBeenCalledWith({
             redirectCallbackUri: `${window.location.origin}/callback`,
+            postLoginRedirectUri: window.location.href,
         });
         expect(mockOAuthLogout).not.toHaveBeenCalled();
     });
@@ -61,12 +72,14 @@ describe('useSilentLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -83,12 +96,14 @@ describe('useSilentLoginAndLogout', () => {
             value: { pathname: '/callback' },
         });
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -100,12 +115,14 @@ describe('useSilentLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
@@ -117,12 +134,14 @@ describe('useSilentLoginAndLogout', () => {
 
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
 
-        renderHook(() =>
-            useSilentLoginAndLogout({
-                is_client_store_initialized: true,
-                isOAuth2Enabled: true,
-                oAuthLogout: mockOAuthLogout,
-            })
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
+                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
         );
 
         expect(requestOidcAuthentication).not.toHaveBeenCalled();

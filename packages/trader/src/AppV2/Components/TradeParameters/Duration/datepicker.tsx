@@ -4,6 +4,11 @@ import React, { useEffect } from 'react';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { useTraderStore } from 'Stores/useTraderStores';
 
+type TMarketEvent = {
+    dates: string[];
+    descrip: string;
+};
+
 const DaysDatepicker = ({
     start_date,
     end_date,
@@ -19,14 +24,27 @@ const DaysDatepicker = ({
 
     const onChangeCalendarMonth = React.useCallback(
         async (e = toMoment().format('YYYY-MM-DD')) => {
+            const new_market_events: TMarketEvent[] = [];
             let new_disabled_days: number[] = [];
-            const events = await ContractType.getTradingEvents(e, symbol);
+
+            const [events, trading_days] = await Promise.all([
+                ContractType.getTradingEvents(e, symbol),
+                ContractType.getTradingDays(e, symbol),
+            ]);
+
+            if (trading_days) {
+                const all_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+                new_disabled_days = all_days
+                    .map((day: (typeof all_days)[number], index) => (!trading_days.includes(day) ? index : -1))
+                    .filter(index => index !== -1);
+            }
+
             events?.forEach(evt => {
-                const dates = evt.dates.split(', ');
-                const idx = dates.indexOf('Fridays');
-                if (idx !== -1) {
-                    new_disabled_days = [6, 0];
-                }
+                const dates = evt.dates.split(', '); // convert dates str into array
+                new_market_events.push({
+                    dates,
+                    descrip: evt.descrip,
+                });
             });
 
             if (isMounted()) {

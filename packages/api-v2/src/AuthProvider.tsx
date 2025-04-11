@@ -154,6 +154,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             if (!activeAccount) return;
 
             localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+            sessionStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
             const isDemo = activeAccount.is_virtual;
             const shouldCreateNewWSConnection =
                 (isDemo && wsClient?.endpoint === AppIDConstants.environments.real) ||

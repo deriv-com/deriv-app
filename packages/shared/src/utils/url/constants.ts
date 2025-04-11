@@ -15,10 +15,14 @@ export const deriv_urls = Object.freeze({
     DERIV_COM_STAGING: `https://staging.${domain_url}`,
     DERIV_APP_PRODUCTION: `https://app.${domain_url}`,
     DERIV_APP_STAGING: `https://staging-app.${domain_url}`,
+    HUB_PRODUCTION: `https://hub.${domain_url}/tradershub`,
+    HUB_STAGING: `https://staging-hub.${domain_url}/tradershub`,
     SMARTTRADER_PRODUCTION: `https://smarttrader.${domain_url}`,
     SMARTTRADER_STAGING: `https://staging-smarttrader.${domain_url}`,
     P2P_PRODUCTION: `https://p2p.${domain_url}`,
     P2P_STAGING: `https://staging-p2p.${domain_url}`,
+    BOT_PRODUCTION: `https://dbot.${domain_url}`,
+    BOT_STAGING: `https://staging-dbot.${domain_url}`,
 });
 /**
  * @deprecated Please use 'URLConstants.whatsApp' from '@deriv-com/utils' instead of this.

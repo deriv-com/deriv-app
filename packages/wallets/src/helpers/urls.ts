@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
-import { Analytics } from '@deriv-com/analytics';
 import { LocalStorageUtils, URLConstants, URLUtils } from '@deriv-com/utils';
 import { LANDING_COMPANIES } from '../constants/constants';
 
@@ -15,6 +14,8 @@ const domainUrlInitial = (isBrowser() && window.location.hostname.split('app.')[
 const domainUrl = supportedDomains.includes(domainUrlInitial) ? domainUrlInitial : derivComUrl;
 
 export const derivUrls = Object.freeze({
+    BOT_PRODUCTION: `https://dbot.${domainUrl}`,
+    BOT_STAGING: `https://staging-dbot.${domainUrl}`,
     DERIV_APP_PRODUCTION: `https://app.${domainUrl}`,
     DERIV_APP_STAGING: `https://staging-app.${domainUrl}`,
     DERIV_COM_PRODUCTION: `https://${domainUrl}`,
@@ -66,6 +67,23 @@ export const getUrlSmartTrader = () => {
     }
 
     return `${baseLink}/${i18NLanguage.toLowerCase()}/trading.html`;
+};
+
+export const getUrlBot = () => {
+    const { isStagingDerivApp } = getPlatformFromUrl();
+    const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+    const urlLang = URLUtils.getQueryParameter('lang');
+    const i18NLanguage = localizeLanguage || urlLang || 'en';
+
+    let baseLink = '';
+
+    if (isStagingDerivApp) {
+        baseLink = derivUrls.BOT_STAGING;
+    } else {
+        baseLink = derivUrls.BOT_PRODUCTION;
+    }
+
+    return `${baseLink}?lang=${i18NLanguage.toLowerCase()}`;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
@@ -125,33 +143,25 @@ export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
 });
 
 export const redirectToOutSystems = (landingCompany?: string, currency = '') => {
-    // redirect to OS Tradershub if feature is enabled
-    const isOutSystemsRealAccountCreationEnabled = Analytics?.getFeatureValue(
-        'trigger_os_real_account_creation',
-        false
-    );
+    const clientAccounts = getAccountsFromLocalStorage() ?? {};
+    if (!Object.keys(clientAccounts).length) return;
+    const accountsWithTokens: Record<string, unknown> = {};
+    Object.keys(clientAccounts).forEach(loginid => {
+        const account = clientAccounts[loginid];
+        accountsWithTokens[loginid] = { token: account.token };
+    });
+    const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
 
-    if (isOutSystemsRealAccountCreationEnabled) {
-        const clientAccounts = getAccountsFromLocalStorage() ?? {};
-        if (!Object.keys(clientAccounts).length) return;
-        const accountsWithTokens: Record<string, unknown> = {};
-        Object.keys(clientAccounts).forEach(loginid => {
-            const account = clientAccounts[loginid];
-            accountsWithTokens[loginid] = { token: account.token };
-        });
-        const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+    Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
 
-        Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
+    const params = new URLSearchParams({
+        action: 'real-account-signup',
+        ...(currency ? { currency } : {}),
+        target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
+    });
+    const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
 
-        const params = new URLSearchParams({
-            action: 'real-account-signup',
-            ...(currency ? { currency } : {}),
-            target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
-        });
-        const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
-
-        const redirectURL = new URL(`${baseUrl}/redirect`);
-        redirectURL.search = params.toString();
-        return (window.location.href = redirectURL.toString());
-    }
+    const redirectURL = new URL(`${baseUrl}/redirect`);
+    redirectURL.search = params.toString();
+    return (window.location.href = redirectURL.toString());
 };

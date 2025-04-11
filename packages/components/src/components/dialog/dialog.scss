@@ -54,6 +54,7 @@
         max-height: 338px;
         min-width: 440px;
         min-height: 176px;
+        margin: 0 15px;
         margin-top: -#{$HEADER_HEIGHT};
         padding: 2.4rem;
         border-radius: 8px;
@@ -64,7 +65,9 @@
         align-items: center;
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         background-color: var(--general-main-2);
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+        transition:
+            transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25),
+            opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     }
     &__header {
         &-wrapper {

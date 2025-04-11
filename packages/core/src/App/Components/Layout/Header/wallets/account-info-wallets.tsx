@@ -190,6 +190,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     <DropdownArrow is_disabled={Boolean(active_account?.is_disabled)} />
                 </div>
             </AccountInfoWrapper>
+            <div className='acc-info__separator' />
             {isDesktop ? (
                 <CSSTransition
                     in={is_dialog_on}

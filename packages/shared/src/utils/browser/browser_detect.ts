@@ -22,10 +22,10 @@ const getUserBrowser = () => {
         return 'Edge';
     } else if (navigator.userAgent.indexOf('Chrome') !== -1 || navigator.userAgent.indexOf('CriOS') !== -1) {
         return 'Chrome';
-    } else if (navigator.userAgent.indexOf('Safari') !== -1) {
-        return 'Safari';
     } else if (navigator.userAgent.indexOf('Firefox') !== -1 || navigator.userAgent.indexOf('FxiOS') !== -1) {
         return 'Firefox';
+    } else if (navigator.userAgent.indexOf('Safari') !== -1) {
+        return 'Safari';
     }
     return 'unknown';
 };

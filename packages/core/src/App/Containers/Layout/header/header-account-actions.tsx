@@ -4,9 +4,10 @@ import { AccountActions } from 'App/Components/Layout/Header';
 
 type THeaderAccountActions = {
     onClickDeposit: () => void;
+    is_traders_hub_routes: boolean;
 };
 
-const HeaderAccountActions = observer(({ onClickDeposit }: THeaderAccountActions) => {
+const HeaderAccountActions = observer(({ onClickDeposit, is_traders_hub_routes }: THeaderAccountActions) => {
     const { client, ui, notifications } = useStore();
     const { account_type, balance, currency, is_eu, is_logged_in, is_virtual } = client;
     const {
@@ -34,6 +35,7 @@ const HeaderAccountActions = observer(({ onClickDeposit }: THeaderAccountActions
                 is_eu={is_eu}
                 is_notifications_visible={is_notifications_visible}
                 is_logged_in={is_logged_in}
+                is_traders_hub_routes={is_traders_hub_routes}
                 is_virtual={is_virtual}
                 onClickDeposit={onClickDeposit}
                 notifications_count={filtered_notifications.length}

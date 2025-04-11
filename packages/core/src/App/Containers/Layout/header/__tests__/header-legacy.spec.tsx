@@ -1,7 +1,7 @@
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import DTraderHeader from '../dtrader-header';
+import HeaderLegacy from '../header-legacy';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -21,12 +21,12 @@ jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Ac
 jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>Mocked Traders Home Button</div>));
 jest.mock('../deriv-short-logo', () => jest.fn(() => <div>Deriv Short Logo</div>));
 
-describe('DTraderHeader', () => {
+describe('HeaderLegacy', () => {
     const mock_store = mockStore({ ui: { is_real_acc_signup_on: true } });
     const renderComponent = (modified_store = mock_store) =>
         render(
             <StoreProvider store={modified_store}>
-                <DTraderHeader />
+                <HeaderLegacy />
             </StoreProvider>
         );
 

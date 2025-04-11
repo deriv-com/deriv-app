@@ -166,7 +166,6 @@
     }
 
     &__divider {
-        margin-right: 1rem;
         width: 0.1rem;
         height: 3rem;
         margin-left: 0.8rem;
@@ -249,5 +248,15 @@
         align-self: center;
         margin: 0 1.2rem;
         cursor: pointer;
+    }
+}
+
+.traders-hub {
+    &-onboarding__toggle {
+        margin-right: 0.8rem;
+
+        @include mobile-or-tablet-screen {
+            margin-right: 0;
+        }
     }
 }

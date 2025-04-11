@@ -9,14 +9,19 @@ import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
 import { BinaryLink } from '../../../Routes/index.js';
 import ToggleNotifications from '../toggle-notifications.jsx';
+import TradersHubOnboarding from '../../../../Containers/Layout/header/traders-hub-onboarding';
 import AccountInfoWallets from './account-info-wallets';
 import 'Sass/app/_common/components/account-switcher.scss';
 
-const AccountActionsWallets = observer(() => {
+type TAccountActionsWallets = {
+    is_traders_hub_routes: boolean;
+};
+
+const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActionsWallets) => {
     const { client, ui, notifications } = useStore();
     const { is_logged_in, accounts, loginid } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_accounts_switcher_on } = ui;
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
@@ -47,24 +52,49 @@ const AccountActionsWallets = observer(() => {
         );
     }
 
-    if (!isDesktop) {
+    if (isMobile) {
         return (
             <React.Fragment>
-                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                <div className='acc-info__wallets-notification-icon'>
-                    <ToggleNotifications
-                        count={notifications_count}
-                        is_visible={is_notifications_visible}
-                        toggleDialog={toggleNotificationsModal}
-                        tooltip_message={undefined}
-                    />
-                </div>
+                {!is_traders_hub_routes && (
+                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+                )}
+                <TradersHubOnboarding />
+                <ToggleNotifications
+                    count={notifications_count}
+                    is_visible={is_notifications_visible}
+                    toggleDialog={toggleNotificationsModal}
+                    tooltip_message={undefined}
+                />
             </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
+            {!is_traders_hub_routes && !is_virtual && !currency && (
+                <div className='set-currency'>
+                    <Button
+                        onClick={() => openRealAccountSignup('set_currency')}
+                        has_effect
+                        type='button'
+                        text={localize('Set currency')}
+                        primary
+                    />
+                </div>
+            )}
+            {!is_traders_hub_routes && currency && (
+                <Button
+                    className='acc-info__button'
+                    has_effect
+                    text={localize('Manage funds')}
+                    onClick={handleManageFundsRedirect}
+                    primary
+                />
+            )}
+            {!is_traders_hub_routes && (
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+            )}
+            <TradersHubOnboarding />
             <ToggleNotifications
                 count={notifications_count}
                 is_visible={is_notifications_visible}
@@ -85,27 +115,6 @@ const AccountActionsWallets = observer(() => {
                 >
                     {accountSettings}
                 </Popover>
-            )}
-            <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-            {!is_virtual && !currency && (
-                <div className='set-currency'>
-                    <Button
-                        onClick={() => openRealAccountSignup('set_currency')}
-                        has_effect
-                        type='button'
-                        text={localize('Set currency')}
-                        primary
-                    />
-                </div>
-            )}
-            {currency && (
-                <Button
-                    className='acc-info__button'
-                    has_effect
-                    text={localize('Manage funds')}
-                    onClick={handleManageFundsRedirect}
-                    primary
-                />
             )}
         </React.Fragment>
     );

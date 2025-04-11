@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -295,14 +296,18 @@ const ModalManager = () => {
         is_mt5_password_invalid_format_modal_visible ||
         is_sent_email_modal_enabled;
 
+    const url_params = new URLSearchParams(useLocation().search);
+    const url_action_param = url_params.get('action');
+
     const should_show_wallets_non_eu_upgrade_modal =
-        !is_eu && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
+        !is_eu && (is_eligible || is_real_wallets_upgrade_on || is_in_progress) && !url_action_param;
 
     const should_show_wallets_eu_upgrade_modal =
         is_eu &&
         (is_virtual || !is_trading_experience_incomplete) &&
         !should_show_assessment_complete_modal &&
-        (is_eligible || is_real_wallets_upgrade_on);
+        (is_eligible || is_real_wallets_upgrade_on) &&
+        !url_action_param;
 
     return (
         <React.Fragment>

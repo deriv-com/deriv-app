@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv/components';
-import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
+import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit, getTomorrowDate } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
@@ -37,10 +37,16 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
     const isMounted = useIsMounted();
 
+    const hasRangeSelection = () => mode === 'duration';
+
     const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
     const [market_events, setMarketEvents] = React.useState<TMarketEvent[]>([]);
     const [duration, setDuration] = React.useState(current_duration);
-    const [selected_date, setSelectedDate] = React.useState<moment.Moment>();
+    const [selected_date, setSelectedDate] = React.useState<moment.Moment | undefined>(() => {
+        if (!hasRangeSelection() && expiry_type === 'endtime') {
+            return toMoment(getTomorrowDate(server_time));
+        }
+    });
 
     React.useEffect(() => {
         onChangeCalendarMonth();
@@ -84,8 +90,6 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
             ? getMomentContractStartDateTime().clone().add(max_daily_duration, 'second')
             : getMomentContractStartDateTime().clone().add(getMaxDailyDuration(), 'second');
     };
-
-    const hasRangeSelection = () => mode === 'duration';
 
     const getFooter = () => {
         if (!hasRangeSelection()) return '';

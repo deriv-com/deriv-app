@@ -20,6 +20,7 @@ export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCFDCompareAccounts } from './useCFDCompareAccounts';
 export { default as useCancelCryptoTransaction } from './useCancelCryptoTransaction';
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
+export { default as useCashierFiatDepositAddress } from './useCashierFiatDepositAddress';
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateNewVirtualAccount } from './useCreateNewVirtualAccount';

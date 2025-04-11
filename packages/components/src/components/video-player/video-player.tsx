@@ -16,6 +16,7 @@ type TVideoPlayerProps = {
     increased_drag_area?: boolean;
     muted?: boolean;
     src: string;
+    show_loading?: boolean;
 };
 type TSupportedEvent = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent;
 
@@ -32,6 +33,7 @@ const VideoPlayer = ({
     increased_drag_area,
     muted = false,
     src,
+    show_loading = false,
 }: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
 
@@ -41,6 +43,7 @@ const VideoPlayer = ({
     const [current_time, setCurrentTime] = React.useState<number>();
     const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [is_animated, setIsAnimated] = React.useState(true);
+    const [is_loading, setIsLoading] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(muted);
     const [playback_rate, setPlaybackRate] = React.useState(1);
@@ -183,6 +186,7 @@ const VideoPlayer = ({
 
         setVideoDuration(video_ref.current.duration);
         setIsPlaying(should_autoplay);
+        setIsLoading(false);
 
         if (should_autoplay) animation_ref.current = requestAnimationFrame(repeat);
     };
@@ -302,6 +306,11 @@ const VideoPlayer = ({
                 playbackRate={playback_rate}
                 volume={volume}
             />
+            {is_loading && show_loading && (
+                <div className='player__loader' style={{ height: height ?? (is_mobile ? '184.5px' : '270px') }}>
+                    <div className='player__loader-circle' />
+                </div>
+            )}
             <VideoOverlay
                 onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
                 is_ended={is_ended.current}

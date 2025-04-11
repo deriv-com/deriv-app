@@ -2,7 +2,7 @@
     /** @define notifications-toggle; weak */
     &-toggle {
         position: relative;
-        margin-right: 24px;
+        margin-right: 0.8rem;
 
         &__icon {
             width: 26px;
@@ -53,7 +53,9 @@
         background: var(--general-main-2);
         border-radius: $BORDER_RADIUS;
         box-shadow: 0 4px 8px 2px var(--shadow-menu);
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+        transition:
+            transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+            opacity 0.25s linear;
         opacity: 0;
         transform: translate3d(0, -20px, 0);
 
@@ -78,7 +80,9 @@
             padding-left: 1.3rem;
             background: var(--general-main-2);
             box-shadow: 0 4px 8px 2px var(--shadow-menu);
-            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
+            transition:
+                transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+                opacity 0.25s linear;
             border-bottom-right-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;
         }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { Text, Icon, Counter } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
@@ -90,6 +91,7 @@ const CashierTab = observer(() => {
 const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     const { isDesktop } = useDevice();
     const { i18n } = useTranslation();
+    const location = useLocation();
     const { client } = useStore();
     const { has_wallet, is_logged_in } = client;
 
@@ -97,8 +99,8 @@ const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
 
     return (
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
-            {!is_traders_hub_routes && <ReportTab />}
             {isDesktop && !has_wallet && <CashierTab />}
+            {!is_traders_hub_routes && !location.pathname.includes(routes.cashier) && <ReportTab />}
         </div>
     );
 });

@@ -1,7 +1,9 @@
 import { Fragment } from 'react';
+
 import { Icon } from '@deriv/components';
-import { Localize } from '@deriv-com/translations';
 import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
+
 import { DescriptionContainer } from './description-container';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import { TipsBlock } from './tips-block';
@@ -26,7 +28,7 @@ export const PasskeysLearnMore = ({ onPrimaryButtonClick, onSecondaryButtonClick
             title={<Localize i18n_default_text='Effortless login with passkeys' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}
-            primary_button_text={<Localize i18n_default_text='Create passkey' />}
+            primary_button_text={<Localize i18n_default_text='Enable biometrics' />}
         />
     </div>
 );

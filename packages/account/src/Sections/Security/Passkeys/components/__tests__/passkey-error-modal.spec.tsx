@@ -38,7 +38,7 @@ describe('PasskeyErrorModal', () => {
         mock_error.name = 'NotSupportedError';
         render(<PasskeyErrorModal error={mock_error} is_modal_open onButtonClick={mockButtonClick} />);
 
-        expect(screen.getByText('Biometrics setup failed')).toBeInTheDocument();
+        expect(screen.getByText('Biometric setup failed')).toBeInTheDocument();
         expect(screen.getByText("This device doesn't support biometrics.")).toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', { name: /ok/i }));
         expect(mockButtonClick).toHaveBeenCalledTimes(1);
@@ -48,6 +48,6 @@ describe('PasskeyErrorModal', () => {
         render(<PasskeyErrorModal error={mock_error} is_modal_open={false} onButtonClick={mockButtonClick} />);
 
         expect(screen.queryByText('Unable to process your request')).not.toBeInTheDocument();
-        expect(screen.queryByText('Biometrics setup failed')).not.toBeInTheDocument();
+        expect(screen.queryByText('Biometric setup failed')).not.toBeInTheDocument();
     });
 });

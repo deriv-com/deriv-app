@@ -78,7 +78,7 @@ jest.mock('@deriv-com/analytics', () => ({
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Enable biometrics';
-    const error_message = 'We’re experiencing a temporary issue in processing your request. Please try again later.';
+    const error_message = "We're facing a temporary issue. Try again later.";
     const error_title = 'Unable to process your request';
     const ok_button = /ok/i;
     const continue_button = /continue/i;

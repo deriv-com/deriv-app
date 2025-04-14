@@ -200,12 +200,7 @@ const getModules = () => {
                         {
                             path: routes.passkeys,
                             component: Account,
-                            getTitle: () => (
-                                <>
-                                    {localize('Biometrics')}
-                                    <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
-                                </>
-                            ),
+                            getTitle: () => localize('Biometrics'),
                         },
                         {
                             path: routes.self_exclusion,

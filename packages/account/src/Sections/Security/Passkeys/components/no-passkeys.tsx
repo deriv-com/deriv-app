@@ -1,5 +1,5 @@
-import { DerivLightIcAddPasskeyIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv-com/translations';
+import { Icon } from '@deriv/components';
 
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
@@ -9,7 +9,7 @@ export const NoPasskeys = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPa
             description={
                 <Localize i18n_default_text='Use fingerprint, face recognition, or other biometric data to log in easily and securely.' />
             }
-            icon={<DerivLightIcAddPasskeyIcon height='96px' width='96px' />}
+            icon={<Icon icon='IcAccountAddBiometrics' size={96} />}
             title={<Localize i18n_default_text='Your key to safer logins' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}

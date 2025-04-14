@@ -1,4 +1,4 @@
-import { DerivLightIcSuccessPasskeyIcon } from '@deriv/quill-icons';
+import { Icon } from '@deriv/components';
 import { getOSNameWithUAParser } from '@deriv/shared';
 import { Localize } from '@deriv-com/translations';
 
@@ -19,7 +19,7 @@ export const PasskeyRemoved = ({ onPrimaryButtonClick }: TPasskeysButtonOnClicks
     <div className='passkeys'>
         <PasskeysStatusLayout
             description={getPasskeysRemovedDescription(getOSNameWithUAParser())}
-            icon={<DerivLightIcSuccessPasskeyIcon height='96px' width='96px' />}
+            icon={<Icon icon='IcAccountRemoveBiometrics' size={96} />}
             title={<Localize i18n_default_text='Biometric removed' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             primary_button_text={<Localize i18n_default_text='OK' />}

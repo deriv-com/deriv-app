@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 
-import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
+import { Icon } from '@deriv/components';
 import { Localize, useTranslations } from '@deriv-com/translations';
 
 import { FormInputField } from '../../../../Components/forms/form-fields';
@@ -25,7 +25,7 @@ export const PasskeyRename = ({
     };
 
     const onSubmitValues = (values: TInitialValues) => {
-        onPrimaryButtonClick({ name: values.passkey_name });
+        onPrimaryButtonClick?.({ name: values.passkey_name });
     };
 
     return (
@@ -39,7 +39,7 @@ export const PasskeyRename = ({
                 <div className='passkeys'>
                     <Form>
                         <PasskeysStatusLayout
-                            icon={<DerivLightIcEditPasskeyIcon height='96px' width='96px' />}
+                            icon={<Icon icon='IcAccountEditBiometrics' size={96} />}
                             title={<Localize i18n_default_text='Edit biometrics' />}
                             onPrimaryButtonClick={onPrimaryButtonClick}
                             onSecondaryButtonClick={onSecondaryButtonClick}

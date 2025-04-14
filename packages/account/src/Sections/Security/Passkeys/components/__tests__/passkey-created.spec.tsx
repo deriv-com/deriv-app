@@ -18,7 +18,7 @@ describe('PasskeyCreated', () => {
         );
 
         expect(screen.getByText('Success')).toBeInTheDocument();
-        expect(screen.getByText(/Your Deriv account is now protected with biometrics/)).toBeInTheDocument();
+        expect(screen.getByText(/You can use biometrics to log in to your Deriv account./)).toBeInTheDocument();
         await userEvent.click(screen.getByRole('button', { name: /Go to Trader's Hub/i }));
         await userEvent.click(screen.getByRole('button', { name: /Manage biometrics/i }));
         expect(mockOnPrimaryButtonClick).toHaveBeenCalled();

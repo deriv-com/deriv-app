@@ -1,4 +1,4 @@
-import { DerivLightIcSuccessPasskeyIcon } from '@deriv/quill-icons';
+import { Icon } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
@@ -6,13 +6,8 @@ import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status
 export const PasskeyCreated = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysButtonOnClicks) => (
     <div className='passkeys'>
         <PasskeysStatusLayout
-            description={
-                <Localize
-                    i18n_default_text='Your Deriv account is now protected with biometrics. To edit or remove your biometric data, press <0>Manage biometrics</0>.'
-                    components={[<strong key={0} />]}
-                />
-            }
-            icon={<DerivLightIcSuccessPasskeyIcon height='96px' width='96px' />}
+            description={<Localize i18n_default_text='You can use biometrics to log in to your Deriv account.' />}
+            icon={<Icon icon='IcAccountCreatedBiometrics' size={96} />}
             title={<Localize i18n_default_text='Success' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}

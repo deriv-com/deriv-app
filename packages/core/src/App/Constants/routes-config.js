@@ -9,8 +9,8 @@ import Redirect from 'App/Containers/Redirect';
 import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
-import OSRedirect from '../Containers/OSRedirect';
 import CallbackPage from '../../Modules/Callback/CallbackPage.tsx';
+import OSRedirect from '../Containers/OSRedirect';
 
 const CFDCompareAccounts = React.lazy(
     () => import(/* webpackChunkName: "cfd-compare-accounts" */ '@deriv/cfd/src/Containers/cfd-compare-accounts')
@@ -202,7 +202,7 @@ const getModules = () => {
                             component: Account,
                             getTitle: () => (
                                 <>
-                                    {localize('Passkeys')}
+                                    {localize('Biometrics')}
                                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
                                 </>
                             ),

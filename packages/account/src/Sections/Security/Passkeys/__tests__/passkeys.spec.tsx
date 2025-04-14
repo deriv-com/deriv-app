@@ -1,15 +1,17 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { Analytics } from '@deriv-com/analytics';
+
 import { APIProvider } from '@deriv/api';
-import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey, useRemovePasskey } from '@deriv/hooks';
-import { useDevice } from '@deriv-com/ui';
+import { useGetPasskeysList, useRegisterPasskey, useRemovePasskey, useRenamePasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import Passkeys from '../passkeys';
+import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { PasskeysList } from '../components/passkeys-list';
+import Passkeys from '../passkeys';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -75,7 +77,7 @@ jest.mock('@deriv-com/analytics', () => ({
 
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
-    const create_passkey = 'Create passkey';
+    const create_passkey = 'Enable biometrics';
     const error_message = 'We’re experiencing a temporary issue in processing your request. Please try again later.';
     const error_title = 'Unable to process your request';
     const ok_button = /ok/i;
@@ -190,7 +192,7 @@ describe('Passkeys', () => {
         );
     });
 
-    it("renders 'Experience safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", async () => {
+    it("renders 'Your key to safer logins' page when no passkey created, trigger 'Learn more' screen, trigger passkey creation", async () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: [],
         });
@@ -200,7 +202,7 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        expect(screen.getByText('Experience safer logins')).toBeInTheDocument();
+        expect(screen.getByText('Your key to safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
         await userEvent.click(learn_more_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
@@ -230,9 +232,8 @@ describe('Passkeys', () => {
         renderComponent();
 
         await userEvent.click(screen.getByRole('button', { name: create_passkey }));
-        expect(screen.getByText('Just a reminder')).toBeInTheDocument();
+        expect(screen.getByText('Set up biometrics')).toBeInTheDocument();
         expect(screen.getByText('Enable screen lock on your device.')).toBeInTheDocument();
-        expect(screen.getByText('Enable bluetooth.')).toBeInTheDocument();
         expect(screen.getByText('Sign in to your Google or iCloud account.')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: continue_button }));
@@ -256,13 +257,13 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        expect(screen.queryByText('Edit passkey')).not.toBeInTheDocument();
+        expect(screen.queryByText('Edit biometrics')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
         await userEvent.click(screen.getByText('Rename'));
 
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_rename_started'));
-        expect(screen.getByText('Edit passkey')).toBeInTheDocument();
+        expect(screen.getByText('Edit biometrics')).toBeInTheDocument();
 
         const input: HTMLInputElement = screen.getByRole('textbox');
         await userEvent.clear(input);
@@ -287,7 +288,7 @@ describe('Passkeys', () => {
 
         renderComponent();
 
-        expect(screen.queryByText('Edit passkey')).not.toBeInTheDocument();
+        expect(screen.queryByText('Edit biometrics')).not.toBeInTheDocument();
 
         await userEvent.click(screen.getAllByTestId('dt_dropdown_display')[0]);
         await userEvent.click(screen.getByText('Remove'));

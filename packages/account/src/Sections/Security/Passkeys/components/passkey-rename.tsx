@@ -1,9 +1,12 @@
 import { Form, Formik } from 'formik';
-import { Localize, useTranslations } from '@deriv-com/translations';
+
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
+import { Localize, useTranslations } from '@deriv-com/translations';
+
 import { FormInputField } from '../../../../Components/forms/form-fields';
 import { TCurrentManagedPasskey } from '../passkeys';
 import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
+
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeyRename = { current_managed_passkey: TCurrentManagedPasskey } & TPasskeysButtonOnClicks;
@@ -37,7 +40,7 @@ export const PasskeyRename = ({
                     <Form>
                         <PasskeysStatusLayout
                             icon={<DerivLightIcEditPasskeyIcon height='96px' width='96px' />}
-                            title={<Localize i18n_default_text='Edit passkey' />}
+                            title={<Localize i18n_default_text='Edit biometrics' />}
                             onPrimaryButtonClick={onPrimaryButtonClick}
                             onSecondaryButtonClick={onSecondaryButtonClick}
                             primary_button_text={<Localize i18n_default_text='Save changes' />}
@@ -45,7 +48,7 @@ export const PasskeyRename = ({
                             primary_button_disabled={!dirty || !isValid}
                             primary_button_type='submit'
                         >
-                            <FormInputField label={localize('Passkey name')} name='passkey_name' />
+                            <FormInputField label={localize('Biometric name')} name='passkey_name' />
                         </PasskeysStatusLayout>
                     </Form>
                 </div>

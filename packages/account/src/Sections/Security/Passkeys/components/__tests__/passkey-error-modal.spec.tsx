@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { PasskeyErrorModal } from '../passkey-error-modal';
 
 describe('PasskeyErrorModal', () => {
@@ -22,25 +24,23 @@ describe('PasskeyErrorModal', () => {
 
     const mockButtonClick = jest.fn();
 
-    it('renders PasskeyErrorModal with common error', () => {
+    it('renders PasskeyErrorModal with common error', async () => {
         render(<PasskeyErrorModal error={mock_error} is_modal_open onButtonClick={mockButtonClick} />);
 
         expect(screen.getByText('Unable to process your request')).toBeInTheDocument();
-        expect(
-            screen.getByText('We’re experiencing a temporary issue in processing your request. Please try again later.')
-        ).toBeInTheDocument();
-        userEvent.click(screen.getByRole('button', { name: /ok/i }));
+        expect(screen.getByText("We're facing a temporary issue. Try again later.")).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('button', { name: /ok/i }));
         expect(mockButtonClick).toHaveBeenCalledTimes(1);
     });
 
-    it('renders PasskeyErrorModal with NotSupportedError', () => {
+    it('renders PasskeyErrorModal with NotSupportedError', async () => {
         jest.clearAllMocks();
         mock_error.name = 'NotSupportedError';
         render(<PasskeyErrorModal error={mock_error} is_modal_open onButtonClick={mockButtonClick} />);
 
-        expect(screen.getByText('Passkey setup failed')).toBeInTheDocument();
-        expect(screen.getByText("This device doesn't support passkeys.")).toBeInTheDocument();
-        userEvent.click(screen.getByRole('button', { name: /ok/i }));
+        expect(screen.getByText('Biometrics setup failed')).toBeInTheDocument();
+        expect(screen.getByText("This device doesn't support biometrics.")).toBeInTheDocument();
+        await userEvent.click(screen.getByRole('button', { name: /ok/i }));
         expect(mockButtonClick).toHaveBeenCalledTimes(1);
     });
 
@@ -48,6 +48,6 @@ describe('PasskeyErrorModal', () => {
         render(<PasskeyErrorModal error={mock_error} is_modal_open={false} onButtonClick={mockButtonClick} />);
 
         expect(screen.queryByText('Unable to process your request')).not.toBeInTheDocument();
-        expect(screen.queryByText('Passkey setup failed')).not.toBeInTheDocument();
+        expect(screen.queryByText('Biometrics setup failed')).not.toBeInTheDocument();
     });
 });

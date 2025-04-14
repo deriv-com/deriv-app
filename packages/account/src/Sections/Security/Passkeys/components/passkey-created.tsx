@@ -1,5 +1,6 @@
-import { Localize } from '@deriv-com/translations';
 import { DerivLightIcSuccessPasskeyIcon } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
+
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 export const PasskeyCreated = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysButtonOnClicks) => (
@@ -7,16 +8,16 @@ export const PasskeyCreated = ({ onPrimaryButtonClick, onSecondaryButtonClick }:
         <PasskeysStatusLayout
             description={
                 <Localize
-                    i18n_default_text='Your account is now secured with a passkey.<0/>Manage your passkey through your<0/>Deriv account settings.'
-                    components={[<br key={0} />]}
+                    i18n_default_text='Your Deriv account is now protected with biometrics. To edit or remove your biometric data, press <0>Manage biometrics</0>.'
+                    components={[<strong key={0} />]}
                 />
             }
             icon={<DerivLightIcSuccessPasskeyIcon height='96px' width='96px' />}
-            title={<Localize i18n_default_text='Success!' />}
+            title={<Localize i18n_default_text='Success' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}
-            primary_button_text={<Localize i18n_default_text='Continue trading' />}
-            secondary_button_text={<Localize i18n_default_text='Add more passkeys' />}
+            primary_button_text={<Localize i18n_default_text="Go to Trader's Hub" />}
+            secondary_button_text={<Localize i18n_default_text='Manage biometrics' />}
         />
     </div>
 );

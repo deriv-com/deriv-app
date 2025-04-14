@@ -15,11 +15,9 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn().mockReturnValue({ pathname: '' }),
 }));
 // eslint-disable-next-line react/display-name
-jest.mock('../default-header', () => () => <div data-testid='dt_default_header'>MockedDefaultHeader</div>);
+jest.mock('../header-legacy', () => () => <div data-testid='dt_default_header'>MockedLegacyHeader</div>);
 // eslint-disable-next-line react/display-name
-jest.mock('../dtrader-header', () => () => <div data-testid='dt_dtrader_header'>MockedDTraderHeader</div>);
-// eslint-disable-next-line react/display-name
-jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_header'>MockedTradersHubHeader</div>);
+jest.mock('../header-wallets', () => () => <div data-testid='dt_dtrader_header'>MockedWalletsHeader</div>);
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({
         isDesktop: true,
@@ -30,7 +28,7 @@ jest.mock('@deriv-com/ui', () => ({
 
 describe('Header', () => {
     const store = mockStore({
-        client: { is_logged_in: true },
+        client: { is_logged_in: true, has_wallet: true },
     });
     const renderComponent = (modified_store = store) =>
         render(
@@ -39,27 +37,15 @@ describe('Header', () => {
             </StoreProvider>
         );
 
-    it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', async () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            pathname: routes.traders_hub,
-        });
-        renderComponent();
-        expect(await screen.findByTestId('dt_traders_hub_header')).toBeInTheDocument();
-        expect(screen.getByText('MockedTradersHubHeader')).toBeInTheDocument();
-    });
-
-    it('should render the "DTraderHeader" component if user is logged in and not in the traders hub route', async () => {
-        (useLocation as jest.Mock).mockReturnValue({
-            pathname: routes.trade,
-        });
+    it('should render the "HeaderWallets" component if user has wallets account', async () => {
         renderComponent();
         expect(await screen.findByTestId('dt_dtrader_header')).toBeInTheDocument();
-        expect(screen.getByText('MockedDTraderHeader')).toBeInTheDocument();
+        expect(screen.getByText('MockedWalletsHeader')).toBeInTheDocument();
     });
 
-    it('should render the "DefaultHeader" component if user is not logged in', async () => {
-        renderComponent(mockStore({ client: { is_logged_in: false } }));
+    it('should render the "HeaderLegacy" component if user is not migrated to wallets yet', async () => {
+        renderComponent(mockStore({ client: { has_wallet: false } }));
         expect(await screen.findByTestId('dt_default_header')).toBeInTheDocument();
-        expect(screen.getByText('MockedDefaultHeader')).toBeInTheDocument();
+        expect(screen.getByText('MockedLegacyHeader')).toBeInTheDocument();
     });
 });

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import HeaderLegacy from '../header-legacy';
 import { useDevice } from '@deriv-com/ui';
+import HeaderLegacy from '../header-legacy';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -11,7 +13,6 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('App/Components/Layout/Header', () => ({
     MenuLinks: jest.fn(() => <div>Mocked Menu Links</div>),
-    PlatformSwitcher: jest.fn(() => <div>Mocked Platform Switcher</div>),
 }));
 jest.mock('App/Containers/RealAccountSignup', () => jest.fn(() => <div>Mocked Real Account SignUp</div>));
 jest.mock('App/Components/Layout/Header/toggle-menu-drawer.jsx', () =>
@@ -22,18 +23,20 @@ jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>Mocked Traders 
 jest.mock('../deriv-short-logo', () => jest.fn(() => <div>Deriv Short Logo</div>));
 
 describe('HeaderLegacy', () => {
+    const history = createBrowserHistory();
     const mock_store = mockStore({ ui: { is_real_acc_signup_on: true } });
     const renderComponent = (modified_store = mock_store) =>
         render(
-            <StoreProvider store={modified_store}>
-                <HeaderLegacy />
-            </StoreProvider>
+            <Router history={history}>
+                <StoreProvider store={modified_store}>
+                    <HeaderLegacy />
+                </StoreProvider>
+            </Router>
         );
 
-    it('should render Platform switcher, Traders Home button, Menu Links, Account actions and Real Account SignUp components, in Desktop view', () => {
+    it('should render Traders Home button, Menu Links, Account actions and Real Account SignUp components, in Desktop view', () => {
         renderComponent();
         const desktop_view_text_content = [
-            'Mocked Platform Switcher',
             'Mocked Traders Home Button',
             'Mocked Menu Links',
             'Mocked Header Account Action',

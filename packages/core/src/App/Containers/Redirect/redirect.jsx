@@ -338,12 +338,10 @@ const Redirect = observer(() => {
         const account_currency = queryCurrency;
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub && is_client_store_initialized) {
             const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-            const is_correct_currency = authorize_accounts_list.some(
-                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
-            );
-            const currency_exists = Object.values(client_account_lists).some(
-                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
-            );
+
+            const length_of_authorize_accounts_list = authorize_accounts_list.length;
+            const length_of_client_account_lists = Object.keys(client_account_lists).length;
+            const should_retrigger_oidc = length_of_authorize_accounts_list !== length_of_client_account_lists;
             const route_mappings = [
                 { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
@@ -368,7 +366,7 @@ const Redirect = observer(() => {
             if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
             }
-            if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
+            if (should_retrigger_oidc && authorize_accounts_list.length > 0) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -409,7 +407,6 @@ const Redirect = observer(() => {
                 'tradershub_redirect_to',
                 matched_route ? `redirect?${updated_search}` : default_route
             );
-
             history.push({
                 pathname: matched_route ? matched_route.route : default_route,
                 search: updated_search,

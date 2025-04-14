@@ -46,6 +46,7 @@ import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { CURRENCY_CONSTANTS } from '../Constants/currency';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -684,7 +685,7 @@ export default class ClientStore extends BaseStore {
     get account_list() {
         return this.all_loginids
             .map(id => this.getAccountInfo(id))
-            .filter(account => !(account.title === 'UST' && account.is_disabled));
+            .filter(account => !(account.title === CURRENCY_CONSTANTS.UST && account.is_disabled));
     }
 
     get has_real_mt5_login() {

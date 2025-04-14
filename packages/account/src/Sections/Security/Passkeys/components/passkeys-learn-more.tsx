@@ -39,7 +39,7 @@ export const PasskeysLearnMore = ({ onSecondaryButtonClick }: TPasskeysButtonOnC
                     autoPlay
                     className='passkeys-status__video'
                     controls
-                    data-testid='dt_onboarding_guide_video'
+                    data-testid='dt_passkeys_learn_more_video'
                     onLoadedData={() => setIsLoading(false)}
                     preload='auto'
                 >

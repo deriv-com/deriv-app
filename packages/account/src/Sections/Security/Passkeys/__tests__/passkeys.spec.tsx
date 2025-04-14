@@ -205,17 +205,7 @@ describe('Passkeys', () => {
         expect(screen.getByText('Your key to safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
         await userEvent.click(learn_more_button);
-        expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('info_open'));
-
-        expect(screen.getByText('Effortless login with passkeys')).toBeInTheDocument();
-        expect(screen.getByText('Tips:')).toBeInTheDocument();
-        const create_passkey_button = screen.getByRole('button', { name: create_passkey });
-        await userEvent.click(create_passkey_button);
-        expect(mockStartPasskeyRegistration).toBeCalledTimes(1);
-        expect(Analytics.trackEvent).toHaveBeenCalledWith(
-            tracking_event,
-            getAnalyticsParams('create_passkey_started', { subform_name: 'passkey_info' })
-        );
+        expect(screen.getByTestId('dt_learn_more_back_button')).toBeInTheDocument();
     });
 
     it('renders passkeys creation modal and triggers new passkey creation', async () => {

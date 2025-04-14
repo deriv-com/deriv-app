@@ -90,7 +90,7 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
     const { client, ui, notifications } = useStore();
     const { is_logged_in, accounts, loginid } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_accounts_switcher_on } = ui;
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
@@ -98,6 +98,9 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
     const active_account = accounts?.[loginid ?? ''];
     const is_virtual = active_account?.is_virtual;
     const currency = active_account?.currency;
+
+    const isCurrencyButtonVisible = !isMobile && !is_traders_hub_routes && !is_virtual && !currency;
+    const isManageFundsButtonVisible = !isMobile && !is_traders_hub_routes && currency;
 
     const history = useHistory();
 
@@ -111,29 +114,10 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
         return <LoggedOutView />;
     }
 
-    if (isDesktop) {
-        return (
-            <>
-                {!is_traders_hub_routes && !is_virtual && !currency && (
-                    <CurrencyButton openRealAccountSignup={openRealAccountSignup} />
-                )}
-                {!is_traders_hub_routes && currency && <ManageFundsButton onClick={handleManageFundsRedirect} />}
-                {!is_traders_hub_routes && (
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                )}
-                {is_traders_hub_routes && <TradersHubOnboarding />}
-                <NotificationsToggle
-                    count={notifications_count}
-                    is_visible={is_notifications_visible}
-                    toggleDialog={toggleNotificationsModal}
-                />
-                <AccountSettingsToggle />
-            </>
-        );
-    }
-
     return (
         <>
+            {isCurrencyButtonVisible && <CurrencyButton openRealAccountSignup={openRealAccountSignup} />}
+            {isManageFundsButtonVisible && <ManageFundsButton onClick={handleManageFundsRedirect} />}
             {!is_traders_hub_routes && (
                 <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
             )}
@@ -142,8 +126,9 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
                 count={notifications_count}
                 is_visible={is_notifications_visible}
                 toggleDialog={toggleNotificationsModal}
-                is_mobile
+                is_mobile={isMobile}
             />
+            {!isMobile && <AccountSettingsToggle />}
         </>
     );
 });

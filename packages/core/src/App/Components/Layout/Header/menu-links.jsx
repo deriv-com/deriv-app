@@ -105,4 +105,4 @@ const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     );
 });
 
-export { MenuLinks };
+export default MenuLinks;

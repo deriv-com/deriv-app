@@ -125,13 +125,16 @@ const AccountActionsComponent = ({
     toggleAccountsDialog,
     toggleNotifications,
 }: TAccountActionsProps) => {
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const location = useLocation();
 
-    const isDepositButtonVisible = currency && !location.pathname.includes(routes.cashier);
+    const isDepositButtonVisible =
+        !isMobile && !is_traders_hub_routes && currency && !location.pathname.includes(routes.cashier);
+    const isCurrencyButtonVisible = !isMobile && !is_traders_hub_routes && !is_virtual && !currency;
+
     const formattedBalance = balance != null ? formatMoney(currency, balance, true) : undefined;
 
-    const renderAccountInfo = (is_mobile = false) => (
+    const renderAccountInfo = () => (
         <React.Suspense fallback={<div />}>
             <AccountInfo
                 acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -143,7 +146,7 @@ const AccountActionsComponent = ({
                 currency={currency}
                 is_dialog_on={is_acc_switcher_on}
                 toggleDialog={toggleAccountsDialog}
-                {...(is_mobile && {
+                {...(isMobile && {
                     disableApp,
                     enableApp,
                     is_mobile: true,
@@ -156,32 +159,17 @@ const AccountActionsComponent = ({
         return <LoggedOutView />;
     }
 
-    if (isDesktop) {
-        return (
-            <React.Fragment>
-                {!is_traders_hub_routes && !is_virtual && !currency && (
-                    <CurrencyButton openRealAccountSignup={openRealAccountSignup} />
-                )}
-                {!is_traders_hub_routes && isDepositButtonVisible && <DepositButton onClickDeposit={onClickDeposit} />}
-                {!is_traders_hub_routes && renderAccountInfo()}
-                <NotificationsToggle
-                    count={notifications_count}
-                    is_visible={is_notifications_visible}
-                    toggleDialog={toggleNotifications}
-                />
-                <AccountSettingsToggle />
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
-            {!is_traders_hub_routes && renderAccountInfo(true)}
+            {isCurrencyButtonVisible && <CurrencyButton openRealAccountSignup={openRealAccountSignup} />}
+            {isDepositButtonVisible && <DepositButton onClickDeposit={onClickDeposit} />}
+            {!is_traders_hub_routes && renderAccountInfo()}
             <NotificationsToggle
                 count={notifications_count}
                 is_visible={is_notifications_visible}
                 toggleDialog={toggleNotifications}
             />
+            {!isMobile && <AccountSettingsToggle />}
         </React.Fragment>
     );
 };

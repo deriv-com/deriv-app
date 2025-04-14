@@ -60,7 +60,7 @@ const MenuLeft = observer(() => {
                     <DerivShortLogo />
                 </React.Fragment>
             )}
-            <MenuLinks {...{ is_traders_hub_routes: traders_hub_routes }} />
+            <MenuLinks is_traders_hub_routes={traders_hub_routes} />
         </div>
     );
 });

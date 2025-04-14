@@ -75,8 +75,10 @@ const CallbackPage = () => {
                 } else {
                     const postLoginRedirectUri = localStorage.getItem('config.post_login_redirect_uri');
                     if (postLoginRedirectUri) {
+                        window.history.replaceState({}, '', postLoginRedirectUri);
                         window.location.href = postLoginRedirectUri;
                     } else {
+                        window.history.replaceState({}, '', routes.traders_hub);
                         window.location.href = routes.traders_hub;
                     }
                 }

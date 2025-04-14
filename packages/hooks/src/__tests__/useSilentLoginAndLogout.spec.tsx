@@ -54,7 +54,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -76,7 +75,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -100,7 +98,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -119,7 +116,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -138,7 +134,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }

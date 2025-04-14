@@ -3,7 +3,6 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
-import { useOauth2 } from '@deriv/hooks';
 import { getDomainName, loginUrl, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -16,7 +15,6 @@ import { WS } from 'Services';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { isOAuth2Enabled } = useOauth2({});
     const [queryCurrency, setQueryCurrency] = useState('USD');
 
     const {
@@ -371,19 +369,17 @@ const Redirect = observer(() => {
                 updated_search = `${params.toString()}`;
             }
             if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
-                if (isOAuth2Enabled) {
-                    try {
-                        requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                            postLoginRedirectUri: `redirect?${updated_search}`,
-                        }).catch(err => {
-                            // eslint-disable-next-line no-console
-                            console.error(err);
-                        });
-                    } catch (err) {
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                        postLoginRedirectUri: `redirect?${updated_search}`,
+                    }).catch(err => {
                         // eslint-disable-next-line no-console
                         console.error(err);
-                    }
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
                 }
             }
 

@@ -726,6 +726,7 @@ export type TClientStore = {
 type TCommonStoreError = {
     header?: string | JSX.Element;
     message: string | JSX.Element;
+    code?: string;
     redirect_label?: string;
     redirect_to?: string;
     redirectOnClick?: (() => void) | null;

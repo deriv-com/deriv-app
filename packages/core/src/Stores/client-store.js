@@ -1594,6 +1594,7 @@ export default class ClientStore extends BaseStore {
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,
+                code: authorize_response.error.code,
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),

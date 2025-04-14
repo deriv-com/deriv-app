@@ -680,9 +680,11 @@ export default class ClientStore extends BaseStore {
             );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
-
+    // Hiding UST account from the Authorization call, as it should be not just disabled, but temporary removed
     get account_list() {
-        return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
+        return this.all_loginids
+            .map(id => this.getAccountInfo(id))
+            .filter(account => !(account.title === 'UST' && account.is_disabled));
     }
 
     get has_real_mt5_login() {

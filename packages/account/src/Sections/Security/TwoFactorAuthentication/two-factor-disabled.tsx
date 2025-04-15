@@ -54,37 +54,25 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                             }
                         >
                             <div className='two-factor__qr'>
-                                {is_qr_loading ? (
-                                    <Loading is_fullscreen={false} />
-                                ) : (
+                                {qr_secret_key && (
+                                    <div className='two-factor__qr--wrapper'>
+                                        <QRCodeSVG value={qr_secret_key} />
+                                    </div>
+                                )}
+                                {secret_key && (
                                     <Fragment>
-                                        {qr_secret_key && (
-                                            <div className='two-factor__qr--wrapper'>
-                                                <QRCodeSVG value={qr_secret_key} />
-                                            </div>
-                                        )}
-
-                                        {secret_key && (
-                                            <Fragment>
-                                                <Text
-                                                    as='h4'
-                                                    size='xs'
-                                                    align='center'
-                                                    className='two-factor__qr--message'
-                                                >
-                                                    <Localize i18n_default_text='If you are unable to scan the QR code, you can manually enter this code instead:' />
-                                                </Text>
-                                                <div className='two-factor__qr--code' data-testid='dt_2fa_clipboard'>
-                                                    <Text size='xs'>{secret_key}</Text>
-                                                    <Clipboard
-                                                        text_copy={secret_key}
-                                                        info_message={localize('Click here to copy key')}
-                                                        success_message={localize('Key copied!')}
-                                                        className='two-factor__qr--clipboard'
-                                                    />
-                                                </div>
-                                            </Fragment>
-                                        )}
+                                        <Text as='h4' size='xs' align='center' className='two-factor__qr--message'>
+                                            <Localize i18n_default_text='If you are unable to scan the QR code, you can manually enter this code instead:' />
+                                        </Text>
+                                        <div className='two-factor__qr--code' data-testid='dt_2fa_clipboard'>
+                                            <Text size='xs'>{secret_key}</Text>
+                                            <Clipboard
+                                                text_copy={secret_key}
+                                                info_message={localize('Click here to copy key')}
+                                                success_message={localize('Key copied!')}
+                                                className='two-factor__qr--clipboard'
+                                            />
+                                        </div>
                                     </Fragment>
                                 )}
                             </div>

@@ -76,9 +76,6 @@ const RootComponent = observer(props => {
 
             const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
             localStorage.removeItem('redirect_to_th_os');
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
-            const accountCurrency = url_params.get('account');
 
             const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
                 ? deriv_urls.DERIV_HOST_NAME
@@ -89,10 +86,10 @@ const RootComponent = observer(props => {
                 switch (redirect_to_lowcode) {
                     case 'wallet':
                         localStorage.setItem('wallet_redirect_done', true);
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet`;
                         break;
                     default:
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home`;
                         break;
                 }
             } else {

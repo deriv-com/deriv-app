@@ -8,6 +8,7 @@ import {
     getTotalProfit,
     getGrowthRatePercentage,
     toMoment,
+    CONTRACT_STORAGE_VALUES,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -20,6 +21,7 @@ import { observer, useStore } from '@deriv/stores';
 import { TColIndex } from 'Types';
 import { OpenPositionsTable } from './open-positions-table';
 import { MobileRowRenderer } from './mobile-row-renderer';
+import { getLatestContractType } from '../Constants/contract-types';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
@@ -150,9 +152,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         active_positions,
         error,
         getPositionById,
-        is_accumulator,
         is_loading,
-        is_multiplier,
         onClickCancel,
         onClickSell,
         onMount,
@@ -185,21 +185,31 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         getContractById,
     };
 
-    const [has_accumulator_contract, setHasAccumulatorContract] = React.useState(false);
-    const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const { isDesktop } = useDevice();
     const previous_active_positions = usePrevious(active_positions);
 
     const generateContractTypes = () => {
         const queryParams = new URLSearchParams(location.search);
-
         const contract_type_bot = queryParams.get('contract_type_bots');
+        const default_contract_type = getLatestContractType(active_positions);
 
         if (!contract_type_bot) {
             return [
-                { text: localize('Options'), value: 'options', is_default: !is_multiplier && !is_accumulator },
-                { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier },
-                { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator },
+                {
+                    text: localize('Options'),
+                    value: CONTRACT_STORAGE_VALUES.OPTIONS,
+                    is_default: default_contract_type === CONTRACT_STORAGE_VALUES.OPTIONS,
+                },
+                {
+                    text: localize('Multipliers'),
+                    value: CONTRACT_STORAGE_VALUES.MULTIPLIERS,
+                    is_default: default_contract_type === CONTRACT_STORAGE_VALUES.MULTIPLIERS,
+                },
+                {
+                    text: localize('Accumulators'),
+                    value: CONTRACT_STORAGE_VALUES.ACCUMULATORS,
+                    is_default: default_contract_type === CONTRACT_STORAGE_VALUES.ACCUMULATORS,
+                },
             ];
         }
 
@@ -207,14 +217,27 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         const is_accumulator_bot = contract_type_bot === 'trade_definition_accumulator';
 
         const contract_types = [
-            { text: localize('Options'), value: 'options', is_default: !is_multiplier_bot && !is_accumulator_bot },
-            { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier_bot },
-            { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator_bot },
+            {
+                text: localize('Options'),
+                value: CONTRACT_STORAGE_VALUES.OPTIONS,
+                is_default: !is_multiplier_bot && !is_accumulator_bot,
+            },
+            {
+                text: localize('Multipliers'),
+                value: CONTRACT_STORAGE_VALUES.MULTIPLIERS,
+                is_default: is_multiplier_bot,
+            },
+            {
+                text: localize('Accumulators'),
+                value: CONTRACT_STORAGE_VALUES.ACCUMULATORS,
+                is_default: is_accumulator_bot,
+            },
         ];
         return contract_types;
     };
 
-    const contract_types = generateContractTypes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const contract_types = React.useMemo(() => generateContractTypes(), [previous_active_positions]);
 
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.value || 'options'
@@ -264,12 +287,12 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
          */
 
         onMount();
-        checkForAccuAndMultContracts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        checkForAccuAndMultContracts(previous_active_positions);
+        const contract_type = getLatestContractType(active_positions);
+        setContractTypeValue(contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
@@ -296,20 +319,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accumulator_rate]);
-
-    const checkForAccuAndMultContracts = (prev_active_positions: TPortfolioStore['active_positions'] = []) => {
-        if (active_positions === prev_active_positions) return;
-        if (!has_accumulator_contract) {
-            setHasAccumulatorContract(
-                active_positions.some(({ contract_info }) => isAccumulatorContract(contract_info?.contract_type))
-            );
-        }
-        if (!has_multiplier_contract) {
-            setHasMultiplierContract(
-                active_positions.some(({ contract_info }) => isMultiplierContract(contract_info?.contract_type || ''))
-            );
-        }
-    };
 
     if (error) return <p>{error}</p>;
 

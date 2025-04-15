@@ -30,23 +30,19 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
 
-    const { oAuthLogout, isOAuth2Enabled } = useOauth2({
+    const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
-            if (isOAuth2Enabled) {
-                try {
-                    await requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                    }).catch(err => {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    });
-                } catch (err) {
+            try {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                }).catch(err => {
                     // eslint-disable-next-line no-console
                     console.error(err);
-                }
-            } else {
-                redirectToLogin(false, getLanguage());
+                });
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err);
             }
         },
     });

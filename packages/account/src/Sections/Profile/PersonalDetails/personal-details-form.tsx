@@ -116,6 +116,9 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
+    const account_opening_reason_list_array = account_opening_reason_list();
+
+    const account_opening_reason_new_list_array = account_opening_reason_new_list();
     useEffect(() => {
         if (isDynamicFAEnabled) {
             WS.authorized.storage
@@ -407,15 +410,17 @@ const PersonalDetailsForm = observer(() => {
     );
 
     const getAccountOpeningReason = () => {
-        const result = account_opening_reason_new_list.find(
+        const result = account_opening_reason_new_list_array.find(
             item => item.value === initialValues?.account_opening_reason
         );
 
-        if (result) return account_opening_reason_new_list;
+        if (result) return account_opening_reason_new_list_array;
 
-        const item = account_opening_reason_list.find(item => item.value === initialValues?.account_opening_reason);
+        const item = account_opening_reason_list_array.find(
+            item => item.value === initialValues?.account_opening_reason
+        );
 
-        return item ? [item, ...account_opening_reason_new_list] : account_opening_reason_new_list;
+        return item ? [item, ...account_opening_reason_new_list_array] : account_opening_reason_new_list_array;
     };
 
     return (
@@ -898,6 +903,7 @@ const PersonalDetailsForm = observer(() => {
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
                                             disabled={isFieldDisabled('email_consent') && !is_virtual}
+                                            label_line_height={'m'}
                                         />
                                     </fieldset>
                                 </Fragment>

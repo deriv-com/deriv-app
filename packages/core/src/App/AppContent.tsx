@@ -56,7 +56,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
 
-    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
+    const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
@@ -68,7 +68,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     useSilentLoginAndLogout({
         is_client_store_initialized,
-        isOAuth2Enabled,
         oAuthLogout,
     });
 

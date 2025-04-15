@@ -85,13 +85,19 @@ const RootComponent = observer(props => {
                 : window.location.hostname;
             Cookies.set('wallet_account', true, { domain });
 
-            switch (redirect_to_lowcode) {
-                case 'wallet':
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
-                    break;
-                default:
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
-                    break;
+            if (!localStorage.getItem('wallet_redirect_done')) {
+                switch (redirect_to_lowcode) {
+                    case 'wallet':
+                        localStorage.setItem('wallet_redirect_done', true);
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${accountCurrency}`;
+                        break;
+                    default:
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${accountCurrency}`;
+                        break;
+                }
+            } else {
+                // Clear the wallet_redirect_done flag after redirection to ensure it can be set again in the future
+                localStorage.removeItem('wallet_redirect_done');
             }
         }
 

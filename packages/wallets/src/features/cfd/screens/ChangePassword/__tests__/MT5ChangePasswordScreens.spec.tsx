@@ -4,6 +4,7 @@ import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Tabs } from '../../../../../components/Base';
+import { useModal } from '../../../../../components/ModalProvider';
 import MT5ChangePasswordScreens from '../MT5ChangePasswordScreens';
 
 jest.mock('@deriv-com/translations', () => ({
@@ -18,6 +19,10 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('../../../../../components', () => ({
     SentEmailContent: () => <div>Sent Email Content</div>,
+}));
+
+jest.mock('../../../../../components/ModalProvider', () => ({
+    useModal: jest.fn(),
 }));
 
 jest.mock('../../../../../components/Base', () => ({
@@ -75,6 +80,7 @@ describe('MT5ChangePasswordScreens', () => {
     beforeAll(() => {
         (useTranslations as jest.Mock).mockReturnValue({ localize: mockLocalize });
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+        (useModal as jest.Mock).mockReturnValue({ hide: jest.fn() });
     });
 
     it('renders Tabs by default', () => {

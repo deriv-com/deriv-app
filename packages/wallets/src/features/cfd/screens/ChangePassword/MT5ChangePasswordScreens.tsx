@@ -3,6 +3,7 @@ import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
 import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
@@ -11,6 +12,7 @@ const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
     const { isDesktop } = useDevice();
     const { localize } = useTranslations();
+    const { hide } = useModal();
 
     const platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform];
@@ -23,6 +25,7 @@ const MT5ChangePasswordScreens = () => {
             <SentEmailContent
                 description={localize('Please click on the link in the email to reset your password.')}
                 isInvestorPassword
+                onErrorButtonClick={hide}
             />
         </div>
     ) : (

@@ -93,7 +93,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                     'wallets-change-password__sent-email-content-wrapper--dxtrade': platform === 'dxtrade',
                 })}
             >
-                <SentEmailContent isChangePassword platform={platform} />
+                <SentEmailContent isChangePassword onErrorButtonClick={hide} platform={platform} />
             </div>
         );
     }

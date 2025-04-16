@@ -378,7 +378,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     if (emailVerificationStatus === 'success') {
         return (
             <ModalWrapper isFullscreen={!isDesktop}>
-                <SentEmailContent isForgottenPassword platform={CFD_PLATFORMS.MT5} />
+                <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={CFD_PLATFORMS.MT5} />
             </ModalWrapper>
         );
     }

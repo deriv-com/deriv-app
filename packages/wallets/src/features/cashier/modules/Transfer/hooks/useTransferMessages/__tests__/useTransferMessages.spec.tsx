@@ -5,6 +5,7 @@ import {
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    minimumTransferLimitMessageFn,
     tradingPlatformStatusMessageFn,
 } from '../utils';
 
@@ -34,6 +35,11 @@ jest.mock('../utils/lifetimeAccountLimitsBetweenWalletsMessageFn', () => ({
 }));
 
 jest.mock('../utils/tradingPlatformStatusMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock('../utils/minimumTransferLimitMessageFn', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -248,5 +254,43 @@ describe('useTransferMessages', () => {
         const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
 
         expect(result.current).toEqual([]);
+    });
+
+    test('should return correct message and type for minimumTransferLimitMessageFn', () => {
+        const mockBelowMinimumTransfer = {
+            accountLimits: {},
+            activeWalletExchangeRates: {},
+            formData: { fromAmount: '0.05', toAmount: '0.05' }, // Amount below minimum limit of 0.1
+            fromAccount: mockWallets,
+            toAccount: mockTrading,
+            USDExchangeRates: {},
+        };
+
+        // Mock other functions to return null so they don't interfere with our test
+        (insufficientBalanceMessageFn as jest.Mock).mockReturnValueOnce(null);
+
+        // Mock minimumTransferLimitMessageFn to return an error message
+        (minimumTransferLimitMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'Minimum required amount is 0.1 USD',
+            type: 'error',
+        });
+
+        const { result } = renderHook(() => useTransferMessages(mockBelowMinimumTransfer));
+
+        expect(result.current).toEqual([
+            {
+                message: 'Minimum required amount is 0.1 USD',
+                type: 'error',
+            },
+        ]);
+
+        // Verify that minimumTransferLimitMessageFn was called with the correct parameters
+        expect(minimumTransferLimitMessageFn).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sourceAccount: mockWallets,
+                sourceAmount: 0.05,
+                targetAccount: mockTrading,
+            })
+        );
     });
 });

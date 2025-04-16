@@ -27,6 +27,7 @@ import {
 import { AUTH_STATUS_CODES, getBrandWebsiteName, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
 
 import FormBody from '../../../Components/form-body';
@@ -206,12 +207,12 @@ const PersonalDetailsForm = observer(() => {
             if (is_phone_number_verified) {
                 return (
                     <Localize
-                        i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                        i18n_default_text='To change your verified phone number, contact us via <0>live chat</0>.'
                         components={[
-                            <OpenLiveChatLink
-                                text_size='xxs'
-                                key={0}
+                            <span
                                 className='account-form__fieldset--phone-verification-livechat-link'
+                                key={0}
+                                onClick={Chat.open}
                             />,
                         ]}
                     />

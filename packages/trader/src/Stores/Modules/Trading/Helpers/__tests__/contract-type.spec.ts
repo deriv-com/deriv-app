@@ -242,8 +242,8 @@ describe('ContractType.getContractType', () => {
                     },
                 ],
             },
-            'Highs & Lows': {
-                name: 'Highs & Lows',
+            'Touch & No Touch': {
+                name: 'Touch & No Touch',
                 categories: [
                     {
                         value: 'high_low',

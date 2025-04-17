@@ -68,8 +68,8 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                         },
                     ],
                     icon: 'IcHighsLows',
-                    label: 'Highs & Lows',
-                    key: 'Highs & Lows',
+                    label: 'Touch & No Touch',
+                    key: 'Touch & No Touch',
                 },
                 {
                     contract_types: [
@@ -197,8 +197,8 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                         },
                     ],
                     icon: 'IcHighsLows',
-                    label: 'Highs & Lows',
-                    key: 'Highs & Lows',
+                    label: 'Touch & No Touch',
+                    key: 'Touch & No Touch',
                 },
                 {
                     contract_types: [
@@ -302,11 +302,11 @@ describe('<Info />', () => {
 
         expect(screen.queryByText(choose_multipliers)).toBeInTheDocument();
     });
-    it('Should call handleSelect when clicking on "Choose Multipliers" button', () => {
+    it('Should call handleSelect when clicking on "Choose Multipliers" button', async () => {
         render(mockInfoProvider());
 
         const trade_type_button = screen.queryByText(choose_multipliers) as HTMLButtonElement;
-        userEvent.click(trade_type_button);
+        await userEvent.click(trade_type_button);
 
         expect(trade_type_button).toBeInTheDocument();
         expect(mocked_props.handleSelect).toHaveBeenCalled();

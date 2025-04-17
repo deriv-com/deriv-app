@@ -71,6 +71,7 @@ const CallbackPage = () => {
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');
+                    window.history.replaceState({}, '', redirectTo || postLoginRedirectUri);
                     window.location.href = redirectTo || postLoginRedirectUri;
                 } else {
                     const postLoginRedirectUri = localStorage.getItem('config.post_login_redirect_uri');

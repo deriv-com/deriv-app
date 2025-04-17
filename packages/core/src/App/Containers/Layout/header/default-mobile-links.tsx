@@ -44,7 +44,7 @@ const DefaultMobileLinks = React.memo(() => {
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>
-            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
                 <Icon icon='IcUserOutline' size={20} />
             </BinaryLink>
             {!has_wallet && (

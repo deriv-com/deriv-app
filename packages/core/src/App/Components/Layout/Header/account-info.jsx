@@ -86,6 +86,7 @@ const AccountInfo = ({
                     )}
                 </div>
             </AccountInfoWrapper>
+            <div className='acc-info__separator' />
             {isDesktop ? (
                 <CSSTransition
                     in={is_dialog_on}

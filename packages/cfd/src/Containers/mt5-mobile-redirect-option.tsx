@@ -15,9 +15,10 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
 
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
         }, 1000);
 
-        document.addEventListener('visibilitychange', function () {
+        function handleVisibilityChange() {
             if (document.hidden) {
                 clearTimeout(timeout);
             }
@@ -29,7 +30,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
                     mobileAppURL && window.location.replace(mobileAppURL); // if it is not redirecting then open installer
                 }
             }
-        });
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
     };
 
     return (

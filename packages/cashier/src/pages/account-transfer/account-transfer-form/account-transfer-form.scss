@@ -18,6 +18,10 @@
         color: var(--text-general);
         margin-top: 0.5rem;
 
+        &-amount {
+            unicode-bidi: isolate;
+        }
+
         &__disabled {
             color: var(--text-less-prominent);
         }

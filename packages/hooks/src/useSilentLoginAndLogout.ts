@@ -8,17 +8,14 @@ import { useStore } from '@deriv/stores';
  *
  * @param {{
  *   is_client_store_initialized: boolean; // Whether the client store has been initialized
- *   isOAuth2Enabled: boolean; // Whether OAuth2 feature is enabled
  *   oAuthLogout: () => Promise<void>; // Function to handle OAuth2 logout
  * }} params - The arguments required for silent login and logout management
  */
 const useSilentLoginAndLogout = ({
     is_client_store_initialized,
-    isOAuth2Enabled,
     oAuthLogout,
 }: {
     is_client_store_initialized: boolean;
-    isOAuth2Enabled: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
     const loggedState = Cookies.get('logged_state');
@@ -64,12 +61,12 @@ const useSilentLoginAndLogout = ({
     };
 
     useEffect(() => {
-        if (prevent_single_login || !isOAuth2Enabled || !is_client_store_initialized || isSilentLoginExcluded) return;
+        if (prevent_single_login || !is_client_store_initialized || isSilentLoginExcluded) return;
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && loggedState === 'false' && isOAuth2Enabled) {
+        if (isUsingLegacyFlow && loggedState === 'false') {
             return;
         }
 
@@ -92,7 +89,6 @@ const useSilentLoginAndLogout = ({
         loggedState,
         isClientAccountsPopulated,
         is_client_store_initialized,
-        isOAuth2Enabled,
         isSilentLoginExcluded,
         prevent_single_login,
     ]);

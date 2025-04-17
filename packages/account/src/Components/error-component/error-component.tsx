@@ -1,10 +1,13 @@
 import { PageError } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 import { routes } from '@deriv/shared';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import Cookies from 'js-cookie';
 
 type TErrorComponent = {
     header: JSX.Element | string;
     message: JSX.Element | string;
+    code: string;
     redirect_label: string;
     redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
@@ -13,6 +16,7 @@ type TErrorComponent = {
 const ErrorComponent = ({
     header,
     message,
+    code,
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
@@ -22,6 +26,22 @@ const ErrorComponent = ({
     ) : (
         ''
     );
+
+    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
+        try {
+            requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            }).catch((err: string) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+        }
+
+        return null;
+    }
 
     return (
         <PageError

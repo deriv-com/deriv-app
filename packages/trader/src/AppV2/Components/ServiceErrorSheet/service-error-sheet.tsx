@@ -47,6 +47,7 @@ const ServiceErrorSheet = observer(() => {
                     onAction: () => {
                         resetServicesError();
                         if (!is_virtual) {
+                            localStorage.setItem('redirect_to_th_os', 'wallet');
                             history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
                         } else {
                             onClose();

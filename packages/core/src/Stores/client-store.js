@@ -46,6 +46,7 @@ import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { CURRENCY_CONSTANTS } from '../Constants/currency';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -680,9 +681,11 @@ export default class ClientStore extends BaseStore {
             );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
-
+    // Hiding UST account from the Authorization call, as it should be not just disabled, but temporary removed
     get account_list() {
-        return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
+        return this.all_loginids
+            .map(id => this.getAccountInfo(id))
+            .filter(account => !(account.title === CURRENCY_CONSTANTS.UST && account.is_disabled));
     }
 
     get has_real_mt5_login() {
@@ -1594,6 +1597,7 @@ export default class ClientStore extends BaseStore {
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,
+                code: authorize_response.error.code,
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { PasskeyReminderModal } from '../passkey-reminder-modal';
 
 describe('PasskeyReminderModal', () => {
@@ -15,24 +17,20 @@ describe('PasskeyReminderModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const reminder_tips = [
-        'Enable screen lock on your device.',
-        'Enable bluetooth.',
-        'Sign in to your Google or iCloud account.',
-    ];
+    const reminder_tips = ['Enable screen lock on your device.', 'Sign in to your Google or iCloud account.'];
 
     const mockButtonClick = jest.fn();
     const mockToggleModal = jest.fn();
 
-    it('renders PasskeyReminderModal', () => {
+    it('renders PasskeyReminderModal', async () => {
         render(<PasskeyReminderModal toggleModal={mockToggleModal} is_modal_open onButtonClick={mockButtonClick} />);
 
-        expect(screen.getByText('Just a reminder')).toBeInTheDocument();
+        expect(screen.getByText('Set up biometrics')).toBeInTheDocument();
         reminder_tips.forEach(tip => {
             expect(screen.getByText(tip)).toBeInTheDocument();
         });
 
-        userEvent.click(screen.getByRole('button', { name: /continue/i }));
+        await userEvent.click(screen.getByRole('button', { name: /continue/i }));
         expect(mockButtonClick).toHaveBeenCalledTimes(1);
     });
 
@@ -41,6 +39,6 @@ describe('PasskeyReminderModal', () => {
             <PasskeyReminderModal toggleModal={mockToggleModal} is_modal_open={false} onButtonClick={mockButtonClick} />
         );
 
-        expect(screen.queryByText('Just a reminder')).not.toBeInTheDocument();
+        expect(screen.queryByText('Set up biometrics')).not.toBeInTheDocument();
     });
 });

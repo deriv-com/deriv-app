@@ -692,14 +692,14 @@ const AccountTransferForm = observer(
                                                                 i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                                 components={[
                                                                     <Money
-                                                                        className='account-transfer-form__hint--amount'
+                                                                        className='account-transfer-form__hint-amount'
                                                                         key={0}
                                                                         amount={transfer_limit.min}
                                                                         currency={selected_from.currency}
                                                                         show_currency
                                                                     />,
                                                                     <Money
-                                                                        className='account-transfer-form__hint--amount'
+                                                                        className='account-transfer-form__hint-amount'
                                                                         key={1}
                                                                         amount={transfer_limit.max}
                                                                         currency={selected_from.currency}

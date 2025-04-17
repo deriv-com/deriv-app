@@ -1,5 +1,7 @@
 import { Localize } from '@deriv-com/translations';
+
 import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';
+
 import { PasskeyCard } from './passkey-card';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
@@ -19,7 +21,7 @@ export const PasskeysList = ({
             className='passkeys-list__wrapper'
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}
-            primary_button_text={<Localize i18n_default_text='Create passkey' />}
+            primary_button_text={<Localize i18n_default_text='Enable biometrics' />}
             scroll_offset='16rem'
             secondary_button_text={<Localize i18n_default_text='Learn more' />}
         >

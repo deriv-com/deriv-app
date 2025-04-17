@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
 import clsx from 'clsx';
+
 import { Button, Text } from '@deriv/components';
-import { TCurrentManagedPasskey } from '../passkeys';
+
 import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';
+import { TCurrentManagedPasskey } from '../passkeys';
 
 export type TPasskeysButtonOnClicks = {
-    onPrimaryButtonClick: (passkey_data?: Partial<TCurrentManagedPasskey>) => void;
+    onPrimaryButtonClick?: (passkey_data?: Partial<TCurrentManagedPasskey>) => void;
     onSecondaryButtonClick?: () => void;
 };
 
@@ -28,7 +30,7 @@ export const PasskeysStatusLayout = ({
     description,
     icon,
     onPrimaryButtonClick,
-    onSecondaryButtonClick,
+    onSecondaryButtonClick = () => null,
     primary_button_disabled = false,
     primary_button_text,
     primary_button_type = 'button',

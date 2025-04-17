@@ -1,4 +1,5 @@
 import { MouseEventHandler } from 'react';
+
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 
@@ -11,8 +12,7 @@ type TPasskeyReminderModal = {
 const getReminderModalContent = () => {
     const reminder_tips = [
         <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
-        <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
-        <Localize i18n_default_text='Sign in to your Google or iCloud account.' key='tip_3' />,
+        <Localize i18n_default_text='Sign in to your Google or iCloud account.' key='tip_2' />,
     ];
 
     return (
@@ -29,7 +29,7 @@ const getReminderModalContent = () => {
 export const PasskeyReminderModal = ({ is_modal_open, onButtonClick, toggleModal }: TPasskeyReminderModal) => {
     const header = (
         <Text size='xs' weight='bold'>
-            <Localize i18n_default_text='Just a reminder' />
+            <Localize i18n_default_text='Set up biometrics' />
         </Text>
     );
 

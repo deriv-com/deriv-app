@@ -116,9 +116,10 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                         return (
                             payment_agent_list.find(pa => pa.value === payment_agent.paymentagent_loginid) && (
                                 <Localize
-                                    i18n_default_text='Withdrawal limits: <0 />-<1 />'
+                                    i18n_default_text='Withdrawal limits: <0 /> - <1 />'
                                     components={[
                                         <Money
+                                            className='payment-agent-listed-withdraw-form__hint-amount'
                                             key={0}
                                             amount={
                                                 payment_agent_list.find(
@@ -129,6 +130,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                                             show_currency
                                         />,
                                         <Money
+                                            className='payment-agent-listed-withdraw-form__hint-amount'
                                             key={1}
                                             amount={
                                                 payment_agent_list.find(
@@ -144,7 +146,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
                         );
                     };
                     return (
-                        <Form className='payment-agent-listed-withdraw-form__form'>
+                        <Form className='payment-agent-listed-withdraw-form__container'>
                             <Field name='amount'>
                                 {({ field }: FieldProps) => (
                                     <Input

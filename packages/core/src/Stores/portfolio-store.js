@@ -368,6 +368,12 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
+
+            // Update position status in sessionStorage to track closed positions
+            const contract_id = response.echo_req.sell;
+            this.root_store.contract_store.updatePositionStatus(contract_id, true);
+
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
             if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                 this.root_store.notifications.addNotificationMessage(
                     contractSold(this.root_store.client.currency, response.sell.sold_for, Money)

@@ -113,9 +113,27 @@ export default class ContractTradeStore extends BaseStore {
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
         if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
-        if (!isAccumulatorContractOpen(this.last_contract.contract_info)) this.accumulator_contract_barriers_data = {};
+
+        // Always clear contract barriers data regardless of contract state
+        this.accumulator_contract_barriers_data = {};
+
         if (!should_clear_contract_data_only) {
             this.accumulator_barriers_data = {};
+
+            // Reset last contract data for accumulator if no active positions
+            const has_active_positions = this.root_store.portfolio?.active_positions?.length > 0;
+            if (!has_active_positions && this.last_contract?.contract_info?.contract_type === 'ACCU') {
+                // Create a clean copy without profit information
+                const clean_contract = { ...this.last_contract };
+                if (clean_contract.contract_info) {
+                    clean_contract.contract_info = {
+                        ...clean_contract.contract_info,
+                        profit: 0,
+                        status: 'open',
+                    };
+                }
+                this.last_contract = clean_contract;
+            }
         }
     }
 
@@ -329,6 +347,11 @@ export default class ContractTradeStore extends BaseStore {
 
         if (trade_type === TRADE_TYPES.ACCUMULATOR && proposal_prev_spot_time && accumulators_high_barrier) {
             const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
+            const has_active_positions = this.root_store.portfolio?.active_positions?.length > 0;
+
+            // Force is_accumulator_trade_without_contract to true if there are no active positions
+            const force_without_contract = !has_active_positions;
+
             markers.push(
                 getAccumulatorMarkers({
                     high_barrier: accumulators_high_barrier,
@@ -338,7 +361,7 @@ export default class ContractTradeStore extends BaseStore {
                     has_crossed_accu_barriers: this.has_crossed_accu_barriers,
                     is_dark_theme: this.root_store.ui.is_dark_mode_on,
                     contract_info: is_open ? this.last_contract.contract_info : {},
-                    is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
+                    is_accumulator_trade_without_contract: force_without_contract || !is_open || !entry_tick_time,
                 })
             );
         }

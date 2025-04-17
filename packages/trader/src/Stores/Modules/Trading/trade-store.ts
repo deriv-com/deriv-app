@@ -718,9 +718,7 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
-            this.root_store.contract_trade.clearAccumulatorBarriersData();
-        }
+        this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
     }
 
     setV2ParamsInitialValues({
@@ -1928,6 +1926,9 @@ export default class TradeStore extends BaseStore {
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
+
+        this.resetAccumulatorData();
+
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {
             this.root_store.notifications.toggleNotificationsModal();

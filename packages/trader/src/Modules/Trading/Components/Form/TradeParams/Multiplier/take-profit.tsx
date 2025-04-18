@@ -7,6 +7,7 @@ import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TTradeStore } from 'Types';
+import DisabledTooltipWrapper from '../disabled-tooltip-wrapper';
 
 type TTakeProfitProps = {
     has_info?: boolean;
@@ -49,43 +50,45 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
 
     return (
         <Fieldset className='trade-container__fieldset'>
-            <InputWithCheckbox
-                addToast={addToast}
-                removeToast={removeToast}
-                classNameBubble='dc-popover__trade-params'
-                classNameInlinePrefix='trade-container__currency'
-                classNameInput={classNames('trade-container__input', {
-                    'trade-container__input--accumulator': is_accumulator,
-                })}
-                className={classNames({
-                    'trade-container__amount trade-container__amount--multipliers': isDesktop(),
-                })}
-                currency={currency}
-                current_focus={current_focus ?? ''}
-                defaultChecked={has_take_profit}
-                error_messages={has_take_profit ? validation_errors?.take_profit : undefined}
-                is_disabled={has_open_accu_contract}
-                is_single_currency={is_single_currency}
-                is_negative_disabled
-                is_input_hidden={!has_take_profit}
-                label={localize('Take profit')}
-                name='take_profit'
-                onChange={changeValue}
-                setCurrentFocus={setCurrentFocus}
-                tooltip_label={
-                    is_accumulator ? (
-                        <React.Fragment>
-                            {take_profit_tooltip}{' '}
-                            <Localize i18n_default_text="Take profit can't be adjusted after your contract starts." />
-                        </React.Fragment>
-                    ) : (
-                        take_profit_tooltip
-                    )
-                }
-                tooltip_alignment='left'
-                error_message_alignment='left'
-                value={take_profit ?? ''}
-            />
+            <DisabledTooltipWrapper is_disabled={has_open_accu_contract}>
+                <InputWithCheckbox
+                    addToast={addToast}
+                    removeToast={removeToast}
+                    classNameBubble='dc-popover__trade-params'
+                    classNameInlinePrefix='trade-container__currency'
+                    classNameInput={classNames('trade-container__input', {
+                        'trade-container__input--accumulator': is_accumulator,
+                    })}
+                    className={classNames({
+                        'trade-container__amount trade-container__amount--multipliers': isDesktop(),
+                    })}
+                    currency={currency}
+                    current_focus={current_focus ?? ''}
+                    defaultChecked={has_take_profit}
+                    error_messages={has_take_profit ? validation_errors?.take_profit : undefined}
+                    is_disabled={has_open_accu_contract}
+                    is_single_currency={is_single_currency}
+                    is_negative_disabled
+                    is_input_hidden={!has_take_profit}
+                    label={localize('Take profit')}
+                    name='take_profit'
+                    onChange={changeValue}
+                    setCurrentFocus={setCurrentFocus}
+                    tooltip_label={
+                        is_accumulator ? (
+                            <React.Fragment>
+                                {take_profit_tooltip}{' '}
+                                <Localize i18n_default_text="Take profit can't be adjusted after your contract starts." />
+                            </React.Fragment>
+                        ) : (
+                            take_profit_tooltip
+                        )
+                    }
+                    tooltip_alignment='left'
+                    error_message_alignment='left'
+                    value={take_profit ?? ''}
+                />
+            </DisabledTooltipWrapper>
         </Fieldset>
     );
 });

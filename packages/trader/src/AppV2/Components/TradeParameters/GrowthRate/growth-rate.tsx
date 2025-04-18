@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, Tooltip } from '@deriv-com/quill-ui';
 import { Skeleton } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -88,17 +88,46 @@ const GrowthRate = observer(({ is_minimized }: TTradeParametersProps) => {
         );
     return (
         <>
-            <TextField
-                className={classname}
-                disabled={has_open_accu_contract || is_market_closed}
-                label={
-                    <Localize i18n_default_text='Growth rate' key={`growth-rate${is_minimized ? '-minimized' : ''}`} />
-                }
-                onClick={() => setIsOpen(true)}
-                readOnly
-                value={`${getGrowthRatePercentage(growth_rate)}%`}
-                variant='fill'
-            />
+            {has_open_accu_contract ? (
+                <Tooltip
+                    tooltipContent={
+                        <Localize i18n_default_text='Parameters are disabled when you have an open position.' />
+                    }
+                    tooltipPosition={is_minimized ? 'top' : 'bottom'}
+                    variant='base'
+                    hasArrow={true}
+                >
+                    <TextField
+                        className={classname}
+                        disabled={has_open_accu_contract || is_market_closed}
+                        label={
+                            <Localize
+                                i18n_default_text='Growth rate'
+                                key={`growth-rate${is_minimized ? '-minimized' : ''}`}
+                            />
+                        }
+                        onClick={() => setIsOpen(true)}
+                        readOnly
+                        value={`${getGrowthRatePercentage(growth_rate)}%`}
+                        variant='fill'
+                    />
+                </Tooltip>
+            ) : (
+                <TextField
+                    className={classname}
+                    disabled={has_open_accu_contract || is_market_closed}
+                    label={
+                        <Localize
+                            i18n_default_text='Growth rate'
+                            key={`growth-rate${is_minimized ? '-minimized' : ''}`}
+                        />
+                    }
+                    onClick={() => setIsOpen(true)}
+                    readOnly
+                    value={`${getGrowthRatePercentage(growth_rate)}%`}
+                    variant='fill'
+                />
+            )}
             <ActionSheet.Root
                 isOpen={is_open}
                 onClose={onActionSheetClose}

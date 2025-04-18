@@ -6,6 +6,7 @@ import { getGrowthRatePercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import DisabledTooltipWrapper from '../disabled-tooltip-wrapper';
 
 const Accumulator = observer(() => {
     const {
@@ -42,14 +43,16 @@ const Accumulator = observer(() => {
                 }
             )}
         >
-            <NumberSelector
-                arr_arr_numbers={arr_arr_numbers}
-                name='growth_rate'
-                onChange={onChange}
-                selected_number={growth_rate}
-                should_show_in_percents
-                is_disabled={has_open_accu_contract}
-            />
+            <DisabledTooltipWrapper is_disabled={has_open_accu_contract}>
+                <NumberSelector
+                    arr_arr_numbers={arr_arr_numbers}
+                    name='growth_rate'
+                    onChange={onChange}
+                    selected_number={growth_rate}
+                    should_show_in_percents
+                    is_disabled={has_open_accu_contract}
+                />
+            </DisabledTooltipWrapper>
         </Fieldset>
     );
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, Tooltip } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
@@ -38,18 +38,50 @@ const TakeProfit = observer(({ is_minimized }: TTradeParametersProps) => {
 
     return (
         <React.Fragment>
-            <TextField
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                disabled={has_open_accu_contract || is_market_closed}
-                label={
-                    <Localize i18n_default_text='Take profit' key={`take-profit${is_minimized ? '-minimized' : ''}`} />
-                }
-                onClick={() => setIsOpen(true)}
-                readOnly
-                variant='fill'
-                value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
-                status={has_error ? 'error' : 'neutral'}
-            />
+            {has_open_accu_contract ? (
+                <Tooltip
+                    tooltipContent={
+                        <Localize i18n_default_text='Parameters are disabled when you have an open position.' />
+                    }
+                    tooltipPosition={is_minimized ? 'top' : 'bottom'}
+                    variant='base'
+                    hasArrow={true}
+                >
+                    <TextField
+                        className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                        disabled={has_open_accu_contract || is_market_closed}
+                        label={
+                            <Localize
+                                i18n_default_text='Take profit'
+                                key={`take-profit${is_minimized ? '-minimized' : ''}`}
+                            />
+                        }
+                        onClick={() => setIsOpen(true)}
+                        readOnly
+                        variant='fill'
+                        value={
+                            has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'
+                        }
+                        status={has_error ? 'error' : 'neutral'}
+                    />
+                </Tooltip>
+            ) : (
+                <TextField
+                    className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                    disabled={has_open_accu_contract || is_market_closed}
+                    label={
+                        <Localize
+                            i18n_default_text='Take profit'
+                            key={`take-profit${is_minimized ? '-minimized' : ''}`}
+                        />
+                    }
+                    onClick={() => setIsOpen(true)}
+                    readOnly
+                    variant='fill'
+                    value={has_take_profit && take_profit ? `${take_profit} ${getCurrencyDisplayCode(currency)}` : '-'}
+                    status={has_error ? 'error' : 'neutral'}
+                />
+            )}
             <ActionSheet.Root
                 isOpen={is_open}
                 onClose={onActionSheetClose}

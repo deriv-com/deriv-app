@@ -89,6 +89,7 @@ const WalletsUpgradeModal = observer(() => {
                             is_mobile={is_mobile}
                             muted
                             src={video_src}
+                            show_loading={true}
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

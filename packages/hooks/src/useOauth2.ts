@@ -14,18 +14,21 @@ import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client'
  * @returns {{ oAuthLogout: () => Promise<void> }}
  */
 const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
     const loginHandler = async () => {
-        try {
-            await requestOidcAuthentication({
-                redirectCallbackUri: `${window.location.origin}/callback`,
-                postLoginRedirectUri: window.location.href,
-            }).catch(err => {
+        if (is_deriv_com) {
+            try {
+                await requestOidcAuthentication({
+                    redirectCallbackUri: `${window.location.origin}/callback`,
+                    postLoginRedirectUri: window.location.href,
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                });
+            } catch (err) {
                 // eslint-disable-next-line no-console
                 console.error(err);
-            });
-        } catch (err) {
-            // eslint-disable-next-line no-console
-            console.error(err);
+            }
         }
         redirectToLogin(false, getLanguage());
     };

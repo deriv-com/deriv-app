@@ -13,6 +13,8 @@ type TErrorComponent = {
     should_show_refresh: boolean;
 };
 
+const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+
 const ErrorComponent = ({
     header,
     message,
@@ -27,7 +29,7 @@ const ErrorComponent = ({
         ''
     );
 
-    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true') {
+    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com) {
         try {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,

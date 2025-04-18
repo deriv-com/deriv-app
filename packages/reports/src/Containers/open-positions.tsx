@@ -291,7 +291,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        const contract_type = getLatestContractType(active_positions);
+        const contract_type = getLatestContractType(active_positions, contract_type_value);
         setContractTypeValue(contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);

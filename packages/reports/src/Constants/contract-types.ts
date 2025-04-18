@@ -9,24 +9,46 @@ const isValidContractType = (
     return value !== null && Object.values(CONTRACT_STORAGE_VALUES).includes(value);
 };
 
-export const getLatestContractType = (positions: TPortfolioStore['active_positions']): string => {
+const getContractCategory = (contract_type: string) => {
+    if (isMultiplierContract(contract_type)) {
+        return CONTRACT_STORAGE_VALUES.MULTIPLIERS;
+    } else if (isAccumulatorContract(contract_type)) {
+        return CONTRACT_STORAGE_VALUES.ACCUMULATORS;
+    }
+    return CONTRACT_STORAGE_VALUES.OPTIONS;
+};
+
+export const getLatestContractType = (
+    positions: TPortfolioStore['active_positions'],
+    currentCategory?: (typeof CONTRACT_STORAGE_VALUES)[keyof typeof CONTRACT_STORAGE_VALUES]
+): string => {
+    // Do not change category if there are open positions with the same type.
+    if (
+        currentCategory &&
+        positions.some(pos => {
+            const type = pos.contract_info?.contract_type;
+            if (!type) return false;
+            return getContractCategory(type) === currentCategory;
+        })
+    ) {
+        return currentCategory;
+    }
+
+    // If no positions, fall back to stored or default.
     if (positions.length === 0) {
         const stored_value = localStorage.getItem('contract_type_value');
         return isValidContractType(stored_value) ? stored_value : CONTRACT_STORAGE_VALUES.OPTIONS;
     }
 
+    // Otherwise, find the latest contract and its type.
     const latest_contract = positions.reduce((latest, current) => {
         const current_date_start = current.contract_info?.date_start || 0;
         const latest_date_start = latest.contract_info?.date_start || 0;
         return current_date_start > latest_date_start ? current : latest;
     });
 
-    if (!latest_contract.contract_info?.contract_type) return CONTRACT_STORAGE_VALUES.OPTIONS;
+    const contract_type = latest_contract.contract_info?.contract_type;
+    if (!contract_type) return CONTRACT_STORAGE_VALUES.OPTIONS;
 
-    if (isMultiplierContract(latest_contract.contract_info.contract_type)) {
-        return CONTRACT_STORAGE_VALUES.MULTIPLIERS;
-    } else if (isAccumulatorContract(latest_contract.contract_info.contract_type)) {
-        return CONTRACT_STORAGE_VALUES.ACCUMULATORS;
-    }
-    return CONTRACT_STORAGE_VALUES.OPTIONS;
+    return getContractCategory(contract_type);
 };

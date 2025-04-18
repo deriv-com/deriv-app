@@ -80,7 +80,7 @@ const ContractAudit = ({
                 <div label={localize('Details')}>
                     <ContractDetails {...props} />
                 </div>
-                <div label={localize('History')}>
+                <div label={localize('TP/SL History')}>
                     <ContractHistory currency={currency} history={update_history} />
                 </div>
             </Tabs>

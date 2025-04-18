@@ -407,7 +407,6 @@ const StakeInput = observer(({ onClose, is_open }: TStakeInput) => {
                     placeholder={localize('Amount')}
                     regex={/[^0-9.,]/g}
                     status={fe_stake_error || (should_show_stake_error && stake_error) ? 'error' : 'neutral'}
-                    shouldRound={false}
                     textAlignment='center'
                     unitLeft={getCurrencyDisplayCode(currency)}
                     value={proposal_request_values.amount}

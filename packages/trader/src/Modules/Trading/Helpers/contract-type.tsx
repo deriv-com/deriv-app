@@ -20,7 +20,7 @@ export const isMajorPairsSymbol = (checked_symbol: string, active_symbols: Activ
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',
-    [localize('Highs & Lows')]: 'IcHighsLows',
+    [localize('Touch & No Touch')]: 'IcHighsLows',
     [localize('Ins & Outs')]: 'IcInsOuts',
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
@@ -34,7 +34,7 @@ export const ordered_trade_categories = [
     'Turbos',
     'Multipliers',
     'Ups & Downs',
-    'Highs & Lows',
+    'Touch & No Touch',
     'Digits',
 ];
 
@@ -45,7 +45,7 @@ export const getContractTypeCategoryIcons = () =>
         Options: 'IcCatOptions',
         Multipliers: 'IcCatMultiplier',
         Turbos: 'IcCatTurbos',
-    } as const);
+    }) as const;
 
 /**
  * Returns a list of contracts in the following format:
@@ -69,7 +69,7 @@ export const getAvailableContractTypes = (
             const available_contract_types = contract_types.filter(type =>
                 type.value &&
                 // TODO: remove this check once all contract types are supported
-                !unsupported_list.includes(type.value as typeof unsupported_contract_types_list[number])
+                !unsupported_list.includes(type.value as (typeof unsupported_contract_types_list)[number])
                     ? type
                     : undefined
             );

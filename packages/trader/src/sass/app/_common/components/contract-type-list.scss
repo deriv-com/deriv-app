@@ -8,8 +8,6 @@
     &__label {
         @include typeface(--paragraph-left-bold-black);
         color: var(--text-prominent);
-        margin-bottom: 0.8rem;
-        margin-left: 1.6rem;
     }
     &:last-child {
         border-bottom: none;
@@ -45,7 +43,6 @@
 
     &__new {
         padding: 0.3rem 0.4rem;
-        margin-bottom: 0.8rem;
         border-radius: $BORDER_RADIUS * 4;
     }
 
@@ -57,7 +54,8 @@
     &__container {
         display: flex;
         align-items: center;
-        gap: 1.6rem;
+        gap: 0.8rem;
+        padding: 0.8rem 1.6rem;
     }
 
     &__icon {

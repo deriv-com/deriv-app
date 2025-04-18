@@ -25,13 +25,13 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
 
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
-        }, 3000);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        }, 1000);
 
-        document.addEventListener('visibilitychange', function () {
+        function handleVisibilityChange() {
             if (document.hidden) {
                 clearTimeout(timeout);
             }
-
             // iOS (17+) and certain browsers (edge) may have popups before redirecting
             if (window.onblur) {
                 clearTimeout(timeout); // installer wont open but will redirect to MetaTrader5
@@ -39,7 +39,9 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                     mobileAppURL && window.location.replace(mobileAppURL); // if it is not redirecting then open installer
                 }
             }
-        });
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
     };
 
     return (

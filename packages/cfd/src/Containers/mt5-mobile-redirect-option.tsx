@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
-import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
-import './mt5-mobile-redirect-option.scss';
 import { Localize } from '@deriv/translations';
+
+import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
+
+import './mt5-mobile-redirect-option.scss';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     const mobileURLSet = async () => {
@@ -12,9 +15,10 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
 
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
-        }, 4000);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        }, 1000);
 
-        document.addEventListener('visibilitychange', function () {
+        function handleVisibilityChange() {
             if (document.hidden) {
                 clearTimeout(timeout);
             }
@@ -26,7 +30,9 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
                     mobileAppURL && window.location.replace(mobileAppURL); // if it is not redirecting then open installer
                 }
             }
-        });
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
     };
 
     return (

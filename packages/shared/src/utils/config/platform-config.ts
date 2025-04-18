@@ -15,8 +15,8 @@ type TPlatform = {
 type TPlatforms = Record<'p2p' | 'p2p_v2' | 'derivgo' | 'tradershub_os', TPlatform>;
 export const tradershub_os_url =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/tradershub/cfds'
-        : 'https://staging-hub.deriv.com/tradershub/cfds';
+        ? 'https://hub.deriv.com/tradershub'
+        : 'https://staging-hub.deriv.com/tradershub';
 
 // TODO: This should be moved to PlatformContext
 export const platforms: TPlatforms = {

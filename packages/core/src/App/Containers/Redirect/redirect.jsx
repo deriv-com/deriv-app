@@ -3,7 +3,8 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
-import { getDomainName, loginUrl, redirectToLogin, routes, SessionStore } from '@deriv/shared';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { getDomainName, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
@@ -42,6 +43,8 @@ const Redirect = observer(() => {
         toggleUpdateEmailModal,
         is_mobile,
     } = ui;
+
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -319,6 +322,17 @@ const Redirect = observer(() => {
                 pathname: routes.cashier_p2p,
                 search: url_query_string,
             });
+            redirected_to_route = true;
+            break;
+        }
+        case 'ctrader_account_transfer': {
+            if (isHubRedirectionEnabled && has_wallet) {
+                window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
+            } else if (has_wallet) {
+                history.push(routes.wallets_transfer);
+            } else {
+                history.push(routes.cashier_acc_transfer);
+            }
             redirected_to_route = true;
             break;
         }

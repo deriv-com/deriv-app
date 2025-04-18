@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_POA_URL, getAppId, getSocketURL } from '@deriv/shared';
+import { ACCOUNTS_OS_POA_URL, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 import { useKycAuthStatus } from '../../../hooks';
 
@@ -18,16 +19,19 @@ const ProofOfAddressFlow = observer(() => {
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poa_in_accounts_os',
     });
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
-    const getFormattedURL = url_link => {
+    const getFormattedURL = (url_link: string) => {
         const url = new URL(url_link);
         const urlParams = new URLSearchParams(location.search);
         const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
 
         const params = {
             platform,
-            appid: getAppId(),
-            lang: 'en',
+            appid: WebSocketUtils.getAppId(),
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

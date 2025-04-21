@@ -29,11 +29,12 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_virtual, logout } = client;
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
 
-    const { oAuthLogout, isOAuth2Enabled } = useOauth2({
+    const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
-            if (isOAuth2Enabled) {
+            if (is_deriv_com) {
                 try {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -45,8 +46,6 @@ const WalletsUpgradeLogoutModal = observer(() => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }
-            } else {
-                redirectToLogin(false, getLanguage());
             }
         },
     });

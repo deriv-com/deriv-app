@@ -8,7 +8,6 @@ import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 import { useDevice } from '@deriv-com/ui';
-import { useOauth2 } from '@deriv/hooks';
 
 type TResetPasswordModalValues = {
     password: string;
@@ -17,6 +16,7 @@ type TResetPasswordModalValues = {
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
     const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
     const {
         disableApp,
         enableApp,
@@ -27,7 +27,6 @@ const ResetPasswordModal = observer(() => {
     } = ui;
 
     const { isDesktop } = useDevice();
-    const { isOAuth2Enabled } = useOauth2({ handleLogout: async () => {} });
 
     const onResetComplete = (
         error: TSocketError<'reset_password'>['error'] | null,
@@ -53,7 +52,7 @@ const ResetPasswordModal = observer(() => {
         setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            if (isOAuth2Enabled) {
+            if (is_deriv_com) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -66,7 +65,7 @@ const ResetPasswordModal = observer(() => {
                     console.error(err);
                 }
             } else {
-                redirectToLogin(false, getLanguage(), false);
+                redirectToLogin(false, getLanguage());
             }
         });
     };

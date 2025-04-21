@@ -27,6 +27,7 @@ import {
 import { AUTH_STATUS_CODES, getBrandWebsiteName, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
 
 import FormBody from '../../../Components/form-body';
@@ -116,6 +117,9 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
+    const account_opening_reason_list_array = account_opening_reason_list();
+
+    const account_opening_reason_new_list_array = account_opening_reason_new_list();
     useEffect(() => {
         if (isDynamicFAEnabled) {
             WS.authorized.storage
@@ -203,12 +207,12 @@ const PersonalDetailsForm = observer(() => {
             if (is_phone_number_verified) {
                 return (
                     <Localize
-                        i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                        i18n_default_text='To change your verified phone number, contact us via <0>live chat</0>.'
                         components={[
-                            <OpenLiveChatLink
-                                text_size='xxs'
-                                key={0}
+                            <span
                                 className='account-form__fieldset--phone-verification-livechat-link'
+                                key={0}
+                                onClick={Chat.open}
                             />,
                         ]}
                     />
@@ -407,15 +411,17 @@ const PersonalDetailsForm = observer(() => {
     );
 
     const getAccountOpeningReason = () => {
-        const result = account_opening_reason_new_list.find(
+        const result = account_opening_reason_new_list_array.find(
             item => item.value === initialValues?.account_opening_reason
         );
 
-        if (result) return account_opening_reason_new_list;
+        if (result) return account_opening_reason_new_list_array;
 
-        const item = account_opening_reason_list.find(item => item.value === initialValues?.account_opening_reason);
+        const item = account_opening_reason_list_array.find(
+            item => item.value === initialValues?.account_opening_reason
+        );
 
-        return item ? [item, ...account_opening_reason_new_list] : account_opening_reason_new_list;
+        return item ? [item, ...account_opening_reason_new_list_array] : account_opening_reason_new_list_array;
     };
 
     return (
@@ -898,6 +904,7 @@ const PersonalDetailsForm = observer(() => {
                                             id='email_consent'
                                             defaultChecked={!!values.email_consent}
                                             disabled={isFieldDisabled('email_consent') && !is_virtual}
+                                            label_line_height={'m'}
                                         />
                                     </fieldset>
                                 </Fragment>

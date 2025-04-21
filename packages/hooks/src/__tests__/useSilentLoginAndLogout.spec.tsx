@@ -36,7 +36,10 @@ describe('useSilentLoginAndLogout', () => {
 
         Object.defineProperty(window, 'location', {
             writable: true,
-            value: { pathname: '/home' },
+            value: {
+                pathname: '/home',
+                hostname: 'app.deriv.com', // Default hostname for tests
+            },
         });
     });
 
@@ -54,7 +57,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -76,7 +78,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -100,7 +101,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -119,7 +119,6 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }
@@ -138,7 +137,29 @@ describe('useSilentLoginAndLogout', () => {
             () =>
                 useSilentLoginAndLogout({
                     is_client_store_initialized: true,
-                    isOAuth2Enabled: true,
+                    oAuthLogout: mockOAuthLogout,
+                }),
+            { wrapper }
+        );
+
+        expect(requestOidcAuthentication).not.toHaveBeenCalled();
+        expect(mockOAuthLogout).not.toHaveBeenCalled();
+    });
+
+    it('should not call requestOidcAuthentication if the hostname is not deriv.com', () => {
+        (Cookies.get as jest.Mock).mockImplementation(() => 'true');
+
+        jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
+
+        Object.defineProperty(window, 'location', {
+            writable: true,
+            value: { hostname: 'app.deriv.me' },
+        });
+
+        renderHook(
+            () =>
+                useSilentLoginAndLogout({
+                    is_client_store_initialized: true,
                     oAuthLogout: mockOAuthLogout,
                 }),
             { wrapper }

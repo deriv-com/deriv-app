@@ -56,6 +56,8 @@ const emailReasons = [
     },
 ];
 
+const RATE_LIMIT_ERROR_CODE = 'RateLimit';
+
 const SentEmailContent: FC<SentEmailContentProps> = ({
     description,
     isChangePassword = false,
@@ -80,6 +82,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
         countStart: 60,
         intervalMs: 1000,
     });
+    const isRateLimitError = resetPasswordError?.error?.code === RATE_LIMIT_ERROR_CODE;
 
     const EmailSentIcon =
         isChangePassword || isInvestorPassword ? DerivLightIcEmailSentIcon : DerivLightIcEmailSentPasskeyIcon;
@@ -95,7 +98,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
         if (count === 0) setHasCountdownStarted(false);
     }, [count]);
 
-    if (resetPasswordError) {
+    if (resetPasswordError && !isRateLimitError) {
         return (
             <WalletError
                 errorMessage={resetPasswordError?.error.message}

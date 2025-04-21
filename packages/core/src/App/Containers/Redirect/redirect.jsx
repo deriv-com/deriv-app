@@ -3,8 +3,8 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
-import { useOauth2 } from '@deriv/hooks';
-import { getDomainName, loginUrl, redirectToLogin, routes, SessionStore } from '@deriv/shared';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { getDomainName, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
@@ -16,8 +16,8 @@ import { WS } from 'Services';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { isOAuth2Enabled } = useOauth2({});
     const [queryCurrency, setQueryCurrency] = useState('USD');
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
 
     const {
         authorize_accounts_list,
@@ -43,6 +43,8 @@ const Redirect = observer(() => {
         toggleUpdateEmailModal,
         is_mobile,
     } = ui;
+
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -323,6 +325,17 @@ const Redirect = observer(() => {
             redirected_to_route = true;
             break;
         }
+        case 'ctrader_account_transfer': {
+            if (isHubRedirectionEnabled && has_wallet) {
+                window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
+            } else if (has_wallet) {
+                history.push(routes.wallets_transfer);
+            } else {
+                history.push(routes.cashier_acc_transfer);
+            }
+            redirected_to_route = true;
+            break;
+        }
         case 'livechat': {
             openLivechat();
             break;
@@ -340,12 +353,10 @@ const Redirect = observer(() => {
         const account_currency = queryCurrency;
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub && is_client_store_initialized) {
             const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
-            const is_correct_currency = authorize_accounts_list.some(
-                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
-            );
-            const currency_exists = Object.values(client_account_lists).some(
-                account => account.currency?.toUpperCase() === account_currency?.toUpperCase()
-            );
+
+            const length_of_authorize_accounts_list = authorize_accounts_list.length;
+            const length_of_client_account_lists = Object.keys(client_account_lists).length;
+            const should_retrigger_oidc = length_of_authorize_accounts_list !== length_of_client_account_lists;
             const route_mappings = [
                 { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
@@ -370,20 +381,18 @@ const Redirect = observer(() => {
             if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
             }
-            if (!currency_exists && is_correct_currency && authorize_accounts_list.length > 0) {
-                if (isOAuth2Enabled) {
-                    try {
-                        requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                            postLoginRedirectUri: `redirect?${updated_search}`,
-                        }).catch(err => {
-                            // eslint-disable-next-line no-console
-                            console.error(err);
-                        });
-                    } catch (err) {
+            if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com) {
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                        postLoginRedirectUri: `redirect?${updated_search}`,
+                    }).catch(err => {
                         // eslint-disable-next-line no-console
                         console.error(err);
-                    }
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
                 }
             }
 
@@ -413,7 +422,6 @@ const Redirect = observer(() => {
                 'tradershub_redirect_to',
                 matched_route ? `redirect?${updated_search}` : default_route
             );
-
             history.push({
                 pathname: matched_route ? matched_route.route : default_route,
                 search: updated_search,

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { getUnitMap } from '@deriv/shared';
+import { getTomorrowDate, getUnitMap, toMoment } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
@@ -55,7 +55,16 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const { server_time } = common;
 
     useEffect(() => {
-        if (expiry_epoch) {
+        if (expiry_epoch && duration_unit !== 'd') {
+            // Set expiry time to end of day
+            setExpiryTimeString('23:59:59');
+
+            // Get tomorrow's date
+            const tomorrow_date = getTomorrowDate(server_time);
+            setExpiryDateString(tomorrow_date);
+            setSavedExpiryDateV2(tomorrow_date);
+        }
+        if (expiry_epoch && duration_unit === 'd' && !expiry_time_string) {
             setExpiryTimeString(
                 new Date((expiry_epoch as number) * 1000).toISOString().split('T')[1].substring(0, 8) || ''
             );

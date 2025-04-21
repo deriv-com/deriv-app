@@ -40,6 +40,12 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     const should_remove_passkeys_route = !isMobile || (isMobile && !is_passkey_supported);
 
     React.useEffect(() => {
+        return () => {
+            window.sessionStorage.removeItem('config.platform');
+        };
+    }, []);
+
+    React.useEffect(() => {
         toggleAccountSettings(true);
     }, [toggleAccountSettings]);
 

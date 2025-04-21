@@ -1,11 +1,13 @@
 import React from 'react';
-import { Modal, Button, StaticUrl, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+
+import { Button, Modal, StaticUrl, Text } from '@deriv/components';
 import { WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 import { useDevice } from '@deriv-com/ui';
+
 import './tnc-status-update-modal.scss';
-import { URLUtils } from '@deriv-com/utils';
 
 const TncStatusUpdateModal = observer(() => {
     const { client, ui } = useStore();
@@ -46,7 +48,7 @@ const TncStatusUpdateModal = observer(() => {
                                     className='link'
                                     rel='noopener noreferrer'
                                     target='_blank'
-                                    href={URLUtils.getDerivStaticURL('/contact_us')}
+                                    onClick={Chat.open}
                                 />,
                             ]}
                         />

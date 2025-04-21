@@ -16,6 +16,7 @@ const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
     const [queryCurrency, setQueryCurrency] = useState('USD');
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
 
     const {
         authorize_accounts_list,
@@ -366,7 +367,7 @@ const Redirect = observer(() => {
             if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
             }
-            if (should_retrigger_oidc && authorize_accounts_list.length > 0) {
+            if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,

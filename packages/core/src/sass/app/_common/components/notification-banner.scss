@@ -4,12 +4,15 @@
     background-color: var(--general-main-1);
     color: var(--text-prominent);
     border-radius: $BORDER_RADIUS;
-    box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
+    box-shadow:
+        0 4px 6px 0 var(--shadow-menu),
+        0 4px 6px 0 var(--shadow-menu);
     width: 100%;
     max-width: 40rem;
     min-height: 14.4rem;
-    transition: transform 0.25s ease, opacity 0.25s linear;
-    z-index: 10;
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s linear;
     margin-bottom: 16px;
 
     &--enter-done {
@@ -22,10 +25,9 @@
         transform: translateY(-16px);
     }
     &--left {
-        z-index: 12;
-        padding: 1.6rem 0 1.6rem 1.6rem;
+        margin: 1.6rem 0 1.6rem 1.6rem;
         width: 50%;
-        min-width: 210px;
+        min-width: 220px;
     }
     &--right {
         position: relative;
@@ -61,7 +63,7 @@
         clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%);
         border-top-right-radius: $BORDER_RADIUS;
         border-bottom-right-radius: $BORDER_RADIUS;
-        z-index: 11;
+        z-index: 1;
 
         .notification-banner__trustpilot & {
             max-width: 13.8rem;
@@ -78,7 +80,7 @@
         object-fit: contain;
         height: 15.2rem;
         width: auto;
-        z-index: 12;
+        z-index: 2;
         pointer-events: none;
 
         @include mobile {
@@ -89,7 +91,7 @@
     }
     &__close-icon {
         position: absolute;
-        z-index: 12;
+        z-index: 2;
         right: 1.6rem;
         top: 1.6rem;
         cursor: pointer;

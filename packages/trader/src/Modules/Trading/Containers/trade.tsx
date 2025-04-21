@@ -67,7 +67,7 @@ const Trade = observer(() => {
         is_dark_mode_on: is_dark_theme,
         notification_messages_ui: NotificationMessages,
     } = ui;
-    const { is_eu, is_logged_in } = client;
+    const { is_eu, is_logged_in, is_single_logging_in } = client;
     const { network_status } = common;
     const { isDesktop, isMobile, isTabletPortrait } = useDevice();
 
@@ -206,11 +206,20 @@ const Trade = observer(() => {
             >
                 <NotificationMessages show_trade_notifications={isMobile} />
                 <React.Suspense
-                    fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || !!is_chart_loading} />}
+                    fallback={
+                        <ChartLoader
+                            is_dark={is_dark_theme}
+                            is_visible={!symbol || !!is_chart_loading || !!is_single_logging_in}
+                        />
+                    }
                 >
                     {isMobile ? (
                         <React.Fragment>
-                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                            <ChartLoader
+                                is_visible={
+                                    is_chart_loading || is_single_logging_in || should_show_active_symbols_loading
+                                }
+                            />
                             <SwipeableWrapper
                                 className={classNames({ 'vanilla-trade-chart': is_vanilla })}
                                 is_disabled={
@@ -218,6 +227,7 @@ const Trade = observer(() => {
                                     !is_trade_enabled ||
                                     !form_components.length ||
                                     is_chart_loading ||
+                                    is_single_logging_in ||
                                     should_show_active_symbols_loading
                                 }
                                 is_swipe_disabled={swipe_index === 1}
@@ -241,7 +251,10 @@ const Trade = observer(() => {
                         >
                             <ChartLoader
                                 is_visible={
-                                    is_chart_loading || should_show_active_symbols_loading || shouldShowPortraitLoader
+                                    is_chart_loading ||
+                                    is_single_logging_in ||
+                                    should_show_active_symbols_loading ||
+                                    shouldShowPortraitLoader
                                 }
                             />
                             <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />

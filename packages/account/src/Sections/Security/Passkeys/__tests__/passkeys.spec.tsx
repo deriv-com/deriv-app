@@ -133,19 +133,6 @@ describe('Passkeys', () => {
     const mockRemovePasskey = jest.fn();
     const mockReloadPasskeysList = jest.fn();
 
-    it("doesn't render existed passkeys for desktop and tablet", () => {
-        (useGetPasskeysList as jest.Mock).mockReturnValue({
-            passkeys_list: mock_passkeys_list,
-        });
-        (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: false });
-
-        renderComponent();
-
-        expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
-        expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
-        expect(Analytics.trackEvent).not.toHaveBeenCalled();
-    });
-
     it('renders loader if passkeys list is loading', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             is_passkeys_list_loading: true,

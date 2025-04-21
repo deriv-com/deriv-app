@@ -239,9 +239,14 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const contract_types = React.useMemo(() => generateContractTypes(), [previous_active_positions]);
 
-    const [contract_type_value, setContractTypeValue] = React.useState(
-        contract_types.find(type => type.is_default)?.value || 'options'
-    );
+    const [contract_type_value, setContractTypeValue] = React.useState(() => {
+        const stored_value = sessionStorage.getItem('contract_type_value');
+        // Check if the stored value is valid
+        if (stored_value && Object.values(CONTRACT_STORAGE_VALUES).includes(stored_value)) {
+            return stored_value;
+        }
+        return contract_types.find(type => type.is_default)?.value || 'options';
+    });
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
         { text: localize('All growth rates'), value: 'all growth rates' },
@@ -289,12 +294,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        const contract_type = getLatestContractType(active_positions, contract_type_value);
-        setContractTypeValue(contract_type);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [previous_active_positions]);
 
     React.useEffect(() => {
         if (prev_contract_type_value) {
@@ -415,7 +414,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={e => {
+                                    setContractTypeValue(e.target.value);
+                                    sessionStorage.setItem('contract_type_value', e.target.value);
+                                }}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -443,9 +445,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             list_items={contract_types_list}
                             value={contract_type_value}
                             should_show_empty_option={false}
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                setContractTypeValue(e.target.value)
-                            }
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) => {
+                                setContractTypeValue(e.target.value);
+                                sessionStorage.setItem('contract_type_value', e.target.value);
+                            }}
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
                             <SelectNative

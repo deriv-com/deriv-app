@@ -20,8 +20,6 @@ const NotificationsList = observer(() => {
         const { type } = item;
         if (['contract_sold', 'info', 'news', 'promotions'].includes(type)) {
             return 'IcAlertInfo';
-        } else if (type === 'p2p_completed_order') {
-            return 'IcAlertAnnounce';
         }
         return `IcAlert${toTitleCase(type)}`;
     };

@@ -10,7 +10,6 @@ import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
 import NotificationPromo from './notification-promo.jsx';
 import { BinaryLink } from '../../Routes';
-import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
@@ -77,10 +76,6 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     message={data.message}
                     onClose={destroy}
                 />
-            );
-        case 'p2p_completed_order':
-            return (
-                <NotificationOrder action={data.action} header={data.header} message={data.message} onClose={destroy} />
             );
         default:
             return (
@@ -203,7 +198,6 @@ Notification.propTypes = {
             'trustpilot',
             'announce',
             'promotions',
-            'p2p_completed_order',
         ]).isRequired,
     }),
     removeNotificationMessage: PropTypes.func,

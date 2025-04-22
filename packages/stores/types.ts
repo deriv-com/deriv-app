@@ -14,8 +14,6 @@ import type {
     GetSettings,
     LandingCompany,
     LogOutResponse,
-    P2PAdvertiserInformationResponse,
-    P2POrderListResponse,
     Portfolio1,
     ProposalOpenContract,
     ResidenceList,
@@ -555,7 +553,6 @@ export type TClientStore = {
     setInitialized: (status?: boolean) => void;
     setIsClientStoreInitialized: () => void;
     setLogout: (status?: boolean) => void;
-    setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
     setLoginInformation: (client_accounts: { [k: string]: TActiveAccount }, client_id: string) => void;
@@ -1121,8 +1118,6 @@ type TNotificationStore = {
         currency: string
     ) => void;
     notifications: TNotificationMessage[];
-    p2p_advertiser_info: P2PAdvertiserInformationResponse['p2p_advertiser_info'];
-    p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;
     removeNotifications: (should_close_persistent: boolean) => void;
@@ -1130,10 +1125,8 @@ type TNotificationStore = {
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     removeTradeNotifications: (id?: string) => void;
-    setP2POrderProps: () => void;
     showPOAAddressMismatchSuccessNotification: () => void;
     showPOAAddressMismatchFailureNotification: () => void;
-    setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setShouldShowPopups: (should_show_popups: boolean) => void;
     toggleNotificationsModal: () => void;

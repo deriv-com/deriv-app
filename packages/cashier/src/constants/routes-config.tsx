@@ -1,5 +1,4 @@
 import React from 'react';
-import P2P from '@deriv/p2p';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
@@ -62,16 +61,12 @@ const initRoutesConfig = (): TRouteConfig[] => [
             },
             {
                 path: routes.cashier_p2p,
-                component: P2P,
+                component: () => {
+                    window.location.href = 'https://p2p.deriv.com';
+                    return null;
+                },
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
-            },
-            {
-                path: routes.p2p_verification,
-                component: P2P,
-                getTitle: () => localize('P2P verification'),
-                icon_component: 'IcDp2p',
-                is_invisible: true,
             },
             {
                 id: 'gtm-onramp-tab',

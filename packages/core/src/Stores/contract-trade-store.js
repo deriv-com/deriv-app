@@ -41,6 +41,8 @@ export default class ContractTradeStore extends BaseStore {
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
 
+    last_contract_override = null;
+
     constructor(root_store) {
         super({ root_store });
 
@@ -55,6 +57,8 @@ export default class ContractTradeStore extends BaseStore {
             error_message: observable,
             granularity: observable,
             chart_type: observable,
+            last_contract_override: observable,
+            clearLastContractOverride: action.bound,
             updateAccumulatorBarriersData: action.bound,
             updateChartType: action.bound,
             updateGranularity: action.bound,
@@ -132,9 +136,13 @@ export default class ContractTradeStore extends BaseStore {
                         status: 'open',
                     };
                 }
-                this.last_contract = clean_contract;
+                this.last_contract_override = clean_contract;
             }
         }
+    }
+
+    clearLastContractOverride() {
+        this.last_contract_override = null;
     }
 
     setNewAccumulatorBarriersData(new_barriers_data, should_update_contract_barriers) {
@@ -403,6 +411,9 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
 
+        // Clear any override when adding a new contract
+        this.clearLastContractOverride();
+
         if (is_tick_contract && !this.root_store.portfolio.is_multiplier && this.granularity !== 0 && isDesktop()) {
             this.root_store.notifications.addNotificationMessage(switch_to_tick_chart);
         }
@@ -447,6 +458,10 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     get last_contract() {
+        if (this.last_contract_override) {
+            return this.last_contract_override;
+        }
+
         const applicable_contracts = this.applicable_contracts();
         const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};

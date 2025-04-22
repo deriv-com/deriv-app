@@ -185,7 +185,7 @@ const PositionsDrawer = observer(({ ...props }) => {
                         <div className='positions-drawer__summary'>
                             <Text size='xxs' color='less-prominent' className='positions-drawer__count'>
                                 {active_positions.length}{' '}
-                                {localize(`${active_positions.length > 1 ? 'open positions' : 'open position'}`)}
+                                {`${active_positions.length > 1 ? localize('open positions') : localize('open position')}`}
                             </Text>
                             <div className='positions-drawer__total'>
                                 <Text size='xs' weight='bold'>

@@ -60,6 +60,13 @@ const RootComponent = observer(props => {
             is_client_store_initialized
         ) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            const accounts_list = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+            const current_account = sessionStorage.getItem('active_wallet_loginid' || 'active_loginid');
+            let currency = accounts_list[current_account]?.currency;
+            // Check if current account is a virtual/demo account
+            if (current_account && (current_account.includes('VRTC') || current_account.includes('VRW'))) {
+                currency = 'demo';
+            }
             // NOTE: Clear OIDC related local storage, when user is in Safari browser as Safari browser doesn't support IFrame for Frontchannel logout
             if (isSafariBrowser()) {
                 // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
@@ -86,10 +93,10 @@ const RootComponent = observer(props => {
                 switch (redirect_to_lowcode) {
                     case 'wallet':
                         localStorage.setItem('wallet_redirect_done', true);
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet&account=${currency}`;
                         break;
                     default:
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home&account=${currency}`;
                         break;
                 }
             } else {

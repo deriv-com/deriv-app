@@ -426,7 +426,7 @@ const FinancialAssessment = observer(() => {
 
         const params = {
             platform,
-            appid: WebSocketUtils.getAppId(),
+            appid: String(WebSocketUtils.getAppId()),
             lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),

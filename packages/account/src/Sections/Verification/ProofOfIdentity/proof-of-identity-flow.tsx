@@ -30,8 +30,8 @@ const ProofOfIdentityFlow = observer(() => {
 
         const params = {
             platform,
-            appid: WebSocketUtils.getAppId(),
-            lang: i18n_language.toLowerCase(),
+            appid: String(WebSocketUtils.getAppId()),
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

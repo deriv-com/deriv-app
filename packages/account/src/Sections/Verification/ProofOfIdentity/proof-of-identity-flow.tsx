@@ -32,7 +32,7 @@ const ProofOfIdentityFlow = observer(() => {
         const params = {
             platform,
             appid: getAppId(),
-            lang: 'en',
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

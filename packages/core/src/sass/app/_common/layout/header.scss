@@ -194,7 +194,7 @@
         }
         @include mobile-or-tablet-screen {
             .acc-info__separator {
-                display: none;
+                padding-left: 1.6rem;
             }
             .notifications-toggle {
                 margin-right: 0;

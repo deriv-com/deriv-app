@@ -121,7 +121,7 @@ const HeaderLegacy = observer(() => {
                         'header__menu-right--hidden': !isDesktop && is_logging_in,
                     })}
                 >
-                    {(is_logging_in || is_single_logging_in || is_switching) && (
+                    {is_logging_in || is_single_logging_in || is_switching ? (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader__dtrader', {
@@ -131,12 +131,13 @@ const HeaderLegacy = observer(() => {
                         >
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />
                         </div>
-                    )}
-                    {!is_from_tradershub_os && (
-                        <HeaderAccountActions
-                            onClickDeposit={handleClickCashier}
-                            is_traders_hub_routes={traders_hub_routes}
-                        />
+                    ) : (
+                        !is_from_tradershub_os && (
+                            <HeaderAccountActions
+                                onClickDeposit={handleClickCashier}
+                                is_traders_hub_routes={traders_hub_routes}
+                            />
+                        )
                     )}
                 </div>
             </div>

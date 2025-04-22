@@ -31,16 +31,12 @@ const LoggedInPreloader = ({ is_mobile }: Pick<TAccountsInfoLoaderWallets, 'is_m
         <React.Fragment>
             <circle cx='97' cy='22' r='13' />
             <circle cx='59' cy='22' r='13' />
-            <rect x='128' y='19' rx='4' ry='4' width='76' height='7' />
         </React.Fragment>
     ) : (
         <React.Fragment>
             <circle cx='14' cy='22' r='12' />
             <circle cx='58' cy='22' r='12' />
-            <rect x='87' y='8' rx='4' ry='4' width='1' height='30' />
-            <circle cx='118' cy='24' r='13' />
-            <rect x='150' y='20' rx='4' ry='4' width='150' height='7' />
-            <rect x='330' y='8' rx='4' ry='4' width='122' height='32' />
+            <circle cx='118' cy='22' r='11' />
         </React.Fragment>
     );
 

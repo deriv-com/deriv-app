@@ -54,10 +54,10 @@ const MenuLeft = observer(() => {
             ) : (
                 <React.Fragment>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                    <DerivShortLogo />
                     {header_extension && is_logged_in && (
                         <div className='header__menu-left-extensions'>{header_extension}</div>
                     )}
-                    <DerivShortLogo />
                 </React.Fragment>
             )}
             <MenuLinks is_traders_hub_routes={traders_hub_routes} />

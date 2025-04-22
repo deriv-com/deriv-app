@@ -145,7 +145,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     return (
         <div className='acc-info__wrapper'>
-            <div className='acc-info__separator' />
+            {isDesktop && <div className='acc-info__separator' />}
             <AccountInfoWrapper
                 is_mobile={!isDesktop}
                 is_disabled={Boolean(active_account?.is_disabled)}

@@ -179,9 +179,9 @@ describe('OpenPositions', () => {
         expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
         expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
     });
-    it('should default to Options when no positions are present and no localStorage value', () => {
+    it('should default to Options when no positions are present and no sessionStorage value', () => {
         store.portfolio.active_positions = [];
-        localStorage.removeItem('contract_type_value');
+        sessionStorage.removeItem('contract_type_value');
         render(mockedOpenPositions());
 
         expect(screen.getByText(notifications)).toBeInTheDocument();
@@ -277,13 +277,42 @@ describe('OpenPositions', () => {
 
         expect(dropdown).toHaveTextContent(multipliers);
     });
+    // Create a mock implementation of sessionStorage
+    beforeEach(() => {
+        const sessionStorageMock = (() => {
+            let store: Record<string, string> = {};
+            return {
+                getItem: jest.fn((key: string) => store[key] || null),
+                setItem: jest.fn((key: string, value: string) => {
+                    store[key] = value;
+                }),
+                removeItem: jest.fn((key: string) => {
+                    delete store[key];
+                }),
+                clear: jest.fn(() => {
+                    store = {};
+                }),
+            };
+        })();
+
+        // Override the sessionStorage property
+        Object.defineProperty(window, 'sessionStorage', {
+            value: sessionStorageMock,
+            writable: true,
+        });
+    });
+
     it('should set 1% Growth rate filter when it is selected from the dropdown for Accumulators on desktop', async () => {
+        // Set sessionStorage to return 'accumulators'
+        (window.sessionStorage.getItem as jest.Mock).mockReturnValue('accumulators');
+
         store = mockStore({
             portfolio: {
                 active_positions: [accumulators_position],
             },
             client: {
                 currency: 'USD',
+                is_eu: false, // Ensure hide_accu_in_dropdown is false
             },
             ui: {
                 notification_messages_ui: () => <div>{notifications}</div>,
@@ -292,6 +321,7 @@ describe('OpenPositions', () => {
         render(mockedOpenPositions());
 
         const dropdowns = screen.getAllByTestId(filter_dropdown);
+        // Check dropdowns
         expect(dropdowns[1]).toHaveTextContent(all_growth_rates);
         await userEvent.click(dropdowns[1]);
         await userEvent.click(screen.getByText(one_percent));
@@ -299,12 +329,17 @@ describe('OpenPositions', () => {
     });
     it('should set 5% Growth rate filter when it is selected from the dropdown for Accumulators on mobile', async () => {
         (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
+
+        // Set sessionStorage to return 'accumulators'
+        (window.sessionStorage.getItem as jest.Mock).mockReturnValue('accumulators');
+
         store = mockStore({
             portfolio: {
                 active_positions: [accumulators_position],
             },
             client: {
                 currency: 'USD',
+                is_eu: false, // Ensure hide_accu_in_dropdown is false
             },
             ui: {
                 notification_messages_ui: () => <div>{notifications}</div>,
@@ -316,5 +351,48 @@ describe('OpenPositions', () => {
         expect(comboboxes[1]).toHaveValue(all_growth_rates.toLowerCase());
         await userEvent.selectOptions(comboboxes[1], five_percent);
         expect(comboboxes[1]).toHaveValue(five_percent);
+    });
+
+    // Clean up sessionStorage mock after all tests
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    it('should persist contract type selection in sessionStorage', async () => {
+        // Start with no stored value
+        sessionStorage.removeItem('contract_type_value');
+
+        // Use only options_position to ensure we know the default selection
+        store = mockStore({
+            portfolio: {
+                active_positions: [options_position],
+            },
+            client: {
+                currency: 'USD',
+            },
+            ui: {
+                notification_messages_ui: () => <div>{notifications}</div>,
+            },
+        });
+
+        const { rerender } = render(mockedOpenPositions());
+
+        // Verify initial selection is Options
+        const dropdown = screen.getByTestId(filter_dropdown);
+        expect(dropdown).toHaveTextContent(options);
+
+        // Change selection to multipliers
+        await userEvent.click(dropdown);
+        await userEvent.click(screen.getByText(multipliers));
+
+        // Verify sessionStorage was called with the correct values
+        expect(window.sessionStorage.setItem).toHaveBeenCalledWith('contract_type_value', 'multipliers');
+
+        // Simulate page refresh by re-rendering with the stored value
+        (window.sessionStorage.getItem as jest.Mock).mockReturnValue('multipliers');
+        rerender(mockedOpenPositions());
+
+        // Verify the stored value is used after refresh
+        expect(dropdown).toHaveTextContent(multipliers);
     });
 });

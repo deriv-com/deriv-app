@@ -213,7 +213,7 @@ const EmploymentTaxDetailsContainer = observer(
                             should_focus_fields &&
                             values.employment_status &&
                             !values.tin_skipped &&
-                            (should_display_long_message || is_tin_required)
+                            (should_display_long_message || is_tin_required || !values.tax_identification_number)
                         }
                     />
                 </div>

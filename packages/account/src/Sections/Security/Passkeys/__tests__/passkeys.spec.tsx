@@ -284,7 +284,7 @@ describe('Passkeys', () => {
         await userEvent.click(screen.getByText('Remove'));
 
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('passkey_remove_started'));
-        expect(screen.getByText('Are you sure you want to remove this passkey?')).toBeInTheDocument();
+        expect(screen.getByText('Are you sure you want to remove this biometric data?')).toBeInTheDocument();
 
         await userEvent.click(screen.getByRole('button', { name: /remove/i }));
         expect(mockRemovePasskey).toHaveBeenCalledTimes(1);

@@ -22,7 +22,8 @@ const ProofOfIdentityFlow = observer(() => {
     const getFormattedURL = url_link => {
         const url = new URL(url_link);
         const urlParams = new URLSearchParams(location.search);
-        const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+        const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
+        const platform = platformConfig ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
 
         const params = {
             platform,

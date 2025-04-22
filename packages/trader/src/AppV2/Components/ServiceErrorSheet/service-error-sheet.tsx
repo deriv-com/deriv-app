@@ -8,6 +8,7 @@ import { ActionSheet } from '@deriv-com/quill-ui';
 
 import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 
 import ServiceErrorDescription from './service-error-description';
 
@@ -19,6 +20,7 @@ const ServiceErrorSheet = observer(() => {
     const { services_error, resetServicesError } = common;
     const { clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
     const history = useHistory();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const { code, message, type } = services_error || {};
     const is_insufficient_balance = code === SERVICE_ERROR.INSUFFICIENT_BALANCE;
@@ -47,8 +49,17 @@ const ServiceErrorSheet = observer(() => {
                     onAction: () => {
                         resetServicesError();
                         if (!is_virtual) {
-                            localStorage.setItem('redirect_to_th_os', 'wallet');
-                            history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
+                            if (has_wallet && isHubRedirectionEnabled) {
+                                const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+                                const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+                                const redirectUrl =
+                                    process.env.NODE_ENV === 'production'
+                                        ? PRODUCTION_REDIRECT_URL
+                                        : STAGING_REDIRECT_URL;
+                                window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet`;
+                            } else {
+                                history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
+                            }
                         } else {
                             onClose();
                         }

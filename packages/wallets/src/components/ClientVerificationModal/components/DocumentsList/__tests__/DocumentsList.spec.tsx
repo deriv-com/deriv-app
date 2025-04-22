@@ -9,8 +9,8 @@ const mockHistoryPush = jest.fn();
 const mockLocationReplace = jest.fn();
 const mockLocalStorage = {
     getItem: jest.fn(),
-    setItem: jest.fn(),
     removeItem: jest.fn(),
+    setItem: jest.fn(),
 };
 
 // Mock the window.location.replace function
@@ -35,8 +35,8 @@ beforeEach(() => {
     mockLocalStorage.setItem.mockReset();
 
     // Default mock for useGrowthbookGetFeatureValue
-    (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, true]);
     (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { loginid: '123' } });
+    (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, true]);
 });
 
 jest.mock('react-router-dom', () => ({

@@ -42,16 +42,16 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
         featureFlag: 'redirect_to_poi_in_accounts_os',
     });
 
-    const getFormattedURL = (url_link: string) => {
-        const url = new URL(url_link);
+    const getFormattedURL = (urlLink: string) => {
+        const url = new URL(urlLink);
         const urlParams = new URLSearchParams(location.search);
         const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
         const platform = platformConfig ?? (isNavigationFromTradersHubOS() ? 'tradershub_os' : 'deriv_app');
 
         const params = {
-            platform,
             appid: getAppId(),
             lang: 'en',
+            platform,
             server: getSocketURL(),
             token: getToken(activeWallet?.loginid || ''),
         };
@@ -71,10 +71,9 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
                     disabled={!isPoiRequired}
                     onClick={() => {
                         if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
-                            const { poi_status } = account.client_kyc_status;
-                            const redirect_url =
-                                poi_status === 'none' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL;
-                            window.location.replace(getFormattedURL(redirect_url));
+                            const { poi_status: poiStatus } = account.client_kyc_status;
+                            const redirectUrl = poiStatus === 'none' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL;
+                            window.location.replace(getFormattedURL(redirectUrl));
                         } else {
                             // @ts-expect-error the following link is not part of wallets routes config
                             history.push('/account/proof-of-identity');

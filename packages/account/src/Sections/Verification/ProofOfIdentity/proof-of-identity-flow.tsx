@@ -43,6 +43,14 @@ const ProofOfIdentityFlow = observer(() => {
         return url.toString();
     };
 
+    // eslint-disable-next-line no-console
+    console.log('==>', {
+        isRedirectToAccountsOSAppFFLoaded,
+        shouldRedirectToAccountsOSApp,
+        kyc_auth_status,
+        url: getFormattedURL(ACCOUNTS_OS_POI_URL),
+    });
+
     if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {
         if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
             const { identity } = kyc_auth_status;

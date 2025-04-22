@@ -37,7 +37,7 @@ const InsufficientBalanceModal = observer(
                         text={is_virtual ? localize('OK') : localize('Deposit now')}
                         onClick={() => {
                             if (!is_virtual) {
-                                if (isHubRedirectionEnabled) {
+                                if (has_wallet && isHubRedirectionEnabled) {
                                     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
                                     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
                                     const redirectUrl =

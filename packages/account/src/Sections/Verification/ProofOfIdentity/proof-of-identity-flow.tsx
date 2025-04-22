@@ -31,7 +31,7 @@ const ProofOfIdentityFlow = observer(() => {
         const params = {
             platform,
             appid: WebSocketUtils.getAppId(),
-            lang: i18n_language,
+            lang: i18n_language.toLowerCase(),
             server: getSocketURL(),
             token: getToken(),
         };
@@ -42,14 +42,6 @@ const ProofOfIdentityFlow = observer(() => {
 
         return url.toString();
     };
-
-    // eslint-disable-next-line no-console
-    console.log('==>', {
-        isRedirectToAccountsOSAppFFLoaded,
-        shouldRedirectToAccountsOSApp,
-        kyc_auth_status,
-        url: getFormattedURL(ACCOUNTS_OS_POI_URL),
-    });
 
     if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {
         if (shouldRedirectToAccountsOSApp && kyc_auth_status) {

@@ -291,6 +291,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
          * `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
          */
 
+        sessionStorage.setItem('contract_type_value', contract_type_value);
         onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

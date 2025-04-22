@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getAppId, getSocketURL } from '@deriv/shared';
+import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 import { useKycAuthStatus } from '../../../hooks';
 
@@ -31,7 +31,7 @@ const ProofOfIdentityFlow = observer(() => {
 
         const params = {
             platform,
-            appid: getAppId(),
+            appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_POA_URL, getSocketURL } from '@deriv/shared';
+import { ACCOUNTS_OS_POA_URL, getSocketURL, getAppId } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 
 import { useKycAuthStatus } from '../../../hooks';
 
@@ -31,7 +31,7 @@ const ProofOfAddressFlow = observer(() => {
 
         const params = {
             platform,
-            appid: String(WebSocketUtils.getAppId()),
+            appid: getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),

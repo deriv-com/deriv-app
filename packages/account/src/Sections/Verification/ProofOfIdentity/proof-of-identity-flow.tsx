@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getSocketURL } from '@deriv/shared';
+import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getAppId, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
@@ -31,7 +31,7 @@ const ProofOfIdentityFlow = observer(() => {
 
         const params = {
             platform,
-            appid: WebSocketUtils.getAppId(),
+            appid: String(WebSocketUtils.getAppId()),
             lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
@@ -51,6 +51,8 @@ const ProofOfIdentityFlow = observer(() => {
         i18n_language,
         url_lang,
         localize_language,
+        appid: getAppId(),
+        appid2: WebSocketUtils.getAppId(),
     });
 
     if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {

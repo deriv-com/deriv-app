@@ -95,7 +95,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         }
         setVerificationModalOpen(false);
         if (id === 'identity' && status) {
-            if (true || (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp)) {
+            if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
                 const redirect_url =
                     status === 'none' || status === 'required' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL;
                 window.location.replace(getFormattedURL(redirect_url));

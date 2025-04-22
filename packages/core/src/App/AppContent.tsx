@@ -14,7 +14,7 @@ import {
 import { getUrlBase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useTranslations, localize } from '@deriv-com/translations';
+import { localize, useTranslations } from '@deriv-com/translations';
 import { Loader, useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
@@ -133,9 +133,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
-            setIsPasskeySupported(
-                is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled && isMobile
-            );
+            setIsPasskeySupported(is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled);
         }
     }, [
         isServicePasskeysFFEnabled,

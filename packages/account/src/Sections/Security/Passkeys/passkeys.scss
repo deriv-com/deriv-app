@@ -8,6 +8,32 @@
     margin-inline: auto;
 
     &-status {
+        &__video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            @include desktop {
+                top: unset;
+            }
+
+            &__wrapper {
+                position: relative;
+                width: 100%;
+                height: calc(100% - 4.2rem);
+
+                &--is-loading {
+                    padding-top: unset;
+                }
+
+                @include desktop {
+                    position: unset;
+                }
+            }
+        }
+
         &__wrapper {
             height: 100%;
             @include flex-column;
@@ -45,67 +71,7 @@
                 margin-inline-start: 2.4rem;
                 margin-inline-end: 0;
                 margin-bottom: 0;
-            }
-
-            &-card {
-                @include flex-column;
-                gap: 0.8rem;
-                border-bottom: 1px solid var(--general-hover);
-                padding: 1.6rem 0;
-
-                ul {
-                    list-style: disc;
-                    padding-inline-start: 1.2rem;
-
-                    li {
-                        margin-inline-start: 0.8rem;
-
-                        &::marker {
-                            font-size: 1.2rem;
-                        }
-                    }
-                }
-            }
-
-            &-container {
-                @include flex-column;
-            }
-
-            &-tips {
-                &-wrapper {
-                    display: flex;
-                    padding: 1.6rem;
-                    margin-top: 1.6rem;
-                    border-radius: 2 * $BORDER_RADIUS;
-                    border: 1px solid var(--border-normal);
-                    gap: 0.8rem;
-
-                    svg {
-                        flex-shrink: 0;
-                    }
-
-                    .dc-icon {
-                        margin: initial;
-                    }
-                }
-
-                &-container {
-                    @include flex-column;
-                    align-items: flex-start;
-
-                    ul {
-                        list-style: disc;
-                        padding-inline-start: 1.2rem;
-
-                        li {
-                            margin-inline-start: 0.8rem;
-
-                            &::marker {
-                                font-size: 1rem;
-                            }
-                        }
-                    }
-                }
+                cursor: pointer;
             }
         }
 

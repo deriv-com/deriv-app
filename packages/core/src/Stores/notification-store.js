@@ -872,7 +872,11 @@ export default class NotificationStore extends BaseStore {
                             data-style-height='52px'
                             data-style-width='100%'
                         >
-                            <a href='https://www.trustpilot.com/review/deriv.com' target='_blank' rel='noopener'>
+                            <a
+                                href='https://www.trustpilot.com/review/deriv.com'
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
                                 {localize('Go to Trustpilot')}
                             </a>
                         </div>

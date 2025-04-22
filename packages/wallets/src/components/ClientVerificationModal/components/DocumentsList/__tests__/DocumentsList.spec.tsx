@@ -1,8 +1,8 @@
 import React from 'react';
+import { useActiveWalletAccount, useGrowthbookGetFeatureValue } from '@deriv/api-v2';
+import { ACCOUNTS_OS_POA_URL, ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL } from '@deriv/shared';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useGrowthbookGetFeatureValue, useActiveWalletAccount } from '@deriv/api-v2';
-import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, ACCOUNTS_OS_POA_URL } from '@deriv/shared';
 import DocumentsList from '../DocumentsList';
 
 const mockHistoryPush = jest.fn();
@@ -49,8 +49,8 @@ jest.mock('react-router-dom', () => ({
 // Mock the API hooks
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useGrowthbookGetFeatureValue: jest.fn(() => [false, true]),
     useActiveWalletAccount: jest.fn(() => ({ data: { loginid: '123' } })),
+    useGrowthbookGetFeatureValue: jest.fn(() => [false, true]),
 }));
 
 jest.mock('../../../../ClientVerificationBadge', () => ({
@@ -268,6 +268,7 @@ describe('<DocumentsList />', () => {
                         poa_status: 'verified',
                     },
                     // Using a different platform that's not mt5
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     platform: 'dxtrade' as any,
                 }}
             />

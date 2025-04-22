@@ -20,7 +20,9 @@ $header-height: 3.6em;
     opacity: 0;
     transform: translateX(-100%);
     will-change: transform, opacity;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
     border-radius: $BORDER_RADIUS;
     border: 1px solid var(--general-section-1);
     background-color: var(--general-section-1);
@@ -93,8 +95,31 @@ $header-height: 3.6em;
         position: relative;
         height: 6em;
         display: flex;
-        justify-content: center;
         align-items: center;
+        box-shadow: 0px -1px 4px 0px #0000000a;
+        box-shadow: 0px -1px 4px 0px #00000014;
+
+        .positions-drawer__summary {
+            margin: 0 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .positions-drawer__count {
+            line-height: 1.4;
+        }
+
+        .positions-drawer__total {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            justify-content: space-between;
+            .dc-text {
+                line-height: 1.4;
+            }
+        }
 
         &:before {
             content: '';

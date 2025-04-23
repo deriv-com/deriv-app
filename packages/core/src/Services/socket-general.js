@@ -9,6 +9,7 @@ import {
     getActionFromUrl,
     checkServerMaintenance,
 } from '@deriv/shared';
+import { useOauth2 } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -133,6 +134,8 @@ const BinarySocketGeneral = (() => {
 
     const setSessionDurationLimit = user_limits => {
         const duration = user_limits?.get_self_exclusion?.session_duration_limit;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const { oAuthLogout } = useOauth2({ handleLogout: client_store.logout });
 
         session_start_time = new Date(sessionStorage.getItem('session_start_time') || ServerTime.get());
         sessionStorage.setItem('session_start_time', session_start_time);
@@ -142,7 +145,7 @@ const BinarySocketGeneral = (() => {
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {
-                client_store.logout();
+                oAuthLogout();
                 sessionStorage.removeItem('session_start_time');
             }, remaining_session_time);
         } else if (!duration) {
@@ -326,7 +329,7 @@ const ResponseHandlers = (() => {
             // The maximum delay is capped at 10 minutes (600k ms).
             if (is_server_down) {
                 const reconnectionDelay =
-                    Math.min(Math.pow(2, reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
+                    Math.min(2 ** (reconnectionCounter + 9), 600000) * (0.5 + Math.random() * 1.5);
 
                 window.setTimeout(() => {
                     reconnectionCounter++;

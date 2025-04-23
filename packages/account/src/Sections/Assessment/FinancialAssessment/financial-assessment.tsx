@@ -9,20 +9,12 @@ import { Formik, FormikHelpers } from 'formik';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import {
-    ACCOUNTS_OS_DFA_URL,
-    getAppId,
-    getSocketURL,
-    platforms,
-    routes,
-    shouldHideOccupationField,
-    WS,
-} from '@deriv/shared';
+import { ACCOUNTS_OS_DFA_URL, getSocketURL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 import DemoMessage from 'Components/demo-message';
 import FormBody from 'Components/form-body';
@@ -427,14 +419,14 @@ const FinancialAssessment = observer(() => {
         return <NavigateToPersonalDetails />;
     }
 
-    const getFormattedURL = url_link => {
+    const getFormattedURL = (url_link: string) => {
         const url = new URL(url_link);
         const urlParams = new URLSearchParams(location.search);
         const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
 
         const params = {
             platform,
-            appid: getAppId(),
+            appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),

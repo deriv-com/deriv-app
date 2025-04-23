@@ -854,6 +854,7 @@ export default class NotificationStore extends BaseStore {
                 message_popup: localize('Drop your review on Trustpilot.'),
                 action: {
                     onClick: () => {
+                        window.open('https://www.trustpilot.com/review/deriv.com', '_blank');
                         this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
                         this.removeNotificationByKey({
                             key: this.client_notifications.trustpilot.key,
@@ -876,6 +877,16 @@ export default class NotificationStore extends BaseStore {
                                 href='https://www.trustpilot.com/review/deriv.com'
                                 target='_blank'
                                 rel='noopener noreferrer'
+                                onClick={() => {
+                                    this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                                    this.removeNotificationByKey({
+                                        key: this.client_notifications.trustpilot.key,
+                                    });
+                                    this.removeNotificationMessage({
+                                        key: this.client_notifications.trustpilot.key,
+                                        should_show_again: false,
+                                    });
+                                }}
                             >
                                 {localize('Go to Trustpilot')}
                             </a>

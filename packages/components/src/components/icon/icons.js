@@ -666,6 +666,7 @@ import './common/ic-verification.svg';
 import './common/ic-verify-passkey.svg';
 import './common/ic-visa-dark.svg';
 import './common/ic-visa-light.svg';
+import './common/ic-warning-orange.svg';
 import './common/ic-warning.svg';
 import './common/ic-web-money-dark.svg';
 import './common/ic-web-money-light.svg';

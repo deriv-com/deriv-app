@@ -25,7 +25,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
 
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
-        }, 3000);
+        }, 1000);
 
         document.addEventListener('visibilitychange', function () {
             if (document.hidden) {

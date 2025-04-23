@@ -67,7 +67,7 @@ describe('MT5MobileRedirectOption', () => {
             () => {
                 expect(window.location.replace).toHaveBeenCalledWith('mock-installer-url');
             },
-            { timeout: 3001 }
+            { timeout: 1001 }
         );
     });
 
@@ -80,7 +80,7 @@ describe('MT5MobileRedirectOption', () => {
             document.dispatchEvent(new Event('visibilitychange'));
         });
         act(() => {
-            jest.advanceTimersByTime(3000);
+            jest.advanceTimersByTime(1000);
         });
 
         expect(window.location.replace).toHaveBeenCalledTimes(1);
@@ -100,7 +100,7 @@ describe('MT5MobileRedirectOption', () => {
             document.dispatchEvent(new Event('visibilitychange'));
         });
         act(() => {
-            jest.advanceTimersByTime(3000);
+            jest.advanceTimersByTime(1000);
         });
 
         expect(window.location.replace).toHaveBeenCalledTimes(3);

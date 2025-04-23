@@ -22,6 +22,7 @@ import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 
 import DemoMessage from 'Components/demo-message';
 import FormBody from 'Components/form-body';
@@ -230,6 +231,9 @@ const FinancialAssessment = observer(() => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState<Partial<GetFinancialAssessment>>({});
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const {
         income_source,
@@ -431,7 +435,7 @@ const FinancialAssessment = observer(() => {
         const params = {
             platform,
             appid: getAppId(),
-            lang: 'en',
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

@@ -4,6 +4,7 @@ import { Loading } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { ACCOUNTS_OS_POI_STATUS_URL, ACCOUNTS_OS_POI_URL, getAppId, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
 
 import { useKycAuthStatus } from '../../../hooks';
 
@@ -18,6 +19,9 @@ const ProofOfIdentityFlow = observer(() => {
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poi_in_accounts_os',
     });
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const getFormattedURL = url_link => {
         const url = new URL(url_link);
@@ -28,7 +32,7 @@ const ProofOfIdentityFlow = observer(() => {
         const params = {
             platform,
             appid: getAppId(),
-            lang: 'en',
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

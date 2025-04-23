@@ -10,6 +10,7 @@ import {
     useIsMounted,
     WS,
 } from '@deriv/shared';
+import { useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import DemoMessage from '../../../Components/demo-message';
 import '../../../Components/self-exclusion/self-exclusion.scss';
@@ -149,6 +150,11 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         },
         initial_state
     );
+    const { oAuthLogout } = useOauth2({
+        handleLogout: async () => {
+            await logout();
+        },
+    });
 
     useEffect(() => {
         if (is_virtual) {
@@ -319,7 +325,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
                         submit_error_message: response.error.message,
                     });
                 } else {
-                    logout();
+                    oAuthLogout();
                 }
             } else {
                 setState({ show_confirm: true });

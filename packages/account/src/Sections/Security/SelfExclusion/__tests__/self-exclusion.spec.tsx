@@ -134,7 +134,7 @@ describe('<SelfExclusion />', () => {
         expect(screen.queryByText('Test getSelfExclusion response error')).toBeInTheDocument();
     });
 
-    it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
+    it('Should trigger session_duration_limit input and show error if the value is greater than 34560 or does not show if less than 34560', async () => {
         store = mockStore({
             client: {
                 ...mock.client,
@@ -158,10 +158,10 @@ describe('<SelfExclusion />', () => {
             (input: FormikValues) => input.name === 'session_duration_limit'
         );
 
-        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60481');
+        if (session_duration_limit_input) await userEvent.type(session_duration_limit_input, '34560');
 
         expect(
-            await screen.findByText('Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).')
+            await screen.findByText('Enter a value in minutes, up to 34560 minutes (equivalent to 24 days).')
         ).toBeInTheDocument();
     });
 
@@ -229,11 +229,11 @@ describe('<SelfExclusion />', () => {
         const max_turnover_input = inputs_1.find((input: FormikValues) => input.name === 'max_turnover');
         const max_open_bets_input = inputs_1.find((input: FormikValues) => input.name === 'max_open_bets');
 
-        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
-        if (max_open_bets_input) userEvent.type(max_open_bets_input, '999');
+        if (max_turnover_input) await userEvent.type(max_turnover_input, '1700');
+        if (max_open_bets_input) await userEvent.type(max_open_bets_input, '999');
 
-        await waitFor(() => {
-            userEvent.click(next_btn_1);
+        await waitFor(async () => {
+            await userEvent.click(next_btn_1);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -244,8 +244,8 @@ describe('<SelfExclusion />', () => {
         const back_btn_1 = screen.getByText('Back');
         expect(back_btn_1).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(back_btn_1);
+        await waitFor(async () => {
+            await userEvent.click(back_btn_1);
         });
 
         expect(screen.getByText('Your stake and loss limits')).toBeInTheDocument();
@@ -257,12 +257,12 @@ describe('<SelfExclusion />', () => {
         expect(inputs_2).toHaveLength(11);
         const max_balance_input = inputs_1.find((input: FormikValues) => input.name === 'max_balance');
 
-        await waitFor(() => {
-            if (max_balance_input) userEvent.type(max_balance_input, '10000');
+        await waitFor(async () => {
+            if (max_balance_input) await userEvent.type(max_balance_input, '10000');
         });
 
-        await waitFor(() => {
-            userEvent.click(next_btn_2);
+        await waitFor(async () => {
+            await userEvent.click(next_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -270,8 +270,8 @@ describe('<SelfExclusion />', () => {
         const accept_btn_2 = screen.getByRole('button');
         expect(accept_btn_2).toHaveTextContent('Accept');
 
-        await waitFor(() => {
-            userEvent.click(accept_btn_2);
+        await waitFor(async () => {
+            await userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('You have set the following limits:')).toBeInTheDocument();
@@ -321,14 +321,14 @@ describe('<SelfExclusion />', () => {
         act(() => {
             if (exclude_until_input) fireEvent.change(exclude_until_input, { target: { value: '2023-02-03' } });
         });
-        if (max_open_bets_input) userEvent.type(max_open_bets_input, '99');
-        if (max_losses_input) userEvent.type(max_losses_input, '1000');
-        if (max_turnover_input) userEvent.type(max_turnover_input, '1700');
-        if (max_7day_losses_input) userEvent.type(max_7day_losses_input, '700');
-        if (max_7day_turnover_input) userEvent.type(max_7day_turnover_input, '700');
-        if (max_30day_losses_input) userEvent.type(max_30day_losses_input, '3000');
-        if (max_30day_turnover_input) userEvent.type(max_30day_turnover_input, '5000');
-        if (session_duration_limit_input) userEvent.type(session_duration_limit_input, '60399');
+        if (max_open_bets_input) await userEvent.type(max_open_bets_input, '99');
+        if (max_losses_input) await userEvent.type(max_losses_input, '1000');
+        if (max_turnover_input) await userEvent.type(max_turnover_input, '1700');
+        if (max_7day_losses_input) await userEvent.type(max_7day_losses_input, '700');
+        if (max_7day_turnover_input) await userEvent.type(max_7day_turnover_input, '700');
+        if (max_30day_losses_input) await userEvent.type(max_30day_losses_input, '3000');
+        if (max_30day_turnover_input) await userEvent.type(max_30day_turnover_input, '5000');
+        if (session_duration_limit_input) await userEvent.type(session_duration_limit_input, '60399');
 
         await userEvent.click(next_btn_1);
 
@@ -337,8 +337,8 @@ describe('<SelfExclusion />', () => {
         expect(next_btn_1).not.toBeInTheDocument();
         const accept_btn_1 = screen.getByRole('button');
         expect(accept_btn_1).toHaveTextContent('Accept');
-        await waitFor(() => {
-            userEvent.click(accept_btn_1);
+        await waitFor(async () => {
+            await userEvent.click(accept_btn_1);
         });
 
         expect(accept_btn_1).not.toBeInTheDocument();
@@ -349,8 +349,8 @@ describe('<SelfExclusion />', () => {
 
         expect(screen.getByText('Yes, log me out immediately')).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(review_btn);
+        await waitFor(async () => {
+            await userEvent.click(review_btn);
         });
 
         expect(screen.queryByText('Yes, log me out immediately')).not.toBeInTheDocument();
@@ -360,16 +360,16 @@ describe('<SelfExclusion />', () => {
         const accept_btn_2 = screen.getByRole('button');
         expect(accept_btn_2).toHaveTextContent('Accept');
 
-        await waitFor(() => {
-            userEvent.click(accept_btn_2);
+        await waitFor(async () => {
+            await userEvent.click(accept_btn_2);
         });
 
         expect(screen.getByText('No, review my limits')).toBeInTheDocument();
         const logout_btn = screen.getByText('Yes, log me out immediately');
         expect(logout_btn).toBeInTheDocument();
 
-        await waitFor(() => {
-            userEvent.click(logout_btn);
+        await waitFor(async () => {
+            await userEvent.click(logout_btn);
         });
 
         expect(logout).toHaveBeenCalled();

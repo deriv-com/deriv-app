@@ -102,7 +102,7 @@
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { npm exec --workspace=@deriv/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
-        "hsn-test": "f () { npm exec --workspace=@deriv/${1:-'*'} -- npm run hsn-test $2 ;}; f",
+        "hsn-test": "test",
         "prepare": "husky install"
     },
     "dependencies": {

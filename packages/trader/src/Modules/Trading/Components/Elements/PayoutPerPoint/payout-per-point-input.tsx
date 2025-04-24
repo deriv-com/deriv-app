@@ -13,22 +13,17 @@ const PayoutPerPointInput = ({
     defaultPayout,
     currency,
     tooltipText,
-    contract_type,
 }: {
     payoutOptions: string[];
     onPayoutClick: (option: string) => void;
     selectedBarrier: string;
     defaultPayout: string;
     currency: string;
-    contract_type: string;
     tooltipText?: React.ReactNode;
 }) => {
     const { is_desktop } = useDevice();
-    const turbos_up_payout_message = (
-        <Localize i18n_default_text='The amount you will receive at expiry for every point of change above the barrier.' />
-    );
-    const turbos_down_payout_message = (
-        <Localize i18n_default_text='The amount you’ll receive at expiry for every point of change below the barrier.' />
+    const turbos_payout_message = (
+        <Localize i18n_default_text='The amount you choose to receive at expiry for every point of change between the final price and the barrier.' />
     );
     if (!is_desktop) {
         return null;
@@ -37,7 +32,7 @@ const PayoutPerPointInput = ({
         <Fieldset
             className='trade-container__fieldset payout-per-point-input'
             header={<Localize i18n_default_text='Payout per Point' />}
-            header_tooltip={contract_type == 'turboslong' ? turbos_up_payout_message : turbos_down_payout_message}
+            header_tooltip={turbos_payout_message}
             popover_wrapper_class='popover_wrapper_class'
         >
             <WheelPicker

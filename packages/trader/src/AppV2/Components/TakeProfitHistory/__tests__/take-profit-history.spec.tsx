@@ -36,7 +36,7 @@ describe('TakeProfitHistory component', () => {
 
     it('renders correct History title for TP if is_multiplier !== true ', () => {
         render(<TakeProfitHistory history={mockHistory.slice(0, 3)} />);
-        expect(screen.getByText('TP history')).toBeInTheDocument();
+        expect(screen.getByText('TP History')).toBeInTheDocument();
     });
 
     it('renders the correct number of history items', () => {

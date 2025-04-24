@@ -81,7 +81,7 @@ const ContractAudit = ({
                     <ContractDetails {...props} />
                 </div>
                 {is_multiplier ? (
-                    <div label={localize('TP/SL History')}>
+                    <div label={localize('TP & SL History')}>
                         <ContractHistory currency={currency} history={update_history} />
                     </div>
                 ) : (

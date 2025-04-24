@@ -89,7 +89,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
     const is_cr = standpoint.svg;
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
-        max_open_positions: 999999999,
+        max_open_positions: 100,
         max_24_days: 34560, // in minutes
     });
 

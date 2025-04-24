@@ -31,12 +31,12 @@ describe('TakeProfitHistory component', () => {
 
     it('renders correct History title for both TP and Sl if is_multiplier === true', () => {
         render(<TakeProfitHistory history={mockHistory.slice(0, 4)} is_multiplier={true} />);
-        expect(screen.getByText('TP & SL history')).toBeInTheDocument();
+        expect(screen.getByText('TP & SL History')).toBeInTheDocument();
     });
 
     it('renders correct History title for TP if is_multiplier !== true ', () => {
         render(<TakeProfitHistory history={mockHistory.slice(0, 3)} />);
-        expect(screen.getByText('TP history')).toBeInTheDocument();
+        expect(screen.getByText('TP History')).toBeInTheDocument();
     });
 
     it('renders the correct number of history items', () => {

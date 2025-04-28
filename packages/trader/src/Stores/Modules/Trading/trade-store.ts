@@ -1229,6 +1229,17 @@ export default class TradeStore extends BaseStore {
                                 });
                             }
 
+                            // Auto-scroll to bottom of page to show chart fully after contract is opened
+                            setTimeout(() => {
+                                const scrollContainer = document.querySelector('.bottom-nav-selection');
+                                if (scrollContainer) {
+                                    scrollContainer.scrollTo({
+                                        top: scrollContainer.scrollHeight,
+                                        behavior: 'smooth',
+                                    });
+                                }
+                            }, 100);
+
                             this.is_purchasing_contract = false;
                             return;
                         }

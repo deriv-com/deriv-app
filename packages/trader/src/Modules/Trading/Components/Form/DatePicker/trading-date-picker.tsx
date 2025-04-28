@@ -88,7 +88,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         const max_daily_duration = start_date ? 24 * 3600 : getMaxDailyDuration();
         return is_24_hours_contract
             ? getMomentContractStartDateTime().clone().add(max_daily_duration, 'second')
-            : getMomentContractStartDateTime().clone().add(getMaxDailyDuration(), 'second');
+            : toMoment(server_time).clone().add(getMaxDailyDuration(), 'second');
     };
 
     const getFooter = () => {

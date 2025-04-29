@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon, DataList, Text, PositionsDrawerCard, Money } from '@deriv/components';
 import {
@@ -52,16 +52,41 @@ const PositionsDrawerCardItem = ({
     is_new_row,
     ...props
 }: TPositionDrawerCardItem) => {
+    const [state, setState] = useState<'visible' | 'fading' | 'hidden'>('visible');
+
     React.useEffect(() => {
         measure?.();
     }, [measure]);
 
-    if (portfolio_position?.contract_info.is_sold) {
+    React.useEffect(() => {
+        let fadeTimeout: number, hideTimeout: number;
+
+        if (portfolio_position?.contract_info.is_sold && state === 'visible') {
+            fadeTimeout = window.setTimeout(() => {
+                setState('fading');
+                hideTimeout = window.setTimeout(() => {
+                    setState('hidden');
+                }, 300);
+            }, 5000);
+        }
+
+        return () => {
+            if (fadeTimeout) window.clearTimeout(fadeTimeout);
+            if (hideTimeout) window.clearTimeout(hideTimeout);
+        };
+    }, [portfolio_position?.contract_info.is_sold, state]);
+
+    if (state === 'hidden') {
         return null;
     }
 
     return (
-        <div className='dc-contract-card__wrapper'>
+        <div
+            data-testid='dt_positions_drawer_card'
+            className={classNames('dc-contract-card__wrapper', {
+                'dc-contract-card__wrapper--fade-out': state === 'fading',
+            })}
+        >
             <PositionsDrawerCard
                 {...portfolio_position}
                 {...props}
@@ -122,10 +147,9 @@ const PositionsDrawer = observer(({ ...props }) => {
         if (scrollbar_ref.current) scrollbar_ref.current.scrollTop = 0;
     }, [symbol, trade_contract_type]);
 
-    const active_positions = all_positions.filter(p => !p.contract_info.is_sold);
     const body_content = (
         <DataList
-            data_source={active_positions}
+            data_source={all_positions}
             rowRenderer={args => (
                 <PositionsDrawerCardItem
                     onHoverPosition={onHoverPosition}
@@ -178,14 +202,18 @@ const PositionsDrawer = observer(({ ...props }) => {
                     </div>
                 </div>
                 <div className='positions-drawer__body' ref={drawer_ref}>
-                    {active_positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
+                    {all_positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                 </div>
                 <div className='positions-drawer__footer'>
-                    {active_positions.length > 0 && (
+                    {all_positions.filter(p => !p.contract_info.is_sold).length > 0 && (
                         <div className='positions-drawer__summary'>
                             <Text size='xxs' color='less-prominent' className='positions-drawer__count'>
-                                {active_positions.length}{' '}
-                                {`${active_positions.length > 1 ? localize('open positions') : localize('open position')}`}
+                                {all_positions.filter(p => !p.contract_info.is_sold).length}{' '}
+                                {`${
+                                    all_positions.filter(p => !p.contract_info.is_sold).length > 1
+                                        ? localize('open positions')
+                                        : localize('open position')
+                                }`}
                             </Text>
                             <div className='positions-drawer__total'>
                                 <Text size='xs' weight='bold'>
@@ -194,10 +222,18 @@ const PositionsDrawer = observer(({ ...props }) => {
                                 <Text
                                     size='xs'
                                     weight='bold'
-                                    color={getTotalProfit(active_positions) > 0 ? 'profit-success' : 'loss-danger'}
+                                    color={
+                                        getTotalProfit(all_positions.filter(p => !p.contract_info.is_sold)) > 0
+                                            ? 'profit-success'
+                                            : 'loss-danger'
+                                    }
                                 >
                                     <React.Fragment>
-                                        <Money amount={getTotalProfit(active_positions)} currency={currency} has_sign />{' '}
+                                        <Money
+                                            amount={getTotalProfit(all_positions.filter(p => !p.contract_info.is_sold))}
+                                            currency={currency}
+                                            has_sign
+                                        />{' '}
                                         {currency}
                                     </React.Fragment>
                                 </Text>

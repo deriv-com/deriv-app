@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, useStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import { mockContractInfo, CONTRACT_TYPES, TRADE_TYPES, isEmptyObject } from '@deriv/shared';
 import PositionsDrawer from '../positions-drawer';
 import TraderProviders from '../../../../../trader-providers';
@@ -35,10 +34,12 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     DataList: jest.fn(props => <div>{props.data_source.map(() => props.rowRenderer())}</div>),
     PositionsDrawerCard: jest.fn(props => (
-        <div>
-            <button onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave}>
-                {position_drawer_card}
-            </button>
+        <div className='dc-contract-card__wrapper'>
+            <div data-testid='dt_positions_drawer_card'>
+                <button onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave}>
+                    {position_drawer_card}
+                </button>
+            </div>
         </div>
     )),
 }));
@@ -51,7 +52,7 @@ describe('<PositionsDrawer />', () => {
         mocked_store.client.currency = 'USD';
     });
 
-    const mockPositionsDrawer = (mocked_store: TCoreStores) => {
+    const mockPositionsDrawer = (mocked_store: ReturnType<typeof mockStore>) => {
         return (
             <TraderProviders store={mocked_store}>
                 <PositionsDrawer />
@@ -325,6 +326,60 @@ describe('<PositionsDrawer />', () => {
 
             expect(screen.getByText('Total P/L:')).toBeInTheDocument();
             expect(screen.getByTestId('dt_span')).toHaveTextContent('50.00');
+        });
+    });
+
+    describe('Position removal behavior', () => {
+        let originalSetTimeout: typeof window.setTimeout, originalClearTimeout: typeof window.clearTimeout;
+
+        beforeEach(() => {
+            originalSetTimeout = window.setTimeout;
+            originalClearTimeout = window.clearTimeout;
+            jest.useFakeTimers();
+        });
+
+        afterEach(() => {
+            window.setTimeout = originalSetTimeout;
+            window.clearTimeout = originalClearTimeout;
+        });
+
+        it('should keep sold positions visible initially', () => {
+            mocked_store.portfolio.all_positions = [
+                {
+                    contract_info: mockContractInfo({
+                        is_sold: 1,
+                        profit: 100,
+                        currency: 'USD',
+                    }),
+                },
+            ] as TAllPositions;
+
+            render(mockPositionsDrawer(mockStore(mocked_store)));
+            expect(screen.getByText(position_drawer_card)).toBeInTheDocument();
+        });
+
+        it('should handle cleanup of timeouts when component unmounts', () => {
+            mocked_store.portfolio.all_positions = [
+                {
+                    contract_info: mockContractInfo({
+                        is_sold: 1,
+                        profit: 100,
+                        currency: 'USD',
+                    }),
+                },
+            ] as TAllPositions;
+
+            const { unmount } = render(mockPositionsDrawer(mockStore(mocked_store)));
+
+            // Fast forward 8 seconds to trigger fade out
+            act(() => {
+                jest.advanceTimersByTime(8000);
+            });
+
+            unmount();
+
+            // Verify clearTimeout was called
+            expect(jest.getTimerCount()).toBe(0);
         });
     });
 });

@@ -1,7 +1,8 @@
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
-import { isNotSupportedError, TPasskeyError } from '../passkeys-configs';
+
 import { TServerError } from '../../../../Types';
+import { isNotSupportedError, TPasskeyError } from '../passkeys-configs';
 
 type TPasskeyErrorModal = {
     error: TPasskeyError;
@@ -13,7 +14,7 @@ const getErrorModalContent = (error: TPasskeyError) => {
     const error_message_header = (
         <Text size='xs' weight='bold'>
             {isNotSupportedError(error as TServerError) ? (
-                <Localize i18n_default_text='Passkey setup failed' />
+                <Localize i18n_default_text='Biometric setup failed' />
             ) : (
                 <Localize i18n_default_text='Unable to process your request' />
             )}
@@ -21,9 +22,9 @@ const getErrorModalContent = (error: TPasskeyError) => {
     );
 
     const error_message = isNotSupportedError(error as TServerError) ? (
-        <Localize i18n_default_text="This device doesn't support passkeys." />
+        <Localize i18n_default_text="This device doesn't support biometrics." />
     ) : (
-        <Localize i18n_default_text='We’re experiencing a temporary issue in processing your request. Please try again later.' />
+        <Localize i18n_default_text="We're facing a temporary issue. Try again later." />
     );
 
     return {

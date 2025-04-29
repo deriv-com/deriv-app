@@ -1,20 +1,15 @@
-import classNames from 'classnames';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Icon, DataList, Text, PositionsDrawerCard, Money } from '@deriv/components';
-import {
-    routes,
-    useNewRowTransition,
-    TRADE_TYPES,
-    isTurbosContract,
-    isVanillaContract,
-    isContractSupportedAndStarted,
-} from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
-import { filterByContractType } from './helpers';
-import { useTraderStore } from 'Stores/useTraderStores';
+import { CSSTransition } from 'react-transition-group';
+import classNames from 'classnames';
+
+import { DataList, Icon, Money, PositionsDrawerCard, Text } from '@deriv/components';
+import { useNewRowTransition } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 
 type TUiStore = Pick<
     ReturnType<typeof useStore>['ui'],
@@ -50,41 +45,59 @@ const PositionsDrawerCardItem = ({
     onHoverPosition,
     symbol,
     is_new_row,
+    onClickRemove,
     ...props
 }: TPositionDrawerCardItem) => {
+    const { in_prop } = useNewRowTransition(is_new_row as boolean);
+
     React.useEffect(() => {
         measure?.();
-    }, [measure]);
+    }, [portfolio_position?.contract_info.is_sold, measure]);
 
-    if (portfolio_position?.contract_info.is_sold) {
-        return null;
-    }
+    React.useEffect(() => {
+        if (portfolio_position?.contract_info.is_sold) {
+            const timeout = setTimeout(() => {
+                onClickRemove(portfolio_position.id);
+            }, 8000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [portfolio_position?.contract_info.is_sold, portfolio_position?.id, onClickRemove]);
 
     return (
-        <div className='dc-contract-card__wrapper'>
-            <PositionsDrawerCard
-                {...portfolio_position}
-                {...props}
-                onMouseEnter={() => {
-                    onHoverPosition(true, portfolio_position as TPortfolioPosition, symbol);
-                }}
-                onMouseLeave={() => {
-                    onHoverPosition(false, portfolio_position as TPortfolioPosition, symbol);
-                }}
-                onFooterEntered={measure}
-            />
-        </div>
+        <CSSTransition
+            in={in_prop}
+            timeout={150}
+            classNames={{
+                appear: 'dc-contract-card__wrapper--enter',
+                enter: 'dc-contract-card__wrapper--enter',
+                enterDone: 'dc-contract-card__wrapper--enter-done',
+                exit: 'dc-contract-card__wrapper--exit',
+            }}
+            onEntered={measure}
+            unmountOnExit
+        >
+            <div className='dc-contract-card__wrapper'>
+                <PositionsDrawerCard
+                    {...portfolio_position}
+                    {...props}
+                    onMouseEnter={() => {
+                        onHoverPosition(true, portfolio_position as TPortfolioPosition, symbol);
+                    }}
+                    onMouseLeave={() => {
+                        onHoverPosition(false, portfolio_position as TPortfolioPosition, symbol);
+                    }}
+                    onFooterEntered={measure}
+                    should_show_transition={is_new_row}
+                    onClickRemove={onClickRemove}
+                />
+            </div>
+        </CSSTransition>
     );
 };
 
 const PositionsDrawer = observer(({ ...props }) => {
     const { symbol, contract_type: trade_contract_type } = useTraderStore();
-    const getTotalProfit = (active_positions: TPortfolioPosition[]) => {
-        return active_positions.reduce((total: number, position: TPortfolioPosition) => {
-            return total + (position.contract_info.profit || 0);
-        }, 0);
-    };
-
     const { client, common, contract_trade, portfolio, ui } = useStore();
     const { currency } = client;
     const { server_time } = common;
@@ -122,10 +135,15 @@ const PositionsDrawer = observer(({ ...props }) => {
         if (scrollbar_ref.current) scrollbar_ref.current.scrollTop = 0;
     }, [symbol, trade_contract_type]);
 
-    const active_positions = all_positions.filter(p => !p.contract_info.is_sold);
+    const getTotalProfit = (active_positions: TPortfolioPosition[]) => {
+        return active_positions.reduce((total: number, position: TPortfolioPosition) => {
+            return total + (position.contract_info.profit || 0);
+        }, 0);
+    };
+
     const body_content = (
         <DataList
-            data_source={active_positions}
+            data_source={all_positions}
             rowRenderer={args => (
                 <PositionsDrawerCardItem
                     onHoverPosition={onHoverPosition}
@@ -170,22 +188,22 @@ const PositionsDrawer = observer(({ ...props }) => {
                         {localize('Open positions')}
                     </Text>
                     <div
-                        data-testid='dt_positions_drawer_close_icon'
+                        id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >
-                        <Icon data-testid='dt_positions_drawer_close_icon' icon='IcMinusBold' />
+                        <Icon icon='IcMinusBold' />
                     </div>
                 </div>
                 <div className='positions-drawer__body' ref={drawer_ref}>
-                    {active_positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
+                    {all_positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                 </div>
                 <div className='positions-drawer__footer'>
-                    {active_positions.length > 0 && (
+                    {all_positions.length > 0 && (
                         <div className='positions-drawer__summary'>
                             <Text size='xxs' color='less-prominent' className='positions-drawer__count'>
-                                {active_positions.length}{' '}
-                                {`${active_positions.length > 1 ? localize('open positions') : localize('open position')}`}
+                                {all_positions.length}{' '}
+                                {`${all_positions.length > 1 ? localize('open positions') : localize('open position')}`}
                             </Text>
                             <div className='positions-drawer__total'>
                                 <Text size='xs' weight='bold'>
@@ -194,10 +212,10 @@ const PositionsDrawer = observer(({ ...props }) => {
                                 <Text
                                     size='xs'
                                     weight='bold'
-                                    color={getTotalProfit(active_positions) > 0 ? 'profit-success' : 'loss-danger'}
+                                    color={getTotalProfit(all_positions) > 0 ? 'profit-success' : 'loss-danger'}
                                 >
                                     <React.Fragment>
-                                        <Money amount={getTotalProfit(active_positions)} currency={currency} has_sign />{' '}
+                                        <Money amount={getTotalProfit(all_positions)} currency={currency} has_sign />{' '}
                                         {currency}
                                     </React.Fragment>
                                 </Text>

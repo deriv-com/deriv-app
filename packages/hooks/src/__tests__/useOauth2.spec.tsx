@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useOAuth2 } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';

@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useOAuth2 } from '@deriv-com/auth-client';
 import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';
 import useOauth2 from '../useOauth2';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv-com/auth-client', () => ({
     useIsOAuth2Enabled: jest.fn(),
@@ -23,7 +24,14 @@ describe('useOauth2', () => {
 
     it('should return oAuthLogout', () => {
         const handleLogout = jest.fn().mockResolvedValue(undefined);
-        const { result } = renderHook(() => useOauth2({ handleLogout }));
+
+        const mockRootStore = mockStore({});
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useOauth2({ handleLogout }), { wrapper });
         expect(typeof result.current.oAuthLogout).toBe('function');
     });
 });

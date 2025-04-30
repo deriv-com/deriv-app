@@ -4,7 +4,7 @@ import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
-import { MenuLinks } from 'App/Components/Layout/Header';
+import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountActionsWallets } from 'App/Components/Layout/Header/wallets/account-actions-wallets';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -16,11 +16,13 @@ import TradersHubHomeButton from './traders-hub-home-button';
 import DerivShortLogo from './deriv-short-logo';
 
 const MenuLeft = observer(() => {
-    const { client, ui } = useStore();
+    const { client, common, traders_hub, ui } = useStore();
     const { isDesktop } = useDevice();
     const { pathname } = useLocation();
 
     const { is_bot_allowed, is_logged_in, is_mt5_allowed, is_dxtrade_allowed } = client;
+    const { app_routing_history, current_language } = common;
+    const { setTogglePlatformType } = traders_hub;
     const { header_extension } = ui;
 
     const traders_hub_routes =
@@ -61,6 +63,14 @@ const MenuLeft = observer(() => {
                 </React.Fragment>
             )}
             <MenuLinks is_traders_hub_routes={traders_hub_routes} />
+            {isDesktop && !traders_hub_routes && !location.pathname.includes(routes.cashier) && (
+                <PlatformSwitcher
+                    app_routing_history={app_routing_history}
+                    platform_config={filterPlatformsForClients(platform_config)}
+                    setTogglePlatformType={setTogglePlatformType}
+                    current_language={current_language}
+                />
+            )}
         </div>
     );
 });

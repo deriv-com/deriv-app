@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-import { MenuLinks } from 'App/Components/Layout/Header';
+import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import ToggleMenuDrawerAccountsOS from 'App/Components/Layout/Header/toggle-menu-drawer-accounts-os.jsx';
@@ -17,7 +17,7 @@ import HeaderAccountActions from './header-account-actions';
 import TradersHubHomeButton from './traders-hub-home-button';
 
 const HeaderLegacy = observer(() => {
-    const { client, common, ui, notifications } = useStore();
+    const { client, common, ui, notifications, traders_hub } = useStore();
     const {
         currency,
         has_any_real_account,
@@ -30,10 +30,11 @@ const HeaderLegacy = observer(() => {
         is_virtual,
         is_switching,
     } = client;
-    const { platform, is_from_tradershub_os } = common;
+    const { app_routing_history, current_language, platform, is_from_tradershub_os } = common;
     const { header_extension, is_app_disabled, is_route_modal_on, toggleReadyToDepositModal, is_real_acc_signup_on } =
         ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
+    const { setTogglePlatformType } = traders_hub;
 
     const { isDesktop } = useDevice();
 
@@ -65,7 +66,7 @@ const HeaderLegacy = observer(() => {
         }
     };
 
-    const filterPlatformsForClients = payload =>
+    const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
@@ -114,6 +115,14 @@ const HeaderLegacy = observer(() => {
                         </React.Fragment>
                     )}
                     <MenuLinks is_traders_hub_routes={traders_hub_routes} />
+                    {isDesktop && !traders_hub_routes && !location.pathname.includes(routes.cashier) && (
+                        <PlatformSwitcher
+                            app_routing_history={app_routing_history}
+                            platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
+                        />
+                    )}
                 </div>
 
                 <div

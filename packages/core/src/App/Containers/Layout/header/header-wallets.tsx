@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { withRouter, useLocation } from 'react-router-dom';
+import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
@@ -71,6 +71,10 @@ const MenuRight = observer(() => {
     const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid, is_crypto } = client;
     const { is_mobile } = ui;
 
+    const history = useHistory();
+
+    const isRedirectPage = history.location.pathname.includes(routes.redirect);
+
     const traders_hub_routes =
         [routes.traders_hub].includes(pathname) ||
         [routes.account, routes.wallets, routes.settings, routes.wallets_compare_accounts, routes.compare_cfds].some(
@@ -82,7 +86,7 @@ const MenuRight = observer(() => {
 
     return (
         <div className='header__menu-right'>
-            {is_logging_in || is_single_logging_in || is_switching ? (
+            {is_logging_in || is_single_logging_in || is_switching || isRedirectPage ? (
                 <div
                     id='dt_core_header_acc-info-preloader'
                     className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {

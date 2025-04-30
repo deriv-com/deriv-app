@@ -1,21 +1,15 @@
-import classNames from 'classnames';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
-import {
-    routes,
-    useNewRowTransition,
-    TRADE_TYPES,
-    isTurbosContract,
-    isVanillaContract,
-    isContractSupportedAndStarted,
-} from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
-import { filterByContractType } from './helpers';
-import { useTraderStore } from 'Stores/useTraderStores';
+import classNames from 'classnames';
+
+import { DataList, Icon, Money, PositionsDrawerCard, Text } from '@deriv/components';
+import { useNewRowTransition } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 
 type TUiStore = Pick<
     ReturnType<typeof useStore>['ui'],
@@ -51,6 +45,7 @@ const PositionsDrawerCardItem = ({
     onHoverPosition,
     symbol,
     is_new_row,
+    onClickRemove,
     ...props
 }: TPositionDrawerCardItem) => {
     const { in_prop } = useNewRowTransition(is_new_row as boolean);
@@ -58,6 +53,16 @@ const PositionsDrawerCardItem = ({
     React.useEffect(() => {
         measure?.();
     }, [portfolio_position?.contract_info.is_sold, measure]);
+
+    React.useEffect(() => {
+        if (portfolio_position?.contract_info.is_sold) {
+            const timeout = setTimeout(() => {
+                onClickRemove(portfolio_position.id);
+            }, 8000);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [portfolio_position?.contract_info.is_sold, portfolio_position?.id, onClickRemove]);
 
     return (
         <CSSTransition
@@ -84,6 +89,7 @@ const PositionsDrawerCardItem = ({
                     }}
                     onFooterEntered={measure}
                     should_show_transition={is_new_row}
+                    onClickRemove={onClickRemove}
                 />
             </div>
         </CSSTransition>
@@ -129,23 +135,15 @@ const PositionsDrawer = observer(({ ...props }) => {
         if (scrollbar_ref.current) scrollbar_ref.current.scrollTop = 0;
     }, [symbol, trade_contract_type]);
 
-    const positions = all_positions.filter(
-        p =>
-            isContractSupportedAndStarted(symbol, p.contract_info) &&
-            (isTurbosContract(trade_contract_type) || isVanillaContract(trade_contract_type)
-                ? filterByContractType(
-                      p.contract_info,
-                      isTurbosContract(trade_contract_type) ? TRADE_TYPES.TURBOS.SHORT : TRADE_TYPES.VANILLA.CALL
-                  ) ||
-                  filterByContractType(
-                      p.contract_info,
-                      isTurbosContract(trade_contract_type) ? TRADE_TYPES.TURBOS.LONG : TRADE_TYPES.VANILLA.PUT
-                  )
-                : filterByContractType(p.contract_info, trade_contract_type))
-    );
+    const getTotalProfit = (active_positions: TPortfolioPosition[]) => {
+        return active_positions.reduce((total: number, position: TPortfolioPosition) => {
+            return total + (position.contract_info.profit || 0);
+        }, 0);
+    };
+
     const body_content = (
         <DataList
-            data_source={positions}
+            data_source={all_positions}
             rowRenderer={args => (
                 <PositionsDrawerCardItem
                     onHoverPosition={onHoverPosition}
@@ -187,29 +185,44 @@ const PositionsDrawer = observer(({ ...props }) => {
             >
                 <div className='positions-drawer__header'>
                     <Text color='prominent' weight='bold' size='xs'>
-                        {localize('Recent positions')}
+                        {localize('Open positions')}
                     </Text>
                     <div
+                        data-testid='dt_positions_drawer_close_icon'
                         id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >
-                        <Icon icon='IcMinusBold' />
+                        <Icon data-testid='dt_positions_drawer_close_icon' icon='IcMinusBold' />
                     </div>
                 </div>
                 <div className='positions-drawer__body' ref={drawer_ref}>
-                    {positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
+                    {all_positions.length === 0 || error ? <EmptyPortfolioMessage error={error} /> : body_content}
                 </div>
                 <div className='positions-drawer__footer'>
-                    <NavLink
-                        id='dt_positions_drawer_report_button'
-                        className='dc-btn dc-btn--secondary dc-btn__large'
-                        to={routes.reports}
-                    >
-                        <Text size='xs' weight='bold'>
-                            {localize('Go to Reports')}
-                        </Text>
-                    </NavLink>
+                    {all_positions.length > 0 && (
+                        <div className='positions-drawer__summary'>
+                            <Text size='xxs' color='less-prominent' className='positions-drawer__count'>
+                                {all_positions.length}{' '}
+                                {`${all_positions.length > 1 ? localize('open positions') : localize('open position')}`}
+                            </Text>
+                            <div className='positions-drawer__total'>
+                                <Text size='xs' weight='bold'>
+                                    {localize('Total P/L:')}
+                                </Text>
+                                <Text
+                                    size='xs'
+                                    weight='bold'
+                                    color={getTotalProfit(all_positions) > 0 ? 'profit-success' : 'loss-danger'}
+                                >
+                                    <React.Fragment>
+                                        <Money amount={getTotalProfit(all_positions)} currency={currency} has_sign />{' '}
+                                        {currency}
+                                    </React.Fragment>
+                                </Text>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </React.Fragment>

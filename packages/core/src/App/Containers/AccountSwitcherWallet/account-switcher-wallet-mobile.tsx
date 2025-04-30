@@ -41,7 +41,12 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
             const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
             const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet`;
+
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         } else {
             history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
         }

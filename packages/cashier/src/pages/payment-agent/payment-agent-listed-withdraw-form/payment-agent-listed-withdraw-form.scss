@@ -7,7 +7,7 @@
     &__header {
         margin-bottom: 1.6rem;
     }
-    &__form {
+    &__container {
         display: flex;
         @include mobile-or-tablet-screen {
             flex-direction: column;
@@ -34,6 +34,11 @@
                 border-top-left-radius: 0.4rem;
                 border-bottom-left-radius: 0.4rem;
             }
+        }
+    }
+    &__hint {
+        &-amount {
+            unicode-bidi: isolate;
         }
     }
 }

@@ -2212,6 +2212,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             await this.cleanUp();
 
+            this.setIsSingleLoggingIn(false);
             this.setLogout(true);
             this.setIsLoggingOut(false);
         }
@@ -2327,9 +2328,9 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                     // NOTE: Remove this logic once social signup is intergated with OIDC
                     // NOTE: We only set logged_state to true when the params has acct1, token1 params
-                    const loggedState = Cookies.get('logged_state');
+                    const isLoggedStateFalsy = !Cookies.get('logged_state') || Cookies.get('logged_state') === 'false';
 
-                    if (loggedState === 'false' && is_acct_token_params) {
+                    if (isLoggedStateFalsy && is_acct_token_params) {
                         const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
                         Cookies.set('logged_state', 'true', {
                             expires: 30,

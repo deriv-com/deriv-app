@@ -5,15 +5,34 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
-    const { ui } = useStore();
+    const { ui, client } = useStore();
     const { is_dark_mode_on } = ui;
     const history = useHistory();
     const location = useLocation();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { has_wallet } = client;
     const { pathname } = location;
 
     const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
+
+    const handleTradershubRedirect = () => {
+        if (isHubRedirectionEnabled && has_wallet) {
+            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+        } else {
+            history.push(routes.traders_hub);
+        }
+    };
 
     return (
         <div
@@ -22,10 +41,7 @@ const TradersHubHomeButton = observer(() => {
                 'traders-hub-header__tradershub--active':
                     pathname === routes.traders_hub || pathname === routes.traders_hub_v2,
             })}
-            onClick={() => {
-                localStorage.setItem('redirect_to_th_os', 'home');
-                history.push(routes.traders_hub);
-            }}
+            onClick={handleTradershubRedirect}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
                 <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />

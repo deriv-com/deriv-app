@@ -28,8 +28,8 @@ import {
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -854,7 +854,7 @@ export default class NotificationStore extends BaseStore {
                 message_popup: localize('Drop your review on Trustpilot.'),
                 action: {
                     onClick: () => {
-                        window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
+                        window.open('https://www.trustpilot.com/review/deriv.com', '_blank');
                         this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
                         this.removeNotificationByKey({
                             key: this.client_notifications.trustpilot.key,
@@ -864,6 +864,34 @@ export default class NotificationStore extends BaseStore {
                             should_show_again: false,
                         });
                     },
+                    children: (
+                        <div
+                            className='trustpilot-widget'
+                            data-locale='en-US'
+                            data-template-id='56278e9abfbbba0bdcd568bc'
+                            data-businessunit-id='5ed4c8a9f74f310001f51bf7'
+                            data-style-height='52px'
+                            data-style-width='100%'
+                        >
+                            <a
+                                href='https://www.trustpilot.com/review/deriv.com'
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                onClick={() => {
+                                    this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                                    this.removeNotificationByKey({
+                                        key: this.client_notifications.trustpilot.key,
+                                    });
+                                    this.removeNotificationMessage({
+                                        key: this.client_notifications.trustpilot.key,
+                                        should_show_again: false,
+                                    });
+                                }}
+                            >
+                                {localize('Go to Trustpilot')}
+                            </a>
+                        </div>
+                    ),
                     text: localize('Go to Trustpilot'),
                 },
                 img_src: getUrlBase('/public/images/common/trustpilot_banner.png'),
@@ -976,11 +1004,11 @@ export default class NotificationStore extends BaseStore {
             enable_passkey: {
                 action: {
                     route: routes.passkeys,
-                    text: localize('Enable passkey'),
+                    text: localize('Enable biometrics'),
                 },
                 key: 'enable_passkey',
                 header: localize('Level up your security'),
-                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
+                message: localize('Strengthen your account’s security today with biometrics.'),
                 type: 'announce',
                 should_show_again: true,
             },

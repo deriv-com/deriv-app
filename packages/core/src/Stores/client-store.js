@@ -2212,6 +2212,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             await this.cleanUp();
 
+            this.setIsSingleLoggingIn(false);
             this.setLogout(true);
             this.setIsLoggingOut(false);
         }

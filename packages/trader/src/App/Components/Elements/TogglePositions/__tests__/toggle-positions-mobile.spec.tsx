@@ -88,7 +88,7 @@ describe('TogglePositionsMobile component', () => {
         const mock_root_store = mockStore(default_mock_store);
         render(mockTogglePositionsMobile(mock_root_store, default_mocked_props));
         expect(screen.getByTestId('dt_positions_toggle')).toBeInTheDocument();
-        expect(screen.queryByText(/Open positions/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Recent positions/i)).not.toBeInTheDocument();
     });
     it('should display an empty Modal when is_positions_drawer_on === true and is_empty === true', () => {
         const mock_root_store = mockStore({
@@ -96,7 +96,7 @@ describe('TogglePositionsMobile component', () => {
             ui: { ...default_mock_store.ui, is_positions_drawer_on: true },
         });
         render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, is_empty: true }));
-        expect(screen.getByText(/Open positions/i)).toBeInTheDocument();
+        expect(screen.getByText(/Recent positions/i)).toBeInTheDocument();
     });
     it('should display 2 positions when is_positions_drawer_on === true, is_empty === false, and has 2 active positions', () => {
         const new_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
@@ -146,7 +146,7 @@ describe('TogglePositionsMobile component', () => {
             ui: { ...default_mock_store.ui, is_positions_drawer_on: true },
         });
         render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, ...new_mocked_props }));
-        expect(screen.getByText(/Open positions/i)).toBeInTheDocument();
+        expect(screen.getByText(/Recent positions/i)).toBeInTheDocument();
         expect(screen.getAllByText(/PositionsModalCard/i)).toHaveLength(2);
     });
     it('should display 1 of 2 positions after closing the modal if one of the 2 positions is sold', async () => {

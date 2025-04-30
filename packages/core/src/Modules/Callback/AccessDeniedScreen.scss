@@ -39,25 +39,25 @@
         justify-content: center;
         align-items: center;
         height: 48px;
-        color: #fff;
+        color: var(--text-colored-background);
         font-size: 16px;
         font-weight: 500;
-        background-color: #ff444f;
+        background-color: var(--button-primary-default);
         cursor: pointer;
     }
 
     &__button:hover {
-        background-color: #bf333b;
+        background-color: var(--button-primary-hover);
     }
 
     &__button--switch {
         background-color: transparent;
-        border: 1px solid #101213;
-        color: #101213;
+        border: 1px solid var(--button-secondary-default);
+        color: var(--text-general);
         margin-top: 8px;
     }
 
     &__button--switch:hover {
-        background-color: #f1f3f5;
+        background-color: var(--button-secondary-hover);
     }
 }

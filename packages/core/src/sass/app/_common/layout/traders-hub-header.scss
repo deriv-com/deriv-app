@@ -254,9 +254,5 @@
 .traders-hub {
     &-onboarding__toggle {
         margin-right: 0.8rem;
-
-        @include mobile-or-tablet-screen {
-            margin-right: 0;
-        }
     }
 }

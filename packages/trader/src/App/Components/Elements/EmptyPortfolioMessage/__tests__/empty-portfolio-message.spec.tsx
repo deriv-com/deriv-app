@@ -3,8 +3,7 @@ import { render, screen } from '@testing-library/react';
 import EmptyPortfolioMessage from '../empty-portfolio-message';
 
 describe('EmptyPortfolioMessage', () => {
-    const empty_portfolio_message =
-        'You have no open positions for this asset. To view other open positions, click Go to Reports';
+    const empty_portfolio_message = 'You have no open positions.';
     const error_text = 'Error text';
 
     it('should render error text on the screen if EmptyPortfolioMessage component will recive error in props', () => {

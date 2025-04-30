@@ -18,6 +18,7 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
     const loggedState = Cookies.get('logged_state');
 
     const { client } = useStore();
@@ -61,12 +62,12 @@ const useSilentLoginAndLogout = ({
     };
 
     useEffect(() => {
-        if (prevent_single_login || !is_client_store_initialized || isSilentLoginExcluded) return;
+        if (prevent_single_login || !is_client_store_initialized || isSilentLoginExcluded || !is_deriv_com) return;
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);
         const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && loggedState === 'false') {
+        if (isUsingLegacyFlow && loggedState === 'false' && is_deriv_com) {
             return;
         }
 

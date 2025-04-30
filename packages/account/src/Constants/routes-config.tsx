@@ -1,20 +1,20 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
+import { Loading } from '@deriv/components';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import {
-    PersonalDetails,
-    ProofOfIdentityFlow,
-    ProofOfAddressFlow,
-    ProofOfOwnership,
     Account,
     DeactivateAccount,
+    PersonalDetails,
+    ProofOfAddressFlow,
+    ProofOfIdentityFlow,
     ProofOfIncome,
+    ProofOfOwnership,
 } from '../Sections';
-
 import { TRoute, TRouteConfig } from '../Types';
-import { Loading } from '@deriv/components';
 // Error Routes
 const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
@@ -188,7 +188,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.passkeys,
                         component: Passkeys,
-                        getTitle: () => localize('Passkeys'),
+                        getTitle: () => localize('Biometrics'),
                     },
                     {
                         path: routes.self_exclusion,

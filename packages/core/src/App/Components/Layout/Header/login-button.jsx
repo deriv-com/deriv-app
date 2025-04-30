@@ -7,6 +7,7 @@ import { getLanguage, localize } from '@deriv/translations';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 const LoginButton = ({ className }) => {
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
     const has_wallet_cookie = Cookies.get('wallet_account');
     return (
         <Button
@@ -22,17 +23,19 @@ const LoginButton = ({ className }) => {
                         location.href = 'https://hub.deriv.com/tradershub/login';
                     }
                 }
-                try {
-                    await requestOidcAuthentication({
-                        redirectCallbackUri: `${window.location.origin}/callback`,
-                        postLoginRedirectUri: window.location.href,
-                    }).catch(err => {
+                if (is_deriv_com) {
+                    try {
+                        await requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                            postLoginRedirectUri: window.location.href,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
+                        });
+                    } catch (err) {
                         // eslint-disable-next-line no-console
                         console.error(err);
-                    });
-                } catch (err) {
-                    // eslint-disable-next-line no-console
-                    console.error(err);
+                    }
                 }
                 window.LiveChatWidget?.call('hide');
                 redirectToLogin(false, getLanguage());

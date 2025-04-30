@@ -58,6 +58,8 @@ const DefaultHeaderWallets = () => {
 
     const history = useHistory();
 
+    const isRedirectPage = history.location.pathname.includes(routes.redirect);
+
     const { isDesktop } = useDevice();
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
@@ -128,7 +130,7 @@ const DefaultHeaderWallets = () => {
                         'header__menu-right--hidden': is_mobile && is_logging_in,
                     })}
                 >
-                    {(is_logging_in || is_single_logging_in || is_switching) && (
+                    {(is_logging_in || is_single_logging_in || is_switching || isRedirectPage) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {

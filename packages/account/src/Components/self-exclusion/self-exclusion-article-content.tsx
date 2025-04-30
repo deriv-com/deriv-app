@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import clsx from 'clsx';
 
-import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
+import { Button, Icon, Popup, Text } from '@deriv/components';
 import { Chat } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
@@ -98,7 +98,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                       component: (
                           <Localize
                               i18n_default_text='If you want to adjust your self-exclusion limits, <0>contact us via live chat.</0>'
-                              components={[<OpenLiveChatLink key={0} text_size='xxs' />]}
+                              components={[<span className='link link--orange' key={0} onClick={Chat.open} />]}
                           />
                       ),
                   },

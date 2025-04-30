@@ -29,16 +29,19 @@ const TakeProfitHistory = ({ history = [], currency, is_multiplier }: TContractH
     }, []);
 
     const getHistoryTitle = () =>
-        is_multiplier ? <Localize i18n_default_text='TP & SL history' /> : <Localize i18n_default_text='TP history' />;
+        is_multiplier ? <Localize i18n_default_text='TP & SL History' /> : <Localize i18n_default_text='TP History' />;
 
     if (!history.length) return null;
 
-    const pages_config = (history as THistory).reduce((result: THistory[], _item: typeof history[0], index: number) => {
-        if (!(index % items_per_page)) {
-            result.push(history.slice(index, index + items_per_page));
-        }
-        return result;
-    }, []);
+    const pages_config = (history as THistory).reduce(
+        (result: THistory[], _item: (typeof history)[0], index: number) => {
+            if (!(index % items_per_page)) {
+                result.push(history.slice(index, index + items_per_page));
+            }
+            return result;
+        },
+        []
+    );
 
     const pages = pages_config.map((array, index) => ({
         id: index,

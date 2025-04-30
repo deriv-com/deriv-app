@@ -37,9 +37,13 @@ const NotificationBanner = ({
             )}
             {!!secondary_btn && (
                 <div className='notification-banner__btn-wrapper'>
-                    <Button className='notification-banner__btn' secondary small onClick={secondary_btn.onClick}>
-                        {secondary_btn.text}
-                    </Button>
+                    {secondary_btn.children ? (
+                        <div className='notification-banner__btn'>{secondary_btn.children}</div>
+                    ) : (
+                        <Button className='notification-banner__btn' secondary small onClick={secondary_btn.onClick}>
+                            {secondary_btn.text}
+                        </Button>
+                    )}
                 </div>
             )}
         </div>

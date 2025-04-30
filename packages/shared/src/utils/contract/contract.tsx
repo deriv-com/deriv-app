@@ -30,6 +30,12 @@ export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
+export const CONTRACT_STORAGE_VALUES = {
+    MULTIPLIERS: 'multipliers',
+    ACCUMULATORS: 'accumulators',
+    OPTIONS: 'options',
+};
+
 export const CONTRACT_TYPES = {
     ACCUMULATOR: 'ACCU',
     ASIAN: { UP: 'ASIANU', DOWN: 'ASIAND' },
@@ -159,7 +165,7 @@ export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
 export const isVanillaFxContract = (contract_type = '', symbol = '') =>
-    isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
+    isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as (typeof VANILLA_FX_SYMBOLS)[number]);
 
 export const isSmartTraderContract = (contract_type = '') =>
     /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET|TICK|LB/i.test(contract_type);
@@ -205,7 +211,7 @@ export const getCurrentTick = (contract_info: TContractInfo) => {
     const current_tick =
         isDigitContract(contract_info.contract_type) || isAsiansContract(contract_info.contract_type)
             ? tick_stream.length
-            : contract_info.tick_passed ?? tick_stream.length - 1;
+            : (contract_info.tick_passed ?? tick_stream.length - 1);
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 

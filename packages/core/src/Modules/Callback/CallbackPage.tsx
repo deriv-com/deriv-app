@@ -1,12 +1,25 @@
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory, useLocation, withRouter } from 'react-router-dom';
 
 import { Button } from '@deriv/components';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Callback } from '@deriv-com/auth-client';
 
+import AccessDeniedScreen from './AccessDeniedScreen';
+
 const CallbackPage = () => {
     const history = useHistory();
+    const location = useLocation();
+    const has_access_denied_error = location.search.includes('access_denied');
+
+    const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'duplicate-login',
+    });
+
+    if (isDuplicateLoginEnabled && has_access_denied_error) {
+        return <AccessDeniedScreen />;
+    }
     return (
         <Callback
             onSignInSuccess={(tokens: Record<string, string>) => {

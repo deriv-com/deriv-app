@@ -16,6 +16,7 @@ type TResetPasswordModalValues = {
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
     const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
     const {
         disableApp,
         enableApp,
@@ -51,16 +52,20 @@ const ResetPasswordModal = observer(() => {
         setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            try {
-                requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                }).catch(err => {
+            if (is_deriv_com) {
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                } catch (err) {
                     // eslint-disable-next-line no-console
                     console.error(err);
-                });
-            } catch (err) {
-                // eslint-disable-next-line no-console
-                console.error(err);
+                }
+            } else {
+                redirectToLogin(false, getLanguage());
             }
         });
     };

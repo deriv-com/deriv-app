@@ -40,6 +40,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('App/Components/Layout/Header', () => ({
     MenuLinks: jest.fn(() => <div>Mocked Menu Links</div>),
+    PlatformSwitcher: jest.fn(() => <div>Mocked Platform Switcher</div>),
 }));
 
 jest.mock('App/Components/Layout/Header/Components/Preloader', () => ({
@@ -125,11 +126,12 @@ describe('HeaderLegacy', () => {
             </Router>
         );
 
-    it('should render Traders Home button, Menu Links, Account actions and Real Account SignUp components, in Desktop view', () => {
+    it('should render Traders Home button, Menu Links, Platform Switcher, Account actions and Real Account SignUp components, in Desktop view', () => {
         renderComponent();
         const desktop_view_text_content = [
             'Mocked Traders Home Button',
             'Mocked Menu Links',
+            'Mocked Platform Switcher',
             'Mocked Header Account Action',
             'Mocked Real Account SignUp',
         ];
@@ -154,6 +156,7 @@ describe('HeaderLegacy', () => {
             'Mocked Real Account SignUp',
         ];
         mobile_view_text_content.forEach(text => expect(screen.getByText(text)).toBeInTheDocument());
+        expect(screen.queryByText('Mocked Platform Switcher')).not.toBeInTheDocument();
     });
 
     it('should render Toggle Menu Drawer OS when is_from_tradershub_os is true in mobile view', () => {
@@ -306,5 +309,16 @@ describe('HeaderLegacy', () => {
 
         const header = screen.getByRole('banner');
         expect(header).toHaveClass('header--tradershub_os_desktop');
+    });
+
+    it('should not render platform switcher when pathname includes traders-hub', () => {
+        const reactRouterDom = jest.requireMock('react-router-dom') as jest.Mocked<typeof import('react-router-dom')>;
+        reactRouterDom.useLocation.mockReturnValue({
+            pathname: '/traders-hub',
+        });
+
+        renderComponent();
+
+        expect(screen.queryByText('Mocked Platform Switcher')).not.toBeInTheDocument();
     });
 });

@@ -63,7 +63,7 @@ const MenuLeft = observer(() => {
                 </React.Fragment>
             )}
             <MenuLinks is_traders_hub_routes={traders_hub_routes} />
-            {isDesktop && !traders_hub_routes && !location.pathname.includes(routes.cashier) && (
+            {isDesktop && !traders_hub_routes && (
                 <PlatformSwitcher
                     app_routing_history={app_routing_history}
                     platform_config={filterPlatformsForClients(platform_config)}

@@ -38,6 +38,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('App/Components/Layout/Header', () => ({
     MenuLinks: jest.fn(() => <div>Mocked Menu Links</div>),
+    PlatformSwitcher: jest.fn(() => <div>Mocked Platform Switcher</div>),
 }));
 
 jest.mock('App/Components/Layout/Header/wallets/accounts-info-loader-wallets', () =>
@@ -124,6 +125,7 @@ describe('HeaderWallets', () => {
         expect(screen.getByText('Deriv Short Logo')).toBeInTheDocument();
         expect(screen.getByText('Mocked Traders Home Button')).toBeInTheDocument();
         expect(screen.getByText('Mocked Menu Links')).toBeInTheDocument();
+        expect(screen.getByText('Mocked Platform Switcher')).toBeInTheDocument();
         expect(screen.getByText('Mocked Account Actions Wallets false')).toBeInTheDocument();
     });
 
@@ -134,6 +136,7 @@ describe('HeaderWallets', () => {
 
         expect(screen.getByTestId('dt_toggle_menu_drawer')).toBeInTheDocument();
         expect(screen.getByText('Mocked Menu Links')).toBeInTheDocument();
+        expect(screen.queryByText('Mocked Platform Switcher')).not.toBeInTheDocument();
         expect(screen.getByText('Mocked Account Actions Wallets false')).toBeInTheDocument();
     });
 
@@ -284,5 +287,16 @@ describe('HeaderWallets', () => {
         renderComponent();
 
         expect(screen.getByText('Mocked Account Actions Wallets true')).toBeInTheDocument();
+    });
+
+    it('should not render platform switcher when pathname includes traders-hub', () => {
+        const reactRouterDom = jest.requireMock('react-router-dom') as jest.Mocked<typeof import('react-router-dom')>;
+        reactRouterDom.useLocation.mockReturnValue({
+            pathname: '/traders-hub',
+        });
+
+        renderComponent();
+
+        expect(screen.queryByText('Mocked Platform Switcher')).not.toBeInTheDocument();
     });
 });

@@ -84,11 +84,11 @@ const ContractAudit = ({
                     <div label={localize('TP & SL History')}>
                         <ContractHistory currency={currency} history={update_history} />
                     </div>
-                ) : (
+                ) : !is_accumulator ? (
                     <div label={localize('TP History')}>
                         <ContractHistory currency={currency} history={update_history} />
                     </div>
-                )}
+                ) : null}
             </Tabs>
         </div>
     );

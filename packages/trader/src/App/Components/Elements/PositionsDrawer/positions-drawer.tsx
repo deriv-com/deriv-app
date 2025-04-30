@@ -188,11 +188,13 @@ const PositionsDrawer = observer(({ ...props }) => {
                         {localize('Open positions')}
                     </Text>
                     <div
+                        data-testid='dt_positions_drawer_close_icon'
+
                         id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}
                     >
-                        <Icon icon='IcMinusBold' />
+                        <Icon data-testid='dt_positions_drawer_close_icon' icon='IcMinusBold' />
                     </div>
                 </div>
                 <div className='positions-drawer__body' ref={drawer_ref}>

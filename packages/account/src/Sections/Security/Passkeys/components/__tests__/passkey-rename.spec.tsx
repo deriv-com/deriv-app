@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+
 import { PasskeyRename } from '../passkey-rename';
 import { PasskeysStatusContainer } from '../passkeys-status-container';
 
@@ -23,25 +25,25 @@ describe('PasskeyRename', () => {
             />
         );
 
-        expect(screen.getByText('Edit passkey')).toBeInTheDocument();
+        expect(screen.getByText('Edit biometrics')).toBeInTheDocument();
         const input = screen.getByRole('textbox');
         expect(input).not.toHaveValue(new_passkey_name);
         expect(input).toHaveValue(init_passkey_name);
         expect(input).toBeInTheDocument();
 
-        userEvent.clear(input);
-        userEvent.type(input, new_passkey_name);
+        await userEvent.clear(input);
+        await userEvent.type(input, new_passkey_name);
 
         expect(input).toHaveValue(new_passkey_name);
         expect(input).not.toHaveValue(init_passkey_name);
 
-        userEvent.click(screen.getByRole('button', { name: /save changes/i }));
+        await userEvent.click(screen.getByRole('button', { name: /save changes/i }));
 
         await waitFor(() => {
             expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
         });
 
-        userEvent.click(screen.getByRole('button', { name: /back/i }));
+        await userEvent.click(screen.getByRole('button', { name: /back/i }));
         expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });
 
@@ -54,29 +56,29 @@ describe('PasskeyRename', () => {
             />
         );
 
-        expect(screen.getByText('Edit passkey')).toBeInTheDocument();
+        expect(screen.getByText('Edit biometrics')).toBeInTheDocument();
         const input = screen.getByRole('textbox');
         const save_changes_button = screen.getByRole('button', { name: /save changes/i });
 
         expect(save_changes_button).toBeDisabled();
 
-        userEvent.clear(input);
-        userEvent.type(input, 'n');
+        await userEvent.clear(input);
+        await userEvent.type(input, 'n');
 
         await waitFor(() => {
             expect(save_changes_button).toBeDisabled();
             expect(screen.getByText(validation_error)).toBeInTheDocument();
         });
 
-        userEvent.type(input, 'new name');
+        await userEvent.type(input, 'new name');
 
         await waitFor(() => {
             expect(save_changes_button).toBeEnabled();
             expect(screen.queryByText(validation_error)).not.toBeInTheDocument();
         });
 
-        userEvent.clear(input);
-        userEvent.type(input, 'new long name to test validation');
+        await userEvent.clear(input);
+        await userEvent.type(input, 'new long name to test validation');
 
         await waitFor(() => {
             expect(save_changes_button).toBeDisabled();

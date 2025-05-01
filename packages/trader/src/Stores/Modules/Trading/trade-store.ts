@@ -1771,7 +1771,8 @@ export default class TradeStore extends BaseStore {
 
     changeDurationValidationRules() {
         if (this.expiry_type === 'endtime') {
-            this.validation_errors.duration = [];
+            delete this.validation_rules.duration;
+            this.validateAllProperties();
             return;
         }
 

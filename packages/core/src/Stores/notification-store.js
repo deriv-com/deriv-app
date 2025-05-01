@@ -28,8 +28,8 @@ import {
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Chat } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
+import { Chat } from '@deriv/utils';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -1004,11 +1004,11 @@ export default class NotificationStore extends BaseStore {
             enable_passkey: {
                 action: {
                     route: routes.passkeys,
-                    text: localize('Enable biometrics'),
+                    text: localize('Enable passkey'),
                 },
                 key: 'enable_passkey',
                 header: localize('Level up your security'),
-                message: localize('Strengthen your account’s security today with biometrics.'),
+                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
                 type: 'announce',
                 should_show_again: true,
             },

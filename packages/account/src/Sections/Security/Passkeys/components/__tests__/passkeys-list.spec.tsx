@@ -1,8 +1,6 @@
 import React from 'react';
-
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
 import { PasskeysList } from '../passkeys-list';
 
 const passkey_name_1 = 'Test Passkey 1';
@@ -35,7 +33,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('PasskeysList', () => {
-    it('renders the passkeys and calls the correct function when the button is clicked', async () => {
+    it('renders the passkeys and calls the correct function when the button is clicked', () => {
         const mockOnPrimaryButtonClick = jest.fn();
         const mockOnSecondaryButtonClick = jest.fn();
         const mockOnPasskeyMenuClick = jest.fn();
@@ -53,8 +51,8 @@ describe('PasskeysList', () => {
             expect(screen.getByText(passkey.name)).toBeInTheDocument();
         });
 
-        await userEvent.click(screen.getByRole('button', { name: /enable biometrics/i }));
-        await userEvent.click(screen.getByRole('button', { name: /learn more/i }));
+        userEvent.click(screen.getByRole('button', { name: /create passkey/i }));
+        userEvent.click(screen.getByRole('button', { name: /learn more/i }));
         expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
         expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });

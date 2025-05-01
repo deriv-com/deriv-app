@@ -26,6 +26,7 @@ import type {
     Transaction,
     WebsiteStatus,
 } from '@deriv/api-types';
+
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -42,7 +43,7 @@ type TRoutes =
     | '/account/proof-of-ownership'
     | '/account/proof-of-income'
     | '/account/passwords'
-    | '/account/biometrics'
+    | '/account/passkeys'
     | '/account/closing-account'
     | '/account/deactivate-account'
     | '/account-closed'

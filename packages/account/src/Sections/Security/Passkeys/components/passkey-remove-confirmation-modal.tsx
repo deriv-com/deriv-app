@@ -1,5 +1,4 @@
 import { MouseEventHandler } from 'react';
-
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 
@@ -18,7 +17,7 @@ export const PasskeyRemoveConfirmationModal = ({
 }: TPasskeyRemoveConfirmationrModal) => {
     const header = (
         <Text size='xs' weight='bold'>
-            <Localize i18n_default_text='Remove biometric data' />
+            <Localize i18n_default_text='Remove passkey' />
         </Text>
     );
 
@@ -33,7 +32,7 @@ export const PasskeyRemoveConfirmationModal = ({
         >
             <Modal.Body>
                 <Text size='xxs'>
-                    <Localize i18n_default_text='Are you sure you want to remove this biometric data?' />
+                    <Localize i18n_default_text='Are you sure you want to remove this passkey?' />
                 </Text>
             </Modal.Body>
             <Modal.Footer>

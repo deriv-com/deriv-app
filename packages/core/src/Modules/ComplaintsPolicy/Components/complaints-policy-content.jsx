@@ -75,7 +75,7 @@ const getGeneralQueriesText = landing_company_shortcode => {
     if (landing_company_shortcode === 'maltainvest') {
         return (
             <Localize
-                i18n_default_text='If you have an inquiry regarding your trading account with {{legal_entity_name}}, you can contact us through our <0>Help centre</0> or by chatting with a representative via <1>Live Chat</1>.<2/><3/>We are committed to resolving your query as quickly as possible and appreciate your patience in allowing us to do so.<4/><5/>We strive to provide the best possible service and support. However, if we are unable to resolve your query or if you feel that our response is unsatisfactory, we want to hear from you.'
+                i18n_default_text='If you have an inquiry regarding your trading account with {{legal_entity_name}}, you can contact us through our <0>Help centre</0> or by chatting with a representative via <1>Live Chat</1>.<2/><2/>We are committed to resolving your query as quickly as possible and appreciate your patience in allowing us to do so.<2/><2/>We strive to provide the best possible service and support. However, if we are unable to resolve your query or if you feel that our response is unsatisfactory, we want to hear from you.'
                 components={[
                     <a
                         key={0}
@@ -92,9 +92,6 @@ const getGeneralQueriesText = landing_company_shortcode => {
                         href='https://eu.deriv.com/livechat/'
                     />,
                     <br key={2} />,
-                    <br key={3} />,
-                    <br key={4} />,
-                    <br key={5} />,
                 ]}
                 values={{ legal_entity_name: getLegalEntityName(landing_company_shortcode) }}
             />

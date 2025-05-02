@@ -13,8 +13,7 @@ export const useAccountSettingsRedirect = () => {
     let redirect_url;
 
     if (should_use_hub) {
-        const base_url =
-            process.env.NODE_ENV === 'production' ? 'https://hub.deriv.com' : 'https://staging-hub.deriv.com';
+        const base_url = process.env.NODE_ENV !== 'staging' ? 'https://hub.deriv.com' : 'https://staging-hub.deriv.com';
 
         redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=home&account=${loginid}`;
     } else {

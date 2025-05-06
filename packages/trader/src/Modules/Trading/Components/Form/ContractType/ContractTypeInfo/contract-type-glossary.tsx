@@ -362,6 +362,7 @@ const ContractTypeGlossary = ({
                             key={text.props.i18n_default_text}
                             weight='bold'
                             className='contract-type-info__content-glossary--heading'
+                            data-glossary-term={text.props.i18n_default_text.toLowerCase().replace(/\s+/g, '_')}
                         >
                             {text}
                         </Text>

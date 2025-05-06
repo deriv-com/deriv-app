@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 const AccumulatorTradeDescription = ({
     onClick,
 }: {
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    onClick: (term: string, e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 }) => {
     const content = [
         <Localize
@@ -13,8 +13,8 @@ const AccumulatorTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('growth_rate', e)}
+                    onKeyDown={e => onClick('growth_rate', e)}
                     key={0}
                 />,
             ]}
@@ -25,8 +25,8 @@ const AccumulatorTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('payout', e)}
+                    onKeyDown={e => onClick('payout', e)}
                     key={0}
                 />,
             ]}
@@ -37,8 +37,8 @@ const AccumulatorTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('range', e)}
+                    onKeyDown={e => onClick('range', e)}
                     key={0}
                 />,
             ]}
@@ -49,8 +49,8 @@ const AccumulatorTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('take_profit', e)}
+                    onKeyDown={e => onClick('take_profit', e)}
                     key={0}
                 />,
             ]}
@@ -61,8 +61,8 @@ const AccumulatorTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('slippage_risk', e)}
+                    onKeyDown={e => onClick('slippage_risk', e)}
                     key={0}
                 />,
             ]}

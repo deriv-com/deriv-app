@@ -11,6 +11,7 @@ import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TContractType, TList } from '../types';
+import './contract-type-info.scss';
 
 type TInfo = {
     handleSelect: (
@@ -63,8 +64,21 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const button_name = contract_types?.find(item => item.value === selected_contract_type)?.text;
 
-    const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
+    const onClickGlossary = (term: string, e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(() => {
+            setSelectedTab(TABS.GLOSSARY);
+            // Add a small delay to ensure the tab switch happens first
+            setTimeout(() => {
+                const element = document.querySelector(`[data-glossary-term="${term}"]`);
+                if (element) {
+                    element.classList.add('contract-type-info__content-glossary--highlight');
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        element.classList.remove('contract-type-info__content-glossary--highlight');
+                    }, 1500);
+                }
+            }, 800);
+        }, e);
     };
 
     const is_unavailable = !!list[0].contract_categories?.find(

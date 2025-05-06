@@ -7,7 +7,7 @@ const VanillaTradeDescription = ({
     onClick,
 }: {
     is_vanilla_fx?: boolean;
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    onClick: (term: string, e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 }) => {
     const content = [
         <Localize
@@ -20,8 +20,8 @@ const VanillaTradeDescription = ({
                 <strong key={0} />,
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('payout', e)}
+                    onKeyDown={e => onClick('payout', e)}
                     key={1}
                 />,
             ]}
@@ -39,8 +39,8 @@ const VanillaTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('payout_per_pip', e)}
+                            onKeyDown={e => onClick('payout_per_pip', e)}
                             key={0}
                         />,
                         <strong key={0} />,
@@ -53,8 +53,8 @@ const VanillaTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('payout_per_point', e)}
+                            onKeyDown={e => onClick('payout_per_point', e)}
                             key={0}
                         />,
                     ]}
@@ -69,8 +69,8 @@ const VanillaTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('contract_value', e)}
+                            onKeyDown={e => onClick('contract_value', e)}
                             key={0}
                         />,
                     ]}
@@ -82,8 +82,8 @@ const VanillaTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('contract_value', e)}
+                            onKeyDown={e => onClick('contract_value', e)}
                             key={0}
                         />,
                     ]}

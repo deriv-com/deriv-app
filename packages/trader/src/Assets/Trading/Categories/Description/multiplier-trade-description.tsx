@@ -1,17 +1,12 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
+import type { TTradeDescriptionWithFX } from './types';
 
-const MultiplierTradeDescription = ({
-    is_multiplier_fx,
-    onClick,
-}: {
-    is_multiplier_fx?: boolean;
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-}) => {
+const MultiplierTradeDescription = ({ is_multiplier_fx, onClick }: TTradeDescriptionWithFX) => {
     const content = [
         <Localize
-            i18n_default_text='Use multipliers to leverage your potential returns. Predict if the asset price will move upward (bullish) or downward (bearish). We’ll charge a commission when you open a multipliers trade.'
+            i18n_default_text="Use multipliers to leverage your potential returns. Predict if the asset price will move upward (bullish) or downward (bearish). We'll charge a commission when you open a multipliers trade."
             key='1'
         />,
         <Localize
@@ -29,8 +24,8 @@ const MultiplierTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('stop_out', e)}
+                    onKeyDown={e => onClick('stop_out', e)}
                     key={0}
                 />,
             ]}
@@ -39,12 +34,12 @@ const MultiplierTradeDescription = ({
         {
             content: is_multiplier_fx ? (
                 <Localize
-                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>” and “<0>Stop loss</0>” allow you to adjust your level of risk aversion.'
+                    i18n_default_text='Additional features are available to manage your positions: "<0>Take profit</0>" and "<0>Stop loss</0>" allow you to adjust your level of risk aversion.'
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('take_profit', e)}
+                            onKeyDown={e => onClick('take_profit', e)}
                             key={0}
                         />,
                     ]}
@@ -52,12 +47,12 @@ const MultiplierTradeDescription = ({
                 />
             ) : (
                 <Localize
-                    i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<0>Stop loss</0>” and “<0>Deal cancellation</0>” allow you to adjust your level of risk aversion.'
+                    i18n_default_text='Additional features are available to manage your positions: "<0>Take profit</0>", "<0>Stop loss</0>" and "<0>Deal cancellation</0>" allow you to adjust your level of risk aversion.'
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('deal_cancellation', e)}
+                            onKeyDown={e => onClick('deal_cancellation', e)}
                             key={0}
                         />,
                     ]}
@@ -70,8 +65,8 @@ const MultiplierTradeDescription = ({
             components={[
                 <span
                     className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
+                    onClick={e => onClick('slippage_risk', e)}
+                    onKeyDown={e => onClick('slippage_risk', e)}
                     key={0}
                 />,
             ]}

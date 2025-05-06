@@ -99,6 +99,8 @@ export type TCFDStore = {
     setIsMt5PasswordChangedModalVisible: (value: boolean) => void;
     setServerMaintenanceModal: (value: boolean) => void;
     setAccountUnavailableModal: (value: boolean) => void;
+    setLinkedNakalaModal: (value: boolean) => void;
     is_server_maintenance_modal_visible: boolean;
     is_account_unavailable_modal_visible: boolean;
+    is_linked_nakala_modal_visible: boolean;
 };

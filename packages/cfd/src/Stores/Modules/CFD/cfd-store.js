@@ -42,6 +42,7 @@ export default class CFDStore extends BaseStore {
     is_from_mt5_migration_modal = false;
     is_server_maintenance_modal_visible = false;
     is_account_unavailable_modal_visible = false;
+    is_linked_nakala_modal_visible = false;
     mt5_migration_error = '';
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
@@ -95,6 +96,7 @@ export default class CFDStore extends BaseStore {
             is_from_mt5_migration_modal: observable,
             is_server_maintenance_modal_visible: observable,
             is_account_unavailable_modal_visible: observable,
+            is_linked_nakala_modal_visible: observable,
             account_title: computed,
             current_list: computed,
             onMount: action.bound,
@@ -126,6 +128,7 @@ export default class CFDStore extends BaseStore {
             setIsFromMt5MigrationModal: action.bound,
             setServerMaintenanceModal: action.bound,
             setAccountUnavailableModal: action.bound,
+            setLinkedNakalaModal: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -866,5 +869,9 @@ export default class CFDStore extends BaseStore {
 
     setAccountUnavailableModal(is_account_unavailable_modal_visible) {
         this.is_account_unavailable_modal_visible = is_account_unavailable_modal_visible;
+    }
+
+    setLinkedNakalaModal(is_linked_nakala_modal_visible) {
+        this.is_linked_nakala_modal_visible = is_linked_nakala_modal_visible;
     }
 }

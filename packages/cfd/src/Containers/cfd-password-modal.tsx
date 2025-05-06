@@ -35,6 +35,9 @@ import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import CFDDerivNakalaInfo, {
+    CFDDerivNakalaLinkAccountSuccess,
+} from './cfd-deriv-nakala-modal/cfd-account-nakala-modal';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
@@ -74,6 +77,7 @@ type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     is_password_reset_error: boolean;
     platform: string;
+    is_nakala_info: boolean;
     has_mt5_account?: boolean;
 };
 
@@ -126,6 +130,7 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
+    is_nakala_info,
 }: TPasswordModalHeaderProps) => {
     const { isDesktop } = useDevice();
     const is_mt5 = platform === CFD_PLATFORMS.MT5;
@@ -137,6 +142,14 @@ const PasswordModalHeader = ({
               padding: '2rem',
           }
         : {};
+
+    if (is_nakala_info) {
+        return (
+            <Text as={element} line_height='m' weight='bold' size={!isDesktop ? 'xs' : 's'} align='center'>
+                <Localize i18n_default_text='Deriv Nakala' />
+            </Text>
+        );
+    }
 
     if (is_mt5 && !is_password_reset_error) {
         const platform_name = getCFDPlatformNames(platform);
@@ -556,6 +569,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsMt5PasswordInvalidFormatModalVisible,
         is_sent_email_modal_enabled,
         setSentEmailModalStatus,
+        is_linked_nakala_modal_visible,
+        setLinkedNakalaModal,
     } = useCfdStore();
 
     const history = useHistory();
@@ -573,6 +588,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         error_type === 'InvalidTradingPlatformPasswordFormat' || error_type === 'IncorrectMT5PasswordFormat';
 
     const [new_password_value, setNewPasswordValue] = React.useState('');
+    const [is_nakala_info_visible, setIsNakalaInfoVisible] = React.useState(is_linked_nakala_modal_visible);
 
     // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
     // It is to avoid the flickering of the modal.
@@ -636,6 +652,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status();
         closeDialogs();
         disableCFDPasswordModal();
+    };
+
+    const onCloseNakalaSuccessModal = () => {
+        setLinkedNakalaModal(false);
+        closeDialogs();
     };
 
     const closeOpenSuccess = () => {
@@ -815,6 +836,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     };
 
+    const handleCFdPasswordModal = () => {
+        if (is_linked_nakala_modal_visible && is_nakala_info_visible) {
+            return <CFDDerivNakalaInfo onclickAction={() => setIsNakalaInfoVisible(false)} />;
+        }
+        return cfd_password_form;
+    };
+
     const cfd_password_form = (
         <CFDPasswordForm
             closeModal={closeModal}
@@ -847,6 +875,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
             onUnmount={() => getAccountStatus(platform)}
@@ -854,7 +883,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onEntered={() => setPasswordModalExited(false)}
             width='auto'
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </Modal>
     );
 
@@ -870,10 +899,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </MobileDialog>
     );
 
@@ -890,10 +920,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     has_mt5_account={has_mt5_account}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </MobileDialog>
     );
 
@@ -945,6 +976,20 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const success_mt5_nakala_modal = (
+        <Modal
+            className={classNames('cfd-password-modal')}
+            has_close_icon
+            is_open={should_show_success && is_linked_nakala_modal_visible}
+            toggleModal={onCloseNakalaSuccessModal}
+            should_header_stick_body
+            renderTitle={''}
+            width='auto'
+        >
+            <CFDDerivNakalaLinkAccountSuccess />
+        </Modal>
+    );
+
     const invalid_mt5_password_modal = isMobileOrTabletPortrait
         ? is_mt5_password_format_invalid
         : is_mt5_password_format_invalid_desktop;
@@ -953,8 +998,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
             {password_modal}
             {password_dialog}
+            {is_linked_nakala_modal_visible && success_mt5_nakala_modal}
             <SuccessDialog
-                is_open={should_show_success}
+                is_open={should_show_success && !is_linked_nakala_modal_visible}
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}

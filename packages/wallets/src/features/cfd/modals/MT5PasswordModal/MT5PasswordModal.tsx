@@ -21,6 +21,7 @@ import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
+import CFDDerivNakalaInfo from '../DerivNakalaModal/DerivAccountNakala';
 import { MT5AccountAdded } from '../MT5AccountAdded';
 import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
@@ -29,6 +30,7 @@ import './MT5PasswordModal.scss';
 
 type TProps = {
     account: TAvailableMT5Account;
+    isNakala?: boolean;
     isVirtual?: boolean;
 };
 
@@ -37,7 +39,7 @@ export type TPlatformPasswordChange = {
     newPassword: string;
 };
 
-const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
+const MT5PasswordModal: React.FC<TProps> = ({ account, isNakala = false, isVirtual = false }) => {
     const [isTncChecked, setIsTncChecked] = useState(
         // tnc is automatically checked for real SVG accounts and all demo accounts
         (account as TAvailableMT5Account).shortcode === JURISDICTION.SVG || isVirtual
@@ -67,6 +69,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const { data: settingsData } = useSettings();
     const { localize } = useTranslations();
     const { data: isEuRegion } = useIsEuRegion();
+    const [isNakalaVisible, setNakalaVisible] = useState(isNakala);
 
     const {
         address_city: addressCity,
@@ -199,7 +202,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     const renderTitle = useCallback(() => {
         let modalTitle;
 
-        if (updateMT5Password) {
+        if (isNakalaVisible) {
+            modalTitle = localize('Deriv Nakala');
+        } else if (updateMT5Password) {
             modalTitle = localize('{{title}} latest password requirements', { title });
         } else if (isMT5PasswordNotSet) {
             modalTitle = isVirtual
@@ -218,9 +223,23 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         }
 
         return modalTitle;
-    }, [isMT5PasswordNotSet, isVirtual, localize, marketTypeTitle, title, updateMT5Password]);
+    }, [isMT5PasswordNotSet, isVirtual, localize, marketTypeTitle, title, updateMT5Password, isNakalaVisible]);
 
     const renderFooter = useCallback(() => {
+        if (isNakalaVisible) {
+            return (
+                <div className='wallets-mt5-password-modal__footer'>
+                    <Button
+                        isFullWidth
+                        onClick={() => setNakalaVisible(false)}
+                        size='lg'
+                        textSize={isDesktop ? 'md' : 'sm'}
+                    >
+                        <Localize i18n_default_text='Next' values={{ title }} />
+                    </Button>
+                </div>
+            );
+        }
         if (isMT5PasswordNotSet)
             return (
                 <div className='wallets-mt5-password-modal__footer'>
@@ -243,6 +262,20 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                 </div>
             );
 
+        if (isNakala && createMT5AccountSuccess) {
+            return (
+                <div className='wallets-mt5-password-modal__footer'>
+                    <Button
+                        isFullWidth
+                        onClick={() => setNakalaVisible(false)}
+                        size='lg'
+                        textSize={isDesktop ? 'md' : 'sm'}
+                    >
+                        <Localize i18n_default_text='Next' values={{ title }} />
+                    </Button>
+                </div>
+            );
+        }
         return (
             <div className='wallets-mt5-password-modal__footer'>
                 <MT5PasswordModalFooter
@@ -272,6 +305,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         validateMT5ErrorMessage,
         localize,
         sendEmailVerification,
+        isNakalaVisible,
     ]);
 
     const PasswordComponent = useMemo(() => {
@@ -288,7 +322,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                 />
             );
 
-        if (isMT5PasswordNotSet && platform === CFD_PLATFORMS.MT5)
+        if (isNakalaVisible) {
+            return <CFDDerivNakalaInfo onclickAction={() => setNakalaVisible(false)} />;
+        }
+
+        if (isMT5PasswordNotSet && platform === CFD_PLATFORMS.MT5) {
             return (
                 <CreatePasswordMT5
                     account={account as TAvailableMT5Account}
@@ -304,6 +342,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
                     platform={mt5Platform}
                 />
             );
+        }
 
         if (updateMT5Password)
             return (
@@ -399,6 +438,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
         return (
             <MT5AccountAdded
                 account={createMT5AccountData}
+                isNakala={isNakala}
                 marketType={marketType}
                 platform={platform}
                 product={product}
@@ -422,7 +462,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ account, isVirtual = false }) => {
     }
 
     if (isDesktop) {
-        return <ModalWrapper hideCloseButton={isLoading || createMT5AccountSuccess}>{PasswordComponent}</ModalWrapper>;
+        return (
+            <ModalWrapper hideCloseButton={isLoading || (createMT5AccountSuccess && !isNakala)}>
+                {PasswordComponent}
+            </ModalWrapper>
+        );
     }
 
     return (

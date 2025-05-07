@@ -5,6 +5,7 @@ import { useDevice } from '@deriv-com/ui';
 import { routes, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useAccountSettingsRedirect } from '@deriv/hooks';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -29,10 +30,12 @@ const TradersHubHeaderWallets = observer(() => {
     const { header_extension, is_app_disabled, is_route_modal_on } = ui;
     const { isDesktop } = useDevice();
 
+    const { redirect_url } = useAccountSettingsRedirect();
+
     const accountSettings = (
-        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+        <a className='traders-hub-header__setting' href={redirect_url}>
             <Icon icon='IcUserOutline' size={20} />
-        </BinaryLink>
+        </a>
     );
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>

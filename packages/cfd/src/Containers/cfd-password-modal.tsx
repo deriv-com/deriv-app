@@ -988,7 +988,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         Cookies.set(nakala_linked_cookie, nakala_linked_cookie_value, {
             expires: nakala_linked_cookie_expiry,
-            // domain: '.deriv.com',
+            domain: '.deriv.com',
         });
     };
 

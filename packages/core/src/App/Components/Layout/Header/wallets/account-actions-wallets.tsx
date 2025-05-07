@@ -7,10 +7,9 @@ import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
-import { BinaryLink } from '../../../Routes/index.js';
 import ToggleNotifications from '../toggle-notifications.jsx';
 import AccountInfoWallets from './account-info-wallets';
-import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useAccountSettingsRedirect } from '@deriv/hooks';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 const AccountActionsWallets = observer(() => {
@@ -19,6 +18,7 @@ const AccountActionsWallets = observer(() => {
     const { openRealAccountSignup, toggleAccountsDialog, is_accounts_switcher_on } = ui;
     const { isDesktop } = useDevice();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { redirect_url } = useAccountSettingsRedirect();
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
@@ -41,14 +41,16 @@ const AccountActionsWallets = observer(() => {
 
             window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         } else {
-            history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+            history.push(routes.wallets_transfer as unknown as Parameters<typeof history.push>[0], {
+                toAccountLoginId: loginid,
+            });
         }
     };
 
     const accountSettings = (
-        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+        <a className='account-settings-toggle' href={redirect_url}>
             <Icon icon='IcUserOutline' />
-        </BinaryLink>
+        </a>
     );
 
     if (!is_logged_in) {

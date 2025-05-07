@@ -6,8 +6,7 @@ import { Button, Icon, Popover } from '@deriv/components';
 import { formatMoney, isTabletOs, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-
-import { BinaryLink } from '../../Routes';
+import { useAccountSettingsRedirect } from '@deriv/hooks';
 
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -45,10 +44,12 @@ const AccountActions = React.memo(
         toggleNotifications,
     }) => {
         const { isDesktop } = useDevice();
+        const { redirect_url } = useAccountSettingsRedirect();
+
         const accountSettings = (
-            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+            <a className='account-settings-toggle' href={redirect_url}>
                 <Icon icon='IcUserOutline' />
-            </BinaryLink>
+            </a>
         );
         const location = useLocation();
         const isDepositButtonVisible = currency && !location.pathname.includes(routes.cashier);

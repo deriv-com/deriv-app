@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Icon, Counter } from '@deriv/components';
+import { Text, Icon } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { useHistory } from 'react-router';
 import './menu-links.scss';
 
@@ -41,7 +41,6 @@ const CashierTab = observer(() => {
     const { client, ui } = useStore();
     const { has_any_real_account, is_virtual } = client;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
-    const p2p_notification_count = useP2PNotificationCount();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
     const history = useHistory();
@@ -75,9 +74,6 @@ const CashierTab = observer(() => {
             icon={
                 <>
                     <Icon icon='IcCashier' className='header__icon' />
-                    {p2p_notification_count > 0 && (
-                        <Counter className='cashier__counter' count={p2p_notification_count} />
-                    )}
                 </>
             }
             text={localize('Cashier')}

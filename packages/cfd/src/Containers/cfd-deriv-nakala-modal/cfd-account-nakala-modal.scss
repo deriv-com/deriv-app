@@ -23,14 +23,14 @@
     }
 
     &__description {
-        margin-bottom: 3.2rem;
+        margin-bottom: 1rem;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         p {
             margin-bottom: 0.8rem;
-            line-height: 16px;
-            text-align: center;
-            font-size: 15px;
             color: #101213;
 
             &:last-child {
@@ -88,19 +88,14 @@
             text-align: center;
 
             a {
-                color: var(--brand-red-coral);
-                text-decoration: none;
+                text-decoration: underline;
                 font-weight: bold;
-
-                &:hover {
-                    text-decoration: underline;
-                }
             }
         }
 
         &-code {
-            width: 140px;
-            height: 140px;
+            width: 80px;
+            height: 80px;
             margin-bottom: 0.8rem;
         }
 
@@ -146,7 +141,7 @@
         }
 
         &__login-specs {
-            margin: 0 0 2.4rem;
+            margin: 0;
             display: flex;
             flex-direction: column;
             gap: 0.1rem;

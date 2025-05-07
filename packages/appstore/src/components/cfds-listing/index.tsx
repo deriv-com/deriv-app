@@ -271,7 +271,6 @@ const CFDsListing = observer(() => {
                     <CFDsDescription />
                     {is_real && !is_nakala_Linked && (
                         <ProductLinkedBanner
-                            icon='DerivNakala'
                             description={localize('Copy trading with Deriv Nakala.')}
                             onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
                         />

@@ -1,21 +1,23 @@
 import React from 'react';
+
 import { Text } from '@deriv/components';
-import TradingPlatformIconProps, { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
+
+import DerivNakala from '../../../assets/svgs/trading-platform/ic-brand-deriv-nakala.svg';
+
 import './product-linked-banner.scss';
 
 interface ProductLinkedBannerProps {
-    icon: keyof typeof PlatformIcons;
     description: string;
     onClick: () => void;
 }
 
-const ProductLinkedBanner: React.FC<ProductLinkedBannerProps> = ({ icon, description, onClick }) => {
+const ProductLinkedBanner: React.FC<ProductLinkedBannerProps> = ({ description, onClick }) => {
     return (
         <div className='product-linked-banner' onClick={onClick}>
             <div className='product-linked-banner__content'>
                 <div className='product-linked-banner__icon'>
-                    <TradingPlatformIconProps icon={icon} />
+                    <DerivNakala width={32} height={32} />
                 </div>
                 <Text size='xs' color='prominent'>
                     {description}

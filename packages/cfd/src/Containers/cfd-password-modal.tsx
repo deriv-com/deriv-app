@@ -37,9 +37,7 @@ import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
 import classNames from 'classnames';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
-import CFDDerivNakalaInfo, {
-    CFDDerivNakalaLinkAccountSuccess,
-} from './cfd-deriv-nakala-modal/cfd-account-nakala-modal';
+import CFDDerivNakalaInfo, { CFDDerivNakalaLinkAccount } from './cfd-deriv-nakala-modal/cfd-account-nakala-modal';
 import Cookies from 'js-cookie';
 
 const MT5CreatePassword = makeLazyLoader(
@@ -1006,7 +1004,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     onUnmount={setNakalaLinkedCookie}
                     width={isDesktop ? '485px' : '100%'}
                 >
-                    <CFDDerivNakalaLinkAccountSuccess />
+                    <CFDDerivNakalaLinkAccount isSuccess />
                 </Modal>
             );
         }
@@ -1020,7 +1018,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 onUnmount={setNakalaLinkedCookie}
             >
                 <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
-                    <CFDDerivNakalaLinkAccountSuccess />
+                    <CFDDerivNakalaLinkAccount isSuccess />
                 </Div100vhContainer>
             </PageOverlay>
         );

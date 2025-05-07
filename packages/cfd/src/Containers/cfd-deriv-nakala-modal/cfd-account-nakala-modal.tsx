@@ -90,7 +90,12 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
     );
 };
 
-export const CFDDerivNakalaLinkAccount = observer(() => {
+interface TCFDDerivNakalaLinkAccountProps {
+    isSuccess?: boolean;
+}
+
+export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAccountProps) => {
+    const { isSuccess = false } = props;
     const { traders_hub } = useStore();
     const { combined_cfd_mt5_accounts } = traders_hub;
 
@@ -103,13 +108,35 @@ export const CFDDerivNakalaLinkAccount = observer(() => {
             <div className='cfd-nakala-modal'>
                 <div className='cfd-nakala-modal__logo-container'>
                     <div className='cfd-nakala-modal__logo'>
-                        <TradingPlatformIcon icon='DerivNakala' size={64} />
+                        {isSuccess ? (
+                            <LinkedSuccess width={64} height={64} />
+                        ) : (
+                            <TradingPlatformIcon icon='DerivNakala' size={64} />
+                        )}
                     </div>
                 </div>
 
+                {isSuccess && (
+                    <div className='cfd-nakala-modal__title'>
+                        <Text as='h3' weight='bold'>
+                            <Localize i18n_default_text='Your MT5 Standard account is ready' />
+                        </Text>
+                    </div>
+                )}
+
                 <div className='cfd-nakala-modal__description'>
-                    <Text as='p' size='s'>
-                        <Localize i18n_default_text='Link your MT5 Standard account to the Deriv Nakala app using these details:' />
+                    <Text align='center' as='p'>
+                        {isSuccess ? (
+                            <Localize
+                                components={[<strong key={0} />]}
+                                i18n_default_text='Link your MT5 Standard account to the <0>Deriv Nakala app</0> using these details:'
+                            />
+                        ) : (
+                            <Localize
+                                components={[<strong key={0} />]}
+                                i18n_default_text='<0>Deriv Nakala app</0> should be linked to your MT5 Standard Account, using these details:'
+                            />
+                        )}
                     </Text>
                 </div>
 
@@ -138,7 +165,7 @@ export const CFDDerivNakalaLinkAccount = observer(() => {
                         </Text>
                     </div>
                     <div className='cfd-nakala-modal__qr-section-code'>
-                        <NakalaQR width='140' height='140' />
+                        <NakalaQR height='80' width='80' />
                     </div>
                     <div className='cfd-nakala-modal__qr-section-text'>
                         <Text size='xxs'>{localize('Scan to download the mobile app.')}</Text>
@@ -148,76 +175,6 @@ export const CFDDerivNakalaLinkAccount = observer(() => {
             <div className={`cfd-nakala-modal__footer ${!isDesktop() && 'cfd-nakala-modal__footer--info-mobile'}`}>
                 <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary large>
                     <Localize i18n_default_text='Open Deriv Nakala web' />
-                </Button>
-            </div>
-        </React.Fragment>
-    );
-});
-
-export const CFDDerivNakalaLinkAccountSuccess = observer(() => {
-    const { traders_hub } = useStore();
-    const { combined_cfd_mt5_accounts } = traders_hub;
-
-    const mt5_trade_account = combined_cfd_mt5_accounts.find(
-        account =>
-            account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
-    );
-    return (
-        <React.Fragment>
-            <div className='cfd-nakala-modal'>
-                <div className='cfd-nakala-modal__logo-container'>
-                    <div className='cfd-nakala-modal__logo'>
-                        <LinkedSuccess width={64} height={64} />
-                    </div>
-                </div>
-
-                <div className='cfd-nakala-modal__title'>
-                    <Text as='h3' weight='bold' size='s'>
-                        <Localize i18n_default_text='Your MT5 Standard account is ready' />
-                    </Text>
-                </div>
-
-                <div className='cfd-nakala-modal__description'>
-                    <Text as='p' size='s'>
-                        <Localize i18n_default_text='Link your MT5 Standard account to the Deriv Nakala app using these details:' />
-                    </Text>
-                </div>
-
-                <div className='cfd-nakala-modal__login-specs'>
-                    <div className='cfd-nakala-modal__login-specs-item'>
-                        <Text className='cfd-nakala-modal--paragraph'>{localize('Server')}</Text>
-                        <SpecBox
-                            is_bold
-                            value={(mt5_trade_account as TAdditionalDetailsOfEachMT5Loginid)?.server_info?.environment}
-                        />
-                    </div>
-                    <div className='cfd-nakala-modal__login-specs-item'>
-                        <Text className='cfd-nakala-modal--paragraph'>{localize('Login id')}</Text>
-                        <SpecBox is_bold value={(mt5_trade_account as TTradingPlatformAccounts)?.display_login} />
-                    </div>
-                    <ModalInfo />
-                </div>
-
-                <div className='cfd-nakala-modal__qr-section'>
-                    <div className='cfd-nakala-modal__qr-section-help'>
-                        <Text size='xs'>
-                            {localize('Need help?')}{' '}
-                            <a href='https://deriv.copytrade-resource.com/' target='_blank' rel='noreferrer'>
-                                {localize('Check the guide')}
-                            </a>
-                        </Text>
-                    </div>
-                    <div className='cfd-nakala-modal__qr-section-code'>
-                        <NakalaQR width='140' height='140' />
-                    </div>
-                    <div className='cfd-nakala-modal__qr-section-text'>
-                        <Text size='xxs'>{localize('Scan to download the mobile app.')}</Text>
-                    </div>
-                </div>
-            </div>
-            <div className={`cfd-nakala-modal__footer ${!isDesktop() && 'cfd-nakala-modal__footer--info-mobile'}`}>
-                <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary large>
-                    <Localize i18n_default_text='Open Deriv Nakala app' />
                 </Button>
             </div>
         </React.Fragment>

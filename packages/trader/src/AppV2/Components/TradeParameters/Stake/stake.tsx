@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ActionSheet, TextField } from '@deriv-com/quill-ui';
+import { ActionSheet, TextField, Tooltip } from '@deriv-com/quill-ui';
 
 import useTradeError from 'AppV2/Hooks/useTradeError';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
@@ -40,17 +40,40 @@ const Stake = observer(({ is_minimized }: TTradeParametersProps) => {
 
     return (
         <React.Fragment>
-            <TextField
-                disabled={has_open_accu_contract || is_market_closed}
-                variant='fill'
-                readOnly
-                label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
-                noStatusIcon
-                onClick={() => setIsOpen(true)}
-                value={`${amount} ${getCurrencyDisplayCode(currency)}`}
-                className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
-                status={has_error && should_show_snackbar ? 'error' : 'neutral'}
-            />
+            {has_open_accu_contract ? (
+                <Tooltip
+                    tooltipContent={
+                        <Localize i18n_default_text='Parameters are disabled when you have an open position.' />
+                    }
+                    tooltipPosition={is_minimized ? 'top' : 'bottom'}
+                    variant='base'
+                    hasArrow={true}
+                >
+                    <TextField
+                        disabled={has_open_accu_contract || is_market_closed}
+                        variant='fill'
+                        readOnly
+                        label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
+                        noStatusIcon
+                        onClick={() => setIsOpen(true)}
+                        value={`${amount} ${getCurrencyDisplayCode(currency)}`}
+                        className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                        status={has_error && should_show_snackbar ? 'error' : 'neutral'}
+                    />
+                </Tooltip>
+            ) : (
+                <TextField
+                    disabled={has_open_accu_contract || is_market_closed}
+                    variant='fill'
+                    readOnly
+                    label={<Localize i18n_default_text='Stake' key={`stake${is_minimized ? '-minimized' : ''}`} />}
+                    noStatusIcon
+                    onClick={() => setIsOpen(true)}
+                    value={`${amount} ${getCurrencyDisplayCode(currency)}`}
+                    className={clsx('trade-params__option', is_minimized && 'trade-params__option--minimized')}
+                    status={has_error && should_show_snackbar ? 'error' : 'neutral'}
+                />
+            )}
             <ActionSheet.Root
                 isOpen={is_open}
                 onClose={onClose}

@@ -76,20 +76,18 @@ const ContractAudit = ({
     }
     return (
         <div className='contract-audit__wrapper'>
-            <Tabs top className='contract-audit__tabs' onTabItemClick={onTabItemClick}>
-                <div label={localize('Details')}>
-                    <ContractDetails {...props} />
-                </div>
-                {is_multiplier ? (
-                    <div label={localize('TP & SL History')}>
+            {is_accumulator ? (
+                <ContractDetails {...props} />
+            ) : (
+                <Tabs top className='contract-audit__tabs' onTabItemClick={onTabItemClick}>
+                    <div label={localize('Details')}>
+                        <ContractDetails {...props} />
+                    </div>
+                    <div label={localize(is_multiplier ? 'TP & SL History' : 'TP History')}>
                         <ContractHistory currency={currency} history={update_history} />
                     </div>
-                ) : (
-                    <div label={localize('TP History')}>
-                        <ContractHistory currency={currency} history={update_history} />
-                    </div>
-                )}
-            </Tabs>
+                </Tabs>
+            )}
         </div>
     );
 };

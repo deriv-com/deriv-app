@@ -694,6 +694,7 @@ export default class CFDStore extends BaseStore {
     }
 
     toggleMT5TradeModal() {
+        this.is_linked_nakala_modal_visible = false;
         this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
     }
 

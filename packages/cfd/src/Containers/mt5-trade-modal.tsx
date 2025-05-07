@@ -77,7 +77,7 @@ const MT5TradeModal = observer(
                         title={is_linked_nakala_modal_visible ? localize('Deriv Nakala') : localize('Trade')}
                         toggleModal={toggleModal}
                         should_header_stick_body={false}
-                        width='600px'
+                        width={is_linked_nakala_modal_visible ? '485px' : '600px'}
                         exit_classname='cfd-modal--custom-exit'
                     >
                         {is_linked_nakala_modal_visible ? <CFDDerivNakalaLinkAccount /> : <CFDTradeModal />}

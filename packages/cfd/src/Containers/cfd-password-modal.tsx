@@ -13,6 +13,8 @@ import {
     PasswordInput,
     PasswordMeter,
     Text,
+    PageOverlay,
+    Div100vhContainer,
 } from '@deriv/components';
 import {
     getCFDPlatformLabel,
@@ -38,6 +40,7 @@ import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../S
 import CFDDerivNakalaInfo, {
     CFDDerivNakalaLinkAccountSuccess,
 } from './cfd-deriv-nakala-modal/cfd-account-nakala-modal';
+import Cookies from 'js-cookie';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
@@ -656,7 +659,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const onCloseNakalaSuccessModal = () => {
         setLinkedNakalaModal(false);
+        updateMT5Status();
         closeDialogs();
+        disableCFDPasswordModal();
     };
 
     const closeOpenSuccess = () => {
@@ -976,29 +981,61 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const success_mt5_nakala_modal = (
-        <Modal
-            className={classNames('cfd-password-modal')}
-            has_close_icon
-            is_open={should_show_success && is_linked_nakala_modal_visible}
-            toggleModal={onCloseNakalaSuccessModal}
-            should_header_stick_body
-            renderTitle={''}
-            width='auto'
-        >
-            <CFDDerivNakalaLinkAccountSuccess />
-        </Modal>
-    );
+    const setNakalaLinkedCookie = () => {
+        const nakala_linked_cookie = 'nakala_linked';
+        const nakala_linked_cookie_value = 'true';
+        const nakala_linked_cookie_expiry = 365; // days
+
+        Cookies.set(nakala_linked_cookie, nakala_linked_cookie_value, {
+            expires: nakala_linked_cookie_expiry,
+            // domain: '.deriv.com',
+        });
+    };
+
+    const success_mt5_nakala_modal = () => {
+        if (isDesktop) {
+            return (
+                <Modal
+                    className={classNames('cfd-password-modal')}
+                    has_close_icon
+                    hasfull_height={isDesktop ? undefined : true}
+                    is_open={should_show_success && is_linked_nakala_modal_visible}
+                    toggleModal={onCloseNakalaSuccessModal}
+                    should_header_stick_body
+                    renderTitle={() => localize('Deriv Nakala')}
+                    onUnmount={setNakalaLinkedCookie}
+                    width={isDesktop ? '485px' : '100%'}
+                >
+                    <CFDDerivNakalaLinkAccountSuccess />
+                </Modal>
+            );
+        }
+        return (
+            <PageOverlay
+                is_open={should_show_success && is_linked_nakala_modal_visible}
+                portal_id='deriv_app'
+                header='Trade'
+                toggleModal={onCloseNakalaSuccessModal}
+                header_classname='cfd-trade-modal__mobile-title'
+                onUnmount={setNakalaLinkedCookie}
+            >
+                <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+                    <CFDDerivNakalaLinkAccountSuccess />
+                </Div100vhContainer>
+            </PageOverlay>
+        );
+    };
 
     const invalid_mt5_password_modal = isMobileOrTabletPortrait
         ? is_mt5_password_format_invalid
         : is_mt5_password_format_invalid_desktop;
+
     return (
         <React.Fragment>
             {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
             {password_modal}
             {password_dialog}
-            {is_linked_nakala_modal_visible && success_mt5_nakala_modal}
+            {is_linked_nakala_modal_visible && success_mt5_nakala_modal()}
             <SuccessDialog
                 is_open={should_show_success && !is_linked_nakala_modal_visible}
                 toggleModal={closeModal}

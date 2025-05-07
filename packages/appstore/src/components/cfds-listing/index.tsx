@@ -1,35 +1,38 @@
 import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
+import Cookies from 'js-cookie';
+
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Loading, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
-    formatMoney,
-    MT5_ACCOUNT_STATUS,
-    TRADING_PLATFORM_STATUS,
-    makeLazyLoader,
-    moduleLoader,
-    setPerformanceValue,
-    cacheTrackEvents,
-} from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
-import { localize } from '@deriv/translations';
-import ListingContainer from 'Components/containers/listing-container';
-import AddOptionsAccount from 'Components/add-options-account';
-import TradingAppCard from 'Components/containers/trading-app-card';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
-import CompareAccount from 'Components/compare-account';
-import CFDsDescription from 'Components/elements/cfds-description';
-import { getHasDivider } from 'Constants/utils';
-import {
-    useMT5SVGEligibleToMigrate,
-    useTradingPlatformStatus,
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
 } from '@deriv/hooks';
+import {
+    cacheTrackEvents,
+    CFD_PLATFORMS,
+    formatMoney,
+    makeLazyLoader,
+    moduleLoader,
+    MT5_ACCOUNT_STATUS,
+    setPerformanceValue,
+    TRADING_PLATFORM_STATUS,
+} from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import AddOptionsAccount from 'Components/add-options-account';
+import ProductLinkedBanner from 'Components/banners/product-linked-banner';
+import CompareAccount from 'Components/compare-account';
+import ListingContainer from 'Components/containers/listing-container';
+import TradingAppCard from 'Components/containers/trading-app-card';
+import CFDsDescription from 'Components/elements/cfds-description';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
+import { getHasDivider } from 'Constants/utils';
 
 import './cfds-listing.scss';
-import ProductLinkedBanner from 'Components/banners/product-linked-banner';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 const MigrationBanner = makeLazyLoader(
     () =>
@@ -133,6 +136,8 @@ const CFDsListing = observer(() => {
         }
     };
 
+    const is_nakala_Linked = Cookies.get('nakala_linked') === 'true';
+
     const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
         account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
     );
@@ -217,8 +222,8 @@ const CFDsListing = observer(() => {
         return null;
     }
 
-    const onGetAccount = (account: INakalaAcount, isNakala?: boolean) => {
-        let existing_account = account;
+    const onGetAccount = (account: INakalaAcount | null, isNakala?: boolean) => {
+        let existing_account = account as INakalaAcount;
         if (isNakala) {
             setLinkedNakalaModal(true);
             existing_account = {
@@ -264,11 +269,11 @@ const CFDsListing = observer(() => {
             description={
                 <div>
                     <CFDsDescription />
-                    {is_real && !has_mt5_standard_account && (
+                    {is_real && !is_nakala_Linked && (
                         <ProductLinkedBanner
                             icon='DerivNakala'
                             description={localize('Copy trading with Deriv Nakala.')}
-                            onClick={() => onGetAccount(null, true)}
+                            onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
                         />
                     )}
                 </div>

@@ -118,6 +118,26 @@
         padding: 15px 24px;
     }
 
+    &__footer--mobile {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    &__footer--info-mobile {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+
     .cfd-nakala-modal {
         &--paragraph {
             @include typeface(--paragraph-left-normal-black, none);
@@ -142,4 +162,15 @@
             }
         }
     }
+}
+
+.nakala-modal-info {
+    border-radius: 0.4rem;
+    background: rgba(55, 124, 252, 0.16);
+    display: flex;
+    padding: 0.8rem;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin: 1.6rem auto;
+    width: 100%;
 }

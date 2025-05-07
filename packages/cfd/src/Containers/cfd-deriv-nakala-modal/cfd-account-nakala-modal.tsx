@@ -1,23 +1,36 @@
 import React from 'react';
 
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text, useDevice } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
+import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 import { Localize, localize } from '@deriv/translations';
+
+import LinkedSuccess from '../../Assets/svgs/ic-nakala-linked-success.svg';
+import NakalaQR from '../../Assets/svgs/ic-nakala-qr-code.svg';
 import TradingPlatformIcon from '../../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../../Components/props.types';
+import SpecBox from '../../Components/specbox';
+import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 import './cfd-account-nakala-modal.scss';
-import { observer, useStore } from '@deriv/stores';
-
-import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
-import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
-import PasswordBox from '../../Components/passwordbox';
-import SpecBox from '../../Components/specbox';
-import { TTradingPlatformAccounts } from '../../Components/props.types';
-import NakalaQR from '../../Assets/svgs/ic-nakala-qr-code.svg';
-import LinkedSuccess from '../../Assets/svgs/ic-nakala-linked-success.svg';
+import { isDesktop } from '@deriv/shared';
 
 interface CFDDerivNakalaModalProps {
     onclickAction: () => void;
 }
+
+const ModalInfo = () => {
+    return (
+        <div className='nakala-modal-info'>
+            <div className='nakala-modal-info_icon'>
+                <Icon icon='IcInfoLight' />
+            </div>
+            <Text size='xxxs'>
+                <Localize i18n_default_text='Use your MT5 password when linking your account.' />
+            </Text>
+        </div>
+    );
+};
 
 const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
     return (
@@ -68,8 +81,8 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
                     </div>
                 </div>
             </div>
-            <div className='cfd-nakala-modal__footer'>
-                <Button type='button' onClick={props.onclickAction} primary medium>
+            <div className={`cfd-nakala-modal__footer ${!isDesktop() && 'cfd-nakala-modal__footer--mobile'}`}>
+                <Button type='button' onClick={props.onclickAction} primary large>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </div>
@@ -112,12 +125,7 @@ export const CFDDerivNakalaLinkAccount = observer(() => {
                         <Text className='cfd-nakala-modal--paragraph'>{localize('Login id')}</Text>
                         <SpecBox is_bold value={(mt5_trade_account as TTradingPlatformAccounts)?.display_login} />
                     </div>
-                    {/* <div className='cfd-nakala-modal__login-specs-item'>
-                        <Text className='cfd-nakala-modal--paragraph'>{localize('Password')}</Text>
-                        <div className='cfd-nakala-modal--paragraph'>
-                            <PasswordBox platform='mt5' onClick={() => null} />
-                        </div>
-                    </div> */}
+                    <ModalInfo />
                 </div>
 
                 <div className='cfd-nakala-modal__qr-section'>
@@ -137,8 +145,8 @@ export const CFDDerivNakalaLinkAccount = observer(() => {
                     </div>
                 </div>
             </div>
-            <div className='cfd-nakala-modal__footer'>
-                <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary medium>
+            <div className={`cfd-nakala-modal__footer ${!isDesktop() && 'cfd-nakala-modal__footer--info-mobile'}`}>
+                <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary large>
                     <Localize i18n_default_text='Open Deriv Nakala web' />
                 </Button>
             </div>
@@ -187,12 +195,7 @@ export const CFDDerivNakalaLinkAccountSuccess = observer(() => {
                         <Text className='cfd-nakala-modal--paragraph'>{localize('Login id')}</Text>
                         <SpecBox is_bold value={(mt5_trade_account as TTradingPlatformAccounts)?.display_login} />
                     </div>
-                    {/* <div className='cfd-nakala-modal__login-specs-item'>
-                        <Text className='cfd-nakala-modal--paragraph'>{localize('Password')}</Text>
-                        <div className='cfd-nakala-modal--paragraph'>
-                            <PasswordBox platform='mt5' onClick={() => null} />
-                        </div>
-                    </div> */}
+                    <ModalInfo />
                 </div>
 
                 <div className='cfd-nakala-modal__qr-section'>
@@ -212,8 +215,8 @@ export const CFDDerivNakalaLinkAccountSuccess = observer(() => {
                     </div>
                 </div>
             </div>
-            <div className='cfd-nakala-modal__footer'>
-                <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary medium>
+            <div className={`cfd-nakala-modal__footer ${!isDesktop() && 'cfd-nakala-modal__footer--info-mobile'}`}>
+                <Button type='button' onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')} primary large>
                     <Localize i18n_default_text='Open Deriv Nakala app' />
                 </Button>
             </div>

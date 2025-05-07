@@ -94,8 +94,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         p2p_settings,
     } = useP2PSettings();
 
-    const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
     React.useEffect(() => {
         if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
@@ -359,7 +357,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <MobileDrawer.Item>
                                     <MenuLink
                                         link_to={routes.traders_hub}
-                                        icon={TradersHubIcon}
+                                        icon={'IcAppstoreTradersHubHome'}
                                         text={localize("Trader's Hub")}
                                         onClickLink={toggleDrawer}
                                         is_active={route === routes.traders_hub}

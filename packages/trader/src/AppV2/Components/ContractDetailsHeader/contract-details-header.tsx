@@ -30,7 +30,7 @@ const ContractDetailsHeader = observer(() => {
                     onClick={handleBack}
                 />
                 <Text size='md' bold color='quill-typography__color--prominent'>
-                    <Localize i18n_default_text='Contract Details' />
+                    <Localize i18n_default_text='Contract details' />
                 </Text>
             </React.Suspense>
         </header>

@@ -189,7 +189,6 @@ const PositionsDrawer = observer(({ ...props }) => {
                     </Text>
                     <div
                         data-testid='dt_positions_drawer_close_icon'
-
                         id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}

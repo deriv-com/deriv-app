@@ -49,7 +49,7 @@ describe('useAccountSettingsRedirect', () => {
         expect(result.current.redirect_url).toBe(routes.personal_details);
     });
 
-    it('should return hub URL when user has wallet', () => {
+    it('should return high code URL when user has wallet but feature flag is off', () => {
         (useStore as jest.Mock).mockReturnValue({
             client: {
                 loginid: 'CR123456',
@@ -60,13 +60,12 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // In test environment, we should always get the staging URL
-        const expectedUrl =
-            'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=CR123456';
+        const expectedUrl = '/account/personal-details';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
 
-    it('should return hub URL when hub redirection is enabled', () => {
+    it('should return high code URL when hub redirection is enabled but feature flag is off', () => {
         (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
             isHubRedirectionEnabled: true,
         });
@@ -74,8 +73,7 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // In test environment, we should always get the staging URL
-        const expectedUrl =
-            'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=CR123456';
+        const expectedUrl = '/account/personal-details';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });

@@ -1,19 +1,17 @@
 import React from 'react';
 
-import { Button, Icon, Text, useDevice } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
 import { Localize, localize } from '@deriv/translations';
 
-import LinkedSuccess from '../../Assets/svgs/ic-nakala-linked-success.svg';
-import NakalaQR from '../../Assets/svgs/ic-nakala-qr-code.svg';
 import TradingPlatformIcon from '../../Assets/svgs/trading-platform';
 import { TTradingPlatformAccounts } from '../../Components/props.types';
 import SpecBox from '../../Components/specbox';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 import './cfd-account-nakala-modal.scss';
-import { isDesktop } from '@deriv/shared';
 
 interface CFDDerivNakalaModalProps {
     onclickAction: () => void;
@@ -109,7 +107,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                 <div className='cfd-nakala-modal__logo-container'>
                     <div className='cfd-nakala-modal__logo'>
                         {isSuccess ? (
-                            <LinkedSuccess width={64} height={64} />
+                            <Icon icon='IcRebrandingNakalaLinkedSuccess' width={64} height={64} />
                         ) : (
                             <TradingPlatformIcon icon='DerivNakala' size={64} />
                         )}
@@ -165,7 +163,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                         </Text>
                     </div>
                     <div className='cfd-nakala-modal__qr-section-code'>
-                        <NakalaQR height='80' width='80' />
+                        <Icon icon='IcRebrandingNakalaQrCode' height={80} width={80} />
                     </div>
                     <div className='cfd-nakala-modal__qr-section-text'>
                         <Text size='xxs'>{localize('Scan to download the mobile app.')}</Text>

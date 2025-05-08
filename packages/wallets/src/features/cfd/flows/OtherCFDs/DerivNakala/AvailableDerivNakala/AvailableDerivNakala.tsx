@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from '@deriv/components';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
@@ -8,7 +9,6 @@ import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useIsRtl from '../../../../../../hooks/useIsRtl';
-import DerivNakala from '../../../../../../public/images/ic-account-deriv-nakala.svg';
 import { CFDDerivNakalaLinkAccount } from '../../../../modals/DerivNakalaModal/DerivAccountNakala';
 
 const AvailableNakalaTradeAccount: React.FC = () => {
@@ -22,7 +22,7 @@ const AvailableNakalaTradeAccount: React.FC = () => {
     return (
         <TradingAccountCard onClick={() => onPressNakala()}>
             <TradingAccountCard.Icon data-testid='dt_icon_dxtrade'>
-                <DerivNakala height={48} width={48} />
+                <Icon height={48} icon='IcRebrandingDerivNakala' width={48} />
             </TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content>

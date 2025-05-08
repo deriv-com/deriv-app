@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
-
-import DerivNakala from '../../../assets/svgs/trading-platform/ic-brand-deriv-nakala.svg';
 
 import './product-linked-banner.scss';
 
@@ -17,7 +15,7 @@ const ProductLinkedBanner: React.FC<ProductLinkedBannerProps> = ({ description, 
         <div className='product-linked-banner' onClick={onClick}>
             <div className='product-linked-banner__content'>
                 <div className='product-linked-banner__icon'>
-                    <DerivNakala width={32} height={32} />
+                    <Icon icon='IcRebrandingDerivNakala' width={32} height={32} />
                 </div>
                 <Text size='xs' color='prominent'>
                     {description}

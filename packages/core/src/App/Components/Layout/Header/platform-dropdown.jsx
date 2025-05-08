@@ -20,20 +20,26 @@ const PlatformBox = ({ platform: { icon, description } }) => (
         </div>
     </React.Fragment>
 );
-const appendAccountParamToUrl = link_to => {
-    const account_param = window.location.search.match(/[?&]account=([^&]*)/);
-    if (account_param) {
-        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${account_param[1]}`;
+const appendAccountParamToUrl = (link_to, client) => {
+    const { is_virtual, currency } = client;
+
+    if (is_virtual) {
+        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=demo`;
     }
+
+    if (currency) {
+        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${currency}`;
+    }
+
     return link_to;
 };
 
-const PlatformDropdownContent = ({ platform, app_routing_history }) => {
+const PlatformDropdownContent = ({ platform, app_routing_history, client }) => {
     return (
         (platform.link_to && (
             <BinaryLink
                 data-testid='dt_platform_dropdown'
-                to={appendAccountParamToUrl(platform.link_to)}
+                to={appendAccountParamToUrl(platform.link_to, client)}
                 // This is here because in routes-config it needs to have children, but not in menu
                 exact={platform.link_to === routes.trade}
                 className='platform-dropdown__list-platform'
@@ -45,7 +51,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
         )) || (
             <a
                 data-testid='dt_platform_dropdown_link'
-                href={appendAccountParamToUrl(platform.href)}
+                href={appendAccountParamToUrl(platform.href, client)}
                 className={`platform-dropdown__list-platform ${
                     getActivePlatform(app_routing_history) === platform.name ? 'active' : ''
                 }`}
@@ -111,7 +117,11 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
                 {platform_config.map(platform => {
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
-                            <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />
+                            <PlatformDropdownContent
+                                platform={platform}
+                                app_routing_history={app_routing_history}
+                                client={client}
+                            />
                         </div>
                     );
                 })}

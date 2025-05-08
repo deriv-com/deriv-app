@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
+    useAccountSettingsRedirect,
     useAccountTransferVisible,
     useAuthorize,
     useOauth2,
@@ -64,6 +65,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
+    const { mobile_redirect_url } = useAccountSettingsRedirect();
     const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
@@ -178,6 +180,19 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const getRoutesWithSubMenu = (route_config, idx) => {
         const has_access = route_config.is_authenticated ? is_logged_in : true;
         if (!has_access) return null;
+
+        if (route_config.path === routes.account && mobile_redirect_url !== routes.account) {
+            return (
+                <MobileDrawer.Item key={idx}>
+                    <MenuLink
+                        link_to={mobile_redirect_url}
+                        icon={route_config.icon_component}
+                        text={route_config.getTitle()}
+                        onClickLink={toggleDrawer}
+                    />
+                </MobileDrawer.Item>
+            );
+        }
 
         if (!route_config.routes) {
             return (

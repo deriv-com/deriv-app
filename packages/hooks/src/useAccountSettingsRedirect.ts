@@ -1,5 +1,6 @@
-import { useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+
 import useIsHubRedirectionEnabled from './useIsHubRedirectionEnabled';
 
 export const useAccountSettingsRedirect = () => {
@@ -8,7 +9,7 @@ export const useAccountSettingsRedirect = () => {
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     // Determine if we should use the new hub endpoints
-    const should_use_hub = has_wallet || isHubRedirectionEnabled;
+    const should_use_hub = has_wallet && isHubRedirectionEnabled;
 
     let redirect_url;
 

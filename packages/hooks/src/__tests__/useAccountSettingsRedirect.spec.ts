@@ -68,7 +68,8 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // In test environment, we should always get the staging URL
-        const expectedUrl = 'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
@@ -81,7 +82,8 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // In test environment, we should always get the staging URL
-        const expectedUrl = 'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
@@ -100,7 +102,8 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // In test environment, we should always get the staging URL
-        const expectedUrl = 'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
@@ -125,7 +128,8 @@ describe('useAccountSettingsRedirect', () => {
         const { result } = renderHook(() => useAccountSettingsRedirect());
 
         // The URL should now contain the new account ID
-        const expectedUrl = 'https://hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=BTC';
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=BTC';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });

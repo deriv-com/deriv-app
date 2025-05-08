@@ -21,11 +21,9 @@ const PlatformBox = ({ platform: { icon, description } }) => (
     </React.Fragment>
 );
 const appendAccountParamToUrl = link_to => {
-    if (link_to === routes.bot) {
-        const account_param = window.location.search.match(/[?&]account=([^&]*)/);
-        if (account_param) {
-            return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${account_param[1]}`;
-        }
+    const account_param = window.location.search.match(/[?&]account=([^&]*)/);
+    if (account_param) {
+        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${account_param[1]}`;
     }
     return link_to;
 };

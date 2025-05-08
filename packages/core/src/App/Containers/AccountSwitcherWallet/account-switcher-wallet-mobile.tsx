@@ -27,8 +27,13 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     }, [toggle]);
 
     const handleTradersHubRedirect = () => {
+        const url_query_string = window.location.search;
+        const url_params = new URLSearchParams(url_query_string);
+        const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
         if (isHubRedirectionEnabled) {
-            window.location.assign(platforms.tradershub_os.url);
+            window.location.assign(
+                `${platforms.tradershub_os.url}/redirect?action=redirect_to&redirect_to=cfds${account_currency ? `&account=${account_currency}` : ''}`
+            );
             return;
         }
         closeAccountsDialog();

@@ -26,7 +26,7 @@ const DurationChips = ({
                             key={`${item.text}-${index}`}
                             selected={unit == item.value}
                             className='duration-container__chips__chip'
-                            onClick={() => onChangeUnit(item.value)}
+                            onClick={() => unit !== item.value && onChangeUnit(item.value)}
                         >
                             <Text size='sm'>{item.text}</Text>
                         </Chip.Selectable>

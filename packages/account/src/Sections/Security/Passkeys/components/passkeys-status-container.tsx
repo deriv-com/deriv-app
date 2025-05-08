@@ -1,14 +1,12 @@
 import { observer } from '@deriv/stores';
-
-import { TCurrentManagedPasskey, TOnPasskeyMenuClick, TPasskey } from '../passkeys';
-import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../passkeys-configs';
-
 import { NoPasskeys } from './no-passkeys';
+import { TCurrentManagedPasskey, TOnPasskeyMenuClick, TPasskey } from '../passkeys';
 import { PasskeyCreated } from './passkey-created';
-import { PasskeyRemoved } from './passkey-removed';
-import { PasskeyRename } from './passkey-rename';
+import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../passkeys-configs';
 import { PasskeysLearnMore } from './passkeys-learn-more';
 import { PasskeysList } from './passkeys-list';
+import { PasskeyRename } from './passkey-rename';
+import { PasskeyRemoved } from './passkey-removed';
 import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysStatusContainer = {
@@ -36,7 +34,12 @@ export const PasskeysStatusContainer = observer(
                     />
                 );
             case PASSKEY_STATUS_CODES.LEARN_MORE:
-                return <PasskeysLearnMore onSecondaryButtonClick={onSecondaryButtonClick} />;
+                return (
+                    <PasskeysLearnMore
+                        onPrimaryButtonClick={onPrimaryButtonClick}
+                        onSecondaryButtonClick={onSecondaryButtonClick}
+                    />
+                );
             case PASSKEY_STATUS_CODES.NO_PASSKEY:
                 return (
                     <NoPasskeys

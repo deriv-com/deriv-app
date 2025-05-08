@@ -20,6 +20,7 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                 src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
                 is_mobile={is_mobile}
                 data_testid={data_testid}
+                should_show_controls={true}
             />
         </div>
     );

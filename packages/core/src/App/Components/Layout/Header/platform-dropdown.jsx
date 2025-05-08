@@ -20,13 +20,22 @@ const PlatformBox = ({ platform: { icon, description } }) => (
         </div>
     </React.Fragment>
 );
+const appendAccountParamToUrl = link_to => {
+    if (link_to === routes.bot) {
+        const account_param = window.location.search.match(/[?&]account=([^&]*)/);
+        if (account_param) {
+            return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${account_param[1]}`;
+        }
+    }
+    return link_to;
+};
 
 const PlatformDropdownContent = ({ platform, app_routing_history }) => {
     return (
         (platform.link_to && (
             <BinaryLink
                 data-testid='dt_platform_dropdown'
-                to={platform.link_to}
+                to={appendAccountParamToUrl(platform.link_to)}
                 // This is here because in routes-config it needs to have children, but not in menu
                 exact={platform.link_to === routes.trade}
                 className='platform-dropdown__list-platform'
@@ -38,7 +47,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
         )) || (
             <a
                 data-testid='dt_platform_dropdown_link'
-                href={platform.href}
+                href={appendAccountParamToUrl(platform.href)}
                 className={`platform-dropdown__list-platform ${
                     getActivePlatform(app_routing_history) === platform.name ? 'active' : ''
                 }`}

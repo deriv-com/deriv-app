@@ -19,7 +19,7 @@ export const useAccountSettingsRedirect = () => {
             process.env.NODE_ENV === 'production' ? 'https://hub.deriv.com' : 'https://staging-hub.deriv.com';
 
         redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=home&account=${account_type}`;
-        mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=personal-details&account=${account_type}`;
+        mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=home&account=${account_type}`;
     } else {
         redirect_url = routes.personal_details;
         mobile_redirect_url = routes.account;

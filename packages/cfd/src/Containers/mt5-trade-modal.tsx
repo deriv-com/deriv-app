@@ -1,15 +1,16 @@
 import React from 'react';
-import { useDevice } from '@deriv-com/ui';
 
 import { Div100vhContainer, Modal, PageOverlay, UILoader } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
+import { CFDDerivNakalaLinkAccount } from './account-nakala-modal/account-nakala-modal';
+import CTraderDerivXTradeModal from './ctrader-derivx-trade-modal';
 import DMT5TradeModal from './dmt5-trade-modal';
 import { TCFDPasswordReset } from './props.types';
-import CTraderDerivXTradeModal from './ctrader-derivx-trade-modal';
 
 type TMT5TradeModalProps = {
     is_eu_user: boolean;
@@ -28,7 +29,12 @@ type TMT5TradeModalProps = {
 const MT5TradeModal = observer(
     ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
         const { isDesktop } = useDevice();
-        const { traders_hub, common } = useStore();
+        const {
+            traders_hub,
+            common,
+            modules: { cfd },
+        } = useStore();
+        const { is_nakala_banner_visible } = cfd;
 
         const { show_eu_related_content } = traders_hub;
         const { platform } = common;
@@ -68,13 +74,13 @@ const MT5TradeModal = observer(
                 {isDesktop ? (
                     <Modal
                         is_open={is_open}
-                        title={localize('Trade')}
+                        title={is_nakala_banner_visible ? localize('Deriv Nakala') : localize('Trade')}
                         toggleModal={toggleModal}
                         should_header_stick_body={false}
-                        width='600px'
+                        width={is_nakala_banner_visible ? '485px' : '600px'}
                         exit_classname='cfd-modal--custom-exit'
                     >
-                        <CFDTradeModal />
+                        {is_nakala_banner_visible ? <CFDDerivNakalaLinkAccount /> : <CFDTradeModal />}
                     </Modal>
                 ) : (
                     <PageOverlay
@@ -85,7 +91,7 @@ const MT5TradeModal = observer(
                         header_classname='cfd-trade-modal__mobile-title'
                     >
                         <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
-                            <CFDTradeModal />
+                            {is_nakala_banner_visible ? <CFDDerivNakalaLinkAccount /> : <CFDTradeModal />}
                         </Div100vhContainer>
                     </PageOverlay>
                 )}

@@ -1,31 +1,36 @@
 import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
+import Cookies from 'js-cookie';
+
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Loading, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
-    formatMoney,
-    MT5_ACCOUNT_STATUS,
-    TRADING_PLATFORM_STATUS,
-    makeLazyLoader,
-    moduleLoader,
-    setPerformanceValue,
-    cacheTrackEvents,
-} from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
-import { localize } from '@deriv/translations';
-import ListingContainer from 'Components/containers/listing-container';
-import AddOptionsAccount from 'Components/add-options-account';
-import TradingAppCard from 'Components/containers/trading-app-card';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
-import CompareAccount from 'Components/compare-account';
-import CFDsDescription from 'Components/elements/cfds-description';
-import { getHasDivider } from 'Constants/utils';
-import {
-    useMT5SVGEligibleToMigrate,
-    useTradingPlatformStatus,
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
 } from '@deriv/hooks';
+import {
+    cacheTrackEvents,
+    CFD_PLATFORMS,
+    formatMoney,
+    makeLazyLoader,
+    moduleLoader,
+    MT5_ACCOUNT_STATUS,
+    setPerformanceValue,
+    TRADING_PLATFORM_STATUS,
+} from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import AddOptionsAccount from 'Components/add-options-account';
+import NakalaLinkedBanner from 'Components/banners/nakala-linked-banner';
+import CompareAccount from 'Components/compare-account';
+import ListingContainer from 'Components/containers/listing-container';
+import TradingAppCard from 'Components/containers/trading-app-card';
+import CFDsDescription from 'Components/elements/cfds-description';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
+import { getHasDivider } from 'Constants/utils';
 
 import './cfds-listing.scss';
 
@@ -39,6 +44,11 @@ const MigrationBanner = makeLazyLoader(
         ),
     () => <Loading />
 )();
+
+interface INakalaAcount extends DetailsOfEachMT5Loginid {
+    platform: string;
+    product: string;
+}
 
 const CFDsListing = observer(() => {
     const { isDesktop } = useDevice();
@@ -79,6 +89,7 @@ const CFDsListing = observer(() => {
         setServerMaintenanceModal,
         setProduct,
         setJurisdictionSelectedShortcode,
+        setNakalaBannerVisible,
     } = cfd;
 
     const {
@@ -101,6 +112,11 @@ const CFDsListing = observer(() => {
         defaultValue: false,
     });
 
+    const has_mt5_standard_account = combined_cfd_mt5_accounts.some(
+        account =>
+            account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
+    );
+
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -119,6 +135,8 @@ const CFDsListing = observer(() => {
                 break;
         }
     };
+
+    const is_nakala_Linked = Cookies.get('nakala_linked') === 'true';
 
     const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
         account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
@@ -204,6 +222,38 @@ const CFDsListing = observer(() => {
         return null;
     }
 
+    const onGetAccount = (account: INakalaAcount, isNakala?: boolean) => {
+        let existing_account = account as INakalaAcount;
+        if (isNakala) {
+            setNakalaBannerVisible(true);
+            existing_account = {
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'synthetic',
+                product: 'standard',
+            };
+        } else {
+            setNakalaBannerVisible(false);
+        }
+        setAccountType({
+            category: selected_account_type,
+            type: existing_account.market_type,
+        });
+        setProduct(existing_account.product);
+        setAppstorePlatform(existing_account.platform);
+        setJurisdictionSelectedShortcode(getDefaultJurisdiction());
+        getTradingPlatformStatus(existing_account.platform);
+    };
+
+    const onOpenNakala = () => {
+        const account: INakalaAcount = {
+            platform: CFD_PLATFORMS.MT5,
+            market_type: 'synthetic',
+            product: 'standard',
+        };
+        startTrade('mt5', account);
+        setNakalaBannerVisible(true);
+    };
+
     return (
         <ListingContainer
             title={
@@ -216,7 +266,17 @@ const CFDsListing = observer(() => {
                     </div>
                 )
             }
-            description={<CFDsDescription />}
+            description={
+                <div>
+                    <CFDsDescription />
+                    {is_real && !is_nakala_Linked && (
+                        <NakalaLinkedBanner
+                            description={localize('Copy trading with Deriv Nakala.')}
+                            onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
+                        />
+                    )}
+                </div>
+            }
         >
             {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
             <AddDerivAccount />
@@ -275,20 +335,12 @@ const CFDsListing = observer(() => {
                                         }
                                         if (hasUnavailableAccount || hasMaintenanceStatus)
                                             return setServerMaintenanceModal(true);
-
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
-                                            setAccountType({
-                                                category: selected_account_type,
-                                                type: existing_account.market_type,
-                                            });
-                                            setProduct(existing_account.product);
-                                            setAppstorePlatform(existing_account.platform);
-                                            setJurisdictionSelectedShortcode(getDefaultJurisdiction());
-                                            getTradingPlatformStatus(existing_account.platform);
+                                            onGetAccount(existing_account);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
@@ -506,6 +558,7 @@ const CFDsListing = observer(() => {
                     ) : (
                         <PlatformLoader />
                     )}
+
                     <React.Fragment>
                         <div className='cfd-full-row'>
                             <hr className='divider' />
@@ -647,6 +700,29 @@ const CFDsListing = observer(() => {
                     ) : (
                         <PlatformLoader />
                     )}
+                </Fragment>
+            )}
+
+            {is_real && has_mt5_standard_account && (
+                <Fragment>
+                    <div className='cfd-full-row'>
+                        <hr className='divider' />
+                    </div>
+                    <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                        <Text weight='bold'>{localize('Deriv Nakala')}</Text>
+                    </div>
+                    <TradingAppCard
+                        action_type='open'
+                        availability={selected_region}
+                        clickable_icon
+                        icon={'DerivNakala'}
+                        name={'Deriv Nakala'}
+                        platform={'mt5'}
+                        description={'Copy trading for CFDs on MT5.'}
+                        onAction={onOpenNakala}
+                        key={`trading_app_card_${'Deriv Nakala'}`}
+                        is_new
+                    />
                 </Fragment>
             )}
         </ListingContainer>

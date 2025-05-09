@@ -109,10 +109,11 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
     const details = StandardMt5;
 
     useEffect(() => {
-        const nakalaLinkedCookieExist = Cookies.get('nakala_linked');
+        const nakalaLinkedCookie = 'nakala_linked';
+
+        const nakalaLinkedCookieExist = Cookies.get(nakalaLinkedCookie);
         if (nakalaLinkedCookieExist) return;
 
-        const nakalaLinkedCookie = 'nakala_linked';
         const nakalaLinkedCookieValue = 'true';
         const nakalaLinkedCookieExpiry = 365; // days
 

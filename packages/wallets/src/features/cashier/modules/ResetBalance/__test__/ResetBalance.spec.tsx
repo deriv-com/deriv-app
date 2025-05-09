@@ -5,6 +5,12 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import useAllBalanceSubscription from '../../../../../hooks/useAllBalanceSubscription';
 import ResetBalance from '../ResetBalance';
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+    withRouter: Component => props => Component({ ...props, history: {}, location: {}, match: {} }),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useMutation: jest.fn(),
@@ -13,10 +19,6 @@ jest.mock('@deriv/api-v2', () => ({
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
     WalletLoader: () => <div>Loading...</div>,
-}));
-
-jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn(),
 }));
 
 jest.mock('../../../../../hooks/useAllBalanceSubscription', () => jest.fn());

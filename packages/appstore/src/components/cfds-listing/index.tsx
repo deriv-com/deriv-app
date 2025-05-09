@@ -718,7 +718,7 @@ const CFDsListing = observer(() => {
                         icon={'DerivNakala'}
                         name={'Deriv Nakala'}
                         platform={'mt5'}
-                        description={'Copy trading for CFDs on MT5.'}
+                        description={localize('Copy trading for CFDs on MT5.')}
                         onAction={onOpenNakala}
                         key={`trading_app_card_${'Deriv Nakala'}`}
                         is_new

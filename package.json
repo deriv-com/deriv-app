@@ -13,6 +13,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
+        "@tanstack/react-query": "^4.28.0",
         "@babel/eslint-parser": "^7.25.1",
         "@babel/plugin-proposal-decorators": "^7.24.7",
         "@babel/plugin-proposal-export-default-from": "^7.24.7",

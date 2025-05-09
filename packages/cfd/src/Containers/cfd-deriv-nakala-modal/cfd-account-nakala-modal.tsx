@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 import { Button, Icon, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
@@ -101,6 +102,22 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
         account =>
             account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
     );
+
+    useEffect(() => {
+        const nakalaLinkedCookie = 'nakala_linked';
+
+        const nakalaLinkedCookieExist = Cookies.get(nakalaLinkedCookie);
+        if (nakalaLinkedCookieExist) return;
+
+        const nakalaLinkedCookieValue = 'true';
+        const nakalaLinkedCookieExpiry = 365; // days
+
+        Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
+            domain: '.deriv.com',
+            expires: nakalaLinkedCookieExpiry,
+        });
+    }, []);
+
     return (
         <React.Fragment>
             <div className='cfd-nakala-modal'>

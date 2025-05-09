@@ -1,44 +1,46 @@
 import React from 'react';
 import { useHistory } from 'react-router';
+import classNames from 'classnames';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
-import { useDevice } from '@deriv-com/ui';
+
 import { SentEmailModal } from '@deriv/account';
-import '../sass/cfd.scss';
 import {
+    Div100vhContainer,
     FormSubmitButton,
     Icon,
     MobileDialog,
     Modal,
     MultiStep,
+    PageOverlay,
     PasswordInput,
     PasswordMeter,
     Text,
-    PageOverlay,
-    Div100vhContainer,
 } from '@deriv/components';
 import {
     getCFDPlatformLabel,
     getCFDPlatformNames,
     getErrorMessages,
-    routes,
-    validLength,
-    validPassword,
-    validMT5Password,
     makeLazyLoader,
     moduleLoader,
+    validLength,
+    validMT5Password,
+    validPassword,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
-import SuccessDialog from '../Components/success-dialog/success-dialog';
+import { useDevice } from '@deriv-com/ui';
+
 import MigrationSuccessModal from '../Components/migration-success-modal';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
-import classNames from 'classnames';
+import SuccessDialog from '../Components/success-dialog/success-dialog';
+import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
 import CFDDerivNakalaInfo, { CFDDerivNakalaLinkAccount } from './cfd-deriv-nakala-modal/cfd-account-nakala-modal';
-import Cookies from 'js-cookie';
+import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
+
+import '../sass/cfd.scss';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
@@ -979,17 +981,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
-    const setNakalaLinkedCookie = () => {
-        const nakala_linked_cookie = 'nakala_linked';
-        const nakala_linked_cookie_value = 'true';
-        const nakala_linked_cookie_expiry = 365; // days
-
-        Cookies.set(nakala_linked_cookie, nakala_linked_cookie_value, {
-            expires: nakala_linked_cookie_expiry,
-            domain: '.deriv.com',
-        });
-    };
-
     const success_mt5_nakala_modal = () => {
         if (isDesktop) {
             return (
@@ -1001,7 +992,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     toggleModal={onCloseNakalaSuccessModal}
                     should_header_stick_body
                     renderTitle={() => localize('Deriv Nakala')}
-                    onUnmount={setNakalaLinkedCookie}
                     width={isDesktop ? '485px' : '100%'}
                 >
                     <CFDDerivNakalaLinkAccount isSuccess />
@@ -1015,7 +1005,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 header='Trade'
                 toggleModal={onCloseNakalaSuccessModal}
                 header_classname='cfd-trade-modal__mobile-title'
-                onUnmount={setNakalaLinkedCookie}
             >
                 <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
                     <CFDDerivNakalaLinkAccount isSuccess />

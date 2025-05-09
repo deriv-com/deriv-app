@@ -20,7 +20,6 @@ import SwapFree from 'Assets/svgs/trading-platform/ic-appstore-swap-free.svg';
 import ZeroSpread from 'Assets/svgs/trading-platform/ic-appstore-zero-spread.svg';
 import Gold from 'Assets/svgs/trading-platform/ic-appstore-gold.svg';
 import Demo from 'Assets/svgs/trading-platform/ic-brand-demo.svg';
-import DerivNakala from 'Assets/svgs/trading-platform/ic-brand-deriv-nakala.svg';
 
 import { IconProps } from '../icon-types';
 
@@ -45,7 +44,6 @@ export const PlatformIcons = {
     ZeroSpread,
     Standard,
     Gold,
-    DerivNakala,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

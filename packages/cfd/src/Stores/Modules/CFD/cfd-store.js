@@ -1,16 +1,14 @@
-import { action, computed, makeObservable, observable, override, runInAction } from 'mobx';
-
+import { action, computed, observable, runInAction, makeObservable, override } from 'mobx';
 import {
-    CFD_PLATFORMS,
     getAccountListKey,
     getAccountTypeFields,
+    CFD_PLATFORMS,
+    WS,
     Jurisdiction,
     JURISDICTION_MARKET_TYPES,
     setPerformanceValue,
     startPerformanceEventTimer,
-    WS,
 } from '@deriv/shared';
-
 import BaseStore from '../../base-store';
 
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
@@ -46,7 +44,6 @@ export default class CFDStore extends BaseStore {
     is_account_unavailable_modal_visible = false;
     mt5_migration_error = '';
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
-    is_nakala_banner_visible = false;
 
     error_type = undefined;
 
@@ -98,7 +95,6 @@ export default class CFDStore extends BaseStore {
             is_from_mt5_migration_modal: observable,
             is_server_maintenance_modal_visible: observable,
             is_account_unavailable_modal_visible: observable,
-            is_nakala_banner_visible: observable,
             account_title: computed,
             current_list: computed,
             onMount: action.bound,
@@ -130,7 +126,6 @@ export default class CFDStore extends BaseStore {
             setIsFromMt5MigrationModal: action.bound,
             setServerMaintenanceModal: action.bound,
             setAccountUnavailableModal: action.bound,
-            setNakalaBannerVisible: action.bound,
             getAccountStatus: action.bound,
             creatMT5Password: action.bound,
             submitMt5Password: action.bound,
@@ -696,7 +691,6 @@ export default class CFDStore extends BaseStore {
     }
 
     toggleMT5TradeModal() {
-        this.is_nakala_banner_visible = false;
         this.is_mt5_trade_modal_visible = !this.is_mt5_trade_modal_visible;
     }
 
@@ -872,9 +866,5 @@ export default class CFDStore extends BaseStore {
 
     setAccountUnavailableModal(is_account_unavailable_modal_visible) {
         this.is_account_unavailable_modal_visible = is_account_unavailable_modal_visible;
-    }
-
-    setNakalaBannerVisible(is_nakala_banner_visible) {
-        this.is_nakala_banner_visible = is_nakala_banner_visible;
     }
 }

@@ -14,6 +14,7 @@ const CFDPlatformsListHeader: React.FC<{ isDesktop?: boolean; isEuRegion?: boole
     return isDesktop ? (
         <React.Fragment>
             <div className='wallets-cfd-list__header-compare-accounts'>
+                <Text> Hello </Text>
                 <Text size='xl' weight='bold'>
                     <Localize i18n_default_text='CFDs' />
                 </Text>

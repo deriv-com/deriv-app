@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { useFormikContext } from 'formik';
-import { useHistory } from 'react-router-dom';
+import { BrowserRouter, useHistory } from 'react-router-dom';
 import { APIProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -14,7 +14,9 @@ jest.mock('formik', () => ({
 }));
 
 jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
+    withRouter: Component => props => Component({ ...props, history: {}, location: {}, match: {} }),
 }));
 
 jest.mock('../../../../../../../components/ModalProvider', () => ({
@@ -92,7 +94,9 @@ describe('TransferFormDropdown', () => {
 
     const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
         <APIProvider>
-            <WalletsAuthProvider>{children}</WalletsAuthProvider>
+            <BrowserRouter>
+                <WalletsAuthProvider>{children}</WalletsAuthProvider>
+            </BrowserRouter>
         </APIProvider>
     );
 

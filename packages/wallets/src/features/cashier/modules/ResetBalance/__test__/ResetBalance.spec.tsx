@@ -10,13 +10,15 @@ jest.mock('@deriv/api-v2', () => ({
     useMutation: jest.fn(),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+    withRouter: Component => props => Component({ ...props, history: {}, location: {}, match: {} }),
+}));
+
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
     WalletLoader: () => <div>Loading...</div>,
-}));
-
-jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn(),
 }));
 
 jest.mock('../../../../../hooks/useAllBalanceSubscription', () => jest.fn());

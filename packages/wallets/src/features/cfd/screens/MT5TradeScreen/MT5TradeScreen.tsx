@@ -7,6 +7,7 @@ import {
     StandaloneArrowUpRightRegularIcon,
     StandaloneChartAreaRegularIcon,
 } from '@deriv/quill-icons';
+import { OSDetect } from '@deriv/shared';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, InlineMessage, Text, useDevice } from '@deriv-com/ui';
 import { InformationBanner, WalletBadge, WalletListCardBadge } from '../../../../components';
@@ -24,7 +25,6 @@ import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
-import { OSDetect } from '@deriv/shared';
 
 type MT5TradeScreenProps = {
     mt5Account?: TAddedMT5Account;

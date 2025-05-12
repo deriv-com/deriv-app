@@ -38,7 +38,7 @@ const ContractAudit = ({
     toggleHistoryTab,
     ...props
 }: TContractAudit) => {
-    const { contract_id, currency } = props.contract_info;
+    const { contract_id, currency, limit_order } = props.contract_info;
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
 
     const getSortedUpdateHistory = (history: TContractUpdateHistory) =>
@@ -46,11 +46,26 @@ const ContractAudit = ({
 
     const requestUpdatedHistory = React.useCallback((id?: number) => {
         if (!id) return;
-        WS.contractUpdateHistory(id)
-            .then((response: TResponse) => {
-                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
-            })
-            .catch(() => null);
+        if (is_accumulator) {
+            const take_profit_data = limit_order?.take_profit
+                ? [
+                      {
+                          ...limit_order.take_profit,
+                          order_amount:
+                              limit_order.take_profit.order_amount !== null
+                                  ? String(limit_order.take_profit.order_amount)
+                                  : undefined,
+                      },
+                  ]
+                : [];
+            setUpdateHistory(getSortedUpdateHistory(take_profit_data));
+        } else {
+            WS.contractUpdateHistory(id)
+                .then((response: TResponse) => {
+                    setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+                })
+                .catch(() => null);
+        }
     }, []);
 
     React.useEffect(() => {

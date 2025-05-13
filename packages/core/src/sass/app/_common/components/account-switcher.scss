@@ -15,7 +15,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 37rem;
+        width: 35rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -34,15 +34,12 @@
             width: 9rem;
         }
         @include mobile-screen {
-            width: 14rem;
+            width: 16.1rem;
             height: 4rem;
             top: -0.3rem;
 
             &:before {
                 display: none;
-            }
-            &--is-crypto {
-                width: 100%;
             }
         }
     }
@@ -51,7 +48,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 37rem;
+        width: 35rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -70,22 +67,12 @@
             width: 9rem;
         }
         @include mobile-screen {
-            width: 23rem;
+            width: 16.1rem;
             height: 4rem;
             top: -0.3rem;
 
             &:before {
                 display: none;
-            }
-            &--is-crypto {
-                width: 100%;
-            }
-        }
-
-        &--wallets {
-            width: 47rem;
-            @include mobile {
-                width: auto;
             }
         }
     }

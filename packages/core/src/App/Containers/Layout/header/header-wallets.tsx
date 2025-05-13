@@ -99,12 +99,17 @@ const MenuRight = observer(() => {
             {is_logging_in || is_single_logging_in || is_switching || isRedirectPage ? (
                 <div
                     id='dt_core_header_acc-info-preloader'
-                    className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {
+                    className={classNames('acc-info__preloader', {
+                        'acc-info__preloader__dtrader': !traders_hub_routes,
                         'acc-info__preloader__dtrader--no-currency': !currency,
-                        'acc-info__preloader__dtrader--is-crypto': is_crypto(currency),
                     })}
                 >
-                    <AccountsInfoLoaderWallets is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
+                    <AccountsInfoLoaderWallets
+                        is_logged_in={is_logged_in}
+                        is_mobile={is_mobile}
+                        is_traders_hub_routes={traders_hub_routes}
+                        speed={3}
+                    />
                 </div>
             ) : (
                 <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>

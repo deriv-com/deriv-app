@@ -133,12 +133,17 @@ const HeaderLegacy = observer(() => {
                     {is_logging_in || is_single_logging_in || is_switching ? (
                         <div
                             id='dt_core_header_acc-info-preloader'
-                            className={classNames('acc-info__preloader__dtrader', {
+                            className={classNames('acc-info__preloader', {
+                                'acc-info__preloader__dtrader': !traders_hub_routes,
                                 'acc-info__preloader__dtrader--no-currency': !currency,
-                                'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
                             })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />
+                            <AccountsInfoLoader
+                                is_logged_in={is_logged_in}
+                                is_mobile={!isDesktop}
+                                speed={3}
+                                is_traders_hub_routes={traders_hub_routes}
+                            />
                         </div>
                     ) : (
                         !is_from_tradershub_os && (

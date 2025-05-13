@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { Icon } from '@deriv/components';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import './nakala-linked-banner.scss';
@@ -13,9 +12,7 @@ const ProductLinkedBanner: FC<ProductLinkedBannerProps> = ({ description, onClic
     return (
         <div className='wallets-product-linked-banner' onClick={onClick}>
             <div className='wallets-product-linked-banner__content'>
-                <div className='wallets-product-linked-banner__icon'>
-                    <Icon height={32} icon='IcRebrandingDerivNakala' width={32} />
-                </div>
+                <div className='wallets-product-linked-banner__icon'>test 1</div>
                 <Text color='prominent' size='sm'>
                     {description}
                 </Text>

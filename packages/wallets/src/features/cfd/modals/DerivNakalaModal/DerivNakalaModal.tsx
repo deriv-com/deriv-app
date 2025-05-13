@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useSortedMT5Accounts } from '@deriv/api-v2';
-import { Icon } from '@deriv/components';
 import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -40,9 +39,7 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
             )}
             <div className='wallets-cfd-nakala-modal__body'>
                 <div className='wallets-cfd-nakala-modal__logo-container'>
-                    <div className='wallets-cfd-nakala-modal__logo'>
-                        <Icon height={64} icon='IcRebrandingDerivNakala' width={64} />
-                    </div>
+                    <div className='wallets-cfd-nakala-modal__logo'>test 6</div>
                 </div>
 
                 <div className='wallets-cfd-nakala-modal__description'>
@@ -136,13 +133,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
 
             <div className='wallets-cfd-nakala-modal__body'>
                 <div className='wallets-cfd-nakala-modal__logo-container'>
-                    <div className='wallets-cfd-nakala-modal__logo'>
-                        {isSuccess ? (
-                            <Icon height={64} icon='IcRebrandingNakalaLinkedSuccess' width={64} />
-                        ) : (
-                            <Icon height={64} icon='IcRebrandingDerivNakala' width={64} />
-                        )}
-                    </div>
+                    <div className='wallets-cfd-nakala-modal__logo'>{isSuccess ? `test 4` : `test 3`}</div>
                 </div>
 
                 {isSuccess && (
@@ -185,9 +176,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                             </a>
                         </Text>
                     </div>
-                    <div className='wallets-cfd-nakala-modal__qr-section-code'>
-                        <Icon height={80} icon='IcRebrandingNakalaQrCode' width={80} />
-                    </div>
+                    <div className='wallets-cfd-nakala-modal__qr-section-code'>test 5</div>
                     <div className='wallets-cfd-nakala-modal__qr-section-text'>
                         <Text size='xs'>{localize('Scan to download the mobile app.')}</Text>
                     </div>

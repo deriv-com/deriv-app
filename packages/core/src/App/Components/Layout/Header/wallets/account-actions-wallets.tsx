@@ -2,16 +2,15 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { routes, isTabletOs, TRoute } from '@deriv/shared';
 import { Button, Icon, Popover } from '@deriv/components';
+import { useIsHubRedirectionEnabled, useAccountSettingsRedirect } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { LoginButton } from '../login-button.jsx';
 import { SignupButton } from '../signup-button.jsx';
-import { BinaryLink } from '../../../Routes/index.js';
 import ToggleNotifications from '../toggle-notifications.jsx';
 import TradersHubOnboarding from '../../../../Containers/Layout/header/traders-hub-onboarding';
 import AccountInfoWallets from './account-info-wallets';
-import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import 'Sass/app/_common/components/account-switcher.scss';
 
 type TUiStore = ReturnType<typeof useStore>['ui'];
@@ -22,10 +21,12 @@ type TAccountActionsWallets = {
 
 // Helper components
 const AccountSettingsToggle = () => {
+    const { redirect_url } = useAccountSettingsRedirect();
+
     const accountSettings = (
-        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+        <a className='account-settings-toggle' href={redirect_url}>
             <Icon icon='IcUserOutline' />
-        </BinaryLink>
+        </a>
     );
 
     if (isTabletOs) return accountSettings;
@@ -89,10 +90,11 @@ const LoggedOutView = () => (
 
 const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActionsWallets) => {
     const { client, ui, notifications } = useStore();
-    const { is_logged_in, accounts, loginid } = client;
+    const { is_logged_in, accounts, loginid, has_wallet } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_accounts_switcher_on } = ui;
     const { isMobile } = useDevice();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { redirect_url } = useAccountSettingsRedirect();
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
@@ -118,7 +120,9 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
 
             window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         } else {
-            history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+            history.push(routes.wallets_transfer as unknown as Parameters<typeof history.push>[0], {
+                toAccountLoginId: loginid,
+            });
         }
     };
 

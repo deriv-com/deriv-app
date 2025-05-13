@@ -1,13 +1,13 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Button, Icon, Popover } from '@deriv/components';
+import { useAccountSettingsRedirect } from '@deriv/hooks';
 import { routes, formatMoney, isTabletOs } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import ToggleNotifications from './toggle-notifications.jsx';
-import { BinaryLink } from '../../Routes/index.js';
 import 'Sass/app/_common/components/account-switcher.scss';
 import { useDevice } from '@deriv-com/ui';
 
@@ -42,10 +42,12 @@ const AccountInfo = React.lazy(
 );
 
 const AccountSettingsToggle = () => {
+    const { redirect_url } = useAccountSettingsRedirect();
+
     const accountSettings = (
-        <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+        <a className='account-settings-toggle' href={redirect_url}>
             <Icon icon='IcUserOutline' />
-        </BinaryLink>
+        </a>
     );
 
     if (isTabletOs) return accountSettings;

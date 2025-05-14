@@ -3,8 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { AccountActions } from '../account-actions';
 import { useLocation } from 'react-router-dom';
-import { useStore } from '@deriv/stores';
-import { formatMoney, isTabletOs, routes } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 
 // Mock dependencies
@@ -15,6 +14,13 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('@deriv/stores', () => ({
     useStore: jest.fn(),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    useAccountSettingsRedirect: jest.fn().mockReturnValue({
+        redirect_url: '/account/personal-details',
+        mobile_redirect_url: '/account',
+    }),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -57,14 +63,7 @@ jest.mock('../toggle-notifications.jsx', () => ({
     ),
 }));
 
-jest.mock('../../../Routes/index.js', () => ({
-    BinaryLink: ({ children, to }: { children: React.ReactNode; to: string }) => (
-        <a href={to} data-testid='dt_binary_link'>
-            {children}
-        </a>
-    ),
-}));
-
+// Mock the dynamic import of AccountInfo
 jest.mock('App/Components/Layout/Header/account-info.jsx', () => ({
     __esModule: true,
     default: ({
@@ -97,6 +96,44 @@ jest.mock('App/Components/Layout/Header/account-info.jsx', () => ({
         </div>
     ),
 }));
+
+// Mock the dynamic import
+jest.mock(
+    /* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx',
+    () => ({
+        __esModule: true,
+        default: ({
+            acc_switcher_disabled_message,
+            account_type,
+            balance,
+            is_disabled,
+            is_eu,
+            is_virtual,
+            currency,
+            is_dialog_on,
+            toggleDialog,
+        }: {
+            acc_switcher_disabled_message?: string;
+            account_type?: string;
+            balance?: string | number;
+            is_disabled?: boolean;
+            is_eu?: boolean;
+            is_virtual?: boolean;
+            currency?: string;
+            is_dialog_on?: boolean;
+            toggleDialog?: () => void;
+        }) => (
+            <div
+                data-testid='dt_account_info'
+                onClick={toggleDialog}
+                className={`${is_disabled ? 'disabled' : ''} ${is_virtual ? 'virtual' : ''}`}
+            >
+                Account Info: {account_type} {balance} {currency} {is_dialog_on ? 'open' : 'closed'}
+            </div>
+        ),
+    }),
+    { virtual: true }
+);
 
 describe('AccountActions component', () => {
     // Default props
@@ -204,7 +241,7 @@ describe('AccountActions component', () => {
     it('should render AccountSettingsToggle when not on mobile', () => {
         render(<AccountActions {...default_props} />);
 
-        expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: '' })).toHaveClass('account-settings-toggle');
     });
 
     it('should not render AccountSettingsToggle on mobile', () => {
@@ -212,7 +249,7 @@ describe('AccountActions component', () => {
 
         render(<AccountActions {...default_props} />);
 
-        expect(screen.queryByTestId('dt_binary_link')).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: '' })).not.toBeInTheDocument();
     });
 
     it('should call onClickDeposit when DepositButton is clicked', async () => {

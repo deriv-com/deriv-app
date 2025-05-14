@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
@@ -22,7 +21,7 @@ const AvailableNakalaTradeAccount: React.FC = () => {
     return (
         <TradingAccountCard onClick={() => onPressNakala()}>
             <TradingAccountCard.Icon data-testid='dt_icon_dxtrade'>
-                <Icon height={48} icon='IcRebrandingDerivNakala' width={48} />
+                <span>TEST ICON</span>
             </TradingAccountCard.Icon>
             <TradingAccountCard.Section>
                 <TradingAccountCard.Content>

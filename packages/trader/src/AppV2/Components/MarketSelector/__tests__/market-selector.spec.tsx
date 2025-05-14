@@ -5,6 +5,19 @@ import TraderProviders from '../../../../trader-providers';
 import { TCoreStores } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
 
+// Mock the WS object from @deriv/shared
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    WS: {
+        authorized: {
+            send: jest.fn().mockResolvedValue({}),
+        },
+        send: jest.fn().mockResolvedValue({}),
+        getMarketNamesMap: jest.fn().mockReturnValue({}),
+    },
+    getMarketNamesMap: jest.fn().mockReturnValue({}),
+}));
+
 jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
     ...jest.requireActual('AppV2/Hooks/useActiveSymbols'),
     __esModule: true,
@@ -16,6 +29,27 @@ jest.mock('AppV2/Hooks/useActiveSymbols', () => ({
         ],
     })),
 }));
+
+// Mock the useContractsForCompany hook
+jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({
+        trade_types: [{ value: 'rise_fall', text: 'Rise/Fall' }],
+        contract_types_list: [],
+        available_contract_types: {},
+        is_fetching_ref: { current: false },
+        resetTradeTypes: jest.fn(),
+    })),
+}));
+
+// Mock the useSnackbar hook
+jest.mock('@deriv-com/quill-ui', () => ({
+    ...jest.requireActual('@deriv-com/quill-ui'),
+    useSnackbar: jest.fn(() => ({
+        addSnackbar: jest.fn(),
+    })),
+}));
+
 jest.mock('AppV2/Components/ActiveSymbolsList', () => jest.fn(() => 'MockedActiveSymbolsList'));
 
 describe('MarketSelector', () => {

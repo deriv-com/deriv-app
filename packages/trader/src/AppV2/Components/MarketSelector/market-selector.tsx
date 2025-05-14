@@ -1,19 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ActiveSymbolsList from '../ActiveSymbolsList';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
-import { CaptionText, Skeleton, Tag, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { CaptionText, Skeleton, Tag, Text, useSnackbar } from '@deriv-com/quill-ui';
+import { Localize, localize } from '@deriv/translations';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { getMarketNamesMap } from '@deriv/shared';
+import useContractsForCompany from 'AppV2/Hooks/useContractsForCompany';
+import { TContractType } from 'Modules/Trading/Components/Form/ContractType/types';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
     const { activeSymbols } = useActiveSymbols();
-    const { symbol: storeSymbol, tick_data, is_market_closed } = useTraderStore();
+    const { symbol: storeSymbol, tick_data, is_market_closed, contract_type } = useTraderStore();
+    const { addSnackbar } = useSnackbar();
+    const { trade_types } = useContractsForCompany();
 
     const currentSymbol = activeSymbols.find(({ symbol }) => symbol === storeSymbol);
+
+    const contract_name = trade_types?.find((item: TContractType) => item.value === contract_type)?.text;
+
+    useEffect(() => {
+        if (!currentSymbol) {
+            const symbol_name = getMarketNamesMap()[storeSymbol as keyof typeof getMarketNamesMap] || storeSymbol;
+            const message = contract_name
+                ? localize('{{symbol_name}} is unavailable for {{contract_name}}.', {
+                      symbol_name,
+                      contract_name,
+                  })
+                : localize('{{symbol_name}} is unavailable.', {
+                      symbol_name,
+                  });
+
+            symbol_name &&
+                addSnackbar({
+                    message,
+                    status: 'neutral',
+                    hasCloseButton: true,
+                    hasFixedHeight: false,
+                    style: {
+                        marginBottom: '48px',
+                        width: 'calc(100% - var(--core-spacing-800)',
+                    },
+                });
+        }
+    }, [currentSymbol, storeSymbol, contract_name]);
+
     const { pip_size, quote } = tick_data ?? {};
     const current_spot = quote?.toFixed(pip_size);
     const current_spot_replacement = is_market_closed ? (

@@ -33,10 +33,33 @@ function main() {
 }
 
 function analyse() {
-    const packagesDir = './packages';
-    const oldPackagesDir = './old/packages';
+    // Define possible directory structures
+    const possibleStructures = [
+        // New structure
+        {
+            new: './artifacts/new',
+            old: './artifacts/old',
+        },
+        // Old structure
+        {
+            new: './packages',
+            old: './old/packages',
+        },
+    ];
 
-    const packages = [...new Set([...fs.readdirSync(packagesDir), ...fs.readdirSync(oldPackagesDir)])];
+    // Find the first structure where both directories exist, or default to the old structure
+    const structure =
+        possibleStructures.find(s => fs.existsSync(s.new) && fs.existsSync(s.old)) || possibleStructures[1];
+
+    const packagesDir = structure.new;
+    const oldPackagesDir = structure.old;
+
+    console.log(`Using directory structure: new=${packagesDir}, old=${oldPackagesDir}`);
+
+    // Get all package names from both directories
+    const newPackages = fs.existsSync(packagesDir) ? fs.readdirSync(packagesDir) : [];
+    const oldPackages = fs.existsSync(oldPackagesDir) ? fs.readdirSync(oldPackagesDir) : [];
+    const packages = [...new Set([...newPackages, ...oldPackages])];
 
     const result = {};
 

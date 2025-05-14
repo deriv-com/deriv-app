@@ -95,12 +95,26 @@ runs:
       GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
     shell: bash
     run: |
+      # Create the old directory structure
+      mkdir -p old
+      
+      # Download and extract the artifact
       curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
         "$ARTIFACT_URL" \
         -o artifact.zip
       unzip artifact.zip -d old
       cd old
       unzip analyse.zip
+      
+      # If the artifact contains the new structure (artifacts/new and artifacts/old),
+      # we need to handle it differently
+      if [ -d "artifacts" ]; then
+        # Move the contents to maintain backward compatibility
+        cp -r artifacts/new/* ../packages/ 2>/dev/null || :
+        mkdir -p ../artifacts/old
+        cp -r artifacts/old/* ../artifacts/old/ 2>/dev/null || :
+        cp -r artifacts/new/* ../artifacts/new/ 2>/dev/null || :
+      fi
 
   - name: Analyze all packages
     env:
@@ -166,7 +180,18 @@ runs:
   - name: Zip all treemaps and reports
     shell: bash
     run: |
-      zip -r analyse.zip packages/*/{report.json,treemap.html}
+      # Create a directory structure to clearly separate old and new reports
+      mkdir -p artifacts/new
+      mkdir -p artifacts/old
+      
+      # Copy new reports to artifacts/new
+      cp -r packages/*/{report.json,treemap.html} artifacts/new/ 2>/dev/null || :
+      
+      # Copy old reports to artifacts/old if they exist
+      cp -r old/packages/*/{report.json,treemap.html} artifacts/old/ 2>/dev/null || :
+      
+      # Zip everything
+      zip -r analyse.zip artifacts/
 
   - name: Upload analyse.zip for Master Branch
     if: github.ref == 'refs/heads/master'
@@ -199,4 +224,3 @@ runs:
     with:
       script: |
         core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
-

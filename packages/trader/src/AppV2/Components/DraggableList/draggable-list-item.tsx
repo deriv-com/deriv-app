@@ -12,7 +12,7 @@ type TDraggableListItemProps = {
     rightIcon?: React.ReactNode;
     title: string;
 };
-
+//check if the item is active
 const DraggableListItem: React.FC<TDraggableListItemProps> = ({
     active,
     disabled,

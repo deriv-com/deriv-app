@@ -128,7 +128,7 @@ export default class ContractReplayStore extends BaseStore {
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
 
-        this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
+        this.root_store.contract_trade.clearAccumulatorBarriersData(true, true);
     }
 
     populateConfig(response) {

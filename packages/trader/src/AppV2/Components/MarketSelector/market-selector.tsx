@@ -27,7 +27,7 @@ const MarketSelector = observer(() => {
             const symbol_name = getMarketNamesMap()[storeSymbol as keyof typeof getMarketNamesMap] || storeSymbol;
             const message = contract_name ? (
                 <Localize
-                    i18n_default_text={`${symbol_name}) is unavailable for ${contract_name}.`}
+                    i18n_default_text={`${symbol_name} is unavailable for ${contract_name}.`}
                     values={{
                         symbol_name,
                         contract_name,

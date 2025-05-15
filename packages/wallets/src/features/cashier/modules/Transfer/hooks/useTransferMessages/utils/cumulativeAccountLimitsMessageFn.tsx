@@ -162,26 +162,28 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    message = isTransferBetweenWallets ? (
-        <Localize
-            i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
-            values={{ formattedSourceCurrencyRemainder }}
-        />
-    ) : (
-        <Localize
-            i18n_default_text='The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.'
-            values={{
-                formattedSourceCurrencyRemainder,
-                sourceAccountName: sourceAccount.accountName,
-                targetAccountName: targetAccount.accountName,
-            }}
-        />
-    );
+    if (sourceAmount && sourceCurrencyRemainder - sourceAmount <= 1000) {
+        message = isTransferBetweenWallets ? (
+            <Localize
+                i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
+                values={{ formattedSourceCurrencyRemainder }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.'
+                values={{
+                    formattedSourceCurrencyRemainder,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetAccountName: targetAccount.accountName,
+                }}
+            />
+        );
 
-    return {
-        message,
-        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-    };
+        return {
+            message,
+            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        };
+    }
 };
 
 export default cumulativeAccountLimitsMessageFn;

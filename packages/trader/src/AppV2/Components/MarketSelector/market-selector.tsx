@@ -3,7 +3,7 @@ import ActiveSymbolsList from '../ActiveSymbolsList';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 import { CaptionText, Skeleton, Tag, Text, useSnackbar } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -25,14 +25,22 @@ const MarketSelector = observer(() => {
     useEffect(() => {
         if (!currentSymbol) {
             const symbol_name = getMarketNamesMap()[storeSymbol as keyof typeof getMarketNamesMap] || storeSymbol;
-            const message = contract_name
-                ? localize('{{symbol_name}} is unavailable for {{contract_name}}.', {
-                      symbol_name,
-                      contract_name,
-                  })
-                : localize('{{symbol_name}} is unavailable.', {
-                      symbol_name,
-                  });
+            const message = contract_name ? (
+                <Localize
+                    i18n_default_text={`${symbol_name}) is unavailable for ${contract_name}.`}
+                    values={{
+                        symbol_name,
+                        contract_name,
+                    }}
+                />
+            ) : (
+                <Localize
+                    i18n_default_text={`${symbol_name} is unavailable.`}
+                    values={{
+                        symbol_name,
+                    }}
+                />
+            );
 
             symbol_name &&
                 addSnackbar({
@@ -41,7 +49,7 @@ const MarketSelector = observer(() => {
                     hasCloseButton: true,
                     hasFixedHeight: false,
                     style: {
-                        marginBottom: '48px',
+                        marginBottom: '0',
                         width: 'calc(100% - var(--core-spacing-800)',
                     },
                 });

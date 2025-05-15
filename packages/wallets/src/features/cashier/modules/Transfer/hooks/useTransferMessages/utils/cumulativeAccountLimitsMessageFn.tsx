@@ -162,7 +162,7 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    if (sourceAmount && sourceCurrencyRemainder - sourceAmount <= 180000) {
+    if (sourceAmount && sourceCurrencyRemainder - sourceAmount <= 1000) {
         message = isTransferBetweenWallets ? (
             <Localize
                 i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'

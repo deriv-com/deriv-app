@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
     useActiveWalletAccount,
@@ -25,8 +25,7 @@ import {
     AvailableMT5AccountsList,
 } from '../../flows';
 import AvailableNakalaTradeAccount from '../../flows/OtherCFDs/DerivNakala/AvailableNakalaAccounts';
-import { MT5PasswordModal, TradingPlatformStatusModal } from '../../modals';
-import { CFDDerivNakalaLinkAccount } from '../../modals/DerivNakalaModal/DerivNakalaModal';
+import { CFDDerivNakalaLinkAccount, MT5PasswordModal, TradingPlatformStatusModal } from '../../modals';
 import './CFDPlatformsListAccounts.scss';
 
 const CFDPlatformsListAccounts: React.FC = () => {
@@ -71,7 +70,28 @@ const CFDPlatformsListAccounts: React.FC = () => {
         landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
     const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
-    const isNakalaLinked = Cookies.get('nakala_linked') === 'true';
+    const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
+
+    useEffect(() => {
+        const checkNakalaCookie = () => {
+            const isLinked = Cookies.get('nakala_linked') === 'true';
+            setIsNakalaLinked(isLinked);
+        };
+
+        window.addEventListener('storage', checkNakalaCookie);
+
+        const originalSet = Cookies.set;
+        Cookies.set = function (...args) {
+            const result = originalSet.apply(this, args);
+            checkNakalaCookie();
+            return result;
+        };
+
+        return () => {
+            window.removeEventListener('storage', checkNakalaCookie);
+            Cookies.set = originalSet;
+        };
+    }, []);
 
     if (isLoading || !isFetchedAfterMount) {
         return (

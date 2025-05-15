@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useSortedMT5Accounts } from '@deriv/api-v2';
-import { Icon } from '@deriv/components';
-import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import DerivNakalaIcon from '../../../../public/images/ic-brand-deriv-nakala.svg';
+import NakalaQRIcon from '../../../../public/images/ic-nakala-qr-code.svg';
 import { TAddedMT5Account } from '../../../../types';
 import { MT5TradeDetailsItem } from '../../screens/MT5TradeScreen/MT5TradeDetailsItem';
 import './DerivNakalaModal.scss';
@@ -41,7 +42,7 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
             <div className='wallets-cfd-nakala-modal__body'>
                 <div className='wallets-cfd-nakala-modal__logo-container'>
                     <div className='wallets-cfd-nakala-modal__logo'>
-                        <Icon height={64} icon='IcRebrandingDerivNakala' width={64} />
+                        <DerivNakalaIcon height={64} width={64} />
                     </div>
                 </div>
 
@@ -118,7 +119,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
         const nakalaLinkedCookieExpiry = 365; // days
 
         Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
-            domain: '.deriv.com',
+            // domain: '.deriv.com',
             expires: nakalaLinkedCookieExpiry,
         });
     }, []);
@@ -137,11 +138,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
             <div className='wallets-cfd-nakala-modal__body'>
                 <div className='wallets-cfd-nakala-modal__logo-container'>
                     <div className='wallets-cfd-nakala-modal__logo'>
-                        {isSuccess ? (
-                            <Icon height={64} icon='IcRebrandingNakalaLinkedSuccess' width={64} />
-                        ) : (
-                            <Icon height={64} icon='IcRebrandingDerivNakala' width={64} />
-                        )}
+                        {isSuccess ? <LegacyWonIcon iconSize='xl' /> : <DerivNakalaIcon height={64} width={64} />}
                     </div>
                 </div>
 
@@ -186,7 +183,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                         </Text>
                     </div>
                     <div className='wallets-cfd-nakala-modal__qr-section-code'>
-                        <Icon height={80} icon='IcRebrandingNakalaQrCode' width={80} />
+                        <NakalaQRIcon height={80} width={80} />
                     </div>
                     <div className='wallets-cfd-nakala-modal__qr-section-text'>
                         <Text size='xs'>{localize('Scan to download the mobile app.')}</Text>

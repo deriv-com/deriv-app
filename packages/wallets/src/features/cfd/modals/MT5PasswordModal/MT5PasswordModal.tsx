@@ -21,7 +21,7 @@ import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPasswordMT5 } from '../../../../utils/password-validation';
 import { CFD_PLATFORMS, getMarketTypeDetails, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, CreatePasswordMT5, EnterPassword, MT5ResetPasswordModal } from '../../screens';
-import CFDDerivNakalaInfo from '../DerivNakalaModal/DerivNakalaModal';
+import CFDDerivNakalaInfo from '../DerivNakalaModal';
 import { MT5AccountAdded } from '../MT5AccountAdded';
 import { MT5ErrorModal } from '../MT5ErrorModal';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';

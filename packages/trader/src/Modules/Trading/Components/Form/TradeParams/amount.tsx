@@ -1,6 +1,7 @@
 import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import DisabledTooltipWrapper from './disabled-tooltip-wrapper';
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset';
 import Multiplier from './Multiplier/multiplier';
@@ -159,16 +160,18 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     />
                 </div>
             ) : (
-                <Input
-                    amount={amount}
-                    currency={currency}
-                    current_focus={current_focus}
-                    error_messages={error_messages}
-                    is_single_currency={is_single_currency}
-                    is_disabled={has_open_accu_contract}
-                    onChange={changeAmount}
-                    setCurrentFocus={setCurrentFocus}
-                />
+                <DisabledTooltipWrapper is_disabled={has_open_accu_contract}>
+                    <Input
+                        amount={amount}
+                        currency={currency}
+                        current_focus={current_focus}
+                        error_messages={error_messages}
+                        is_single_currency={is_single_currency}
+                        is_disabled={has_open_accu_contract}
+                        onChange={changeAmount}
+                        setCurrentFocus={setCurrentFocus}
+                    />
+                </DisabledTooltipWrapper>
             )}
             <AllowEquals
                 contract_start_type={contract_start_type}

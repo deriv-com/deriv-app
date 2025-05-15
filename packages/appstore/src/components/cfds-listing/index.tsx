@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
@@ -117,6 +117,8 @@ const CFDsListing = observer(() => {
             account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
     );
 
+    const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
+
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -136,7 +138,26 @@ const CFDsListing = observer(() => {
         }
     };
 
-    const is_nakala_Linked = Cookies.get('nakala_linked') === 'true';
+    useEffect(() => {
+        const checkNakalaCookie = () => {
+            const isLinked = Cookies.get('nakala_linked') === 'true';
+            setIsNakalaLinked(isLinked);
+        };
+
+        window.addEventListener('storage', checkNakalaCookie);
+
+        const originalSet = Cookies.set;
+        Cookies.set = function (...args) {
+            const result = originalSet.apply(this, args);
+            checkNakalaCookie();
+            return result;
+        };
+
+        return () => {
+            window.removeEventListener('storage', checkNakalaCookie);
+            Cookies.set = originalSet;
+        };
+    }, []);
 
     const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
         account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
@@ -269,7 +290,7 @@ const CFDsListing = observer(() => {
             description={
                 <div>
                     <CFDsDescription />
-                    {is_real && !is_nakala_Linked && (
+                    {is_real && !isNakalaLinked && (
                         <NakalaLinkedBanner
                             description={localize('Copy trading with Deriv Nakala.')}
                             onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}

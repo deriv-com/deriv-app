@@ -119,7 +119,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
         const nakalaLinkedCookieExpiry = 365; // days
 
         Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
-            // domain: '.deriv.com',
+            domain: '.deriv.com',
             expires: nakalaLinkedCookieExpiry,
         });
     }, []);

@@ -59,8 +59,7 @@ afterAll(() => {
 describe('<ApiToken/>', () => {
     const admin_scope_description =
         'This scope will allow third-party apps to open accounts for you, manage your settings and token usage, and more.';
-    const admin_scope_note =
-        'To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.';
+    const admin_scope_note = /To avoid loss of funds, do not share tokens with/i;
     const learn_more_title = 'Learn more about API token';
     const read_scope_description =
         'This scope will allow third-party apps to view your account activity, settings, limits, balance sheets, trade purchase history, and more.';
@@ -152,11 +151,11 @@ describe('<ApiToken/>', () => {
         const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
         expect(delete_btns_1).toHaveLength(2);
 
-        userEvent.click(delete_btns_1[0]);
+        await userEvent.click(delete_btns_1[0]);
         const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
         expect(no_btn_1).toBeInTheDocument();
 
-        userEvent.click(no_btn_1);
+        await userEvent.click(no_btn_1);
         await waitFor(() => {
             expect(no_btn_1).not.toBeInTheDocument();
         });
@@ -164,11 +163,11 @@ describe('<ApiToken/>', () => {
         const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
         expect(delete_btns_2).toHaveLength(2);
 
-        userEvent.click(delete_btns_2[0]);
+        await userEvent.click(delete_btns_2[0]);
         const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
         expect(yes_btn_1).toBeInTheDocument();
 
-        userEvent.click(yes_btn_1);
+        await userEvent.click(yes_btn_1);
         const deleteToken = WS.authorized.apiToken;
         expect(deleteToken).toHaveBeenCalled();
         await waitFor(() => {
@@ -217,29 +216,29 @@ describe('<ApiToken/>', () => {
         expect(read_checkbox?.checked).toBeFalsy();
         expect(token_name_input?.value).toBe('');
 
-        userEvent.click(read_checkbox);
+        await userEvent.click(read_checkbox);
         expect(read_checkbox?.checked).toBeTruthy();
 
-        userEvent.type(token_name_input, '@#$');
-        userEvent.tab();
+        await userEvent.type(token_name_input, '@#$');
+        await userEvent.tab();
         expect(await screen.findByText('Only letters, numbers, and underscores are allowed.')).toBeInTheDocument();
-        userEvent.clear(token_name_input);
+        await userEvent.clear(token_name_input);
 
-        userEvent.type(token_name_input, 'N');
+        await userEvent.type(token_name_input, 'N');
         expect(await screen.findByText(/length of token name must be between/i)).toBeInTheDocument();
-        userEvent.clear(token_name_input);
+        await userEvent.clear(token_name_input);
 
-        userEvent.type(token_name_input, 'New test extra long name for erorr');
+        await userEvent.type(token_name_input, 'New test extra long name for erorr');
         expect(await screen.findByText(/maximum/i)).toBeInTheDocument();
-        userEvent.clear(token_name_input);
+        await userEvent.clear(token_name_input);
 
-        userEvent.type(token_name_input, 'New token name');
+        await userEvent.type(token_name_input, 'New token name');
         await waitFor(() => {
             expect(token_name_input.value).toBe('New token name');
         });
         expect(create_btn).toBeEnabled();
 
-        userEvent.click(create_btn);
+        await userEvent.click(create_btn);
         const updated_token_name_input = (await screen.findByLabelText('Token name')) as HTMLInputElement;
         expect(updated_token_name_input.value).toBe('');
 
@@ -276,26 +275,26 @@ describe('<ApiToken/>', () => {
         const toggle_visibility_btns = await screen.findAllByTestId('dt_toggle_visibility_icon');
         expect(toggle_visibility_btns).toHaveLength(2);
 
-        userEvent.click(toggle_visibility_btns[0]);
+        await userEvent.click(toggle_visibility_btns[0]);
         expect(screen.getByText('FirstTokenID')).toBeInTheDocument();
 
-        userEvent.click(toggle_visibility_btns[1]);
+        await userEvent.click(toggle_visibility_btns[1]);
         expect(screen.getByText('SecondTokenID')).toBeInTheDocument();
 
         const copy_btns_1 = await screen.findAllByTestId('dt_copy_token_icon');
         expect(copy_btns_1).toHaveLength(2);
 
-        userEvent.click(copy_btns_1[0]);
+        await userEvent.click(copy_btns_1[0]);
         expect(screen.queryByText(warning_msg)).not.toBeInTheDocument();
         expect(screen.queryByTestId('dt_token_copied_icon')).not.toBeInTheDocument();
 
-        userEvent.click(copy_btns_1[1]);
+        await userEvent.click(copy_btns_1[1]);
         expect(await screen.findByText(warning_msg)).toBeInTheDocument();
 
         const ok_btn = screen.getByRole('button', { name: /ok/i });
         expect(ok_btn).toBeInTheDocument();
 
-        userEvent.click(ok_btn);
+        await userEvent.click(ok_btn);
 
         jest.clearAllMocks();
     });

@@ -2737,7 +2737,7 @@
     "-1782590355": "Não foi definida uma divisa para esta conta",
     "-1171226355": "O tamanho do nome do token deve estar entre {{MIN_TOKEN}} e {{MAX_TOKEN}} caracteres.",
     "-1803339710": "Máximo de {{MAX_TOKEN}} caracteres.",
-    "-2030570897": "Para evitar a perda de fundos, não partilhe os tokens com partes <0>não autorizadas</0>, especialmente os tokens com qualquer dos seguintes âmbitos: <0>Pagamentos</0>, <0>Administração</0> ou <0>Comércio</0>.",
+    "-2030570897": "Para evitar a perda de fundos, não partilhe os tokens com partes <0>não autorizadas</0>, especialmente os tokens com qualquer dos seguintes âmbitos: <0>Pagamentos</0>, <0>Administração</0> ou <0>Negociação</0>.",
     "-408613988": "Selecione os âmbitos com base no acesso pretendido.",
     "-1117963487": "Dê um nome ao seu token e clique em “Criar” para gerar o seu token.",
     "-2116332353": "Por favor, feche as suas posições na(s) seguinte(s) conta(s) Deriv:",

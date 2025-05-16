@@ -9,10 +9,10 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { TToken } from '../../../Types';
 import { ApiTokenContext, ApiTokenArticle, ApiTokenCard, ApiTokenTable } from '../../../Components/api-token';
-import InlineNoteWithIcon from '../../../Components/inline-note-with-icon';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import { API_TOKEN_CARD_DETAILS, TOKEN_LIMITS, TOKEN_NAME_REGEX } from '../../../Constants/api-token-card-details';
 import './api-token.scss';
+import InlineFullWidthNoteWithIcon from '../../../Components/inline-full-width-note-with-icon';
 
 type AptTokenState = {
     api_tokens: NonNullable<TToken[]>;
@@ -207,6 +207,16 @@ const ApiToken = observer(() => {
                                 setFieldTouched,
                             }) => (
                                 <Form noValidate>
+                                    <InlineFullWidthNoteWithIcon
+                                        icon='IcAppstoreNewWarning'
+                                        font_size='xs'
+                                        message={
+                                            <Localize
+                                                i18n_default_text='To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.'
+                                                components={[<strong key={0} />]}
+                                            />
+                                        }
+                                    />
                                     <Timeline className='da-api-token__timeline' line_height='xxxl'>
                                         <Timeline.Item
                                             item_title={
@@ -220,17 +230,7 @@ const ApiToken = observer(() => {
                                                         name={card.name}
                                                         display_name={card.display_name}
                                                         description={card.description}
-                                                    >
-                                                        {card.name === 'admin' && (
-                                                            <InlineNoteWithIcon
-                                                                icon='IcAlertWarning'
-                                                                message={
-                                                                    <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
-                                                                }
-                                                                title={<Localize i18n_default_text='Note:' />}
-                                                            />
-                                                        )}
-                                                    </ApiTokenCard>
+                                                    />
                                                 ))}
                                             </div>
                                         </Timeline.Item>

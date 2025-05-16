@@ -2,9 +2,9 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
+import { useIsHubRedirectionEnabled } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { THooks, TMarketTypes, TPlatforms } from '../../types';
-import { useIsHubRedirectionEnabled } from '@deriv/api-v2';
 
 type TModalState = {
     accountId?: string;

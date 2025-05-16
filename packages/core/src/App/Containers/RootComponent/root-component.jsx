@@ -42,6 +42,7 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
@@ -53,6 +54,7 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (
             isHubRedirectionEnabled &&
+            isOutsystemsMigrationModalClosed &&
             has_wallet &&
             !is_logging_out &&
             is_logged_in &&
@@ -102,6 +104,7 @@ const RootComponent = observer(props => {
         prevent_redirect_to_hub,
         prevent_single_login,
         is_client_store_initialized,
+        isOutsystemsMigrationModalClosed,
     ]);
 
     return has_wallet ? (

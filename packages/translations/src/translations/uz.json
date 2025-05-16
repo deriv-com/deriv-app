@@ -2737,7 +2737,7 @@
     "-1782590355": "Bu hisob uchun valyuta belgilanmagan",
     "-1171226355": "Token nomi uzunligi {{MIN_TOKEN}} va {{MAX_TOKEN}} belgilar orasida boʻlishi kerak.",
     "-1803339710": "Maksimal {{MAX_TOKEN}} ta belgi.",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Mablag‘laringiz yo‘qolib qolmasligi uchun, tokenlarni <0>ruxsatsiz</0> shaxslar bilan ulashmang, ayniqsa quyidagi doiralarga ega tokenlarni: <0>Payments</0>, <0>Admin</0> yoki <0>Trade</0>.",
     "-408613988": "Sizga kerak bo'lgan kirishga asoslangan qo'llash sohani tanlang.",
     "-1117963487": "Tokeningizga nom bering va tokenni yaratish uchun \"Yaratish\" tugmasini bosing.",
     "-2116332353": "Iltimos, quyidagi Deriv hisob(lar)dagi o‘z pozitsiyalaringizni yoping:",

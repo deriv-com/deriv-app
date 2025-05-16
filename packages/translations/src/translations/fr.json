@@ -2737,7 +2737,7 @@
     "-1782590355": "Aucune devise n'a été définie pour ce compte",
     "-1171226355": "La longueur du nom du token doit être comprise entre {{MIN_TOKEN}} et {{MAX_TOKEN}} caractères.",
     "-1803339710": "{{MAX_TOKEN}} caractères au maximum.",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Pour éviter toute perte de fonds, ne partagez pas vos tokens avec des parties <0>non autorisées</0>, en particulier les tokens ayant l'un des niveaux d'accès suivants : <0>Paiements</0>, <0>Administration</0> ou <0>Trading</0>.",
     "-408613988": "Sélectionnez les étendues en fonction de l'accès dont vous avez besoin.",
     "-1117963487": "Nommez votre token et cliquez sur 'Créer' pour générer votre token.",
     "-2116332353": "Veuillez fermer vos positions du ou des comptes Deriv suivants :",

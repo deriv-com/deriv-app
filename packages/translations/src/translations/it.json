@@ -2737,7 +2737,7 @@
     "-1782590355": "Non è stata selezionata alcuna valuta per questo conto",
     "-1171226355": "I caratteri del nome del token devono essere compresi tra {{MIN_TOKEN}} e {{MAX_TOKEN}}.",
     "-1803339710": "Massimo {{MAX_TOKEN}} caratteri.",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Per evitare la perdita di fondi, non condividere i token con parti <0>non autorizzate</0>, in particolare i token con uno dei seguenti ambiti: <0>Pagamenti</0>, <0>Amministrazione</0> o <0>Commercio</0>.",
     "-408613988": "Seleziona gli ambiti in base all'accesso desiderato.",
     "-1117963487": "Dai un nome al token e clicca su \"Crea\" per generare il token.",
     "-2116332353": "Chiudi le posizioni nei seguenti conti Deriv:",

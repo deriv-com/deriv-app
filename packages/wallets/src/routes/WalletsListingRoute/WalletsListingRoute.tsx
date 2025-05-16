@@ -32,7 +32,7 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
     const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
     useEffect(() => {
-        if (!isOutsystemsMigrationModalClosed) {
+        if (!isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
             show(<WalletsOutsystemsMigrationModal />);
         }
     }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed, show]);

@@ -31,7 +31,7 @@ const AccountInfo = ({
 
     return (
         <div className='acc-info__wrapper'>
-            <div className='acc-info__separator' />
+            {isDesktop && <div className='acc-info__separator' />}
             <AccountInfoWrapper
                 is_disabled={is_disabled}
                 disabled_message={acc_switcher_disabled_message}
@@ -86,6 +86,7 @@ const AccountInfo = ({
                     )}
                 </div>
             </AccountInfoWrapper>
+            <div className='acc-info__separator' />
             {isDesktop ? (
                 <CSSTransition
                     in={is_dialog_on}

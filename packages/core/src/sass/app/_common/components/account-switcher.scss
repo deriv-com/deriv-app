@@ -6,13 +6,16 @@
     flex-direction: row;
     height: 100%;
     justify-content: center;
-    padding: 0 1.6rem 0 1.7rem;
+
+    @include desktop-screen {
+        padding: 0 1.6rem;
+    }
 
     &__preloader {
         position: absolute;
         top: 0;
         right: 0;
-        width: 37rem;
+        width: 35rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -31,15 +34,12 @@
             width: 9rem;
         }
         @include mobile-screen {
-            width: 14rem;
+            width: 16.1rem;
             height: 4rem;
             top: -0.3rem;
 
             &:before {
                 display: none;
-            }
-            &--is-crypto {
-                width: 100%;
             }
         }
     }
@@ -48,7 +48,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        width: 37rem;
+        width: 35rem;
         height: 4rem;
         z-index: 2;
         background: var(--general-main-1);
@@ -67,30 +67,26 @@
             width: 9rem;
         }
         @include mobile-screen {
-            width: 23rem;
+            width: 16.1rem;
             height: 4rem;
             top: -0.3rem;
 
             &:before {
                 display: none;
             }
-            &--is-crypto {
-                width: 100%;
-            }
-        }
-
-        &--wallets {
-            width: 47rem;
-            @include mobile {
-                width: auto;
-            }
         }
     }
 
     &__container {
+        display: flex;
         align-items: center;
         -webkit-box-align: center;
-        display: flex;
+        padding-right: 0.8rem;
+        gap: 1.6rem;
+
+        @include mobile-screen {
+            gap: 0.8rem;
+        }
     }
     &__wrapper {
         align-items: center;
@@ -99,7 +95,6 @@
         height: 100%;
         justify-content: center;
         position: relative;
-        margin-right: 0.8rem;
         user-select: none;
         -webkit-touch-callout: none;
         -webkit-tap-highlight-color: transparent;
@@ -114,9 +109,7 @@
     }
     &__separator {
         border-right: 1px solid var(--general-section-1);
-        width: 2rem;
         height: 3.2rem;
-        margin-right: -0.1rem;
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
@@ -152,9 +145,6 @@
         }
     }
     @include mobile-screen {
-        padding: 0 1rem;
-        margin-right: -0.8rem;
-
         &__balance {
             font-size: 1.4rem;
 
@@ -181,23 +171,13 @@
         }
     }
     &__button {
-        margin: 0 1.6em 0 0 !important;
-
-        &:not(:last-child) {
-            margin-right: 1em;
-        }
         @include mobile-screen {
             height: 2.8rem !important;
         }
     }
 
     &__wallets {
-        padding: 1.2rem 1.6rem;
         gap: 0.8rem;
-
-        &-notification-icon {
-            margin-right: 1rem;
-        }
 
         &-container {
             align-items: center;

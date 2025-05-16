@@ -2737,7 +2737,7 @@
     "-1782590355": "Hakuna sarafu iliyowekwa kwa akaunti hii",
     "-1171226355": "Urefu wa jina la tokeni lazima uwe kati ya herufi {{MIN_TOKEN}} na {{MAX_TOKEN}}.",
     "-1803339710": "Wahusika cha juu wa {{MAX_TOKEN}} .",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Ili kuepuka upotevu wa fedha, usishiriki tokeni na pande <0>zisizoidhinishwa</0>, hasa tokeni zilizo na wigo wowote kati ya ifuatayo: <0>Malipo</0>, <0>Utawala</0>, au <0>Biashara</0>.",
     "-408613988": "Chagua wigo kulingana na ufikiaji unaohitaji.",
     "-1117963487": "Ipatie jina tokeni yako na bonyeza 'Unda' ili kutengeneza tokeni yako.",
     "-2116332353": "Tafadhali funga nafasi zako katika akaunti zifuatazo za Deriv:",

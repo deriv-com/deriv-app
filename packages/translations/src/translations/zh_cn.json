@@ -2737,7 +2737,7 @@
     "-1782590355": "此账户还未设置币种",
     "-1171226355": "令牌名称长度须介于{{MIN_TOKEN}} 至{{MAX_TOKEN}} 个字符。",
     "-1803339710": "最大 {{MAX_TOKEN}} 个字符。",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "为了避免资金损失，请勿将令牌分享给<0>未授权</0>方，特别是具有以下任何范围的令牌：<0>支付</0>、<0>管理</0>或<0>交易</0>。",
     "-408613988": "根据所需权限选择范围。",
     "-1117963487": "给令牌取名并单击“创建”以生成令牌。",
     "-2116332353": "请将以下 Deriv 账户平仓：",

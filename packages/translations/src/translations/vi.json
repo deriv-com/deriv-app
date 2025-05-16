@@ -2737,7 +2737,7 @@
     "-1782590355": "Bạn chưa chọn đơn vị tiền tệ cho tài khoản này",
     "-1171226355": "Độ dài của tên mã thông báo phải từ {{MIN_TOKEN}} đến {{MAX_TOKEN}} ký tự.",
     "-1803339710": "Tối đa {{MAX_TOKEN}} ký tự.",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Để tránh mất tiền, không chia sẻ mã thông báo với các bên <0>không được phép</0>, đặc biệt là những mã có phạm vi sau: <0>Thanh toán</0>, <0>Quản trị</0>, hoặc <0>Giao dịch</0>.",
     "-408613988": "Chọn phạm vi cho quyền hạn dựa theo nhu cầu của bạn.",
     "-1117963487": "Đặt tên cho mã token rồi nhấp \"Tạo mới\" để tạo mã token của bạn.",
     "-2116332353": "Vui lòng đóng các giao dịch của bạn trong (các) tài khoản Deriv sau:",

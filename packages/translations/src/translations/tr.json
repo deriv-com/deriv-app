@@ -2737,7 +2737,7 @@
     "-1782590355": "Bu hesap için hiçbir para birimi ayarlanmadı",
     "-1171226355": "Token adının uzunluğu {{MIN_TOKEN}} ile {{MAX_TOKEN}} karakter arasında olmalıdır.",
     "-1803339710": "Maksimum {{MAX_TOKEN}} karakter.",
-    "-2030570897": "To avoid loss of funds, do not share tokens with <0>unauthorised</0> parties, especially the tokens with any of the following scopes: <0>Payments</0>, <0>Admin</0>, or <0>Trade</0>.",
+    "-2030570897": "Fon kaybını önlemek için, özellikle aşağıdaki kapsamlar içindeki <0>ödeme</0>, <0>yönetim</0> veya <0>ticaret</0> tokenları olmak üzere, tokenları <0>yetkisiz</0> taraflarla paylaşmayın.",
     "-408613988": "İhtiyacınız olan erişime göre kapsam seçin.",
     "-1117963487": "Tokeninizi adlandırın ve tokeninizi oluşturmak için \"Oluştur\"a tıklayın.",
     "-2116332353": "Lütfen aşağıdaki Deriv hesaplarındaki pozisyonlarınızı kapatın:",

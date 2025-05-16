@@ -144,6 +144,7 @@ const PersonalDetailsForm = observer(() => {
     } = notifications;
 
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
+    const should_update_fa = account_status?.status?.includes('update_fa');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
     });
@@ -230,7 +231,9 @@ const PersonalDetailsForm = observer(() => {
         setStatus({ msg: '' });
         const request = {
             ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
-            ...(isDynamicFAEnabled && { financial_information_version: versionRef.current || 'v2' }),
+            ...(isDynamicFAEnabled && {
+                financial_information_version: should_update_fa ? 'v2' : versionRef.current || 'v2',
+            }),
         };
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);
@@ -401,7 +404,11 @@ const PersonalDetailsForm = observer(() => {
     };
 
     const initialValues = getPersonalDetailsInitialValues(
-        account_settings,
+        {
+            ...account_settings,
+            employment_status:
+                should_update_fa && versionRef.current === 'v1' ? undefined : account_settings.employment_status,
+        },
         residence_list,
         states_list,
         is_virtual,
@@ -676,7 +683,11 @@ const PersonalDetailsForm = observer(() => {
                                                         states_list={states_list}
                                                         next_email_otp_request_timer={next_email_otp_request_timer}
                                                         setStatus={setStatus}
-                                                        version={versionRef.current}
+                                                        version={
+                                                            should_update_fa && versionRef.current === 'v1'
+                                                                ? 'v2'
+                                                                : versionRef.current
+                                                        }
                                                     />
                                                 )}
                                             </div>
@@ -710,7 +721,7 @@ const PersonalDetailsForm = observer(() => {
                                             tin_validation_config={tin_validation_config}
                                             should_display_long_message={is_mf_account}
                                             should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
-                                            version={versionRef.current}
+                                            version={should_update_fa ? 'v2' : versionRef.current}
                                             is_feature_flag_disabled={isDynamicFALoaded && !isDynamicFAEnabled}
                                         />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}

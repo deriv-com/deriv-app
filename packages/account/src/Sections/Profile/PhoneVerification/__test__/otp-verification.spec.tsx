@@ -62,9 +62,8 @@ describe('OTPVerification', () => {
     it('should render ConfirmYourEmail in OTP Verification', () => {
         renderComponent();
         expect(screen.getByText('Step 1 of 3: Email verification needed')).toBeInTheDocument();
-        expect(screen.getByText(/We've sent a verification code to/)).toBeInTheDocument();
+        expect(screen.getByText(/Enter the code sent to/)).toBeInTheDocument();
         expect(screen.getByText('johndoe@regentmarkets.com')).toBeInTheDocument();
-        expect(screen.getByText(/Enter the code below to verify it's you/)).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /Verification code/ })).toBeInTheDocument();
         expect(screen.getByText(/Resend Code Timer/)).toBeInTheDocument();
     });

@@ -422,7 +422,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             <MenuLink
                                                 link_to={routes.account_limits}
                                                 icon='IcAccountLimits'
-                                                text={localize('Account Limits')}
+                                                text={localize('Account limits')}
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>

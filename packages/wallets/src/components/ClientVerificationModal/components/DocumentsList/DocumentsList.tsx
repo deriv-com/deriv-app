@@ -41,9 +41,9 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poi_in_accounts_os',
     });
-    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
-    const url_lang = URLUtils.getQueryParameter('lang');
-    const i18n_language = localize_language || url_lang || 'en';
+    const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+    const urlLang = URLUtils.getQueryParameter('lang');
+    const i18nLanguage = localizeLanguage || urlLang || 'en';
 
     const getFormattedURL = (urlLink: string) => {
         const url = new URL(urlLink);
@@ -53,7 +53,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
 
         const params = {
             appid: WebSocketUtils.getAppId(),
-            lang: i18n_language,
+            lang: i18nLanguage,
             platform,
             server: getSocketURL(),
             token: getToken(activeWallet?.loginid || ''),

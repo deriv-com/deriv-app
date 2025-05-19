@@ -104,7 +104,6 @@ const RootComponent = observer(props => {
         prevent_redirect_to_hub,
         prevent_single_login,
         is_client_store_initialized,
-        isOutsystemsMigrationModalClosed,
     ]);
 
     return has_wallet ? (

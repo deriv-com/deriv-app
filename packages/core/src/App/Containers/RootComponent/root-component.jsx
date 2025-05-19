@@ -73,7 +73,7 @@ const RootComponent = observer(props => {
 
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
-            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
 
             if (!localStorage.getItem('wallet_redirect_done')) {
                 switch (redirect_to_lowcode) {

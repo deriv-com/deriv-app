@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
@@ -9,6 +9,13 @@ import './WalletsOutsystemsMigrationModal.scss';
 
 const WalletsOustystemsMigrationModal = () => {
     const { isMobile } = useDevice();
+
+    useEffect(() => {
+        const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
+            ? derivUrls.DERIV_HOST_NAME
+            : window.location.hostname;
+        Cookies.set('wallet_account', 'true', { domain });
+    }, []);
 
     const redirectToOutsystems = () => {
         const redirectUrl =

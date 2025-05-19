@@ -718,9 +718,7 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
-            this.root_store.contract_trade.clearAccumulatorBarriersData();
-        }
+        this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
     }
 
     setV2ParamsInitialValues({
@@ -1228,6 +1226,17 @@ export default class TradeStore extends BaseStore {
                                     status: 'open',
                                 });
                             }
+
+                            // Auto-scroll to bottom of page to show chart fully after contract is opened
+                            setTimeout(() => {
+                                const scrollContainer = document.querySelector('.bottom-nav-selection');
+                                if (scrollContainer) {
+                                    scrollContainer.scrollTo({
+                                        top: scrollContainer.scrollHeight,
+                                        behavior: 'smooth',
+                                    });
+                                }
+                            }, 100);
 
                             this.is_purchasing_contract = false;
                             return;
@@ -1928,6 +1937,9 @@ export default class TradeStore extends BaseStore {
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
+
+        this.resetAccumulatorData();
+
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {
             this.root_store.notifications.toggleNotificationsModal();

@@ -40,7 +40,6 @@ const renderComponent = (isDesktop: boolean) => {
             onPayoutClick={mockOnPayoutClick}
             selectedBarrier={selectedBarrier}
             defaultPayout={defaultPayout}
-            contract_type='turboslong'
             currency={currency}
             tooltipText={tooltipText}
         />

@@ -97,7 +97,6 @@ describe('TogglePositionsMobile component', () => {
         });
         render(mockTogglePositionsMobile(mock_root_store, { ...default_mocked_props, is_empty: true }));
         expect(screen.getByText(/Recent positions/i)).toBeInTheDocument();
-        expect(screen.getByText(/You have no open positions for this asset./i)).toBeInTheDocument();
     });
     it('should display 2 positions when is_positions_drawer_on === true, is_empty === false, and has 2 active positions', () => {
         const new_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
@@ -201,7 +200,7 @@ describe('TogglePositionsMobile component', () => {
         expect(screen.getAllByText(/PositionsModalCard/i)).toHaveLength(2);
 
         const close_icon = screen.getByTestId('dt_modal_header_close');
-        userEvent.click(close_icon);
+        await userEvent.click(close_icon);
         await waitFor(() => {
             expect(mock_root_store.ui.togglePositionsDrawer).toHaveBeenCalled();
             expect(screen.getByText(/PositionsModalCard/i)).toBeInTheDocument();

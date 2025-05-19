@@ -6,6 +6,7 @@ import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletO
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
+import { useAccountSettingsRedirect } from '@deriv/hooks';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -74,10 +75,12 @@ const TradersHubHeader = observer(() => {
     const cashier_routes = pathname.startsWith(routes.cashier);
     const account_balance = formatMoney(currency, balance ?? '', true);
 
+    const { redirect_url } = useAccountSettingsRedirect();
+
     const accountSettings = (
-        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+        <a className='traders-hub-header__setting' href={redirect_url}>
             <Icon icon='IcUserOutline' size={20} />
-        </BinaryLink>
+        </a>
     );
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>

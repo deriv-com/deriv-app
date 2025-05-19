@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useRemoteConfig } from '@deriv/api';
 import {
@@ -11,11 +12,10 @@ import {
     useOauth2,
     useSilentLoginAndLogout,
 } from '@deriv/hooks';
-import { getUrlBase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useTranslations, localize } from '@deriv-com/translations';
-import { Loader, useDevice } from '@deriv-com/ui';
+import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import initDatadog from '../Utils/Datadog';
@@ -55,6 +55,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
+    const location = useLocation();
+    const has_access_denied_error = location.search.includes('access_denied');
 
     const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
@@ -82,6 +84,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     });
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
+    });
+    const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'duplicate-login',
     });
 
     const { data } = useRemoteConfig(true);
@@ -174,7 +179,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <Footer />
+            {!(isDuplicateLoginEnabled && has_access_denied_error) && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

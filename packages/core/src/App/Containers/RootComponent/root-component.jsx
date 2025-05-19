@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader, deriv_urls, isSafariBrowser } from '@deriv/shared';
+import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -42,6 +42,7 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
@@ -53,6 +54,7 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (
             isHubRedirectionEnabled &&
+            isOutsystemsMigrationModalClosed &&
             has_wallet &&
             !is_logging_out &&
             is_logged_in &&
@@ -60,19 +62,6 @@ const RootComponent = observer(props => {
             is_client_store_initialized
         ) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            // NOTE: Clear OIDC related local storage, when user is in Safari browser as Safari browser doesn't support IFrame for Frontchannel logout
-            if (isSafariBrowser()) {
-                // NOTE: Clear OIDC related local storage, this is to prevent OIDC to re-apply client.accounts again from the callback page
-                localStorage.removeItem('config.account1');
-                localStorage.removeItem('config.tokens');
-                // NOTE: Clear local storage to prevent user from being logged in at Deriv.app since they should be logged in at low-code Traders Hub only
-                localStorage.removeItem('active_loginid');
-                localStorage.removeItem('active_user_id');
-                sessionStorage.removeItem('active_loginid');
-                sessionStorage.removeItem('active_wallet_loginid');
-                localStorage.setItem('client.accounts', '{}');
-                localStorage.removeItem('active_wallet_loginid');
-            }
 
             const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
             localStorage.removeItem('redirect_to_th_os');
@@ -82,14 +71,18 @@ const RootComponent = observer(props => {
                 : window.location.hostname;
             Cookies.set('wallet_account', true, { domain });
 
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
             if (!localStorage.getItem('wallet_redirect_done')) {
                 switch (redirect_to_lowcode) {
                     case 'wallet':
                         localStorage.setItem('wallet_redirect_done', true);
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
                         break;
                     default:
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home`;
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
                         break;
                 }
             } else {
@@ -111,6 +104,7 @@ const RootComponent = observer(props => {
         prevent_redirect_to_hub,
         prevent_single_login,
         is_client_store_initialized,
+        isOutsystemsMigrationModalClosed,
     ]);
 
     return has_wallet ? (

@@ -1,13 +1,21 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedChevronRightMdRegularIcon } from '@deriv/quill-icons';
-import { useHistory } from 'react-router-dom';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import { Text, StatusBadge } from '@deriv/components';
-import { AUTH_STATUS_CODES } from '@deriv/shared';
-import './verification-docs-list-modal.scss';
+import {
+    ACCOUNTS_OS_POI_STATUS_URL,
+    ACCOUNTS_OS_POI_URL,
+    ACCOUNTS_OS_POA_URL,
+    AUTH_STATUS_CODES,
+    getSocketURL,
+} from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import classNames from 'classnames';
+import { WebSocketUtils } from '@deriv-com/utils';
+import './verification-docs-list-modal.scss';
 
 type TListItemProps = {
     id: string;
@@ -16,7 +24,7 @@ type TListItemProps = {
     route: string;
 };
 
-type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+type TAuthStatusCodes = (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
 
 const getBadgeStatus = (status: TAuthStatusCodes) => {
     switch (status) {
@@ -49,24 +57,62 @@ const getBadgeStatus = (status: TAuthStatusCodes) => {
 
 const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
-    const { traders_hub, ui } = useStore();
+    const { client, common, traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
+    const { getToken } = client;
+    const { is_from_tradershub_os } = common;
     const { setVerificationModalOpen } = traders_hub;
     const history = useHistory();
     const is_document_verified = status === AUTH_STATUS_CODES.VERIFIED;
+    const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'redirect_to_poi_in_accounts_os',
+    });
+
+    const getFormattedURL = (url_link: string) => {
+        const url = new URL(url_link);
+        const urlParams = new URLSearchParams(location.search);
+        const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
+        const platform = platformConfig ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+
+        const params = {
+            platform,
+            appid: WebSocketUtils.getAppId(),
+            lang: 'en',
+            server: getSocketURL(),
+            token: getToken(),
+        };
+
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.append(key, value);
+        });
+
+        return url.toString();
+    };
 
     const onClickItem = () => {
         if (is_document_verified) {
             return;
         }
-        if (id === 'tax') {
-            ui.setFieldRefToFocus('employment-tax-section');
+        setVerificationModalOpen(false);
+        if (id === 'identity' && status) {
+            if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
+                const redirect_url =
+                    status === 'none' || status === 'required' ? ACCOUNTS_OS_POI_URL : ACCOUNTS_OS_POI_STATUS_URL;
+                window.location.replace(getFormattedURL(redirect_url));
+                return;
+            }
         }
         if (id === 'address' && status) {
             localStorage.setItem('mt5_poa_status', String(status));
+            if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
+                window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
+                return;
+            }
+        }
+        if (id === 'tax') {
+            ui.setFieldRefToFocus('employment-tax-section');
         }
         history.push(route);
-        setVerificationModalOpen(false);
     };
 
     return (

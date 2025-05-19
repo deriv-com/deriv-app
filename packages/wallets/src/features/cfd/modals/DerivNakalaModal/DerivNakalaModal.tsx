@@ -190,18 +190,18 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                     </div>
                 </div>
             </div>
-            <div
-                className={`wallets-cfd-nakala-modal__footer ${!isDesktop && 'wallets-cfd-nakala-modal__footer--mobile'}`}
-            >
-                <Button
-                    color='primary'
-                    onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')}
-                    size='lg'
-                    type='button'
-                >
-                    <Localize i18n_default_text='Open Deriv Nakala app' />
-                </Button>
-            </div>
+            {!isDesktop && (
+                <div className={`wallets-cfd-nakala-modal__footer wallets-cfd-nakala-modal__footer--mobile`}>
+                    <Button
+                        color='primary'
+                        onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')}
+                        size='lg'
+                        type='button'
+                    >
+                        <Localize i18n_default_text='Open Deriv Nakala app' />
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

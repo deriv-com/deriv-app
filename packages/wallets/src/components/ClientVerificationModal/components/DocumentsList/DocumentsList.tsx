@@ -16,6 +16,7 @@ import { getClientVerification } from '../../../../utils';
 import { ClientVerificationStatusBadge } from '../../../ClientVerificationBadge';
 import { DocumentTile } from './components';
 import './DocumentsList.scss';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 type TDocumentsListProps = {
     account: TModifiedMT5Account | TWalletsMFAccountStatus;
@@ -41,6 +42,9 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poi_in_accounts_os',
     });
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const getFormattedURL = (urlLink: string) => {
         const url = new URL(urlLink);
@@ -49,8 +53,8 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
         const platform = platformConfig ?? (isNavigationFromTradersHubOS() ? 'tradershub_os' : 'deriv_app');
 
         const params = {
-            appid: getAppId(),
-            lang: 'en',
+            appid: WebSocketUtils.getAppId(),
+            lang: localize_language,
             platform,
             server: getSocketURL(),
             token: getToken(activeWallet?.loginid || ''),

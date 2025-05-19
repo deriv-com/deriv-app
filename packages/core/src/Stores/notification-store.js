@@ -1474,10 +1474,12 @@ export default class NotificationStore extends BaseStore {
             },
             update_fa_required: {
                 key: 'update_fa_required',
-                header: localize('Update required'),
-                message: localize(
-                    'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
-                ),
+                header: is_cr_account ? localize('Complete your Financial assessment') : localize('Update required'),
+                message: is_cr_account
+                    ? localize('Help us keep your information up to date by completing the assessment.')
+                    : localize(
+                          'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
+                      ),
                 action: {
                     route: routes.financial_assessment,
                     text: localize('Start now'),

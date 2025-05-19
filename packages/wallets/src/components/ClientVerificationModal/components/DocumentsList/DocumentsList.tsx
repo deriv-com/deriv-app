@@ -5,7 +5,6 @@ import {
     ACCOUNTS_OS_POI_STATUS_URL,
     ACCOUNTS_OS_POI_URL,
     ACCOUNTS_OS_POA_URL,
-    getAppId,
     getSocketURL,
     isNavigationFromTradersHubOS,
 } from '@deriv/shared';
@@ -54,7 +53,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
 
         const params = {
             appid: WebSocketUtils.getAppId(),
-            lang: localize_language,
+            lang: i18n_language,
             platform,
             server: getSocketURL(),
             token: getToken(activeWallet?.loginid || ''),

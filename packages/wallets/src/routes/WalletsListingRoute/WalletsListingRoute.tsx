@@ -35,7 +35,8 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
         if (!isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
             show(<WalletsOutsystemsMigrationModal />);
         }
-    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed, show]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed]);
 
     return (
         <div className='wallets-listing-route'>

@@ -33,6 +33,10 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
         return is_visible && !checkAllParentNodes(event.target as HTMLElement);
     };
 
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);
     }, [toggle]);
@@ -41,7 +45,9 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
 
     const handleTradersHubRedirect = async () => {
         if (isHubRedirectionEnabled) {
-            window.location.assign(platforms.tradershub_os.url);
+            window.location.assign(
+                `${platforms.tradershub_os.url}/redirect?action=redirect_to&redirect_to=cfds${account_currency ? `&account=${account_currency}` : ''}`
+            );
             return;
         }
         closeAccountsDialog();

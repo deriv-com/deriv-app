@@ -1,13 +1,31 @@
 import { ReactNode, useContext } from 'react';
 import clsx from 'clsx';
-import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
+import {
+    Div100vhContainer,
+    Icon,
+    ThemedScrollbars,
+    Autocomplete,
+    Checkbox,
+    InlineMessage,
+    RadioGroup,
+    SelectNative,
+    Text,
+} from '@deriv/components';
 import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';
 import { useDevice } from '@deriv-com/ui';
+import { Localize } from '@deriv-com/translations';
+import IconWithMessage from 'Components/icon-with-message';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
+import IconMessageContent from 'Components/icon-message-content';
+import { Chat } from '@deriv/utils';
 
 const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {
     const { is_app_settings, is_wrapper_bypassed, state } = useContext(SelfExclusionContext);
     const { isDesktop } = useDevice();
+
+    // Check if any exclusion field has a value
+    const hasAnyExclusion = Object.values(state?.self_exclusions || {}).some(value => value);
 
     // "is_wrapper_bypassed" is currently used for a <AppSettings> hosted <SelfExclusion>.
     // It only features the <SelfExclusionArticle> for mobile views, as the <AppSettings> footer
@@ -34,10 +52,25 @@ const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {
             is_disabled={isDesktop}
             height_offset='80px'
         >
-            <ThemedScrollbars className='da-self-exclusion__scrollbars' is_bypassed={!isDesktop}>
-                {!isDesktop && <SelfExclusionArticle />}
-                {children}
-            </ThemedScrollbars>
+            <div>
+                {hasAnyExclusion && (
+                    <InlineMessage
+                        type='information'
+                        size={isDesktop ? 'sm' : 'md'}
+                        className='da-self-exclusion__banner'
+                        message={
+                            <Localize
+                                i18n_default_text='To increase or remove your limit, contact us via <0>live chat</0>.'
+                                components={[<span key={0} className='link link--prominent' onClick={Chat.open} />]}
+                            />
+                        }
+                    />
+                )}
+                <ThemedScrollbars className='da-self-exclusion__scrollbars' is_bypassed={!isDesktop}>
+                    {!isDesktop && <SelfExclusionArticle />}
+                    {children}
+                </ThemedScrollbars>
+            </div>
             {isDesktop && <SelfExclusionArticle />}
         </Div100vhContainer>
     );

@@ -296,4 +296,14 @@
         width: 100%;
         align-items: center;
     }
+    &__banner {
+        margin-block-end: 2.4rem;
+        @include mobile-screen {
+            margin-inline: 1.6rem;
+            margin-block-start: 1.6rem;
+        }
+        .link {
+            text-decoration: underline;
+        }
+    }
 }

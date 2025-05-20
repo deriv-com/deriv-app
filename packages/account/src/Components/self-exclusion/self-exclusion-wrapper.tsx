@@ -39,7 +39,7 @@ const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {
             is_disabled={isDesktop}
             height_offset='80px'
         >
-            <div>
+            <div className='da-self-exclusion__inner-wrap'>
                 {hasAnyExclusion && (
                     <InlineMessage
                         type='information'

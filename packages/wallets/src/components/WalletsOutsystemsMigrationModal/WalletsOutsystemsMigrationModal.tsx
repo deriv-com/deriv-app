@@ -24,7 +24,6 @@ const WalletsOustystemsMigrationModal = () => {
         const urlParams = new URLSearchParams(urlQueryString);
         const accountCurrency = urlParams.get('account') || window.sessionStorage.getItem('account');
 
-        localStorage.setItem('wallet_redirect_done', 'true');
         window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${accountCurrency ? `&account=${accountCurrency}` : ''}`;
     };
 

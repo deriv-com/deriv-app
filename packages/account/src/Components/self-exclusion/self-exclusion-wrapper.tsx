@@ -1,23 +1,10 @@
 import { ReactNode, useContext } from 'react';
 import clsx from 'clsx';
-import {
-    Div100vhContainer,
-    Icon,
-    ThemedScrollbars,
-    Autocomplete,
-    Checkbox,
-    InlineMessage,
-    RadioGroup,
-    SelectNative,
-    Text,
-} from '@deriv/components';
+import { Div100vhContainer, ThemedScrollbars, InlineMessage } from '@deriv/components';
 import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv-com/translations';
-import IconWithMessage from 'Components/icon-with-message';
-import InlineNoteWithIcon from 'Components/inline-note-with-icon';
-import IconMessageContent from 'Components/icon-message-content';
 import { Chat } from '@deriv/utils';
 
 const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {

@@ -40,9 +40,7 @@ const CallbackPage = () => {
                 //added a check for postLoginRedirectUri to basically sync account when user created a new currency from Tradershub and redirected back to DTrader
                 if (redirectTo || (postLoginRedirectUri && !!containsAccount)) {
                     const params = new URLSearchParams(redirectTo || postLoginRedirectUri);
-                    const queryAccount = sessionStorage.getItem('account')
-                        ? sessionStorage.getItem('account')
-                        : params.get('account');
+                    const queryAccount = params.get('account');
 
                     let matchingLoginId: string | undefined, matchingToken: string | undefined;
                     if (queryAccount?.toLowerCase() !== 'demo') {

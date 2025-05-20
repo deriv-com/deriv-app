@@ -106,6 +106,10 @@ const RootComponent = observer(props => {
         is_client_store_initialized,
     ]);
 
+    if (!is_client_store_initialized || (isHubRedirectionEnabled && has_wallet)) {
+        return null;
+    }
+
     return has_wallet ? (
         <Wallets
             isWalletsOnboardingTourGuideVisible={is_wallets_onboarding_tour_guide_visible}

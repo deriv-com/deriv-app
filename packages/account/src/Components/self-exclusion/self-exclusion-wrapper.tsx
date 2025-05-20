@@ -8,11 +8,11 @@ import { Localize } from '@deriv-com/translations';
 import { Chat } from '@deriv/utils';
 
 const SelfExclusionWrapper = ({ children }: { children?: ReactNode }) => {
-    const { is_app_settings, is_wrapper_bypassed, state } = useContext(SelfExclusionContext);
+    const { is_app_settings, is_wrapper_bypassed, state, is_mf } = useContext(SelfExclusionContext);
     const { isDesktop } = useDevice();
 
     // Check if any exclusion field has a value
-    const hasAnyExclusion = Object.values(state?.self_exclusions || {}).some(value => value);
+    const hasAnyExclusion = is_mf && Object.values(state?.self_exclusions || {}).some(value => value);
 
     // "is_wrapper_bypassed" is currently used for a <AppSettings> hosted <SelfExclusion>.
     // It only features the <SelfExclusionArticle> for mobile views, as the <AppSettings> footer

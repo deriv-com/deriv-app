@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import Cookies from 'js-cookie';
 
 import { loginUrl, removeCookies } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
@@ -16,6 +17,8 @@ type UseTMBReturn = {
  */
 const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn => {
     const { showErrorModal } = options;
+    const { client } = useStore();
+    const { init } = client;
 
     // Replace getCurrentRoute with direct pathname check
     const currentPathname = window.location.pathname;
@@ -120,6 +123,8 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                 setAccountInSessionStorage(realAccount?.loginid);
                 setAccountInSessionStorage(realWalletAccount?.loginid, true);
             }
+            // Trigger init Client Store
+            await init();
 
             // TODO:
             // For backward compatibility, we need to set logged_state cookie to tell other apps about authentication state

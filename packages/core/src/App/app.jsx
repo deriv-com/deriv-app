@@ -7,7 +7,6 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
-import { useTMB } from '@deriv/hooks';
 import {
     initFormErrorMessages,
     POIProvider,
@@ -39,7 +38,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
-    const { onRenderTMBCheck } = useTMB();
     const initCashierStore = () => {
         root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
@@ -100,7 +98,6 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(() => {
         initCashierStore();
         initCFDStore();
-        onRenderTMBCheck();
         const loadSmartchartsStyles = () => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };

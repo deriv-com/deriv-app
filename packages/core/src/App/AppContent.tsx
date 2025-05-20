@@ -11,6 +11,7 @@ import {
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
+    useTMB,
 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
@@ -52,6 +53,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
     const { is_dark_mode_on, setDarkMode } = store.ui;
+    const { onRenderTMBCheck } = useTMB();
 
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -150,6 +152,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         isMobile,
         setIsPasskeySupported,
     ]);
+
+    React.useEffect(() => {
+        onRenderTMBCheck();
+    }, [onRenderTMBCheck]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

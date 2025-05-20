@@ -2234,6 +2234,7 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
+        const latestClientAccounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
@@ -2269,15 +2270,10 @@ export default class ClientStore extends BaseStore {
             });
         });
 
-        let i = 1;
-        while (obj_params[`acct${i}`]) {
-            const loginid = obj_params[`acct${i}`];
-            const token = obj_params[`token${i}`];
-            if (loginid && token) {
-                client_object[loginid].token = token;
-            }
-            i++;
-        }
+        // this needs to be change to the latest one's
+        latestClientAccounts.forEach(account => {
+            client_object[account.loginid].token = account.token;
+        });
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
@@ -2303,6 +2299,7 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    //this is here
     async setUserLogin(login_new_user) {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};
@@ -2398,6 +2395,7 @@ export default class ClientStore extends BaseStore {
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
 
                 if (this.canStoreClientAccounts(obj_params, account_list)) {
+                    console.log(obj_params);
                     this.storeClientAccounts(obj_params, account_list);
                 } else {
                     // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.

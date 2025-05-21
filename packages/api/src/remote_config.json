@@ -1,6 +1,6 @@
 {
     "cs_chat_livechat": true,
-    "cs_chat_whatsapp": false,
+    "cs_chat_whatsapp": true,
     "hub_enabled_country_list": [
         "bs",
         "tw",

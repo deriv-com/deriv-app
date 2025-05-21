@@ -57,7 +57,7 @@
 
     @include mobile-or-tablet-screen {
         width: 100vw;
-        height: 100vh;
+        height: 100svh;
         border-radius: unset;
     }
 }

@@ -1099,7 +1099,6 @@ export default class ClientStore extends BaseStore {
         const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
         if (account_param) {
             url.searchParams.set('account', account_param);
-            sessionStorage.setItem('account', account_param);
             window.history.replaceState({}, '', url.toString());
         }
     }

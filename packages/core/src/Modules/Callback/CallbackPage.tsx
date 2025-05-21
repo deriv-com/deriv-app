@@ -47,7 +47,10 @@ const CallbackPage = () => {
                         matchingWalletLoginId: string | undefined;
                     if (queryAccount?.toLowerCase() !== 'demo') {
                         Object.keys(tokens).find(key => {
-                            if (key.startsWith('cur') && tokens[key] === queryAccount) {
+                            if (
+                                key.startsWith('cur') &&
+                                tokens[key].toLocaleLowerCase() === queryAccount?.toLocaleLowerCase()
+                            ) {
                                 const sequence = key.replace('cur', '');
                                 const isNotCRWallet =
                                     tokens[`acct${sequence}`]?.startsWith('CR') &&
@@ -63,7 +66,6 @@ const CallbackPage = () => {
                                 }
                                 if (!isNotCRWallet && !isNotMFWallet) {
                                     matchingWalletLoginId = tokens[`acct${sequence}`];
-                                    matchingToken = tokens[`token${sequence}`];
                                 }
                             }
                         });
@@ -81,7 +83,6 @@ const CallbackPage = () => {
                                 }
                                 if (isWalletDemo) {
                                     matchingWalletLoginId = tokens[`acct${sequence}`];
-                                    matchingToken = tokens[`token${sequence}`];
                                 }
                             }
                         });

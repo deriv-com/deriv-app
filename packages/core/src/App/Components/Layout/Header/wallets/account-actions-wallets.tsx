@@ -116,7 +116,7 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
 
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
-            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
 
             window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         } else {

@@ -41,23 +41,32 @@ const CallbackPage = () => {
                 if (redirectTo || (postLoginRedirectUri && !!containsAccount)) {
                     const params = new URLSearchParams(redirectTo || postLoginRedirectUri);
                     const queryAccount = params.get('account');
-
-                    let matchingLoginId: string | undefined, matchingToken: string | undefined;
+                    let matchingLoginId: string | undefined,
+                        matchingToken: string | undefined,
+                        matchingWalletLoginId: string | undefined;
                     if (queryAccount?.toLowerCase() !== 'demo') {
                         Object.keys(tokens).find(key => {
-                            if (key.startsWith('cur') && tokens[key] === queryAccount) {
+                            if (
+                                key.startsWith('cur') &&
+                                tokens[key].toLocaleLowerCase() === queryAccount?.toLocaleLowerCase()
+                            ) {
                                 const sequence = key.replace('cur', '');
                                 const isNotCRWallet =
                                     tokens[`acct${sequence}`]?.startsWith('CR') &&
                                     !tokens[`acct${sequence}`]?.startsWith('CRW');
+                                const isCRWallet = tokens[`acct${sequence}`]?.startsWith('CRW');
                                 const isNotMFWallet =
                                     tokens[`acct${sequence}`]?.startsWith('MF') &&
                                     !tokens[`acct${sequence}`]?.startsWith('MFW');
+                                const isMFWallet = tokens[`acct${sequence}`]?.startsWith('MFW');
                                 if (isNotCRWallet || isNotMFWallet) {
                                     if (!matchingLoginId && !matchingToken) {
                                         matchingLoginId = tokens[`acct${sequence}`];
                                         matchingToken = tokens[`token${sequence}`];
                                     }
+                                }
+                                if (isCRWallet || isMFWallet) {
+                                    matchingWalletLoginId = tokens[`acct${sequence}`];
                                 }
                             }
                         });
@@ -67,10 +76,14 @@ const CallbackPage = () => {
                                 // get currency sequence number, e.g. cur1=1, cur2=2
                                 const sequence = key.replace('cur', '');
                                 const isDemo = tokens[`acct${sequence}`]?.startsWith('VRTC');
+                                const isWalletDemo = tokens[`acct${sequence}`]?.startsWith('VRW');
 
                                 if (isDemo) {
                                     matchingLoginId = tokens[`acct${sequence}`];
                                     matchingToken = tokens[`token${sequence}`];
+                                }
+                                if (isWalletDemo) {
+                                    matchingWalletLoginId = tokens[`acct${sequence}`];
                                 }
                             }
                         });
@@ -79,6 +92,22 @@ const CallbackPage = () => {
                         sessionStorage.setItem('active_loginid', matchingLoginId);
                         localStorage.setItem('config.account1', matchingToken);
                         localStorage.setItem('active_loginid', matchingLoginId);
+                    } else if (!matchingWalletLoginId && !matchingToken && !tokens.acct1.startsWith('CRW')) {
+                        if (tokens.acct1.startsWith('VR')) {
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('account', 'demo');
+                            window.history.replaceState({}, '', url.toString());
+                        } else {
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('account', tokens.cur1.toString());
+                            window.history.replaceState({}, '', url.toString());
+                        }
+                        sessionStorage.setItem('active_loginid', tokens.acct1);
+                        localStorage.setItem('config.account1', tokens.token1);
+                        localStorage.setItem('active_loginid', tokens.acct1);
+                    }
+                    if (matchingWalletLoginId && matchingToken) {
+                        sessionStorage.setItem('active_wallet_loginid', matchingWalletLoginId);
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');

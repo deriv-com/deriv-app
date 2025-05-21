@@ -42,7 +42,9 @@ const CallbackPage = () => {
                     const params = new URLSearchParams(redirectTo || postLoginRedirectUri);
                     const queryAccount = params.get('account');
 
-                    let matchingLoginId: string | undefined, matchingToken: string | undefined;
+                    let matchingLoginId: string | undefined,
+                        matchingToken: string | undefined,
+                        matchingWalletLoginId: string | undefined;
                     if (queryAccount?.toLowerCase() !== 'demo') {
                         Object.keys(tokens).find(key => {
                             if (key.startsWith('cur') && tokens[key] === queryAccount) {
@@ -59,6 +61,10 @@ const CallbackPage = () => {
                                         matchingToken = tokens[`token${sequence}`];
                                     }
                                 }
+                                if (!isNotCRWallet && !isNotMFWallet) {
+                                    matchingWalletLoginId = tokens[`acct${sequence}`];
+                                    matchingToken = tokens[`token${sequence}`];
+                                }
                             }
                         });
                     } else {
@@ -67,9 +73,14 @@ const CallbackPage = () => {
                                 // get currency sequence number, e.g. cur1=1, cur2=2
                                 const sequence = key.replace('cur', '');
                                 const isDemo = tokens[`acct${sequence}`]?.startsWith('VRTC');
+                                const isWalletDemo = tokens[`acct${sequence}`]?.startsWith('VRW');
 
                                 if (isDemo) {
                                     matchingLoginId = tokens[`acct${sequence}`];
+                                    matchingToken = tokens[`token${sequence}`];
+                                }
+                                if (isWalletDemo) {
+                                    matchingWalletLoginId = tokens[`acct${sequence}`];
                                     matchingToken = tokens[`token${sequence}`];
                                 }
                             }
@@ -79,6 +90,9 @@ const CallbackPage = () => {
                         sessionStorage.setItem('active_loginid', matchingLoginId);
                         localStorage.setItem('config.account1', matchingToken);
                         localStorage.setItem('active_loginid', matchingLoginId);
+                    }
+                    if (matchingWalletLoginId && matchingToken) {
+                        sessionStorage.setItem('active_wallet_loginid', matchingWalletLoginId);
                     }
 
                     sessionStorage.removeItem('tradershub_redirect_to');

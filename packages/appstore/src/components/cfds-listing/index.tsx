@@ -6,6 +6,7 @@ import { Loading, Text } from '@deriv/components';
 import {
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
+    useIsEnabledNakala,
     useMT5SVGEligibleToMigrate,
     useTradingPlatformStatus,
 } from '@deriv/hooks';
@@ -118,6 +119,9 @@ const CFDsListing = observer(() => {
     );
 
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
+    const { IsEnabledNakala } = useIsEnabledNakala();
+
+    const showNakala = is_real && !isNakalaLinked && IsEnabledNakala;
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
@@ -290,7 +294,7 @@ const CFDsListing = observer(() => {
             description={
                 <div>
                     <CFDsDescription />
-                    {is_real && !isNakalaLinked && (
+                    {showNakala && (
                         <NakalaLinkedBanner
                             description={localize('Copy trading with Deriv Nakala.')}
                             onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
@@ -724,7 +728,7 @@ const CFDsListing = observer(() => {
                 </Fragment>
             )}
 
-            {is_real && has_mt5_standard_account && (
+            {IsEnabledNakala && is_real && has_mt5_standard_account && (
                 <Fragment>
                     <div className='cfd-full-row'>
                         <hr className='divider' />

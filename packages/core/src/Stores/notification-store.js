@@ -28,8 +28,8 @@ import {
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -383,6 +383,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
+
             const {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
@@ -412,6 +413,16 @@ export default class NotificationStore extends BaseStore {
 
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
+            if (status?.includes('update_fa')) {
+                this.addNotificationMessage(this.client_notifications.update_fa_required);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.update_fa_required?.key });
+                this.removeNotificationMessage({
+                    key: this.client_notifications.update_fa_required?.key,
+                    should_show_again: true,
+                });
+            }
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1460,6 +1471,21 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to live chat'),
                 },
                 type: 'danger',
+            },
+            update_fa_required: {
+                key: 'update_fa_required',
+                header: is_cr_account ? localize('Complete your Financial assessment') : localize('Update required'),
+                message: is_cr_account
+                    ? localize('Help us keep your information up to date by completing the assessment.')
+                    : localize(
+                          'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
+                      ),
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start now'),
+                },
+                type: 'warning',
+                should_show_again: true,
             },
             withdrawal_locked: {
                 key: 'withdrawal_locked',

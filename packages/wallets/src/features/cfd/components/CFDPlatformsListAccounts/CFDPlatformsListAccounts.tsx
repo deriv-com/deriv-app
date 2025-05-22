@@ -10,6 +10,7 @@ import {
     useSortedMT5Accounts,
     useTradingPlatformStatus,
 } from '@deriv/api-v2';
+import { useIsEnabledNakala } from '@deriv/hooks';
 import { localize } from '@deriv-com/translations';
 import ProductLinkedBanner from '../../../../components/Banner/nakala-linked-banner';
 import { useModal } from '../../../../components/ModalProvider';
@@ -70,7 +71,10 @@ const CFDPlatformsListAccounts: React.FC = () => {
         landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
     const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
+    const { IsEnabledNakala } = useIsEnabledNakala();
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
+
+    const showNakala = !isDemo && !isNakalaLinked && IsEnabledNakala;
 
     useEffect(() => {
         const checkNakalaCookie = () => {
@@ -130,7 +134,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
 
     return (
         <React.Fragment>
-            {!isDemo && !isNakalaLinked && (
+            {showNakala && (
                 <ProductLinkedBanner
                     description={localize('Copy trading with Deriv Nakala.')}
                     onClick={onButtonClick}
@@ -159,7 +163,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
                         {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
                     </>
                 )}
-                {hasMT5StandardAccount?.is_added && <AvailableNakalaTradeAccount />}
+                {showNakala && hasMT5StandardAccount?.is_added && <AvailableNakalaTradeAccount />}
             </div>
         </React.Fragment>
     );

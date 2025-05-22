@@ -55,8 +55,6 @@ const CFDPlatformsListAccounts: React.FC = () => {
     const hasUnavailableAccount = mt5Accounts?.some(account => account.status === 'unavailable');
     const isVirtual = activeWallet?.is_virtual;
 
-    const isDemo = activeWallet?.is_virtual;
-
     const isLoading = isMT5Loading || isCTraderLoading || isDxtradeLoading || isLandingCompanyLoading;
     const isFetchedAfterMount = isMT5FetchedAfterMount || isCtraderFetchedAfterMount || isDxtradeFetchedAfterMount;
 
@@ -74,7 +72,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
     const { IsEnabledNakala } = useIsEnabledNakala();
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
 
-    const showNakala = !isDemo && !isNakalaLinked && IsEnabledNakala;
+    const showNakala = !isVirtual && !isNakalaLinked && IsEnabledNakala;
 
     useEffect(() => {
         const checkNakalaCookie = () => {
@@ -163,7 +161,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
                         {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
                     </>
                 )}
-                {showNakala && hasMT5StandardAccount?.is_added && <AvailableNakalaTradeAccount />}
+                {IsEnabledNakala && !isVirtual && hasMT5StandardAccount?.is_added && <AvailableNakalaTradeAccount />}
             </div>
         </React.Fragment>
     );

@@ -18,7 +18,7 @@ type UseTMBReturn = {
 const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn => {
     const { showErrorModal } = options;
     const { client } = useStore();
-    const { init } = client;
+    const { init, setIsLoggingIn } = client;
 
     // Replace getCurrentRoute with direct pathname check
     const currentPathname = window.location.pathname;
@@ -43,7 +43,7 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                 secure: true,
             });
         }
-        window.open(oauthUrl, '_self');
+        // window.open(oauthUrl, '_self');
     }, [currentDomain, domains, oauthUrl]);
 
     // Helper function to set account in session storage
@@ -67,13 +67,18 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
     }, [showErrorModal]);
 
     const onRenderTMBCheck = useCallback(async () => {
+        setIsLoggingIn(true);
         const activeSessions = await getActiveSessions();
-
-        if (!activeSessions?.active && !isEndpointPage) {
+        if (!activeSessions?.active) {
+            setIsLoggingIn(false);
             return handleLogout();
         }
 
         if (activeSessions?.active) {
+            const localStorageClientAccounts = localStorage.getItem('clientAccounts');
+            const activeSessionTokens = JSON.stringify(activeSessions?.tokens);
+            const shouldReinitializeClientStore = localStorageClientAccounts !== activeSessionTokens;
+
             localStorage.setItem('clientAccounts', JSON.stringify(activeSessions?.tokens));
 
             // Get account from URL params and set the loginid to session storage
@@ -111,20 +116,33 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                 const realAccount = activeSessions?.tokens?.find(
                     item =>
                         item.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
-                        item.loginid.startsWith('CR') &&
-                        !item.loginid.startsWith('CRW')
+                        (item.loginid.startsWith('CR') || item.loginid.startsWith('MF')) &&
+                        (!item.loginid.startsWith('CRW') || !item.loginid.startsWith('MFW'))
                 );
 
                 const realWalletAccount = activeSessions?.tokens?.find(
                     item =>
-                        item.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() && item.loginid.startsWith('CRW')
+                        item.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                        (item.loginid.startsWith('CRW') || item.loginid.startsWith('MFW'))
                 );
 
                 setAccountInSessionStorage(realAccount?.loginid);
                 setAccountInSessionStorage(realWalletAccount?.loginid, true);
             }
-            // Trigger init Client Store
-            await init();
+            const convertedResult = {};
+
+            activeSessions?.tokens?.forEach((account, index) => {
+                const num = index + 1;
+                (convertedResult as Record<string, string>)[`acct${num}`] = account.loginid;
+                (convertedResult as Record<string, string>)[`token${num}`] = account.token;
+                (convertedResult as Record<string, string>)[`cur${num}`] = account.cur;
+            });
+            if (shouldReinitializeClientStore) {
+                // Trigger init Client Store
+                init(convertedResult);
+            } else {
+                setIsLoggingIn(false);
+            }
 
             // TODO:
             // For backward compatibility, we need to set logged_state cookie to tell other apps about authentication state

@@ -2270,10 +2270,15 @@ export default class ClientStore extends BaseStore {
             });
         });
 
-        // this needs to be change to the latest one's
-        latestClientAccounts.forEach(account => {
-            client_object[account.loginid].token = account.token;
-        });
+        let i = 1;
+        while (obj_params[`acct${i}`]) {
+            const loginid = obj_params[`acct${i}`];
+            const token = obj_params[`token${i}`];
+            if (loginid && token) {
+                client_object[loginid].token = token;
+            }
+            i++;
+        }
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
@@ -2393,17 +2398,7 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
-
-                if (this.canStoreClientAccounts(obj_params, account_list)) {
-                    console.log(obj_params);
-                    this.storeClientAccounts(obj_params, account_list);
-                } else {
-                    // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
-                    authorize_response.error = {
-                        code: 'MismatchedAcct',
-                        message: localize('Invalid token'),
-                    };
-                }
+                this.storeClientAccounts(obj_params, account_list);
             });
             return authorize_response;
         }

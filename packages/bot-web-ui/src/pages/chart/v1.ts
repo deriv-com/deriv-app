@@ -9,7 +9,7 @@ const init = () => {
         // TODO: Proper fix for types in smartcharts
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        return import(/* webpackChunkName: "smart_chart" */ '@deriv/deriv-charts');
+        return import(/* webpackChunkName: "smart_chart" */ '@jimdanielswasswa/test-chart');
     });
 
     module.then(({ setSmartChartsPublicPath }: { setSmartChartsPublicPath: (path: string) => void }) => {

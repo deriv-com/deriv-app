@@ -149,6 +149,7 @@ const Dropzone: React.FC<TProps> = ({
                                 <div className='wallets-dropzone__placeholder-text'>
                                     <Button
                                         borderWidth='sm'
+                                        className='wallets-dropzone__button'
                                         color='black'
                                         onClick={open}
                                         textSize={isDesktop ? 'sm' : 'md'}

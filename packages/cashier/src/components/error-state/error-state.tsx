@@ -7,7 +7,7 @@ type TProps = {
 };
 
 const ErrorState: React.FC<TProps> = ({ error }) => {
-    let message = localize('Something went wrong. Please refresh the page and try again.');
+    let message = localize('Please refresh the page and try again.');
 
     if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
         message = error.message;
@@ -15,11 +15,11 @@ const ErrorState: React.FC<TProps> = ({ error }) => {
 
     return (
         <EmptyState
-            icon='IcCashierError'
-            title={localize('Oops, something went wrong!')}
+            icon='IcTriangleExclamationXl'
+            title={localize('Something went wrong')}
             description={message}
             action={{
-                label: localize('Try again'),
+                label: localize('Refresh page'),
                 onClick: () => window.location.reload(),
                 tertiary: true,
             }}

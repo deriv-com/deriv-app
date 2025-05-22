@@ -143,6 +143,11 @@
 }
 
 .faq {
+    &__description {
+        a {
+            text-decoration: underline;
+        }
+    }
     &__wrapper {
         overflow: auto;
         padding-bottom: 18px;

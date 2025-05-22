@@ -65,20 +65,26 @@ describe('<Multiplier />', () => {
                 </ModulesProvider>
             </TraderProviders>
         );
-    it('should render Skeleton loader if multiplier is falsy', () => {
+    it('renders Skeleton loader if multiplier is falsy', () => {
         default_mock_store.modules.trade.multiplier = 0;
         mockMultiplier();
 
         expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
         expect(screen.queryByText(multiplier_param_label)).not.toBeInTheDocument();
     });
-    it('should render trade param with multiplier label and input with a value equal to the current multiplier value', () => {
+    it('renders trade param with multiplier label and input with a value equal to the current multiplier value', () => {
         mockMultiplier();
 
         expect(screen.getByText(multiplier_param_label)).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toHaveValue('x1');
     });
-    it('should open ActionSheet with WheelPicker component, details, "Save" button and trade param definition if user clicks on multiplier trade param', () => {
+    it('disables trade param if is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        mockMultiplier();
+
+        expect(screen.getByRole('textbox')).toBeDisabled();
+    });
+    it('opens ActionSheet with WheelPicker component, details, "Save" button and trade param definition if user clicks on multiplier trade param', () => {
         mockMultiplier();
 
         expect(screen.queryByTestId('dt-actionsheet-overlay')).not.toBeInTheDocument();
@@ -92,7 +98,7 @@ describe('<Multiplier />', () => {
         expect(screen.getByText('Commission')).toBeInTheDocument();
         expect(screen.getByText('0.01')).toBeInTheDocument();
     });
-    it('should render skeleton instead of WheelPicker if multiplier_range_list is empty', () => {
+    it('renders skeleton instead of WheelPicker if multiplier_range_list is empty', () => {
         default_mock_store.modules.trade.multiplier_range_list = [];
         mockMultiplier();
 
@@ -102,7 +108,7 @@ describe('<Multiplier />', () => {
         expect(screen.queryByText('WheelPicker')).not.toBeInTheDocument();
         expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
     });
-    it('should render skeleton instead of detail if commission not available', () => {
+    it('renders skeleton instead of detail if commission not available', () => {
         default_mock_store.modules.trade.commission = null;
         mockMultiplier();
 
@@ -110,7 +116,7 @@ describe('<Multiplier />', () => {
 
         expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
     });
-    it('should apply specific className if innerHeight is <= 640px', () => {
+    it('applies specific className if innerHeight is <= 640px', () => {
         const original_height = window.innerHeight;
         window.innerHeight = 640;
         mockMultiplier();
@@ -120,7 +126,7 @@ describe('<Multiplier />', () => {
         expect(screen.getByTestId(multiplier_carousel_testid)).toHaveClass('multiplier__carousel--small');
         window.innerHeight = original_height;
     });
-    it('should call onChange function if user changes selected value', async () => {
+    it('calls onChange function if user changes selected value', async () => {
         jest.useFakeTimers();
         mockMultiplier();
 

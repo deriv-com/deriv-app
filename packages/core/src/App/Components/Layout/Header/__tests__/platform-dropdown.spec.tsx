@@ -17,6 +17,13 @@ type TMockPlatformDropdown = {
     }[];
 };
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsHubRedirectionEnabled: () => ({
+        isHubRedirectionEnabled: false,
+    }),
+}));
+
 const history = createBrowserHistory();
 const store = mockStore({});
 
@@ -81,19 +88,19 @@ describe('PlatformDropdown component', () => {
         expect(screen.getByTestId('dt_platform_dropdown_link')).toBeInTheDocument();
         expect(screen.getByText(tradershub_redirect)).toBeInTheDocument();
     });
-    it('should update URL when clicking on another (non-selected) platform', () => {
+    it('should update URL when clicking on another (non-selected) platform', async () => {
         history.push(routes.bot);
         render(<MockPlatformDropdown platform_config={[dtrader_platform_config]} />);
 
-        userEvent.click(screen.getByText(dtrader_description));
+        await userEvent.click(screen.getByText(dtrader_description));
         expect(history.location.pathname).toBe(routes.trade);
         expect(history.location.search).toBe('');
     });
-    it('should not update URL when clicking on an already selected platform', () => {
+    it('should not update URL when clicking on an already selected platform', async () => {
         history.push(routes.trade + dtrader_url_params);
         render(<MockPlatformDropdown platform_config={[dtrader_platform_config]} />);
 
-        userEvent.click(screen.getByText(dtrader_description));
+        await userEvent.click(screen.getByText(dtrader_description));
         expect(history.location.pathname).toBe(routes.trade);
         expect(history.location.search).toBe(dtrader_url_params);
     });

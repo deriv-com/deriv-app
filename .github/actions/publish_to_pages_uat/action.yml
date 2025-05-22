@@ -7,6 +7,9 @@ inputs:
   CLOUDFLARE_API_TOKEN:
     description: 'Cloudflare token'
     required: true
+  BRANCH_NAME:
+    description: 'Branch name'
+    required: true
 runs:
   using: composite
   steps:
@@ -17,6 +20,6 @@ runs:
     run: |
       npm i wrangler@3.1.0
       cd packages/core
-      npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=uat
-      echo "New uat website - https://uat.cf-pages-deriv-app.deriv.com"
+      npx wrangler pages deploy dist/ --project-name=deriv-app-pages --branch=${{ inputs.BRANCH_NAME }}
+      echo "New uat website - https://${{ inputs.BRANCH_NAME }}.cf-pages-deriv-app.deriv.com"
     shell: bash

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -23,9 +23,10 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common } = useStore();
-    const { logout } = client;
-    const { is_from_derivgo } = common;
+    const { client, common, ui } = useStore();
+    const { logout, setIsLoggingOut } = client;
+    const { is_from_derivgo, is_from_tradershub_os, is_from_derivp2p } = common;
+    const { setIsForcedToExitPnv } = ui;
     const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
@@ -53,9 +54,15 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
-    const onClickLogout = () => {
+    const onClickLogout = async () => {
+        setIsLoggingOut(true);
+        if (window.location.pathname.startsWith(shared_routes.phone_verification)) {
+            setIsForcedToExitPnv(true);
+            // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
         history.push(shared_routes.traders_hub);
-        logout();
+        await logout();
     };
 
     if (!isDesktop && selected_route) {
@@ -65,16 +72,21 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 header={selected_route?.getTitle?.()}
                 onClickClose={onClickClose}
                 is_from_app={is_from_derivgo}
+                is_from_derivp2p={is_from_derivp2p}
+                is_from_tradershub_os={is_from_tradershub_os}
             >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
     }
+
     return (
         <PageOverlay
             header={<Localize i18n_default_text='Settings' />}
             onClickClose={onClickClose}
             is_from_app={is_from_derivgo}
+            is_from_derivp2p={is_from_derivp2p}
+            is_from_tradershub_os={is_from_tradershub_os}
         >
             <VerticalTab
                 is_floating

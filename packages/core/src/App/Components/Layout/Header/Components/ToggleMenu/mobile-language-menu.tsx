@@ -13,16 +13,11 @@ type TMobileLanguageMenu = {
 };
 
 const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLanguageMenu) => {
-    const { client, common, ui } = useStore();
+    const { common, ui } = useStore();
     const { is_language_changing } = common;
-    const { has_wallet } = client;
     const { is_mobile_language_menu_open, setMobileLanguageMenuOpen } = ui;
 
     const allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
-
-    const filtered_languages = has_wallet
-        ? allowed_languages.filter(lang => lang === 'EN' || lang === 'AR')
-        : allowed_languages;
 
     return (
         <MobileDrawer.SubMenu
@@ -40,7 +35,7 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
                     'settings-language__language-container--disabled': is_language_changing,
                 })}
             >
-                {filtered_languages.map(lang => (
+                {allowed_languages.map(lang => (
                     <LanguageLink
                         key={lang}
                         is_clickable

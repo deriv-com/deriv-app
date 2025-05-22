@@ -18,6 +18,7 @@ describe('<MultipliersExpirationInfo />', () => {
         modules: {
             trade: {
                 expiration: 1626188400,
+                is_market_closed: false,
             },
         },
         common: {
@@ -27,9 +28,9 @@ describe('<MultipliersExpirationInfo />', () => {
         },
     };
 
-    const MockedMultipliersExpirationInfo = (mocked_store: TCoreStores) => {
+    const MockedMultipliersExpirationInfo = () => {
         return (
-            <TraderProviders store={mocked_store}>
+            <TraderProviders store={mockStore(mock_store)}>
                 <MultipliersExpirationInfo />
             </TraderProviders>
         );
@@ -39,9 +40,16 @@ describe('<MultipliersExpirationInfo />', () => {
         (formatDuration as jest.Mock).mockReturnValue({ days: 1, timestamp: '14:00' });
         (getDateFromNow as jest.Mock).mockReturnValue('13 Jul 2021');
         (getDiffDuration as jest.Mock).mockReturnValue(14400);
-        render(MockedMultipliersExpirationInfo(mockStore(mock_store)));
+        render(MockedMultipliersExpirationInfo());
 
         expect(screen.getByText('Expires on')).toBeInTheDocument();
         expect(screen.getByText('13 Jul 2021 at 14:00')).toBeInTheDocument();
+    });
+
+    it('applies specific className if is_market_closed === true', () => {
+        mock_store.modules.trade.is_market_closed = true;
+        render(MockedMultipliersExpirationInfo());
+
+        expect(screen.getByText('Expires on')).toHaveClass('trade-params__text--disabled');
     });
 });

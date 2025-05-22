@@ -4,6 +4,7 @@ import { Button, Modal } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 
 type TInsufficientBalanceModal = RouteComponentProps & {
     is_virtual?: boolean;
@@ -18,6 +19,7 @@ const InsufficientBalanceModal = observer(
             ui: { is_mobile },
             client,
         } = useStore();
+        const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
         const { has_wallet } = client;
         return (
             <Modal
@@ -35,7 +37,23 @@ const InsufficientBalanceModal = observer(
                         text={is_virtual ? localize('OK') : localize('Deposit now')}
                         onClick={() => {
                             if (!is_virtual) {
-                                history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
+                                if (has_wallet && isHubRedirectionEnabled) {
+                                    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+                                    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+                                    const redirectUrl =
+                                        process.env.NODE_ENV === 'production'
+                                            ? PRODUCTION_REDIRECT_URL
+                                            : STAGING_REDIRECT_URL;
+
+                                    const url_query_string = window.location.search;
+                                    const url_params = new URLSearchParams(url_query_string);
+                                    const account_currency =
+                                        window.sessionStorage.getItem('account') || url_params.get('account');
+
+                                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                                } else {
+                                    history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
+                                }
                             } else {
                                 toggleModal();
                             }

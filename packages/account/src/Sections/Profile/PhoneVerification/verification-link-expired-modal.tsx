@@ -63,8 +63,10 @@ const VerificationLinkExpiredModal = observer(
                 isOpened={should_show_verification_link_expired_modal}
                 isPrimaryButtonDisabled={!!next_email_otp_request_timer || is_email_otp_timer_loading}
                 buttonColor='coral'
+                showCrossIcon={false}
+                showHandleBar={false}
+                disableCloseOnOverlay
                 isNonExpandable
-                shouldCloseModalOnSwipeDown
                 primaryButtonCallback={handleSendNewLinkButton}
                 primaryButtonLabel={
                     <Localize

@@ -25,6 +25,7 @@ jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
                 descrip: "New Year's Day",
             },
         ]),
+        getTradingDays: jest.fn(() => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']),
     },
 }));
 describe('<TradingTimePicker />', () => {

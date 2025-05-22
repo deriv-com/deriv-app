@@ -7,8 +7,8 @@ import type {
     TSocketResponseData,
 } from '../types';
 import useAPI from './useAPI';
-import { getQueryKeys } from './utils';
-import { useAuthorize } from './hooks';
+import { getQueryKeys } from './utils/query-utils';
+import useAuthorize from './hooks/useAuthorize';
 
 /**
  * just like useQuery, but only runs when user is authorized

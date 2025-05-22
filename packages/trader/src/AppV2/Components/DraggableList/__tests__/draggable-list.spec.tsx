@@ -39,8 +39,6 @@ describe('DraggableList', () => {
     it('renders categories and items correctly', () => {
         renderComponent();
 
-        expect(screen.getByText('Category 1')).toBeInTheDocument();
-        expect(screen.getByText('Category 2')).toBeInTheDocument();
         expect(screen.getByText('Item 1')).toBeInTheDocument();
         expect(screen.getByText('Item 2')).toBeInTheDocument();
         expect(screen.getByText('Item 3')).toBeInTheDocument();

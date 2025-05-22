@@ -91,7 +91,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         is_trading_assessment_for_new_user_enabled,
     } = ui;
     const { show_eu_related_content } = traders_hub;
-    const deposit_target = modules.cashier.general_store.deposit_target;
+    const { deposit_target, setDepositTarget } = modules.cashier.general_store;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
     const [current_action, setCurrentAction] = React.useState(null);
@@ -468,6 +468,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
+
+        if (deposit_target === routes.cashier_onramp) setDepositTarget('');
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);

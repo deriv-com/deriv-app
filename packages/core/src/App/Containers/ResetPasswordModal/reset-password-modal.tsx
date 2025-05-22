@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, FormikHelpers, FormikErrors } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS, removeActionParam } from '@deriv/shared';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
@@ -14,7 +15,8 @@ type TResetPasswordModalValues = {
 
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
-    const { logout: logoutClient, verification_code, setVerificationCode } = client;
+    const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const {
         disableApp,
         enableApp,
@@ -25,6 +27,7 @@ const ResetPasswordModal = observer(() => {
     } = ui;
 
     const { isDesktop } = useDevice();
+
     const onResetComplete = (
         error: TSocketError<'reset_password'>['error'] | null,
         actions: FormikHelpers<TResetPasswordModalValues>
@@ -46,10 +49,24 @@ const ResetPasswordModal = observer(() => {
             }
             return;
         }
-
+        setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            redirectToLogin(false, getLanguage(), false);
+            if (is_deriv_com) {
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
+            } else {
+                redirectToLogin(false, getLanguage());
+            }
         });
     };
 
@@ -93,6 +110,7 @@ const ResetPasswordModal = observer(() => {
     const reset_initial_values: TResetPasswordModalValues = { password: '' };
 
     const closeResetPasswordModal = () => {
+        setPreventRedirectToHub(false);
         toggleResetPasswordModal(false);
         removeActionParam('reset_password');
     };

@@ -1,10 +1,14 @@
-import React, { createContext, useState, useContext, useCallback, useEffect, useMemo } from 'react';
-import { useAPIContext } from './APIProvider';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
-import useMutation from './useMutation';
-import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
+import { AppIDConstants } from '@deriv-com/utils';
+
+import { TSocketRequestPayload, TSocketResponseData, TSocketSubscribableEndpointNames } from '../types';
+
+import { useAPIContext } from './APIProvider';
+import { API_ERROR_CODES } from './constants';
 import useAPI from './useAPI';
+import useMutation from './useMutation';
 
 // Define the type for the context state
 type AuthContextType = {
@@ -24,6 +28,7 @@ type AuthContextType = {
         name: T,
         payload?: TSocketRequestPayload<T>
     ) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         subscribe: (onData: (response: any) => void) => Promise<{ unsubscribe: () => Promise<void> }>;
     };
 };
@@ -38,7 +43,10 @@ type AuthProviderProps = {
     cookieTimeout?: number;
     loginIDKey?: string;
     selectDefaultAccount?: (loginids: NonNullable<ReturnType<typeof getAccountsFromLocalStorage>>) => string;
+    logout?: () => Promise<void>;
 };
+
+type TAuthorizeError = ReturnType<typeof useMutation<'authorize'>>['error'];
 
 // Create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -99,12 +107,12 @@ function waitForLoginAndTokenWithTimeout(
     };
 }
 
-const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount }: AuthProviderProps) => {
+const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccount, logout }: AuthProviderProps) => {
     const [loginid, setLoginid] = useState<string | null>(null);
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient, setOnReconnected, setOnConnected, wsClient } = useAPIContext();
+    const { queryClient, setOnReconnected, setOnConnected, wsClient, createNewWSConnection } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -121,6 +129,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
     const subscribe = useCallback(
         <T extends TSocketSubscribableEndpointNames>(name: T, payload?: TSocketRequestPayload<T>) => {
             return {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 subscribe: (onData: (response: any) => void) => {
                     return wsClient?.subscribe(name, payload, onData);
                 },
@@ -145,8 +154,16 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             if (!activeAccount) return;
 
             localStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+            sessionStorage.setItem(loginIDKey ?? 'active_loginid', activeLoginID);
+            const isDemo = activeAccount.is_virtual;
+            const shouldCreateNewWSConnection =
+                (isDemo && wsClient?.endpoint === AppIDConstants.environments.real) ||
+                (!isDemo && wsClient?.endpoint === AppIDConstants.environments.demo);
+            if (shouldCreateNewWSConnection) {
+                createNewWSConnection();
+            }
         },
-        [loginIDKey]
+        [loginIDKey, wsClient?.endpoint, createNewWSConnection]
     );
 
     useEffect(() => {
@@ -187,8 +204,10 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
                         setIsSuccess(true);
                         setLoginid(res?.authorize?.loginid ?? '');
                     })
-                    .catch(() => {
-                        setIsAuthorized(false);
+                    .catch(async (e: TAuthorizeError) => {
+                        if (e?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                            await logout?.();
+                        }
                         setIsLoading(false);
                         setIsInitializing(false);
                         setIsError(true);
@@ -225,15 +244,21 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             setIsSwitching(true);
 
             setIsAuthorized(false);
-            const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
-            setIsAuthorized(true);
-            setLoginid(newLoginId);
-            processAuthorizeResponse(authorizeResponse);
-
-            setIsLoading(false);
-            setIsSwitching(false);
+            try {
+                const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+                setIsAuthorized(true);
+                setLoginid(newLoginId);
+                processAuthorizeResponse(authorizeResponse);
+            } catch (e: unknown) {
+                if (typeof e === 'object' && (e as TAuthorizeError)?.error.code === API_ERROR_CODES.DISABLED_ACCOUNT) {
+                    await logout?.();
+                }
+            } finally {
+                setIsLoading(false);
+                setIsSwitching(false);
+            }
         },
-        [loginid, mutateAsync, processAuthorizeResponse, queryClient]
+        [loginid, logout, mutateAsync, processAuthorizeResponse, queryClient]
     );
 
     const refetch = useCallback(() => {
@@ -254,8 +279,22 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isSwitching,
             isInitializing,
             subscribe,
+            logout,
+            createNewWSConnection,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, subscribe]);
+    }, [
+        data,
+        switchAccount,
+        refetch,
+        isLoading,
+        isError,
+        isFetching,
+        isSuccess,
+        loginid,
+        logout,
+        createNewWSConnection,
+        subscribe,
+    ]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

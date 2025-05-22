@@ -9,18 +9,21 @@ describe('<CFDInstrumentsLabelHighlighted />', () => {
     const mock = mockStore({
         traders_hub: {
             selected_region: 'Non-EU',
+            is_eu_user: false,
         },
     });
 
     const mocked_props = {
         trading_platforms: {
-            platform: 'mt5',
-            market_type: 'gaming',
-            shortcode: 'svg',
+            market_type: 'financial',
+            shortcode: 'maltainvest',
+            instruments: ['Forex', 'Cryptocurrencies'],
+            product_details: { max_leverage: '1:30', min_spread: '0.5' },
+            platform: 'ctrader',
         },
     };
 
-    it('should renders icons for market type gaming/synthetic', () => {
+    it('should renders icons for product type standard', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

@@ -1,89 +1,159 @@
 import React, { useEffect, useState } from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { ActionSheet, Text } from '@deriv-com/quill-ui';
-import { getLanguage, Localize } from '@deriv/translations';
-import { redirectToLogin } from '@deriv/shared';
 import { useHistory } from 'react-router';
-import { useSignupTrigger } from 'AppV2/Hooks/useSignupTrigger';
+
+import { isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { getLanguage, Localize } from '@deriv/translations';
+import { ActionSheet } from '@deriv-com/quill-ui';
+
+import { checkIsServiceModalError, SERVICE_ERROR } from 'AppV2/Utils/layout-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+
 import ServiceErrorDescription from './service-error-description';
 
 const ServiceErrorSheet = observer(() => {
     const [is_open, setIsOpen] = useState(false);
-    const { common } = useStore();
+    const { common, client, ui } = useStore();
+    const { is_mf_verification_pending_modal_visible, setIsMFVericationPendingModal } = ui;
+    const { has_wallet, is_virtual } = client;
     const { services_error, resetServicesError } = common;
-    const { handleSignup } = useSignupTrigger();
+    const { clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
     const history = useHistory();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
-    const is_insufficient_balance =
-        services_error.code === 'InsufficientBalance' || services_error.code === 'InvalidContractProposal';
-    const is_authorization_required = services_error.code === 'AuthorizationRequired' && services_error.type === 'buy';
+    const { code, message, type } = services_error || {};
+    const is_insufficient_balance = code === SERVICE_ERROR.INSUFFICIENT_BALANCE;
+    const is_authorization_required = code === SERVICE_ERROR.AUTHORIZATION_REQUIRED && type === 'buy';
+    const is_account_verification_required = code === SERVICE_ERROR.PLEASE_AUTHENTICATE;
+    const should_show_error_modal =
+        (!isEmptyObject(services_error) || is_mf_verification_pending_modal_visible) &&
+        checkIsServiceModalError({ services_error, is_mf_verification_pending_modal_visible });
+
+    const onClose = () => {
+        setIsOpen(false);
+        if (services_error.type === 'buy') {
+            if (is_insufficient_balance) {
+                return;
+            }
+            clearPurchaseInfo();
+            resetPurchase();
+        }
+    };
+
+    const getActionButtonProps = () => {
+        if (is_insufficient_balance) {
+            return {
+                primaryAction: {
+                    content: <Localize i18n_default_text='Deposit now' />,
+                    onAction: () => {
+                        resetServicesError();
+                        if (!is_virtual) {
+                            if (has_wallet && isHubRedirectionEnabled) {
+                                const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+                                const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+                                const redirectUrl =
+                                    process.env.NODE_ENV === 'production'
+                                        ? PRODUCTION_REDIRECT_URL
+                                        : STAGING_REDIRECT_URL;
+
+                                const url_query_string = window.location.search;
+                                const url_params = new URLSearchParams(url_query_string);
+                                const account_currency =
+                                    window.sessionStorage.getItem('account') || url_params.get('account');
+
+                                window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                            } else {
+                                history?.push?.(has_wallet ? routes.wallets_deposit : routes.cashier_deposit);
+                            }
+                        } else {
+                            onClose();
+                        }
+                    },
+                },
+            };
+        }
+        if (is_authorization_required) {
+            return {
+                primaryAction: {
+                    content: <Localize i18n_default_text='Create free account' />,
+                    onAction: () => {
+                        resetServicesError();
+                        redirectToSignUp();
+                    },
+                },
+                secondaryAction: {
+                    content: <Localize i18n_default_text='Login' />,
+                    onAction: () => {
+                        resetServicesError();
+                        redirectToLogin(false, getLanguage());
+                    },
+                },
+            };
+        }
+        if (is_account_verification_required) {
+            return {
+                primaryAction: {
+                    content: <Localize i18n_default_text='Submit Proof' />,
+                    onAction: () => {
+                        resetServicesError();
+                        history.push(routes.proof_of_identity);
+                    },
+                },
+            };
+        }
+        if (is_mf_verification_pending_modal_visible) {
+            return {
+                primaryAction: {
+                    content: <Localize i18n_default_text='Got it' />,
+                    onAction: () => {
+                        resetServicesError();
+                        setIsMFVericationPendingModal(false);
+                        onClose();
+                    },
+                },
+            };
+        }
+    };
+
+    const getErrorType = () => {
+        if (is_insufficient_balance) return SERVICE_ERROR.INSUFFICIENT_BALANCE;
+        if (is_authorization_required) return SERVICE_ERROR.AUTHORIZATION_REQUIRED;
+        if (is_account_verification_required) return SERVICE_ERROR.PLEASE_AUTHENTICATE;
+        if (is_mf_verification_pending_modal_visible) return SERVICE_ERROR.PENDING_VERIFICATION;
+        return null;
+    };
 
     useEffect(() => {
-        if (is_insufficient_balance || is_authorization_required) {
-            setIsOpen(true);
-        }
-    }, [services_error]);
+        setIsOpen(should_show_error_modal);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [should_show_error_modal]);
 
     useEffect(() => {
-        if (!is_open && services_error.code) {
-            resetServicesError();
-        }
-    }, [resetServicesError, is_open]);
+        if (!is_open && code) resetServicesError();
+        if (!is_open) setIsMFVericationPendingModal(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_open]);
+
+    if (!should_show_error_modal) return null;
 
     return (
         <ActionSheet.Root
             className='service-error-sheet'
             isOpen={is_open}
-            onClose={() => {
-                if (services_error.code) {
-                    setIsOpen(false);
-                }
-            }}
+            onClose={onClose}
             expandable={false}
             position='left'
         >
             <ActionSheet.Portal showHandlebar shouldCloseOnDrag>
                 <div className='service-error-sheet__body'>
-                    <ServiceErrorDescription
-                        is_authorization_required={is_authorization_required}
-                        is_insufficient_balance={is_insufficient_balance}
-                        services_error={services_error}
-                    />
+                    <ServiceErrorDescription error_type={getErrorType()} services_error_message={message} />
                 </div>
                 <ActionSheet.Footer
                     className='service-error-sheet__footer'
                     alignment='vertical'
-                    {...(is_insufficient_balance
-                        ? {
-                              primaryAction: {
-                                  content: <Localize i18n_default_text='Deposit now' />,
-                                  onAction: () => {
-                                      resetServicesError();
-                                      history.push('/cashier/deposit');
-                                  },
-                              },
-                              primaryButtonColor: 'coral',
-                          }
-                        : {})}
-                    {...(is_authorization_required
-                        ? {
-                              primaryAction: {
-                                  content: <Localize i18n_default_text='Create free account' />,
-                                  onAction: () => {
-                                      resetServicesError();
-                                      handleSignup();
-                                  },
-                              },
-                              primaryButtonColor: 'coral',
-                              secondaryAction: {
-                                  content: <Localize i18n_default_text='Login' />,
-                                  onAction: () => {
-                                      resetServicesError();
-                                      redirectToLogin(false, getLanguage());
-                                  },
-                              },
-                          }
-                        : {})}
+                    primaryButtonColor='coral'
+                    {...getActionButtonProps()}
                 />
             </ActionSheet.Portal>
         </ActionSheet.Root>

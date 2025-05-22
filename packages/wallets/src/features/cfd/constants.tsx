@@ -2,59 +2,118 @@ import React from 'react';
 import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
+    AccountsDmt5CfdsIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     AccountsDmt5ZrsIcon,
-    DerivProductDerivXBrandDarkWordmarkIcon,
+    DerivProductBrandDarkDerivXWordmarkIcon,
     LabelPairedLinuxXlIcon,
     LabelPairedMacosXlIcon,
     LabelPairedWindowsXlIcon,
-    PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
-    PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
+    PartnersProductBrandDarkDerivCtraderWordmarkIcon,
+    PartnersProductBrandLightDerivMt5LogoWordmarkIcon,
 } from '@deriv/quill-icons';
 import { localize, useTranslations } from '@deriv-com/translations';
+import AccountsDmt5GoldIcon from '../../public/images/account-dmt5-gold-icon.svg';
 import { THooks, TPlatforms } from '../../types';
-import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
+import { getWebtraderUrl } from './screens/MT5TradeScreen/MT5TradeLink/constants';
+import {
+    ctraderLinks,
+    whiteLabelLinks as internalWhiteLabelLinks,
+} from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 const zeroSpreadDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
+    availability: 'Non-EU',
     description: localize('Zero spread CFDs on financial and derived instruments'),
     icon: <AccountsDmt5ZrsIcon height={48} width={48} />,
     title: 'Zero Spread',
 });
 
 const swapFreeDetails = (localize: ReturnType<typeof useTranslations>['localize']) => ({
+    availability: 'Non-EU',
     description: localize('Swap-free CFDs on selected financial and derived instruments'),
     icon: <AccountsDmt5SwfIcon height={48} width={48} />,
     title: 'Swap-Free',
 });
 
+const getMarketTypeDetailsDescription = (
+    localize: ReturnType<typeof useTranslations>['localize'],
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
+    isEuRegion?: boolean
+) => {
+    if (product === 'stp') {
+        return localize('Direct access to market prices');
+    }
+
+    if (product === 'gold') {
+        return localize('Trading opportunities on popular precious metals.');
+    }
+
+    return isEuRegion
+        ? localize('Your all-in-one access to financial and derived instruments.')
+        : localize('CFDs on financial instruments');
+};
+
+const getMarketTypeDetailsTitle = (
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
+    isEuRegion?: boolean
+) => {
+    if (product === 'stp') {
+        return 'Financial STP';
+    }
+
+    if (product === 'gold') {
+        return 'Gold';
+    }
+
+    return isEuRegion ? 'CFDs' : 'Financial';
+};
+
 export const getMarketTypeDetails = (
     localize: ReturnType<typeof useTranslations>['localize'],
-    product?: THooks.AvailableMT5Accounts['product']
-) =>
-    ({
+    product?: THooks.AvailableMT5Accounts['product'] | 'gold' | 'stp',
+    isEuRegion?: boolean
+) => {
+    const getIcon = () => {
+        if (product === 'gold') {
+            return <AccountsDmt5GoldIcon height={48} width={48} />;
+        }
+
+        return isEuRegion ? (
+            <AccountsDmt5CfdsIcon fill='#000000' iconSize='lg' />
+        ) : (
+            <AccountsDmt5FinancialIcon height={48} width={48} />
+        );
+    };
+
+    return {
         all: product === PRODUCT.ZEROSPREAD ? zeroSpreadDetails(localize) : swapFreeDetails(localize),
         financial: {
-            description: localize('CFDs on financial instruments'),
-            icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
-            title: 'Financial',
+            availability: 'All',
+            description: getMarketTypeDetailsDescription(localize, product, isEuRegion),
+            icon: getIcon(),
+            title: getMarketTypeDetailsTitle(product, isEuRegion),
         },
         synthetic: {
+            availability: 'All',
             description: localize('CFDs on derived and financial instruments'),
             icon: <AccountsDmt5StandardIcon height={48} width={48} />,
             title: 'Standard',
         },
-    } as const);
+    } as const;
+};
 
 export const PlatformDetails = {
     ctrader: {
+        availability: 'Non-EU',
         icon: <AccountsDerivCtraderIcon height={48} width={48} />,
         link: 'https://onelink.to/5jgj8z',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
     dxtrade: {
+        availability: 'Non-EU',
         icon: <AccountsDerivXIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'dxtrade' as TPlatforms.OtherAccounts,
@@ -75,18 +134,21 @@ export const PlatformDetails = {
 } as const;
 
 export const companyNamesAndUrls = {
-    bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
-    labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
+    bvi: { shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
+    dml: { shortcode: 'DML', tncUrl: 'tnc/deriv-mauritius-ltd.pdf' },
+    labuan: { shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
-        name: 'Deriv Investments (Europe) Limited',
         shortcode: 'Maltainvest',
         tncUrl: 'tnc/deriv-investments-(europe)-limited.pdf',
     },
-    svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
-    vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
+    svg: { shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
+    vanuatu: { shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
 
-export const getAppToContentMapper = (localize: ReturnType<typeof useTranslations>['localize']) =>
+export const getAppToContentMapper = (
+    localize: ReturnType<typeof useTranslations>['localize'],
+    mt5TradeAccount?: THooks.MT5AccountsList
+) =>
     ({
         ctrader: {
             icon: <LabelPairedWindowsXlIcon />,
@@ -96,33 +158,33 @@ export const getAppToContentMapper = (localize: ReturnType<typeof useTranslation
         },
         linux: {
             icon: <LabelPairedLinuxXlIcon />,
-            link: whiteLabelLinks.linux,
+            link: internalWhiteLabelLinks.linux,
             text: localize('Learn more'),
             title: localize('MetaTrader 5 Linux app'),
         },
         macos: {
             icon: <LabelPairedMacosXlIcon />,
-            link: whiteLabelLinks.macos,
+            link: internalWhiteLabelLinks.macos,
             text: localize('Download'),
             title: localize('MetaTrader 5 MacOS app'),
         },
         web: {
-            icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-            link: whiteLabelLinks.webtrader_url,
+            icon: <PartnersProductBrandLightDerivMt5LogoWordmarkIcon height={32} width={32} />,
+            link: mt5TradeAccount ? getWebtraderUrl({ mt5TradeAccount }) : '',
             text: localize('Open'),
             title: localize('MetaTrader 5 web'),
         },
         windows: {
             icon: <LabelPairedWindowsXlIcon />,
-            link: whiteLabelLinks.windows,
+            link: mt5TradeAccount?.white_label_links?.windows,
             text: localize('Download'),
             title: localize('MetaTrader 5 Windows app'),
         },
-    } as const);
+    }) as const;
 
 export const PlatformToLabelIconMapper = {
-    ctrader: <PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon height={8} width={58} />,
-    dxtrade: <DerivProductDerivXBrandDarkWordmarkIcon height={10} width={35} />,
+    ctrader: <PartnersProductBrandDarkDerivCtraderWordmarkIcon height={8} width={58} />,
+    dxtrade: <DerivProductBrandDarkDerivXWordmarkIcon height={10} width={35} />,
 } as const;
 
 export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTranslations>['localize']) =>
@@ -136,7 +198,7 @@ export const getServiceMaintenanceMessages = (localize: ReturnType<typeof useTra
         mt5: localize(
             'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.'
         ),
-    } as const);
+    }) as const;
 
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',
@@ -174,6 +236,7 @@ export const JURISDICTION = {
 export const PRODUCT = {
     CTRADER: 'ctrader',
     DERIVX: 'derivx',
+    GOLD: 'gold',
     SWAPFREE: 'swap_free',
     ZEROSPREAD: 'zero_spread',
 } as const;
@@ -185,12 +248,24 @@ export const MT5_ACCOUNT_STATUS = {
     FAILED: 'failed',
     MIGRATED_WITH_POSITION: 'migrated_with_position',
     MIGRATED_WITHOUT_POSITION: 'migrated_without_position',
-    NEEDS_VERIFICATION: 'needs_verification',
     PENDING: 'pending',
-    POA_PENDING: 'poa_pending',
-    POA_VERIFIED: 'poa_verified',
     UNAVAILABLE: 'unavailable',
     UNDER_MAINTENANCE: 'under_maintenance',
+    // TODO: remove all the statuses below once the KYC statuses are consolidated by BE
+    // eslint-disable-next-line sort-keys
+    POA_FAILED: 'poa_failed',
+    POA_OUTDATED: 'poa_outdated',
+    PROOF_FAILED: 'proof_failed',
+
+    // eslint-disable-next-line sort-keys
+    NEEDS_VERIFICATION: 'needs_verification',
+    POA_REQUIRED: 'poa_required',
+
+    // eslint-disable-next-line sort-keys
+    POA_PENDING: 'poa_pending',
+    VERIFICATION_PENDING: 'verification_pending',
+    // eslint-disable-next-line sort-keys
+    POA_VERIFIED: 'poa_verified',
 } as const;
 
 /**
@@ -202,3 +277,10 @@ export const TRADING_PLATFORM_STATUS = {
     MAINTENANCE: 'maintenance',
     UNAVAILABLE: 'unavailable',
 } as const;
+
+export const DISABLED_PLATFORM_STATUSES = [
+    MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE,
+    MT5_ACCOUNT_STATUS.UNAVAILABLE,
+    TRADING_PLATFORM_STATUS.MAINTENANCE,
+    TRADING_PLATFORM_STATUS.UNAVAILABLE,
+] as const;

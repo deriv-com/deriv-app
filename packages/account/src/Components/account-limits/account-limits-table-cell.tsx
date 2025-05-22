@@ -6,6 +6,7 @@ type TAccountLimitsTableCell = {
     align: 'right' | 'left';
     is_hint: boolean;
     level: string;
+    className?: string;
     renderExtraInfo: () => ReactElement;
 };
 
@@ -15,12 +16,13 @@ const AccountLimitsTableCell = ({
     is_hint,
     level,
     renderExtraInfo,
+    className,
 }: PropsWithChildren<Partial<TAccountLimitsTableCell>>) => {
     const text_size = is_hint ? 'xxxs' : 'xxs';
 
     return (
         <td
-            className={clsx('da-account-limits__table-cell', {
+            className={clsx('da-account-limits__table-cell', className, {
                 'da-account-limits__table-cell--left': align !== 'right',
                 'da-account-limits__table-cell--right': align === 'right',
                 'da-account-limits__table-cell--submarket': level === 'submarket',

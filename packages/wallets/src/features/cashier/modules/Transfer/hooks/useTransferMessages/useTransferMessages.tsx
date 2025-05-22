@@ -9,6 +9,7 @@ import {
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    minimumTransferLimitMessageFn,
     tradingPlatformStatusMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
@@ -57,12 +58,15 @@ const useTransferMessages = ({
     const memoizedMessages = useMemo(() => {
         const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
 
-        const sourceAmount = formData.fromAmount;
-        const targetAmount = formData.toAmount;
+        const sourceAmount = Number(formData.fromAmount);
+        const targetAmount = Number(formData.toAmount);
 
         const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
         const messages: TTransferMessage[] = [];
 
+        // messageFns.push(validateNumber);
+
+        messageFns.push(minimumTransferLimitMessageFn);
         messageFns.push(insufficientBalanceMessageFn);
         messageFns.push(countLimitMessageFn);
 
@@ -100,7 +104,8 @@ const useTransferMessages = ({
         });
 
         if (messages.some(message => message.type === 'error')) {
-            return messages.filter(message => message.type === 'error');
+            const errorMessage = messages.filter(message => message.type === 'error')[0];
+            return [errorMessage];
         }
 
         return messages;

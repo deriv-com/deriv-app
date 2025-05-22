@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../components';
 import { Page404 } from '../components/Page404';
 
 const LazyWalletsListingRoute = lazy(
@@ -25,6 +25,10 @@ type TWalletsRoute =
     | '/wallet/withdrawal';
 
 export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
+
+type TRouterProps = {
+    isHubRedirectionEnabled: boolean;
+};
 
 // wallets routes which have their states
 interface WalletsRouteState {
@@ -71,14 +75,14 @@ declare module 'react-router-dom' {
     export function useRouteMatch(path: TRoute): boolean;
 }
 
-const Router: React.FC = () => {
+const Router: React.FC<TRouterProps> = ({ isHubRedirectionEnabled }) => {
     return (
         <Switch>
             <Route
                 exact
                 path={'/compare-accounts'}
                 render={() => (
-                    <React.Suspense fallback={<Loader />}>
+                    <React.Suspense fallback={<WalletLoader />}>
                         <LazyCompareAccountsRoute />
                     </React.Suspense>
                 )}
@@ -86,7 +90,7 @@ const Router: React.FC = () => {
             <Route
                 path={'/wallet'}
                 render={() => (
-                    <React.Suspense fallback={<Loader />}>
+                    <React.Suspense fallback={<WalletLoader />}>
                         <LazyCashierModalRoute />
                     </React.Suspense>
                 )}
@@ -95,8 +99,8 @@ const Router: React.FC = () => {
                 exact
                 path={'/'}
                 render={() => (
-                    <React.Suspense fallback={<Loader />}>
-                        <LazyWalletsListingRoute />
+                    <React.Suspense fallback={<WalletLoader />}>
+                        <LazyWalletsListingRoute isHubRedirectionEnabled={isHubRedirectionEnabled} />
                     </React.Suspense>
                 )}
             />

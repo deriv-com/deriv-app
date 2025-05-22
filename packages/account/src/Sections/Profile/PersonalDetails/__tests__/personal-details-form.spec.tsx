@@ -1,12 +1,14 @@
 import React from 'react';
-import { cleanup, render, waitFor, screen } from '@testing-library/react';
-import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
+
 import { APIProvider } from '@deriv/api';
-import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import PersonalDetailsForm from '../personal-details-form';
 import { useGrowthbookGetFeatureValue, useResidenceList } from '@deriv/hooks';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import PersonalDetailsForm from '../personal-details-form';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -18,6 +20,30 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     WS: {
         send: jest.fn().mockResolvedValue({ time: 1620000000 }),
         wait: (...payload: []) => Promise.resolve([...payload]),
+        authorized: {
+            storage: {
+                getFinancialAssessment: jest.fn(() =>
+                    Promise.resolve({
+                        get_financial_assessment: {
+                            account_turnover: '',
+                            cfd_score: 0,
+                            education_level: '',
+                            employment_industry: '',
+                            employment_status: 'Employed',
+                            estimated_worth: '',
+                            financial_information_score: '',
+                            financial_information_version: '',
+                            income_source: '',
+                            net_income: '',
+                            occupation: '',
+                            source_of_wealth: '',
+                            total_score: '',
+                            trading_score: '',
+                        },
+                    })
+                ),
+            },
+        },
     },
     useWS: () => undefined,
 }));
@@ -66,7 +92,7 @@ describe('<PersonalDetailsForm />', () => {
     };
 
     beforeEach(() => {
-        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true]);
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true, true]);
     });
 
     it('should render successfully', async () => {
@@ -99,19 +125,10 @@ describe('<PersonalDetailsForm />', () => {
     it('should have "required" validation errors on required form fields', async () => {
         renderComponent();
 
-        await waitFor(() => {
-            const first_name = screen.getByTestId('dt_first_name');
-            userEvent.clear(first_name);
-            expect(screen.getByText(/First name is required./)).toBeInTheDocument();
-        });
-    });
-
-    it('should display error for up to 50 characters length validation, for last name when entered characters are more than 50', async () => {
-        renderComponent();
         await waitFor(async () => {
-            const last_name = screen.getByTestId('dt_last_name');
-            await userEvent.type(last_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
-            expect(screen.getByText(/Enter no more than 50 characters./)).toBeInTheDocument();
+            const first_name = screen.getByTestId('dt_first_name');
+            await userEvent.clear(first_name);
+            expect(screen.getByText(/First name is required./)).toBeInTheDocument();
         });
     });
 
@@ -127,9 +144,9 @@ describe('<PersonalDetailsForm />', () => {
 
     it('should not display error for the regex validation, for First name when acceptable characters are entered', async () => {
         renderComponent();
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, "test-with' chars.");
+            await userEvent.type(first_name, "test-with' chars.");
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
         });
     });
@@ -181,14 +198,14 @@ describe('<PersonalDetailsForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should update user profile after clicking on Save changes', () => {
+    it('should update user profile after clicking on Save changes', async () => {
         renderComponent();
         const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;
         expect(first_name.value).toBe('John');
-        userEvent.clear(first_name);
-        userEvent.type(first_name, 'James');
+        await userEvent.clear(first_name);
+        await userEvent.type(first_name, 'James');
         const save_changes_button = screen.getByRole('button', { name: /Save changes/ });
-        userEvent.click(save_changes_button);
+        await userEvent.click(save_changes_button);
         expect(first_name.value).toBe('James');
     });
 

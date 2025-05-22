@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { modifyContextMenu, setCurrency } from '../../../utils';
 
 const description = localize(
     'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
@@ -53,13 +53,13 @@ Blockly.Blocks.multiplier_stop_loss = {
         }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) ||
+            (event.type === Blockly.Events.BLOCK_CHANGE && !event.isStart)
         ) {
-            this.setCurrency();
+            setCurrency(this);
         }
     },
     restricted_parents: ['trade_definition_multiplier'],
-    setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
         if (field_input.connection.targetBlock()) {

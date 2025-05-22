@@ -24,7 +24,10 @@ import ErrorStore from './error-store';
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
 export default class AccountTransferStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(
+        public WS: TWebSocket,
+        public root_store: TRootStore
+    ) {
         makeObservable(this, {
             accounts_list: observable,
             error: observable,
@@ -230,7 +233,7 @@ export default class AccountTransferStore {
     setMinimumFee() {
         const decimals = getDecimalPlaces(this.selected_from.currency || '');
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
+        this.minimum_fee = (1 / 10 ** decimals).toFixed(decimals);
     }
 
     setTransferLimit() {
@@ -393,6 +396,7 @@ export default class AccountTransferStore {
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
                           product: account.product,
+                          shortcode: account.landing_company_short,
                       })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
                     : `${cfd_text_display} ${
                           getCFDAccountDisplay({
@@ -401,6 +405,7 @@ export default class AccountTransferStore {
                               platform: account.account_type,
                               is_eu: this.root_store.client.is_eu,
                               is_transfer_form: true,
+                              product: account.product,
                           }) || ''
                       }`;
             const account_text_display = is_cfd

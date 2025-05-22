@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import { formatDate, formatTime, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 
 const CooldownWarningModal = observer(() => {
     const { client, ui } = useStore();
@@ -26,7 +27,7 @@ const CooldownWarningModal = observer(() => {
                 <Icon icon='IcRedWarning' size={63} />
                 <Text as='p' size='xs' align='center' className='risk-acceptance__text'>
                     <Localize
-                        i18n_default_text="Sorry, you're unable to create an account at this time. As you declined our previous risk warnings, we need you to wait for 24 hours after your first account creation attempt before you can proceed.<0/><0/>"
+                        i18n_default_text="Sorry, you're unable to create an account at this time. As you declined our previous risk warnings, we need you to wait for 24 hours before you can proceed.<0/><0/>"
                         components={<br key={0} />}
                     />
                     <Localize

@@ -20,7 +20,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
 
     const renderButtons = (
         <Button isFullWidth={!isDesktop} onClick={onClick} size='lg' textSize='sm'>
-            {isInvestorPassword ? localize('Ok') : localize('Done')}
+            {localize('OK')}
         </Button>
     );
 
@@ -28,11 +28,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
         <ModalStepWrapper
             renderFooter={isDesktop ? undefined : () => renderButtons}
             shouldHideFooter={isDesktop}
-            title={
-                isInvestorPassword
-                    ? localize('Reset {{title}} password', { title })
-                    : localize('Manage {{title}} password', { title })
-            }
+            title={isInvestorPassword ? localize('Reset {{title}} password', { title }) : localize('Success')}
         >
             <div className='wallets-reset-mt5-password'>
                 <ActionScreen
@@ -40,10 +36,9 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
                     description={
                         isInvestorPassword
                             ? localize('Your investor password has been changed.')
-                            : localize(
-                                  'You have a new {{title}} password to log in to your {{title}} accounts on the web and mobile apps.',
-                                  { title }
-                              )
+                            : localize('You can log in to all your {{title}} accounts with your new password.', {
+                                  title,
+                              })
                     }
                     descriptionSize='sm'
                     icon={
@@ -53,7 +48,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
                             <DerivLightMt5SuccessPasswordResetIcon height={100} width={100} />
                         )
                     }
-                    title={isInvestorPassword ? localize('Password saved') : localize('Success')}
+                    title={isInvestorPassword ? localize('Password saved') : undefined}
                 />
             </div>
         </ModalStepWrapper>

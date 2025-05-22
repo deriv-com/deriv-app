@@ -13,7 +13,7 @@ jest.mock('@deriv/hooks', () => ({
     useCashierLocked: jest.fn(() => false),
     useIsSystemMaintenance: jest.fn(() => false),
     useCurrentCurrencyConfig: jest.fn(() => ({
-        platform: { cashier: ['doughflow'] },
+        platform: { cashier: ['doughflow'], ramp: [] },
     })),
 }));
 
@@ -118,7 +118,7 @@ describe('<Deposit />', () => {
         });
 
         (useCurrentCurrencyConfig as jest.Mock).mockReturnValue({
-            platform: { cashier: ['crypto'] },
+            platform: { cashier: ['crypto'], ramp: ['banxa'] },
         });
 
         render(<Deposit />, {

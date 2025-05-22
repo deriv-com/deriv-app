@@ -1,5 +1,6 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import classNames from 'classnames';
+import { useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { AccountsList } from '../AccountsList';
 import { WalletsCardLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
@@ -8,9 +9,14 @@ import './DesktopWalletsList.scss';
 
 const DesktopWalletsList = () => {
     const { data: activeWallet, isInitializing } = useActiveWalletAccount();
-
+    const { data: isEuRegion } = useIsEuRegion();
     return (
-        <div className='wallets-desktop-wallets-list' data-testid='dt_desktop-wallets-list'>
+        <div
+            className={classNames('wallets-desktop-wallets-list', {
+                'wallets-desktop-wallets-list--with-banner': isEuRegion && !activeWallet?.is_virtual,
+            })}
+            data-testid='dt_desktop-wallets-list'
+        >
             {isInitializing && <WalletsCardLoader />}
             {!isInitializing && (
                 <WalletsContainer

@@ -34,6 +34,10 @@ const usePOI = () => {
         return !hasAcknowledgedStatus || isPreviousStatusFailed;
     }, [authentication_data?.identity, previous_service?.status]);
 
+    const needs_verification = useMemo(() => {
+        return new Set(authentication_data?.needs_verification);
+    }, [authentication_data?.needs_verification]);
+
     /**
      * @description Get the current step based on a few checks. Returns configuration for document validation as well.
      */
@@ -97,14 +101,16 @@ const usePOI = () => {
             ...authentication_data?.identity,
             previous: previous_service,
             current: current_poi,
+            has_attempted_poi: authentication_data?.identity?.status !== 'none',
             is_poi_required,
             is_pending: authentication_data?.identity?.status === 'pending',
             is_rejected: authentication_data?.identity?.status === 'rejected',
             is_expired: authentication_data?.identity?.status === 'expired',
             is_suspected: authentication_data?.identity?.status === 'suspected',
             is_verified: authentication_data?.identity?.status === 'verified',
+            poi_needs_verification: needs_verification.has('identity'),
         };
-    }, [authentication_data, current_poi, is_poi_required, previous_service]);
+    }, [authentication_data, current_poi, is_poi_required, needs_verification, previous_service]);
 
     return {
         data: modified_verification_data,

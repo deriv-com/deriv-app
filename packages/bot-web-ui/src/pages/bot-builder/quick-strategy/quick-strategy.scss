@@ -69,7 +69,7 @@
             width: var(--sidebar-width);
 
             &__subtitle {
-                padding: 1rem 2.4rem;
+                padding: 1rem 1.6rem;
             }
 
             &__items {
@@ -670,5 +670,12 @@
                 margin: 1.5rem 0.5rem;
             }
         }
+    }
+}
+
+.sell_conditions {
+    &__take_profit,
+    &__tick_count {
+        margin-bottom: 0.8rem;
     }
 }

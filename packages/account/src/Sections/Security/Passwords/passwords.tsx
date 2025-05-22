@@ -1,9 +1,10 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import DerivPassword from './deriv-password';
 import DerivEmail from './deriv-email';
-import PasswordsPlatform from './passwords-platform';
+import DerivMt5Password from './deriv-mt5-password';
+import DerivXPassword from './deriv-x-password';
 
 /**
  *  Displays the Email, Password, section under Account settings.
@@ -45,10 +46,8 @@ const Passwords = observer(() => {
         <div className='account__passwords'>
             <DerivEmail />
             <DerivPassword />
-            {!is_from_derivgo && has_mt5_accounts && <PasswordsPlatform has_mt5_accounts={has_mt5_accounts} />}
-            {!is_from_derivgo && has_dxtrade_accounts && (
-                <PasswordsPlatform has_dxtrade_accounts={has_dxtrade_accounts} />
-            )}
+            {!is_from_derivgo && has_mt5_accounts && <DerivMt5Password />}
+            {!is_from_derivgo && has_dxtrade_accounts && <DerivXPassword />}
         </div>
     );
 });

@@ -4,7 +4,7 @@ import UploadComplete from '../../../Components/poi/status/upload-complete';
 import Verified from '../../../Components/poi/status/verified';
 import RejectedReasons from '../../../Components/poi/status/rejected-reasons';
 import Unsupported from '../../../Components/poi/status/unsupported';
-import { identity_status_codes } from './proof-of-identity-utils';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
 
 const Onfido = ({
     handleRequireSubmission,
@@ -51,7 +51,12 @@ const Onfido = ({
         }
         case identity_status_codes.verified:
             return (
-                <Verified is_from_external={is_from_external} needs_poa={needs_poa} redirect_button={redirect_button} />
+                <Verified
+                    is_from_external={is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                    service={service_code.onfido}
+                />
             );
         default:
             return null;

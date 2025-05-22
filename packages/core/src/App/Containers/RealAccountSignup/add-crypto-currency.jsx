@@ -5,8 +5,10 @@ import { useDevice } from '@deriv-com/ui';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { reorderCurrencies, website_name } from '@deriv/shared';
+import { isMobile, reorderCurrencies, routes, website_name } from '@deriv/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
+import CurrencyProvider from './choose-currency';
+import AddCurrencyNote from './add-currency-note';
 import './currency-selector.scss';
 
 const messages = () => [
@@ -43,17 +45,23 @@ const AddCryptoCurrency = observer(
         hasNoAvailableCrypto,
     }) => {
         const { isDesktop } = useDevice();
-        const { client, ui } = useStore();
+        const { client, modules, ui } = useStore();
         const { available_crypto_currencies, upgradeable_currencies: legal_allowed_currencies, has_fiat } = client;
         const { should_show_cancel } = ui;
+        const { cashier } = modules;
+
+        const deposit_target = cashier.general_store.deposit_target;
+
         const getReorderedFiatCurrencies = () =>
             reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
-        const getReorderedCryptoCurrencies = () =>
-            reorderCurrencies(
-                legal_allowed_currencies.filter(currency => currency.type === CRYPTO_CURRENCY_TYPE),
-                CRYPTO_CURRENCY_TYPE
-            );
+        const getReorderedCryptoCurrencies = () => {
+            const currencies =
+                deposit_target === routes.cashier_onramp
+                    ? CurrencyProvider.currenciesOnRampAvailability(legal_allowed_currencies)
+                    : legal_allowed_currencies.filter(currency => currency.type === CRYPTO_CURRENCY_TYPE);
 
+            return reorderCurrencies(currencies, CRYPTO_CURRENCY_TYPE);
+        };
         const canAddFiat = () => !has_fiat && !should_show_crypto_only;
         const canAddCrypto = currency => {
             // check if the cryptocurrency has not been created
@@ -74,30 +82,28 @@ const AddCryptoCurrency = observer(
                             <Headers heading={is_add_fiat ? messages()[4] : messages()[2]} subheading={messages()[3]} />
                         )}
                         {canAddFiat() && (
-                            <React.Fragment>
-                                <ThemedScrollbars>
-                                    <CurrencyRadioButtonGroup
-                                        id='fiat_currency'
-                                        is_fiat
-                                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                        value={values.currency}
-                                        error={errors.currency}
-                                        touched={touched.currency}
-                                        is_title_enabled={canAddFiat()}
-                                        item_count={getReorderedFiatCurrencies().length}
-                                    >
-                                        {getReorderedFiatCurrencies().map(currency => (
-                                            <Field
-                                                key={currency.value}
-                                                component={CurrencyRadioButton}
-                                                name='currency'
-                                                id={currency.value}
-                                                label={currency.name}
-                                            />
-                                        ))}
-                                    </CurrencyRadioButtonGroup>
-                                </ThemedScrollbars>
-                            </React.Fragment>
+                            <ThemedScrollbars>
+                                <CurrencyRadioButtonGroup
+                                    id='fiat_currency'
+                                    is_fiat
+                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    value={values.currency}
+                                    error={errors.currency}
+                                    touched={touched.currency}
+                                    is_title_enabled={canAddFiat()}
+                                    item_count={getReorderedFiatCurrencies().length}
+                                >
+                                    {getReorderedFiatCurrencies().map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={CurrencyRadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                        />
+                                    ))}
+                                </CurrencyRadioButtonGroup>
+                            </ThemedScrollbars>
                         )}
                         {canAddFiat() && (
                             <Text
@@ -129,29 +135,36 @@ const AddCryptoCurrency = observer(
                         )}
                         {!should_show_fiat_only &&
                             (available_crypto_currencies.length !== 0 ? (
-                                <ThemedScrollbars>
-                                    <CurrencyRadioButtonGroup
-                                        id='crypto_currency'
-                                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                        label={localize('Cryptocurrencies')}
-                                        value={values.currency}
-                                        error={errors.currency}
-                                        touched={touched.currency}
-                                        is_title_enabled={canAddFiat()}
-                                        item_count={getReorderedCryptoCurrencies().length}
-                                    >
-                                        {getReorderedCryptoCurrencies().map(currency => (
-                                            <Field
-                                                key={currency.value}
-                                                component={CurrencyRadioButton}
-                                                name='currency'
-                                                id={currency.value}
-                                                label={currency.name}
-                                                selected={canAddCrypto(currency)}
-                                            />
-                                        ))}
-                                    </CurrencyRadioButtonGroup>
-                                </ThemedScrollbars>
+                                <>
+                                    <ThemedScrollbars height={isMobile() ? window.innerHeight - 240 : '460px'}>
+                                        <CurrencyRadioButtonGroup
+                                            id='crypto_currency'
+                                            className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                            label={localize('Cryptocurrencies')}
+                                            value={values.currency}
+                                            error={errors.currency}
+                                            touched={touched.currency}
+                                            is_title_enabled={canAddFiat()}
+                                            item_count={getReorderedCryptoCurrencies().length}
+                                        >
+                                            {getReorderedCryptoCurrencies().map(currency => (
+                                                <Field
+                                                    key={currency.value}
+                                                    component={CurrencyRadioButton}
+                                                    name='currency'
+                                                    id={currency.value}
+                                                    label={currency.name}
+                                                    selected={canAddCrypto(currency)}
+                                                />
+                                            ))}
+                                        </CurrencyRadioButtonGroup>
+                                    </ThemedScrollbars>
+                                    {deposit_target === routes.cashier_onramp && (
+                                        <AddCurrencyNote
+                                            message={localize('Some currencies may not be supported by fiat onramp.')}
+                                        />
+                                    )}
+                                </>
                             ) : (
                                 <ThemedScrollbars>
                                     <CurrencyRadioButtonGroup

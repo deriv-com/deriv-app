@@ -55,33 +55,76 @@ mockUseTradingPlatformStatus.mockReturnValue({
     getPlatformStatus: jest.fn(),
 });
 describe('CFDsListing', () => {
-    const mock = mockStore({
-        traders_hub: {
-            selected_region: 'Non-EU',
-            has_any_real_account: true,
-            is_real: true,
-            no_MF_account: true,
-            is_demo_low_risk: true,
-        },
-        client: {
-            is_landing_company_loaded: true,
-            real_account_creation_unlock_date: '2022-02-02',
-        },
-        modules: {
-            cfd: {
-                toggleCompareAccountsModal: jest.fn(),
-                setAccountType: jest.fn(),
-                current_list: {},
+    it('should not render the component when cfd accounts are not supported', () => {
+        const mock = mockStore({
+            traders_hub: {
+                selected_region: 'Non-EU',
+                has_any_real_account: true,
+                is_real: true,
+                no_MF_account: true,
+                is_demo_low_risk: true,
+                available_dxtrade_accounts: [],
+                available_ctrader_accounts: [],
+                combined_cfd_mt5_accounts: [],
             },
-        },
-    });
-
-    it('should render the component', () => {
+            client: {
+                is_landing_company_loaded: true,
+                is_trading_platform_available_account_loaded: true,
+                real_account_creation_unlock_date: '2022-02-02',
+            },
+            modules: {
+                cfd: {
+                    toggleCompareAccountsModal: jest.fn(),
+                    setAccountType: jest.fn(),
+                    current_list: {},
+                },
+            },
+        });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
 
         render(<CFDsListing />, { wrapper });
-        expect(screen.getByTestId('listing-container')).toBeInTheDocument();
+        expect(screen.queryByTestId('listing-container')).not.toBeInTheDocument();
+    });
+
+    it('should render the component when cfd accounts are  supported', () => {
+        const mock = mockStore({
+            traders_hub: {
+                selected_region: 'Non-EU',
+                has_any_real_account: true,
+                is_real: true,
+                no_MF_account: true,
+                is_demo_low_risk: true,
+                available_dxtrade_accounts: [],
+                available_ctrader_accounts: [],
+                combined_cfd_mt5_accounts: [
+                    {
+                        landing_company_short: 'svg',
+                        product: 'financial',
+                        status: 'proof_failed',
+                        login: '123',
+                    },
+                ],
+            },
+            client: {
+                is_landing_company_loaded: true,
+                is_trading_platform_available_account_loaded: true,
+                real_account_creation_unlock_date: '2022-02-02',
+            },
+            modules: {
+                cfd: {
+                    toggleCompareAccountsModal: jest.fn(),
+                    setAccountType: jest.fn(),
+                    current_list: {},
+                },
+            },
+        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        render(<CFDsListing />, { wrapper });
+        expect(screen.queryByTestId('listing-container')).toBeInTheDocument();
     });
 });

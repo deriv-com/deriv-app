@@ -1,17 +1,23 @@
 import React from 'react';
-import { InlineMessage, Text, Icon } from '@deriv/components';
+
+import { Icon, InlineMessage, Text } from '@deriv/components';
+import { CONTRACT_STORAGE_VALUES, TRADE_TYPES } from '@deriv/shared';
+
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
-import ContractType from './contract-type';
+
+import { useTraderStore } from 'Stores/useTraderStores';
+
 import {
     findContractCategory,
-    getContractTypeCategoryIcons,
     getCategoriesSortedByKey,
+    getContractTypeCategoryIcons,
     getContractTypes,
 } from '../../../Helpers/contract-type';
+
+import ContractType from './contract-type';
 import { TContractCategory, TContractType, TList } from './types';
-import { useTraderStore } from 'Stores/useTraderStores';
 
 type TContractTypeWidget = {
     name: string;
@@ -33,7 +39,7 @@ const ContractTypeWidget = observer(
             active_symbols: { active_symbols },
             ui: { is_mobile },
         } = useStore();
-        const { symbol } = useTraderStore();
+        const { symbol, contract_type } = useTraderStore();
         const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
         const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
         const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
@@ -80,6 +86,19 @@ const ContractTypeWidget = observer(
             }
         }, [is_dialog_open]);
 
+        React.useEffect(() => {
+            if (contract_type) {
+                const contract_type_map = {
+                    [TRADE_TYPES.MULTIPLIER]: CONTRACT_STORAGE_VALUES.MULTIPLIERS,
+                    [TRADE_TYPES.ACCUMULATOR]: CONTRACT_STORAGE_VALUES.ACCUMULATORS,
+                };
+                const stored_value =
+                    contract_type_map[contract_type as keyof typeof contract_type_map] ??
+                    CONTRACT_STORAGE_VALUES.OPTIONS;
+                localStorage.setItem('contract_type_value', stored_value);
+            }
+        }, [contract_type]);
+
         const handleCategoryClick: React.ComponentProps<typeof ContractType.Dialog>['onCategoryClick'] = ({ key }) => {
             if (key) setSelectedCategory(key);
         };
@@ -101,6 +120,7 @@ const ContractTypeWidget = observer(
 
                 onChange({ target: { name, value: clicked_item.value } });
 
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 if ((window as any).hj) (window as any).hj('event', `selected_${clicked_item.value}_contract_type`);
                 if (subform_name === 'trade_type') {
                     Analytics.trackEvent('ce_trade_types_form', {

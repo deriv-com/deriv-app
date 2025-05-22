@@ -1,12 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
-import DTraderContractDetailsHeader from './dtrader-v2-contract-detail-header';
 
 const HeaderFallback = () => {
     return <div className={classNames('header')} />;
@@ -44,10 +42,10 @@ const TradersHubHeaderWallets = makeLazyLoader(
 )();
 
 const Header = observer(() => {
-    const { client } = useStore();
-    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
+    const { client, common } = useStore();
+    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount, is_single_logging_in } = client;
+    const { is_from_tradershub_os } = common;
     const { pathname } = useLocation();
-    const { isMobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -63,8 +61,6 @@ const Header = observer(() => {
         is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
-
     React.useEffect(() => {
         if (has_wallet && is_logged_in) {
             const accounts_keys = Object.keys(accounts ?? {});
@@ -76,20 +72,21 @@ const Header = observer(() => {
             }
         }
     }, [accounts, client_accounts, has_wallet, is_logged_in, loginid, setAccounts, switchAccount]);
-
-    if (is_logged_in) {
+    if (is_logged_in && !is_single_logging_in) {
         let result;
         switch (true) {
             case pathname === routes.onboarding:
                 result = null;
                 break;
-            case is_dtrader_v2_enabled &&
-                isMobile &&
-                pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'):
-                result = <DTraderContractDetailsHeader />;
-                break;
             case traders_hub_routes:
                 result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
+                break;
+            case pathname.includes(routes.account):
+                if (is_from_tradershub_os) {
+                    result = <DTraderHeader />;
+                } else {
+                    result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;
+                }
                 break;
             default:
                 result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;

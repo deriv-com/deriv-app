@@ -58,7 +58,7 @@ const AccountOption = ({
         if (is_pending_verification) {
             return (
                 <Text color='warning' size='xs'>
-                    <Localize i18n_default_text='Pending verification' />
+                    <Localize i18n_default_text='In review' />
                 </Text>
             );
         } else if (is_verification_needed) {
@@ -70,17 +70,25 @@ const AccountOption = ({
         } else if (is_verification_failed) {
             return (
                 <Text color='red' size='xs'>
-                    <Localize i18n_default_text='Verification failed' />
+                    <Localize i18n_default_text='Failed' />
                 </Text>
             );
         } else if (is_server_maintenance) {
-            return <StatusBadge account_status='under_maintenance' icon='IcAlertWarning' text='Server Maintenance' />;
+            return (
+                <StatusBadge
+                    account_status='under_maintenance'
+                    icon='IcAlertWarning'
+                    text={<Localize i18n_default_text='<0>Server maintenance</0>' components={[<span key={0} />]} />}
+                />
+            );
         } else if (is_account_unavailable) {
             return (
                 <StatusBadge
                     account_status={TRADING_PLATFORM_STATUS.UNAVAILABLE}
                     icon='IcAlertWarning'
-                    text='Unavailable'
+                    text={
+                        <Localize i18n_default_text='<0>Temporarily unavailable</0>' components={[<span key={0} />]} />
+                    }
                 />
             );
         }
@@ -410,9 +418,7 @@ const AccountTransferForm = observer(
             if (is_migration_status_present) {
                 hint_text = <Localize i18n_default_text='You can no longer open new positions with this account.' />;
             } else if (is_unavailable_status_present) {
-                hint_text = (
-                    <Localize i18n_default_text='The server is temporarily unavailable for this account. We’re working to resolve this.' />
-                );
+                hint_text = <Localize i18n_default_text='Check back in a few minutes by refreshing the page.' />;
             } else if (is_maintenance_status_present) {
                 hint_text = (
                     <Localize
@@ -633,12 +639,14 @@ const AccountTransferForm = observer(
                                                                     i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                                     components={[
                                                                         <Money
+                                                                            className='account-transfer-form__hint-amount'
                                                                             key={0}
                                                                             amount={transfer_limit.min}
                                                                             currency={selected_from.currency}
                                                                             show_currency
                                                                         />,
                                                                         <Money
+                                                                            className='account-transfer-form__hint-amount'
                                                                             key={1}
                                                                             amount={transfer_limit.max}
                                                                             currency={selected_from.currency}
@@ -684,12 +692,14 @@ const AccountTransferForm = observer(
                                                                 i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                                 components={[
                                                                     <Money
+                                                                        className='account-transfer-form__hint-amount'
                                                                         key={0}
                                                                         amount={transfer_limit.min}
                                                                         currency={selected_from.currency}
                                                                         show_currency
                                                                     />,
                                                                     <Money
+                                                                        className='account-transfer-form__hint-amount'
                                                                         key={1}
                                                                         amount={transfer_limit.max}
                                                                         currency={selected_from.currency}

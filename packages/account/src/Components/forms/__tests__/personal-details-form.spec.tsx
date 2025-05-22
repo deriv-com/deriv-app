@@ -1,14 +1,20 @@
 import React from 'react';
 import { Formik } from 'formik';
-
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import PersonalDetailsForm from '../personal-details-form';
+import { APIProvider } from '@deriv/api';
+import { useGetPhoneNumberList } from '@deriv/hooks';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Link: () => <div>Mocked Link Component</div>,
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGetPhoneNumberList: jest.fn(),
 }));
 
 describe('PersonalDetailsForm', () => {
@@ -20,11 +26,21 @@ describe('PersonalDetailsForm', () => {
         ],
     };
 
+    beforeEach(() => {
+        (useGetPhoneNumberList as jest.Mock).mockReturnValue({
+            legacy_core_countries_list: [
+                { text: 'United States (+1)', value: '+1', id: '1_US', carriers: [], disabled: false },
+            ],
+        });
+    });
+
     const renderComponent = () => {
         render(
-            <Formik initialValues={{ salutation: '' }} onSubmit={jest.fn()}>
-                <PersonalDetailsForm {...mock_props} />
-            </Formik>
+            <APIProvider>
+                <Formik initialValues={{ salutation: '' }} onSubmit={jest.fn()}>
+                    <PersonalDetailsForm {...mock_props} />
+                </Formik>
+            </APIProvider>
         );
     };
 
@@ -35,7 +51,7 @@ describe('PersonalDetailsForm', () => {
         expect(screen.getByRole('radio', { name: 'Ms' })).toBeInTheDocument();
     });
 
-    it('should select the respective salutation when radio button is clicked', () => {
+    it('should select the respective salutation when radio button is clicked', async () => {
         renderComponent();
 
         const mr_radio_input = screen.getByRole('radio', { name: 'Mr' });
@@ -44,30 +60,12 @@ describe('PersonalDetailsForm', () => {
         expect(mr_radio_input).not.toBeChecked();
         expect(ms_radio_input).not.toBeChecked();
 
-        userEvent.click(mr_radio_input);
+        await userEvent.click(mr_radio_input);
         expect(mr_radio_input).toBeChecked();
         expect(ms_radio_input).not.toBeChecked();
 
-        userEvent.click(ms_radio_input);
+        await userEvent.click(ms_radio_input);
         expect(mr_radio_input).not.toBeChecked();
         expect(ms_radio_input).toBeChecked();
-    });
-
-    it('should display crs confirmation checkbox if tax residence & tin fields are filled', () => {
-        render(
-            <Formik
-                initialValues={{ tax_residence: '', tax_identification_number: '', crs_confirmation: false }}
-                onSubmit={jest.fn()}
-            >
-                <PersonalDetailsForm is_svg />
-            </Formik>
-        );
-
-        fireEvent.change(screen.getByTestId('tax_residence'), { target: { value: 'Afghanistan' } });
-        fireEvent.change(screen.getByTestId('tax_identification_number'), { target: { value: '1234567890' } });
-
-        expect(
-            screen.queryByLabelText(/i confirm that my tax information is accurate and complete/i)
-        ).toBeInTheDocument();
     });
 });

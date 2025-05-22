@@ -106,6 +106,6 @@ describe('useWalletAccountSwitcher', () => {
         const switchWalletAccount = result.current;
 
         await switchWalletAccount('CRW34569');
-        expect(global.localStorage.getItem('active_loginid')).toBe('CR34567');
+        expect(global.sessionStorage.getItem('active_loginid')).toBe('CR34567');
     });
 });

@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { config } from '../../../../constants/config';
-import { modifyContextMenu } from '../../../utils';
+import { excludeOptionFromContextMenu, modifyContextMenu, setCurrency } from '../../../utils';
 
 const description = localize(
     'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the accumulator trade type.'
@@ -50,16 +50,18 @@ Blockly.Blocks.accumulator_take_profit = {
         }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) ||
+            (event.type === Blockly.Events.BLOCK_CHANGE && !event.isStart)
         ) {
-            this.setCurrency();
+            setCurrency(this);
         }
     },
     customContextMenu(menu) {
+        const menu_items = [localize('Enable Block'), localize('Disable Block')];
+        excludeOptionFromContextMenu(menu, menu_items);
         modifyContextMenu(menu);
     },
     restricted_parents: ['trade_definition_accumulator'],
-    setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
         if (field_input.connection.targetBlock()) {

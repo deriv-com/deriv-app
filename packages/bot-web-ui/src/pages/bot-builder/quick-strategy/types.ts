@@ -34,7 +34,7 @@ export type TConfigItem = Partial<{
     name: keyof TFormData;
     dependencies: string[];
     label: string;
-    description: string;
+    description: ReactNode;
     attached: boolean;
     hide: string[];
     validation: TValidationItem[];
@@ -119,7 +119,15 @@ export type TRsStrategyName =
     | `oscar's-grind`
     | `reverse martingale`
     | `reverse d'alembert`
-    | `1-3-2-6`;
+    | `1-3-2-6`
+    | `ACCUMULATORS_MARTINGALE`
+    | `ACCUMULATORS_DALEMBERT`
+    | `ACCUMULATORS_MARTINGALE_ON_STAT_RESET`
+    | `ACCUMULATORS_DALEMBERT_ON_STAT_RESET`
+    | `ACCUMULATORS_REVERSE_MARTINGALE`
+    | `ACCUMULATORS_REVERSE_MARTINGALE_ON_STAT_RESET`
+    | `ACCUMULATORS_REVERSE_DALEMBERT`
+    | `ACCUMULATORS_REVERSE_DALEMBERT_ON_STAT_RESET`;
 
 export type TDurationType = 't' | 's' | 'm' | 'h' | 'd';
 

@@ -32,8 +32,6 @@ describe('TradeTypeList', () => {
     it('renders categories and items correctly', () => {
         render(<TradeTypeList categories={categories} onRightIconClick={jest.fn()} />);
 
-        expect(screen.getByText('Category 1')).toBeInTheDocument();
-        expect(screen.getByText('Category 2')).toBeInTheDocument();
         expect(screen.getByText('Item 1')).toBeInTheDocument();
         expect(screen.getByText('Item 2')).toBeInTheDocument();
         expect(screen.getByText('Item 3')).toBeInTheDocument();

@@ -5,6 +5,7 @@ import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
 import SymbolSearchResults from '../SymbolSearchResults';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { sendMarketTypeToAnalytics } from '../../../Analytics';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -12,7 +13,7 @@ type TActiveSymbolsList = {
 };
 
 const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
-    const { setTickData, symbol } = useTraderStore();
+    const { setTickData, setDigitStats, symbol, contract_type } = useTraderStore();
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(symbol);
     const [searchValue, setSearchValue] = useState('');
@@ -22,7 +23,8 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     useEffect(() => {
         setSelectedSymbol(symbol);
         setTickData(null);
-    }, [setTickData, symbol]);
+        setDigitStats([]);
+    }, [setDigitStats, setTickData, symbol]);
 
     return (
         <React.Fragment>
@@ -50,12 +52,18 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 searchValue={searchValue}
                                 setSearchValue={setSearchValue}
                                 setIsOpen={setIsOpen}
-                                setSelectedSymbol={setSelectedSymbol}
+                                setSelectedSymbol={(symbol: string) => {
+                                    sendMarketTypeToAnalytics(symbol, contract_type);
+                                    setSelectedSymbol(symbol);
+                                }}
                             />
                         ) : (
                             <MarketCategories
                                 selectedSymbol={selectedSymbol}
-                                setSelectedSymbol={setSelectedSymbol}
+                                setSelectedSymbol={(symbol: string) => {
+                                    sendMarketTypeToAnalytics(symbol, contract_type);
+                                    setSelectedSymbol(symbol);
+                                }}
                                 setIsOpen={setIsOpen}
                                 isOpen={isOpen}
                                 marketCategoriesRef={marketCategoriesRef}

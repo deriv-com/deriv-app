@@ -1,7 +1,8 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 import { CFD_PLATFORMS } from '../platform';
-import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -26,11 +27,13 @@ export const CFD_text: { [key: string]: string } = {
     all_zero_spread_demo: 'Zero Spread Demo',
     all_swap_free_svg: 'Swap-Free SVG',
     all_zero_spread_bvi: 'Zero Spread BVI',
+    stp: 'Financial Labuan',
 } as const;
 
 export const CFD_PRODUCTS_TITLE = {
     ZEROSPREAD: 'Zero Spread',
     SWAPFREE: 'Swap-Free',
+    GOLD: 'Gold',
 } as const;
 
 export const getMT5Title = (account_type: string) => {
@@ -43,10 +46,10 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+type TProduct = 'financial' | 'synthetic' | 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx' | 'stp' | 'gold';
 export type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest' | 'dml';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -56,6 +59,17 @@ type TGetCFDAccountKey = TGetAccount & {
     shortcode?: TShortcode;
     product?: TProduct;
 };
+
+export const PRODUCT = {
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+    STP: 'stp',
+    FINANCIAL: 'financial',
+    STANDARD: 'standard',
+    GOLD: 'gold',
+} as const;
 
 // * mt5_login_list returns these:
 // market_type: "financial" | "gaming"
@@ -88,7 +102,7 @@ export const getCFDAccountKey = ({
                 return 'all_demo';
         }
     }
-    if (market_type === 'all') {
+    if (market_type === 'all' && platform !== CFD_PLATFORMS.MT5) {
         switch (platform) {
             case CFD_PLATFORMS.CTRADER:
                 return 'ctrader';
@@ -112,24 +126,32 @@ export const getCFDAccountKey = ({
         }
     }
     if (market_type === 'financial') {
-        if (
-            platform === CFD_PLATFORMS.DXTRADE ||
-            sub_account_type === 'financial' ||
-            sub_account_type === 'financial_stp'
-        ) {
+        if (product === PRODUCT.STP && sub_account_type === 'financial_stp') {
+            return 'stp';
+        } else if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             switch (shortcode) {
                 case 'svg':
                     return 'financial_svg';
                 case 'bvi':
                     return 'financial_bvi';
-                case 'labuan':
-                    return 'financial_fx';
+
                 case 'vanuatu':
                     return 'financial_v';
                 case 'maltainvest':
                     return 'financial';
                 default:
                     return 'financial_demo';
+            }
+        } else if (product === PRODUCT.GOLD) {
+            switch (shortcode) {
+                case 'bvi':
+                    return 'gold_bvi';
+                case 'vanuatu':
+                    return 'gold_v';
+                case 'dml':
+                    return 'gold_dml';
+                default:
+                    return 'gold';
             }
         }
     }
@@ -238,6 +260,7 @@ type TGetCFDAccount = TGetAccount & {
 type TGetMT5Icon = {
     market_type: TMarketType;
     is_eu?: boolean;
+    product?: TProduct;
 };
 
 export const getCFDAccount = ({
@@ -260,8 +283,9 @@ export const getCFDAccount = ({
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
 };
 
-export const getMT5Icon = ({ market_type, is_eu }: TGetMT5Icon) => {
+export const getMT5Icon = ({ market_type, is_eu, product }: TGetMT5Icon) => {
     if (market_type === 'all' && !is_eu) return 'SwapFree';
+    if (product === 'gold') return 'Gold';
     if (market_type === 'financial' && is_eu) return 'CFDs';
     return market_type;
 };
@@ -482,7 +506,7 @@ export const mt5_community_url =
 
 export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
 
-export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
+export const getFormattedJurisdictionCode = (jurisdiction_code?: (typeof Jurisdiction)[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
@@ -508,7 +532,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdic
 };
 
 export const getFormattedJurisdictionMarketTypes = (
-    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+    jurisdiction_market_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
 ) => {
     let formatted_market_type = '';
 
@@ -527,8 +551,8 @@ export const getFormattedJurisdictionMarketTypes = (
 };
 
 type TGetMT5AccountTitle = {
-    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
-    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
+    account_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: (typeof Jurisdiction)[keyof typeof Jurisdiction];
 };
 
 //returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu
@@ -536,13 +560,4 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
         account_type
     )} ${getFormattedJurisdictionCode(jurisdiction)}`;
-};
-
-export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
-    const { document } = account_status?.authentication || {};
-    if (document?.status === AUTH_STATUS_CODES.PENDING) {
-        return false;
-    }
-    // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatu
-    return !document?.verified_jurisdiction[jurisdiction_shortcode];
 };

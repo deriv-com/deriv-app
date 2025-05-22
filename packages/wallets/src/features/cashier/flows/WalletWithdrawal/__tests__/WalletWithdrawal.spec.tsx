@@ -5,6 +5,11 @@ import useAllBalanceSubscription from '../../../../../hooks/useAllBalanceSubscri
 import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
 
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
+}));
+
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
     CashierLocked: jest.fn(({ children }) => <>{children}</>),
@@ -30,10 +35,6 @@ jest.mock('../../../modules', () => ({
 jest.mock('../../../screens', () => ({
     ...jest.requireActual('../../../screens'),
     WithdrawalNoBalance: jest.fn(() => <div>WithdrawalNoBalance</div>),
-}));
-
-jest.mock('@deriv-com/ui', () => ({
-    Loader: jest.fn(() => <div>Loading...</div>),
 }));
 
 const mockSwitchAccount = jest.fn();

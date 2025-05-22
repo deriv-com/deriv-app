@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Icon, MobileDialog, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { platforms, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
-import { useIsRtl, useStoreWalletAccountsList } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useIsRtl, useStoreWalletAccountsList } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import './account-switcher-wallet-mobile.scss';
 
@@ -20,19 +20,41 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     const { data: wallet_list } = useStoreWalletAccountsList();
 
     const dtrade_account_wallets = wallet_list?.filter(wallet => wallet.dtrade_loginid);
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);
     }, [toggle]);
 
     const handleTradersHubRedirect = () => {
+        const url_query_string = window.location.search;
+        const url_params = new URLSearchParams(url_query_string);
+        const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+        if (isHubRedirectionEnabled) {
+            window.location.assign(
+                `${platforms.tradershub_os.url}/redirect?action=redirect_to&redirect_to=cfds${account_currency ? `&account=${account_currency}` : ''}`
+            );
+            return;
+        }
         closeAccountsDialog();
         history.push(routes.traders_hub);
     };
 
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
-        history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+        if (isHubRedirectionEnabled) {
+            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
+
+            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+        } else {
+            history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+        }
     };
 
     const footer = (

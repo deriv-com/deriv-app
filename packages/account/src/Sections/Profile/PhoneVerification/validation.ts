@@ -2,22 +2,27 @@ import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import { localize } from '@deriv-com/translations';
 
-const phoneNumberSchema = Yup.string().matches(
-    ValidationConstants.patterns.phoneNumber,
-    localize('Enter a valid phone number.')
-);
+const tempPhoneNumberValidation = /^[0-9]{5,15}$/;
+
+const phoneNumberSchema = (isCountryCodeDropdownEnabled: boolean) =>
+    Yup.string().matches(
+        isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : ValidationConstants.patterns.phoneNumber,
+        localize('Enter a valid phone number.')
+    );
 
 export const validatePhoneNumber = (
     phone_number: string,
     setErrorMessage: (value: string) => void,
-    setIsDisabledRequestButton: (value: boolean) => void
+    setIsDisabledRequestButton: (value: boolean) => void,
+    isCountryCodeDropdownEnabled: boolean
 ) => {
-    phoneNumberSchema
+    phoneNumberSchema(isCountryCodeDropdownEnabled)
         .validate(phone_number)
         .then(() => {
             setErrorMessage('');
             setIsDisabledRequestButton(false);
         })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .catch(({ errors }: any) => {
             setErrorMessage(errors);
             setIsDisabledRequestButton(true);

@@ -13,7 +13,7 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
         <div className='compare-cfd-account-main-container'>
             <div className='compare-cfd-account-card-container'>
                 <CFDCompareAccountsPlatformLabel trading_platforms={trading_platforms} />
-                {trading_platforms.product === PRODUCT.ZEROSPREAD && (
+                {trading_platforms.product === PRODUCT.GOLD && (
                     <Text
                         className='compare-cfd-account-card-container__banner'
                         weight='bold'
@@ -30,13 +30,6 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
                 />
                 <CFDCompareAccountsDescription trading_platforms={trading_platforms} is_demo={is_demo} />
                 <CFDInstrumentsLabelHighlighted trading_platforms={trading_platforms} is_demo={is_demo} />
-                {is_eu_user && (
-                    <div className='compare-cfd-account-card-container__eu-clients'>
-                        <Text color='red' size='xxs' weight='bold'>
-                            <Localize i18n_default_text='*Volatility 250 Index, Volatility 150 Index, Boom 300 and Crash 300 Index' />
-                        </Text>
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -1,10 +1,11 @@
-import classNames from 'classnames';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
-import Text from '../text/text';
-import Icon from '../icon/icon';
+import classNames from 'classnames';
+
 import Div100vhContainer from '../div100vh-container';
+import Icon from '../icon/icon';
+import Text from '../text/text';
 import ThemedScrollbars from '../themed-scrollbars';
 
 type TMobileDialog = {
@@ -21,6 +22,7 @@ type TMobileDialog = {
     title?: React.ReactNode;
     visible?: boolean;
     wrapper_classname?: string;
+    footer_classname?: string;
     learn_more_banner?: React.ReactNode;
 };
 
@@ -37,6 +39,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         title,
         visible,
         wrapper_classname,
+        footer_classname,
         learn_more_banner,
     } = props;
 
@@ -159,7 +162,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                         </div>
                     </div>
                     {footer && (
-                        <div ref={footer_ref} className='dc-mobile-dialog__footer'>
+                        <div ref={footer_ref} className={classNames('dc-mobile-dialog__footer', footer_classname)}>
                             {footer}
                         </div>
                     )}

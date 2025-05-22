@@ -1,81 +1,87 @@
-import { ActionSheet, CaptionText, DatePicker, IconButton, Text } from '@deriv-com/quill-ui';
-import { LabelPairedCalendarSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
-import React, { useState } from 'react';
+import { DatePicker } from '@deriv-com/quill-ui';
+import { toMoment, useIsMounted } from '@deriv/shared';
+import React, { useEffect } from 'react';
+import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const formatDate = (date: Date) => {
-    const utc_year = date.getFullYear();
-    const utc_month = date.getMonth();
-    const utc_day = date.getDate();
-
-    const utc_date = new Date(Date.UTC(utc_year, utc_month, utc_day, 23, 59, 59));
-    const options: Intl.DateTimeFormatOptions = {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        timeZone: 'UTC',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-    };
-    const formatted_date = new Intl.DateTimeFormat('en-GB', options).format(utc_date);
-    return `${formatted_date} GMT`;
+type TMarketEvent = {
+    dates: string[];
+    descrip: string;
 };
 
-const DurationEndDatePicker = ({
-    expiry_date,
-    setExpiryDate,
+const DaysDatepicker = ({
+    start_date,
+    end_date,
+    setEndDate,
 }: {
-    setExpiryDate: (date: Date) => void;
-    expiry_date: Date;
+    start_date: Date;
+    setEndDate: (arg: Date) => void;
+    end_date: Date;
 }) => {
-    const [open_date_picker, setOpenDatePicker] = useState(false);
+    const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
+    const { symbol } = useTraderStore();
+    const isMounted = useIsMounted();
 
+    const onChangeCalendarMonth = React.useCallback(
+        async (e = toMoment().format('YYYY-MM-DD')) => {
+            const new_market_events: TMarketEvent[] = [];
+            let new_disabled_days: number[] = [];
+
+            const [events, trading_days] = await Promise.all([
+                ContractType.getTradingEvents(e, symbol),
+                ContractType.getTradingDays(e, symbol),
+            ]);
+
+            if (trading_days) {
+                const all_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+                new_disabled_days = all_days
+                    .map((day: (typeof all_days)[number], index) => (!trading_days.includes(day) ? index : -1))
+                    .filter(index => index !== -1);
+            }
+
+            events?.forEach(evt => {
+                const dates = evt.dates.split(', '); // convert dates str into array
+                new_market_events.push({
+                    dates,
+                    descrip: evt.descrip,
+                });
+            });
+
+            if (isMounted()) {
+                setDisabledDays(new_disabled_days);
+            }
+        },
+        [isMounted, symbol]
+    );
+
+    useEffect(() => {
+        onChangeCalendarMonth();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const getDisabledDays = ({ date }: { date: Date }) => {
+        const day = date.getDay();
+        return disabled_days.includes(day);
+    };
     return (
-        <div className='duration-container__date-picker'>
-            <div className='duration-container__date-picker__heading'>
-                <CaptionText color='quill-typography__color--subtle'>
-                    <Localize i18n_default_text='Expiry' />
-                </CaptionText>
-                <Text size='sm'>{formatDate(expiry_date)}</Text>
-            </div>
-            <div>
-                <IconButton
-                    size='md'
-                    color='black-white'
-                    variant='secondary'
-                    onClick={() => setOpenDatePicker(true)}
-                    icon={<LabelPairedCalendarSmBoldIcon />}
-                />
-                <ActionSheet.Root
-                    isOpen={open_date_picker}
-                    onClose={() => setOpenDatePicker(false)}
-                    position='left'
-                    expandable={false}
-                >
-                    <ActionSheet.Portal shouldCloseOnDrag>
-                        <ActionSheet.Header title={<Localize i18n_default_text='Pick an end date' />} />
-                        <div className='duration-datepicker'>
-                            <DatePicker
-                                hasFixedWidth={false}
-                                minDate={new Date()}
-                                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                                onChange={date => {
-                                    if (date && date instanceof Date) {
-                                        setExpiryDate(date);
-                                        setOpenDatePicker(false);
-                                    }
-                                }}
-                                wrapperClassName='duration-container__date-picker__sheet'
-                                disableCurrentDayMarker
-                            />
-                        </div>
-                    </ActionSheet.Portal>
-                </ActionSheet.Root>
-            </div>
+        <div className='duration-datepicker duration-container__date-picker'>
+            <DatePicker
+                className='date-picker'
+                hasFixedWidth={false}
+                minDate={new Date(start_date)}
+                maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+                view='month'
+                value={end_date}
+                tileDisabled={getDisabledDays}
+                onChange={date => {
+                    if (date && date instanceof Date) {
+                        setEndDate(date);
+                    }
+                }}
+                wrapperClassName='duration-container__date-picker__sheet'
+            />
         </div>
     );
 };
 
-export default DurationEndDatePicker;
+export default DaysDatepicker;

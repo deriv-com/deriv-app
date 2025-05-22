@@ -34,8 +34,9 @@ describe('TakeProfit component', () => {
         jest.clearAllMocks();
     });
 
-    it('passes correct props to RiskManagementItem component when take profit is visible', () => {
+    it('passes correct validation_params prop to RiskManagementItem component', () => {
         render(<TakeProfit />);
+
         expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
         expect(screen.getByText('Take profit')).toBeInTheDocument();
         expect(

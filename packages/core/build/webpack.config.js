@@ -9,18 +9,28 @@ module.exports = function (env) {
     return {
         context: path.resolve(__dirname, '../src'),
         devServer: {
-            publicPath: base,
-            open: openChromeBasedOnPlatform(process.platform),
-            openPage: sub_path,
+            static: {
+                publicPath: base,
+                watch: true,
+            },
+            open: {
+                app: {
+                    name: openChromeBasedOnPlatform(process.platform),
+                },
+                target: sub_path,
+            },
             host: 'localhost',
-            https: true,
+            server: 'https',
+
             port: 8443,
             historyApiFallback: true,
-            stats: {
-                colors: true,
+            hot: false,
+            client: {
+                overlay: false,
             },
         },
         devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
+
         entry: './index.tsx',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -71,6 +81,9 @@ module.exports = function (env) {
         }),
         snapshot: {
             managedPaths: [],
+        },
+        stats: {
+            colors: true,
         },
     };
 };

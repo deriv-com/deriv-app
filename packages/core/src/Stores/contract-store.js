@@ -3,10 +3,13 @@ import {
     ChartBarrierStore,
     isAccumulatorContract,
     isDigitContract,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
     isEnded,
     isEqualObject,
     isMultiplierContract,
     isResetContract,
+    isSmartTraderContract,
     isOpen,
     isTurbosContract,
     getDigitInfo,
@@ -24,6 +27,7 @@ import {
     BARRIER_COLORS,
     getContractStatus,
     setLimitOrderBarriers,
+    LocalStore,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
@@ -66,6 +70,7 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
+            updatePositionStatus: action.bound,
             getContractsArray: action.bound,
         });
 
@@ -127,6 +132,11 @@ export default class ContractStore extends BaseStore {
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
+
+        if (this.is_ended && isAccumulatorContract(this.contract_info.contract_type)) {
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
+        }
+
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {
@@ -285,6 +295,12 @@ export default class ContractStore extends BaseStore {
             ) {
                 main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
             }
+            if (isBarrierSupported(contract_type) && !isSmartTraderContract(contract_type)) {
+                // Barrier color will depend on pnl (except old SmartTrader contracts)
+                main_barrier?.updateColor({
+                    barrier_color: contract_info.profit >= 0 ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED,
+                });
+            }
             if (
                 contract_info.contract_id &&
                 contract_info.contract_id === this.root_store.contract_replay.contract_id
@@ -312,10 +328,11 @@ export default class ContractStore extends BaseStore {
                 reset_barrier,
             } = contract_info;
             const high_barrier = this.accu_high_barrier || barrier || high;
+            const updated_color = contract_info.profit >= 0 ? BARRIER_COLORS.GREEN : BARRIER_COLORS.RED;
             const common_props = {
                 not_draggable: true,
                 shade: DEFAULT_SHADES['2'],
-                color: BARRIER_COLORS.BLUE,
+                color: isSmartTraderContract(contract_type) ? BARRIER_COLORS.BLUE : updated_color,
             };
             if (
                 isBarrierSupported(contract_type) &&
@@ -384,10 +401,15 @@ export default class ContractStore extends BaseStore {
         Object.keys(limit_order).length !== 0 &&
             WS.contractUpdate(this.contract_id, limit_order).then(response => {
                 if (response.error) {
-                    this.root_store.common.setServicesError({
-                        type: response.msg_type,
-                        ...response.error,
-                    });
+                    this.root_store.common.setServicesError(
+                        {
+                            type: response.msg_type,
+                            ...response.error,
+                        },
+                        // Temporary switching off old snackbar for DTrader-V2
+                        isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                            isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+                    );
                     return;
                 }
 
@@ -400,6 +422,21 @@ export default class ContractStore extends BaseStore {
                 // Update portfolio store
                 this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
             });
+    }
+
+    updatePositionStatus(contract_id, is_closed) {
+        if (!contract_id) return;
+
+        // Store position state in sessionStorage
+        const position_states = JSON.parse(LocalStore.get('position_states') || '{}');
+        position_states[contract_id] = { is_closed, timestamp: Date.now() };
+        LocalStore.set('position_states', JSON.stringify(position_states));
+
+        // If position is closed, reset barrier color to blue
+        if (is_closed && isAccumulatorContract(this.contract_info?.contract_type)) {
+            // Force reset of contract data in contract-trade-store
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
+        }
     }
 
     getContractsArray() {

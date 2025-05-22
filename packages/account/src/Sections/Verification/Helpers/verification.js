@@ -17,14 +17,20 @@ export const populateVerificationStatus = account_status => {
     const poa_address_mismatch = account_status.status.some(status => status === 'poa_address_mismatch');
     const poi_expiring_soon = account_status.status.some(status => status === 'poi_expiring_soon');
     const poa_authenticated_with_idv = account_status.status.some(status => status === 'poa_authenticated_with_idv');
+    const poa_authenticated_with_idv_photo = account_status.status.some(
+        status => status === 'poa_authenticated_with_idv_photo'
+    );
     const poa_expiring_soon = account_status.status.some(status => status === 'poa_expiring_soon');
-
+    const poi_acknowledged = ['pending', 'verified'].includes(identity_status);
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');
     const has_poinc = !(income && income.status === 'none');
     const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission;
-    const needs_poa = Boolean(needs_verification.length) && needs_verification.includes('document');
-    const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
+    const needs_poa =
+        !(has_submitted_poa || document_status === 'verified') ||
+        (needs_verification.length && needs_verification.includes('document'));
+    const needs_poi =
+        !poi_acknowledged || (Boolean(needs_verification.length) && needs_verification.includes('identity'));
     const needs_poinc = needs_verification.length && needs_verification.includes('income');
 
     const { idv, onfido, manual } = identity.services;
@@ -57,6 +63,7 @@ export const populateVerificationStatus = account_status => {
         onfido,
         poa_address_mismatch,
         poa_authenticated_with_idv,
+        poa_authenticated_with_idv_photo,
         poi_expiring_soon,
         poa_expiring_soon,
     };

@@ -3,7 +3,6 @@ import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } f
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { CashierScrollContext } from '../../../../../context/CashierScrollContext';
 import TransactionsCompleted from '../TransactionsCompleted';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
@@ -13,9 +12,9 @@ jest.mock('@deriv/api-v2', () => ({
     })),
 }));
 
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../../../components', () => ({
+    ...jest.requireActual('../../../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../../TransactionsCompletedRow', () => ({

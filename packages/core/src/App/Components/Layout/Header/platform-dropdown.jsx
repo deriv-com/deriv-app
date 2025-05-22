@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
-import { routes, getActivePlatform } from '@deriv/shared';
+import { routes, getActivePlatform, platforms } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
@@ -18,13 +20,26 @@ const PlatformBox = ({ platform: { icon, description } }) => (
         </div>
     </React.Fragment>
 );
+const appendAccountParamToUrl = (link_to, client) => {
+    const { is_virtual, currency } = client;
 
-const PlatformDropdownContent = ({ platform, app_routing_history }) => {
+    if (is_virtual) {
+        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=demo`;
+    }
+
+    if (currency) {
+        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${currency}`;
+    }
+
+    return link_to;
+};
+
+const PlatformDropdownContent = ({ platform, app_routing_history, client }) => {
     return (
         (platform.link_to && (
             <BinaryLink
                 data-testid='dt_platform_dropdown'
-                to={platform.link_to}
+                to={appendAccountParamToUrl(platform.link_to, client)}
                 // This is here because in routes-config it needs to have children, but not in menu
                 exact={platform.link_to === routes.trade}
                 className='platform-dropdown__list-platform'
@@ -36,8 +51,10 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
         )) || (
             <a
                 data-testid='dt_platform_dropdown_link'
-                href={platform.href}
-                className='platform-dropdown__list-platform'
+                href={appendAccountParamToUrl(platform.href, client)}
+                className={`platform-dropdown__list-platform ${
+                    getActivePlatform(app_routing_history) === platform.name ? 'active' : ''
+                }`}
             >
                 <PlatformBox platform={platform} />
             </a>
@@ -48,12 +65,20 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
 const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, setTogglePlatformType }) => {
     const history = useHistory();
     const { isDesktop } = useDevice();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { client } = useStore();
+    const { has_wallet } = client;
 
     const TradersHubRedirect = () => {
         return (
             <div className='platform-dropdown__cta'>
                 <BinaryLink
                     onClick={() => {
+                        if (isHubRedirectionEnabled && has_wallet) {
+                            localStorage.setItem('redirect_to_th_os', 'home');
+                            window.location.assign(platforms.tradershub_os.url);
+                            return;
+                        }
                         if (!isDesktop) {
                             history.push(routes.traders_hub);
                             setTogglePlatformType('cfd');
@@ -92,7 +117,11 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
                 {platform_config.map(platform => {
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
-                            <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />
+                            <PlatformDropdownContent
+                                platform={platform}
+                                app_routing_history={app_routing_history}
+                                client={client}
+                            />
                         </div>
                     );
                 })}

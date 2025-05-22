@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import WalletGradientBackground from '../WalletGradientBackground';
-import '@testing-library/jest-dom/extend-expect';
 
 describe('WalletGradientBackground', () => {
     const defaultProps = {
@@ -60,6 +59,20 @@ describe('WalletGradientBackground', () => {
     it('applies the bodyClassName when provided', () => {
         render(<WalletGradientBackground {...defaultProps} bodyClassName='custom-body-class' />);
         expect(screen.getByTestId('dt_wallet_gradient_background')).toHaveClass('custom-body-class');
+    });
+
+    it('renders IconWrapper for desktop demo header with correct length', () => {
+        render(
+            <WalletGradientBackground {...defaultProps} device='desktop' isDemo={true} theme='light' type='header' />
+        );
+        expect(screen.getAllByTestId('dt_wallet_gradient_icon')).toHaveLength(100);
+    });
+
+    it('renders IconWrapper for mobile demo header with correct length', () => {
+        render(
+            <WalletGradientBackground {...defaultProps} device='mobile' isDemo={true} theme='light' type='header' />
+        );
+        expect(screen.getAllByTestId('dt_wallet_gradient_icon')).toHaveLength(60);
     });
 
     it('renders children correctly', () => {

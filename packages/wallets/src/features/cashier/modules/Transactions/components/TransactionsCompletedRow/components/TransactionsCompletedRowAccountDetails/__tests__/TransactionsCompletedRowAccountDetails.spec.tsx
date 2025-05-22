@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getMarketType } from '../../../../../../../helpers';
 import TransactionsCompletedRowAccountDetails from '../TransactionsCompletedRowAccountDetails';
 
 jest.mock('../../../../../../../helpers', () => ({
@@ -46,14 +45,5 @@ describe('TransactionsCompletedRowAccountDetails', () => {
         render(<TransactionsCompletedRowAccountDetails {...defaultProps} isDemo={true} />);
 
         expect(screen.queryByTestId('dt_wallet_list_card_badge')).not.toBeInTheDocument();
-    });
-
-    it('calls getMarketType with correct mt5 group', () => {
-        const mt5Props = {
-            ...defaultProps,
-        };
-        render(<TransactionsCompletedRowAccountDetails {...mt5Props} />);
-
-        expect(getMarketType).toHaveBeenCalledWith('mocked mt5 group');
     });
 });

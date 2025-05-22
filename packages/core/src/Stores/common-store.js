@@ -12,6 +12,8 @@ import {
     platforms,
     routes,
     toMoment,
+    isNavigationFromTradersHubOS,
+    isNavigationFromP2PV2,
 } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -39,6 +41,8 @@ export default class CommonStore extends BaseStore {
             has_error: observable,
             init: action.bound,
             is_from_derivgo: computed,
+            is_from_derivp2p: computed,
+            is_from_tradershub_os: computed,
             is_language_changing: observable,
             is_network_online: observable,
             is_socket_opened: observable,
@@ -122,7 +126,7 @@ export default class CommonStore extends BaseStore {
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-        await WS.wait('authorize');
+        await WS?.wait('authorize');
         return new Promise((resolve, reject) => {
             WS.setSettings({
                 set_settings: 1,
@@ -174,6 +178,17 @@ export default class CommonStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get is_from_outside_cashier() {
         return !window.location.pathname.startsWith(routes.cashier);
+    }
+
+    get is_from_tradershub_os() {
+        return (
+            platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name ||
+            isNavigationFromTradersHubOS()
+        );
+    }
+
+    get is_from_derivp2p() {
+        return isNavigationFromP2PV2();
     }
 
     setInitialRouteHistoryItem(location) {

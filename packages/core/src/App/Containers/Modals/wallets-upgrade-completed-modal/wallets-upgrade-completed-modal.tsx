@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Button, Icon, MobileDialog, Modal, Text } from '@deriv/components';
@@ -9,13 +9,19 @@ import './wallets-upgrade-completed-modal.scss';
 
 const WalletsUpgradeCompletedModal = observer(() => {
     const history = useHistory();
-    const { ui } = useStore();
+    const { client, ui } = useStore();
     const { is_mobile } = ui;
+    const { setPreventRedirectToHub } = client;
     const [isOpen, setIsOpen] = useState(true);
+
+    useEffect(() => {
+        setPreventRedirectToHub(true);
+    }, []);
 
     const handleClose = () => {
         setIsOpen(false);
         Cookies.remove('recent_wallets_migration');
+        setPreventRedirectToHub(false);
         history.push(routes.traders_hub);
     };
 

@@ -13,9 +13,13 @@ type TVideoPlayerProps = {
     data_testid?: string;
     height?: string;
     is_mobile?: boolean;
+    is_v2?: boolean;
     increased_drag_area?: boolean;
     muted?: boolean;
     src: string;
+    show_loading?: boolean;
+    onModalClose?: () => void;
+    should_show_controls?: boolean;
 };
 type TSupportedEvent = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent;
 
@@ -29,9 +33,13 @@ const VideoPlayer = ({
     data_testid,
     height,
     is_mobile,
+    is_v2,
     increased_drag_area,
     muted = false,
     src,
+    show_loading = false,
+    onModalClose,
+    should_show_controls = false,
 }: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
 
@@ -41,10 +49,22 @@ const VideoPlayer = ({
     const [current_time, setCurrentTime] = React.useState<number>();
     const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [is_animated, setIsAnimated] = React.useState(true);
+    const [is_loading, setIsLoading] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(muted);
     const [playback_rate, setPlaybackRate] = React.useState(1);
-    const [show_controls, setShowControls] = React.useState(!should_autoplay);
+    const [show_controls, setShowControls] = React.useState(should_show_controls ? true : !should_autoplay);
+    const [is_in_initial_period, setIsInInitialPeriod] = React.useState(should_show_controls);
+
+    React.useEffect(() => {
+        if (should_show_controls) {
+            const tutorial_timeout = setTimeout(() => {
+                setShowControls(false);
+                setIsInInitialPeriod(false);
+            }, 5000);
+            return () => clearTimeout(tutorial_timeout);
+        }
+    }, [should_show_controls]);
     const [shift_X, setShiftX] = React.useState(0);
     const [video_duration, setVideoDuration] = React.useState<number>();
     const [volume, setVolume] = React.useState(0.5);
@@ -59,6 +79,7 @@ const VideoPlayer = ({
 
     const replay_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
     const toggle_animation_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const inactivity_timeout = React.useRef<ReturnType<typeof setTimeout>>();
 
     const is_dragging = React.useRef(false);
     const is_ended = React.useRef(false);
@@ -183,6 +204,7 @@ const VideoPlayer = ({
 
         setVideoDuration(video_ref.current.duration);
         setIsPlaying(should_autoplay);
+        setIsLoading(false);
 
         if (should_autoplay) animation_ref.current = requestAnimationFrame(repeat);
     };
@@ -230,6 +252,25 @@ const VideoPlayer = ({
             clearTimeout(replay_animation_timeout.current);
             clearTimeout(toggle_animation_timeout.current);
             setIsAnimated(false);
+
+            // handle replay by resetting time and progress bar at the end of the video
+            if (is_ended.current) {
+                is_ended.current = false;
+                video_ref.current.currentTime = 0;
+                new_time_ref.current = 0;
+                setCurrentTime(0);
+                progress_bar_filled_ref.current.style.setProperty('width', '0%');
+
+                replay_animation_timeout.current = setTimeout(() => {
+                    animation_ref.current = requestAnimationFrame(repeat);
+                    video_ref?.current?.play().catch(() => null);
+                }, 500);
+                toggle_animation_timeout.current = setTimeout(() => {
+                    setIsAnimated(true);
+                }, 1000);
+                return;
+            }
+
             is_ended.current = false;
 
             if (is_playing) {
@@ -277,23 +318,48 @@ const VideoPlayer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // logic and effect to cancel/reset timeout to auto close when there's user controls interaction
+    const resetInactivityTimer = React.useCallback(() => {
+        if (inactivity_timeout.current) {
+            clearTimeout(inactivity_timeout.current);
+        }
+
+        if (is_v2 && is_mobile && !is_ended.current) {
+            inactivity_timeout.current = setTimeout(() => {
+                setShowControls(false);
+            }, 3000);
+        }
+    }, [is_v2, is_mobile]);
+
+    React.useEffect(() => {
+        if (show_controls && is_v2 && is_mobile && !is_ended.current) {
+            resetInactivityTimer();
+        }
+        return () => {
+            if (inactivity_timeout.current) {
+                clearTimeout(inactivity_timeout.current);
+            }
+        };
+    }, [show_controls, is_v2, is_mobile, resetInactivityTimer]);
+
     return (
         <div
             className={classNames(className, 'player__wrapper')}
-            onMouseOver={is_mobile ? undefined : () => setShowControls(true)}
-            onMouseLeave={is_mobile ? undefined : () => setShowControls(false)}
+            onMouseOver={is_mobile || is_in_initial_period ? undefined : () => setShowControls(true)}
+            onMouseLeave={is_mobile || is_in_initial_period ? undefined : () => setShowControls(false)}
             data-testid={data_testid}
         >
             <Stream
                 autoplay={should_autoplay && !is_dragging.current}
-                height={height ?? (is_mobile ? '184.5px' : '270px')}
+                height={!is_v2 ? (height ?? (is_mobile ? '184.5px' : '270px')) : undefined}
+                className={classNames('', { player: is_v2 })}
+                width='100%'
                 letterboxColor='transparent'
                 muted={is_muted}
                 preload='auto'
-                responsive={false}
+                responsive={is_v2 ? undefined : false}
                 src={src}
                 streamRef={video_ref}
-                width='100%'
                 onEnded={onEnded}
                 onPlay={() => setIsPlaying(true)}
                 onLoadedMetaData={onLoadedMetaData}
@@ -302,10 +368,20 @@ const VideoPlayer = ({
                 playbackRate={playback_rate}
                 volume={volume}
             />
+            {is_loading && show_loading && (
+                <div className='player__loader' style={{ height: height ?? (is_mobile ? '184.5px' : '270px') }}>
+                    <div className='player__loader-circle' />
+                </div>
+            )}
             <VideoOverlay
-                onClick={is_mobile && !is_ended.current ? () => setShowControls(!show_controls) : togglePlay}
+                onClick={() => setShowControls(!show_controls)}
+                togglePlay={togglePlay}
+                show_controls={show_controls}
                 is_ended={is_ended.current}
                 is_mobile={is_mobile}
+                is_playing={is_playing}
+                is_v2={is_v2}
+                onModalClose={onModalClose}
             />
             <VideoControls
                 block_controls={is_dragging.current}
@@ -317,6 +393,7 @@ const VideoPlayer = ({
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}
+                is_v2={is_v2}
                 increased_drag_area={increased_drag_area}
                 onRewind={onRewind}
                 onVolumeChange={setVolume}
@@ -330,6 +407,7 @@ const VideoPlayer = ({
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}
                 playback_rate={playback_rate}
+                onUserActivity={resetInactivityTimer}
             />
         </div>
     );

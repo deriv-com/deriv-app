@@ -39,7 +39,7 @@ describe('CooldownPeriodModal', () => {
         renderComponent();
         const ok_button = screen.getByRole('button', { name: /OK/ });
         userEvent.click(ok_button);
-        expect(mock_push_function).toBeCalledWith(routes.personal_details);
+        expect(mock_push_function).toBeCalledWith(routes.traders_hub);
         expect(mockSetShowCoolDownPeriodModal).toBeCalledWith(false);
         expect(mock_store.ui.setIsForcedToExitPnv).toBeCalledWith(false);
     });

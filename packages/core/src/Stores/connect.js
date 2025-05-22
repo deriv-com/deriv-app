@@ -1,4 +1,4 @@
-import { useObserver } from 'mobx-react';
+import { useObserver } from 'mobx-react-lite';
 import React from 'react';
 
 const isClassComponent = Component =>

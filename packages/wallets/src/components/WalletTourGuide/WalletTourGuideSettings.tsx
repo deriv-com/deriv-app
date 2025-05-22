@@ -5,9 +5,6 @@ import { Localize } from '@deriv-com/translations';
 import { Button, Text } from '@deriv-com/ui';
 import './WalletTourGuide.scss';
 
-export const walletsOnboardingLocalStorageKey = 'walletsOnboarding';
-export const walletsOnboardingStartValue = 'started';
-
 export const TooltipComponent = ({
     backProps,
     closeProps,

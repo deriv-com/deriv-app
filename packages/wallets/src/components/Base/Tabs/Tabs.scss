@@ -14,12 +14,13 @@
         background: none;
         padding: 1rem 0;
         cursor: pointer;
+
         &--active {
             width: 50%;
             border: none;
             border-bottom: 0.2rem solid var(--brand-coral, #ff444f);
             background: none;
-            padding: 1rem 0;
+            padding: 1rem;
         }
     }
 }

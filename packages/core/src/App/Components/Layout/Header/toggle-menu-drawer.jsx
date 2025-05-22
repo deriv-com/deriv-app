@@ -1,25 +1,29 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+
 import { useRemoteConfig } from '@deriv/api';
-import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
+    useAccountSettingsRedirect,
     useAccountTransferVisible,
     useAuthorize,
-    useIsP2PEnabled,
+    useOauth2,
     useOnrampVisible,
-    usePaymentAgentTransferVisible,
     useP2PSettings,
+    usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getOSNameWithUAParser, getStaticUrl, routes, whatsapp_url } from '@deriv/shared';
+import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import NetworkStatus from 'App/Components/Layout/Footer';
-import ServerTime from 'App/Containers/server-time.jsx';
-import getRoutesConfig from 'App/Constants/routes-config';
+import { Analytics } from '@deriv-com/analytics';
+
 import LiveChat from 'App/Components/Elements/LiveChat';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import WhatsApp from 'App/Components/Elements/WhatsApp';
+import NetworkStatus from 'App/Components/Layout/Footer';
+import getRoutesConfig from 'App/Constants/routes-config';
+import ServerTime from 'App/Containers/server-time.jsx';
+
 import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
 import PlatformSwitcher from './platform-switcher';
@@ -35,15 +39,17 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
         setMobileLanguageMenuOpen,
+        setIsForcedToExitPnv,
     } = ui;
     const {
         account_status,
         has_wallet,
+        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
-        loginid,
         logout: logoutClient,
+        setIsLoggingOut,
         should_allow_authentication,
         should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
@@ -51,16 +57,18 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_proof_of_ownership_enabled,
         is_eu,
         is_passkey_supported,
+        // We should use this computed property instead of the hook, to prevent the hook's data from becoming stale after a WebSocket reconnection during the first login.
+        is_p2p_available,
     } = client;
     const { cashier } = modules;
     const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
     const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
+    const { mobile_redirect_url } = useAccountSettingsRedirect();
     const { isSuccess } = useAuthorize();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { is_p2p_enabled } = useIsP2PEnabled();
 
     const { pathname: route } = useLocation();
 
@@ -75,7 +83,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data } = useRemoteConfig(true);
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
-    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -92,10 +99,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     React.useEffect(() => {
-        if (isSuccess && !isSubscribed) {
+        if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
         }
-    }, [isSuccess, p2p_settings, subscribe, isSubscribed]);
+    }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -124,7 +131,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_trading_hub_category,
         is_mobile,
         is_passkey_supported,
-        is_p2p_enabled,
+        is_p2p_available,
     ]);
 
     const toggleDrawer = React.useCallback(() => {
@@ -139,6 +146,20 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
+
+    const handleLogout = React.useCallback(async () => {
+        setIsLoggingOut(true);
+        toggleDrawer();
+        if (window.location.pathname.startsWith(routes.phone_verification)) {
+            setIsForcedToExitPnv(true);
+            // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
+            await new Promise(resolve => setTimeout(resolve, 0));
+        }
+        history.push(routes.traders_hub);
+        await logoutClient();
+    }, [history, logoutClient, toggleDrawer]);
+
+    const { oAuthLogout } = useOauth2({ handleLogout });
 
     const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -159,6 +180,19 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const getRoutesWithSubMenu = (route_config, idx) => {
         const has_access = route_config.is_authenticated ? is_logged_in : true;
         if (!has_access) return null;
+
+        if (route_config.path === routes.account && mobile_redirect_url !== routes.account) {
+            return (
+                <MobileDrawer.Item key={idx}>
+                    <MenuLink
+                        link_to={mobile_redirect_url}
+                        icon={route_config.icon_component}
+                        text={route_config.getTitle()}
+                        onClickLink={toggleDrawer}
+                    />
+                </MobileDrawer.Item>
+            );
+        }
 
         if (!route_config.routes) {
             return (
@@ -216,7 +250,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             !route.is_invisible &&
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                            (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
+                            (route.path !== routes.cashier_p2p || is_p2p_available) &&
                             (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
@@ -384,14 +418,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {HelpCentreRoute()}
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.account_limits}
-                                                icon='IcAccountLimits'
-                                                text={localize('Account Limits')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
                                         <MobileDrawer.Item
                                             className={
                                                 should_show_regulatory_information
@@ -427,18 +453,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {liveChat.isReady && cs_chat_whatsapp && (
+                                {cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
-                                        <Icon icon='IcWhatsApp' className='drawer-icon' />
-                                        <a
-                                            className='header__menu-mobile-whatsapp-link'
-                                            href={whatsapp_url}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                            onClick={toggleDrawer}
-                                        >
-                                            {localize('WhatsApp')}
-                                        </a>
+                                        <WhatsApp onClick={toggleDrawer} />
                                     </MobileDrawer.Item>
                                 )}
                                 {cs_chat_livechat && (
@@ -447,14 +464,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item
-                                        onClick={() => {
-                                            toggleDrawer();
-                                            history.push(routes.traders_hub);
-                                            logoutClient();
-                                        }}
-                                        className='dc-mobile-drawer__item'
-                                    >
+                                    <MobileDrawer.Item onClick={oAuthLogout} className='dc-mobile-drawer__item'>
                                         <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}

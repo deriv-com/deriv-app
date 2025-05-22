@@ -1,5 +1,14 @@
 import { action, observable, makeObservable, override } from 'mobx';
-import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv/shared';
+import {
+    routes,
+    isDtraderV2MobileEnabled,
+    isDtraderV2DesktopEnabled,
+    isEmptyObject,
+    isForwardStarting,
+    WS,
+    contractCancelled,
+    contractSold,
+} from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
@@ -56,7 +65,7 @@ export default class ContractReplayStore extends BaseStore {
     };
 
     subscribeProposalOpenContract = () => {
-        WS.wait('authorize').then(() => {
+        WS?.wait('authorize')?.then(() => {
             this.handleSubscribeProposalOpenContract(this.contract_id, this.populateConfig);
         });
     };
@@ -118,6 +127,8 @@ export default class ContractReplayStore extends BaseStore {
         this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
+
+        this.root_store.contract_trade.clearAccumulatorBarriersData(true, true);
     }
 
     populateConfig(response) {
@@ -223,10 +234,15 @@ export default class ContractReplayStore extends BaseStore {
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
-                    this.root_store.common.setServicesError({
-                        type: response.msg_type,
-                        ...response.error,
-                    });
+                    this.root_store.common.setServicesError(
+                        {
+                            type: response.msg_type,
+                            ...response.error,
+                        },
+                        // Temporary switching off old snackbar for DTrader-V2
+                        isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                            isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+                    );
                 } else {
                     this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
@@ -246,10 +262,15 @@ export default class ContractReplayStore extends BaseStore {
         if (response.error) {
             // If unable to sell due to error, give error via pop up if not in contract mode
             this.is_sell_requested = false;
-            this.root_store.common.setServicesError({
-                type: response.msg_type,
-                ...response.error,
-            });
+            this.root_store.common.setServicesError(
+                {
+                    type: response.msg_type,
+                    ...response.error,
+                },
+                // Temporary switching off old snackbar for DTrader-V2
+                isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                    isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+            );
         } else if (!response.error && response.sell) {
             this.is_sell_requested = false;
             // update contract store sell info after sell
@@ -257,6 +278,11 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
+
+            // Update position status in sessionStorage to track closed positions
+            const contract_id = response.echo_req.sell;
+            this.root_store.contract_store.updatePositionStatus(contract_id, true);
+
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );

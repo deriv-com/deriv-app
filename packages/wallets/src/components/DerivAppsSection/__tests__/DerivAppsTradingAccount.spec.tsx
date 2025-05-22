@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveLinkedToTradingAccount, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
@@ -28,6 +28,23 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: { currency_config: { display_code: 'USD' }, is_virtual: false, loginid: 'CRW1' },
     })),
+    useCurrencyConfig: jest.fn(() => {
+        const config = {
+            USD: {
+                code: 'USD',
+                display_code: 'USD',
+                fractional_digits: 2,
+            },
+        };
+        return {
+            data: config,
+            getConfig: jest.fn((currency: keyof typeof config) => config?.[currency]),
+        };
+    }),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+        isLoading: false,
+    })),
 }));
 
 jest.mock('../../../hooks/useAllBalanceSubscription', () =>
@@ -37,6 +54,14 @@ jest.mock('../../../hooks/useAllBalanceSubscription', () =>
                 balance: 100,
                 currency: 'USD',
             },
+        },
+        isLoading: false,
+    }))
+);
+jest.mock('../../../hooks/useWalletsMFAccountStatus', () =>
+    jest.fn(() => ({
+        data: {
+            client_kyc_status: { status: 'none' },
         },
         isLoading: false,
     }))
@@ -98,7 +123,7 @@ describe('DerivAppsTradingAccount', () => {
     });
     it('renders the component with balance', () => {
         render(<DerivAppsTradingAccount />, { wrapper });
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_deriv_apps_balance')).toHaveTextContent('100.00 USD');
     });
     it('navigates to /wallet/account-transfer when the transfer button is clicked', () => {
         render(<DerivAppsTradingAccount />, { wrapper });
@@ -106,5 +131,24 @@ describe('DerivAppsTradingAccount', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith('/wallet/account-transfer', {
             toAccountLoginId: 'CRW1',
         });
+    });
+    it('shows Options tab when is_eu is false', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: false,
+            isLoading: false,
+        });
+        render(<DerivAppsTradingAccount />, { wrapper });
+        expect(screen.getByText('Options')).toBeInTheDocument();
+    });
+
+    it('shows Multipliers tab when is_eu is true', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useIsEuRegion as jest.Mock).mockReturnValue({
+            data: true,
+            isLoading: false,
+        });
+        render(<DerivAppsTradingAccount />, { wrapper });
+        expect(screen.getByText('Multipliers')).toBeInTheDocument();
     });
 });

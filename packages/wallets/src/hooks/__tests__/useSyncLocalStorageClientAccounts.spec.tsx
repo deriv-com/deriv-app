@@ -204,13 +204,16 @@ describe('useSyncLocalStorageClientAccounts', () => {
         const { result } = renderHook(() => useSyncLocalStorageClientAccounts(), { wrapper });
         expect(result.current.addTradingAccountToLocalStorage).toBeDefined();
 
-        await result.current.addTradingAccountToLocalStorage({
-            client_id: 'CR1002',
-            currency: 'BTC',
-            landing_company: 'Deriv (SVG)',
-            landing_company_shortcode: 'svg',
-            oauth_token: 'a1-testTRALALA',
-        });
+        await result.current.addTradingAccountToLocalStorage(
+            {
+                client_id: 'CR1002',
+                currency: 'BTC',
+                landing_company: 'Deriv (SVG)',
+                landing_company_shortcode: 'svg',
+                oauth_token: 'a1-testTRALALA',
+            },
+            false
+        );
 
         const localStorageData = JSON.parse(global.localStorage.getItem(localStorageKey) ?? '{}');
 

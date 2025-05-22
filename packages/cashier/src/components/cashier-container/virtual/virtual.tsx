@@ -42,7 +42,13 @@ const Virtual = observer(() => {
                         i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
                         components={[
                             <br key={0} />,
-                            <span key={1} className='virtual__account-switch-text' onClick={toggleAccountsDialog} />,
+                            <span
+                                key={1}
+                                className='virtual__account-switch-text'
+                                onClick={() => {
+                                    toggleAccountsDialog();
+                                }}
+                            />,
                         ]}
                     />
                 </Text>

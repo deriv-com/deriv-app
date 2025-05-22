@@ -1,30 +1,30 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { isTradeParamVisible } from 'AppV2/Utils/layout-utils';
-import AllowEquals from './AllowEquals';
-import Duration from './Duration';
-import Stake from './Stake';
-import Barrier from './Barrier';
-import GrowthRate from './GrowthRate';
-import TakeProfit from './TakeProfit';
-import AccumulatorsInformation from './AccumulatorsInformation';
-import Multiplier from './Multiplier';
-import RiskManagement from './RiskManagement';
-import MultipliersDealCancellationInfo from './MultipliersDealCancellationInfo';
-import TradeTypeTabs from './TradeTypeTabs';
-import Strike from './Strike';
-import PayoutPerPoint from './PayoutPerPoint';
-import LastDigitPrediction from './LastDigitPrediction';
-import MultipliersExpirationInfo from './MultipliersExpirationInfo';
-import BarrierInfo from './BarrierInfo';
-import PayoutPerPointInfo from './PayoutPerPointInfo';
-import PayoutInfo from './PayoutInfo';
+import { observer } from 'mobx-react-lite';
 
-type TTradeParametersProps = {
-    is_minimized?: boolean;
-};
+import { isTradeParamVisible } from 'AppV2/Utils/layout-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import AccumulatorsInformation from './AccumulatorsInformation';
+import AllowEquals from './AllowEquals';
+import Barrier from './Barrier';
+import BarrierInfo from './BarrierInfo';
+import Duration from './Duration';
+import GrowthRate from './GrowthRate';
+import LastDigitPrediction from './LastDigitPrediction';
+import Multiplier from './Multiplier';
+import MultipliersDealCancellationInfo from './MultipliersDealCancellationInfo';
+import MultipliersExpirationInfo from './MultipliersExpirationInfo';
+import PayoutInfo from './PayoutInfo';
+import PayoutPerPoint from './PayoutPerPoint';
+import PayoutPerPointInfo from './PayoutPerPointInfo';
+import RiskManagement from './RiskManagement';
+import Stake from './Stake';
+import Strike from './Strike';
+import TakeProfit from './TakeProfit';
+import TradeTypeTabs from './TradeTypeTabs';
+
+export type TTradeParametersProps = { is_minimized?: boolean };
 
 const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
     const { contract_type, has_cancellation, symbol } = useTraderStore();
@@ -41,7 +41,6 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
             {is_minimized && (
                 <React.Fragment>
                     {isVisible('expiration') && <MultipliersExpirationInfo />}
-                    {isVisible('mult_info_display') && <MultipliersDealCancellationInfo />}
                     {isVisible('payout_per_point_info') && <PayoutPerPointInfo />}
                     {isVisible('allow_equals') && <AllowEquals />}
                     {isVisible('payout') && <PayoutInfo />}
@@ -70,8 +69,8 @@ const TradeParameters = observer(({ is_minimized }: TTradeParametersProps) => {
                 {isVisible('barrier_info') && !is_minimized && <BarrierInfo />}
                 {isVisible('payout_per_point_info') && !is_minimized && <PayoutPerPointInfo />}
                 {isVisible('payout') && !is_minimized && <PayoutInfo />}
-                {isVisible('mult_info_display') && !is_minimized && <MultipliersDealCancellationInfo />}
             </div>
+            {isVisible('mult_info_display') && <MultipliersDealCancellationInfo is_minimized={is_minimized} />}
         </div>
     );
 });

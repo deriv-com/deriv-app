@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import PayoutPerPointInput from '../payout-per-point-input';
 import { useDevice } from '@deriv/components';
 import userEvent from '@testing-library/user-event';
@@ -41,7 +40,6 @@ const renderComponent = (isDesktop: boolean) => {
             onPayoutClick={mockOnPayoutClick}
             selectedBarrier={selectedBarrier}
             defaultPayout={defaultPayout}
-            contract_type='turboslong'
             currency={currency}
             tooltipText={tooltipText}
         />
@@ -66,10 +64,10 @@ describe('PayoutPerPointInput Component', () => {
         expect(screen.queryByText('Distance to current spot')).not.toBeInTheDocument();
     });
 
-    test('should call onPayoutClick when an option is selected in WheelPicker', () => {
+    test('should call onPayoutClick when an option is selected in WheelPicker', async () => {
         renderComponent(true);
         const option = screen.getByText('30');
-        userEvent.click(option);
+        await userEvent.click(option);
         expect(mockOnPayoutClick).toHaveBeenCalledWith('30');
     });
 });

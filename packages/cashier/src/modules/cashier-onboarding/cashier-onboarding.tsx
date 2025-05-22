@@ -51,9 +51,9 @@ const CashierOnboarding: React.FC = observer(() => {
             <CashierOnboardingAccountIdentifierMessage />
             <CashierOnboardingFiatCard />
             <CashierOnboardingCryptoCard />
+            <CashierOnboardingP2PCard />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
-            <CashierOnboardingP2PCard />
         </PageContainer>
     );
 });

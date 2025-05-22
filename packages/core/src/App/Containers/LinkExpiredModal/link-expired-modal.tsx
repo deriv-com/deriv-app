@@ -9,7 +9,8 @@ import { Localize, localize } from '@deriv/translations';
 import EmailResent from './email-resent';
 
 const LinkExpiredModal = observer(() => {
-    const { ui } = useStore();
+    const { ui, client } = useStore();
+    const { setPreventRedirectToHub } = client;
     const { enableApp, disableApp, is_link_expired_modal_visible: is_visible, toggleLinkExpiredModal } = ui;
 
     const { send, error: verify_error, data: verify_data } = useVerifyEmail('reset_password');
@@ -60,7 +61,10 @@ const LinkExpiredModal = observer(() => {
                 enableApp={enableApp}
                 title={is_email_sent ? '' : localize('Link expired')}
                 has_close_icon
-                onConfirm={() => toggleLinkExpiredModal(false)}
+                onConfirm={() => {
+                    toggleLinkExpiredModal(false);
+                    setPreventRedirectToHub(false);
+                }}
             >
                 <div className='link-expired'>
                     {is_email_sent ? (
@@ -94,7 +98,10 @@ const LinkExpiredModal = observer(() => {
                             <FormSubmitButton
                                 has_cancel
                                 cancel_label={localize('Close')}
-                                onCancel={() => toggleLinkExpiredModal(false)}
+                                onCancel={() => {
+                                    toggleLinkExpiredModal(false);
+                                    setPreventRedirectToHub(false);
+                                }}
                                 is_disabled={!values.email || !!errors.email || isSubmitting}
                                 is_loading={isSubmitting}
                                 label={localize('Resend email')}

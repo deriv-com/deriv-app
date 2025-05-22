@@ -3,10 +3,17 @@ import ReactDOM from 'react-dom';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PoiConfirmWithExampleFormContainer from '../poi-confirm-with-example-form-container';
+import { APIProvider } from '@deriv/api';
+import { useGetPhoneNumberList } from '@deriv/hooks';
 
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
     DerivLightNameDobPoiIcon: () => 'DerivLightNameDobPoiIcon',
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGetPhoneNumberList: jest.fn(),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -45,6 +52,11 @@ jest.mock('@deriv/shared', () => ({
 describe('<PoiConfirmWithExampleFormContainer/>', () => {
     beforeAll(() => {
         (ReactDOM.createPortal as jest.Mock) = jest.fn(element => element);
+        (useGetPhoneNumberList as jest.Mock).mockReturnValue({
+            legacy_core_countries_list: [
+                { text: 'United States (+1)', value: '+1', id: '1_US', carriers: [], disabled: false },
+            ],
+        });
     });
     afterEach(() => {
         (ReactDOM.createPortal as jest.Mock).mockClear();
@@ -55,14 +67,22 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         getChangeableFields: jest.fn(() => ['first_name', 'last_name', 'date_of_birth']),
         onFormConfirm: jest.fn(),
     };
+
+    const renderComponent = ({ props = mock_props }) =>
+        render(
+            <APIProvider>
+                <PoiConfirmWithExampleFormContainer {...props} />
+            </APIProvider>
+        );
+
     const clarification_message = /To avoid delays, enter your/;
     it('should render PersonalDetailsForm with image and checkbox', async () => {
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        renderComponent({});
 
         expect(await screen.findByText('DerivLightNameDobPoiIcon')).toBeInTheDocument();
         expect(screen.getByText(clarification_message)).toBeInTheDocument();
         const checkbox_el: HTMLInputElement = screen.getByRole('checkbox');
-        expect(checkbox_el.checked).toBeFalsy();
+        expect(checkbox_el).not.toBeChecked();
 
         const input_fields: HTMLInputElement[] = screen.getAllByRole('textbox');
         expect(input_fields).toHaveLength(3);
@@ -72,24 +92,24 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
     });
     it('should change fields and trigger submit', async () => {
         jest.useFakeTimers();
-        render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
+        renderComponent({});
 
         const checkbox_el: HTMLInputElement = await screen.findByRole('checkbox');
-        expect(checkbox_el.checked).toBeFalsy();
+        expect(checkbox_el).not.toBeChecked();
 
         const input_fields: HTMLInputElement[] = screen.getAllByRole('textbox');
         const first_name_input = input_fields[0];
         const last_name_input = input_fields[1];
         const dob_input = input_fields[2];
 
-        expect(first_name_input.value).toBe('test first name');
-        expect(last_name_input.value).toBe('test last name');
-        expect(dob_input.value).toBe('2003-08-02');
+        expect(first_name_input).toHaveValue('test first name');
+        expect(last_name_input).toHaveValue('test last name');
+        expect(dob_input).toHaveValue('2003-08-02');
 
-        userEvent.clear(first_name_input);
-        userEvent.clear(last_name_input);
-        userEvent.type(first_name_input, 'new test first name');
-        userEvent.type(last_name_input, 'new test last name');
+        await userEvent.clear(first_name_input);
+        await userEvent.clear(last_name_input);
+        await userEvent.type(first_name_input, 'new test first name');
+        await userEvent.type(last_name_input, 'new test last name');
 
         await waitFor(() => {
             expect(first_name_input.value).toBe('new test first name');
@@ -97,7 +117,7 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         });
 
         const button_el = screen.getByRole('button');
-        userEvent.click(button_el);
+        await userEvent.click(button_el);
         await userEvent.click(button_el);
         act(() => {
             jest.advanceTimersByTime(500);

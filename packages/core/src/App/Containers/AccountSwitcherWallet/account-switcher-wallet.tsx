@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { platforms, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useStoreWalletAccountsList } from '@deriv/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
@@ -20,6 +20,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const history = useHistory();
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const validateClickOutside = (event: MouseEvent) => {
         const checkAllParentNodes = (node: HTMLElement): boolean => {
@@ -32,6 +33,10 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
         return is_visible && !checkAllParentNodes(event.target as HTMLElement);
     };
 
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
     const closeAccountsDialog = React.useCallback(() => {
         toggle(false);
     }, [toggle]);
@@ -39,6 +44,12 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
     const handleTradersHubRedirect = async () => {
+        if (isHubRedirectionEnabled) {
+            window.location.assign(
+                `${platforms.tradershub_os.url}/redirect?action=redirect_to&redirect_to=cfds${account_currency ? `&account=${account_currency}` : ''}`
+            );
+            return;
+        }
         closeAccountsDialog();
         history.push(routes.traders_hub);
     };

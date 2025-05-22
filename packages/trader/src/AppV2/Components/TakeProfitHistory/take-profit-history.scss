@@ -41,4 +41,11 @@
             justify-content: start;
         }
     }
+
+    &__carousel {
+        .carousel__item {
+            width: calc(100vw - var(--core-spacing-2400));
+            min-width: calc(100vw - var(--core-spacing-2400));
+        }
+    }
 }

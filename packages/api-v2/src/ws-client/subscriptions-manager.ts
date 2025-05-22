@@ -4,14 +4,31 @@ import { getQueryKeys } from '../utils';
 
 export default class SubscriptionsManager {
     backendSubscriptions: Map<string, Subscription> = new Map();
-    authorizedWs: WebSocket | undefined;
+    authorizedWs?: WebSocket;
 
-    setAuthorizedWs(authorizedWs: WebSocket) {
+    setAuthorizedWs(authorizedWs?: WebSocket) {
         this.authorizedWs = authorizedWs;
 
         this.backendSubscriptions.forEach(subscription => {
             subscription.setAuthorizedWs(authorizedWs);
         });
+    }
+
+    async close() {
+        if (!this.authorizedWs) {
+            return;
+        }
+
+        // Collect promises from the async unsubscribe calls
+        const unsubscribePromises = Array.from(this.backendSubscriptions.values()).map(async backendSubscription => {
+            await backendSubscription.unsubscribe();
+        });
+
+        // Clear the subscriptions map after all promises have resolved
+        this.backendSubscriptions.clear();
+
+        // Await all the unsubscribe promises to finish
+        await Promise.all(unsubscribePromises);
     }
 
     async subscribe(

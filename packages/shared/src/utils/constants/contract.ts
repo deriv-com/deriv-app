@@ -18,7 +18,7 @@ export const getLocalizedBasis = () =>
         payout: localize('Payout'),
         stake: localize('Stake'),
         turbos: localize('Turbos'),
-    } as const);
+    }) as const;
 
 /**
  * components can be undef or an array containing any of: 'start_date', 'barrier', 'last_digit'
@@ -30,7 +30,7 @@ type TContractTypesConfig = {
     basis: string[];
     components: string[];
     barrier_count?: number;
-    config?: { hide_duration?: boolean };
+    config?: { hide_duration?: boolean; default_stake?: number };
 };
 
 type TGetContractTypesConfig = (symbol?: string) => Record<string, TContractTypesConfig>;
@@ -230,8 +230,8 @@ export const getContractCategoriesConfig = () =>
                 TRADE_TYPES.CALL_PUT_SPREAD,
             ],
         },
-        'Highs & Lows': {
-            name: localize('Highs & Lows'),
+        'Touch & No Touch': {
+            name: localize('Touch & No Touch'),
             categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
         },
         'Ins & Outs': { name: localize('Ins & Outs'), categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },
@@ -245,7 +245,7 @@ export const getContractCategoriesConfig = () =>
         },
         Vanillas: { name: localize('Vanillas'), categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT] },
         Accumulators: { name: localize('Accumulators'), categories: [TRADE_TYPES.ACCUMULATOR] },
-    } as const);
+    }) as const;
 
 export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
@@ -312,7 +312,7 @@ export const getCardLabels = () =>
         TICKS: localize('Ticks'),
         TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
         WON: localize('Won'),
-    } as const);
+    }) as const;
 
 export const getCardLabelsV2 = () =>
     ({
@@ -321,6 +321,7 @@ export const getCardLabelsV2 = () =>
         HIGH_BARRIER: localize('High Barrier'),
         LOW_BARRIER: localize('Low Barrier'),
         BUY_PRICE: localize('Buy price'),
+        BUY: localize('Buy'),
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
         CLOSED: localize('Closed'),
@@ -377,7 +378,7 @@ export const getCardLabelsV2 = () =>
         RESET_BARRIER: localize('Reset barrier'),
         RESET_TIME: localize('Reset time'),
         SELECTED_TICK: localize('Selected tick'),
-    } as const);
+    }) as const;
 
 export const getMarketNamesMap = () =>
     ({
@@ -433,9 +434,13 @@ export const getMarketNamesMap = () =>
         R_100: localize('Volatility 100 Index'),
         BOOM300N: localize('Boom 300 Index'),
         BOOM500: localize('Boom 500 Index'),
+        BOOM600: localize('Boom 600 Index'),
+        BOOM900: localize('Boom 900 Index'),
         BOOM1000: localize('Boom 1000 Index'),
         CRASH300N: localize('Crash 300 Index'),
         CRASH500: localize('Crash 500 Index'),
+        CRASH600: localize('Crash 600 Index'),
+        CRASH900: localize('Crash 900 Index'),
         CRASH1000: localize('Crash 1000 Index'),
         RDBEAR: localize('Bear Market Index'),
         RDBULL: localize('Bull Market Index'),
@@ -482,7 +487,7 @@ export const getMarketNamesMap = () =>
         CRYETHUSD: localize('ETH/USD'),
         CRYEOSUSD: localize('EOS/USD'),
         CRYLTCUSD: localize('LTC/USD'),
-    } as const);
+    }) as const;
 
 export const getUnsupportedContracts = () =>
     ({
@@ -494,7 +499,7 @@ export const getUnsupportedContracts = () =>
             name: localize('Spread Down'),
             position: 'bottom',
         },
-    } as const);
+    }) as const;
 
 /**
  * // Config to display details such as trade buttons, their positions, and names of trade types
@@ -654,7 +659,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         //     position: 'top',
         // }
         // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
-    } as const);
+    }) as const;
 
 export const TRADE_FEATURE_FLAGS = ['sharkfin', 'dtrader_v2'];
 

@@ -17,6 +17,7 @@ module.exports = {
         '^Translations/(.*)$': '<rootDir>/src/translations/$1',
         '^Types/(.*)$': '<rootDir>/src/types/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
     },
     testPathIgnorePatterns: [
         '/scripts/',

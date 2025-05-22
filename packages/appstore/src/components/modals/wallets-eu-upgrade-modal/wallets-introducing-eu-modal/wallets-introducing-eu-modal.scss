@@ -1,0 +1,57 @@
+.wallets-introducing-eu-modal {
+    &__body {
+        position: relative;
+        background-color: var(--general-section-2);
+
+        @include mobile-or-tablet-screen {
+            padding: 1.6rem;
+
+            &:first-child {
+                padding-top: 1.6rem;
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-width: 35.3rem;
+        width: 100%;
+        margin-bottom: 1.6rem;
+
+        @include mobile-or-tablet-screen {
+            max-width: none;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 0rem;
+        right: -8.5rem;
+
+        @include rtl {
+            right: 28rem;
+        }
+
+        @include mobile-or-tablet-screen {
+            position: static;
+            display: flex;
+            justify-content: center;
+            margin: 1.6rem 0;
+        }
+    }
+
+    &__button {
+        display: flex;
+        justify-content: flex-start;
+
+        @include mobile-or-tablet-screen {
+            justify-content: center;
+
+            &-text {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}

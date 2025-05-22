@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useMutation } from '@deriv/api-v2';
 import { DerivLightDemoResetBalanceIcon, DerivLightDemoResetBalanceSuccessfulIcon } from '@deriv/quill-icons';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import { ActionScreen, Button, Loader } from '@deriv-com/ui';
+import { ActionScreen, Button } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import useAllBalanceSubscription from '../../../../hooks/useAllBalanceSubscription';
 
 const ResetBalance = () => {
@@ -21,7 +22,7 @@ const ResetBalance = () => {
     const isResetBalanceAvailable = balanceData && balanceData?.[activeWallet?.loginid ?? '']?.balance < 10000;
 
     if (isBalanceLoading) {
-        return <Loader />;
+        return <WalletLoader />;
     }
 
     if (isResetBalanceSuccess) {

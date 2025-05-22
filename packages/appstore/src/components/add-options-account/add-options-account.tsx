@@ -4,8 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { isMobile, ContentFlag } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
+import { isMobile, ContentFlag, cacheTrackEvents } from '@deriv/shared';
 
 const AddOptions = observer(() => {
     const { client, traders_hub, ui } = useStore();
@@ -37,12 +36,19 @@ const AddOptions = observer(() => {
                     has_effect
                     onClick={() => {
                         if (is_traders_dashboard_tracking_enabled) {
-                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                action: 'account_get',
-                                form_name: 'traders_hub_default',
-                                account_mode: selected_account_type,
-                                account_name: 'cfd_banner',
-                            });
+                            cacheTrackEvents.loadEvent([
+                                {
+                                    event: {
+                                        name: 'ce_tradershub_dashboard_form',
+                                        properties: {
+                                            action: 'account_get',
+                                            form_name: 'traders_hub_default',
+                                            account_mode: selected_account_type,
+                                            account_name: 'cfd_banner',
+                                        },
+                                    },
+                                },
+                            ]);
                         }
 
                         if (is_real && eu_user) {

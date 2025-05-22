@@ -38,6 +38,7 @@ const DefaultHeaderWallets = () => {
         is_eu,
         is_logged_in,
         is_logging_in,
+        is_single_logging_in,
         is_mt5_allowed,
         is_dxtrade_allowed,
         is_virtual,
@@ -56,6 +57,8 @@ const DefaultHeaderWallets = () => {
     } = notifications;
 
     const history = useHistory();
+
+    const isRedirectPage = history.location.pathname.includes(routes.redirect);
 
     const { isDesktop } = useDevice();
 
@@ -127,7 +130,7 @@ const DefaultHeaderWallets = () => {
                         'header__menu-right--hidden': is_mobile && is_logging_in,
                     })}
                 >
-                    {(is_logging_in || is_switching) && (
+                    {(is_logging_in || is_single_logging_in || is_switching || isRedirectPage) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {

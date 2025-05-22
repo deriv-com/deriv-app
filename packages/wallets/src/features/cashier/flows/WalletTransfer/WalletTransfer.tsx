@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useTransferBetweenAccounts } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { TransferModule } from '../../modules';
 import { TransferNotAvailable } from '../../screens/TransferNotAvailable';
 
 const WalletTransfer = () => {
-    const { data, isLoading: isTransferAccountsLoading, mutate } = useTransferBetweenAccounts();
+    const { data, isLoading: isTransferAccountsLoading } = useTransferBetweenAccounts();
 
-    const requestTransferAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
-
-    useEffect(() => {
-        requestTransferAccounts();
-    }, [requestTransferAccounts]);
-
-    if (isTransferAccountsLoading || !data?.accounts) return <Loader />;
+    if (isTransferAccountsLoading || !data?.accounts) return <WalletLoader />;
 
     return (
         <TransferNotAvailable accounts={data.accounts}>

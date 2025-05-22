@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import React from 'react';
 import { Button, LinearProgress, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
@@ -13,6 +14,34 @@ import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
+    const history = useHistory();
+
+    // Load Trustpilot script dynamically when notification type is 'trustpilot'
+    React.useEffect(() => {
+        if (data.type === 'trustpilot') {
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js';
+            script.async = true;
+            script.onload = () => {
+                // Script has loaded, now we can initialize Trustpilot if needed
+                if (window.Trustpilot) {
+                    const trustpilot_element = document.querySelector('.trustpilot-widget');
+                    if (trustpilot_element) {
+                        window.Trustpilot.loadFromElement(trustpilot_element);
+                    }
+                }
+            };
+            document.body.appendChild(script);
+
+            // Cleanup function to remove script when component unmounts
+            return () => {
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            };
+        }
+    }, [data.type]);
 
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
@@ -117,7 +146,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                         <div className='notification__action'>
                             {!isEmptyObject(data.action) && (
                                 <React.Fragment>
-                                    {data.action.route ? (
+                                    {data.action.route && !data.action.onClick ? (
                                         <BinaryLink
                                             className={classNames(
                                                 'dc-btn',
@@ -135,9 +164,13 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                         <Button
                                             className='notification__cta-button'
                                             onClick={() => {
-                                                if (data.timeout)
+                                                if (data.timeout) {
                                                     linear_progress_container_ref.current.removeTimeoutSession();
+                                                }
                                                 data.action.onClick();
+                                                if (data.action.route) {
+                                                    history.push(data.action.route);
+                                                }
                                             }}
                                             text={data.action.text}
                                             secondary

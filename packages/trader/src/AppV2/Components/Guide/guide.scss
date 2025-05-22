@@ -26,9 +26,15 @@
     }
 
     &__wrapper {
-        &--content {
+        &__content {
             padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
             overflow-x: hidden;
+
+            &--separate {
+                padding: 0 var(--component-actionSheet-spacing-padding-lg)
+                    var(--component-actionSheet-spacing-padding-md);
+                overflow-x: hidden;
+            }
         }
     }
 
@@ -40,6 +46,10 @@
 
         &::-webkit-scrollbar {
             display: none;
+        }
+
+        &--without-btn {
+            height: calc(90dvh - 17rem);
         }
     }
 
@@ -133,6 +143,20 @@
     }
 }
 
+.quoted-button {
+    white-space: nowrap;
+    &:before {
+        // for opening quotes
+        content: '\201C';
+        color: var(--component-textIcon-normal-default);
+    }
+    &:after {
+        // for closing quotes
+        content: '\201D';
+        color: var(--component-textIcon-normal-default);
+    }
+}
+
 .definition {
     &__title {
         margin-block-end: var(--component-actionSheet-spacing-padding-lg);
@@ -177,20 +201,39 @@
 
 .modal-player {
     position: fixed;
+    inset: 0;
     padding: 0;
     border: unset;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--core-color-solid-slate-1400);
+    z-index: 999;
 
-    &::backdrop {
-        background-color: var(--core-color-opacity-black-600);
+    &__container {
+        height: 100%;
+    }
+
+    &__icon {
+        &-close {
+            position: fixed;
+            top: 0;
+            inset-inline-end: 0;
+            padding: 1.6rem;
+        }
     }
 
     &__wrapper {
-        width: 32rem;
-        height: 18rem;
+        width: 100vw;
+        height: 100%;
+        background-color: #000000;
 
         .player__controls__wrapper {
-            bottom: -1px;
+            position: fixed;
+            left: 0;
+            bottom: 4rem;
+            padding: 0 2rem;
         }
     }
 }

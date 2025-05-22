@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { useCashierFiatDepositAddress } from '@deriv/api-v2';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { DepositErrorScreen } from '../../screens';
 import './DepositFiat.scss';
 
 const DepositFiat: React.FC = () => {
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const {
-        data: iframeUrl,
-        error,
-        isLoading: isDepositFiatLoading,
-        mutate: mutateDepositFiat,
-    } = useCashierFiatAddress();
+    const { data: iframeUrl, error, isAuthorizing, isLoading } = useCashierFiatDepositAddress();
     const [isIframeLoading, setIsIframeLoading] = useState(true);
     const depositFiatError = error?.error;
 
     useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutateDepositFiat('deposit');
+        if (isAuthorizing) {
+            setIsIframeLoading(true);
         }
-    }, [isAuthorizeSuccess, mutateDepositFiat]);
+    }, [isAuthorizing]);
 
-    if (isDepositFiatLoading) return <Loader />;
+    if (isLoading || isAuthorizing) return <WalletLoader />;
 
     if (isServerError(depositFiatError)) {
         return <DepositErrorScreen error={depositFiatError} />;
@@ -30,7 +24,7 @@ const DepositFiat: React.FC = () => {
 
     return (
         <React.Fragment>
-            {isIframeLoading && <Loader />}
+            {isIframeLoading && <WalletLoader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'

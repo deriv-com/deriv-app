@@ -1,15 +1,16 @@
 import React from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
+import { useAuthorize, useCashierFiatDepositAddress } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import DepositFiat from '../DepositFiat';
 
 jest.mock('@deriv/api-v2', () => ({
     useAuthorize: jest.fn(),
-    useCashierFiatAddress: jest.fn(),
+    useCashierFiatDepositAddress: jest.fn(),
 }));
 
-jest.mock('@deriv-com/ui', () => ({
-    Loader: jest.fn(() => <div>Loading...</div>),
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    WalletLoader: () => <div>Loading...</div>,
 }));
 
 jest.mock('../../../screens', () => ({
@@ -23,7 +24,7 @@ describe('DepositFiat', () => {
 
     it('should render loader while data is loading', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: false });
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+        (useCashierFiatDepositAddress as jest.Mock).mockReturnValue({
             isLoading: true,
             mutate: jest.fn(),
         });
@@ -35,7 +36,7 @@ describe('DepositFiat', () => {
 
     it('should render error screen for fiat deposit error', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+        (useCashierFiatDepositAddress as jest.Mock).mockReturnValue({
             error: { error: { code: 'CashierForwardError', message: 'Fiat Error' } },
             mutate: jest.fn(),
         });
@@ -47,7 +48,7 @@ describe('DepositFiat', () => {
 
     it('should render loader if iframe is not yet loaded', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+        (useCashierFiatDepositAddress as jest.Mock).mockReturnValue({
             mutate: jest.fn(),
         });
         render(<DepositFiat />);
@@ -58,7 +59,7 @@ describe('DepositFiat', () => {
 
     it('should display iframe correctly after onLoad event', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+        (useCashierFiatDepositAddress as jest.Mock).mockReturnValue({
             data: 'https://iframe_url',
             isLoading: false,
             mutate: jest.fn(),

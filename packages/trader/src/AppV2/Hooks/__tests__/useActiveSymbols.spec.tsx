@@ -84,6 +84,7 @@ describe('useActiveSymbols', () => {
             'active_symbols',
             mocked_store.client.loginid ?? '',
             mocked_store.modules.trade.contract_type,
+            mocked_store.common.current_language,
         ]);
     });
 

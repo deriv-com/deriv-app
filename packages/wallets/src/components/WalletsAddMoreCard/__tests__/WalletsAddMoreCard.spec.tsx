@@ -2,7 +2,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import WalletsAddMoreCard from '../WalletsAddMoreCard';
-import '@testing-library/jest-dom/extend-expect';
 
 type TGradientBackground = {
     children: React.ReactNode;

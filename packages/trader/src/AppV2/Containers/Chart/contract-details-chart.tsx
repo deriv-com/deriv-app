@@ -1,7 +1,7 @@
 import React from 'react';
 import { isAccumulatorContract, isResetContract } from '@deriv/shared';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import ReplayChart from 'Modules/Contract/Containers/replay-chart';
 import './contract-details-chart.scss';
 

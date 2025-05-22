@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -11,23 +11,12 @@ import Carousel from 'AppV2/Components/Carousel';
 import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeParamDefinition from 'AppV2/Components/TradeParamDefinition';
 import PayoutPerPointWheel from './payout-per-point-wheel';
+import { TTradeParametersProps } from '../trade-parameters';
 
-type TPayoutPerPointProps = {
-    is_minimized?: boolean;
-};
-
-const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
+const PayoutPerPoint = observer(({ is_minimized }: TTradeParametersProps) => {
     const [is_open, setIsOpen] = React.useState(false);
-    const {
-        barrier_1,
-        currency,
-        payout_choices,
-        payout_per_point,
-        setPayoutPerPoint,
-        setV2ParamsInitialValues,
-        v2_params_initial_values,
-    } = useTraderStore();
-
+    const { barrier_1, currency, is_market_closed, payout_choices, payout_per_point, setPayoutPerPoint } =
+        useTraderStore();
     const is_small_screen = isSmallScreen();
     const currency_display_code = getCurrencyDisplayCode(currency);
     const payout_per_point_list = [...payout_choices]
@@ -37,18 +26,21 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
             label: `${payout_per_point} ${currency_display_code}`,
         }));
 
+    const onClose = React.useCallback(() => setIsOpen(false), []);
+
     const action_sheet_content = [
         {
             id: 1,
             component: (
                 <PayoutPerPointWheel
+                    barrier={barrier_1}
                     current_payout_per_point={payout_per_point}
+                    is_open={is_open}
                     onPayoutPerPointSelect={
                         setPayoutPerPoint as React.ComponentProps<typeof PayoutPerPointWheel>['onPayoutPerPointSelect']
                     }
-                    barrier={barrier_1}
+                    onClose={onClose}
                     payout_per_point_list={payout_per_point_list}
-                    setV2ParamsInitialValues={setV2ParamsInitialValues}
                 />
             ),
         },
@@ -65,14 +57,6 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     ];
     const classname = clsx('trade-params__option', is_minimized && 'trade-params__option--minimized');
 
-    React.useEffect(() => {
-        const initial_payout_per_point = v2_params_initial_values?.payout_per_point;
-        if (initial_payout_per_point && payout_per_point !== initial_payout_per_point) {
-            setPayoutPerPoint(initial_payout_per_point);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     if (!payout_per_point)
         return (
             <div className={classname}>
@@ -83,6 +67,7 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
     return (
         <React.Fragment>
             <TextField
+                disabled={is_market_closed}
                 className={classname}
                 label={
                     <Localize
@@ -93,9 +78,15 @@ const PayoutPerPoint = observer(({ is_minimized }: TPayoutPerPointProps) => {
                 onClick={() => setIsOpen(true)}
                 readOnly
                 variant='fill'
-                value={`${v2_params_initial_values?.payout_per_point ?? payout_per_point} ${currency_display_code}`}
+                value={`${payout_per_point} ${currency_display_code}`}
             />
-            <ActionSheet.Root isOpen={is_open} onClose={() => setIsOpen(false)} position='left' expandable={false}>
+            <ActionSheet.Root
+                isOpen={is_open}
+                onClose={onClose}
+                position='left'
+                expandable={false}
+                shouldBlurOnClose={is_open}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <Carousel
                         classname={clsx(

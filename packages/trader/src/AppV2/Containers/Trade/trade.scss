@@ -25,7 +25,11 @@
         }
 
         button {
-            background-color: transparent;
+            background-color: transparent !important;
+
+            &.quill-chip[data-state='selected'] {
+                background-color: var(--component-chip-bg-selected) !important;
+            }
         }
 
         &-header {
@@ -45,6 +49,7 @@
         }
     }
     &__chart {
+        direction: ltr;
         border-top-left-radius: var(--core-borderRadius-400);
         border-top-right-radius: var(--core-borderRadius-400);
         overflow: hidden;
@@ -67,10 +72,21 @@
 
         &--with-button {
             min-height: 13.6rem;
-
-            &:has(.trade-params__options__wrapper--horizontal:not(:only-child)) {
-                min-height: 16.8rem;
-            }
         }
+    }
+}
+
+.quill-action-sheet--portal--wrapper:has(.trade-types-dialog--is_editing) {
+    overflow-y: hidden;
+}
+.trade-types-dialog {
+    &__title {
+        margin: var(--core-spacing-1200) var(--core-spacing-50);
+    }
+    &__content {
+        padding-top: var(--core-spacing-50);
+    }
+    &--is_editing {
+        overflow: hidden;
     }
 }

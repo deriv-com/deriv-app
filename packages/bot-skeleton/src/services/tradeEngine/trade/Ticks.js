@@ -1,4 +1,3 @@
-import { getLast } from 'binary-utils';
 import { localize } from '@deriv/translations';
 import * as constants from './state/constants';
 import { getDirection, getLastDigit } from '../utils/helpers';
@@ -6,6 +5,7 @@ import { expectPositiveInteger } from '../utils/sanitize';
 import { observer as globalObserver } from '../../../utils/observer';
 import { api_base } from '../../api/api-base';
 import debounce from 'lodash.debounce';
+import { getLast } from '../../api/binary-utils';
 
 let tickListenerKey;
 

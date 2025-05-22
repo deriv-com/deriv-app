@@ -1,12 +1,12 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { DepositCryptoModule, DepositFiatModule } from '../../modules';
 
 const WalletDeposit = () => {
     const { data: activeWallet } = useActiveWalletAccount();
 
-    if (!activeWallet?.currency_config) return <Loader />;
+    if (!activeWallet?.currency_config) return <WalletLoader />;
 
     const isCryptoProvider = activeWallet.currency_config.platform.cashier.includes('crypto');
 

@@ -1,9 +1,17 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import FinancialAssessment from '../financial-assessment';
+
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { WS } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen, waitFor } from '@testing-library/react';
+
+import FinancialAssessment from '../financial-assessment';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: jest.fn(),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -44,20 +52,30 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('<FinancialAssessment/>', () => {
-    const mock = mockStore({});
-    const rendercomponent = () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+    beforeEach(() => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, true]);
+    });
+    const mock = mockStore({
+        client: {
+            account_settings: {
+                account_opening_reason: 'Hedging',
+                tax_residence: 'Germany',
+                tax_identification_number: '123456789',
+                employment_status: 'Employed',
+            },
+        },
+    });
+    const renderComponent = (store_config = mock) =>
         render(
             <BrowserRouter>
-                <FinancialAssessment />
-            </BrowserRouter>,
-            { wrapper }
+                <StoreProvider store={store_config}>
+                    <FinancialAssessment />
+                </StoreProvider>
+            </BrowserRouter>
         );
-    };
+
     it('should render FinancialAssessment component', async () => {
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Financial information')).toBeInTheDocument();
             expect(screen.getByText('Source of income')).toBeInTheDocument();
@@ -93,7 +111,7 @@ describe('<FinancialAssessment/>', () => {
                 },
             })
         );
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Employment status')).toBeInTheDocument();
             expect(screen.getByText('Industry of employment')).toBeInTheDocument();
@@ -121,7 +139,7 @@ describe('<FinancialAssessment/>', () => {
                 },
             })
         );
-        rendercomponent();
+        renderComponent();
         await waitFor(() => {
             expect(screen.getByText('Employment status')).toBeInTheDocument();
             expect(screen.getByText('Industry of employment')).toBeInTheDocument();

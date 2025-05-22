@@ -1,36 +1,46 @@
 import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
 import { useCashierFiatAddress } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
+import { TSocketError } from '@deriv/api-v2/types';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';
 import './WithdrawalFiat.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    setResendEmail: React.Dispatch<React.SetStateAction<boolean>>;
+    setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
     verificationCode?: string;
 }
 
-const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
-    const { data: iframeUrl, error, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
+const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setResendEmail, setVerificationCode, verificationCode }) => {
+    const { data: iframeUrl, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
     const [isIframeLoading, setIsIframeLoading] = useState(true);
-    const withdrawalFiatError = error?.error;
+    const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
 
     useEffect(() => {
         if (verificationCode) {
             mutateAsync('withdraw', {
                 verification_code: verificationCode,
+            }).catch((response: TSocketError<'cashier'> | null) => {
+                if (isServerError(response?.error)) setError(response?.error);
             });
         }
     }, [mutateAsync, verificationCode]);
 
-    if (isWithdrawalFiatLoading) return <Loader />;
+    const resetError = () => {
+        setVerificationCode('');
+        setError(undefined);
+    };
 
-    if (isServerError(withdrawalFiatError)) {
-        return <WithdrawalErrorScreen error={withdrawalFiatError} />;
+    if (isWithdrawalFiatLoading) return <WalletLoader />;
+
+    if (error) {
+        return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;
     }
 
     return (
         <React.Fragment>
-            {isIframeLoading && <Loader />}
+            {isIframeLoading && <WalletLoader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-withdrawal-fiat__iframe'

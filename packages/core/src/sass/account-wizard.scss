@@ -806,7 +806,7 @@
         height: 0;
     }
     @include desktop-screen {
-        padding-bottom: unset;
+        padding-bottom: 7rem;
     }
 }
 
@@ -825,5 +825,9 @@
         @include mobile-or-tablet-screen {
             width: 100%;
         }
+    }
+
+    .employment-status-field {
+        margin-top: 0.5rem;
     }
 }

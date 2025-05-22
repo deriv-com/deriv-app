@@ -1,4 +1,4 @@
-import { RefObject, useState, useEffect } from 'react';
+import { RefObject, useState, useEffect, Fragment } from 'react';
 import { FormikValues } from 'formik';
 import clsx from 'clsx';
 import { useIsMounted } from '@deriv/shared';
@@ -167,9 +167,12 @@ const AccountLimits = observer(
                                             <AccountLimitsTableCell align='right'>
                                                 {/* null or 0 are expected form BE when max balance limit is not set */}
                                                 {account_balance ? (
-                                                    FormatUtils.formatMoney(account_balance, {
-                                                        currency: currency as CurrencyConstants.Currency,
-                                                    })
+                                                    <Fragment>
+                                                        {FormatUtils.formatMoney(account_balance, {
+                                                            currency: currency as CurrencyConstants.Currency,
+                                                        })}{' '}
+                                                        {currency}
+                                                    </Fragment>
                                                 ) : (
                                                     <Localize i18n_default_text='Not set' />
                                                 )}
@@ -190,7 +193,8 @@ const AccountLimits = observer(
                                             <AccountLimitsTableCell align='right'>
                                                 {FormatUtils.formatMoney(payout as number, {
                                                     currency: currency as CurrencyConstants.Currency,
-                                                })}
+                                                })}{' '}
+                                                {currency}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>
@@ -216,7 +220,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum daily turnover' />
                                             </AccountLimitsTableHeader>
                                             <AccountLimitsTableHeader align='right'>
-                                                <Localize i18n_default_text='Limit' />
+                                                <Localize i18n_default_text={`Limit (${currency})`} />
                                             </AccountLimitsTableHeader>
                                         </tr>
                                     </thead>
@@ -237,13 +241,7 @@ const AccountLimits = observer(
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
 
-                                {!is_app_settings && (
-                                    <WithdrawalLimitsTable
-                                        num_of_days_limit={num_of_days_limit}
-                                        remainder={remainder}
-                                        withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}
-                                    />
-                                )}
+                                {!is_app_settings && <WithdrawalLimitsTable />}
                             </ThemedScrollbars>
                         </div>
                         {should_show_article && isDesktop && <AccountLimitsArticle />}

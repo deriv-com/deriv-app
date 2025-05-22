@@ -249,8 +249,8 @@ describe('getContractCategoriesConfig', () => {
                     TRADE_TYPES.CALL_PUT_SPREAD,
                 ],
             },
-            'Highs & Lows': {
-                name: 'Highs & Lows',
+            'Touch & No Touch': {
+                name: 'Touch & No Touch',
                 categories: [TRADE_TYPES.TOUCH, TRADE_TYPES.TICK_HIGH_LOW],
             },
             'Ins & Outs': { name: 'Ins & Outs', categories: [TRADE_TYPES.END, TRADE_TYPES.STAY] },

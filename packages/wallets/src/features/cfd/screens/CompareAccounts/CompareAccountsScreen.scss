@@ -11,7 +11,6 @@
     &__card-list {
         display: flex;
         justify-content: center;
-        padding: 2rem;
 
         @include desktop-screen {
             margin: 0 auto;

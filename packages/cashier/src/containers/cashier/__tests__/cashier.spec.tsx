@@ -1,54 +1,27 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import getRoutesConfig from 'Constants/routes-config';
-import Cashier from '../cashier';
-import { P2PSettingsProvider, mockStore } from '@deriv/stores';
-import CashierProviders from '../../../cashier-providers';
-import { routes } from '@deriv/shared';
+import { BrowserHistory, createBrowserHistory } from 'history';
+
 import { APIProvider } from '@deriv/api';
+import { routes } from '@deriv/shared';
+import { mockStore, P2PSettingsProvider } from '@deriv/stores';
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import getRoutesConfig from 'Constants/routes-config';
+
+import CashierProviders from '../../../cashier-providers';
+import Cashier from '../cashier';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
+jest.mock('@deriv/p2p', () => jest.fn(() => <div>P2P</div>));
+
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),
-        usePaymentAgentList: jest.fn(() => ({
-            data: [
-                {
-                    currencies: 'USD',
-                    email: 'pa-test@email.com',
-                    further_information: 'Further information',
-                    max_withdrawal: '2000',
-                    min_withdrawal: '10',
-                    name: 'PA',
-                    paymentagent_loginid: 'CR9999999',
-                    phone_numbers: [
-                        {
-                            phone_number: '+987654321',
-                        },
-                    ],
-                    summary: '',
-                    supported_payment_methods: [
-                        {
-                            payment_method: 'Visa',
-                        },
-                    ],
-                    urls: [
-                        {
-                            url: 'https://test.test',
-                        },
-                    ],
-                    withdrawal_commission: '0',
-                },
-            ],
-            isLoading: false,
-            isSuccess: true,
-        })),
         usePaymentAgentTransferVisible: jest.fn(() => ({
             data: true,
             isLoading: false,
@@ -101,11 +74,23 @@ describe('<Cashier />', () => {
                 toggleCashier: jest.fn(),
             },
             client: {
+                active_accounts: [],
+                currency: 'USD',
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: false,
-                active_accounts: [],
-                is_crypto: jest.fn(),
+                website_status: {
+                    currencies_config: {
+                        USD: {
+                            //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                            platform: { cashier: ['doughflow'], ramp: [] },
+                        },
+                        BTC: {
+                            //@ts-expect-error need to update `@deriv/api-types` library to the latest version
+                            platform: { cashier: ['crypto'], ramp: ['ramp'] },
+                        },
+                    },
+                },
             },
             notifications: {
                 showAccountSwitchToRealNotification: jest.fn(),
@@ -126,6 +111,9 @@ describe('<Cashier />', () => {
                     },
                     transaction_history: {
                         is_transactions_crypto_visible: false,
+                    },
+                    payment_agent: {
+                        is_payment_agent_visible: false,
                     },
                 },
             },
@@ -167,11 +155,12 @@ describe('<Cashier />', () => {
     });
 
     it('renders the component if logged in and account setting is loaded', () => {
+        mockRootStore.client.currency = 'BTC';
         mockRootStore.client.is_account_setting_loaded = true;
         mockRootStore.client.is_logged_in = true;
         mockRootStore.client.is_logging_in = false;
-        mockRootStore.client.is_crypto = jest.fn(() => true);
         mockRootStore.modules.cashier.general_store.is_cashier_onboarding = true;
+        mockRootStore.modules.cashier.payment_agent.is_payment_agent_visible = true;
 
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
 

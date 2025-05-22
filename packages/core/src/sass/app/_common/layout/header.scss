@@ -18,6 +18,15 @@
     &--is-hidden {
         display: none;
     }
+
+    &--tradershub_os {
+        &_desktop {
+            display: none;
+        }
+        &_mobile {
+            display: block;
+        }
+    }
     &__menu-mobile-whatsapp {
         &-link {
             text-decoration: none;

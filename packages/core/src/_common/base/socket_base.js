@@ -400,6 +400,8 @@ const BinarySocketBase = (() => {
             name: 'test real labuan financial stp',
         });
 
+    const getPhoneSettings = () => deriv_api.send({ phone_settings: 1 });
+
     const getServiceToken = (platform, server) => {
         const temp_service = platform;
 
@@ -477,6 +479,7 @@ const BinarySocketBase = (() => {
         newAccountVirtual,
         newAccountReal,
         newAccountRealMaltaInvest,
+        getPhoneSettings,
         p2pSubscribe,
         profitTable,
         statement,
@@ -553,7 +556,7 @@ const proxyForAuthorize = obj =>
             if (target[field] && typeof target[field] !== 'function') {
                 return proxyForAuthorize(target[field]);
             }
-            return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));
+            return (...args) => BinarySocketBase?.wait('authorize')?.then(() => target[field](...args));
         },
     });
 

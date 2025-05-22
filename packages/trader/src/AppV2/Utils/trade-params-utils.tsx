@@ -1,5 +1,6 @@
 import {
     CONTRACT_TYPES,
+    isTimeValid,
     isTouchContract,
     isTurbosContract,
     isVanillaContract,
@@ -7,7 +8,18 @@ import {
     TRADE_TYPES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import React, { ReactNode } from 'react';
+import { Moment } from 'moment';
+import React from 'react';
+import { createProposalRequestForContract, getProposalInfo } from 'Stores/Modules/Trading/Helpers/proposal';
+import { TTradeStore } from 'Types';
+
+export const DURATION_UNIT = {
+    DAYS: 'd',
+    TICKS: 't',
+    MINUTES: 'm',
+    HOURS: 'h',
+    SECONDS: 's',
+};
 
 export const getTradeParams = (symbol?: string, has_cancellation?: boolean) => ({
     [TRADE_TYPES.RISE_FALL]: {
@@ -211,31 +223,95 @@ export const getSnackBarText = ({
         return <Localize i18n_default_text='DC has been turned off.' />;
 };
 
-export const getOptionPerUnit = (unit: string, show_tick_from_5: boolean): { value: number; label: ReactNode }[][] => {
-    const unitConfig: Record<
-        string,
-        { start: number; end: number; label: ReactNode } | (() => { value: number; label: ReactNode }[][])
-    > = {
-        m: { start: 1, end: 59, label: <Localize i18n_default_text='min' /> },
-        s: { start: 15, end: 59, label: <Localize i18n_default_text='sec' /> },
-        d: { start: 1, end: 365, label: <Localize i18n_default_text='days' /> },
-        t: { start: show_tick_from_5 ? 5 : 1, end: 10, label: <Localize i18n_default_text='tick' /> },
-        h: () => {
-            const hour_options = generateOptions(1, 24, 'h');
-            const minute_options = generateOptions(0, 59, 'min');
-            return [hour_options, minute_options];
-        },
-    };
+export const getClosestTimeToCurrentGMT = (interval: number): string => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 5);
 
-    const generateOptions = (start: number, end: number, label: ReactNode) => {
-        return Array.from({ length: end - start + 1 }, (_, i) => ({
-            value: start + i,
+    const options: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'UTC',
+    };
+    const formattedTime = new Intl.DateTimeFormat('en-GB', options).format(now);
+
+    const [hours, minutes] = formattedTime.split(':').map(Number);
+
+    const date = new Date();
+    date.setUTCHours(hours);
+    date.setUTCMinutes(minutes);
+
+    const roundedMinutes = Math.ceil(date.getUTCMinutes() / interval) * interval;
+
+    if (roundedMinutes >= 60) {
+        date.setUTCHours(date.getUTCHours() + 1);
+        date.setUTCMinutes(0);
+    } else {
+        date.setUTCMinutes(roundedMinutes);
+    }
+
+    const newHours = String(date.getUTCHours()).padStart(2, '0');
+    const newMinutes = String(date.getUTCMinutes()).padStart(2, '0');
+
+    return `${newHours}:${newMinutes}`;
+};
+
+type TDurationOption = {
+    value: number;
+    label: React.ReactNode;
+};
+
+const generateOptions = (
+    startValue: number,
+    endValue: number,
+    singularLabel: React.ReactNode,
+    pluralLabel: React.ReactNode
+): TDurationOption[] => {
+    const length = endValue - startValue + 1;
+    return Array.from({ length }, (_, index): TDurationOption => {
+        const value = startValue + index;
+        return {
+            value,
             label: (
-                <React.Fragment key={start + i}>
-                    {start + i} {label}
+                <React.Fragment key={value}>
+                    {value} {value > 1 ? pluralLabel : singularLabel}
                 </React.Fragment>
             ),
-        }));
+        };
+    });
+};
+
+export const getOptionPerUnit = (unit: string, duration_min_max: Record<string, { min: number; max: number }>) => {
+    const { intraday, tick, daily } = duration_min_max;
+    const unitConfig: Record<
+        string,
+        | { start: number; end: number; labelSingle: React.ReactNode; labelPlural: React.ReactNode }
+        | (() => { value: number; label: React.ReactNode }[][])
+    > = {
+        m: {
+            start: Math.max(1, intraday?.min / 60),
+            end: Math.min(59, intraday?.max / 60),
+            labelSingle: <Localize i18n_default_text='min' />,
+            labelPlural: <Localize i18n_default_text='min' />,
+        },
+        s: {
+            start: Math.max(15, intraday?.min),
+            end: Math.min(59, intraday?.max),
+            labelSingle: <Localize i18n_default_text='sec' />,
+            labelPlural: <Localize i18n_default_text='sec' />,
+        },
+        d: {
+            start: Math.max(1, daily?.min / 86400),
+            end: Math.min(365, daily?.max / 86400),
+            labelSingle: <Localize i18n_default_text='days' />,
+            labelPlural: <Localize i18n_default_text='days' />,
+        },
+        t: {
+            start: Math.max(1, tick?.min),
+            end: Math.min(10, tick?.max),
+            labelSingle: <Localize i18n_default_text='tick' />,
+            labelPlural: <Localize i18n_default_text='ticks' />,
+        },
     };
 
     const config = unitConfig[unit];
@@ -245,9 +321,185 @@ export const getOptionPerUnit = (unit: string, show_tick_from_5: boolean): { val
     }
 
     if (config) {
-        const { start, end, label } = config;
-        return [generateOptions(start, end, label)];
+        const { start, end, labelSingle, labelPlural } = config;
+        return [generateOptions(Math.ceil(start), Math.floor(end), labelSingle, labelPlural)];
     }
 
     return [[]];
+};
+
+export const getSmallestDuration = (
+    obj: { [x: string]: { min: number; max: number } | { min: number } },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    durationUnits: any[]
+) => {
+    const keysPriority = ['tick', 'intraday', 'daily'];
+    let smallestValueInSeconds = Infinity;
+    let smallestUnit: 's' | 'm' | 'h' | 'd' | null = null;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const key of keysPriority) {
+        if (obj[key]) {
+            if (key === 'tick') {
+                const tickUnit = durationUnits.find((item: { value: string }) => item.value === 't');
+                if (tickUnit) {
+                    return { value: obj[key].min, unit: 't' };
+                }
+            }
+
+            if (obj[key].min < smallestValueInSeconds) {
+                smallestValueInSeconds = obj[key].min;
+
+                if (key === 'intraday') {
+                    if (smallestValueInSeconds >= 60 && smallestValueInSeconds < 3600) {
+                        smallestUnit = 'm';
+                    } else if (smallestValueInSeconds >= 3600 && smallestValueInSeconds < 86400) {
+                        smallestUnit = 'h';
+                    }
+                } else if (key === 'daily') {
+                    smallestUnit = 'd';
+                }
+            }
+        }
+    }
+
+    if (smallestUnit) {
+        const validUnit = durationUnits.find((item: { value: string; text: string }) => item.value === smallestUnit);
+        if (validUnit) {
+            let convertedValue;
+            switch (smallestUnit) {
+                case 'm':
+                    convertedValue = smallestValueInSeconds / 60;
+                    break;
+                case 'h':
+                    convertedValue = smallestValueInSeconds / 3600;
+                    break;
+                case 'd':
+                    convertedValue = smallestValueInSeconds / 86400;
+                    break;
+                default:
+                    convertedValue = 1;
+            }
+            return { value: convertedValue, unit: smallestUnit };
+        }
+    }
+
+    return null;
+};
+
+export const getDatePickerStartDate = (
+    duration_units_list: { value: string }[],
+    server_time: Moment,
+    start_time: string | null,
+    duration_min_max: Record<string, { min: number; max: number }>
+) => {
+    const hasIntradayDurationUnit = (duration_units_list: { value: string }[]) => {
+        return duration_units_list.some((unit: { value: string }) => ['m', 'h'].indexOf(unit.value) !== -1);
+    };
+
+    const setMinTime = (dateObj: Date, time?: string) => {
+        const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
+        dateObj?.setHours(Number(hour));
+        dateObj?.setMinutes(Number(minute) || 0);
+        dateObj?.setSeconds(Number(second) || 0);
+        return dateObj;
+    };
+
+    const toDate = (value: string | number | Date | Moment): Date => {
+        if (!value) return new Date();
+
+        if (value instanceof Date && !isNaN(value.getTime())) {
+            return value;
+        }
+
+        if (typeof value === 'number') {
+            return new Date(value * 1000);
+        }
+
+        const parsedDate = new Date(value as Date);
+        if (isNaN(parsedDate.getTime())) {
+            const today = new Date();
+            const daysInMonth = new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 0).getDate();
+            const valueAsNumber = Date.parse(value as string) / (1000 * 60 * 60 * 24);
+            return valueAsNumber > daysInMonth
+                ? new Date(today.setUTCDate(today.getUTCDate() + Number(value)))
+                : new Date(value as Date);
+        }
+
+        return parsedDate;
+    };
+
+    const getMinDuration = (server_time: string | number | Date | Moment, duration_units_list: { value: string }[]) => {
+        const server_date = toDate(server_time);
+        return hasIntradayDurationUnit(duration_units_list)
+            ? new Date(server_date)
+            : new Date(server_date.getTime() + (duration_min_max?.daily?.min || 0) * 1000);
+    };
+
+    const getMomentContractStartDateTime = () => {
+        const minDurationDate = getMinDuration(server_time, duration_units_list);
+        const time = isTimeValid(start_time ?? '') ? start_time : (server_time?.toISOString().substr(11, 8) ?? '');
+        return setMinTime(minDurationDate, time ?? '');
+    };
+
+    const min_date = new Date(getMomentContractStartDateTime());
+    return min_date;
+};
+
+export const getProposalRequestObject = ({
+    new_values = {},
+    should_subscribe = false,
+    trade_store,
+    trade_type,
+}: {
+    new_values: Record<string, unknown>;
+    should_subscribe?: boolean;
+    trade_store: TTradeStore;
+    trade_type: string;
+}) => {
+    const store = {
+        ...trade_store,
+        ...new_values,
+    };
+
+    const request = createProposalRequestForContract(
+        store as Parameters<typeof createProposalRequestForContract>[0],
+        trade_type
+    ) as Omit<ReturnType<typeof createProposalRequestForContract>, 'subscribe'> & {
+        subscribe?: number;
+        limit_order:
+            | {
+                  take_profit?: number;
+                  stop_loss?: number;
+              }
+            | undefined;
+    };
+
+    if (!should_subscribe) delete request.subscribe;
+
+    return request;
+};
+
+export const getPayoutInfo = (proposal_info: ReturnType<typeof getProposalInfo>) => {
+    // getting current payout
+    const { has_error, message = '', payout = 0, error_field } = proposal_info ?? {};
+    const float_number_search_regex = /\d+(\.\d+)?/g;
+    const is_error_matching = has_error && (error_field === 'amount' || error_field === 'stake');
+    const proposal_error_message = is_error_matching ? message : '';
+    /* TODO: stop using error text for getting the payout value, need API changes */
+    // Extracting the value of exceeded payout from error text
+    const error_payout = proposal_error_message
+        ? Number(proposal_error_message.match(float_number_search_regex)?.[2])
+        : 0;
+    const contract_payout = payout || error_payout;
+
+    // getting max allowed payout
+    const { payout: validation_payout } = (proposal_info?.validation_params || proposal_info?.validation_params) ?? {};
+    const { max } = validation_payout ?? {};
+    /* TODO: stop using error text for getting the max payout value, need API changes */
+    // Extracting the value of max payout from error text
+    const error_max_payout = is_error_matching && message ? Number(message.match(float_number_search_regex)?.[1]) : 0;
+    const max_payout = max || error_max_payout;
+
+    return { contract_payout, max_payout, error: proposal_error_message };
 };

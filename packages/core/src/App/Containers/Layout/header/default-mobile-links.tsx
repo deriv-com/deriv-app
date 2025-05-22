@@ -1,11 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier, useAccountSettingsRedirect } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 
@@ -15,6 +14,7 @@ const DefaultMobileLinks = React.memo(() => {
     const { toggleNeedRealAccountForCashierModal, toggleReadyToDepositModal } = ui;
 
     const history = useHistory();
+    const { redirect_url } = useAccountSettingsRedirect();
 
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
@@ -30,7 +30,7 @@ const DefaultMobileLinks = React.memo(() => {
         if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
             toggleModal();
         } else {
-            history.push(routes.cashier_deposit);
+            history.push(routes.cashier_deposit as unknown as Parameters<typeof history.push>[0]);
         }
     };
 
@@ -44,9 +44,9 @@ const DefaultMobileLinks = React.memo(() => {
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>
-            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <a className='traders-hub-header__setting' href={redirect_url}>
                 <Icon icon='IcUserOutline' size={20} />
-            </BinaryLink>
+            </a>
             {!has_wallet && (
                 <div className='traders-hub-header__cashier-button'>
                     <Button primary small onClick={handleClickCashier}>

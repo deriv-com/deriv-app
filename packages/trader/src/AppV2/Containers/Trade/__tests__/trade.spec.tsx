@@ -5,12 +5,10 @@ import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useRe
 import TraderProviders from '../../../../trader-providers';
 import ModulesProvider from 'Stores/Providers/modules-providers';
 import Trade from '../trade';
-import { TRADE_TYPES, redirectToLogin } from '@deriv/shared';
+import { TRADE_TYPES, redirectToLogin, redirectToSignUp } from '@deriv/shared';
 import { Router } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
-import { useSignupTrigger } from '../../../Hooks/useSignupTrigger';
-import { renderHook } from '@testing-library/react-hooks';
 
 const mock_contract_data = {
     contracts_for_company: {
@@ -37,6 +35,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     redirectToLogin: jest.fn(),
+    redirectToSignUp: jest.fn(),
 }));
 
 jest.mock('AppV2/Components/ClosedMarketMessage', () => jest.fn(() => <div>ClosedMarketMessage</div>));
@@ -66,12 +65,11 @@ jest.mock('AppV2/Components/OnboardingGuide/GuideForPages', () => jest.fn(() => 
 jest.mock('AppV2/Hooks/useContractsForCompany', () => ({
     __esModule: true,
     default: jest.fn(() => ({
-        contracts_for_company: mock_contract_data,
         is_fetching_ref: { current: false },
         trade_types: mock_contract_data.contracts_for_company.available,
+        resetTradeTypes: jest.fn(),
     })),
 }));
-jest.mock('AppV2/Hooks/useSignupTrigger');
 
 describe('Trade', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
@@ -117,10 +115,9 @@ describe('Trade', () => {
                     ],
                 },
             },
-            client: { is_logged_in: true },
+            client: { is_logged_in: true, is_switching: false },
             common: { resetServicesError: jest.fn() },
         });
-        (useSignupTrigger as jest.Mock).mockReturnValue({ handleSignup: jest.fn() });
         localStorage.clear();
     });
 
@@ -140,6 +137,13 @@ describe('Trade', () => {
 
     it('should render loader if there is no active_symbols or contract_types_list', () => {
         default_mock_store = mockStore({});
+        render(mockTrade());
+
+        expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
+    });
+
+    it('should show loader if we are switching from demo to real account', () => {
+        default_mock_store.client.is_switching = true;
         render(mockTrade());
 
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
@@ -257,13 +261,12 @@ describe('Trade', () => {
             message: 'You need to log in to place a trade',
             type: 'buy',
         };
-        const { result } = renderHook(() => useSignupTrigger());
 
         render(mockTrade());
 
         const signupButton = screen.getByText('Create free account');
         userEvent.click(signupButton);
 
-        expect(result.current.handleSignup).toHaveBeenCalled();
+        expect(redirectToSignUp).toHaveBeenCalled();
     });
 });

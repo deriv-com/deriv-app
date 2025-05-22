@@ -24,8 +24,11 @@ module.exports = function () {
             minimize: true,
         },
         devServer: {
-            publicPath: '/dist/',
+            static: {
+                publicPath: '/dist/',
+            },
         },
+
         module: {
             rules: [
                 {
@@ -76,7 +79,6 @@ module.exports = function () {
                 classnames: 'classnames',
                 'react-div-100vh': 'react-div-100vh',
                 'framer-motion': 'framer-motion',
-                'babel-polyfill': 'babel-polyfill',
                 'prop-types': 'prop-types',
                 'react-transition-group': 'react-transition-group',
                 react: 'react',
@@ -85,6 +87,8 @@ module.exports = function () {
                 'react-dropzone': 'react-dropzone',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/translations': '@deriv/translations',
+                '@deriv/account': '@deriv/account',
+                '@deriv/utils': '@deriv/utils',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',

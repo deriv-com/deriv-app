@@ -29,7 +29,7 @@
   "author": "Deriv.com",
   "license": "ISC",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/preset-react": "^7.16.7"
+    "@babel/eslint-parser": "^7.25.1",
+    "@babel/preset-react": "^7.24.7"
   }
 }

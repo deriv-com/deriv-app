@@ -8,6 +8,9 @@ import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderAccountsList: jest.fn(),
+    useIsHubRedirectionEnabled: jest.fn(() => ({
+        isHubRedirectionEnabled: false,
+    })),
 }));
 
 jest.mock('../../../../modals', () => ({

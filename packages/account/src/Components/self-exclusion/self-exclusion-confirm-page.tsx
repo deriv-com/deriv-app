@@ -1,15 +1,19 @@
-import { useContext, Fragment } from 'react';
-import { Button, Icon, StaticUrl, Text } from '@deriv/components';
+import { Fragment, useContext } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
+
+import { Button, Icon, Text } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import { FormatUtils, CurrencyConstants } from '@deriv-com/utils';
+import { Chat } from '@deriv/utils';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import SelfExclusionContext from './self-exclusion-context';
+import { CurrencyConstants, FormatUtils } from '@deriv-com/utils';
+
 import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits';
+import SelfExclusionContext from './self-exclusion-context';
 
 const SelfExclusionConfirmPage = () => {
     const { backFromConfirmLimits, currency, currency_display, exclusion_texts, is_eu, state } =
         useContext(SelfExclusionContext);
+
     const { isSubmitting, values } = useFormikContext<FormikValues>();
     const { localize } = useTranslations();
 
@@ -87,7 +91,7 @@ const SelfExclusionConfirmPage = () => {
                             i18n_default_text='You’ll be able to adjust these limits at any time. You can reduce your limits from the <0>self-exclusion page</0>. To increase or remove your limits, please contact our <1>Customer Support team</1>.'
                             components={[
                                 <Text key={0} size='xs' color='loss-danger' weight='bold' />,
-                                <StaticUrl key={1} className='link link--orange' href='/contact-us' />,
+                                <span className='link link--orange' key={1} onClick={Chat.open} />,
                             ]}
                         />
                     ) : (

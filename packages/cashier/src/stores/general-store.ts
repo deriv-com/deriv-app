@@ -1,12 +1,19 @@
-import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { isCryptocurrency, routes } from '@deriv/shared';
+
 import Constants from 'Constants/constants';
-import BaseStore from './base-store';
-import PaymentAgentStore from './payment-agent-store';
+
 import type { TRootStore, TWebSocket } from '../types';
 
+import BaseStore from './base-store';
+import PaymentAgentStore from './payment-agent-store';
+
 export default class GeneralStore extends BaseStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(
+        public WS: TWebSocket,
+        public root_store: TRootStore
+    ) {
         super({ root_store });
 
         makeObservable(this, {
@@ -16,6 +23,7 @@ export default class GeneralStore extends BaseStore {
             init: action.bound,
             is_cashier_onboarding: observable,
             is_crypto: computed,
+            is_crypto_provider: computed,
             is_deposit: observable,
             is_loading: observable,
             onMountCommon: action.bound,
@@ -37,11 +45,14 @@ export default class GeneralStore extends BaseStore {
         });
 
         reaction(
-            () => [
-                this.root_store.client.switched,
-                this.root_store.client.is_logged_in,
-                this.root_store.client.currency,
-            ],
+            () => {
+                return [
+                    this.root_store.common.current_language,
+                    this.root_store.client.switched,
+                    this.root_store.client.is_logged_in,
+                    this.root_store.client.currency,
+                ];
+            },
             () => {
                 this.init();
             }
@@ -70,10 +81,18 @@ export default class GeneralStore extends BaseStore {
     setOnRemount(func: VoidFunction): void {
         this.onRemount = func;
     }
-
+    /**
+     * @deprecated This is a legacy method and should not be used. Please use `is_crypto_provider` instead.
+     */
     get is_crypto(): boolean {
         const { currency } = this.root_store.client;
         return !!currency && isCryptocurrency(currency);
+    }
+
+    get is_crypto_provider(): boolean {
+        const { currency, website_status } = this.root_store.client;
+        //@ts-expect-error we need to update the api-types version
+        return website_status?.currencies_config[currency].platform.cashier.includes('crypto');
     }
 
     calculatePercentage(amount = this.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount): void {

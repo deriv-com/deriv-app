@@ -3,7 +3,7 @@ import { Localize } from '@deriv/translations';
 import { getPositionsV2TabIndexFromURL } from '@deriv/shared';
 import { useLocalStorageData } from '@deriv/hooks';
 import { Tab } from '@deriv-com/quill-ui';
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { useStore } from '@deriv/stores';
 import { useModulesStore } from 'Stores/useModulesStores';
 import { setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
@@ -24,6 +24,7 @@ const Positions = observer(() => {
 
     const {
         client: { is_logged_in },
+        ui: { is_dark_mode_on },
     } = useStore();
     const {
         positions: { onUnmount },
@@ -84,7 +85,11 @@ const Positions = observer(() => {
                 </Tab.Container>
             </div>
             {!guide_dtrader_v2?.positions_page && is_logged_in && (
-                <OnboardingGuide type='positions_page' callback={() => setHasButtonsDemo(true)} />
+                <OnboardingGuide
+                    type='positions_page'
+                    is_dark_mode_on={is_dark_mode_on}
+                    callback={() => setHasButtonsDemo(true)}
+                />
             )}
         </BottomNav>
     );

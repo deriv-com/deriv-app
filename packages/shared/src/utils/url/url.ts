@@ -159,6 +159,14 @@ export const getStaticUrl = (path = '', is_document = false, is_eu_url = false) 
     return `${host}${lang}/${normalizePath(path)}`;
 };
 
+export const getHubSignupUrl = () => {
+    const current_domain = process.env.NODE_ENV === 'production' ? deriv_urls.HUB_PRODUCTION : deriv_urls.HUB_STAGING;
+
+    const lang = `?lang=${default_language?.toLowerCase() || 'en'}`;
+
+    return `${current_domain}/signup${lang}`;
+};
+
 export const getPath = (route_path: string, parameters = {}) =>
     Object.keys(parameters).reduce(
         (p, name) => p.replace(`:${name}`, parameters[name as keyof typeof parameters]),

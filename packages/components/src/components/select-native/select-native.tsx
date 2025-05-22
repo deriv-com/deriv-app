@@ -15,6 +15,7 @@ type TSelectNative = {
     should_show_empty_option?: boolean;
     suffix_icon?: string;
     data_testid?: string;
+    is_country_code_dropdown?: boolean;
     hide_selected_value?: boolean;
     hide_top_placeholder?: boolean;
     value?: string | number;
@@ -70,7 +71,7 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
                 {group_names.map(option => (
                     <optgroup key={option} label={option}>
                         {dropdown_items[option].map((value: TListItem) => (
-                            <option key={value.value} value={use_text ? value.text : value.value}>
+                            <option key={value.id || value.value} value={use_text ? value.text : value.value}>
                                 {value.nativepicker_text || value.text}
                             </option>
                         ))}
@@ -101,6 +102,7 @@ const SelectNative = ({
     label,
     list_items,
     placeholder,
+    is_country_code_dropdown,
     should_hide_disabled_options = true,
     should_show_empty_option = true,
     suffix_icon,
@@ -176,7 +178,7 @@ const SelectNative = ({
                                 <SelectNativeOptions
                                     list_items={list_items}
                                     should_hide_disabled_options={should_hide_disabled_options}
-                                    use_text={use_text}
+                                    use_text={use_text && !is_country_code_dropdown}
                                 />
                             </React.Fragment>
                         ) : (

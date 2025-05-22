@@ -39,7 +39,9 @@ describe('TransferFormAccountCard', () => {
     );
 
     it('should render without crashing', () => {
-        render(<TransferFormAccountCard account={undefined} type={undefined} />, { wrapper });
+        render(<TransferFormAccountCard account={undefined} hasPlatformStatus={jest.fn()} type={undefined} />, {
+            wrapper,
+        });
 
         expect(screen.queryByText('Test Account')).not.toBeInTheDocument();
         expect(screen.queryByText('Balance: 1000 USD')).not.toBeInTheDocument();
@@ -52,6 +54,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='modal'
             />,
             { wrapper }
@@ -70,6 +73,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='modal'
             />,
             { wrapper }
@@ -90,6 +94,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='modal'
             />,
             { wrapper }
@@ -108,6 +113,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='input'
             />,
             { wrapper }
@@ -126,6 +132,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='input'
             />,
             { wrapper }
@@ -142,6 +149,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='modal'
             />,
             { wrapper }
@@ -153,6 +161,7 @@ describe('TransferFormAccountCard', () => {
             <TransferFormAccountCard
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
                 account={mockNewAccount}
+                hasPlatformStatus={jest.fn()}
                 type='input'
             />
         );

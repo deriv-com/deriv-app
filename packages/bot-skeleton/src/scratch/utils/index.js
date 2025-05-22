@@ -8,8 +8,9 @@ import { saveWorkspaceToRecent } from '../../utils/local-storage';
 import DBotStore from '../dbot-store';
 import { LogTypes } from '../../constants/messages';
 import { error_message_map } from '../../utils/error-config';
-import { botNotification } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification';
-import { notification_message } from '../../../../bot-web-ui/src/components/bot-notification/bot-notification-utils';
+import { botNotification } from '@deriv/bot-web-ui/src/components/bot-notification/bot-notification';
+import { notification_message } from '@deriv/bot-web-ui/src/components/bot-notification/bot-notification-utils';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 
 export const inject_workspace_options = {
     media: `${__webpack_public_path__}media/`,
@@ -681,11 +682,8 @@ const all_context_menu_options = [
     localize('Download Block'),
 ];
 
-// Need for later
-// const deleteLocaleText = localize("Delete");
-// const blocksLocaleText = localize("Blocks");
-// const deleteBlocksLocaleText = localize("Delete Blocks");
-// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+const deleteBlocksLocaleText = localize('Delete Block');
+const deleteAllBlocksLocaleText = localize('Delete All Blocks');
 
 export const modifyContextMenu = (menu, add_new_items = []) => {
     const include_items = [...common_included_items, ...add_new_items];
@@ -698,9 +696,18 @@ export const modifyContextMenu = (menu, add_new_items = []) => {
     });
 
     for (let i = 0; i < menu.length; i++) {
-        const localized_text = localize(menu[i].text);
-        if (all_context_menu_options.includes(localized_text)) {
-            menu[i].text = localized_text;
+        const menu_text = menu[i].text.toLowerCase();
+        if (menu_text.includes('delete')) {
+            if (menu_text.includes('block') && !menu_text.includes('blocks')) {
+                menu[i].text = deleteBlocksLocaleText;
+            } else {
+                menu[i].text = deleteAllBlocksLocaleText;
+            }
+        } else {
+            const localized_text = localize(menu[i].text);
+            if (all_context_menu_options.includes(localized_text)) {
+                menu[i].text = localized_text;
+            }
         }
     }
 };
@@ -714,4 +721,10 @@ export const evaluateExpression = value => {
     } catch (e) {
         return 'invalid_input';
     }
+};
+
+export const setCurrency = block_instance => {
+    const currency_field = block_instance.getField('CURRENCY_LIST');
+    const { currency } = DBotStore.instance.client;
+    currency_field?.setValue(getCurrencyDisplayCode(currency));
 };

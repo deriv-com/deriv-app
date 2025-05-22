@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv-com/translations';
-import { Loader, Text } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
+import { WalletLoader } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import { WithdrawalErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
@@ -29,7 +30,7 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
         setError(undefined);
     };
 
-    if (isLoading) return <Loader />;
+    if (isLoading) return <WalletLoader />;
 
     if (isServerError(error)) {
         return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;

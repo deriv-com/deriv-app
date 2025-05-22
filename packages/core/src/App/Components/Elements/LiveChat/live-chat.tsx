@@ -1,19 +1,37 @@
-import React from 'react';
-import { Popover, Icon, Text } from '@deriv/components';
-import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv/stores';
+import { Icon, Popover, Text } from '@deriv/components';
+import { useIsFreshchatAvailable, useIsIntercomAvailable, useIsLiveChatWidgetAvailable } from '@deriv/hooks';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
+import { Chat } from '@deriv/utils';
+import { useDevice } from '@deriv-com/ui';
 
 const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
-    const { client } = useStore();
-    const { has_cookie_account, loginid } = client;
     const { isDesktop } = useDevice();
-    const liveChat = useLiveChat(has_cookie_account, loginid);
 
-    if (!liveChat.isReady) return null;
+    const { is_livechat_available } = useIsLiveChatWidgetAvailable();
 
-    const liveChatClickHandler = () => liveChat.widget?.call('maximize');
+    const fcAvailable = useIsFreshchatAvailable();
+    const icAvailable = useIsIntercomAvailable();
+
+    const isNeitherChatNorLiveChatAvailable = !is_livechat_available && !fcAvailable && !icAvailable;
+
+    if (isNeitherChatNorLiveChatAvailable) {
+        return null;
+    }
+
+    // Quick fix for making sure livechat won't popup if feature flag is late to enable.
+    // We will add a refactor after this
+    setInterval(() => {
+        if (fcAvailable || icAvailable) {
+            if (window.LiveChatWidget && typeof window.LiveChatWidget.call === 'function') {
+                window.LiveChatWidget.call('destroy');
+            }
+        }
+    }, 10);
+
+    const liveChatClickHandler = () => {
+        Chat.open();
+    };
 
     if (isDesktop)
         return (

@@ -1,4 +1,7 @@
-import { LocalStorageUtils, URLUtils } from '@deriv-com/utils';
+import Cookies from 'js-cookie';
+import { getAccountsFromLocalStorage } from '@deriv/utils';
+import { LocalStorageUtils, URLConstants, URLUtils } from '@deriv-com/utils';
+import { LANDING_COMPANIES } from '../constants/constants';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -11,6 +14,8 @@ const domainUrlInitial = (isBrowser() && window.location.hostname.split('app.')[
 const domainUrl = supportedDomains.includes(domainUrlInitial) ? domainUrlInitial : derivComUrl;
 
 export const derivUrls = Object.freeze({
+    BOT_PRODUCTION: `https://dbot.${domainUrl}`,
+    BOT_STAGING: `https://staging-dbot.${domainUrl}`,
     DERIV_APP_PRODUCTION: `https://app.${domainUrl}`,
     DERIV_APP_STAGING: `https://staging-app.${domainUrl}`,
     DERIV_COM_PRODUCTION: `https://${domainUrl}`,
@@ -27,6 +32,10 @@ export const derivUrls = Object.freeze({
 export const whatsappUrl = 'https://wa.me/35699578341';
 
 let defaultLanguage: string;
+
+export const setUrlLanguage = (lang: string) => {
+    defaultLanguage = lang;
+};
 
 /**
  * @deprecated Please use 'URLUtils.normalizePath' from '@deriv-com/utils' instead of this.
@@ -60,6 +69,23 @@ export const getUrlSmartTrader = () => {
     return `${baseLink}/${i18NLanguage.toLowerCase()}/trading.html`;
 };
 
+export const getUrlBot = () => {
+    const { isStagingDerivApp } = getPlatformFromUrl();
+    const localizeLanguage = LocalStorageUtils.getValue<string>('i18n_language');
+    const urlLang = URLUtils.getQueryParameter('lang');
+    const i18NLanguage = localizeLanguage || urlLang || 'en';
+
+    let baseLink = '';
+
+    if (isStagingDerivApp) {
+        baseLink = derivUrls.BOT_STAGING;
+    } else {
+        baseLink = derivUrls.BOT_PRODUCTION;
+    }
+
+    return `${baseLink}?lang=${i18NLanguage.toLowerCase()}`;
+};
+
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
     const resolutions = {
         isDerivApp: /^app\.deriv\.(com|me|be)$/i.test(domain),
@@ -79,12 +105,21 @@ export const isStaging = (domain = window.location.hostname) => {
     return isStagingDerivApp;
 };
 
+export const isProduction = () => {
+    return process.env.NODE_ENV === 'production';
+};
+
 /**
  * @deprecated Please use 'URLUtils.getDerivStaticURL' from '@deriv-com/utils' instead of this.
  */
-export const getStaticUrl = (path = '', isDocument = false, isEuUrl = false) => {
+export const getStaticUrl = (
+    path = '',
+    language = defaultLanguage?.toLowerCase(),
+    isDocument = false,
+    isEuUrl = false
+) => {
     const host = isEuUrl ? derivUrls.DERIV_COM_PRODUCTION_EU : derivUrls.DERIV_COM_PRODUCTION;
-    let lang = defaultLanguage?.toLowerCase();
+    let lang = language;
 
     if (lang && lang !== 'en') {
         lang = `/${lang}`;
@@ -100,4 +135,33 @@ export const getStaticUrl = (path = '', isDocument = false, isEuUrl = false) => 
     }
 
     return `${host}${lang}/${normalizePath(path)}`;
+};
+
+export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
+    PRODUCTION: `https://hub.${domainUrl}/tradershub`,
+    STAGING: `https://staging-hub.${domainUrl}/tradershub`,
+});
+
+export const redirectToOutSystems = (landingCompany?: string, currency = '') => {
+    const clientAccounts = getAccountsFromLocalStorage() ?? {};
+    if (!Object.keys(clientAccounts).length) return;
+    const accountsWithTokens: Record<string, unknown> = {};
+    Object.keys(clientAccounts).forEach(loginid => {
+        const account = clientAccounts[loginid];
+        accountsWithTokens[loginid] = { token: account.token };
+    });
+    const expires = new Date(new Date().getTime() + 1 * 60 * 1000); // 1 minute
+
+    Cookies.set('os_auth_tokens', JSON.stringify(accountsWithTokens), { domain: URLConstants.baseDomain, expires });
+
+    const params = new URLSearchParams({
+        action: 'real-account-signup',
+        ...(currency ? { currency } : {}),
+        target: landingCompany || LANDING_COMPANIES.MALTAINVEST,
+    });
+    const baseUrl = isProduction() ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
+
+    const redirectURL = new URL(`${baseUrl}/redirect`);
+    redirectURL.search = params.toString();
+    return (window.location.href = redirectURL.toString());
 };

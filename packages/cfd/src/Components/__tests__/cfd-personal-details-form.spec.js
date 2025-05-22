@@ -6,6 +6,7 @@ import CFDPersonalDetailsForm from '../cfd-personal-details-form';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useLandingCompanyDetails } from '@deriv/hooks';
+import { Chat } from '@deriv/utils';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -21,10 +22,6 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(),
 }));
-
-global.window.LC_API = {
-    open_chat_window: jest.fn(),
-};
 
 describe('<CFDPersonalDetailsForm />', () => {
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
@@ -138,6 +135,14 @@ describe('<CFDPersonalDetailsForm />', () => {
             <CFDStoreProvider>{children}</CFDStoreProvider>;
         </StoreProvider>
     );
+
+    beforeEach(() => {
+        jest.spyOn(Chat, 'open').mockImplementation(jest.fn());
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
 
     it('should render properly on desktop', async () => {
         render(<CFDPersonalDetailsForm {...props} />, { wrapper });
@@ -358,6 +363,6 @@ describe('<CFDPersonalDetailsForm />', () => {
         const linkElement = screen.getByText(/live chat/i);
         expect(linkElement).toBeInTheDocument();
         fireEvent.click(linkElement);
-        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
+        expect(Chat.open).toHaveBeenCalledTimes(1);
     });
 });

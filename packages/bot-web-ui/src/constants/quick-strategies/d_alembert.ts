@@ -64,7 +64,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'media',
         src: getImageLocation('dalembert.svg'),
-        alt: localize("An example of D’Alembert's Grind strategy"),
+        alt: localize('An example of D’Alembert strategy'),
     },
     {
         type: 'text',

@@ -1,12 +1,15 @@
-import { Fragment, useState } from 'react';
-import { Button, Text, Input } from '@deriv/components';
+import { Fragment, useEffect, useState } from 'react';
+
 import { useVerifyEmail } from '@deriv/api';
+import { Button, Modal, Text } from '@deriv/components';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
-import FormSubHeader from '../../../Components/form-sub-header';
+
 import SentEmailModal from '../../../Components/sent-email-modal';
 import UnlinkAccountModal from '../../../Components/unlink-account-modal';
+
+import EmailPasswordSection from './email-password-section';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 
@@ -20,19 +23,29 @@ const DerivEmail = observer(() => {
         common: { is_from_derivgo },
         client: { social_identity_provider, is_social_signup, email },
     } = useStore();
-    const { mutate } = useVerifyEmail();
+
+    const { mutate, isError, error, isSuccess } = useVerifyEmail();
     const { localize } = useTranslations();
     const [is_unlink_account_modal_open, setIsUnlinkAccountModalOpen] = useState(false);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = useState(false);
+    const [is_error_modal_open, setIsErrorModalOpen] = useState(false);
 
     const payload: TVerifyEmailPayload = { verify_email: email, type: 'request_email' };
+
+    useEffect(() => {
+        if (isError) {
+            setIsErrorModalOpen(true);
+            setIsSendEmailModalOpen(false);
+        } else if (isSuccess) {
+            setIsSendEmailModalOpen(true);
+        }
+    }, [isError, isSuccess]);
 
     const onClickChangeEmail = () => {
         if (is_social_signup) {
             setIsUnlinkAccountModalOpen(true);
         } else {
             mutate(payload);
-            setIsSendEmailModalOpen(true);
         }
     };
 
@@ -42,40 +55,32 @@ const DerivEmail = observer(() => {
         setIsSendEmailModalOpen(true);
     };
 
+    const onClose = () => {
+        setIsErrorModalOpen(false);
+    };
+
+    type VerifyEmailError = {
+        code?: string;
+        message?: string;
+    };
+
     return (
         <Fragment>
-            <FormSubHeader title={localize('Email address')} />
-            <div className='account__email-wrapper'>
-                <Text as='p' className='email-platform__desc' color='prominent' size='xs' weight='lighter'>
-                    <Localize i18n_default_text='This is the email address associated with your Deriv account.' />
-                </Text>
-                <div className='email-platform__content'>
-                    <fieldset className='email-platform__content__fieldset'>
-                        <Input
-                            className='email-input'
-                            data-lpignore='true'
-                            type='text'
-                            name='email'
-                            id='email'
-                            label={localize('Email address*')}
-                            value={email}
-                            disabled={true}
+            <div className='account__passwords-wrapper'>
+                <EmailPasswordSection
+                    title={localize('Email address')}
+                    title_icon='deriv_email'
+                    description={
+                        <Localize
+                            i18n_default_text='This is the email address associated with your Deriv account. <0>{{ email }}</0>'
+                            components={[<Text key={0} as='span' weight='bold' size='xs' />]}
+                            values={{ email }}
                         />
-                    </fieldset>
-                    {!is_from_derivgo && (
-                        <Button
-                            className='email-change_button'
-                            type='button'
-                            onClick={onClickChangeEmail}
-                            has_effect
-                            is_disabled={false}
-                            is_loading={false}
-                            text={localize('Change email')}
-                            large
-                            primary
-                        />
-                    )}
-                </div>
+                    }
+                    should_display_button={!is_from_derivgo}
+                    onClick={onClickChangeEmail}
+                    button_text={localize('Change email')}
+                />
                 <UnlinkAccountModal
                     is_open={is_unlink_account_modal_open}
                     onClose={() => setIsUnlinkAccountModalOpen(false)}
@@ -91,6 +96,31 @@ const DerivEmail = observer(() => {
                     is_modal_when_mobile={true}
                 />
             </div>
+            {is_error_modal_open && error && (
+                <Modal
+                    is_open={is_error_modal_open}
+                    has_close_icon
+                    should_header_stick_body
+                    title={localize('Email change currently unavailable')}
+                    toggleModal={onClose}
+                    width='440px'
+                    height='200px'
+                >
+                    <div className='account__email-unhandled-error'>
+                        <Text className='account__email-unhandled-error-error_text' as='p' size='xs'>
+                            {(error as VerifyEmailError)?.code === 'EmailChangeFailP2PActive' ? (
+                                <Localize i18n_default_text='Complete P2P orders and deactivate ads to proceed.' />
+                            ) : (
+                                <Localize i18n_default_text={(error as VerifyEmailError)?.message || ''} />
+                            )}
+                        </Text>
+
+                        <Button onClick={onClose} has_effect primary large>
+                            <Localize i18n_default_text='OK' />
+                        </Button>
+                    </div>
+                </Modal>
+            )}
         </Fragment>
     );
 });

@@ -51,6 +51,7 @@ export class ChartBarrierStore {
             title: observable,
             updateBarriers: action.bound,
             updateBarrierShade: action.bound,
+            updateColor: action.bound,
             onBarrierChange: action.bound,
             barrier_count: computed,
             default_shade: computed,
@@ -58,7 +59,7 @@ export class ChartBarrierStore {
 
         this.color = color;
         this.hideBarrierLine = hideBarrierLine;
-        this.lineStyle = line_style || BARRIER_LINE_STYLES.SOLID;
+        this.lineStyle = line_style || BARRIER_LINE_STYLES.DOTTED;
         this.onChange = this.onBarrierChange;
 
         // trade_store's action to process new barriers on dragged
@@ -97,6 +98,11 @@ export class ChartBarrierStore {
     updateBarrierShade(should_display: boolean, contract_type: string) {
         this.shade =
             (should_display && CONTRACT_SHADES[contract_type as keyof typeof CONTRACT_SHADES]) || this.default_shade;
+    }
+
+    updateColor({ barrier_color, shade_color }: { barrier_color?: string; shade_color?: string }) {
+        if (shade_color) this.shadeColor = shade_color;
+        if (barrier_color) this.color = barrier_color;
     }
 
     onBarrierChange({ high, low, title, hidePriceLines }: TOnChangeParams) {

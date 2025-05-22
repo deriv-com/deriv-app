@@ -24,7 +24,7 @@ const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, si
             onClick={handleOnClick}
         >
             {icon}
-            <Text size={size} weight={isActive ? 'bold' : 'normal'}>
+            <Text align='center' size={size} weight={isActive ? 'bold' : 'normal'}>
                 {title}
             </Text>
         </button>

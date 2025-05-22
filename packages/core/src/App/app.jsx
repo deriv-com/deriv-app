@@ -1,31 +1,33 @@
 import React from 'react';
-import WS from 'Services/ws-methods';
-import PropTypes from 'prop-types';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Analytics } from '@deriv-com/analytics';
-import { BreakpointProvider } from '@deriv/quill-design';
+import PropTypes from 'prop-types';
+
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import { Loading } from '@deriv/components';
 import {
-    POIProvider,
-    getPositionsV2TabIndexFromURL,
     initFormErrorMessages,
-    isDTraderV2,
-    routes,
+    POIProvider,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
+import { P2PSettingsProvider, StoreProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
-import { withTranslation, useTranslation } from 'react-i18next';
-import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
+import { Analytics } from '@deriv-com/analytics';
+import { BreakpointProvider } from '@deriv-com/quill-ui';
+import { getInitialLanguage, initializeI18n, TranslationProvider } from '@deriv-com/translations';
+
+import WS from 'Services/ws-methods';
+
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+
 import AppContent from './AppContent';
+
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
@@ -47,9 +49,44 @@ const AppWithoutTranslation = ({ root_store }) => {
     const { preferred_language } = root_store.client;
     const { is_dark_mode_on } = root_store.ui;
     const is_dark_mode = is_dark_mode_on || JSON.parse(localStorage.getItem('ui_store'))?.is_dark_mode_on;
-    const is_dtrader_v2 =
-        isDTraderV2() && (location.pathname.startsWith(routes.trade) || location.pathname.startsWith('/contract/'));
     const language = preferred_language ?? getInitialLanguage();
+
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+    const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') ?? '{}');
+
+    if (account_currency) {
+        let matching_loginid, matching_wallet_loginid;
+
+        const converted_account_currency = account_currency.toUpperCase();
+
+        if (converted_account_currency === 'DEMO') {
+            matching_loginid = Object.keys(client_account_lists).find(loginid => /^VRTC/.test(loginid));
+            matching_wallet_loginid = Object.keys(client_account_lists).find(loginid => /^VRW/.test(loginid));
+        } else {
+            matching_loginid = Object.keys(client_account_lists).find(
+                loginid =>
+                    client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                    client_account_lists[loginid].account_category === 'trading' &&
+                    !client_account_lists[loginid]?.is_virtual
+            );
+            matching_wallet_loginid = Object.keys(client_account_lists).find(
+                loginid =>
+                    client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                    client_account_lists[loginid].account_category === 'wallet' &&
+                    !client_account_lists[loginid]?.is_virtual
+            );
+        }
+
+        if (matching_loginid) {
+            sessionStorage.setItem('active_loginid', matching_loginid);
+        }
+        if (matching_wallet_loginid) {
+            sessionStorage.setItem('active_wallet_loginid', matching_wallet_loginid);
+        }
+    }
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());
@@ -63,13 +100,6 @@ const AppWithoutTranslation = ({ root_store }) => {
             import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
-        const loadExternalScripts = async () => {
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-            await delay(3000);
-            window.LiveChatWidget.init();
-        };
-
         initializeTranslations();
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
@@ -79,17 +109,6 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
 
-        // Set maximum timeout before we load livechat in case if page loading is disturbed or takes too long
-        const max_timeout = setTimeout(loadExternalScripts, 15 * 1000); // 15 seconds
-
-        window.addEventListener('load', () => {
-            clearTimeout(max_timeout);
-            loadExternalScripts();
-        });
-
-        return () => {
-            window.removeEventListener('load', loadExternalScripts);
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -108,22 +127,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         }
     }, [root_store.client.email]);
 
-    const getLoader = () =>
-        is_dtrader_v2 ? (
-            <Loading.DTraderV2
-                initial_app_loading
-                is_contract_details={location.pathname.startsWith('/contract/')}
-                is_positions={location.pathname === routes.trader_positions}
-                is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
-            />
-        ) : (
-            <Loading />
-        );
-
     React.useEffect(() => {
         const html = document?.querySelector('html');
 
-        if (!html || !is_dtrader_v2) return;
+        if (!html) return;
         if (is_dark_mode) {
             html.classList?.remove('light');
             html.classList?.add('dark');
@@ -145,7 +152,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
                                             {/* This is required as translation provider uses suspense to reload language */}
-                                            <React.Suspense fallback={getLoader()}>
+                                            <React.Suspense fallback={<Loading />}>
                                                 <AppContent passthrough={platform_passthrough} />
                                             </React.Suspense>
                                         </TranslationProvider>

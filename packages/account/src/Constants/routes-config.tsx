@@ -5,8 +5,8 @@ import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     PersonalDetails,
-    ProofOfIdentity,
-    ProofOfAddress,
+    ProofOfIdentityFlow,
+    ProofOfAddressFlow,
     ProofOfOwnership,
     Account,
     DeactivateAccount,
@@ -107,7 +107,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: Account,
         is_authenticated: true,
-        getTitle: () => localize('Account Settings'),
+        getTitle: () => localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {
@@ -155,12 +155,12 @@ const initRoutesConfig = () => [
                 subroutes: [
                     {
                         path: routes.proof_of_identity,
-                        component: ProofOfIdentity,
+                        component: ProofOfIdentityFlow,
                         getTitle: () => localize('Proof of identity'),
                     },
                     {
                         path: routes.proof_of_address,
-                        component: ProofOfAddress,
+                        component: ProofOfAddressFlow,
                         getTitle: () => localize('Proof of address'),
                     },
                     {

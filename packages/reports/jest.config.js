@@ -20,5 +20,6 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
         '^Types/(.*)$': '<rootDir>/src/Types/$1',
         '^Types$': '<rootDir>/src/Types/index.ts',
+        '@deriv-com/ui': '<rootDir>/../../__mocks__/deriv-com.ui.mock.js',
     },
 };

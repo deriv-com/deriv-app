@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon';
+import { StandaloneVolumeHighRegularIcon, StandaloneVolumeXmarkRegularIcon } from '@deriv/quill-icons';
 
 type TVolumeControl = {
     onVolumeChange: (new_value: number) => void;
@@ -9,9 +10,10 @@ type TVolumeControl = {
     is_mobile?: boolean;
     is_muted?: boolean;
     toggleMute: (new_value: boolean) => void;
+    is_v2?: boolean;
 };
 
-const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute }: TVolumeControl) => {
+const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, is_v2 = false, toggleMute }: TVolumeControl) => {
     const [is_animated, setIsAnimated] = React.useState(true);
     const [show_volume, setShowVolume] = React.useState(false);
     const [shift_Y, setShiftY] = React.useState(0);
@@ -124,12 +126,16 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
             }}
         >
             <button className='player__controls__button' onClick={buttonClickHandler}>
-                <Icon
-                    icon={is_muted ? 'IcSoundOff' : 'IcSoundOn'}
-                    custom_color='var(--text-colored-background)'
-                    height={18}
-                    width={20}
-                />
+                {is_v2 && is_muted && <StandaloneVolumeXmarkRegularIcon fill='#ffffff' iconSize='md' />}
+                {is_v2 && !is_muted && <StandaloneVolumeHighRegularIcon fill='#ffffff' iconSize='md' />}
+                {!is_v2 && (
+                    <Icon
+                        icon={is_muted ? 'IcSoundOff' : 'IcSoundOn'}
+                        custom_color='var(--text-colored-background)'
+                        height={18}
+                        width={20}
+                    />
+                )}
             </button>
             <CSSTransition
                 in={show_volume}

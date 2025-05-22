@@ -3,8 +3,6 @@ import { Localize } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import { WalletCurrencyCard, WalletMarketCurrencyIcon } from '../../../../../../../../components';
 import { THooks, TPlatforms } from '../../../../../../../../types';
-import { MARKET_TYPE } from '../../../../../../../cfd/constants';
-import { getMarketType } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
 type TProps = {
@@ -15,7 +13,7 @@ type TProps = {
     displayActionType: string;
     isDemo: boolean;
     isInterWallet?: boolean;
-    mt5Group?: string;
+    marketType?: string;
     product?: THooks.AvailableMT5Accounts['product'];
     transactionID?: number;
 };
@@ -28,12 +26,11 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     displayActionType,
     isDemo,
     isInterWallet = false,
-    mt5Group,
+    marketType,
     product,
     transactionID,
 }) => {
     const { isDesktop } = useDevice();
-    const marketType = getMarketType(mt5Group);
 
     return (
         <div className='wallets-transactions-completed-row-account-details'>
@@ -48,7 +45,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                 <WalletMarketCurrencyIcon
                     currency={currency}
                     isDemo={isDemo}
-                    marketType={marketType ?? MARKET_TYPE.ALL}
+                    marketType={marketType}
                     platform={accountType as TPlatforms.All}
                     product={product}
                 />

@@ -16,7 +16,7 @@ export const TradingDisabledByResidenceModalContent = observer(() => {
             </Text>
             <Text align='center' size='xs'>
                 <Localize
-                    i18n_default_text='Due to business changes, Senegal client accounts are to be closed. Withdraw any remaining funds by {{date}}.'
+                    i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw any remaining funds by {{date}}.'
                     values={{
                         date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
                     }}

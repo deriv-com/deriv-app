@@ -18,9 +18,7 @@ const title = 'Allow equals';
 describe('AllowEquals', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
 
-    beforeEach(() => {
-        default_mock_store = mockStore({});
-    });
+    beforeEach(() => (default_mock_store = mockStore({})));
 
     const mockAllowEquals = () => {
         return (
@@ -32,28 +30,28 @@ describe('AllowEquals', () => {
         );
     };
 
-    it('should not render component if hasCallPutEqual return false', () => {
+    it('does not render component if hasCallPutEqual return false', () => {
         (hasCallPutEqual as jest.Mock).mockReturnValueOnce(false);
         const { container } = render(mockAllowEquals());
 
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should not render component if hasDurationForCallPutEqual return false', () => {
+    it('does not render component if hasDurationForCallPutEqual return false', () => {
         (hasDurationForCallPutEqual as jest.Mock).mockReturnValueOnce(false);
         const { container } = render(mockAllowEquals());
 
         expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render component with correct ToggleSwitch state value if is_equal is 0', () => {
+    it('renders component with ToggleSwitch state value aria-pressed === false if is_equal is 0', () => {
         render(mockAllowEquals());
 
         expect(screen.getByText(title)).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveAttribute('aria-pressed', 'false');
     });
 
-    it('should render component with correct ToggleSwitch state value if is_equal is 1', () => {
+    it('renders component with ToggleSwitch state value aria-pressed === true if is_equal is 1', () => {
         default_mock_store.modules.trade.is_equal = 1;
         render(mockAllowEquals());
 
@@ -61,7 +59,7 @@ describe('AllowEquals', () => {
         expect(screen.getByRole('button')).toHaveAttribute('aria-pressed', 'true');
     });
 
-    it('should call onChange function if user clicks on ToggleSwitch', () => {
+    it('calls onChange function if user clicks on ToggleSwitch', () => {
         render(mockAllowEquals());
 
         userEvent.click(screen.getByRole('button'));
@@ -69,12 +67,19 @@ describe('AllowEquals', () => {
         expect(default_mock_store.modules.trade.onChange).toBeCalled();
     });
 
-    it('should render ActionSheet with definition if user clicks on "Allow equal" term', () => {
+    it('renders ActionSheet with definition if user clicks on "Allow equal" term', () => {
         render(mockAllowEquals());
 
         userEvent.click(screen.getByText(title));
 
         expect(screen.getByText('Win payout if exit spot is also equal to entry spot.')).toBeInTheDocument();
         expect(screen.getByText('Got it')).toBeInTheDocument();
+    });
+
+    it('renders disabled ToggleSwitch is is_market_closed === true', () => {
+        default_mock_store.modules.trade.is_market_closed = true;
+        render(mockAllowEquals());
+
+        expect(screen.getByRole('button')).toBeDisabled();
     });
 });

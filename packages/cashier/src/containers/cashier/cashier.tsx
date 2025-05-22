@@ -1,25 +1,27 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
-import { Div100vhContainer, FadeWrapper, PageOverlay, VerticalTab, Loading } from '@deriv/components';
+
+import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, VerticalTab } from '@deriv/components';
 import {
-    useAuthorize,
-    useOnrampVisible,
     useAccountTransferVisible,
+    useAuthorize,
     useIsP2PEnabled,
-    usePaymentAgentList,
-    usePaymentAgentTransferVisible,
+    useOnrampVisible,
     useP2PNotificationCount,
     useP2PSettings,
+    usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getSelectedRoute, routes, setPerformanceValue, WS, matchRoute } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
+import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
+
 import ErrorDialog from '../../components/error-dialog';
-import { TRoute } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { TRoute } from '../../types';
+
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -45,7 +47,7 @@ type TCashierOptions = {
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
     const { isDesktop, isMobile } = useDevice();
-    const { withdraw, general_store } = useCashierStore();
+    const { withdraw, general_store, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -56,6 +58,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         cashier_route_tab_index: tab_index,
         setActiveTab,
     } = general_store;
+    // We should use this computed property instead of the hook, to prevent the hook's data from becoming stale after a WebSocket reconnection during the first login.
+    const { is_payment_agent_visible } = payment_agent;
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_transfer_checking,
@@ -65,12 +69,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
     const { account_settings, currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } =
         client;
-    const {
-        data: paymentAgentList,
-        isLoading: is_payment_agent_list_loading,
-        isSuccess: is_payment_agent_list_success,
-    } = usePaymentAgentList(currency);
-    const is_payment_agent_visible = paymentAgentList && paymentAgentList.length > 0;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -238,13 +236,11 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     ]);
 
     const is_p2p_loading = is_p2p_enabled_loading && !is_p2p_enabled_success;
-    const is_payment_agent_loading = is_payment_agent_list_loading && !is_payment_agent_list_success;
     const is_cashier_loading =
         ((!is_logged_in || isMobile) && is_logging_in) ||
         !is_account_setting_loaded ||
         is_payment_agent_transfer_checking ||
-        is_p2p_loading ||
-        is_payment_agent_loading;
+        is_p2p_loading;
 
     if (is_cashier_loading) {
         return <Loading is_fullscreen />;

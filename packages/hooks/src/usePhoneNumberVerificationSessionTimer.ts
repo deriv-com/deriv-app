@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useIsMounted, WS } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
 import dayjs from 'dayjs';
+import useSettings from './useSettings';
 
 const usePhoneNumberVerificationSessionTimer = () => {
     const [session_timer, setSessionTimer] = useState<number | undefined>();
     const [formatted_time, setFormattedTime] = useState('00:00');
     const [should_show_session_timeout_modal, setShouldShowSessionTimeoutModal] = useState(false);
-    const { client } = useStore();
-    const { account_settings } = client;
-    const { phone_number_verification } = account_settings;
+    const { data: account_settings } = useSettings();
     const isMounted = useIsMounted();
 
     const formatTime = useCallback((totalSeconds: number) => {
@@ -29,22 +27,25 @@ const usePhoneNumberVerificationSessionTimer = () => {
         WS.send({ time: 1 }).then((response: { error?: Error; time: number }) => {
             if (response.error) return;
 
-            if (response.time && phone_number_verification?.session_timestamp) {
+            //@ts-expect-error will remove this once GetSettings is updated
+            if (response.time && account_settings?.phone_number_verification?.session_timestamp) {
                 // request_in_miliseconds is to convert session_timestamp from get_settings * it with 1000 to make it into miliseconds and convert the time using dayjs package
-                const request_in_milliseconds = dayjs(phone_number_verification?.session_timestamp * 1000);
+                const request_in_milliseconds = dayjs(
+                    //@ts-expect-error will remove this once GetSettings is updated
+                    account_settings?.phone_number_verification?.session_timestamp * 1000
+                );
                 // next_request is to compare request_in_miliseconds with server's response time
                 const next_request = Math.round(request_in_milliseconds.diff(response.time * 1000) / 1000);
 
                 if (isMounted()) {
-                    if (next_request > 0) {
+                    if (next_request >= 0) {
                         setSessionTimer(next_request);
-                    } else {
-                        setSessionTimer(0);
                     }
                 }
             }
         });
-    }, [phone_number_verification?.session_timestamp]);
+        //@ts-expect-error will remove this once GetSettings is updated
+    }, [account_settings?.phone_number_verification?.session_timestamp]);
 
     useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
@@ -65,6 +66,7 @@ const usePhoneNumberVerificationSessionTimer = () => {
     return {
         formatted_time,
         should_show_session_timeout_modal,
+        setSessionTimer,
         setShouldShowSessionTimeoutModal,
     };
 };

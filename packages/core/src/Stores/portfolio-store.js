@@ -1,6 +1,8 @@
 import throttle from 'lodash.throttle';
-import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
+import { action, computed, makeObservable, observable, override, reaction } from 'mobx';
 import { computedFn } from 'mobx-utils';
+
+import { Money } from '@deriv/components';
 import {
     ChartBarrierStore,
     contractCancelled,
@@ -10,27 +12,29 @@ import {
     formatPortfolioPosition,
     getContractPath,
     getCurrentTick,
-    getTotalProfit,
     getDisplayStatus,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    getTotalProfit,
     getTradeNotificationMessage,
     isAccumulatorContract,
+    isDtraderV2DesktopEnabled,
+    isDtraderV2MobileEnabled,
     isEmptyObject,
     isEnded,
-    isValidToSell,
     isMultiplierContract,
-    WS,
-    TRADE_TYPES,
+    isValidToSell,
     removeBarrier,
     routes,
     setLimitOrderBarriers,
+    TRADE_TYPES,
+    WS,
 } from '@deriv/shared';
-import { Money } from '@deriv/components';
-import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+
 import BaseStore from './base-store';
 
 export default class PortfolioStore extends BaseStore {
@@ -50,11 +54,11 @@ export default class PortfolioStore extends BaseStore {
     main_barrier = null;
     contract_type = '';
 
-    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
-
     responseQueue = [];
 
     active_positions = [];
+
+    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -313,10 +317,15 @@ export default class PortfolioStore extends BaseStore {
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
                 if (response.error) {
-                    this.root_store.common.setServicesError({
-                        type: response.msg_type,
-                        ...response.error,
-                    });
+                    this.root_store.common.setServicesError(
+                        {
+                            type: response.msg_type,
+                            ...response.error,
+                        },
+                        // Temporary switching off old snackbar for DTrader-V2
+                        isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                            isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+                    );
                 } else if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                     this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
@@ -343,10 +352,15 @@ export default class PortfolioStore extends BaseStore {
 
             // invalidToken error will handle in socket-general.js
             if (response.error.code !== 'InvalidToken') {
-                this.root_store.common.setServicesError({
-                    type: response.msg_type,
-                    ...response.error,
-                });
+                this.root_store.common.setServicesError(
+                    {
+                        type: response.msg_type,
+                        ...response.error,
+                    },
+                    // Temporary switching off old snackbar for dTrader-V2
+                    isDtraderV2MobileEnabled(this.root_store.ui.is_mobile) ||
+                        isDtraderV2DesktopEnabled(this.root_store.ui.is_desktop)
+                );
             }
         } else if (!response.error && response.sell) {
             // update contract store sell info after sell
@@ -354,6 +368,12 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
+
+            // Update position status in sessionStorage to track closed positions
+            const contract_id = response.echo_req.sell;
+            this.root_store.contract_store.updatePositionStatus(contract_id, true);
+
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
             if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                 this.root_store.notifications.addNotificationMessage(
                     contractSold(this.root_store.client.currency, response.sell.sold_for, Money)

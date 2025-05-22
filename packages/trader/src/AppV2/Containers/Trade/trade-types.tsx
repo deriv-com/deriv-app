@@ -1,29 +1,41 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTraderStore } from 'Stores/useTraderStores';
-import { Chip, Text, ActionSheet, Button } from '@deriv-com/quill-ui';
-import { DraggableList } from 'AppV2/Components/DraggableList';
-import { TradeTypeList } from 'AppV2/Components/TradeTypeList';
-import { getTradeTypesList } from 'AppV2/Utils/trade-types-utils';
-import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
+import clsx from 'clsx';
+
+import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
 import { safeParse } from '@deriv/utils';
+import { ActionSheet, Button, Chip, Text } from '@deriv-com/quill-ui';
+
+import Carousel from 'AppV2/Components/Carousel';
+import CarouselHeader from 'AppV2/Components/Carousel/carousel-header';
 import TradeTypesSelectionGuide from 'AppV2/Components/OnboardingGuide/TradeTypesSelectionGuide';
+import { checkContractTypePrefix } from 'AppV2/Utils/contract-type';
+import { getTradeTypesList, sortCategoriesInTradeTypeOrder } from 'AppV2/Utils/trade-types-utils';
+import { useTraderStore } from 'Stores/useTraderStores';
+
+import { sendOpenGuideToAnalytics } from '../../../Analytics';
 import Guide from '../../Components/Guide';
 
+import TradeTypesContent from './trade-types-content';
+
 type TTradeTypesProps = {
-    onTradeTypeSelect: (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    onTradeTypeSelect: (
+        e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
+        subform_name: string,
+        trade_type_count: number
+    ) => void;
     trade_types: ReturnType<typeof getTradeTypesList>;
     contract_type: string;
     is_dark_mode_on: boolean;
 } & Pick<ReturnType<typeof useTraderStore>, 'contract_type'>;
 
-type TItem = {
+export type TItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
 };
 
-type TResultItem = {
+export type TResultItem = {
     id: string;
     title?: string;
     button_title?: string;
@@ -58,19 +70,18 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     const [other_trade_types, setOtherTradeTypes] = useState<TResultItem[]>([]);
     const [pinned_trade_types, setPinnedTradeTypes] = useState<TResultItem[]>(saved_pinned_trade_types);
 
-    const sorted_trade_types_array = useMemo(() => {
-        const array = createArrayFromCategories(trade_types);
-        return array.sort((a, b) => a.title?.localeCompare(b.title));
+    const trade_types_array = useMemo(() => {
+        return createArrayFromCategories(trade_types);
     }, [trade_types]);
 
     const getPinnedItems = useCallback(() => {
-        const pinned_items = filterItems(getItems(saved_pinned_trade_types), sorted_trade_types_array);
+        const pinned_items = filterItems(getItems(saved_pinned_trade_types), trade_types_array);
 
         if (pinned_items.length === 0) {
-            pinned_items.push(...sorted_trade_types_array.slice(0, 5));
+            pinned_items.push(...trade_types_array.slice(0, trade_types_array.length));
         }
         return pinned_items;
-    }, [saved_pinned_trade_types, sorted_trade_types_array]);
+    }, [saved_pinned_trade_types, trade_types_array]);
 
     const setTradeTypes = useCallback(() => {
         const pinned_items = getPinnedItems();
@@ -86,15 +97,13 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
         const default_other_trade_types = [
             {
                 id: 'other',
-                items: sorted_trade_types_array.filter(
-                    item => !pinned_items.some(pinned_item => pinned_item.id === item.id)
-                ),
+                items: trade_types_array.filter(item => !pinned_items.some(pinned_item => pinned_item.id === item.id)),
             },
         ];
 
         setPinnedTradeTypes(default_pinned_trade_types);
         setOtherTradeTypes(default_other_trade_types);
-    }, [getPinnedItems, sorted_trade_types_array]);
+    }, [getPinnedItems, trade_types_array]);
 
     useEffect(() => {
         setTradeTypes();
@@ -114,65 +123,43 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const handleAddPinnedClick = (item: TItem) => {
-        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setOtherTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setPinnedTradeTypes(prev_pinned => modifyPinnedCategories(prev_pinned, item, 'add'));
     };
 
     const handleRemovePinnedClick = (item: TItem) => {
-        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item, 'remove'));
+        setPinnedTradeTypes(prev_categories => modifyCategories(prev_categories, item));
         setOtherTradeTypes(prev_others => modifyOtherCategories(prev_others, item));
     };
 
     const modifyPinnedCategories = (categories: TResultItem[], item: TItem, action: 'add' | 'remove') => {
-        const updated_categories = [...categories];
-        const pinned_category = updated_categories.find(cat => cat.id === 'pinned');
-
-        if (action === 'add') {
-            if (pinned_category) {
-                pinned_category.items.push(item);
-            } else {
-                updated_categories.push({
-                    id: 'pinned',
-                    title: localize('Pinned'),
-                    items: [item],
-                });
+        return categories.map(category => {
+            if (category.id === 'pinned') {
+                return {
+                    ...category,
+                    items: action === 'add' ? [...category.items, item] : category.items.filter(i => i.id !== item.id),
+                };
             }
-        } else if (action === 'remove') {
-            updated_categories.map(category => ({
-                ...category,
-                items: category.items.filter(i => i.id !== item.id),
-            }));
-        }
-
-        return updated_categories;
+            return category;
+        });
     };
 
-    const modifyCategories = (categories: TResultItem[], item: TItem, action: 'remove' = 'remove') =>
+    const modifyCategories = (categories: TResultItem[], item: TItem) =>
         categories.map(category => ({
             ...category,
-            items:
-                action === 'remove'
-                    ? category.items.filter(i => i.id !== item.id)
-                    : category.items.filter(i => i.id !== item.id).sort((a, b) => a.title?.localeCompare(b.title)),
+            items: category.items.filter(i => i.id !== item.id),
         }));
 
     const modifyOtherCategories = (categories: TResultItem[], item: TItem) => {
-        const updated_categories = [...categories];
-        const other_category = updated_categories.find(cat => cat.id === 'other');
-
-        if (other_category) {
-            other_category.items.unshift(item);
-        } else {
-            updated_categories.push({
-                id: 'other',
-                items: [item],
-            });
-        }
-
-        return updated_categories.map(category => ({
-            ...category,
-            items: category.items.sort((a, b) => a.title?.localeCompare(b.title)),
-        }));
+        return categories.map(category => {
+            if (category.id === 'other') {
+                return {
+                    ...category,
+                    items: sortCategoriesInTradeTypeOrder(trade_types, [...category.items, item]),
+                };
+            }
+            return category;
+        });
     };
 
     const scrollToSelectedTradeType = () => {
@@ -183,7 +170,9 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     'button[data-state="selected"]'
                 ) as HTMLButtonElement;
                 if (selected_chip) {
-                    position_x = selected_chip.getBoundingClientRect().x - 8 || 0;
+                    position_x =
+                        selected_chip.getBoundingClientRect().x -
+                            (window.innerWidth - selected_chip.getBoundingClientRect().width) / 2 || 0;
                 }
                 trade_types_ref.current.scrollBy({
                     left: position_x,
@@ -203,7 +192,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
     };
 
     const handleOnTradeTypeSelect = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        onTradeTypeSelect(e);
+        onTradeTypeSelect(e, 'trade_type_page', getPinnedItems().length);
         scrollToSelectedTradeType();
         setIsOpen(false);
     };
@@ -229,7 +218,7 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
         const other_item = !is_contract_type_in_pinned
             ? getItems(other_trade_types).find(
-                  item => item.id === contract_type || checkContractTypePrefix([item.id, contract_type])
+                  item => item && (item.id === contract_type || checkContractTypePrefix([item.id, contract_type]))
               )
             : null;
 
@@ -238,11 +227,43 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
 
     const trade_type_chips = getTradeTypeChips();
     const should_show_view_all = trade_type_chips.length >= 2 || getItems(other_trade_types).length > 0;
+    const show_trade_type_list_divider = !!other_trade_types[0]?.items?.length;
+    const show_editing_divider = trade_types_array.length !== pinned_trade_types[0]?.items?.length;
+    const trade_type_content_props = {
+        handleCustomizeTradeTypes,
+        handleRemovePinnedClick,
+        handleOnDrag,
+        handleOnTradeTypeSelect,
+        handleAddPinnedClick,
+        is_editing,
+        is_dark_mode_on,
+        isTradeTypeSelected,
+        savePinnedToLocalStorage,
+        show_trade_type_list_divider,
+        show_editing_divider,
+        other_trade_types,
+        pinned_trade_types,
+    };
+
+    const action_sheet_content = [
+        {
+            id: 1,
+            component: <TradeTypesContent {...trade_type_content_props} />,
+        },
+        {
+            id: 2,
+            component: <Guide show_trigger_button={false} is_open_by_default show_description_in_a_modal={false} />,
+        },
+    ];
 
     return (
         <div className='trade__trade-types' ref={trade_types_ref}>
             {trade_type_chips.map(({ title, id }: TItem) => (
-                <Chip.Selectable key={id} onChipSelect={onTradeTypeSelect} selected={isTradeTypeSelected(id)}>
+                <Chip.Selectable
+                    key={id}
+                    onChipSelect={e => onTradeTypeSelect(e, 'main_trade_page', getPinnedItems().length)}
+                    selected={isTradeTypeSelected(id)}
+                >
                     <Text size='sm'>{title}</Text>
                 </Chip.Selectable>
             ))}
@@ -255,45 +276,42 @@ const TradeTypes = ({ contract_type, onTradeTypeSelect, trade_types, is_dark_mod
                     color={is_dark_mode_on ? 'white' : 'black'}
                 >
                     <Text size='sm' bold underlined color='var(--component-button-label-color-blackWhite-tertiary)'>
-                        {<Localize i18n_default_text='View all' />}
+                        <Localize i18n_default_text='View all' />
                     </Text>
                 </Button>
             )}
-            <ActionSheet.Root isOpen={is_open} expandable={false} onClose={handleCloseTradeTypes}>
-                <ActionSheet.Portal>
-                    <ActionSheet.Header
-                        title={<Localize i18n_default_text='Trade types' />}
-                        icon={!is_editing && <Guide />}
-                    />
-                    <ActionSheet.Content className='mock-action-sheet--content'>
-                        {is_editing ? (
-                            <DraggableList
-                                categories={pinned_trade_types}
-                                onRightIconClick={handleRemovePinnedClick}
-                                onAction={savePinnedToLocalStorage}
-                                onDrag={handleOnDrag}
+            <ActionSheet.Root
+                className={clsx('trade-types-dialog', {
+                    'trade-types-dialog--is_editing': is_editing,
+                })}
+                isOpen={is_open}
+                expandable={false}
+                onClose={handleCloseTradeTypes}
+            >
+                <ActionSheet.Portal shouldCloseOnDrag>
+                    {is_editing ? (
+                        <React.Fragment>
+                            <ActionSheet.Header
+                                title={
+                                    <div className='trade-types-dialog__title'>
+                                        <Localize i18n_default_text='Trade types' />
+                                    </div>
+                                }
                             />
-                        ) : (
-                            <TradeTypeList
-                                categories={pinned_trade_types}
-                                onAction={handleCustomizeTradeTypes}
-                                onTradeTypeClick={handleOnTradeTypeSelect}
-                                isSelected={id => isTradeTypeSelected(id)}
-                                should_show_title={false}
-                                selectable
-                            />
-                        )}
-                        <TradeTypeList
-                            categories={other_trade_types}
-                            onRightIconClick={is_editing ? handleAddPinnedClick : undefined}
-                            onTradeTypeClick={!is_editing ? handleOnTradeTypeSelect : undefined}
-                            isSelected={id => isTradeTypeSelected(id)}
-                            selectable={!is_editing}
+                            <TradeTypesContent {...trade_type_content_props} />
+                        </React.Fragment>
+                    ) : (
+                        <Carousel
+                            header={CarouselHeader}
+                            pages={action_sheet_content}
+                            title={<Localize i18n_default_text='Trade types' />}
+                            next_icon={LabelPairedPresentationScreenSmRegularIcon}
+                            onNextButtonClick={() => sendOpenGuideToAnalytics(contract_type, 'trade_type_page')}
                         />
-                    </ActionSheet.Content>
+                    )}
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-            {is_open && <TradeTypesSelectionGuide />}
+            {is_open && <TradeTypesSelectionGuide is_dark_mode_on={is_dark_mode_on} />}
         </div>
     );
 };

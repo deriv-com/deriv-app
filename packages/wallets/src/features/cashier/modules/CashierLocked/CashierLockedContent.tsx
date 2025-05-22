@@ -1,4 +1,5 @@
 import React from 'react';
+import { Chat } from '@deriv/utils';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { WalletLink } from '../../../../components';
@@ -23,6 +24,8 @@ type TCashierLockedDescProps = {
     disabledStatus?: boolean;
     documentsExpired?: boolean;
     financialAssessmentRequired?: boolean;
+    isEuRegion?: boolean;
+    module?: 'deposit' | 'transfer' | 'withdrawal';
     noResidence?: boolean;
     poaNeedsVerification?: boolean;
     poiNeedsVerification?: boolean;
@@ -107,6 +110,8 @@ const getCashierLockedDesc = ({
     disabledStatus,
     documentsExpired,
     financialAssessmentRequired,
+    isEuRegion,
+    module,
     noResidence,
     poaNeedsVerification,
     poiNeedsVerification,
@@ -137,11 +142,7 @@ const getCashierLockedDesc = ({
             <Text align='center'>
                 <Localize
                     components={[
-                        <button
-                            className='wallets-link wallets-link__variant--bold'
-                            key={0}
-                            onClick={() => window.LC_API.open_chat_window()}
-                        />,
+                        <button className='wallets-link wallets-link__variant--bold' key={0} onClick={Chat.open} />,
                     ]}
                     i18n_default_text='Please contact us via <0>live chat</0> to enable deposits and withdrawals again.'
                 />
@@ -153,6 +154,26 @@ const getCashierLockedDesc = ({
                 <Localize i18n_default_text='Please set your account currency to enable deposits and withdrawals.' />
             </Text>
         );
+    } else if (isEuRegion && askAuthenticate) {
+        if (module === 'transfer') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a funds transfer once the verification of your account is complete.' />
+                </Text>
+            );
+        } else if (module === 'withdrawal') {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a withdrawal once the verification of your account is complete.' />
+                </Text>
+            );
+        } else {
+            description = (
+                <Text align='center'>
+                    <Localize i18n_default_text='You can make a new deposit once the verification of your account is complete.' />
+                </Text>
+            );
+        }
     } else if (askAuthenticate && poiNeedsVerification) {
         if (poaNeedsVerification) {
             description = (
@@ -167,7 +188,7 @@ const getCashierLockedDesc = ({
                     />
                 </Text>
             );
-        } else if (!poaNeedsVerification) {
+        } else {
             description = (
                 <Text align='center'>
                     <Localize

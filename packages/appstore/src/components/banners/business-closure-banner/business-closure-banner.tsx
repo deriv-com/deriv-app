@@ -15,7 +15,7 @@ const BusinessClosureBanner = observer(() => {
         <InlineMessage type='filled' variant='warning' className='business-closure-banner'>
             <Text size='xs'>
                 <Localize
-                    i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Deposits and trading are disabled. Withdraw your funds by {{date}}.'
+                    i18n_default_text='Due to business changes, client accounts in your country are to be closed. Deposits and trading are disabled. Withdraw your funds by {{date}}.'
                     values={{
                         date: formatDate(account_time_of_closure, 'DD MMM YYYY'),
                     }}

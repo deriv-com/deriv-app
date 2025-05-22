@@ -139,7 +139,7 @@ const initial_language = getInitialLanguage();
 const i18n_config = {
     react: {
         hashTransKey(defaultValue: string) {
-            return crc32(defaultValue);
+            return crc32(defaultValue ?? '');
         },
         useSuspense: false,
     },

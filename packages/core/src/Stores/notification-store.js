@@ -1,10 +1,10 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { StaticUrl } from '@deriv/components';
+import { StaticUrl, Text } from '@deriv/components';
 import {
     checkServerMaintenance,
-    daysSince,
     extractInfoFromShortcode,
     formatDate,
     formatMoney,
@@ -13,7 +13,6 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -25,9 +24,12 @@ import {
     isMultiplierContract,
     LocalStore,
     routes,
+    shouldShowPhoneVerificationNotification,
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -43,8 +45,6 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
-import dayjs from 'dayjs';
-import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -232,15 +232,19 @@ export default class NotificationStore extends BaseStore {
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
-        if (identity.status === 'verified') {
+        const status = this.root_store.client.account_status.status;
+        if (identity.status === 'verified' && !status.includes('allow_poi_resubmission')) {
             //identity
             this.addNotificationMessage(this.client_notifications.poi_verified);
-        } else if (!['none', 'pending', 'expired'].includes(identity.status)) {
+        } else if (
+            !['none', 'pending', 'expired'].includes(identity.status) ||
+            status.includes('allow_poi_resubmission')
+        ) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
 
         // document
-        if (document.status === 'verified') {
+        if (document.status === 'verified' && !status.includes('allow_poa_resubmission')) {
             this.addNotificationMessage(this.client_notifications.poa_verified);
         } else if (has_restricted_mt5_account) {
             if (document.status === 'pending') {
@@ -250,7 +254,10 @@ export default class NotificationStore extends BaseStore {
             }
         } else if (has_mt5_account_with_rejected_poa) {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
-        } else if (!['none', 'pending', 'expired'].includes(document.status)) {
+        } else if (
+            !['none', 'pending', 'expired'].includes(document.status) ||
+            status.includes('allow_poa_resubmission')
+        ) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }
@@ -315,7 +322,6 @@ export default class NotificationStore extends BaseStore {
             account_list,
             account_settings,
             account_status,
-            account_open_date,
             accounts,
             isAccountOfType,
             is_eu,
@@ -323,7 +329,6 @@ export default class NotificationStore extends BaseStore {
             is_logged_in,
             is_virtual,
             is_phone_number_verification_enabled,
-            is_tnc_needed,
             landing_company_shortcode,
             loginid,
             obj_total_balance,
@@ -340,17 +345,20 @@ export default class NotificationStore extends BaseStore {
             is_p2p_enabled,
             is_poa_expired,
             currency,
+            is_country_code_dropdown_enabled,
+            phone_settings,
         } = this.root_store.client;
+        const carriers_supported = phone_settings?.carriers && phone_settings?.carriers.length > 0;
         const { upgradable_daily_limits } = this.p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
         const { current_language, selected_contract_type } = this.root_store.common;
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
-        const is_website_up = website_status.site_status === 'up';
-        const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.trustpilot?.key
-        );
+        const marked_notifications = LocalStore.getObject('marked_notifications');
+        const has_trustpilot = Array.isArray(marked_notifications)
+            ? marked_notifications.includes(this.client_notifications?.trustpilot?.key)
+            : false;
         const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
             account_settings?.phone_number_verification?.next_email_attempt,
             current_time
@@ -361,7 +369,8 @@ export default class NotificationStore extends BaseStore {
             account_settings?.phone &&
             !is_next_email_attempt_timer_running &&
             !is_virtual &&
-            is_phone_number_verification_enabled;
+            is_phone_number_verification_enabled &&
+            (is_country_code_dropdown_enabled ? carriers_supported : true);
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);
@@ -374,6 +383,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
+
             const {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
@@ -403,6 +413,16 @@ export default class NotificationStore extends BaseStore {
 
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
+            if (status?.includes('update_fa')) {
+                this.addNotificationMessage(this.client_notifications.update_fa_required);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.update_fa_required?.key });
+                this.removeNotificationMessage({
+                    key: this.client_notifications.update_fa_required?.key,
+                    should_show_again: true,
+                });
+            }
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -458,6 +478,10 @@ export default class NotificationStore extends BaseStore {
                 });
             }
 
+            if (!has_trustpilot && this.root_store.client.should_show_trustpilot_notification) {
+                this.addNotificationMessage(this.client_notifications.trustpilot);
+            }
+
             const client = accounts[loginid];
             if (client && !client.is_virtual) {
                 if (isEmptyObject(account_status)) return;
@@ -509,6 +533,9 @@ export default class NotificationStore extends BaseStore {
                     has_restricted_mt5_account,
                     has_mt5_account_with_rejected_poa
                 );
+
+                if (account_settings?.tnc_update_notification_start_date)
+                    this.addNotificationMessage(this.client_notifications.reaccept_tnc);
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
@@ -624,13 +651,6 @@ export default class NotificationStore extends BaseStore {
                 } else {
                     this.removeNotificationMessageByKey({ key: this.client_notifications.dp2p?.key });
                 }
-                if (is_website_up && !has_trustpilot && daysSince(account_open_date) > 7) {
-                    this.addNotificationMessage(this.client_notifications.trustpilot);
-                }
-                if (is_tnc_needed) {
-                    this.addNotificationMessage(this.client_notifications.tnc);
-                }
-
                 has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
                 if (has_missing_required_field) {
                     this.addNotificationMessage(
@@ -793,11 +813,14 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email, is_cr_account, account_settings } =
+            this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
         const platform_name_go = getPlatformSettings('go').name;
+
+        const next_prompt_date = account_settings?.tnc_update_notification_start_date;
 
         const notifications = {
             ask_financial_risk_approval: {
@@ -828,7 +851,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to unlock it.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -842,13 +865,44 @@ export default class NotificationStore extends BaseStore {
                 message_popup: localize('Drop your review on Trustpilot.'),
                 action: {
                     onClick: () => {
-                        window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
-                        this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
+                        window.open('https://www.trustpilot.com/review/deriv.com', '_blank');
+                        this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                        this.removeNotificationByKey({
+                            key: this.client_notifications.trustpilot.key,
+                        });
                         this.removeNotificationMessage({
                             key: this.client_notifications.trustpilot.key,
                             should_show_again: false,
                         });
                     },
+                    children: (
+                        <div
+                            className='trustpilot-widget'
+                            data-locale='en-US'
+                            data-template-id='56278e9abfbbba0bdcd568bc'
+                            data-businessunit-id='5ed4c8a9f74f310001f51bf7'
+                            data-style-height='52px'
+                            data-style-width='100%'
+                        >
+                            <a
+                                href='https://www.trustpilot.com/review/deriv.com'
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                onClick={() => {
+                                    this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                                    this.removeNotificationByKey({
+                                        key: this.client_notifications.trustpilot.key,
+                                    });
+                                    this.removeNotificationMessage({
+                                        key: this.client_notifications.trustpilot.key,
+                                        should_show_again: false,
+                                    });
+                                }}
+                            >
+                                {localize('Go to Trustpilot')}
+                            </a>
+                        </div>
+                    ),
                     text: localize('Go to Trustpilot'),
                 },
                 img_src: getUrlBase('/public/images/common/trustpilot_banner.png'),
@@ -1082,7 +1136,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1112,6 +1166,7 @@ export default class NotificationStore extends BaseStore {
                 type: 'warning',
                 action: {
                     onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
                         WS.verifyEmail(email, 'phone_number_verification');
                         localStorage.setItem('routes_from_notification_to_pnv', window.location.pathname);
                     },
@@ -1238,6 +1293,26 @@ export default class NotificationStore extends BaseStore {
                     },
                 };
             },
+            reaccept_tnc: {
+                key: 'reaccept_tnc',
+                header: localize('Important update: Terms and conditions'),
+                message: (
+                    <Localize
+                        i18n_default_text="We've updated our <0>terms and conditions</0>. To continue trading, you must review and accept the updated terms. You'll be prompted to accept them starting [<1>{{next_prompt_date}}</1>]."
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='link'
+                                href='terms-and-conditions'
+                                is_eu_url={!is_cr_account}
+                            />,
+                            <Text key={1} size='xs' weight='bold' />,
+                        ]}
+                        values={{ next_prompt_date: formatDate(next_prompt_date, 'DD MMM YYYY') }}
+                    />
+                ),
+                type: 'announce',
+            },
             reset_virtual_balance: {
                 key: 'reset_virtual_balance',
                 header: localize('Reset your balance'),
@@ -1278,7 +1353,7 @@ export default class NotificationStore extends BaseStore {
                     ),
                     action: {
                         onClick: () => {
-                            window.LC_API.open_chat_window();
+                            Chat.open();
                         },
                         text: localize('Go to live chat'),
                     },
@@ -1391,11 +1466,26 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
                 type: 'danger',
+            },
+            update_fa_required: {
+                key: 'update_fa_required',
+                header: is_cr_account ? localize('Complete your Financial assessment') : localize('Update required'),
+                message: is_cr_account
+                    ? localize('Help us keep your information up to date by completing the assessment.')
+                    : localize(
+                          'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
+                      ),
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start now'),
+                },
+                type: 'warning',
+                should_show_again: true,
             },
             withdrawal_locked: {
                 key: 'withdrawal_locked',
@@ -1403,7 +1493,7 @@ export default class NotificationStore extends BaseStore {
                 message: localize('Please contact us via live chat to enable withdrawals.'),
                 action: {
                     onClick: () => {
-                        window.LC_API.open_chat_window();
+                        Chat.open();
                     },
                     text: localize('Go to live chat'),
                 },
@@ -1578,7 +1668,7 @@ export default class NotificationStore extends BaseStore {
                 ),
                 action: {
                     onClick: async () => {
-                        window.LC_API.open_chat_window();
+                        Chat.open();
                     },
                     text: localize('Go to LiveChat'),
                 },
@@ -1594,9 +1684,10 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Update now'),
                     onClick: () => {
                         if (this.is_notifications_visible) this.toggleNotificationsModal();
-                        ui.toggleAdditionalKycInfoModal();
+                        ui.setFieldRefToFocus('account-opening-reason');
                         this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
+                    route: routes.personal_details,
                 },
                 type: 'warning',
             },
@@ -1609,7 +1700,7 @@ export default class NotificationStore extends BaseStore {
                 key: 'notify_account_is_to_be_closed_by_residence',
                 message: (
                     <Localize
-                        i18n_default_text='Due to business changes, client accounts in Senegal are to be closed. Withdraw your funds by {{date}}.'
+                        i18n_default_text='Due to business changes, client accounts in your country are to be closed. Withdraw your funds by {{date}}.'
                         values={{
                             date: formatDate(this.root_store.client.account_time_of_closure, 'DD MMM YYYY'),
                         }}
@@ -1745,7 +1836,7 @@ export default class NotificationStore extends BaseStore {
             : {
                   text: localize('Contact live chat'),
                   onClick: () => {
-                      window.LC_API.open_chat_window();
+                      Chat.open();
                   },
               };
 

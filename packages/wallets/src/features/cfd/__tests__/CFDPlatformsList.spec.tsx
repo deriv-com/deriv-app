@@ -1,8 +1,9 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../AuthProvider';
 import CFDPlatformsList from '../CFDPlatformsList';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -14,6 +15,7 @@ jest.mock('@deriv/api-v2', () => ({
             },
         },
     })),
+    useIsEuRegion: jest.fn(),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -39,12 +41,22 @@ jest.mock('../components', () => ({
 const mockUseActiveWalletAccount = useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>;
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <APIProvider>
+        <WalletsAuthProvider>{children}</WalletsAuthProvider>
+    </APIProvider>
+);
+
 describe('CFDPlatformsList', () => {
     describe('Mobile/Tablet view', () => {
         it('renders proper content', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             expect(
                 screen.getByText('Trade bigger positions with less capital on a wide range of global markets.')
@@ -56,20 +68,28 @@ describe('CFDPlatformsList', () => {
         it('opens proper link when the user is clicking on `Learn more` text', () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
 
             expect(learnMoreEl).toHaveAttribute('href', 'https://deriv.com/trade-types/cfds/');
         });
 
-        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
+        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', async () => {
             //@ts-expect-error we only need partial action types
             mockUseDevice.mockReturnValueOnce({ isMobile: true });
-            render(<CFDPlatformsList />);
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
-            userEvent.click(compareAccountsBtn);
+            await userEvent.click(compareAccountsBtn);
 
             expect(mockPush).toHaveBeenCalledWith('/compare-accounts');
         });
@@ -77,7 +97,11 @@ describe('CFDPlatformsList', () => {
 
     describe('Desktop view', () => {
         it('renders proper content', () => {
-            render(<CFDPlatformsList />);
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             expect(screen.getByText('CFDs')).toBeInTheDocument();
             expect(
@@ -88,30 +112,50 @@ describe('CFDPlatformsList', () => {
         });
 
         it('opens proper link when the user is clicking on `Learn more` text', () => {
-            render(<CFDPlatformsList />);
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             const learnMoreEl = screen.getByRole('link', { name: 'Learn more' });
 
             expect(learnMoreEl).toHaveAttribute('href', 'https://deriv.com/trade-types/cfds');
         });
 
-        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', () => {
-            render(<CFDPlatformsList />);
+        it('redirects to `/compare-accounts` route when the user is clicking on `Compare accounts` button', async () => {
+            (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+                data: false,
+                isLoading: false,
+            }));
+            render(<CFDPlatformsList />, { wrapper });
 
             const compareAccountsBtn = screen.getByText('Compare accounts');
-            userEvent.click(compareAccountsBtn);
+            await userEvent.click(compareAccountsBtn);
 
             expect(mockPush).toHaveBeenCalledWith('/compare-accounts');
         });
     });
 
     it('renders proper content for fiat accounts', () => {
-        render(<CFDPlatformsList />);
+        (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+            data: false,
+            isLoading: false,
+        }));
+        render(<CFDPlatformsList />, { wrapper });
 
         expect(screen.getByText('CFDPlatformsListAccounts')).toBeInTheDocument();
     });
 
     it('renders proper content for crypto accounts', () => {
+        (useIsEuRegion as jest.Mock).mockReturnValue(() => ({
+            data: false,
+            isLoading: false,
+        }));
         mockUseActiveWalletAccount.mockReturnValueOnce({
             data: {
                 //@ts-expect-error we only need partial action types
@@ -120,7 +164,7 @@ describe('CFDPlatformsList', () => {
                 },
             },
         });
-        render(<CFDPlatformsList />);
+        render(<CFDPlatformsList />, { wrapper });
 
         expect(screen.getByText('CFDPlatformsListEmptyState')).toBeInTheDocument();
     });

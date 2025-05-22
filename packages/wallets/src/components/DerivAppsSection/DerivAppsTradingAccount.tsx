@@ -1,65 +1,184 @@
-import React from 'react';
+import React, { useState } from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount } from '@deriv/api-v2';
-import { displayMoney } from '@deriv/api-v2/src/utils';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useIsEuRegion } from '@deriv/api-v2';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
 import { Text, useDevice } from '@deriv-com/ui';
 import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
+import useWalletsMFAccountStatus from '../../hooks/useWalletsMFAccountStatus';
+import { THooks } from '../../types';
+import { ClientVerificationStatusBadge } from '../ClientVerificationBadge';
+import { ClientVerificationModal } from '../ClientVerificationModal';
+import { useModal } from '../ModalProvider';
 import { TradingAccountCard } from '../TradingAccountCard';
+import { WalletDisabledAccountModal } from '../WalletDisabledAccountModal';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
+import { WalletMoney } from '../WalletMoney';
+import { WalletStatusBadge } from '../WalletStatusBadge';
 
-const DerivAppsTradingAccount = () => {
-    const { isDesktop } = useDevice();
+type TDerivAppsTradingAccountButtonContent = {
+    activeTradingAccount: THooks.TActiveLinkedToTradingAccount;
+    isEuRegion: boolean;
+    mfAccountStatusDetails?: ReturnType<typeof useWalletsMFAccountStatus>['data'];
+};
+
+const DerivAppsTradingAccountButtonContent: React.FC<TDerivAppsTradingAccountButtonContent> = ({
+    activeTradingAccount,
+    isEuRegion,
+    mfAccountStatusDetails,
+}) => {
     const history = useHistory();
-    const { data: activeWallet } = useActiveWalletAccount();
-    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
-    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
-    const balance = balanceData?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance;
+    const { show } = useModal();
+    const { is_disabled: isAccountDisabled, is_virtual: isDemo, loginid } = activeTradingAccount ?? {};
+    const {
+        client_kyc_status: clientKycStatus,
+        is_added: isMFAccountAdded,
+        mfAccountStatus,
+    } = mfAccountStatusDetails ?? {};
+
+    const shouldShowVerificationStatus =
+        isEuRegion && !isDemo && mfAccountStatus && isMFAccountAdded && clientKycStatus;
+
+    if (isAccountDisabled) {
+        return <WalletStatusBadge badgeSize='md' padding='tight' status='disabled' />;
+    }
+
+    if (shouldShowVerificationStatus) {
+        return (
+            <ClientVerificationStatusBadge
+                onClick={() =>
+                    show(
+                        <ClientVerificationModal
+                            account={{
+                                client_kyc_status: clientKycStatus,
+                                is_added: isMFAccountAdded,
+                            }}
+                        />
+                    )
+                }
+                variant={mfAccountStatus}
+            />
+        );
+    }
 
     return (
-        <TradingAccountCard className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
-            <TradingAccountCard.Icon>
-                <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
-            </TradingAccountCard.Icon>
-            <TradingAccountCard.Content>
-                <div className='wallets-deriv-apps-section__title-and-badge'>
-                    <Text align='start' size='sm'>
-                        <Localize i18n_default_text='Options' />
-                    </Text>
-                    {activeWallet?.is_virtual && <WalletListCardBadge />}
-                </div>
-                {isBalanceLoading ? (
-                    <div
-                        className='wallets-skeleton wallets-deriv-apps-balance-loader'
-                        data-testid='dt_deriv-apps-balance-loader'
-                    />
-                ) : (
-                    <Text align='start' size='sm' weight='bold'>
-                        {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code, {
-                            fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                        })}
-                    </Text>
-                )}
-                <Text align='start' color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
-                    {activeLinkedToTradingAccount?.loginid}
-                </Text>
-            </TradingAccountCard.Content>
-            <TradingAccountCard.Button>
-                <button
-                    className='wallets-deriv-apps-section__button'
-                    data-testid='dt_deriv-apps-trading-account-transfer-button'
-                    onClick={() => {
-                        history.push('/wallet/account-transfer', {
-                            toAccountLoginId: activeLinkedToTradingAccount?.loginid,
-                        });
-                    }}
+        <button
+            className='wallets-deriv-apps-section__button'
+            data-testid='dt_deriv-apps-trading-account-transfer-button'
+            onClick={() => {
+                history.push('/wallet/account-transfer', {
+                    toAccountLoginId: loginid,
+                });
+            }}
+        >
+            <LabelPairedArrowUpArrowDownSmBoldIcon />
+        </button>
+    );
+};
+
+const AccountBalance: React.FC<{ activeTradingAccount: THooks.TActiveLinkedToTradingAccount }> = ({
+    activeTradingAccount,
+}) => {
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
+    const balance = balanceData?.[activeTradingAccount?.loginid ?? '']?.balance;
+
+    return isBalanceLoading ? (
+        <div
+            className='wallets-skeleton wallets-deriv-apps-balance-loader'
+            data-testid='dt_deriv-apps-balance-loader'
+        />
+    ) : (
+        <Text align='start' data-testid='dt_wallets_deriv_apps_balance' size='sm' weight='bold'>
+            <WalletMoney amount={balance} currency={activeTradingAccount?.currency_config?.display_code} />
+        </Text>
+    );
+};
+
+const DerivAppsTradingAccount = () => {
+    const [shouldShowDisabledAccountModal, setShouldShowDisabledAccountModal] = useState(false);
+    const { localize } = useTranslations();
+    const { isDesktop } = useDevice();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+    const { data: mfAccountStatusDetails, isLoading: isMFAccountLoading } = useWalletsMFAccountStatus();
+
+    const isLoading = isEuRegionLoading || isMFAccountLoading;
+
+    const shouldHideBalance =
+        isLoading ||
+        (isEuRegion && !activeLinkedToTradingAccount?.is_virtual && mfAccountStatusDetails.mfAccountStatus) ||
+        activeLinkedToTradingAccount?.is_disabled;
+
+    return (
+        <>
+            <TradingAccountCard
+                className={classNames('wallets-deriv-apps-section wallets-deriv-apps-section__border', {
+                    'wallets-deriv-apps-section--disabled': activeLinkedToTradingAccount?.is_disabled,
+                })}
+                onClick={() => {
+                    if (activeLinkedToTradingAccount?.is_disabled) {
+                        setShouldShowDisabledAccountModal(true);
+                    }
+                }}
+            >
+                <TradingAccountCard.Icon
+                    className={classNames({
+                        'wallets-deriv-apps-section--disabled-icon': activeLinkedToTradingAccount?.is_disabled,
+                    })}
                 >
-                    <LabelPairedArrowUpArrowDownSmBoldIcon />
-                </button>
-            </TradingAccountCard.Button>
-        </TradingAccountCard>
+                    <WalletMarketIcon icon='standard' size={isDesktop ? 'lg' : 'md'} />
+                </TradingAccountCard.Icon>
+                <TradingAccountCard.Section>
+                    <TradingAccountCard.Content
+                        className={classNames({
+                            'wallets-deriv-apps-section--disabled-content': activeLinkedToTradingAccount?.is_disabled,
+                        })}
+                    >
+                        <div className='wallets-deriv-apps-section__title-and-badge'>
+                            <Text align='start' size='sm'>
+                                {isEuRegion ? (
+                                    <Localize i18n_default_text='Multipliers' />
+                                ) : (
+                                    <Localize i18n_default_text='Options' />
+                                )}
+                            </Text>
+                            {activeWallet?.is_virtual && <WalletListCardBadge />}
+                        </div>
+                        {shouldHideBalance ? null : (
+                            <AccountBalance activeTradingAccount={activeLinkedToTradingAccount} />
+                        )}
+
+                        <Text align='start' color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
+                            {activeLinkedToTradingAccount?.loginid}
+                        </Text>
+                    </TradingAccountCard.Content>
+                    <TradingAccountCard.Button>
+                        {isLoading ? (
+                            <div
+                                className='wallets-skeleton wallets-deriv-apps-button-content-loader'
+                                data-testid='dt_deriv-apps-button-content-loader'
+                            />
+                        ) : (
+                            <DerivAppsTradingAccountButtonContent
+                                activeTradingAccount={activeLinkedToTradingAccount}
+                                isEuRegion={isEuRegion}
+                                mfAccountStatusDetails={mfAccountStatusDetails}
+                            />
+                        )}
+                    </TradingAccountCard.Button>
+                </TradingAccountCard.Section>
+            </TradingAccountCard>
+            {shouldShowDisabledAccountModal && (
+                <WalletDisabledAccountModal
+                    accountType={localize('Options')}
+                    isVisible={shouldShowDisabledAccountModal}
+                    onClose={() => setShouldShowDisabledAccountModal(false)}
+                />
+            )}
+        </>
     );
 };
 

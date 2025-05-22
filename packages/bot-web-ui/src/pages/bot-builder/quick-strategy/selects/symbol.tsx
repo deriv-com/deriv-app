@@ -6,6 +6,7 @@ import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
+import { V2_QS_STRATEGIES } from '../utils';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -32,12 +33,14 @@ const SymbolSelect: React.FC = () => {
     const {
         ui: { is_desktop },
     } = useStore();
-    const { setValue } = quick_strategy;
+    const { setValue, selected_strategy } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState<TSymbol[]>([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
+
+    const is_strategy_accumulator = V2_QS_STRATEGIES.includes(selected_strategy);
 
     const symbols = useMemo(
         () =>
@@ -54,7 +57,12 @@ const SymbolSelect: React.FC = () => {
                 getSymbolsForBot: () => TSymbol[];
             };
         };
-        const symbols = active_symbols.getSymbolsForBot();
+        let symbols = active_symbols.getSymbolsForBot();
+
+        if (is_strategy_accumulator) {
+            symbols = symbols.filter(symbol => symbol?.group?.startsWith('Continuous Indices'));
+        }
+
         setActiveSymbols(symbols);
 
         const has_symbol = !!symbols?.find(symbol => symbol?.value === values?.symbol);

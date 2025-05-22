@@ -181,6 +181,10 @@
         min-width: 15.6rem;
         margin-block-start: 0.4rem;
         margin-inline-end: unset;
+
+        &--eu {
+            min-width: 10.8rem;
+        }
     }
 
     @include tablet-screen {

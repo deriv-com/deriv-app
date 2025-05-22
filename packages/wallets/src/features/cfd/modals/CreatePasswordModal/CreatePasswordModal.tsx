@@ -2,7 +2,8 @@ import React, { ComponentProps, FC } from 'react';
 import { Localize } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components';
-import { PlatformDetails } from '../../constants';
+import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
+import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import { CreatePassword } from '../../screens';
 import '../EnterPasswordModal/EnterPasswordModal.scss';
 
@@ -14,6 +15,9 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
     platform,
 }) => {
     const { isDesktop } = useDevice();
+    const isMT5 = platform === CFD_PLATFORMS.MT5;
+    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
+
     if (isDesktop) {
         return (
             <ModalWrapper>
@@ -36,7 +40,7 @@ const CreatePasswordModal: FC<ComponentProps<typeof CreatePassword>> = ({
                 return (
                     <div className='wallets-password-modal__footer'>
                         <Button
-                            disabled={!password || isLoading}
+                            disabled={!password || isLoading || disableButton}
                             isFullWidth
                             isLoading={isLoading}
                             onClick={onPrimaryClick}

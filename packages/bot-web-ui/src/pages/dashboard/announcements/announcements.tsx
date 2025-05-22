@@ -1,15 +1,23 @@
 import React from 'react';
-import { Text } from '@deriv/components';
-import { Notifications as Announcement } from '@deriv-com/ui';
-import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { Text } from '@deriv/components';
+import { StandaloneBullhornRegularIcon } from '@deriv/quill-icons';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Notifications as Announcement } from '@deriv-com/ui';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
+import {
+    rudderStackSendAnnouncementActionEvent,
+    rudderStackSendAnnouncementClickEvent,
+} from '../../../analytics/rudderstack-dashboard';
+import { guide_content } from '../../tutorials/constants';
+import { performButtonAction } from './utils/accumulator-helper-functions';
+import { MessageAnnounce, TitleAnnounce } from './announcement-components';
 import AnnouncementDialog from './announcement-dialog';
 import { BOT_ANNOUNCEMENTS_LIST, TAnnouncement, TNotifications } from './config';
 import './announcements.scss';
-import { MessageAnnounce, TitleAnnounce } from './announcement-components';
-import { performButtonAction } from './utils/accumulator-helper-functions';
 
 type TAnnouncements = {
     is_mobile?: boolean;
@@ -17,7 +25,12 @@ type TAnnouncements = {
     handleTabChange: (item: number) => void;
 };
 
-const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
+const Announcements = observer(({ is_mobile, is_tablet, handleTabChange }: TAnnouncements) => {
+    const {
+        load_modal: { toggleLoadModal },
+        dashboard: { showVideoDialog },
+        quick_strategy: { setFormVisibility },
+    } = useDBotStore();
     const [is_announce_dialog_open, setIsAnnounceDialogOpen] = React.useState(false);
     const [is_open_announce_list, setIsOpenAnnounceList] = React.useState(false);
     const [selected_announcement, setSelectedAnnouncement] = React.useState<TAnnouncement | null>(null);
@@ -31,17 +44,20 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
         localStorage?.setItem('bot-announcements', JSON.stringify(updated_local_storage_data));
     };
 
+    const updateLocalStorage = (announce_id: string) => {
+        let data: Record<string, boolean> | null = null;
+        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
+        storeDataInLocalStorage({ ...data, [announce_id]: false });
+        const temp_notifications = updateNotifications();
+        setReadAnnouncementsMap(temp_notifications);
+    };
+
     const modalButtonAction = (announce_id: string, announcement: TAnnouncement) => () => {
         setSelectedAnnouncement(announcement);
         setIsAnnounceDialogOpen(true);
         setIsOpenAnnounceList(prev => !prev);
-
-        let data: Record<string, boolean> | null = null;
-        data = JSON.parse(localStorage.getItem('bot-announcements') ?? '{}');
-
-        storeDataInLocalStorage({ ...data, [announce_id]: false });
-        const temp_notifications = updateNotifications();
-        setReadAnnouncementsMap(temp_notifications);
+        rudderStackSendAnnouncementClickEvent({ announcement_name: announcement.announcement.event_name });
+        updateLocalStorage(announce_id);
     };
 
     const handleRedirect = (url: string) => () => {
@@ -60,6 +76,7 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
             if (data && Object.hasOwn(data, item.id)) {
                 is_not_read = data[item.id];
             }
+
             tmp_notifications.push({
                 key: item.id,
                 icon: <item.icon announce={is_not_read} />,
@@ -87,17 +104,41 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [read_announcements_map]);
 
+    const openAccumulatorsVideo = () => {
+        const accumulators_video = guide_content.find(guide_content => guide_content.id === 4);
+        if (accumulators_video) {
+            showVideoDialog({ url: accumulators_video.url, type: 'url' });
+        }
+    };
+
     const handleOnCancel = () => {
+        rudderStackSendAnnouncementActionEvent({
+            announcement_name: selected_announcement?.announcement.event_name,
+            announcement_action: selected_announcement?.announcement?.event_action?.cancel_button_text,
+        });
         if (selected_announcement?.switch_tab_on_cancel) {
             handleTabChange(selected_announcement.switch_tab_on_cancel);
+            if (selected_announcement.announcement.id === 'ACCUMULATOR_ANNOUNCE') {
+                openAccumulatorsVideo();
+            }
         }
         selected_announcement?.onCancel?.();
         setSelectedAnnouncement(null);
     };
 
     const handleOnConfirm = () => {
+        rudderStackSendAnnouncementActionEvent({
+            announcement_name: selected_announcement?.announcement.event_name,
+            announcement_action: selected_announcement?.announcement?.event_action?.confirm_button_text,
+        });
         if (selected_announcement?.switch_tab_on_confirm) {
             handleTabChange(selected_announcement.switch_tab_on_confirm);
+        }
+        if (selected_announcement?.should_toggle_qs_modal) {
+            setFormVisibility(true);
+        }
+        if (selected_announcement?.should_toggle_load_modal) {
+            toggleLoadModal();
         }
         selected_announcement?.onConfirm?.();
         setSelectedAnnouncement(null);
@@ -116,7 +157,15 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
         <div className='announcements'>
             <button
                 className='announcements__button'
-                onClick={() => setIsOpenAnnounceList(prevState => !prevState)}
+                onClick={() => {
+                    setIsOpenAnnounceList(prevState => !prevState);
+                    if (!is_open_announce_list) {
+                        rudderStackSendOpenEvent({
+                            subform_name: 'announcements',
+                            subform_source: 'dashboard',
+                        });
+                    }
+                }}
                 data-testid='btn-announcements'
             >
                 <StandaloneBullhornRegularIcon fill='var(--icon-black-plus)' iconSize='sm' />
@@ -126,8 +175,8 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
                     </Text>
                 )}
                 {amount_active_announce !== 0 && (
-                    <div className='announcements__amount' data-testid='announcements__amount'>
-                        <p>{amount_active_announce}</p>
+                    <div className='announcements__amount'>
+                        <p data-testid='announcements__amount'>{amount_active_announce}</p>
                     </div>
                 )}
             </button>
@@ -149,6 +198,7 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
                     setIsOpen={setIsOpenAnnounceList}
                     notifications={notifications}
                     excludedClickOutsideClass={action_button_class_name}
+                    {...(is_mobile && { appElement: document.getElementById('modal_root') })}
                 />
             </div>
             {selected_announcement?.announcement && (
@@ -156,13 +206,13 @@ const Announcements = ({ is_mobile, is_tablet, handleTabChange }: TAnnouncements
                     announcement={selected_announcement.announcement}
                     is_announce_dialog_open={is_announce_dialog_open}
                     setIsAnnounceDialogOpen={setIsAnnounceDialogOpen}
-                    handleOnCancel={handleOnCancel}
+                    handleOnCancel={!selected_announcement?.should_not_be_cancel ? handleOnCancel : null}
                     handleOnConfirm={handleOnConfirm}
                     is_tablet={is_tablet}
                 />
             )}
         </div>
     );
-};
+});
 
 export default Announcements;

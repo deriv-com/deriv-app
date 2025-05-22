@@ -3,6 +3,8 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalProvider } from '../../../ModalProvider';
 import ModalStepWrapper from '../ModalStepWrapper';
+import { APIProvider } from '@deriv/api-v2';
+import WalletsAuthProvider from '../../../../AuthProvider';
 
 const mockhideFn = jest.fn();
 jest.mock('../../../ModalProvider', () => ({
@@ -19,11 +21,15 @@ beforeEach(() => {
 
 describe('ModalStepWrapper', () => {
     const MockComponent = (props: React.ComponentProps<typeof ModalStepWrapper>) => (
-        <ModalProvider>
-            <ModalStepWrapper {...props}>
-                <div>test</div>
-            </ModalStepWrapper>
-        </ModalProvider>
+        <APIProvider>
+            <WalletsAuthProvider>
+                <ModalProvider>
+                    <ModalStepWrapper {...props}>
+                        <div>test</div>
+                    </ModalStepWrapper>
+                </ModalProvider>
+            </WalletsAuthProvider>
+        </APIProvider>
     );
 
     it('should render ModalStepWrapper on default values', () => {
@@ -75,24 +81,24 @@ describe('ModalStepWrapper', () => {
         expect(footerElement).toBeInTheDocument();
     });
 
-    it('should close modal on close icon click', () => {
+    it('should close modal on close icon click', async () => {
         render(<MockComponent renderFooter={() => <div>Footer</div>} />);
         const closeIcon = screen.getByTestId('dt_modal_step_wrapper_header_icon');
-        userEvent.click(closeIcon);
+        await userEvent.click(closeIcon);
         expect(mockhideFn).toHaveBeenCalled();
     });
 
-    it('should close modal on escape if shouldPreventCloseOnEscape false', () => {
+    it('should close modal on escape if shouldPreventCloseOnEscape false', async () => {
         const { container } = render(<MockComponent renderFooter={() => <div>Footer</div>} />);
-        userEvent.type(container, '{esc}');
+        await userEvent.type(container, '{esc}');
         expect(mockhideFn).toHaveBeenCalled();
     });
 
-    it('should not close modal on escape if shouldPreventCloseOnEscape true', () => {
+    it('should not close modal on escape if shouldPreventCloseOnEscape true', async () => {
         const { container } = render(
             <MockComponent renderFooter={() => <div>Footer</div>} shouldPreventCloseOnEscape />
         );
-        userEvent.type(container, '{esc}');
+        await userEvent.type(container, '{esc}');
         expect(mockhideFn).not.toHaveBeenCalled();
     });
 });

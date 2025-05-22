@@ -77,6 +77,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         new_display_name: '',
         example_format: '',
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
     if (IDV_DOCUMENT_DATA) {
         return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
@@ -158,7 +159,7 @@ export const isDocumentTypeValid = (document_type: FormikValues) => {
 export const isAdditionalDocumentValid = (document_type: FormikValues, additional_document_value?: string) => {
     const error_message = documentAdditionalError(additional_document_value, document_type?.additional);
     if (error_message) {
-        return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        return error_message + getExampleFormat(document_type?.additional?.example_format);
     }
     return undefined;
 };

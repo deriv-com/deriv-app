@@ -26,6 +26,9 @@ jest.mock('@deriv/api-v2', () => ({
     useCurrencyConfig: jest.fn(() => ({
         getConfig: (currency: 'BTC' | 'USD') => mockCurrencyConfig[currency],
     })),
+    useIsHubRedirectionEnabled: jest.fn(() => ({
+        isHubRedirectionEnabled: false,
+    })),
 }));
 
 jest.mock('react-router-dom', () => ({

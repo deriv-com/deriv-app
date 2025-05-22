@@ -1,3 +1,2 @@
-import ProofOfAddress from './proof-of-address';
-
-export default ProofOfAddress;
+export { default as ProofOfAddress } from './proof-of-address';
+export { default as ProofOfAddressFlow } from './proof-of-address-flow';

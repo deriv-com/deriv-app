@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
@@ -10,7 +11,7 @@ const useAuthorize = (token?: string) => {
 
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: token ?? current_token },
-        options: { enabled: Boolean(token ?? current_token) },
+        options: { enabled: Boolean(token ?? current_token), refetchOnWindowFocus: false },
     });
 
     // Add additional information to the authorize response.

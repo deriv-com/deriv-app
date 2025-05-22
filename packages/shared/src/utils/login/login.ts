@@ -1,7 +1,7 @@
 import { website_name } from '../config/app-config';
 import { domain_app_ids, getAppId } from '../config/config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
-import { getStaticUrl, urlForCurrentDomain } from '../url';
+import { getHubSignupUrl, urlForCurrentDomain } from '../url';
 import { deriv_urls } from '../url/constants';
 
 export const redirectToLogin = (is_logged_in: boolean, language: string, has_params = true, redirect_delay = 0) => {
@@ -17,7 +17,7 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 };
 
 export const redirectToSignUp = () => {
-    window.open(getStaticUrl('/signup/'));
+    window.open(getHubSignupUrl());
 };
 
 type TLoginUrl = {
@@ -26,17 +26,21 @@ type TLoginUrl = {
 
 export const loginUrl = ({ language }: TLoginUrl) => {
     const server_url = LocalStore.get('config.server_url');
+    const change_login_app_id = LocalStore.get('change_login_app_id');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const signup_device_cookie = new (CookieStorage as any)('signup_device');
     const signup_device = signup_device_cookie.get('signup_device');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const date_first_contact_cookie = new (CookieStorage as any)('date_first_contact');
     const date_first_contact = date_first_contact_cookie.get('date_first_contact');
     const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
+
     const getOAuthUrl = () => {
         return `https://oauth.${
             deriv_urls.DERIV_HOST_NAME
-        }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+        }/oauth2/authorize?app_id=${change_login_app_id || getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
     if (server_url && /qa/.test(server_url)) {

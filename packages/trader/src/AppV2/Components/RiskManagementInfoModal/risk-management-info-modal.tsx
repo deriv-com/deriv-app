@@ -17,6 +17,8 @@ const RiskManagementInfoModal = ({ header_content, body_content, info_message }:
                 <LabelPairedCircleInfoSmRegularIcon fill='var(--component-textIcon-normal-default)' />
             </button>
             <Modal
+                isNonExpandable
+                shouldCloseModalOnSwipeDown
                 isOpened={isVisible}
                 toggleModal={setIsVisible}
                 primaryButtonLabel={<Localize i18n_default_text='Got it' />}

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import TradingAccountCardButton from './TradingAccountCardButton';
 import TradingAccountCardContent from './TradingAccountCardContent';
 import TradingAccountCardIcon from './TradingAccountCardIcon';
+import TradingAccountCardSection from './TradingAccountCardSection';
 import './TradingAccountCard.scss';
 
 export type TCommonProps = {
@@ -27,9 +28,13 @@ const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWit
     return (
         <div
             aria-disabled={disabled}
-            className={classNames('wallets-trading-account-card', className, {
-                'wallets-trading-account-card--disabled': disabled,
-            })}
+            className={classNames(
+                'wallets-trading-account-card',
+                {
+                    'wallets-trading-account-card--disabled': disabled,
+                },
+                className
+            )}
             data-testid='dt_wallets_trading_account_card'
             onClick={handleClick}
             onKeyDown={handleClick}
@@ -43,5 +48,6 @@ const TradingAccountCard = ({ children, className, disabled, onClick }: PropsWit
 TradingAccountCard.Icon = TradingAccountCardIcon;
 TradingAccountCard.Content = TradingAccountCardContent;
 TradingAccountCard.Button = TradingAccountCardButton;
+TradingAccountCard.Section = TradingAccountCardSection;
 
 export default TradingAccountCard;

@@ -34,8 +34,9 @@ describe('StopLoss component', () => {
         jest.clearAllMocks();
     });
 
-    it('passes correct props to RiskManagementItem component when stop loss is visible', () => {
+    it('passes correct validation_params prop to RiskManagementItem component', () => {
         render(<StopLoss />);
+
         expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
         expect(screen.getByText('Stop loss')).toBeInTheDocument();
         expect(

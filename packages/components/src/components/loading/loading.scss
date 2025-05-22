@@ -182,7 +182,7 @@
                         padding-top: unset;
                     }
                     &:not(:last-child) {
-                        border-bottom: 1px solid var(--core-color-solid-slate-75);
+                        border-bottom: 1px solid var(--semantic-color-monochrome-border-normal-mid);
                         padding-bottom: var(--semantic-spacing-general-sm);
                     }
                 }

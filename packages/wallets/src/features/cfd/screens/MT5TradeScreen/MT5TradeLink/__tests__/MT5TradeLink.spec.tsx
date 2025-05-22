@@ -7,6 +7,9 @@ import MT5TradeLink from '../MT5TradeLink';
 
 jest.mock('@deriv/api-v2', () => ({
     useCtraderServiceToken: jest.fn(),
+    useIsEuRegion: jest.fn(() => ({
+        data: false,
+    })),
 }));
 
 jest.mock('../../../../../../helpers/urls', () => ({
@@ -41,7 +44,11 @@ describe('MT5TradeLink', () => {
         render(<MT5TradeLink platform='mt5' />);
 
         fireEvent.click(screen.getByText('Learn more'));
-        expect(window.open).toHaveBeenCalledWith(expect.stringContaining('metatrader5'));
+        expect(window.open).toHaveBeenCalledWith(
+            'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+            '_blank',
+            'noopener,noreferrer'
+        );
     });
 
     it('opens DTrader web terminal when clicked', async () => {

@@ -33,11 +33,10 @@ describe('DerivEmail', () => {
             </APIProvider>
         );
 
-    it('should render email address in disabled form', () => {
+    it('should render message properly', () => {
         renderComponent({});
 
-        const el_input_field = screen.getByRole('textbox', { name: /Email address\*/i });
-        expect(el_input_field).toBeDisabled();
+        expect(screen.getByText(/This is the email address associated with your Deriv account./i)).toBeInTheDocument();
     });
 
     it('should display button when it is not redirected from deriv-go', () => {
@@ -58,29 +57,18 @@ describe('DerivEmail', () => {
         expect(el_button).not.toBeInTheDocument();
     });
 
-    it('should not display unlink account modal when not associated with social media', async () => {
-        renderComponent({});
-        const el_button = screen.getByRole('button', { name: /Change email/i });
-        userEvent.click(el_button);
-        let el_modal;
-        await waitFor(() => {
-            el_modal = screen.getByText('We’ve sent you an email');
-        });
-        expect(el_modal).toBeInTheDocument();
-    });
-
     it('should display unlink account modal when button is clicked', async () => {
         const store_config = mockStore({ client: { social_identity_provider: 'Google', is_social_signup: true } });
         renderComponent({ store_config });
         const el_button = screen.getByRole('button', { name: /Change email/i });
-        userEvent.click(el_button);
+        await userEvent.click(el_button);
         let el_modal;
         await waitFor(() => {
             el_modal = screen.getByText('Change your login email');
             expect(el_modal).toBeInTheDocument();
         });
         const el_unlink_btn = screen.getByRole('button', { name: /Unlink from Google/i });
-        userEvent.click(el_unlink_btn);
+        await userEvent.click(el_unlink_btn);
 
         await waitFor(() => {
             el_modal = screen.getByText('We’ve sent you an email');

@@ -1,9 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer } from '@deriv/shared';
+import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer, cacheTrackEvents } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
@@ -58,11 +57,18 @@ const RealAccountCard = observer(() => {
                     <Button
                         onClick={(e: MouseEvent) => {
                             if (is_traders_dashboard_tracking_enabled) {
-                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                    action: 'deposit_balance',
-                                    form_name: 'traders_hub_default',
-                                    account_mode: selected_account_type,
-                                });
+                                cacheTrackEvents.loadEvent([
+                                    {
+                                        event: {
+                                            name: 'ce_tradershub_dashboard_form',
+                                            properties: {
+                                                action: 'deposit_balance',
+                                                form_name: 'traders_hub_default',
+                                                account_mode: selected_account_type,
+                                            },
+                                        },
+                                    },
+                                ]);
                             }
 
                             if (isCryptocurrency(currency))

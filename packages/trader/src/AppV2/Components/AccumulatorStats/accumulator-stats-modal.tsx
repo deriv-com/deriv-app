@@ -20,11 +20,11 @@ const AccumulatorStatsModal = ({
                         <Localize i18n_default_text='Stats' />
                     </Text>
                 </div>
-                <div className='stats-sheet__caption'>
-                    <Text>
-                        <Localize i18n_default_text='History of tick counts' />
-                    </Text>
-                </div>
+                <Text>
+                    <Localize i18n_default_text='History of tick counts' />
+                </Text>
+            </div>
+            <ActionSheet.Content>
                 <div className='stats-sheet__stats'>
                     <StatsRow
                         rows={rows[0]}
@@ -42,7 +42,7 @@ const AccumulatorStatsModal = ({
                         ))}
                     </div>
                 ))}
-            </div>
+            </ActionSheet.Content>
         </ActionSheet.Portal>
     );
 };

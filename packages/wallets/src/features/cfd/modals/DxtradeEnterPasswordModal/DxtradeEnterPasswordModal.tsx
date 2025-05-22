@@ -42,9 +42,9 @@ const DxtradeEnterPasswordModal = () => {
     } = useSendPasswordResetEmail();
     const { hide, show } = useModal();
     const { localize } = useTranslations();
+
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
-
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
     const onSubmit = useCallback(async () => {
@@ -64,7 +64,7 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? localize("Let's practise trading with {{dxtradeBalance}} virtual funds.", { dxtradeBalance })
+            ? localize('Practise trading with {{dxtradeBalance}} virtual funds.', { dxtradeBalance })
             : localize(
                   'Transfer funds from your {{currency}} Wallet to your {{dxtradeTitle}} account to start trading.',
                   { currency: activeWallet?.currency, dxtradeTitle: PlatformDetails.dxtrade.title }
@@ -141,6 +141,7 @@ const DxtradeEnterPasswordModal = () => {
             <SuccessModal
                 description={successDescription}
                 displayBalance={dxtradeBalance ?? ''}
+                isDemo={activeWallet?.is_virtual}
                 marketType='all'
                 onPrimaryClick={() => {
                     hide();

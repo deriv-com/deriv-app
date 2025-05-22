@@ -12,7 +12,7 @@ import ProofOfAddress from './proof-of-address';
 
 const ProofOfAddressFlow = observer(() => {
     const {
-        client: { getToken, residence },
+        client: { currency, residence },
         common: { is_from_tradershub_os },
     } = useStore();
     const { kyc_auth_status, isLoading: isKYCLoading } = useKycAuthStatus({ country: residence });
@@ -34,7 +34,7 @@ const ProofOfAddressFlow = observer(() => {
             appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
-            token: getToken(),
+            currency,
         };
 
         Object.entries(params).forEach(([key, value]) => {

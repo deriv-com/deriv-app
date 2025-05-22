@@ -12,7 +12,7 @@ import ProofOfIdentity from './proof-of-identity';
 
 const ProofOfIdentityFlow = observer(() => {
     const {
-        client: { getToken, residence },
+        client: { residence, currency },
         common: { is_from_tradershub_os },
     } = useStore();
     const { kyc_auth_status, isLoading: isKYCLoading } = useKycAuthStatus({ country: residence });
@@ -28,13 +28,12 @@ const ProofOfIdentityFlow = observer(() => {
         const urlParams = new URLSearchParams(location.search);
         const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
         const platform = platformConfig ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
-
         const params = {
             platform,
             appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
-            token: getToken(),
+            currency,
         };
 
         Object.entries(params).forEach(([key, value]) => {

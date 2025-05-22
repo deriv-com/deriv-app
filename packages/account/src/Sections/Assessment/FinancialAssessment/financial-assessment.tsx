@@ -193,6 +193,7 @@ const FinancialAssessment = observer(() => {
     const { client, common, notifications } = useStore();
     const {
         getToken,
+        currency,
         landing_company_shortcode,
         is_virtual,
         is_financial_account,
@@ -429,7 +430,7 @@ const FinancialAssessment = observer(() => {
             appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
-            token: getToken(),
+            currency,
         };
 
         Object.entries(params).forEach(([key, value]) => {

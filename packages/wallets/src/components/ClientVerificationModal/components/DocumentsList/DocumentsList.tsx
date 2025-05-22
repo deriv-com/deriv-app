@@ -9,7 +9,6 @@ import {
     isNavigationFromTradersHubOS,
 } from '@deriv/shared';
 import { useTranslations } from '@deriv-com/translations';
-import { getToken } from '@deriv/utils';
 import { TModifiedMT5Account, TWalletsMFAccountStatus } from '../../../../types';
 import { getClientVerification } from '../../../../utils';
 import { ClientVerificationStatusBadge } from '../../../ClientVerificationBadge';
@@ -53,10 +52,10 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
 
         const params = {
             appid: WebSocketUtils.getAppId(),
+            currency: activeWallet?.currency || '',
             lang: i18nLanguage,
             platform,
             server: getSocketURL(),
-            token: getToken(activeWallet?.loginid || ''),
         };
 
         Object.entries(params).forEach(([key, value]) => {

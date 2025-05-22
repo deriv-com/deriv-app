@@ -59,7 +59,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
     const { client, common, traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
-    const { getToken } = client;
+    const { currency } = client;
     const { is_from_tradershub_os } = common;
     const { setVerificationModalOpen } = traders_hub;
     const history = useHistory();
@@ -82,7 +82,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
             appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),
-            token: getToken(),
+            currency,
         };
 
         Object.entries(params).forEach(([key, value]) => {

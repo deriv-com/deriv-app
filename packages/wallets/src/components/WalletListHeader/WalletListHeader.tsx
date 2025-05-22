@@ -61,8 +61,11 @@ const WalletListHeader: React.FC = () => {
     };
 
     useEffect(() => {
-        setIsChecked(!isDemo);
-    }, [isDemo]);
+        const newChecked = !isDemo;
+        if (isChecked !== newChecked) {
+            setIsChecked(newChecked);
+        }
+    }, [isDemo, isChecked]);
 
     return (
         <div className='wallets-list-header'>

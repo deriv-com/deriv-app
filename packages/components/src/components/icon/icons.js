@@ -35,6 +35,7 @@ import './appstore/ic-appstore-logged-out-non-eu-coins-desktop.svg';
 import './appstore/ic-appstore-logged-out-non-eu-coins-responsive.svg';
 import './appstore/ic-appstore-menu-homepage.svg';
 import './appstore/ic-appstore-multipliers-trade-type.svg';
+import './appstore/ic-appstore-new-warning.svg';
 import './appstore/ic-appstore-option-trade-type.svg';
 import './appstore/ic-appstore-skeleton-card-border.svg';
 import './appstore/ic-appstore-success.svg';

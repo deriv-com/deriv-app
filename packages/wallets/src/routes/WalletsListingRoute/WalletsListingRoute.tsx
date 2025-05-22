@@ -4,6 +4,7 @@ import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@de
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
+    WalletLoader,
     WalletsAddMoreCarousel,
     WalletsCardLoader,
     WalletsDisclaimerBanner,
@@ -35,7 +36,12 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
         if (!isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
             show(<WalletsOutsystemsMigrationModal />);
         }
-    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed, show]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed]);
+
+    if (isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
+        return <WalletLoader />;
+    }
 
     return (
         <div className='wallets-listing-route'>

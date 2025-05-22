@@ -107,7 +107,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: Account,
         is_authenticated: true,
-        getTitle: () => localize('Account Settings'),
+        getTitle: () => localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {

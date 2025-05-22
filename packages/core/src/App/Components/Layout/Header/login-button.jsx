@@ -7,7 +7,7 @@ import { getLanguage, localize } from '@deriv/translations';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 const LoginButton = ({ className }) => {
-    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const has_wallet_cookie = Cookies.get('wallet_account');
     return (
         <Button

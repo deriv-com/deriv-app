@@ -718,9 +718,7 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
-            this.root_store.contract_trade.clearAccumulatorBarriersData();
-        }
+        this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
     }
 
     setV2ParamsInitialValues({
@@ -1939,6 +1937,9 @@ export default class TradeStore extends BaseStore {
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
+
+        this.resetAccumulatorData();
+
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {
             this.root_store.notifications.toggleNotificationsModal();
@@ -1986,8 +1987,19 @@ export default class TradeStore extends BaseStore {
                 const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
                 if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
             }
+            interface AccumulatorBarriersData {
+                current_spot?: number;
+                current_spot_time?: number;
+                tick_update_timestamp?: number;
+                accumulators_high_barrier?: string;
+                accumulators_low_barrier?: string;
+                barrier_spot_distance?: string;
+                previous_spot_time?: number;
+            }
+
             if (this.is_accumulator) {
-                let current_spot_data = {};
+                let current_spot_data: AccumulatorBarriersData = {};
+
                 if ('tick' in args[0]) {
                     const { epoch, quote, symbol } = args[0].tick as TickSpotData;
                     if (this.symbol !== symbol) return;
@@ -2002,11 +2014,36 @@ export default class TradeStore extends BaseStore {
                     current_spot_data = {
                         current_spot: prices?.[prices?.length - 1],
                         current_spot_time: times?.[times?.length - 1],
-                        prev_spot_time: times?.[times?.length - 2],
+                        previous_spot_time: times?.[times?.length - 2],
                     };
                 } else {
                     return;
                 }
+
+                // If switching accounts, include previous barrier values
+                if (this.root_store.client.is_switching) {
+                    const barriers_data = this.root_store.contract_trade
+                        .accumulator_barriers_data as AccumulatorBarriersData;
+
+                    if (
+                        current_spot_data.current_spot !== undefined &&
+                        barriers_data.barrier_spot_distance !== undefined
+                    ) {
+                        const barrier_spot_distance_num = parseFloat(barriers_data.barrier_spot_distance);
+
+                        current_spot_data = {
+                            ...current_spot_data,
+                            accumulators_high_barrier: String(
+                                current_spot_data.current_spot + barrier_spot_distance_num
+                            ),
+                            accumulators_low_barrier: String(
+                                current_spot_data.current_spot - barrier_spot_distance_num
+                            ),
+                            barrier_spot_distance: barriers_data.barrier_spot_distance,
+                        };
+                    }
+                }
+
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };

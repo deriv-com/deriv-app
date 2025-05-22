@@ -42,6 +42,7 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
@@ -53,6 +54,7 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (
             isHubRedirectionEnabled &&
+            isOutsystemsMigrationModalClosed &&
             has_wallet &&
             !is_logging_out &&
             is_logged_in &&
@@ -71,21 +73,16 @@ const RootComponent = observer(props => {
 
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
-            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
 
-            if (!localStorage.getItem('wallet_redirect_done')) {
-                switch (redirect_to_lowcode) {
-                    case 'wallet':
-                        localStorage.setItem('wallet_redirect_done', true);
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
-                        break;
-                    default:
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
-                        break;
-                }
-            } else {
-                // Clear the wallet_redirect_done flag after redirection to ensure it can be set again in the future
-                localStorage.removeItem('wallet_redirect_done');
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    localStorage.setItem('wallet_redirect_done', true);
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
+                default:
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
             }
         }
 

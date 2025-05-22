@@ -13,7 +13,7 @@ type TErrorComponent = {
     should_show_refresh: boolean;
 };
 
-const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
 
 const ErrorComponent = ({
     header,

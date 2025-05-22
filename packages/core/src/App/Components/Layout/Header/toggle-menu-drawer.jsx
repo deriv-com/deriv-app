@@ -418,14 +418,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {HelpCentreRoute()}
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.account_limits}
-                                                icon='IcAccountLimits'
-                                                text={localize('Account Limits')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
                                         <MobileDrawer.Item
                                             className={
                                                 should_show_regulatory_information

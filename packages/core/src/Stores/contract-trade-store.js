@@ -40,21 +40,31 @@ export default class ContractTradeStore extends BaseStore {
     accu_barriers_timeout_id = null;
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
+    previous_accumulator_barriers_data = {};
+    is_barriers_loading = false;
+
+    last_contract_override = null;
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
             accu_barriers_timeout_id: observable,
+            is_barriers_loading: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
+            previous_accumulator_barriers_data: observable.struct,
             clearAccumulatorBarriersData: action.bound,
+            setBarriersLoadingState: action.bound,
             contracts: observable.shallow,
             has_crossed_accu_barriers: computed,
             has_error: observable,
             error_message: observable,
             granularity: observable,
             chart_type: observable,
+            last_contract_override: observable,
+            clearLastContractOverride: action.bound,
+            restorePreviousBarriersIfNeeded: action.bound,
             updateAccumulatorBarriersData: action.bound,
             updateChartType: action.bound,
             updateGranularity: action.bound,
@@ -77,6 +87,17 @@ export default class ContractTradeStore extends BaseStore {
 
         this.root_store = root_store;
         this.onSwitchAccount(this.accountSwitchListener);
+
+        // Add reaction to detect when account switching is complete
+        this.disposeAccountSwitchingComplete = reaction(
+            () => this.root_store.client.is_switching,
+            is_switching => {
+                if (!is_switching && this.is_barriers_loading) {
+                    // Account switching just completed
+                    this.restorePreviousBarriersIfNeeded();
+                }
+            }
+        );
 
         reaction(
             () => this.last_contract.contract_info,
@@ -113,10 +134,43 @@ export default class ContractTradeStore extends BaseStore {
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
         if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
-        if (!isAccumulatorContractOpen(this.last_contract.contract_info)) this.accumulator_contract_barriers_data = {};
+        this.accu_barriers_timeout_id = null;
+
+        // Always clear contract barriers data regardless of contract state
+        this.accumulator_contract_barriers_data = {};
+
         if (!should_clear_contract_data_only) {
-            this.accumulator_barriers_data = {};
+            // Ensure all barrier-related properties are reset
+            runInAction(() => {
+                this.accumulator_barriers_data = {
+                    accumulators_high_barrier: null,
+                    accumulators_low_barrier: null,
+                    barrier_spot_distance: null,
+                    current_spot: null,
+                    current_spot_time: null,
+                    tick_update_timestamp: null,
+                };
+            });
+
+            // Reset last contract data for accumulator if no active positions
+            const has_active_positions = this.root_store.portfolio?.active_positions?.length > 0;
+            if (!has_active_positions && this.last_contract?.contract_info?.contract_type === 'ACCU') {
+                // Create a clean copy without profit information
+                const clean_contract = { ...this.last_contract };
+                if (clean_contract.contract_info) {
+                    clean_contract.contract_info = {
+                        ...clean_contract.contract_info,
+                        profit: 0,
+                        status: 'open',
+                    };
+                }
+                this.last_contract_override = clean_contract;
+            }
         }
+    }
+
+    clearLastContractOverride() {
+        this.last_contract_override = null;
     }
 
     setNewAccumulatorBarriersData(new_barriers_data, should_update_contract_barriers) {
@@ -143,7 +197,12 @@ export default class ContractTradeStore extends BaseStore {
         should_update_contract_barriers,
         underlying,
     }) {
-        if (current_spot) {
+        // If we have new barrier data, update and set loading to false
+        if (accumulators_high_barrier || accumulators_low_barrier) {
+            this.setBarriersLoadingState(false);
+        }
+
+        if (current_spot && !this.root_store.client.is_switching) {
             const ticks_history_prev_spot_time = prev_spot_time ?? this.accumulator_barriers_data.current_spot_time;
             // update current tick coming from ticks_history while skipping an update for duplicate data
             if (current_spot_time === ticks_history_prev_spot_time) return;
@@ -181,6 +240,7 @@ export default class ContractTradeStore extends BaseStore {
         const tick_update_timestamp = should_update_contract_barriers
             ? this.accumulator_contract_barriers_data.tick_update_timestamp
             : this.accumulator_barriers_data.tick_update_timestamp;
+        // If we're in the process of switching accounts or the document is hidden, update immediately without timeout
         if (document.hidden) {
             clearTimeout(this.accu_barriers_timeout_id);
             this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
@@ -329,6 +389,11 @@ export default class ContractTradeStore extends BaseStore {
 
         if (trade_type === TRADE_TYPES.ACCUMULATOR && proposal_prev_spot_time && accumulators_high_barrier) {
             const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
+            const has_active_positions = this.root_store.portfolio?.active_positions?.length > 0;
+
+            // Force is_accumulator_trade_without_contract to true if there are no active positions
+            const force_without_contract = !has_active_positions;
+
             markers.push(
                 getAccumulatorMarkers({
                     high_barrier: accumulators_high_barrier,
@@ -338,7 +403,7 @@ export default class ContractTradeStore extends BaseStore {
                     has_crossed_accu_barriers: this.has_crossed_accu_barriers,
                     is_dark_theme: this.root_store.ui.is_dark_mode_on,
                     contract_info: is_open ? this.last_contract.contract_info : {},
-                    is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
+                    is_accumulator_trade_without_contract: force_without_contract || !is_open || !entry_tick_time,
                 })
             );
         }
@@ -380,6 +445,9 @@ export default class ContractTradeStore extends BaseStore {
         this.contracts.push(contract);
         this.contracts_map[contract_id] = contract;
 
+        // Clear any override when adding a new contract
+        this.clearLastContractOverride();
+
         if (is_tick_contract && !this.root_store.portfolio.is_multiplier && this.granularity !== 0 && isDesktop()) {
             this.root_store.notifications.addNotificationMessage(switch_to_tick_chart);
         }
@@ -395,11 +463,42 @@ export default class ContractTradeStore extends BaseStore {
             this.clearError();
         }
 
+        // Store previous barrier values before clearing
+        this.previous_accumulator_barriers_data = { ...this.accumulator_barriers_data };
+        this.setBarriersLoadingState(true);
+        this.clearAccumulatorBarriersData(false, true);
+
+        runInAction(() => {
+            this.accumulator_barriers_data = {};
+            this.accumulator_contract_barriers_data = {};
+        });
+
         return Promise.resolve();
+    }
+
+    setBarriersLoadingState(is_loading) {
+        this.is_barriers_loading = is_loading;
+    }
+
+    restorePreviousBarriersIfNeeded() {
+        // If we have previous barrier data and current barriers are empty
+        if (
+            this.previous_accumulator_barriers_data.accumulators_high_barrier &&
+            !this.accumulator_barriers_data.accumulators_high_barrier
+        ) {
+            // Restore previous barrier data
+            this.setNewAccumulatorBarriersData(this.previous_accumulator_barriers_data);
+
+            // Set loading state to false
+            this.setBarriersLoadingState(false);
+        }
     }
 
     onUnmount() {
         this.disposeSwitchAccount();
+        if (this.disposeAccountSwitchingComplete) {
+            this.disposeAccountSwitchingComplete();
+        }
         // TODO: don't forget the tick history when switching to contract-replay-store
     }
 
@@ -424,6 +523,10 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     get last_contract() {
+        if (this.last_contract_override) {
+            return this.last_contract_override;
+        }
+
         const applicable_contracts = this.applicable_contracts();
         const length = this.contracts[0]?.contract_info.current_spot_time ? applicable_contracts.length : -1;
         return length > 0 ? applicable_contracts[length - 1] : {};

@@ -1095,11 +1095,10 @@ export default class ClientStore extends BaseStore {
 
     setUrlParams() {
         const url = new URL(window.location.href);
-        const loginid = sessionStorage.getItem('active_loginid') || sessionStorage.getItem('active_wallet_loginid');
+        const loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
         const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
         if (account_param) {
             url.searchParams.set('account', account_param);
-            sessionStorage.setItem('account', account_param);
             window.history.replaceState({}, '', url.toString());
         }
     }

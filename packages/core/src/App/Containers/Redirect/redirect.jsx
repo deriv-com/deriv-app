@@ -17,6 +17,7 @@ const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
     const [queryCurrency, setQueryCurrency] = useState('USD');
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
 
     const {
@@ -381,7 +382,8 @@ const Redirect = observer(() => {
             if (matched_route && matched_route?.type) {
                 updated_search = `${params.toString()}`;
             }
-            if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com) {
+
+            if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com && !is_TMB_enabled) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -396,7 +398,7 @@ const Redirect = observer(() => {
                 }
             }
 
-            if (account_currency) {
+            if (account_currency && !is_TMB_enabled) {
                 let matching_loginid;
 
                 const converted_account_currency = account_currency.toUpperCase();

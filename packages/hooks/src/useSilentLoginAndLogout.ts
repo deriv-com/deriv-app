@@ -18,6 +18,7 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const loggedState = Cookies.get('logged_state');
 
@@ -62,7 +63,14 @@ const useSilentLoginAndLogout = ({
     };
 
     useEffect(() => {
-        if (prevent_single_login || !is_client_store_initialized || isSilentLoginExcluded || !is_deriv_com) return;
+        if (
+            prevent_single_login ||
+            !is_client_store_initialized ||
+            isSilentLoginExcluded ||
+            !is_deriv_com ||
+            is_TMB_enabled
+        )
+            return;
 
         // NOTE: Remove this logic once social signup is intergated with OIDC
         const params = new URLSearchParams(window.location.search);

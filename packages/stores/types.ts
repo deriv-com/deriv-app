@@ -446,6 +446,7 @@ export type TClientStore = {
         is_loading?: boolean;
         api_initial_load_error?: string;
     };
+    setIsLoggingIn: (value: boolean) => void;
     account_list: TAccountsList;
     self_exclusion: Partial<GetSelfExclusion>;
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;

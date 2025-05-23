@@ -16,6 +16,7 @@ type TResetPasswordModalValues = {
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
     const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const {
         disableApp,
@@ -52,7 +53,7 @@ const ResetPasswordModal = observer(() => {
         setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            if (is_deriv_com) {
+            if (is_deriv_com && !is_TMB_enabled) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,

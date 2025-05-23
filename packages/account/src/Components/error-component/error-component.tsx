@@ -13,6 +13,7 @@ type TErrorComponent = {
     should_show_refresh: boolean;
 };
 
+const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
 const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
 
 const ErrorComponent = ({
@@ -29,7 +30,7 @@ const ErrorComponent = ({
         ''
     );
 
-    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com) {
+    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com && !is_TMB_enabled) {
         try {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,

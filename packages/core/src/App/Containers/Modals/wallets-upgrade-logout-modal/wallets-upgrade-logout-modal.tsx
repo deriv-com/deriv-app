@@ -29,12 +29,13 @@ const WalletsUpgradeLogoutModal = observer(() => {
     const { is_virtual, logout } = client;
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
 
     const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
-            if (is_deriv_com) {
+            if (is_deriv_com && !is_TMB_enabled) {
                 try {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,

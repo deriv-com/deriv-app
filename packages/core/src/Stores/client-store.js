@@ -2277,7 +2277,10 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
-
+        // this needs to be change to the latest one's
+        // latestClientAccounts.forEach(account => {
+        //     client_object[account.loginid].token = account.token;
+        // });
         let i = 1;
         while (obj_params[`acct${i}`]) {
             const loginid = obj_params[`acct${i}`];

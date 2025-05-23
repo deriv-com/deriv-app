@@ -11,6 +11,15 @@ type UseTMBReturn = {
     onRenderTMBCheck: VoidFunction;
 };
 
+type TMBApiReturnedValue = {
+    tokens?: {
+        loginid: string;
+        token: string;
+        cur: string;
+    };
+    active?: boolean;
+};
+
 /**
  * useTMB - hooks to help with TMB function such getting the active sessions and tokens
  * @returns {UseOAuthReturn}
@@ -93,7 +102,7 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                 account = firstAccount.loginid.startsWith('VR') ? 'demo' : firstAccount.cur;
 
                 // Update URL params to reflect the selected account
-                params.set('account', account);
+                params.set('account', account ?? '');
                 const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
                 window.history.replaceState({}, '', newUrl);
             }
@@ -102,11 +111,13 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             if (account?.toLocaleUpperCase() === 'DEMO') {
                 // For demo accounts, find virtual accounts with USD currency
                 const demoAccount = activeSessions?.tokens?.find(
-                    item => item.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
+                    (item: TMBApiReturnedValue['tokens']) =>
+                        item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
                 );
 
                 const demoWalletAccount = activeSessions?.tokens?.find(
-                    item => item.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
+                    (item: TMBApiReturnedValue['tokens']) =>
+                        item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
                 );
 
                 setAccountInSessionStorage(demoAccount?.loginid);
@@ -114,16 +125,16 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             } else {
                 // For real accounts, find accounts matching the selected currency
                 const realAccount = activeSessions?.tokens?.find(
-                    item =>
-                        item.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
-                        (item.loginid.startsWith('CR') || item.loginid.startsWith('MF')) &&
+                    (item: TMBApiReturnedValue['tokens']) =>
+                        item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                        (item?.loginid.startsWith('CR') || item?.loginid.startsWith('MF')) &&
                         (!item.loginid.startsWith('CRW') || !item.loginid.startsWith('MFW'))
                 );
 
                 const realWalletAccount = activeSessions?.tokens?.find(
-                    item =>
-                        item.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
-                        (item.loginid.startsWith('CRW') || item.loginid.startsWith('MFW'))
+                    (item: TMBApiReturnedValue['tokens']) =>
+                        item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                        (item?.loginid.startsWith('CRW') || item?.loginid.startsWith('MFW'))
                 );
 
                 setAccountInSessionStorage(realAccount?.loginid);
@@ -131,14 +142,16 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             }
             const convertedResult = {};
 
-            activeSessions?.tokens?.forEach((account, index) => {
+            activeSessions.tokens.forEach((account: TMBApiReturnedValue['tokens'], index: number) => {
                 const num = index + 1;
-                (convertedResult as Record<string, string>)[`acct${num}`] = account.loginid;
-                (convertedResult as Record<string, string>)[`token${num}`] = account.token;
-                (convertedResult as Record<string, string>)[`cur${num}`] = account.cur;
+                account?.loginid && ((convertedResult as Record<string, string>)[`acct${num}`] = account.loginid);
+                account?.token && ((convertedResult as Record<string, string>)[`token${num}`] = account.token);
+                account?.cur && ((convertedResult as Record<string, string>)[`cur${num}`] = account.cur);
             });
+
             if (shouldReinitializeClientStore) {
                 // Trigger init Client Store
+                //@ts-expect-error ignore this as of now
                 init(convertedResult);
             } else {
                 setIsLoggingIn(false);

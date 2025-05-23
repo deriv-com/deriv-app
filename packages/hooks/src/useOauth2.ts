@@ -15,10 +15,11 @@ import { useStore } from '@deriv/stores';
  * @returns {{ oAuthLogout: () => Promise<void> }}
  */
 const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const { common, client } = useStore();
     const loginHandler = async () => {
-        if (is_deriv_com) {
+        if (is_deriv_com && !is_TMB_enabled) {
             try {
                 await requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,

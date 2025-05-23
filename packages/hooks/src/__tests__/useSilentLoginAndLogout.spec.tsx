@@ -31,6 +31,9 @@ describe('useSilentLoginAndLogout', () => {
             if (key === 'client.accounts') {
                 return JSON.stringify({});
             }
+            if (key === 'is_tmb_enabled') {
+                return null;
+            }
             return null;
         });
 
@@ -51,7 +54,15 @@ describe('useSilentLoginAndLogout', () => {
         // Mock `loggedState` to 'true'
         (Cookies.get as jest.Mock).mockImplementation(() => 'true');
 
-        jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
+            if (key === 'client.accounts') {
+                return JSON.stringify({});
+            }
+            if (key === 'is_tmb_enabled') {
+                return null; // or 'false' if you want to explicitly set it to false
+            }
+            return null;
+        });
 
         renderHook(
             () =>
@@ -113,7 +124,15 @@ describe('useSilentLoginAndLogout', () => {
     it('should call oAuthLogout if conditions for single logout are met', () => {
         (Cookies.get as jest.Mock).mockImplementation(() => 'false');
 
-        jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
+            if (key === 'client.accounts') {
+                return JSON.stringify({ account1: {}, account2: {} });
+            }
+            if (key === 'is_tmb_enabled') {
+                return null; // or 'false' if you want to explicitly set it to false
+            }
+            return null;
+        });
 
         renderHook(
             () =>

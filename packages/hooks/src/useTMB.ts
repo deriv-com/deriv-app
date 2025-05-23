@@ -57,6 +57,8 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
         localStorage.removeItem('verification_code.system_email_change');
         localStorage.removeItem('verification_code.request_email');
         localStorage.removeItem('new_email.system_email_change');
+        localStorage.removeItem('active_loginid');
+        localStorage.removeItem('active_wallet_loginid');
         Object.keys(sessionStorage)
             .filter(key => key !== 'trade_store')
             .forEach(key => sessionStorage.removeItem(key));

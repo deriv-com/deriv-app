@@ -308,5 +308,9 @@
     }
     &__inner-wrap {
         height: 100%;
+        @include mobile-or-tablet-screen {
+            display: flex;
+            flex-direction: column;
+        }
     }
 }

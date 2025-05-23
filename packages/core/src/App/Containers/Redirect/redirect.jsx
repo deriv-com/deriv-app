@@ -9,7 +9,7 @@ import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
-// import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 import { WS } from 'Services';
 
@@ -17,7 +17,8 @@ const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
     const [queryCurrency, setQueryCurrency] = useState('USD');
-    // const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
 
     const {
         authorize_accounts_list,
@@ -29,7 +30,7 @@ const Redirect = observer(() => {
         setVerificationCode,
         verification_code,
         setPreventRedirectToHub,
-        // switchAccount,
+        switchAccount,
         is_client_store_initialized,
     } = client;
 
@@ -350,13 +351,13 @@ const Redirect = observer(() => {
     }, []);
 
     useEffect(() => {
-        // const account_currency = queryCurrency;
+        const account_currency = queryCurrency;
         if (!redirected_to_route && history.location.pathname !== routes.traders_hub && is_client_store_initialized) {
-            // const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+            const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
 
-            // const length_of_authorize_accounts_list = authorize_accounts_list.length;
-            // const length_of_client_account_lists = Object.keys(client_account_lists).length;
-            // const should_retrigger_oidc = length_of_authorize_accounts_list !== length_of_client_account_lists;
+            const length_of_authorize_accounts_list = authorize_accounts_list.length;
+            const length_of_client_account_lists = Object.keys(client_account_lists).length;
+            const should_retrigger_oidc = length_of_authorize_accounts_list !== length_of_client_account_lists;
             const route_mappings = [
                 { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
                 { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
@@ -382,27 +383,42 @@ const Redirect = observer(() => {
                 updated_search = `${params.toString()}`;
             }
 
-            // if (account_currency) {
-            //     let matching_loginid;
+            if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com && !is_TMB_enabled) {
+                try {
+                    requestOidcAuthentication({
+                        redirectCallbackUri: `${window.location.origin}/callback`,
+                        postLoginRedirectUri: `redirect?${updated_search}`,
+                    }).catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    });
+                } catch (err) {
+                    // eslint-disable-next-line no-console
+                    console.error(err);
+                }
+            }
 
-            //     const converted_account_currency = account_currency.toUpperCase();
+            if (account_currency && !is_TMB_enabled) {
+                let matching_loginid;
 
-            //     if (converted_account_currency === 'DEMO') {
-            //         matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
-            //     } else {
-            //         matching_loginid = Object.keys(client_account_lists).find(
-            //             loginid =>
-            //                 client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
-            //                 client_account_lists[loginid].account_category === 'trading' &&
-            //                 !client_account_lists[loginid]?.is_virtual
-            //         );
-            //     }
+                const converted_account_currency = account_currency.toUpperCase();
 
-            //     if (matching_loginid && is_client_store_initialized) {
-            //         switchAccount(matching_loginid);
-            //         sessionStorage.setItem('active_loginid', matching_loginid);
-            //     }
-            // }
+                if (converted_account_currency === 'DEMO') {
+                    matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
+                } else {
+                    matching_loginid = Object.keys(client_account_lists).find(
+                        loginid =>
+                            client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                            client_account_lists[loginid].account_category === 'trading' &&
+                            !client_account_lists[loginid]?.is_virtual
+                    );
+                }
+
+                if (matching_loginid && is_client_store_initialized) {
+                    switchAccount(matching_loginid);
+                    sessionStorage.setItem('active_loginid', matching_loginid);
+                }
+            }
 
             sessionStorage.setItem(
                 'tradershub_redirect_to',

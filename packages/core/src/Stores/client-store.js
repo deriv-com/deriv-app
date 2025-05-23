@@ -2242,7 +2242,6 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
-        const latestClientAccounts = JSON.parse(localStorage.getItem('clientAccounts') || '{}');
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
@@ -2277,10 +2276,7 @@ export default class ClientStore extends BaseStore {
                 }
             });
         });
-        // this needs to be change to the latest one's
-        // latestClientAccounts.forEach(account => {
-        //     client_object[account.loginid].token = account.token;
-        // });
+
         let i = 1;
         while (obj_params[`acct${i}`]) {
             const loginid = obj_params[`acct${i}`];
@@ -2315,7 +2311,6 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    //this is here
     async setUserLogin(login_new_user) {
         // login_new_user is populated only on virtual sign-up
         let obj_params = {};

@@ -14,15 +14,17 @@ import {
     PlatformDetails,
 } from '../../constants';
 import { CFDSuccess } from '../../screens/CFDSuccess';
+import { CFDDerivNakalaLinkAccount } from '../DerivNakalaModal/DerivNakalaModal';
 
 type TProps = {
     account?: THooks.CreateMT5Account;
+    isNakala?: boolean;
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
     product?: THooks.AvailableMT5Accounts['product'];
 };
 
-const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product }) => {
+const MT5AccountAdded: FC<TProps> = ({ account, isNakala, marketType, platform, product }) => {
     const { data: activeWallet, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
     const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
     const { data: poiData, isLoading: isPOILoading } = usePOI();
@@ -122,6 +124,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
     const renderMainContent = useMemo(() => {
         if (isLoading) return null;
 
+        if (isNakala) {
+            return <CFDDerivNakalaLinkAccount isSuccess onclickAction={hide} />;
+        }
+
         return (
             <CFDSuccess
                 actionButtons={renderAccountSuccessButton(isDemo)}
@@ -157,6 +163,8 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform, product })
         renderAccountSuccessButton,
         renderSuccessDescription,
         product,
+        isNakala,
+        hide,
     ]);
 
     if (isLoading) return null;

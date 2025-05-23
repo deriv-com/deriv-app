@@ -3,7 +3,7 @@ import { useStore } from '@deriv/stores';
 
 import useIsHubRedirectionEnabled from './useIsHubRedirectionEnabled';
 
-export const useAccountSettingsRedirect = () => {
+export const useAccountSettingsRedirect = (redirect_to = 'home') => {
     const { client } = useStore();
     const { has_wallet } = client;
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
@@ -19,8 +19,8 @@ export const useAccountSettingsRedirect = () => {
         const base_url =
             process.env.NODE_ENV === 'production' ? 'https://hub.deriv.com' : 'https://staging-hub.deriv.com';
 
-        redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=home&account=${account_type}`;
-        mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=home&account=${account_type}`;
+        redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;
+        mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;
     } else {
         redirect_url = routes.personal_details;
         mobile_redirect_url = routes.account;

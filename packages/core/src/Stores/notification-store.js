@@ -415,11 +415,11 @@ export default class NotificationStore extends BaseStore {
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
             if (status?.includes('update_fa')) {
-                this.addNotificationMessage(this.client_notifications.update_fa_required);
+                this.addNotificationMessage(this.client_notifications.update_fa_required());
             } else {
-                this.removeNotificationByKey({ key: this.client_notifications.update_fa_required?.key });
+                this.removeNotificationByKey({ key: this.client_notifications.update_fa_required().key });
                 this.removeNotificationMessage({
-                    key: this.client_notifications.update_fa_required?.key,
+                    key: this.client_notifications.update_fa_required().key,
                     should_show_again: true,
                 });
             }
@@ -1482,7 +1482,7 @@ export default class NotificationStore extends BaseStore {
             update_fa_required: () => {
                 let header, message;
                 if (is_cr_account) {
-                    if (account_status.includes('financial_information_not_complete')) {
+                    if (account_status?.status?.includes('financial_information_not_complete')) {
                         header = localize('Complete your Financial assessment');
                     } else {
                         header = localize('Update required');
@@ -1492,7 +1492,7 @@ export default class NotificationStore extends BaseStore {
                 }
 
                 if (is_cr_account) {
-                    if (account_status.includes('financial_information_not_complete')) {
+                    if (account_status?.status?.includes('financial_information_not_complete')) {
                         message = localize('Help us keep your information up to date by completing the assessment.');
                     } else {
                         message = localize(

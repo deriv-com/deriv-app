@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import Cookies from 'js-cookie';
 
-import { loginUrl, removeCookies } from '@deriv/shared';
+import { removeCookies } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { getLanguage } from '@deriv/translations';
+import { Chat } from '@deriv/utils';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 type UseTMBReturn = {
@@ -33,17 +33,34 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
     const currentPathname = window.location.pathname;
     const isEndpointPage = currentPathname.endsWith('/endpoint') || currentPathname === '/endpoint';
     const isRedirectPage = currentPathname.endsWith('/redirect') || currentPathname === '/redirect';
-    const oauthUrl = loginUrl({
-        language: getLanguage(),
-    });
+
     const domains = useMemo(
         () => ['deriv.com', 'deriv.dev', 'binary.sx', 'pages.dev', 'localhost', 'deriv.be', 'deriv.me'],
         []
     );
     const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
 
+    function endChat() {
+        window.LC_API?.close_chat?.();
+        window.LiveChatWidget?.call('hide');
+        window.fcWidget?.close();
+        Chat.clear();
+    }
+
     const handleLogout = useCallback(async () => {
         removeCookies('affiliate_token', 'affiliate_tracking', 'utm_data', 'onfido_token', 'gclid');
+        localStorage.removeItem('closed_toast_notifications');
+        localStorage.removeItem('is_wallet_migration_modal_closed');
+        localStorage.removeItem('active_wallet_loginid');
+        localStorage.removeItem('config.account1');
+        localStorage.removeItem('config.tokens');
+        localStorage.removeItem('verification_code.system_email_change');
+        localStorage.removeItem('verification_code.request_email');
+        localStorage.removeItem('new_email.system_email_change');
+        Object.keys(sessionStorage)
+            .filter(key => key !== 'trade_store')
+            .forEach(key => sessionStorage.removeItem(key));
+        endChat();
         if (domains.includes(currentDomain)) {
             Cookies.set('logged_state', 'false', {
                 domain: currentDomain,
@@ -53,7 +70,7 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             });
         }
         // window.open(oauthUrl, '_self');
-    }, [currentDomain, domains, oauthUrl]);
+    }, [currentDomain, domains]);
 
     // Helper function to set account in session storage
     const setAccountInSessionStorage = (loginid?: string, isWallet = false) => {

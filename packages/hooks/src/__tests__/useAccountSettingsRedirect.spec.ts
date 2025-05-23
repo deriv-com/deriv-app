@@ -86,7 +86,7 @@ describe('useAccountSettingsRedirect', () => {
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
 
-    it('should return hub URL when both conditions are true', () => {
+    it('should return hub URL with default redirect_to=home when both conditions are true', () => {
         (useStore as jest.Mock).mockReturnValue({
             client: {
                 has_wallet: true,
@@ -102,6 +102,26 @@ describe('useAccountSettingsRedirect', () => {
         // In test environment, we should always get the staging URL
         const expectedUrl =
             'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=demo';
+
+        expect(result.current.redirect_url).toBe(expectedUrl);
+    });
+
+    it('should use custom redirect_to value when provided', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            client: {
+                has_wallet: true,
+            },
+        });
+
+        (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
+            isHubRedirectionEnabled: true,
+        });
+
+        const { result } = renderHook(() => useAccountSettingsRedirect('account-limits'));
+
+        // In test environment, we should always get the staging URL with the custom redirect_to value
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=account-limits&account=demo';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
     });
@@ -133,5 +153,44 @@ describe('useAccountSettingsRedirect', () => {
             'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=home&account=BTC';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
+    });
+
+    it('should set both redirect_url and mobile_redirect_url with custom redirect_to value', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            client: {
+                has_wallet: true,
+            },
+        });
+
+        (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
+            isHubRedirectionEnabled: true,
+        });
+
+        const { result } = renderHook(() => useAccountSettingsRedirect('trading-assessment'));
+
+        // Both URLs should contain the custom redirect_to value
+        const expectedUrl =
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=trading-assessment&account=demo';
+
+        expect(result.current.redirect_url).toBe(expectedUrl);
+        expect(result.current.mobile_redirect_url).toBe(expectedUrl);
+    });
+
+    it('should return deriv-app routes if isHubRedirectionEnabled is false', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            client: {
+                has_wallet: false,
+            },
+        });
+
+        (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
+            isHubRedirectionEnabled: false,
+        });
+
+        const { result } = renderHook(() => useAccountSettingsRedirect('custom-page'));
+
+        // Should still return the default routes regardless of the redirect_to parameter
+        expect(result.current.redirect_url).toBe(routes.personal_details);
+        expect(result.current.mobile_redirect_url).toBe(routes.account);
     });
 });

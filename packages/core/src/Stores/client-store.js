@@ -2404,7 +2404,17 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
-                this.storeClientAccounts(obj_params, account_list);
+                const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
+
+                if (this.canStoreClientAccounts(obj_params, account_list) || is_TMB_enabled) {
+                    this.storeClientAccounts(obj_params, account_list);
+                } else {
+                    // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
+                    authorize_response.error = {
+                        code: 'MismatchedAcct',
+                        message: localize('Invalid token'),
+                    };
+                }
             });
             return authorize_response;
         }

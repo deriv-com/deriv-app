@@ -15,7 +15,6 @@ const WalletsOustystemsMigrationModal = () => {
             process.env.NODE_ENV === 'production' ? OUT_SYSTEMS_TRADERSHUB.PRODUCTION : OUT_SYSTEMS_TRADERSHUB.STAGING;
 
         localStorage.removeItem('redirect_to_th_os');
-
         const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
             ? derivUrls.DERIV_HOST_NAME
             : window.location.hostname;
@@ -25,8 +24,7 @@ const WalletsOustystemsMigrationModal = () => {
         const urlParams = new URLSearchParams(urlQueryString);
         const accountCurrency = urlParams.get('account') || window.sessionStorage.getItem('account');
 
-        localStorage.setItem('wallet_redirect_done', 'true');
-        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${accountCurrency ? `&account=${accountCurrency}` : ''}`;
+        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${accountCurrency ? `&account=${accountCurrency}` : ''}`;
     };
 
     return (

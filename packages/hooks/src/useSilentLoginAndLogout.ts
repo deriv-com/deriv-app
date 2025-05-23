@@ -18,7 +18,7 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
-    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const loggedState = Cookies.get('logged_state');
 
     const { client } = useStore();

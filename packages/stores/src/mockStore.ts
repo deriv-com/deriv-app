@@ -698,6 +698,14 @@ const mock = (): TStores & { is_mock: boolean } => {
             updateChartType: jest.fn(),
             updateGranularity: jest.fn(),
             updateProposal: jest.fn(),
+            previous_accumulator_barriers_data: {},
+            is_barriers_loading: false,
+            setBarriersLoadingState(is_loading: boolean): void {
+                throw new Error('Function not implemented.');
+            },
+            restorePreviousBarriersIfNeeded(): void {
+                throw new Error('Function not implemented.');
+            },
         },
         modules: {
             cfd: {

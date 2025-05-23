@@ -2027,6 +2027,14 @@ export default class ClientStore extends BaseStore {
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
         runInAction(() => (this.is_switching = false));
+
+        if (this.root_store.contract_trade) {
+            this.root_store.contract_trade.setBarriersLoadingState(false);
+
+            if (this.root_store.modules?.trade?.contract_type === 'ACCU') {
+                this.root_store.modules.trade.requestProposal();
+            }
+        }
     }
 
     registerReactions() {

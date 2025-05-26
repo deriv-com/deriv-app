@@ -78,7 +78,6 @@ const DataList = React.memo(
             if (is_dynamic_height) {
                 cache.current = new CellMeasurerCache({
                     fixedWidth: true,
-                    defaultHeight: 100,
                     keyMapper: row_index => {
                         if (data_source_ref?.current && row_index < data_source_ref?.current.length)
                             return keyMapper?.(data_source_ref.current[row_index]) || row_index;
@@ -92,7 +91,6 @@ const DataList = React.memo(
 
         React.useEffect(() => {
             if (is_dynamic_height) {
-                cache.current?.clearAll();
                 list_ref.current?.recomputeGridSize?.({ columnIndex: 0, rowIndex: 0 });
             }
             trackItemsForTransition();

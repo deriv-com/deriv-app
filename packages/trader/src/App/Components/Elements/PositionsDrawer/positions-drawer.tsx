@@ -51,8 +51,14 @@ const PositionsDrawerCardItem = ({
     const { in_prop } = useNewRowTransition(is_new_row as boolean);
 
     React.useEffect(() => {
-        measure?.();
-    }, [portfolio_position?.contract_info.is_sold, measure]);
+        // Ensure measurement happens after render
+        if (measure) {
+            // Use setTimeout to ensure the DOM has been fully rendered
+            setTimeout(() => {
+                measure();
+            }, 0);
+        }
+    }, [portfolio_position?.contract_info.is_sold, measure, portfolio_position?.id]);
 
     React.useEffect(() => {
         if (portfolio_position?.contract_info.is_sold) {
@@ -189,7 +195,6 @@ const PositionsDrawer = observer(({ ...props }) => {
                     </Text>
                     <div
                         data-testid='dt_positions_drawer_close_icon'
-
                         id='dt_positions_drawer_close_icon'
                         className='positions-drawer__icon-close'
                         onClick={toggleDrawer}

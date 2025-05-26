@@ -51,9 +51,7 @@ const PositionsDrawerCardItem = ({
     const { in_prop } = useNewRowTransition(is_new_row as boolean);
 
     React.useEffect(() => {
-        // Ensure measurement happens after render
         if (measure) {
-            // Use setTimeout to ensure the DOM has been fully rendered
             setTimeout(() => {
                 measure();
             }, 0);

@@ -296,7 +296,7 @@ const CFDsListing = observer(() => {
                     <CFDsDescription />
                     {showNakala && (
                         <NakalaLinkedBanner
-                            description={localize('Copy trading with Deriv Nakala.')}
+                            description={localize('Copy trading with Deriv Nakala')}
                             onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
                         />
                     )}
@@ -743,7 +743,7 @@ const CFDsListing = observer(() => {
                         icon={'DerivNakala'}
                         name={'Deriv Nakala'}
                         platform={'mt5'}
-                        description={localize('Copy trading for CFDs on MT5.')}
+                        description={localize('Copy trading for CFDs on MT5')}
                         onAction={onOpenNakala}
                         key={`trading_app_card_${'Deriv Nakala'}`}
                         is_new

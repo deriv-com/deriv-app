@@ -187,14 +187,14 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                 </div>
             </div>
             {!isDesktop() && (
-                <div className={`cfd-nakala-modal__footer cfd-nakala-modal__footer--info-mobile'}`}>
+                <div className={`cfd-nakala-modal__footer cfd-nakala-modal__footer--info-mobile`}>
                     <Button
                         type='button'
                         onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')}
                         primary
                         large
                     >
-                        <Localize i18n_default_text='Open Deriv Nakala web' />
+                        <Localize i18n_default_text='Open Deriv Nakala app' />
                     </Button>
                 </div>
             )}

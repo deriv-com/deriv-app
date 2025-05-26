@@ -37,7 +37,7 @@ const AvailableNakalaTradeAccount: React.FC = () => {
                         </div>
                     </div>
                     <Text align='start' size='xs'>
-                        <Localize i18n_default_text='Copy trading for CFDs on MT5.' />
+                        <Localize i18n_default_text='Copy trading for CFDs on MT5' />
                     </Text>
                 </TradingAccountCard.Content>
                 <TradingAccountCard.Button>

@@ -133,10 +133,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
     return (
         <React.Fragment>
             {showNakala && (
-                <ProductLinkedBanner
-                    description={localize('Copy trading with Deriv Nakala.')}
-                    onClick={onButtonClick}
-                />
+                <ProductLinkedBanner description={localize('Copy trading with Deriv Nakala')} onClick={onButtonClick} />
             )}
             <div className='wallets-cfd-list-accounts__content'>
                 {mt5AccountsList?.map((account, index) => {

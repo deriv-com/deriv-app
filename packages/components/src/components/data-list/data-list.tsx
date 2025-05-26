@@ -13,12 +13,9 @@ import {
 } from 'react-virtualized';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
 import classNames from 'classnames';
-
 import { isDesktop, isForwardStartingBuyTransaction, isMobile } from '@deriv/shared';
-
 import ThemedScrollbars from '../themed-scrollbars';
 import { TPassThrough, TRow, TTableRowItem } from '../types/common.types';
-
 import DataListCell from './data-list-cell';
 import DataListRow, { TRowRenderer } from './data-list-row';
 

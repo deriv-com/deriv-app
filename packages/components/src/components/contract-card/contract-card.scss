@@ -630,11 +630,6 @@
     }
 }
 
-/* Fix for ReactVirtualized grid container height issues */
-.ReactVirtualized__Grid__innerScrollContainer {
-    min-height: 150px !important;
-}
-
 /** @define dc-contract-type */
 .dc-contract-type {
     display: flex;

@@ -96,7 +96,7 @@
                 margin: 0;
                 max-width: none;
                 width: 25.6rem;
-                flex: 1;
+                flex: 0;
 
                 @include mobile-or-tablet-screen {
                     width: 100%;

@@ -280,6 +280,13 @@ describe('useTMB', () => {
 
     describe('convertedResult formatting', () => {
         it('should format tokens correctly for client store', async () => {
+            // Mock localStorage to return different tokens to trigger reinitialization
+            mockLocalStorage.getItem.mockImplementation(key => {
+                if (key === 'clientAccounts') {
+                    return JSON.stringify([{ loginid: 'OLD123', token: 'oldtoken', cur: 'EUR' }]);
+                }
+                return null;
+            });
             const { result } = renderHook(() => useTMB(), { wrapper });
 
             await result.current.onRenderTMBCheck();

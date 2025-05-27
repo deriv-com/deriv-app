@@ -98,10 +98,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
             {
                 header: localize('How do I check if my deposit method also supports withdrawals?'),
                 content: (
-                    <Localize
-                        i18n_default_text='You can check if a payment method supports withdrawals on the <0>payment methods page</0>. If it shows "Withdrawal: N/A," that means withdrawals aren’t available for that method, so you’ll need to choose a different deposit method that allows both deposits and withdrawals.'
-                        components={[<StaticUrl key={0} className='link' href='/payment-methods' />]}
-                    />
+                    <Localize i18n_default_text='You can check if a payment method supports withdrawals on the deposit page. If it shows "Withdrawal: N/A," that means withdrawals aren’t available for that method, so you’ll need to choose a different deposit method that allows both deposits and withdrawals.' />
                 ),
             },
         ];

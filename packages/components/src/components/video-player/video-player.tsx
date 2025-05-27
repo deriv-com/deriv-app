@@ -15,7 +15,6 @@ type TVideoPlayerProps = {
     is_mobile?: boolean;
     is_v2?: boolean;
     increased_drag_area?: boolean;
-    muted?: boolean;
     src: string;
     show_loading?: boolean;
     onModalClose?: () => void;
@@ -35,7 +34,6 @@ const VideoPlayer = ({
     is_mobile,
     is_v2,
     increased_drag_area,
-    muted = false,
     src,
     show_loading = false,
     onModalClose,
@@ -51,7 +49,6 @@ const VideoPlayer = ({
     const [is_animated, setIsAnimated] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
-    const [is_muted, setIsMuted] = React.useState(muted);
     const [playback_rate, setPlaybackRate] = React.useState(1);
     const [show_controls, setShowControls] = React.useState(should_show_controls ? true : !should_autoplay);
     const [is_in_initial_period, setIsInInitialPeriod] = React.useState(should_show_controls);
@@ -67,7 +64,6 @@ const VideoPlayer = ({
     }, [should_show_controls]);
     const [shift_X, setShiftX] = React.useState(0);
     const [video_duration, setVideoDuration] = React.useState<number>();
-    const [volume, setVolume] = React.useState(0.5);
 
     const video_ref = React.useRef<StreamPlayerApi>();
     const progress_bar_filled_ref = React.useRef<HTMLDivElement>(null);
@@ -355,7 +351,7 @@ const VideoPlayer = ({
                 className={classNames('', { player: is_v2 })}
                 width='100%'
                 letterboxColor='transparent'
-                muted={is_muted}
+                muted={true}
                 preload='auto'
                 responsive={is_v2 ? undefined : false}
                 src={src}
@@ -366,7 +362,7 @@ const VideoPlayer = ({
                 onSeeked={() => (should_check_time_ref.current = true)}
                 onSeeking={() => (should_check_time_ref.current = true)}
                 playbackRate={playback_rate}
-                volume={volume}
+                volume={0}
             />
             {is_loading && show_loading && (
                 <div className='player__loader' style={{ height: height ?? (is_mobile ? '184.5px' : '270px') }}>
@@ -392,17 +388,13 @@ const VideoPlayer = ({
                 is_ended={is_ended.current}
                 is_playing={is_playing}
                 is_mobile={is_mobile}
-                is_muted={is_muted}
                 is_v2={is_v2}
                 increased_drag_area={increased_drag_area}
                 onRewind={onRewind}
-                onVolumeChange={setVolume}
                 onPlaybackRateChange={setPlaybackRate}
                 show_controls={show_controls}
                 togglePlay={togglePlay}
-                toggleMute={setIsMuted}
                 video_duration={video_duration}
-                volume={volume}
                 progress_bar_filled_ref={progress_bar_filled_ref}
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}

@@ -4,6 +4,7 @@ import { routes } from '@deriv/shared';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import Cookies from 'js-cookie';
 import { useTMB } from '@deriv/hooks';
+import { useEffect, useState } from 'react';
 
 type TErrorComponent = {
     header: JSX.Element | string;
@@ -25,14 +26,24 @@ const ErrorComponent = ({
     should_show_refresh = true,
 }: Partial<TErrorComponent>) => {
     const { isTmbEnabled } = useTMB();
-    const is_tmb_enabled = isTmbEnabled();
+    const [isTmbEnabledValue, setIsTmbEnabledValue] = useState(false);
+
+    useEffect(() => {
+        const checkTmbStatus = async () => {
+            const tmbStatus = await isTmbEnabled();
+            setIsTmbEnabledValue(tmbStatus);
+        };
+
+        checkTmbStatus();
+    }, [isTmbEnabled]);
+
     const refresh_message: JSX.Element | string = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />
     ) : (
         ''
     );
 
-    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com && !is_tmb_enabled) {
+    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com && !isTmbEnabledValue) {
         try {
             requestOidcAuthentication({
                 redirectCallbackUri: `${window.location.origin}/callback`,

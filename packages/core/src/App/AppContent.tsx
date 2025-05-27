@@ -94,7 +94,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
-    const is_TMB_Enabled = localStorage.getItem('is_tmb_enabled');
 
     const livechat_client_information: Parameters<typeof useLiveChat>[0] = {
         is_client_store_initialized,

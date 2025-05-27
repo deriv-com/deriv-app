@@ -8,6 +8,7 @@ import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 import { useDevice } from '@deriv-com/ui';
+import { useTMB } from '@deriv/hooks';
 
 type TResetPasswordModalValues = {
     password: string;
@@ -16,7 +17,6 @@ type TResetPasswordModalValues = {
 const ResetPasswordModal = observer(() => {
     const { ui, client } = useStore();
     const { logout: logoutClient, verification_code, setVerificationCode, setPreventRedirectToHub } = client;
-    const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const {
         disableApp,
@@ -26,13 +26,15 @@ const ResetPasswordModal = observer(() => {
         toggleResetPasswordModal,
         toggleLinkExpiredModal,
     } = ui;
+    const { isTmbEnabled } = useTMB();
 
     const { isDesktop } = useDevice();
 
-    const onResetComplete = (
+    const onResetComplete = async (
         error: TSocketError<'reset_password'>['error'] | null,
         actions: FormikHelpers<TResetPasswordModalValues>
     ) => {
+        const is_tmb_enabled = await isTmbEnabled();
         actions.setSubmitting(false);
         const error_code = error?.code;
         // Error would be returned on invalid token (and the like) cases.
@@ -53,7 +55,7 @@ const ResetPasswordModal = observer(() => {
         setPreventRedirectToHub(false);
         actions.setStatus({ reset_complete: true });
         logoutClient().then(() => {
-            if (is_deriv_com && !is_TMB_enabled) {
+            if (is_deriv_com && !is_tmb_enabled) {
                 try {
                     requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,

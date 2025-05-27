@@ -53,7 +53,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
     const { is_dark_mode_on, setDarkMode } = store.ui;
-    const { onRenderTMBCheck } = useTMB();
+    const { onRenderTMBCheck, isTmbEnabled } = useTMB();
 
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -155,8 +155,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     ]);
 
     React.useEffect(() => {
-        if (is_TMB_Enabled) onRenderTMBCheck();
-    }, [onRenderTMBCheck, is_TMB_Enabled]);
+        const renderTMB = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            if (is_tmb_enabled) onRenderTMBCheck();
+        };
+        renderTMB();
+    }, [onRenderTMBCheck]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

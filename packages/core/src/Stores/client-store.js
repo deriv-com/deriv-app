@@ -1186,7 +1186,7 @@ export default class ClientStore extends BaseStore {
         const email = this.email || client_accounts[loginid]?.email;
         const residence = this.residence || client_accounts[loginid]?.residence;
 
-        const { first_name, last_name, name } = account_settings;
+        // const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
                 loginid,
@@ -1194,9 +1194,9 @@ export default class ClientStore extends BaseStore {
                 landing_company_shortcode,
                 currency,
                 residence,
-                first_name,
-                last_name,
-                name,
+                first_name: account_settings.first_name,
+                last_name: account_settings.last_name,
+                name: account_settings.name,
                 preferred_language,
                 user_id,
             };
@@ -2404,9 +2404,8 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 const account_list = (authorize_response.authorize || {}).account_list;
                 this.upgradeable_landing_companies = [...new Set(authorize_response.upgradeable_landing_companies)];
-                const is_TMB_enabled = localStorage.getItem('is_tmb_enabled');
 
-                if (this.canStoreClientAccounts(obj_params, account_list) || is_TMB_enabled) {
+                if (this.canStoreClientAccounts(obj_params, account_list)) {
                     this.storeClientAccounts(obj_params, account_list);
                 } else {
                     // Since there is no API error, we have to add this to manually trigger checks in other parts of the code.
@@ -2420,7 +2419,8 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    canStoreClientAccounts(obj_params, account_list) {
+    async canStoreClientAccounts(obj_params, account_list) {
+        let is_TMB_enabled;
         const is_ready_to_process = account_list && isEmptyObject(this.accounts);
         const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
@@ -2428,7 +2428,21 @@ export default class ClientStore extends BaseStore {
             account_list.some(account => account.loginid === obj_params[acct])
         );
 
-        return is_ready_to_process && is_cross_checked;
+        const storedValue = localStorage.getItem('is_tmb_enabled');
+        try {
+            const url = 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+            const response = await fetch(url);
+            const result = await response.json();
+
+            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : !!result.app;
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            // by default it will fallback to true if firebase error happens
+            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : true;
+        }
+
+        return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;
     }
 
     setVerificationCode(code, action) {

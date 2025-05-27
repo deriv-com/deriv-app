@@ -9,6 +9,7 @@ import { requestSessionActive } from '@deriv-com/auth-client';
 type UseTMBReturn = {
     handleLogout: VoidFunction;
     onRenderTMBCheck: VoidFunction;
+    isTmbEnabled: () => Promise<boolean>;
 };
 
 type TMBApiReturnedValue = {
@@ -59,6 +60,7 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             localStorage.removeItem('verification_code.request_email');
             localStorage.removeItem('new_email.system_email_change');
             localStorage.removeItem('active_loginid');
+            localStorage.removeItem('clientAccounts');
             Object.keys(sessionStorage)
                 .filter(key => key !== 'trade_store')
                 .forEach(key => sessionStorage.removeItem(key));
@@ -94,6 +96,22 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
             showErrorModal?.();
         }
     }, [showErrorModal]);
+
+    const isTmbEnabled = async () => {
+        const storedValue = localStorage.getItem('is_tmb_enabled');
+        try {
+            const url = 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+            const response = await fetch(url);
+            const result = await response.json();
+
+            return storedValue !== null ? storedValue === 'true' : !!result.app;
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            // by default it will fallback to true if firebase error happens
+            return storedValue !== null ? storedValue === 'true' : true;
+        }
+    };
 
     const onRenderTMBCheck = useCallback(async () => {
         setIsLoggingIn(true);
@@ -204,7 +222,7 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
         }
     }, [getActiveSessions, isEndpointPage, handleLogout, domains, currentDomain, isRedirectPage]);
 
-    return { handleLogout, onRenderTMBCheck };
+    return { handleLogout, onRenderTMBCheck, isTmbEnabled };
 };
 
 export default useTMB;

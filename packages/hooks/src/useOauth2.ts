@@ -2,6 +2,7 @@ import { redirectToLogin } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useStore } from '@deriv/stores';
+import useTMB from './useTMB';
 
 /**
  * Provides an object with one properties: `oAuthLogout`.
@@ -17,8 +18,11 @@ import { useStore } from '@deriv/stores';
 const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const { common, client } = useStore();
+    const { isTmbEnabled } = useTMB();
+
     const loginHandler = async () => {
-        if (is_deriv_com) {
+        const is_tmb_enabled = await isTmbEnabled();
+        if (is_deriv_com && !is_tmb_enabled) {
             try {
                 await requestOidcAuthentication({
                     redirectCallbackUri: `${window.location.origin}/callback`,

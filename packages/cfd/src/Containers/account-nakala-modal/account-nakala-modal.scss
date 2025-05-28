@@ -1,7 +1,7 @@
 .cfd-nakala-modal {
     display: flex;
     flex-direction: column;
-    padding: 40px 24px 0;
+    padding: 40px 20px 0;
 
     &__logo-container {
         display: flex;
@@ -32,6 +32,7 @@
         p {
             margin-bottom: 0.8rem;
             color: #101213;
+            text-align: center;
 
             &:last-child {
                 margin-bottom: 0;

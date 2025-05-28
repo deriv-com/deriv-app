@@ -6,16 +6,8 @@ import { ValidationConstants } from '@deriv-com/utils';
 
 import { TEmployeeDetailsTinValidationConfig } from '../Types';
 
-const {
-    taxIdentificationNumber,
-    address,
-    addressCity,
-    addressState,
-    postalCode,
-    phoneNumber,
-    name,
-    postalOfficeBoxNumber,
-} = ValidationConstants.patterns;
+const { taxIdentificationNumber, address, addressCity, postalCode, phoneNumber, name, postalOfficeBoxNumber } =
+    ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
 type TINDepdendents = {

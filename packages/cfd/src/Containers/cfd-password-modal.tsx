@@ -1,15 +1,17 @@
 import React from 'react';
 import { useHistory } from 'react-router';
+import classNames from 'classnames';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
-import { useDevice } from '@deriv-com/ui';
+
 import { SentEmailModal } from '@deriv/account';
-import '../sass/cfd.scss';
 import {
+    Div100vhContainer,
     FormSubmitButton,
     Icon,
     MobileDialog,
     Modal,
     MultiStep,
+    PageOverlay,
     PasswordInput,
     PasswordMeter,
     Text,
@@ -18,23 +20,27 @@ import {
     getCFDPlatformLabel,
     getCFDPlatformNames,
     getErrorMessages,
-    routes,
-    validLength,
-    validPassword,
-    validMT5Password,
     makeLazyLoader,
     moduleLoader,
+    validLength,
+    validMT5Password,
+    validPassword,
     WS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
-import SuccessDialog from '../Components/success-dialog/success-dialog';
+import { useDevice } from '@deriv-com/ui';
+
 import MigrationSuccessModal from '../Components/migration-success-modal';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { CFD_PLATFORMS, CATEGORY } from '../Helpers/cfd-config';
-import classNames from 'classnames';
+import SuccessDialog from '../Components/success-dialog/success-dialog';
+import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
+import CFDDerivNakalaInfo, { CFDDerivNakalaLinkAccount } from './account-nakala-modal/account-nakala-modal';
+import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
+
+import '../sass/cfd.scss';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
@@ -74,6 +80,7 @@ type TPasswordModalHeaderProps = {
     should_set_trading_password: boolean;
     is_password_reset_error: boolean;
     platform: string;
+    is_nakala_info: boolean;
     has_mt5_account?: boolean;
 };
 
@@ -126,6 +133,7 @@ const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
     platform,
+    is_nakala_info,
 }: TPasswordModalHeaderProps) => {
     const { isDesktop } = useDevice();
     const is_mt5 = platform === CFD_PLATFORMS.MT5;
@@ -137,6 +145,14 @@ const PasswordModalHeader = ({
               padding: '2rem',
           }
         : {};
+
+    if (is_nakala_info) {
+        return (
+            <Text as={element} line_height='m' weight='bold' size={!isDesktop ? 'xs' : 's'} align='center'>
+                <Localize i18n_default_text='Deriv Nakala' />
+            </Text>
+        );
+    }
 
     if (is_mt5 && !is_password_reset_error) {
         const platform_name = getCFDPlatformNames(platform);
@@ -556,6 +572,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         setIsMt5PasswordInvalidFormatModalVisible,
         is_sent_email_modal_enabled,
         setSentEmailModalStatus,
+        is_nakala_banner_visible,
+        setNakalaBannerVisible,
     } = useCfdStore();
 
     const history = useHistory();
@@ -573,6 +591,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         error_type === 'InvalidTradingPlatformPasswordFormat' || error_type === 'IncorrectMT5PasswordFormat';
 
     const [new_password_value, setNewPasswordValue] = React.useState('');
+    const [is_nakala_info_visible, setIsNakalaInfoVisible] = React.useState(is_nakala_banner_visible);
 
     // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
     // It is to avoid the flickering of the modal.
@@ -633,6 +652,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const closeModal = () => {
+        updateMT5Status();
+        closeDialogs();
+        disableCFDPasswordModal();
+    };
+
+    const onCloseNakalaSuccessModal = () => {
+        setNakalaBannerVisible(false);
         updateMT5Status();
         closeDialogs();
         disableCFDPasswordModal();
@@ -815,6 +841,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     };
 
+    const handleCFdPasswordModal = () => {
+        if (is_nakala_banner_visible && is_nakala_info_visible) {
+            return <CFDDerivNakalaInfo onclickAction={() => setIsNakalaInfoVisible(false)} />;
+        }
+        return cfd_password_form;
+    };
+
     const cfd_password_form = (
         <CFDPasswordForm
             closeModal={closeModal}
@@ -847,6 +880,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
             onUnmount={() => getAccountStatus(platform)}
@@ -854,7 +888,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onEntered={() => setPasswordModalExited(false)}
             width='auto'
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </Modal>
     );
 
@@ -870,10 +904,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     should_set_trading_password={should_set_trading_password}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </MobileDialog>
     );
 
@@ -890,10 +925,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     has_mt5_account={has_mt5_account}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
+                    is_nakala_info={is_nakala_info_visible}
                 />
             )}
         >
-            {cfd_password_form}
+            {handleCFdPasswordModal()}
         </MobileDialog>
     );
 
@@ -945,16 +981,50 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </MobileDialog>
     );
 
+    const success_mt5_nakala_modal = () => {
+        if (isDesktop) {
+            return (
+                <Modal
+                    className={classNames('cfd-password-modal')}
+                    has_close_icon
+                    hasfull_height={isDesktop ? undefined : true}
+                    is_open={should_show_success && is_nakala_banner_visible}
+                    toggleModal={onCloseNakalaSuccessModal}
+                    should_header_stick_body
+                    renderTitle={() => localize('Deriv Nakala')}
+                    width={isDesktop ? '485px' : '100%'}
+                >
+                    <CFDDerivNakalaLinkAccount isSuccess />
+                </Modal>
+            );
+        }
+        return (
+            <PageOverlay
+                is_open={should_show_success && is_nakala_banner_visible}
+                portal_id='deriv_app'
+                header='Trade'
+                toggleModal={onCloseNakalaSuccessModal}
+                header_classname='cfd-trade-modal__mobile-title'
+            >
+                <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+                    <CFDDerivNakalaLinkAccount isSuccess />
+                </Div100vhContainer>
+            </PageOverlay>
+        );
+    };
+
     const invalid_mt5_password_modal = isMobileOrTabletPortrait
         ? is_mt5_password_format_invalid
         : is_mt5_password_format_invalid_desktop;
+
     return (
         <React.Fragment>
             {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
             {password_modal}
             {password_dialog}
+            {is_nakala_banner_visible && success_mt5_nakala_modal()}
             <SuccessDialog
-                is_open={should_show_success}
+                is_open={should_show_success && !is_nakala_banner_visible}
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}

@@ -24,6 +24,7 @@ jest.mock('react-router-dom', () => ({
             },
         },
     })),
+    withRouter: jest.fn(component => component),
 }));
 
 jest.mock('../components', () => ({

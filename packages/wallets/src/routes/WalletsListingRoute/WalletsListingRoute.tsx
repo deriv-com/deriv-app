@@ -1,4 +1,4 @@
-import React, { lazy, useEffect } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useSettings } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
@@ -25,22 +25,39 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirectionEnabled }) => {
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
-    const { data: settingsData } = useSettings();
+    const { data: settingsData, isLoading: isSettingsLoading } = useSettings();
     const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
-    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account'); // Fallback to cookie if BE flag is not available
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
+    const [shouldShowOutsystemsMigrationModal, setShouldShowOutsystemsMigrationModal] = useState(false);
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && (settingsData.feature_flag?.wallet == 0 || !isOutsystemsMigrationModalClosed)) {
+        if (!isSettingsLoading) {
+            const isWalletFlagDisabled = settingsData?.feature_flag?.wallet === 0;
+            // Fallback to cookie if BE flag is not available
+            setShouldShowOutsystemsMigrationModal(
+                settingsData?.feature_flag?.wallet !== undefined
+                    ? isWalletFlagDisabled
+                    : !isOutsystemsMigrationModalClosed
+            );
+        }
+    }, [isSettingsLoading, settingsData, isOutsystemsMigrationModalClosed]);
+
+    useEffect(() => {
+        if (isHubRedirectionEnabled && shouldShowOutsystemsMigrationModal) {
             show(<WalletsOutsystemsMigrationModal />);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isHubRedirectionEnabled, settingsData, isOutsystemsMigrationModalClosed]);
+    }, [isHubRedirectionEnabled, shouldShowOutsystemsMigrationModal]);
 
-    if ((isOutsystemsMigrationModalClosed || settingsData.feature_flag?.wallet !== 0) && isHubRedirectionEnabled) {
+    if (isSettingsLoading) {
+        return <WalletLoader />;
+    }
+
+    if (!shouldShowOutsystemsMigrationModal && isHubRedirectionEnabled) {
         return <WalletLoader />;
     }
 

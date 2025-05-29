@@ -9,19 +9,12 @@ import { Formik, FormikHelpers } from 'formik';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import {
-    ACCOUNTS_OS_DFA_URL,
-    getAppId,
-    getSocketURL,
-    platforms,
-    routes,
-    shouldHideOccupationField,
-    WS,
-} from '@deriv/shared';
+import { ACCOUNTS_OS_DFA_URL, getSocketURL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 import DemoMessage from 'Components/demo-message';
 import FormBody from 'Components/form-body';
@@ -230,6 +223,11 @@ const FinancialAssessment = observer(() => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState<Partial<GetFinancialAssessment>>({});
+    const [financial_information_version, setFinancialInformationVersion] = React.useState('');
+    const [account_status, setAccountStatus] = React.useState([]);
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const {
         income_source,
@@ -258,7 +256,8 @@ const FinancialAssessment = observer(() => {
         } else {
             WS.authorized.storage.getFinancialAssessment().then(async (data: GetFinancialAssessmentResponse) => {
                 try {
-                    await WS.wait('get_account_status');
+                    const status = await WS.wait('get_account_status');
+                    setAccountStatus(status?.get_account_status?.status ?? []);
                     setHasTradingExperience(
                         (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
                     );
@@ -273,7 +272,10 @@ const FinancialAssessment = observer(() => {
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-                    if (data?.get_financial_assessment) setInitialFormValues(data.get_financial_assessment);
+                    if (data?.get_financial_assessment) {
+                        setInitialFormValues(data.get_financial_assessment);
+                        setFinancialInformationVersion(data.get_financial_assessment?.financial_information_version);
+                    }
                     setIsLoading(false);
                 } catch (e) {
                     // eslint-disable-next-line no-console
@@ -415,6 +417,7 @@ const FinancialAssessment = observer(() => {
     };
 
     if (
+        (account_status?.includes('update_fa') && financial_information_version === 'v1') ||
         !employment_status ||
         !account_settings.account_opening_reason ||
         !account_settings.tax_residence ||
@@ -423,15 +426,15 @@ const FinancialAssessment = observer(() => {
         return <NavigateToPersonalDetails />;
     }
 
-    const getFormattedURL = url_link => {
+    const getFormattedURL = (url_link: string) => {
         const url = new URL(url_link);
         const urlParams = new URLSearchParams(location.search);
         const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
 
         const params = {
             platform,
-            appid: getAppId(),
-            lang: 'en',
+            appid: WebSocketUtils.getAppId(),
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

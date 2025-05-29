@@ -14,7 +14,7 @@ import {
     getSocketURL,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { WebSocketUtils } from '@deriv-com/utils';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 import './verification-docs-list-modal.scss';
 
 type TListItemProps = {
@@ -67,6 +67,9 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
     const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'redirect_to_poi_in_accounts_os',
     });
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const getFormattedURL = (url_link: string) => {
         const url = new URL(url_link);
@@ -77,7 +80,7 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         const params = {
             platform,
             appid: WebSocketUtils.getAppId(),
-            lang: 'en',
+            lang: i18n_language,
             server: getSocketURL(),
             token: getToken(),
         };

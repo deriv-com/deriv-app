@@ -8,6 +8,7 @@ import {
     useAccountSettingsRedirect,
     useAccountTransferVisible,
     useAuthorize,
+    useIsHubRedirectionEnabled,
     useOauth2,
     useOnrampVisible,
     useP2PSettings,
@@ -95,6 +96,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         rest: { isSubscribed },
         p2p_settings,
     } = useP2PSettings();
+
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
@@ -319,6 +322,21 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
+    const handleTradershubRedirect = () => {
+        if (isHubRedirectionEnabled && has_wallet) {
+            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+
+            return `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+        }
+        return routes.traders_hub;
+    };
+
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
@@ -373,7 +391,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 </MobileDrawer.Item>
                                 <MobileDrawer.Item>
                                     <MenuLink
-                                        link_to={routes.traders_hub}
+                                        link_to={handleTradershubRedirect()}
                                         icon={TradersHubIcon}
                                         text={localize("Trader's Hub")}
                                         onClickLink={toggleDrawer}
@@ -418,14 +436,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {HelpCentreRoute()}
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        <MobileDrawer.Item>
-                                            <MenuLink
-                                                link_to={routes.account_limits}
-                                                icon='IcAccountLimits'
-                                                text={localize('Account Limits')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
                                         <MobileDrawer.Item
                                             className={
                                                 should_show_regulatory_information

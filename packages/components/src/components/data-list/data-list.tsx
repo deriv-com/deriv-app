@@ -1,23 +1,23 @@
 import React from 'react';
-import classNames from 'classnames';
 import { TransitionGroup } from 'react-transition-group';
 import {
-    List as _List,
+    AutoSizer as _AutoSizer,
+    type AutoSizerProps,
     CellMeasurer as _CellMeasurer,
     CellMeasurerCache,
     CellMeasurerProps,
-    AutoSizer as _AutoSizer,
-    type AutoSizerProps,
+    IndexRange,
+    List as _List,
     ListProps,
     ListRowProps,
-    IndexRange,
 } from 'react-virtualized';
-import { isMobile, isDesktop, isForwardStartingBuyTransaction } from '@deriv/shared';
+import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
+import classNames from 'classnames';
+import { isDesktop, isForwardStartingBuyTransaction, isMobile } from '@deriv/shared';
+import ThemedScrollbars from '../themed-scrollbars';
+import { TPassThrough, TRow, TTableRowItem } from '../types/common.types';
 import DataListCell from './data-list-cell';
 import DataListRow, { TRowRenderer } from './data-list-row';
-import ThemedScrollbars from '../themed-scrollbars';
-import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
-import { TTableRowItem, TPassThrough, TRow } from '../types/common.types';
 
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;

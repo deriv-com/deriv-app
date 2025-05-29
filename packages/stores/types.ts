@@ -446,6 +446,7 @@ export type TClientStore = {
         is_loading?: boolean;
         api_initial_load_error?: string;
     };
+    setIsLoggingIn: (value: boolean) => void;
     account_list: TAccountsList;
     self_exclusion: Partial<GetSelfExclusion>;
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
@@ -1039,6 +1040,7 @@ type TContractTradeStore = {
     accu_barriers_timeout_id: NodeJS.Timeout | null;
     accumulator_barriers_data: Partial<TAccumulatorBarriersData>;
     accumulator_contract_barriers_data: Partial<TAccumulatorContractBarriersData>;
+    previous_accumulator_barriers_data: Partial<TAccumulatorBarriersData>;
     addContract: ({
         barrier,
         contract_id,
@@ -1059,6 +1061,7 @@ type TContractTradeStore = {
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
     has_error: boolean;
+    is_barriers_loading: boolean;
     last_contract: TContractStore | Record<string, never>;
     markers_array: Array<{
         type: string;
@@ -1073,6 +1076,8 @@ type TContractTradeStore = {
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
+    setBarriersLoadingState: (is_loading: boolean) => void;
+    restorePreviousBarriersIfNeeded: () => void;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean

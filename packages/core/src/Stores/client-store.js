@@ -2202,7 +2202,7 @@ export default class ClientStore extends BaseStore {
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
-        Analytics.identifyEvent('');
+        Analytics.reset();
 
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());

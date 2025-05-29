@@ -49,7 +49,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 postLogoutRedirectUri: `${window.location.origin}/`,
             });
-            Analytics.identifyEvent('');
+            Analytics.reset();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

@@ -51,8 +51,12 @@ const PositionsDrawerCardItem = ({
     const { in_prop } = useNewRowTransition(is_new_row as boolean);
 
     React.useEffect(() => {
-        measure?.();
-    }, [portfolio_position?.contract_info.is_sold, measure]);
+        if (measure) {
+            setTimeout(() => {
+                measure();
+            }, 0);
+        }
+    }, [portfolio_position?.contract_info.is_sold, measure, portfolio_position?.id]);
 
     React.useEffect(() => {
         if (portfolio_position?.contract_info.is_sold) {

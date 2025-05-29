@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader, deriv_urls } from '@deriv/shared';
+
+import { useIsHubRedirectionEnabled, useOauth2, useSettings } from '@deriv/hooks';
+import { deriv_urls, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -42,7 +43,7 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
-    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
+    const { data: settingsData } = useSettings();
 
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
@@ -54,7 +55,7 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (
             isHubRedirectionEnabled &&
-            isOutsystemsMigrationModalClosed &&
+            settingsData?.feature_flag?.wallet !== 0 &&
             has_wallet &&
             !is_logging_out &&
             is_logged_in &&

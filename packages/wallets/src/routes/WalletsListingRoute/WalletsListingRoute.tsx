@@ -1,6 +1,6 @@
 import React, { lazy, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useSettings } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
@@ -25,6 +25,7 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirectionEnabled }) => {
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
+    const { data: settingsData } = useSettings();
     const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
@@ -33,13 +34,13 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
     const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
     useEffect(() => {
-        if (!isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
+        if (isHubRedirectionEnabled && settingsData.feature_flag?.wallet == 0) {
             show(<WalletsOutsystemsMigrationModal />);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed]);
+    }, [isHubRedirectionEnabled, settingsData]);
 
-    if (isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
+    if ((isOutsystemsMigrationModalClosed || settingsData.feature_flag?.wallet !== 0) && isHubRedirectionEnabled) {
         return <WalletLoader />;
     }
 

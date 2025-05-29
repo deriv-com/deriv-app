@@ -325,7 +325,7 @@ describe('getAddressDetailValidationSchema', () => {
         await expect(address_state.validate('NY')).resolves.toBe('NY');
         await expect(address_state.validate('a'.repeat(102))).rejects.toThrow('State is not in a proper format');
 
-        await expect(address_state.validate('%_ASD')).rejects.toThrow('State is not in a proper format');
+        await expect(address_state.validate('%_ASD')).resolves.toBe('%_ASD');
     });
 
     it('validates address_city correctly', async () => {
@@ -337,5 +337,10 @@ describe('getAddressDetailValidationSchema', () => {
         await expect(address_city.validate('%_ASD')).rejects.toThrow(
             'Only letters, periods, hyphens, apostrophes, and spaces, please.'
         );
+    });
+
+    it('validates address_state with special characters', async () => {
+        const { address_state } = getAddressDetailValidationSchema(false).fields;
+        await expect(address_state.validate('Z̧ufār')).resolves.toBe('Z̧ufār');
     });
 });

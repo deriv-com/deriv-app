@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routes, isTabletOs, TRoute } from '@deriv/shared';
+import { routes, isTabletOs } from '@deriv/shared';
 import { Button, Icon, Popover } from '@deriv/components';
 import { useIsHubRedirectionEnabled, useAccountSettingsRedirect } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
@@ -92,9 +92,8 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
     const { client, ui, notifications } = useStore();
     const { is_logged_in, accounts, loginid, has_wallet } = client;
     const { openRealAccountSignup, toggleAccountsDialog, is_accounts_switcher_on } = ui;
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
-    const { redirect_url } = useAccountSettingsRedirect();
     const { is_notifications_visible, notifications: notificationsArray, toggleNotificationsModal } = notifications;
 
     const notifications_count = notificationsArray?.length;
@@ -103,8 +102,8 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
     const is_virtual = active_account?.is_virtual;
     const currency = active_account?.currency;
 
-    const isCurrencyButtonVisible = !isMobile && !is_traders_hub_routes && !is_virtual && !currency;
-    const isManageFundsButtonVisible = !isMobile && !is_traders_hub_routes && currency;
+    const isCurrencyButtonVisible = isDesktop && !is_traders_hub_routes && !is_virtual && !currency;
+    const isManageFundsButtonVisible = isDesktop && !is_traders_hub_routes && currency;
 
     const history = useHistory();
 
@@ -142,9 +141,9 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
                 count={notifications_count}
                 is_visible={is_notifications_visible}
                 toggleDialog={toggleNotificationsModal}
-                is_mobile={isMobile}
+                is_mobile={!isDesktop}
             />
-            {!isMobile && <AccountSettingsToggle />}
+            {isDesktop && <AccountSettingsToggle />}
         </>
     );
 });

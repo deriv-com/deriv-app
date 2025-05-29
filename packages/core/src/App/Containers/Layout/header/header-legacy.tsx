@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
+import { platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';

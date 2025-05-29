@@ -127,12 +127,12 @@ const AccountActionsComponent = ({
     toggleAccountsDialog,
     toggleNotifications,
 }: TAccountActionsProps) => {
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const location = useLocation();
 
     const isDepositButtonVisible =
-        !isMobile && !is_traders_hub_routes && currency && !location.pathname.includes(routes.cashier);
-    const isCurrencyButtonVisible = !isMobile && !is_traders_hub_routes && !is_virtual && !currency;
+        isDesktop && !is_traders_hub_routes && currency && !location.pathname.includes(routes.cashier);
+    const isCurrencyButtonVisible = isDesktop && !is_traders_hub_routes && !is_virtual && !currency;
 
     const formattedBalance = balance != null ? formatMoney(currency, balance, true) : undefined;
 
@@ -148,7 +148,7 @@ const AccountActionsComponent = ({
                 currency={currency}
                 is_dialog_on={is_acc_switcher_on}
                 toggleDialog={toggleAccountsDialog}
-                {...(isMobile && {
+                {...(!isDesktop && {
                     disableApp,
                     enableApp,
                     is_mobile: true,
@@ -171,7 +171,7 @@ const AccountActionsComponent = ({
                 is_visible={is_notifications_visible}
                 toggleDialog={toggleNotifications}
             />
-            {!isMobile && <AccountSettingsToggle />}
+            {isDesktop && <AccountSettingsToggle />}
         </React.Fragment>
     );
 };

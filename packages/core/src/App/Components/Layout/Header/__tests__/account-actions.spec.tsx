@@ -161,7 +161,7 @@ describe('AccountActions component', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         (useLocation as jest.Mock).mockReturnValue({ pathname: '/some-path' });
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
         (formatMoney as jest.Mock).mockImplementation((currency, balance) => `${balance} ${currency}`);
     });
 
@@ -202,7 +202,7 @@ describe('AccountActions component', () => {
     });
 
     it('should not render DepositButton on mobile', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         render(<AccountActions {...default_props} />);
 
@@ -245,7 +245,7 @@ describe('AccountActions component', () => {
     });
 
     it('should not render AccountSettingsToggle on mobile', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         render(<AccountActions {...default_props} />);
 

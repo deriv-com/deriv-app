@@ -56,9 +56,10 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
             if (common.setError) {
                 common.setError(true, {
                     code: 'LogoutError',
-                    message: localize('Failed while logging out, please login'),
+                    message: localize("We couldn't restore your session."),
+                    header: localize("You're logged out"),
                     should_show_refresh: false,
-                    redirect_label: localize('Log in'),
+                    redirect_label: localize('Log in again'),
                     redirectOnClick: () => loginHandler(),
                 });
             }

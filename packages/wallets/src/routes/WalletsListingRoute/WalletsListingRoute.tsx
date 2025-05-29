@@ -31,14 +31,14 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
-    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account'); // Fallback to cookie if BE flag is not available
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && settingsData.feature_flag?.wallet == 0) {
+        if (isHubRedirectionEnabled && (settingsData.feature_flag?.wallet == 0 || !isOutsystemsMigrationModalClosed)) {
             show(<WalletsOutsystemsMigrationModal />);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isHubRedirectionEnabled, settingsData]);
+    }, [isHubRedirectionEnabled, settingsData, isOutsystemsMigrationModalClosed]);
 
     if ((isOutsystemsMigrationModalClosed || settingsData.feature_flag?.wallet !== 0) && isHubRedirectionEnabled) {
         return <WalletLoader />;

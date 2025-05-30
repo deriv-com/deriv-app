@@ -54,7 +54,7 @@ const cumulativeAccountLimitsMessageFn = ({
     );
 
     if (isDemoTransfer) {
-        if (allowedSumUSD === availableSumUSD) {
+        if (sourceAmount && allowedSumUSD === availableSumUSD) {
             message = (
                 <Localize
                     i18n_default_text='Your daily transfer limit for virtual funds is {{formattedDemoLimit}}'
@@ -139,7 +139,7 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    if (allowedSumUSD === availableSumUSD) {
+    if (sourceAmount && allowedSumUSD === availableSumUSD) {
         message = isTransferBetweenWallets ? (
             <Localize
                 i18n_default_text='The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'

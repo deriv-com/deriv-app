@@ -534,6 +534,7 @@ export default class TradersHubStore extends BaseStore {
         };
 
         const all_available_accounts = [...getCFDAvailableAccount(), ...getFilteredAccounts()];
+
         this.available_cfd_accounts = all_available_accounts.map(account => {
             return {
                 ...account,
@@ -622,7 +623,12 @@ export default class TradersHubStore extends BaseStore {
         );
     }
     getAvailableCTraderAccounts() {
-        if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
+        if (
+            this.CFDs_restricted_countries ||
+            this.financial_restricted_countries ||
+            (this.root_store.client.is_logged_in &&
+                JSON.parse(JSON.stringify(this.root_store.client.landing_companies.ctrader.all.standard)) === 'none')
+        ) {
             this.available_ctrader_accounts = [];
             return;
         }

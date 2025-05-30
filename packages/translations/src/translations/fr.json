@@ -4021,7 +4021,7 @@
     "-1419311086": "Paiement par Point",
     "-1636919806": "Vous recevrez un paiement à l'expiration si le prix au comptant ne franchit jamais la barrière pendant toute la durée du contrat. Sinon, votre contrat sera résilié de façon anticipée.",
     "-1775944645": "Distance par rapport au point actuel :",
-    "-1790089996": "NOUVEAU!",
+    "-1790089996": "NEW!",
     "-253521386": "Il s'agit du prix spot du dernier tick à l'expiration, c'est-à-dire le prix de sortie.",
     "-1890561510": "Heure limite",
     "-878534036": "Si vous sélectionnez \"Call\", vous obtiendrez un paiement si le prix final est supérieur au prix d'exercice à l'expiration. Dans le cas contraire, vous n'obtiendrez aucun paiement.",

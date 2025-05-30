@@ -81,6 +81,9 @@ const Redirect = observer(() => {
         Chat.open();
     };
 
+    const accounts = JSON.parse(localStorage.getItem('client.accounts') || '{}');
+    const hasVRWorCRW = Object.keys(accounts).some(key => key.includes('VRW') || key.includes('CRW'));
+
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
@@ -327,7 +330,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'ctrader_account_transfer': {
-            if (isHubRedirectionEnabled && has_wallet) {
+            if (isHubRedirectionEnabled && (has_wallet || hasVRWorCRW)) {
                 window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
             } else if (has_wallet) {
                 history.push(routes.wallets_transfer);

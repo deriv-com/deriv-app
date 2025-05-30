@@ -1,5 +1,6 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import { useSettings } from '@deriv/api-v2';
 import { Localize } from '@deriv-com/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import { derivUrls, OUT_SYSTEMS_TRADERSHUB } from '../../helpers/urls';
@@ -9,6 +10,7 @@ import './WalletsOutsystemsMigrationModal.scss';
 
 const WalletsOustystemsMigrationModal = () => {
     const { isMobile } = useDevice();
+    const { update } = useSettings();
 
     const redirectToOutsystems = () => {
         const redirectUrl =
@@ -19,6 +21,7 @@ const WalletsOustystemsMigrationModal = () => {
             ? derivUrls.DERIV_HOST_NAME
             : window.location.hostname;
         Cookies.set('wallet_account', 'true', { domain });
+        update({ feature_flag: { wallet: 1 } });
 
         const urlQueryString = window.location.search;
         const urlParams = new URLSearchParams(urlQueryString);

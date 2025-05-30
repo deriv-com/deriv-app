@@ -89,10 +89,8 @@ describe('getAvailableContractTypes', () => {
     it('should return null for component field if it is not Accumulators', () => {
         expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[1]?.component).toEqual(null);
     });
-    it('should return html element for component field if it is Accumulators', () => {
-        expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[0]?.component).not.toEqual(
-            null
-        );
+    it('should return null for component field even if it is Accumulators (NEW label removed)', () => {
+        expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[0]?.component).toEqual(null);
     });
 });
 

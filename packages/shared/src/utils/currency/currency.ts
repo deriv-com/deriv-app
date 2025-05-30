@@ -1,4 +1,4 @@
-import { getPropertyValue, deepFreeze } from '../object';
+import { deepFreeze, getPropertyValue } from '../object';
 
 export type TCurrenciesConfig = {
     [key: string]: {
@@ -40,6 +40,7 @@ const crypto_currencies_display_order = [
     'TUSD',
     'USDC',
     'USDK',
+    'XRP',
 ];
 
 export const reorderCurrencies = <T extends { value: string; type: string; name: string }>(
@@ -275,6 +276,11 @@ export const CryptoConfig = (() => {
                 pa_max_withdrawal: 2000,
                 pa_min_withdrawal: 10,
                 fractional_digits: 2,
+            },
+            XRP: {
+                display_code: 'XRP',
+                name: 'Ripple',
+                fractional_digits: 6,
             },
             // USB: {
             //     display_code: 'USB',

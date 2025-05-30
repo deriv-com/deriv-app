@@ -80,7 +80,10 @@ export const getAvailableContractTypes = (
                     label: contract_name,
                     contract_types: available_contract_types,
                     icon: contract_category_icon[contract_name],
-                    component: null,
+                    component:
+                        contract_name === localize('Accumulators') ? (
+                            <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
+                        ) : null,
                 };
             }
             return undefined;

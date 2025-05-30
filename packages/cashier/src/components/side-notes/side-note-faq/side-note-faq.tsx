@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+
 import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import { useDevice } from '@deriv-com/ui';
-import './side-note-faq.scss';
+import { Localize, localize } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
+import { useDevice } from '@deriv-com/ui';
+
+import './side-note-faq.scss';
 
 type TSideNoteFAQProps = {
     transaction_type?: 'deposit' | 'withdraw';
@@ -20,10 +22,10 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     const deposit_faq_list = useMemo(() => {
         return [
             {
-                header: localize('Why can’t I see the funds deposited in my Deriv account?'),
+                header: localize('How can I confirm that my deposit was successful in my Deriv account?'),
                 content: (
                     <Localize
-                        i18n_default_text='We process deposits immediately. If your funds don’t appear in your account within 24 hours, contact us via <0>live chat</0>. Provide the transaction details, including the amount, date, and time, so we can assist you quickly.'
+                        i18n_default_text='Deposits are usually processed immediately. If you don’t see the funds after 24 hours, contact us via <0>live chat</0> with your transaction details (amount, date, and time), and we’ll sort it out quickly for you.'
                         components={[
                             <span key={0} className='link' onClick={onClickHandler} onKeyDown={onClickHandler} />,
                         ]}
@@ -31,10 +33,10 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                 ),
             },
             {
-                header: localize('What do I do if I have reached my deposit limit?'),
+                header: localize('Can I keep depositing if I reach my limit?'),
                 content: (
                     <Localize
-                        i18n_default_text="If you've hit the deposit limit, please wait 1-2 hours before trying again. Check that your browser is up to date and use incognito mode. If you still have problems, please contact us via <0>live chat</0>."
+                        i18n_default_text='The deposit limit resets within 1–2 hours. We recommend updating your browser and using incognito mode. If the issue persists, please contact us via <0>live chat</0>.'
                         components={[
                             <span key={0} className='link' onClick={onClickHandler} onKeyDown={onClickHandler} />,
                         ]}
@@ -42,14 +44,14 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                 ),
             },
             {
-                header: localize('Why is my card/e-wallet not working?'),
+                header: localize('What steps can I take if my payment method isn’t working?'),
                 content: (
                     <>
                         <Localize i18n_default_text='Here are some common card/e-wallet errors and their solutions:' />
                         <ol className='side-note-faq__accordion-list'>
                             <Text as='li' size='xxs'>
                                 <Localize
-                                    i18n_default_text='<0>Insufficient balance:</0> Please ensure you have sufficient funds in your card/e-wallet. If the problem persists, please contact your bank for help.'
+                                    i18n_default_text='<0>Insufficient balance:</0> Please ensure you have sufficient funds in your card or e-wallet. If the problem persists, please contact your bank for help.'
                                     components={[<strong key={0} />]}
                                 />
                             </Text>
@@ -67,7 +69,7 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                             </Text>
                             <Text as='li' size='xxs'>
                                 <Localize
-                                    i18n_default_text='<0>Do not honour:</0> Please contact your bank for further assistance.'
+                                    i18n_default_text='<0>Transaction declined by bank:</0> Please contact your bank for further assistance.'
                                     components={[<strong key={0} />]}
                                 />
                             </Text>
@@ -85,11 +87,18 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                 header: localize("Can I use someone else's payment method?"),
                 content: (
                     <Localize
-                        i18n_default_text="No, you cannot use someone else's payment method to deposit into Deriv. If you use another person's payment method, your account will be suspended (if they are on Deriv, their account will also be suspended). If you suspect that someone has used your payment method, let us know through <0>live chat</0> with your proof of ownership."
+                        i18n_default_text='To keep your account safe, we only support payment methods registered under your name. Using someone else’s payment method can lead to account restrictions for both parties.<1/><1/>If you think your payment method was used without your permission, please contact us via <0>live chat</0> with proof of ownership. We’re here to help.'
                         components={[
                             <span key={0} className='link' onClick={onClickHandler} onKeyDown={onClickHandler} />,
+                            <br key={1} />,
                         ]}
                     />
+                ),
+            },
+            {
+                header: localize('How do I check if my deposit method also supports withdrawals?'),
+                content: (
+                    <Localize i18n_default_text='You can check if a payment method supports withdrawals on the deposit page. If it shows "Withdrawal: N/A," that means withdrawals aren’t available for that method, so you’ll need to choose a different deposit method that allows both deposits and withdrawals.' />
                 ),
             },
         ];
@@ -124,6 +133,15 @@ const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
                 header: localize('Can I withdraw using a different method?'),
                 content: (
                     <Localize i18n_default_text='No, withdrawals must be made using the same method you used for your deposit.' />
+                ),
+            },
+            {
+                header: localize('How long does it take to receive my withdrawal?'),
+                content: (
+                    <Localize
+                        i18n_default_text='We usually process withdrawal requests within 24 hours. The time it takes for the funds to reach your account depends on the payment method you choose.<0/><0/>After we’ve processed your withdrawal request, it may take up to 5 working days for the amount to appear in your account balance.'
+                        components={[<br key={0} />]}
+                    />
                 ),
             },
         ];

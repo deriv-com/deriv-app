@@ -627,7 +627,7 @@ export default class TradersHubStore extends BaseStore {
             this.CFDs_restricted_countries ||
             this.financial_restricted_countries ||
             (this.root_store.client.is_logged_in &&
-                JSON.parse(JSON.stringify(this.root_store.client.landing_companies.ctrader.all.standard)) === 'none')
+                this.root_store.client.landing_companies.ctrader.all.standard === 'none'
         ) {
             this.available_ctrader_accounts = [];
             return;

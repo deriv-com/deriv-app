@@ -4,7 +4,7 @@ import { useScript } from 'usehooks-ts';
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
 export const useIntercom = (token: string | null) => {
-    const intercom_script = 'https://static.deriv.com/scripts/intercom/v1.0.1.js';
+    const intercom_script = 'https://static.deriv.com/scripts/intercom/test.js';
     const [enable_intercom] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_intercom',
     });

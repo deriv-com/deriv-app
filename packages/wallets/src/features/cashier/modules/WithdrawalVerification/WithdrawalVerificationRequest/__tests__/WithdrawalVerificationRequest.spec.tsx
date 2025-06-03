@@ -7,13 +7,11 @@ describe('WithdrawalVerificationRequest', () => {
         render(<WithdrawalVerificationRequest sendEmail={jest.fn()} />);
 
         expect(
-            screen.getByText("Press the button below, and we'll email you a verification link.")
+            screen.getByText("To continue withdrawal, verify it's you. We will send a verification link to your email.")
         ).toBeInTheDocument();
 
-        const sendEmailButton = screen.getByRole('button', { name: 'Send email' });
+        const sendEmailButton = screen.getByRole('button', { name: 'Send link' });
         expect(sendEmailButton).toBeInTheDocument();
-
-        expect(screen.getByText("This is to confirm that it's you making the withdrawal request.")).toBeInTheDocument();
 
         const emailVerificationIcon = screen.getByTestId('dt_withdrawal_verification_request_icon');
         expect(emailVerificationIcon).toBeInTheDocument();
@@ -23,7 +21,7 @@ describe('WithdrawalVerificationRequest', () => {
         const sendEmailMock = jest.fn();
         render(<WithdrawalVerificationRequest sendEmail={sendEmailMock} />);
 
-        fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Send link' }));
 
         expect(sendEmailMock).toHaveBeenCalledTimes(1);
     });

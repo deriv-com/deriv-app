@@ -25,7 +25,11 @@
         }
 
         button {
-            background-color: transparent;
+            background-color: transparent !important;
+
+            &.quill-chip[data-state='selected'] {
+                background-color: var(--component-chip-bg-selected) !important;
+            }
         }
 
         &-header {

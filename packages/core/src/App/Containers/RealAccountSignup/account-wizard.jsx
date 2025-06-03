@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useResidenceSelfDeclaration, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { useResidenceSelfDeclaration, useGrowthbookGetFeatureValue, useGetPhoneNumberList } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -57,11 +57,21 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 const AccountWizard = observer(props => {
     const { client, notifications, ui, traders_hub } = useStore();
 
+    const [isCountryCodeDropdownEnabled, isCountryCodeLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'enable_country_code_dropdown',
+    });
+    const { selected_phone_code } = useGetPhoneNumberList();
+
+    const is_phone_number_required = client.account_settings.immutable_fields.includes('phone');
+
     const { is_eu_user } = traders_hub;
 
     const modifiedProps = {
         ...props,
-        account_settings: client.account_settings,
+        account_settings: {
+            ...client.account_settings,
+            ...(isCountryCodeLoaded && isCountryCodeDropdownEnabled && { calling_country_code: '' }),
+        },
         account_status: client.account_status,
         fetchAccountSettings: client.fetchAccountSettings,
         fetchResidenceList: client.fetchResidenceList,
@@ -146,7 +156,15 @@ const AccountWizard = observer(props => {
 
     const get_items_props = {
         ...modifiedProps,
+        selected_phone_code,
     };
+    React.useEffect(() => {
+        if (selected_phone_code && isCountryCodeLoaded && isCountryCodeDropdownEnabled) {
+            const updated_items = getItems(get_items_props);
+            setStateItems(updated_items);
+            setRealAccountSignupFormData(updated_items);
+        }
+    }, [selected_phone_code, setRealAccountSignupFormData, isCountryCodeLoaded, isCountryCodeDropdownEnabled]);
 
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
@@ -179,7 +197,7 @@ const AccountWizard = observer(props => {
 
     React.useEffect(() => {
         if (residence_list.length) {
-            const setDefaultPhone = country_code => {
+            const setDefaultPhone = () => {
                 let items;
                 if (state_items.length) {
                     items = state_items;
@@ -187,15 +205,15 @@ const AccountWizard = observer(props => {
                     items = getItems(get_items_props);
                 }
 
-                if (items.length > 1 && 'phone' in items[1]?.form_value) {
-                    items[1].form_value.phone = items[1].form_value.phone || country_code || '';
+                if (items.length > 1 && 'phone' in items[1]?.form_value && !isCountryCodeDropdownEnabled) {
+                    items[1].form_value.phone = items[1].form_value.phone || '';
                     setStateItems(items);
                     setRealAccountSignupFormData(items);
                 }
             };
             getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [residence_list, setRealAccountSignupFormData]);
+    }, [residence_list, setRealAccountSignupFormData, isCountryCodeDropdownEnabled]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -227,6 +245,9 @@ const AccountWizard = observer(props => {
                             : original_form_values[current];
                     return acc;
                 }, {});
+                if (values.calling_country_code && values.phone) {
+                    values.phone = values.calling_country_code + values.phone;
+                }
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
                 }
@@ -301,6 +322,11 @@ const AccountWizard = observer(props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
+        delete clone?.calling_country_code;
+
+        if (is_phone_number_required && clone?.phone) {
+            delete clone.phone;
+        }
 
         if (is_residence_self_declaration_required && clone?.resident_self_declaration)
             clone.resident_self_declaration = 1;
@@ -390,6 +416,7 @@ const AccountWizard = observer(props => {
     const createRealAccount = (payload = undefined) => {
         setLoading(true);
         const form_data = { ...form_values() };
+        delete form_data?.calling_country_code;
         /**
          * Remove document_type from payload if it is not present (For Non IDV supporting countries)
          */

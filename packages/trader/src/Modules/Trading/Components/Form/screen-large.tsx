@@ -9,14 +9,15 @@ import TradeParams from '../../Containers/trade-params';
 type TScreenLarge = {
     is_market_closed?: boolean;
     is_trade_enabled: boolean;
+    is_single_logging_in?: boolean;
 };
-const ScreenLarge = ({ is_market_closed = false, is_trade_enabled }: TScreenLarge) => (
+const ScreenLarge = ({ is_market_closed = false, is_trade_enabled, is_single_logging_in = false }: TScreenLarge) => (
     <div
         className={classNames('sidebar__items', {
             'sidebar__items--market-closed': is_market_closed,
         })}
     >
-        {!is_trade_enabled ? (
+        {!is_trade_enabled || is_single_logging_in ? (
             <TradeParamsLoader speed={2} />
         ) : (
             <React.Fragment>

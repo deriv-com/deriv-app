@@ -1,22 +1,26 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+
 import { isMobile, routes } from '@deriv/shared';
-import 'Sass/app/_common/components/app-notification-message.scss';
 import { observer, useStore } from '@deriv/stores';
+
+import {
+    excluded_notifications,
+    maintenance_notifications,
+    priority_toast_messages,
+} from '../../Stores/Helpers/client-notifications';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import { useLocation } from 'react-router-dom';
-import {
-    excluded_notifications,
-    priority_toast_messages,
-    maintenance_notifications,
-} from '../../Stores/Helpers/client-notifications';
+
 import TradeNotifications from './trade-notifications';
+
+import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -131,6 +135,7 @@ const AppNotificationMessages = observer(
                       'tnc',
                       'trustpilot',
                       'unwelcome',
+                      'update_fa_required',
                       'additional_kyc_info',
                       'notify_account_is_to_be_closed_by_residence',
                   ].includes(message.key) || message.type === 'p2p_completed_order'

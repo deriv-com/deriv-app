@@ -446,6 +446,7 @@ export type TClientStore = {
         is_loading?: boolean;
         api_initial_load_error?: string;
     };
+    setIsLoggingIn: (value: boolean) => void;
     account_list: TAccountsList;
     self_exclusion: Partial<GetSelfExclusion>;
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
@@ -505,6 +506,7 @@ export type TClientStore = {
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_single_logging_in: boolean;
     is_low_risk: boolean;
     is_client_store_initialized: boolean;
     is_mt5_password_not_set: boolean;
@@ -514,6 +516,9 @@ export type TClientStore = {
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_populating_ctrader_account_list: boolean;
+    is_logging_out: boolean;
+    setIsSingleLoggingIn: (value: boolean) => void;
+    setIsLoggingOut: (value: boolean) => void;
     is_switching: boolean;
     is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
@@ -542,7 +547,9 @@ export type TClientStore = {
     standpoint: TStandPoint;
     is_p2p_available: boolean;
     prevent_redirect_to_hub: boolean;
+    prevent_single_login: boolean;
     setPreventRedirectToHub: (value: boolean) => void;
+    setPreventSingleLogin: (value: boolean) => void;
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     selectCurrency: (currency: string) => void;
@@ -720,6 +727,7 @@ export type TClientStore = {
 type TCommonStoreError = {
     header?: string | JSX.Element;
     message: string | JSX.Element;
+    code?: string;
     redirect_label?: string;
     redirect_to?: string;
     redirectOnClick?: (() => void) | null;
@@ -741,6 +749,7 @@ type TCommonStore = {
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
+    is_from_derivp2p: boolean;
     is_from_tradershub_os: boolean;
     is_from_outside_cashier: boolean;
     is_network_online: boolean;
@@ -1031,6 +1040,7 @@ type TContractTradeStore = {
     accu_barriers_timeout_id: NodeJS.Timeout | null;
     accumulator_barriers_data: Partial<TAccumulatorBarriersData>;
     accumulator_contract_barriers_data: Partial<TAccumulatorContractBarriersData>;
+    previous_accumulator_barriers_data: Partial<TAccumulatorBarriersData>;
     addContract: ({
         barrier,
         contract_id,
@@ -1051,6 +1061,7 @@ type TContractTradeStore = {
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
     has_error: boolean;
+    is_barriers_loading: boolean;
     last_contract: TContractStore | Record<string, never>;
     markers_array: Array<{
         type: string;
@@ -1065,6 +1076,8 @@ type TContractTradeStore = {
     prev_granularity: number | null;
     removeContract: (data: { contract_id: string }) => void;
     savePreviousChartMode: (chart_type: string, granularity: number | null) => void;
+    setBarriersLoadingState: (is_loading: boolean) => void;
+    restorePreviousBarriersIfNeeded: () => void;
     setNewAccumulatorBarriersData: (
         new_barriers_data: TAccumulatorBarriersData,
         should_update_contract_barriers?: boolean

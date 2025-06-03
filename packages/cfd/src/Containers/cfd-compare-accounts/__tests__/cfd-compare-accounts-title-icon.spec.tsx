@@ -82,13 +82,13 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
     test('should render correct title for EU Clients', () => {
         mocked_props.trading_platforms = {
             platform: 'mt5',
-            market_type: 'financial',
+            market_type: 'gaming',
             shortcode: 'maltainvest',
             product: 'financial',
         };
         mocked_props.is_eu_user = true;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('CFDs')).toBeInTheDocument();
+        expect(screen.getByText('Standard')).toBeInTheDocument();
     });
 
     test('should render correct title for standard product type in demo account', () => {
@@ -159,11 +159,11 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
 
     test('should render correct title for EU clients demo accounts', () => {
         mocked_props.trading_platforms.platform = 'mt5';
-        mocked_props.trading_platforms.market_type = 'financial';
+        mocked_props.trading_platforms.market_type = 'gaming';
         mocked_props.trading_platforms.shortcode = 'svg';
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = true;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('CFDs demo')).toBeInTheDocument();
+        expect(screen.getByText('Standard demo')).toBeInTheDocument();
     });
 });

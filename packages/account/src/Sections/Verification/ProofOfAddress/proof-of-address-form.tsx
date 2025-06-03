@@ -3,7 +3,15 @@ import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { useDevice } from '@deriv-com/ui';
 import { Loading } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
-import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
+import {
+    validAddress,
+    validPostCode,
+    validLetterSymbol,
+    validAddressState,
+    validLength,
+    getLocation,
+    WS,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import LeaveConfirm from '../../../Components/leave-confirm';
@@ -118,7 +126,7 @@ const ProofOfAddressForm = observer(
                 errors.address_city = validation_letter_symbol_message;
             }
 
-            if (values.address_state && !validLetterSymbol(values.address_state) && states_list?.length < 1) {
+            if (values.address_state && !validAddressState(values.address_state) && states_list?.length < 1) {
                 errors.address_state = validation_letter_symbol_message;
             }
 

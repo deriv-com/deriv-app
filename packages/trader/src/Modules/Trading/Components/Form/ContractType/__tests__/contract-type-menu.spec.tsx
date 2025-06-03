@@ -78,8 +78,8 @@ describe('ContractTypeMenu', () => {
                         },
                     ],
                     icon: 'IcHighsLows',
-                    label: 'Highs & Lows',
-                    key: 'Highs & Lows',
+                    label: 'Touch & No Touch',
+                    key: 'Touch & No Touch',
                 },
                 {
                     contract_types: [
@@ -192,8 +192,8 @@ describe('ContractTypeMenu', () => {
                         },
                     ],
                     icon: 'IcHighsLows',
-                    label: 'Highs & Lows',
-                    key: 'Highs & Lows',
+                    label: 'Touch & No Touch',
+                    key: 'Touch & No Touch',
                 },
                 {
                     contract_types: [
@@ -290,8 +290,8 @@ describe('ContractTypeMenu', () => {
                 },
             ],
             icon: 'IcHighsLows',
-            label: 'Highs & Lows',
-            key: 'Highs & Lows',
+            label: 'Touch & No Touch',
+            key: 'Touch & No Touch',
         },
         {
             contract_types: [

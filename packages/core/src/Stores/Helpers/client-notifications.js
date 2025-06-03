@@ -63,6 +63,7 @@ export const excluded_notifications = ['contract_sold', 'has_changed_two_fa'];
 export const maintenance_notifications = ['system_maintenance', 'site_maintenance'];
 
 export const priority_toast_messages = [
+    'trustpilot',
     'account_currency_closure',
     'svg',
     'need_fa',
@@ -72,6 +73,7 @@ export const priority_toast_messages = [
     'wallets_failed',
     'needs_poinc',
     'notify_financial_assessment',
+    'update_fa_required',
     'poa_expired',
     'svg_needs_poa',
     'svg_needs_poi',

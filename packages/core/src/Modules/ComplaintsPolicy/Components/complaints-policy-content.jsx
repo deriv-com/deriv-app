@@ -58,7 +58,7 @@ const getFairTreatmentText = landing_company_shortcode => {
     if (landing_company_shortcode === 'maltainvest') {
         return (
             <Localize
-                i18n_default_text='We are committed to treating our clients fairly and providing them with excellent service.<0/><1/>We would love to hear from you on how we can improve our services to you. Any information you provide will be treated in the strictest confidence. Rest assured that you will be heard, valued, and always treated fairly.'
+                i18n_default_text='We are committed to treating our clients fairly and providing them with excellent service.<0/><1/>We would love to hear from you on how we can improve our services. Any information you provide will be treated in the strictest confidence. Rest assured that you will be heard, valued, and always treated fairly.'
                 components={[<br key={0} />, <br key={1} />]}
             />
         );
@@ -72,6 +72,31 @@ const getFairTreatmentText = landing_company_shortcode => {
 };
 
 const getGeneralQueriesText = landing_company_shortcode => {
+    if (landing_company_shortcode === 'maltainvest') {
+        return (
+            <Localize
+                i18n_default_text='If you have an inquiry regarding your trading account with {{legal_entity_name}}, you can contact us through our <0>Help centre</0> or by chatting with a representative via <1>Live Chat</1>.<2/><2/>We are committed to resolving your query as quickly as possible and appreciate your patience in allowing us to do so.<2/><2/>We strive to provide the best possible service and support. However, if we are unable to resolve your query or if you feel that our response is unsatisfactory, we want to hear from you.'
+                components={[
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='https://eu.deriv.com/help-centre/'
+                    />,
+                    <a
+                        key={1}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='https://eu.deriv.com/livechat/'
+                    />,
+                    <br key={2} />,
+                ]}
+                values={{ legal_entity_name: getLegalEntityName(landing_company_shortcode) }}
+            />
+        );
+    }
     return (
         <Localize
             i18n_default_text='If you have an inquiry regarding your trading account with {{legal_entity_name}}, you can contact us through our <0>Help centre</0> or by chatting with a representative via <1>Live Chat</1>.<2/><3/>We are committed to resolving your query in the quickest time possible and appreciate your patience in allowing us time to resolve the matter.<4/><5/>We strive to provide the best possible service and support to our customers. However, in the event that we are unable to resolve your query or if you feel that our response is unsatisfactory, we want to hear from you. We welcome and encourage you to submit an official complaint to us so that we can review your concerns and work towards a resolution.'
@@ -215,17 +240,21 @@ const Content = observer(({ landing_company_shortcode }) => {
             id: 'complaints',
             title: localize('4. Complaints'),
             content: {
-                text: localize(
-                    'We take all complaints seriously and aim to resolve them as quickly and fairly as possible. If you are unhappy with any aspect of our service, please let us know by submitting a complaint using the guidance below:'
-                ),
+                text:
+                    landing_company_shortcode === 'maltainvest'
+                        ? localize(
+                              'We take all complaints seriously and aim to resolve them as quickly and fairly as possible.'
+                          )
+                        : localize(
+                              'We take all complaints seriously and aim to resolve them as quickly and fairly as possible. If you are unhappy with any aspect of our service, please let us know by submitting a complaint using the guidance below:'
+                          ),
                 sub_content: [
                     {
                         title: localize('4.1. What is considered a complaint?'),
                         text: (
                             <Localize
-                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products or services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a complaint, we may reclassify it as a query and forward it to the relevant department for handling. However, if you believe that your query should be classified as a complaint due to its relevance to the investment services provided by {{legal_entity_name}}, you may request that we reclassify it accordingly.'
+                                i18n_default_text='A complaint is any expression of dissatisfaction by a client regarding our products and services that requires a formal response.<0/><1/>If what you submit does not fall within the scope of a formal complaint, we will still respond to your message and handle it in accordance with our internal processes.'
                                 components={[<br key={0} />, <br key={1} />]}
-                                values={{ legal_entity_name: getLegalEntityName(landing_company_shortcode) }}
                             />
                         ),
                     },
@@ -283,16 +312,26 @@ const Content = observer(({ landing_company_shortcode }) => {
                     },
                     {
                         title: localize('4.6. Your decision'),
-                        text: (
-                            <Localize
-                                i18n_default_text='If we are unable to resolve your complaint or you are not satisfied with the outcome, you can escalate your complaint to the Office of the Arbiter for Financial Services.<0/><1/><2>Filing complaints with the Office of the Arbiter for Financial Services</2>'
-                                components={[
-                                    <br key={0} />,
-                                    <br key={1} />,
-                                    <span key={2} className='complaints-policy__list-item-underlined' />,
-                                ]}
-                            />
-                        ),
+                        text:
+                            landing_company_shortcode === 'maltainvest' ? (
+                                <Localize
+                                    i18n_default_text='If we are unable to resolve your complaint or you are not satisfied with the company’s decision, you can escalate your complaint to the Office of the Arbiter for Financial Services.<0/><1/><2>Filing complaints with the Office of the Arbiter for Financial Services</2>'
+                                    components={[
+                                        <br key={0} />,
+                                        <br key={1} />,
+                                        <span key={2} className='complaints-policy__list-item-underlined' />,
+                                    ]}
+                                />
+                            ) : (
+                                <Localize
+                                    i18n_default_text='If we are unable to resolve your complaint or you are not satisfied with the outcome, you can escalate your complaint to the Office of the Arbiter for Financial Services.<0/><1/><2>Filing complaints with the Office of the Arbiter for Financial Services</2>'
+                                    components={[
+                                        <br key={0} />,
+                                        <br key={1} />,
+                                        <span key={2} className='complaints-policy__list-item-underlined' />,
+                                    ]}
+                                />
+                            ),
                         bullets: [
                             <Localize
                                 key={0}
@@ -304,11 +343,19 @@ const Content = observer(({ landing_company_shortcode }) => {
                                 i18n_default_text='<0>&bull;</0>The Arbiter for Financial Services will determine whether the complaint can be accepted and is in accordance with the law.'
                                 components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
                             />,
-                            <Localize
-                                key={2}
-                                i18n_default_text='<0>&bull;</0>If the complaint is accepted by the Arbiter, you will receive another email with further details relating to the payment of the €25 complaint fee and the processes that follow.'
-                                components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
-                            />,
+                            landing_company_shortcode === 'maltainvest' ? (
+                                <Localize
+                                    key={2}
+                                    i18n_default_text='<0>&bull;</0>If the complaint is accepted by the Arbiter, you will receive another email with further details relating to the payment of the €25 complaint fee and the processes that follow.'
+                                    components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
+                                />
+                            ) : (
+                                <Localize
+                                    key={2}
+                                    i18n_default_text='<0>&bull;</0>If the complaint is accepted by the Arbiter, you will receive another email with further details relating to the processes that follow.'
+                                    components={[<span className='complaints-policy__list-item-prefix' key={0} />]}
+                                />
+                            ),
                         ],
                         ending_text: (
                             <Localize

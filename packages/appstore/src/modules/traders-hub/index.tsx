@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { ButtonToggle, Div100vhContainer, Loading, Text } from '@deriv/components';
 import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -51,6 +51,7 @@ const TradersHub = observer(() => {
         is_logged_in,
         is_switching,
         is_logging_in,
+        is_single_logging_in,
         is_account_setting_loaded,
         is_mt5_allowed,
         website_status,
@@ -102,6 +103,7 @@ const TradersHub = observer(() => {
         setTogglePlatformType(event.target.value);
     };
     if (!is_logged_in) return null;
+    if (is_single_logging_in) return <Loading is_fullscreen />;
     const is_cfd_accounts_supported =
         combined_cfd_mt5_accounts.length || available_dxtrade_accounts.length || available_ctrader_accounts.length;
     const should_show_cfd_section = !!(is_mt5_allowed && is_cfd_accounts_supported);

@@ -54,7 +54,7 @@ const list = [
             },
         ],
         icon: 'IcHighsLows',
-        label: 'Highs & Lows',
+        label: 'Touch & No Touch',
         key: 'Options',
     },
     {

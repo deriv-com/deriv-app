@@ -1,16 +1,20 @@
-import { useState, useEffect, ChangeEvent, Fragment } from 'react';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { observer, useStore } from '@deriv/stores';
-import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
+import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
+
 import { Button, Modal, Text } from '@deriv/components';
-import { useTranslations, Localize } from '@deriv-com/translations';
-import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
-import TradingAssessmentDropdown from './trading-assessment-dropdown';
-import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
-import { TTradingAssessmentForm, TQuestion } from 'Types';
-import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, useTranslations } from '@deriv-com/translations';
+
+import { TQuestion, TTradingAssessmentForm } from 'Types';
+
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
+import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+
+import TradingAssessmentDropdown from './trading-assessment-dropdown';
+import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 
 type TradingAssessmentFormProps = {
     class_name?: string;
@@ -200,7 +204,7 @@ const TradingAssessmentForm = observer(
                         <InlineNoteWithIcon
                             icon='IcAlertWarning'
                             message={localize(
-                                'To assess your trading experience and if our products are suitable for you. Please provide accurate and complete answers, as they may affect the outcome of this assessment.'
+                                "We collect this to ensure you’re aware of trading risks and assess our products' suitability for you."
                             )}
                             title={localize('Why do we collect this?')}
                         />

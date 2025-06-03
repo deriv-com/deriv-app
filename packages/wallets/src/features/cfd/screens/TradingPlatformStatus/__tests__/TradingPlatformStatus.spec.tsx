@@ -55,10 +55,8 @@ describe('TradingPlatformStatus', () => {
             </APIProvider>
         );
 
-        expect(screen.getByText('Account Unavailable')).toBeInTheDocument();
-        expect(
-            screen.getByText('The server is temporarily unavailable for this account. We’re working to resolve this.')
-        ).toBeInTheDocument();
+        expect(screen.getByText('Account temporarily unavailable')).toBeInTheDocument();
+        expect(screen.getByText('Check back in a few minutes by refreshing the page.')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
     });
 

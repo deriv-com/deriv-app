@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react';
-import { useDevice } from '@deriv-com/ui';
-import { getUrlBase, Jurisdiction, cacheTrackEvents } from '@deriv/shared';
-import { Analytics } from '@deriv-com/analytics';
-import { Localize } from '@deriv/translations';
-import { Text, Button } from '@deriv/components';
+
+import { Button, Text } from '@deriv/components';
+import { cacheTrackEvents, getUrlBase, Jurisdiction } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import './real-account-creation-banner.scss';
 
 const RealAccountCreationBanner = observer(() => {
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
     const { ui } = useStore();
     const { openRealAccountSignup, is_dark_mode_on } = ui;
-    const device = !isDesktop ? 'mobile' : 'desktop';
+    const device = isMobile ? 'mobile' : 'desktop';
 
     const handleClick = () => {
         cacheTrackEvents.loadEvent([

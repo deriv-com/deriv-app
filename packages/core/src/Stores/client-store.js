@@ -46,6 +46,7 @@ import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
+import { CURRENCY_CONSTANTS } from '../Constants/currency';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -59,6 +60,7 @@ export default class ClientStore extends BaseStore {
     upgrade_info;
     email;
     accounts = {};
+    authorize_accounts_list = [];
     is_trading_platform_available_account_loaded = false;
     trading_platform_available_accounts = [];
     ctrader_trading_platform_available_accounts = [];
@@ -76,12 +78,14 @@ export default class ClientStore extends BaseStore {
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
     is_populating_ctrader_account_list = true;
+    is_logging_out = false;
     website_status = {};
     account_settings = {};
     account_status = {};
     device_data = {};
     is_authorize = false;
     is_logging_in = false;
+    is_single_logging_in = false;
     is_client_store_initialized = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
@@ -115,6 +119,7 @@ export default class ClientStore extends BaseStore {
         currency: '',
     };
     prevent_redirect_to_hub = false;
+    prevent_single_login = false;
 
     verification_code = {
         signup: '',
@@ -204,12 +209,14 @@ export default class ClientStore extends BaseStore {
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
             is_populating_ctrader_account_list: observable,
+            is_logging_out: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
             device_data: observable,
             is_authorize: observable,
             is_logging_in: observable,
+            is_single_logging_in: observable,
             is_client_store_initialized: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -241,6 +248,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             prev_account_type: observable,
             prevent_redirect_to_hub: observable,
+            prevent_single_login: observable,
             phone_settings: observable,
             is_already_attempted: observable,
             is_p2p_enabled: observable,
@@ -355,12 +363,15 @@ export default class ClientStore extends BaseStore {
             resetMt5AccountListPopulation: action.bound,
             responseWebsiteStatus: action.bound,
             responseLandingCompany: action.bound,
+            setIsLoggingOut: action.bound,
             setStandpoint: action.bound,
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setUrlParams: action.bound,
             setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
+            setIsSingleLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
             switchAccountHandler: action.bound,
@@ -670,9 +681,11 @@ export default class ClientStore extends BaseStore {
             );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
-
+    // Hiding UST account from the Authorization call, as it should be not just disabled, but temporary removed
     get account_list() {
-        return this.all_loginids.map(id => this.getAccountInfo(id)).filter(account => account);
+        return this.all_loginids
+            .map(id => this.getAccountInfo(id))
+            .filter(account => !(account.title === CURRENCY_CONSTANTS.UST && account.is_disabled));
     }
 
     get has_real_mt5_login() {
@@ -840,7 +853,7 @@ export default class ClientStore extends BaseStore {
             !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
             this.loginid &&
-            this.accounts[this.loginid].token
+            this.accounts[this.loginid]?.token
         );
     }
 
@@ -927,6 +940,10 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    setIsLoggingOut(is_logging_out) {
+        this.is_logging_out = is_logging_out;
+    }
+
     setPhoneSettings(phone_settings) {
         this.phone_settings = phone_settings;
     }
@@ -948,6 +965,10 @@ export default class ClientStore extends BaseStore {
 
     setPreventRedirectToHub = value => {
         this.prevent_redirect_to_hub = value;
+    };
+
+    setPreventSingleLogin = value => {
+        this.prevent_single_login = value;
     };
 
     getIsMarketTypeMatching = (account, market_type) => {
@@ -1065,9 +1086,21 @@ export default class ClientStore extends BaseStore {
     resetLocalStorageValues(loginid) {
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
-        LocalStore.set('active_loginid', loginid);
+        if (/^(CR|MF|VRTC)\d/.test(loginid)) sessionStorage.setItem('active_loginid', loginid);
+        if (/^(CRW|MFW|VRW)\d/.test(loginid)) sessionStorage.setItem('active_wallet_loginid', loginid);
+        this.setUrlParams();
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+    }
+
+    setUrlParams() {
+        const url = new URL(window.location.href);
+        const loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
+        const account_param = /^VR/.test(loginid) ? 'demo' : this.accounts[loginid]?.currency;
+        if (account_param) {
+            url.searchParams.set('account', account_param);
+            window.history.replaceState({}, '', url.toString());
+        }
     }
 
     setIsAuthorize(value) {
@@ -1149,11 +1182,11 @@ export default class ClientStore extends BaseStore {
         // eslint-disable-next-line max-len
         const { loginid, landing_company_shortcode, currency, account_settings, preferred_language, user_id } = this;
 
-        const client_accounts = JSON.parse(LocalStore.get(storage_key));
+        const client_accounts = JSON.parse(LocalStore.get(storage_key) || '{}');
         const email = this.email || client_accounts[loginid]?.email;
         const residence = this.residence || client_accounts[loginid]?.residence;
 
-        const { first_name, last_name, name } = account_settings;
+        // const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
                 loginid,
@@ -1161,9 +1194,9 @@ export default class ClientStore extends BaseStore {
                 landing_company_shortcode,
                 currency,
                 residence,
-                first_name,
-                last_name,
-                name,
+                first_name: account_settings.first_name,
+                last_name: account_settings.last_name,
+                name: account_settings.name,
                 preferred_language,
                 user_id,
             };
@@ -1454,6 +1487,7 @@ export default class ClientStore extends BaseStore {
     };
 
     updateAccountList(account_list) {
+        this.authorize_accounts_list = account_list;
         account_list.forEach(account => {
             if (this.accounts[account.loginid]) {
                 this.accounts[account.loginid].excluded_until = account.excluded_until || '';
@@ -1563,6 +1597,7 @@ export default class ClientStore extends BaseStore {
             await this.logout();
             this.root_store.common.setError(true, {
                 header: authorize_response.error.message,
+                code: authorize_response.error.code,
                 message: localize('Please Log in'),
                 should_show_refresh: false,
                 redirect_label: localize('Log in'),
@@ -1574,9 +1609,19 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        if (['crypto_transactions_withdraw', 'payment_withdraw'].includes(action_param) && loginid_param)
+        if (
+            ['crypto_transactions_withdraw', 'payment_withdraw', 'payment_agent_withdraw'].includes(action_param) &&
+            loginid_param
+        ) {
+            if (/^(CR|MF|VRTC)\d/.test(loginid_param)) sessionStorage.setItem('active_loginid', loginid_param);
+            if (/^(CRW|MFW|VRW)\d/.test(loginid_param)) sessionStorage.setItem('active_wallet_loginid', loginid_param);
             this.setLoginId(loginid_param);
-        else this.setLoginId(LocalStore.get('active_loginid'));
+        } else
+            this.setLoginId(
+                window.sessionStorage.getItem('active_loginid') ||
+                    window.sessionStorage.getItem('active_wallet_loginid') ||
+                    LocalStore.get('active_loginid')
+            );
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
@@ -1822,52 +1867,8 @@ export default class ClientStore extends BaseStore {
         const is_virtual = account.is_virtual;
         const account_type = !is_virtual && currency ? currency : this.account_title;
 
-        const ppc_campaign_cookies =
-            Cookies.getJSON('utm_data') === 'null'
-                ? {
-                      utm_source: 'no source',
-                      utm_medium: 'no medium',
-                      utm_campaign: 'no campaign',
-                      utm_content: 'no content',
-                  }
-                : Cookies.getJSON('utm_data');
-        const broker = LocalStore?.get('active_loginid')
-            ?.match(/[a-zA-Z]+/g)
-            ?.join('');
         setTimeout(async () => {
-            let residence_country = '';
-            if (this.residence) {
-                residence_country = this.residence;
-            } else {
-                try {
-                    const { country_code } = (await WS.authorized.cache.getSettings())?.get_settings || {
-                        country_code: '',
-                    };
-                    residence_country = country_code;
-                } catch (error) {
-                    // eslint-disable-next-line no-console
-                    console.error('Error getting residence country', error);
-                }
-            }
-
-            const analytics_config = {
-                loggedIn: this.is_logged_in,
-                account_type: broker === 'null' ? 'unlogged' : broker,
-                residence_country,
-                app_id: String(getAppId()),
-                device_type: isMobile() ? 'mobile' : 'desktop',
-                language: getLanguage(),
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: await CountryUtils.getCountry(),
-                utm_source: ppc_campaign_cookies?.utm_source,
-                utm_medium: ppc_campaign_cookies?.utm_medium,
-                utm_campaign: ppc_campaign_cookies?.utm_campaign,
-                utm_content: ppc_campaign_cookies?.utm_content,
-                domain: window.location.hostname,
-                url: window.location.href,
-            };
-
+            const analytics_config = await this.getAnalyticsConfig();
             if (this.user_id) analytics_config.user_id = this.user_id;
             Analytics.setAttributes(analytics_config);
         }, 4);
@@ -1881,8 +1882,67 @@ export default class ClientStore extends BaseStore {
         };
     }
 
+    async getAnalyticsConfig(isLoggedOut = false) {
+        const broker = LocalStore?.get('active_loginid')
+            ?.match(/[a-zA-Z]+/g)
+            ?.join('');
+
+        const ppc_campaign_cookies =
+            Cookies.getJSON('utm_data') === 'null'
+                ? {
+                      utm_source: 'no source',
+                      utm_medium: 'no medium',
+                      utm_campaign: 'no campaign',
+                      utm_content: 'no content',
+                  }
+                : Cookies.getJSON('utm_data');
+
+        let residence_country = '';
+        if (!isLoggedOut) {
+            if (this.residence) {
+                residence_country = this.residence;
+            } else {
+                try {
+                    const { country_code } = (await WS.authorized.cache.getSettings())?.get_settings || {
+                        country_code: '',
+                    };
+                    residence_country = country_code;
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error('Error getting residence country', error);
+                }
+            }
+        }
+        let login_status = false;
+        if (!isLoggedOut && this.is_logged_in) {
+            login_status = true;
+        }
+
+        return {
+            loggedIn: login_status,
+            account_type: broker === 'null' ? 'unlogged' : broker,
+            residence_country,
+            app_id: String(getAppId()),
+            device_type: isMobile() ? 'mobile' : 'desktop',
+            language: getLanguage(),
+            device_language: navigator?.language || 'en-EN',
+            user_language: getLanguage().toLowerCase(),
+            country: await CountryUtils.getCountry(),
+            utm_source: ppc_campaign_cookies?.utm_source,
+            utm_medium: ppc_campaign_cookies?.utm_medium,
+            utm_campaign: ppc_campaign_cookies?.utm_campaign,
+            utm_content: ppc_campaign_cookies?.utm_content,
+            domain: window.location.hostname,
+            url: window.location.href,
+        };
+    }
+
     setIsLoggingIn(bool) {
         this.is_logging_in = bool;
+    }
+
+    setIsSingleLoggingIn(bool) {
+        this.is_single_logging_in = bool;
     }
 
     setPreSwitchAccount(is_pre_switch) {
@@ -1914,7 +1974,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async switchAccountHandler() {
-        if (!this.switched || !this.switched.length || !this.getAccount(this.switched)?.token) {
+        if (!this.switched || !this.switched.length) {
             if (this.isUnableToFindLoginId()) {
                 this.handleNotFoundLoginId();
                 return;
@@ -1929,6 +1989,12 @@ export default class ClientStore extends BaseStore {
             // switch to default account.
             this.switchAccount(this.all_loginids[0]);
             await this.switchAccountHandler();
+            return;
+        }
+
+        const switched_account = this.getAccount(this.switched);
+        if (!switched_account?.token) {
+            this.handleNotFoundLoginId();
             return;
         }
 
@@ -1948,7 +2014,7 @@ export default class ClientStore extends BaseStore {
             await BinarySocket?.wait('authorize');
         } else {
             await WS.forgetAll('balance');
-            await BinarySocket.authorize(this.getToken());
+            await BinarySocket.authorize(switched_account.token);
         }
         if (this.root_store.common.has_error) this.root_store.common.setError(false, null);
         sessionStorage.setItem('active_tab', '1');
@@ -1961,6 +2027,14 @@ export default class ClientStore extends BaseStore {
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
         runInAction(() => (this.is_switching = false));
+
+        if (this.root_store.contract_trade) {
+            this.root_store.contract_trade.setBarriersLoadingState(false);
+
+            if (this.root_store.modules?.trade?.contract_type === 'ACCU') {
+                this.root_store.modules.trade.requestProposal();
+            }
+        }
     }
 
     registerReactions() {
@@ -1988,11 +2062,16 @@ export default class ClientStore extends BaseStore {
 
             //temporary workaround to sync this.loginid with selected wallet loginid
             if (window.location.pathname.includes(routes.wallets)) {
-                this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
+                this.resetLocalStorageValues(
+                    window.sessionStorage.getItem('active_loginid') ??
+                        localStorage.getItem('active_loginid') ??
+                        sessionStorage.getItem('active_wallet_loginid') ??
+                        this.loginid
+                );
                 return;
             }
 
-            this.resetLocalStorageValues(this.loginid);
+            this.resetLocalStorageValues(window.sessionStorage.getItem('active_loginid') ?? this.loginid);
         }
     }
 
@@ -2093,7 +2172,7 @@ export default class ClientStore extends BaseStore {
         this.initialized_broadcast = is_initialized;
     }
 
-    cleanUp() {
+    async cleanUp() {
         // delete all notifications keys for this account when logout
         const notification_messages = LocalStore.getObject('notification_messages');
         if (notification_messages && this.loginid) {
@@ -2102,6 +2181,9 @@ export default class ClientStore extends BaseStore {
                 ...notification_messages,
             });
         }
+        // update growthbook
+        const analytics_config = await this.getAnalyticsConfig(true);
+        Analytics.setAttributes(analytics_config);
 
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
@@ -2116,8 +2198,11 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
+        sessionStorage.removeItem('active_loginid');
         localStorage.setItem('active_user_id', this.user_id);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
+
+        Analytics.reset();
 
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
@@ -2135,9 +2220,11 @@ export default class ClientStore extends BaseStore {
         const response = await requestLogout();
 
         if (response?.logout === 1) {
-            this.cleanUp();
+            await this.cleanUp();
 
+            this.setIsSingleLoggingIn(false);
             this.setLogout(true);
+            this.setIsLoggingOut(false);
         }
 
         return response;
@@ -2160,7 +2247,7 @@ export default class ClientStore extends BaseStore {
         const selected_account = obj_params?.selected_acct;
         const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
-        let active_loginid;
+        let active_loginid = sessionStorage.getItem('active_loginid');
         let active_wallet_loginid;
 
         if (selected_account) {
@@ -2204,7 +2291,7 @@ export default class ClientStore extends BaseStore {
 
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
-        if (!active_loginid || !client_object[active_loginid].token) {
+        if (!active_loginid || !client_object[active_loginid]?.token) {
             active_loginid = obj_params.acct1;
         }
 
@@ -2212,11 +2299,14 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+                sessionStorage.setItem('active_wallet_loginid', active_wallet_loginid);
                 if (verification_code) {
                     localStorage.setItem('verification_code.payment_withdraw', verification_code);
                 }
             }
-
+            if (/^(CR|MF|VRTC)\d/.test(active_loginid)) sessionStorage.setItem('active_loginid', active_loginid);
+            if (/^(CRW|MFW|VRW)\d/.test(active_loginid))
+                sessionStorage.setItem('active_wallet_loginid', active_loginid);
             localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
@@ -2248,9 +2338,9 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                     // NOTE: Remove this logic once social signup is intergated with OIDC
                     // NOTE: We only set logged_state to true when the params has acct1, token1 params
-                    const loggedState = Cookies.get('logged_state');
+                    const isLoggedStateFalsy = !Cookies.get('logged_state') || Cookies.get('logged_state') === 'false';
 
-                    if (loggedState === 'false' && is_acct_token_params) {
+                    if (isLoggedStateFalsy && is_acct_token_params) {
                         const currentDomain = window.location.hostname.split('.').slice(-2).join('.');
                         Cookies.set('logged_state', 'true', {
                             expires: 30,
@@ -2331,7 +2421,8 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    canStoreClientAccounts(obj_params, account_list) {
+    async canStoreClientAccounts(obj_params, account_list) {
+        let is_TMB_enabled;
         const is_ready_to_process = account_list && isEmptyObject(this.accounts);
         const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
@@ -2339,7 +2430,24 @@ export default class ClientStore extends BaseStore {
             account_list.some(account => account.loginid === obj_params[acct])
         );
 
-        return is_ready_to_process && is_cross_checked;
+        const storedValue = localStorage.getItem('is_tmb_enabled');
+        try {
+            const url =
+                process.env.NODE_ENV === 'production'
+                    ? 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
+                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
+            const response = await fetch(url);
+            const result = await response.json();
+
+            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : !!result.app;
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+            // by default it will fallback to true if firebase error happens
+            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : true;
+        }
+
+        return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;
     }
 
     setVerificationCode(code, action) {

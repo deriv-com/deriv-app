@@ -575,6 +575,7 @@
                 direction: rtl;
             }
             & .dc-input-wrapper {
+                direction: ltr;
                 border: 1px solid var(--status-danger);
 
                 &:hover {

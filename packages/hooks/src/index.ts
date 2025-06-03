@@ -35,8 +35,6 @@ export { default as useHasP2PSupportedCurrencies } from './useHasP2PSupportedCur
 export { default as useHasSetCurrency } from './useHasSetCurrency';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
-export { default as useInputATMFormatter } from './useInputATMFormatter';
-export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
 export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useIsClientHighRiskForMT5 } from './useIsClientHighRiskForMT5';
 export { default as useIsHubRedirectionEnabled } from './useIsHubRedirectionEnabled';
@@ -110,4 +108,6 @@ export { default as useIsGrowthbookIsLoaded } from './useIsGrowthbookLoaded';
 export { default as useOauth2 } from './useOauth2';
 export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimitsDetails';
 export { default as useSilentLoginAndLogout } from './useSilentLoginAndLogout';
+export { default as useAccountSettingsRedirect } from './useAccountSettingsRedirect';
+export { default as useTMB } from './useTMB';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

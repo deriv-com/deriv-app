@@ -1,4 +1,4 @@
-import { getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
+import { getUrlSmartTrader, getUrlBot, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
@@ -31,6 +31,27 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
+/**
+ * Appends current URL search parameters to a given URL
+ * @param url - The base URL to append parameters to
+ * @returns The URL with search parameters appended
+ */
+export const appendSearchParamsToUrl = (url: string): string => {
+    const search_params = new URLSearchParams(window.location.search);
+    if (!search_params.toString()) return url;
+
+    const url_obj = new URL(url, window.location.origin);
+    const existing_params = url_obj.searchParams;
+
+    search_params.forEach((value, key) => {
+        existing_params.set(key, value);
+    });
+
+    url_obj.search = existing_params.toString();
+
+    return url.startsWith('http') ? url_obj.toString() : `${url_obj.pathname}${url_obj.search}`;
+};
+
 export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
@@ -40,13 +61,13 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('dbot').name,
         app_desc: localize('The ultimate bot trading platform.'),
-        link_to: routes.bot,
+        link_to: appendSearchParamsToUrl(getUrlBot()),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
         app_desc: localize('The legacy options trading platform.'),
-        link_to: getUrlSmartTrader(),
+        link_to: appendSearchParamsToUrl(getUrlSmartTrader()),
         is_external: true,
     },
     {

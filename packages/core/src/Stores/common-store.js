@@ -13,6 +13,7 @@ import {
     routes,
     toMoment,
     isNavigationFromTradersHubOS,
+    isNavigationFromP2PV2,
 } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -40,6 +41,7 @@ export default class CommonStore extends BaseStore {
             has_error: observable,
             init: action.bound,
             is_from_derivgo: computed,
+            is_from_derivp2p: computed,
             is_from_tradershub_os: computed,
             is_language_changing: observable,
             is_network_online: observable,
@@ -183,6 +185,10 @@ export default class CommonStore extends BaseStore {
             platforms[this.platform]?.platform_name === platforms.tradershub_os.platform_name ||
             isNavigationFromTradersHubOS()
         );
+    }
+
+    get is_from_derivp2p() {
+        return isNavigationFromP2PV2();
     }
 
     setInitialRouteHistoryItem(location) {

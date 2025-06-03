@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-
+import Cookies from 'js-cookie';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader } from '@deriv/shared';
+import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -25,24 +25,81 @@ const RootComponent = observer(props => {
         setIsWalletsOnboardingTourGuideVisible,
         notification_messages_ui,
     } = ui;
-    const { has_wallet, logout, prevent_redirect_to_hub } = client;
+    const {
+        has_wallet,
+        logout,
+        prevent_redirect_to_hub,
+        is_client_store_initialized,
+        prevent_single_login,
+        is_logging_out,
+        is_logged_in,
+        setPreventSingleLogin,
+    } = client;
 
     const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
     const onWalletsOnboardingTourGuideCloseHandler = () => {
         setIsWalletsOnboardingTourGuideVisible(false);
     };
-    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub/cfds';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub/cfds';
+    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
+    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && has_wallet && !prevent_redirect_to_hub) {
+        setPreventSingleLogin(true);
+    }, []);
+
+    useEffect(() => {
+        if (
+            isHubRedirectionEnabled &&
+            isOutsystemsMigrationModalClosed &&
+            has_wallet &&
+            !is_logging_out &&
+            is_logged_in &&
+            !prevent_redirect_to_hub &&
+            is_client_store_initialized
+        ) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            window.location.assign(redirectUrl);
+
+            const redirect_to_lowcode = localStorage.getItem('redirect_to_th_os');
+            localStorage.removeItem('redirect_to_th_os');
+
+            const domain = /deriv\.(com|me|be)/.test(window.location.hostname)
+                ? deriv_urls.DERIV_HOST_NAME
+                : window.location.hostname;
+            Cookies.set('wallet_account', true, { domain });
+
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
+
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    localStorage.setItem('wallet_redirect_done', true);
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
+                default:
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
+            }
         }
-    }, [isHubRedirectionEnabled, has_wallet, prevent_redirect_to_hub]);
+
+        const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
+        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
+            setPreventSingleLogin(false);
+        }
+    }, [
+        isHubRedirectionLoaded,
+        isHubRedirectionEnabled,
+        has_wallet,
+        is_logging_out,
+        is_logged_in,
+        prevent_redirect_to_hub,
+        prevent_single_login,
+        is_client_store_initialized,
+    ]);
 
     return has_wallet ? (
         <Wallets

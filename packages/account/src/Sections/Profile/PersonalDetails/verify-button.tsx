@@ -1,15 +1,19 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
+
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import { useIsPhoneNumberVerified, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useTranslations, Localize } from '@deriv-com/translations';
+import { Localize, useTranslations } from '@deriv-com/translations';
+
 import { makeSettingsRequest } from './validation';
+
 import './verify-button.scss';
 
 type TVerifyButton = {
+    is_dynamic_fa_enabled: boolean;
     is_verify_button_disabled: boolean;
     next_email_otp_request_timer?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -17,16 +21,19 @@ type TVerifyButton = {
     values: GetSettings;
     residence_list: ResidenceList;
     states_list: StatesList;
+    version: string;
 };
 
 export const VerifyButton = observer(
     ({
+        is_dynamic_fa_enabled,
         is_verify_button_disabled,
         next_email_otp_request_timer,
         setStatus,
         values,
         residence_list,
         states_list,
+        version,
     }: TVerifyButton) => {
         const { client, ui } = useStore();
         const { setShouldShowPhoneNumberOTP } = ui;
@@ -60,8 +67,12 @@ export const VerifyButton = observer(
             localStorage.setItem('routes_from_notification_to_pnv', routes.personal_details);
             setVerificationCode('', 'phone_number_verification');
             setShouldShowPhoneNumberOTP(false);
-            // @ts-expect-error GetSettings types doesn't match updated set_settings payload types
-            const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
+            const request = {
+                // @ts-expect-error GetSettings types doesn't match updated set_settings payload types
+                ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
+                ...(is_dynamic_fa_enabled && { financial_information_version: version || 'v2' }),
+            };
+
             // @ts-expect-error GetSettings types doesn't match updated set_settings payload types
             updateSettings({ payload: request })
                 .then(() => {

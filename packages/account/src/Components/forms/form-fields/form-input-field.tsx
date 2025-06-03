@@ -33,10 +33,13 @@ const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
                     autoComplete='off'
                     error={touched[field.name] && errors[field.name] ? errors[field.name] : undefined}
                     warn={warn}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        !touched[field.name] && setFieldTouched(field.name);
-                        field.onChange(e);
-                    }}
+                    onChange={
+                        rest.onChange ||
+                        ((e: React.ChangeEvent<HTMLInputElement>) => {
+                            !touched[field.name] && setFieldTouched(field.name);
+                            field.onChange(e);
+                        })
+                    }
                 />
             );
         }}

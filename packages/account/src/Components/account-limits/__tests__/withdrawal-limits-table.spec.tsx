@@ -10,7 +10,11 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('WithdrawalLimitsTable', () => {
-    const store = mockStore({});
+    const store = mockStore({
+        client: {
+            currency: 'USD',
+        },
+    });
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -52,7 +56,7 @@ describe('WithdrawalLimitsTable', () => {
         expect(screen.getByText(/5,000/)).toBeInTheDocument();
     });
 
-    it('should render withdrawal_info_message on mouse hover on the info icon', () => {
+    it('should render withdrawal_info_message on mouse hover on the info icon', async () => {
         (useGetWithdrawalLimitsDetails as jest.Mock).mockReturnValue({
             withdrawal_limit_details: [
                 {
@@ -66,7 +70,7 @@ describe('WithdrawalLimitsTable', () => {
         renderComponent();
         expect(screen.queryByText(/Lifetime limit info/)).not.toBeInTheDocument();
         const pop_over_icon = screen.getByTestId('dt_popover_wrapper');
-        userEvent.hover(pop_over_icon);
+        await userEvent.hover(pop_over_icon);
         expect(screen.queryByText(/Lifetime limit info/)).toBeInTheDocument();
     });
 

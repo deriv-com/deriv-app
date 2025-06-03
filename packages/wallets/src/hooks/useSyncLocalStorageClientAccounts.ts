@@ -122,6 +122,7 @@ const useSyncLocalStorageClientAccounts = () => {
                             platform: 'dtrade',
                         },
                     ];
+                    sessionStorage.setItem('active_loginid', newAccount.client_id);
                 }
 
                 setLocalStorageClientAccounts(localStorageData);

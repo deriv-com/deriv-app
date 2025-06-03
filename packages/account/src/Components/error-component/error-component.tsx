@@ -1,27 +1,63 @@
 import { PageError } from '@deriv/components';
 import { Localize } from '@deriv-com/translations';
 import { routes } from '@deriv/shared';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+import Cookies from 'js-cookie';
+import { useTMB } from '@deriv/hooks';
+import { useEffect, useState } from 'react';
 
 type TErrorComponent = {
     header: JSX.Element | string;
     message: JSX.Element | string;
+    code: string;
     redirect_label: string;
     redirectOnClick: (() => void) | null;
     should_show_refresh: boolean;
 };
 
+const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
+
 const ErrorComponent = ({
     header,
     message,
+    code,
     redirect_label,
     redirectOnClick,
     should_show_refresh = true,
 }: Partial<TErrorComponent>) => {
+    const { isTmbEnabled } = useTMB();
+    const [isTmbEnabledValue, setIsTmbEnabledValue] = useState(false);
+
+    useEffect(() => {
+        const checkTmbStatus = async () => {
+            const tmbStatus = await isTmbEnabled();
+            setIsTmbEnabledValue(tmbStatus);
+        };
+
+        checkTmbStatus();
+    }, [isTmbEnabled]);
+
     const refresh_message: JSX.Element | string = should_show_refresh ? (
         <Localize i18n_default_text='Please refresh this page to continue.' />
     ) : (
         ''
     );
+
+    if (code === 'InvalidToken' && Cookies.get('logged_state') === 'true' && is_deriv_com && !isTmbEnabledValue) {
+        try {
+            requestOidcAuthentication({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+            }).catch((err: string) => {
+                // eslint-disable-next-line no-console
+                console.error(err);
+            });
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+        }
+
+        return null;
+    }
 
     return (
         <PageError

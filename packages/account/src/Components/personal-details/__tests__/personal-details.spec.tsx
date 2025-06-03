@@ -10,6 +10,7 @@ import { FormikErrors } from 'formik';
 import { getIDVFormValidationSchema } from '../../../Configs/kyc-validation-config';
 import { useDevice } from '@deriv-com/ui';
 import { APIProvider } from '@deriv/api';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -42,6 +43,11 @@ jest.mock('@deriv-com/analytics', () => ({
     Analytics: {
         trackEvent: jest.fn(),
     },
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useGrowthbookGetFeatureValue: jest.fn(),
 }));
 
 type TPersonalDetailsSectionForm = ComponentProps<typeof PersonalDetails>['value'];
@@ -266,6 +272,10 @@ describe('<PersonalDetails/>', () => {
         real_account_signup_target: '',
     };
 
+    beforeEach(() => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, false]);
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -438,6 +448,19 @@ describe('<PersonalDetails/>', () => {
 
         expect(mr_radio_btn).toBeChecked();
         expect(mrs_radio_btn).not.toBeChecked();
+    });
+
+    it('should display country code dropdown when isCountryCodeDropdownEnabled is true ', () => {
+        (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([true, true]);
+        renderwithRouter({});
+
+        expect(screen.getByText(/code\*/i)).toBeInTheDocument();
+    });
+
+    it('should not display country code dropdown when isCountryCodeDropdownEnabled is false ', () => {
+        renderwithRouter({});
+
+        expect(screen.queryByText(/code\*/i)).not.toBeInTheDocument();
     });
 
     it('should display the correct field details ', () => {

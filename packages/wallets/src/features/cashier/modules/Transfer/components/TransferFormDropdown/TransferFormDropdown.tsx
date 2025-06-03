@@ -92,9 +92,9 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                         ...prev,
                         activeAmountFieldName: undefined,
                         fromAccount: account,
-                        fromAmount: 0,
+                        fromAmount: '',
                         toAccount,
-                        toAmount: 0,
+                        toAmount: '',
                     };
                 });
             } else {
@@ -102,7 +102,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                     ...prev,
                     activeAmountFieldName: 'fromAmount',
                     toAccount: account,
-                    toAmount: 0,
+                    toAmount: '',
                 }));
             }
         },

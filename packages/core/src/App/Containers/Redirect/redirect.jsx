@@ -1,19 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore, getDomainName } from '@deriv/shared';
+
+import { useIsHubRedirectionEnabled, useTMB } from '@deriv/hooks';
+import { getDomainName, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { WS } from 'Services';
-import { Analytics } from '@deriv-com/analytics';
-import Cookies from 'js-cookie';
 import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+
+import { WS } from 'Services';
 
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
+    const [queryCurrency, setQueryCurrency] = useState('USD');
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
+    const { isTmbEnabled } = useTMB();
 
     const {
+        authorize_accounts_list,
         currency,
         has_wallet,
         is_logged_in,
@@ -22,6 +30,8 @@ const Redirect = observer(() => {
         setVerificationCode,
         verification_code,
         setPreventRedirectToHub,
+        switchAccount,
+        is_client_store_initialized,
     } = client;
 
     const {
@@ -34,6 +44,8 @@ const Redirect = observer(() => {
         toggleUpdateEmailModal,
         is_mobile,
     } = ui;
+
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
@@ -314,6 +326,17 @@ const Redirect = observer(() => {
             redirected_to_route = true;
             break;
         }
+        case 'ctrader_account_transfer': {
+            if (isHubRedirectionEnabled && has_wallet) {
+                window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
+            } else if (has_wallet) {
+                history.push(routes.wallets_transfer);
+            } else {
+                history.push(routes.cashier_acc_transfer);
+            }
+            redirected_to_route = true;
+            break;
+        }
         case 'livechat': {
             openLivechat();
             break;
@@ -321,36 +344,101 @@ const Redirect = observer(() => {
         default:
             break;
     }
+
     useEffect(() => {
-        if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-            const route_mappings = [
-                { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
-                { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
-                { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
-                { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
-                { pattern: /proof-of-address/i, route: routes.proof_of_address },
-                { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
-                { pattern: /personal-details/i, route: routes.personal_details },
-                { pattern: /dbot/i, route: routes.bot },
-            ];
+        const account_currency = url_params.get('account');
+        setQueryCurrency(account_currency);
+    }, []);
 
-            const default_route = routes.traders_hub;
+    useEffect(() => {
+        const checkTmbAndRedirect = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            const account_currency = queryCurrency;
+            if (
+                !redirected_to_route &&
+                history.location.pathname !== routes.traders_hub &&
+                is_client_store_initialized
+            ) {
+                const client_account_lists = JSON.parse(localStorage.getItem('client.accounts') || '{}');
 
-            const matched_route = route_mappings.find(({ pattern }) =>
-                pattern.test(url_query_string || history.location.search)
-            );
+                const length_of_authorize_accounts_list = authorize_accounts_list.length;
+                const length_of_client_account_lists = Object.keys(client_account_lists).length;
+                const should_retrigger_oidc = length_of_authorize_accounts_list !== length_of_client_account_lists;
+                const route_mappings = [
+                    { pattern: /accumulator/i, route: routes.trade, type: 'accumulator' },
+                    { pattern: /turbos/i, route: routes.trade, type: 'turboslong' },
+                    { pattern: /vanilla/i, route: routes.trade, type: 'vanillalongcall' },
+                    { pattern: /multiplier/i, route: routes.trade, type: 'multiplier' },
+                    { pattern: /proof-of-address/i, route: routes.proof_of_address },
+                    { pattern: /proof-of-identity/i, route: routes.proof_of_identity },
+                    { pattern: /personal-details/i, route: routes.personal_details },
+                    { pattern: /dbot/i, route: routes.bot },
+                ];
 
-            let updated_search = url_query_string;
-            if (matched_route && matched_route.type) {
-                updated_search = `${url_query_string}&trade_type=${matched_route.type}`;
+                const default_route = routes.traders_hub;
+
+                const matched_route = route_mappings.find(({ pattern }) =>
+                    pattern.test(url_query_string || history.location.search)
+                );
+
+                let updated_search = url_query_string;
+                const params = new URLSearchParams(url_query_string);
+                params.set('account', queryCurrency);
+                params.set('trade_type', matched_route?.type);
+                if (matched_route && matched_route?.type) {
+                    updated_search = `${params.toString()}`;
+                }
+
+                if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com && !is_tmb_enabled) {
+                    try {
+                        requestOidcAuthentication({
+                            redirectCallbackUri: `${window.location.origin}/callback`,
+                            postLoginRedirectUri: `redirect?${updated_search}`,
+                        }).catch(err => {
+                            // eslint-disable-next-line no-console
+                            console.error(err);
+                        });
+                    } catch (err) {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    }
+                }
+
+                if (account_currency && !is_tmb_enabled) {
+                    let matching_loginid;
+
+                    const converted_account_currency = account_currency.toUpperCase();
+
+                    if (converted_account_currency === 'DEMO') {
+                        matching_loginid = Object.keys(client_account_lists).find(loginid => /^VR/.test(loginid));
+                    } else {
+                        matching_loginid = Object.keys(client_account_lists).find(
+                            loginid =>
+                                client_account_lists[loginid].currency?.toUpperCase() === converted_account_currency &&
+                                client_account_lists[loginid].account_category === 'trading' &&
+                                !client_account_lists[loginid]?.is_virtual
+                        );
+                    }
+
+                    if (matching_loginid && is_client_store_initialized) {
+                        switchAccount(matching_loginid);
+                        sessionStorage.setItem('active_loginid', matching_loginid);
+                    }
+                }
+
+                sessionStorage.setItem(
+                    'tradershub_redirect_to',
+                    matched_route ? `redirect?${updated_search}` : default_route
+                );
+                history.push({
+                    pathname: matched_route ? matched_route.route : default_route,
+                    search: updated_search,
+                });
             }
+        };
 
-            history.push({
-                pathname: matched_route ? matched_route.route : default_route,
-                search: updated_search,
-            });
-        }
-    }, [redirected_to_route, url_query_string, history]);
+        checkTmbAndRedirect();
+    }, [redirected_to_route, url_query_string, history, is_client_store_initialized, authorize_accounts_list]);
 
     return null;
 });

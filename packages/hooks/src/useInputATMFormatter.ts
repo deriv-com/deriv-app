@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+
 import { unFormatLocaleString } from '@deriv/utils';
+
 import useInputDecimalFormatter from './useInputDecimalFormatter';
 
 type TOptions = {

@@ -9,6 +9,7 @@ type TPageOverlay = {
     header?: React.ReactNode;
     id?: string;
     is_from_app?: boolean;
+    is_from_derivp2p?: boolean;
     is_open?: boolean;
     onClickClose?: (event: MouseEvent) => void;
     portal_id?: string;
@@ -23,6 +24,7 @@ const PageOverlay = ({
     header,
     id,
     is_from_app = false,
+    is_from_derivp2p = false,
     is_open,
     onClickClose,
     portal_id,
@@ -37,14 +39,20 @@ const PageOverlay = ({
         window.location.href = platforms.tradershub_os.url ?? '';
     };
 
+    const redirectToP2P = () => {
+        window.location.href = platforms.p2p_v2.url ?? '';
+    };
+
     const RedirectionComponent = () => (
         <div
             data-testid='dt_page_overlay_header_close'
             className='dc-page-overlay__header-close'
             onClick={
-                is_from_tradershub_os
-                    ? onClickTraderHub
-                    : (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) || window.history.back
+                is_from_derivp2p
+                    ? redirectToP2P
+                    : is_from_tradershub_os
+                      ? onClickTraderHub
+                      : (onClickClose as unknown as MouseEventHandler<HTMLDivElement>) || window.history.back
             }
         >
             <Icon icon='IcCross' />

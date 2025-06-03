@@ -33,7 +33,7 @@ const AccumulatorTradeDescription = ({
             key='2'
         />,
         <Localize
-            i18n_default_text='Your stake will continue to grow as long as the current spot price remains within a specified <0>range</0> from the <0>previous spot price</0>. Otherwise, you lose your stake and the trade is terminated.'
+            i18n_default_text='Your payout will continue to grow as long as the current spot price remains within a specified <0>range</0> from the <0>previous spot price</0>. Otherwise, you lose your stake and the trade is terminated.'
             components={[
                 <span
                     className='contract-type-info__content-definition'

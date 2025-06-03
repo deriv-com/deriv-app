@@ -1,45 +1,51 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors
 
-import clsx from 'clsx';
 import React from 'react';
-import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
-import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv/components';
-import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
+import clsx from 'clsx';
+import { Formik, FormikHelpers } from 'formik';
+
+import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
+import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { ACCOUNTS_OS_DFA_URL, getSocketURL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useTranslations, Localize } from '@deriv-com/translations';
-import LeaveConfirm from 'Components/leave-confirm';
-import IconMessageContent from 'Components/icon-message-content';
+import type { TCoreStores } from '@deriv/stores/types';
+import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
+
 import DemoMessage from 'Components/demo-message';
-import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
-import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
+import FormSubHeader from 'Components/form-sub-header';
+import { EmploymentStatusField } from 'Components/forms/form-fields';
+import IconMessageContent from 'Components/icon-message-content';
+import LeaveConfirm from 'Components/leave-confirm';
+import LoadErrorMessage from 'Components/load-error-message';
+import { getFormattedOccupationList } from 'Configs/financial-details-config';
+import { TFinancialInformationForm } from 'Types';
+
 import {
     getAccountTurnoverList,
-    getEducationLevelList,
-    getEmploymentIndustryList,
-    getEstimatedWorthList,
-    getIncomeSourceList,
-    getNetIncomeList,
-    getSourceOfWealthList,
     getBinaryOptionsTradingExperienceList,
     getBinaryOptionsTradingFrequencyList,
     getCfdTradingExperienceList,
     getCfdTradingFrequencyList,
+    getEducationLevelList,
+    getEmploymentIndustryList,
+    getEstimatedWorthList,
     getForexTradingExperienceList,
     getForexTradingFrequencyList,
+    getIncomeSourceList,
+    getNetIncomeList,
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
+    getSourceOfWealthList,
 } from '../../../Constants/financial-information-list';
-import type { TCoreStores } from '@deriv/stores/types';
-import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
-import { getFormattedOccupationList } from 'Configs/financial-details-config';
-import { TFinancialInformationForm } from 'Types';
-import { EmploymentStatusField } from 'Components/forms/form-fields';
-import { useDevice } from '@deriv-com/ui';
+
 import NavigateToPersonalDetails from './NavigateToPersonalDetails';
 
 type TConfirmationPage = {
@@ -186,6 +192,7 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
 const FinancialAssessment = observer(() => {
     const { client, common, notifications } = useStore();
     const {
+        getToken,
         landing_company_shortcode,
         is_virtual,
         is_financial_account,
@@ -198,9 +205,12 @@ const FinancialAssessment = observer(() => {
         account_settings,
     } = client;
     const { isMobile, isTablet, isDesktop } = useDevice();
-    const { platform, routeBackInApp } = common;
+    const { is_from_tradershub_os, platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
     const is_mf = landing_company_shortcode === 'maltainvest';
+    const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
+        featureFlag: 'redirect_to_fa_in_account_os',
+    });
 
     const history = useHistory();
     const { localize } = useTranslations();
@@ -213,6 +223,11 @@ const FinancialAssessment = observer(() => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState<Partial<GetFinancialAssessment>>({});
+    const [financial_information_version, setFinancialInformationVersion] = React.useState('');
+    const [account_status, setAccountStatus] = React.useState([]);
+    const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
+    const url_lang = URLUtils.getQueryParameter('lang');
+    const i18n_language = localize_language || url_lang || 'en';
 
     const {
         income_source,
@@ -241,7 +256,8 @@ const FinancialAssessment = observer(() => {
         } else {
             WS.authorized.storage.getFinancialAssessment().then(async (data: GetFinancialAssessmentResponse) => {
                 try {
-                    await WS.wait('get_account_status');
+                    const status = await WS.wait('get_account_status');
+                    setAccountStatus(status?.get_account_status?.status ?? []);
                     setHasTradingExperience(
                         (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
                     );
@@ -256,7 +272,10 @@ const FinancialAssessment = observer(() => {
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-                    if (data?.get_financial_assessment) setInitialFormValues(data.get_financial_assessment);
+                    if (data?.get_financial_assessment) {
+                        setInitialFormValues(data.get_financial_assessment);
+                        setFinancialInformationVersion(data.get_financial_assessment?.financial_information_version);
+                    }
                     setIsLoading(false);
                 } catch (e) {
                     // eslint-disable-next-line no-console
@@ -356,7 +375,8 @@ const FinancialAssessment = observer(() => {
         return '8rem';
     };
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (is_loading || !isRedirectToAccountsOSAppFFLoaded)
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
     if (isMobile && is_authentication_needed && !is_mf && is_submit_success)
@@ -397,12 +417,40 @@ const FinancialAssessment = observer(() => {
     };
 
     if (
+        (account_status?.includes('update_fa') && financial_information_version === 'v1') ||
         !employment_status ||
         !account_settings.account_opening_reason ||
         !account_settings.tax_residence ||
         !account_settings.tax_identification_number
     ) {
         return <NavigateToPersonalDetails />;
+    }
+
+    const getFormattedURL = (url_link: string) => {
+        const url = new URL(url_link);
+        const urlParams = new URLSearchParams(location.search);
+        const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+
+        const params = {
+            platform,
+            appid: WebSocketUtils.getAppId(),
+            lang: i18n_language,
+            server: getSocketURL(),
+            token: getToken(),
+        };
+
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.append(key, value);
+        });
+
+        return url.toString();
+    };
+
+    if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
+        setTimeout(() => {
+            window.location.replace(getFormattedURL(ACCOUNTS_OS_DFA_URL));
+        }, 0);
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
     return (

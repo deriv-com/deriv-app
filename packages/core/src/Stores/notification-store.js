@@ -28,8 +28,8 @@ import {
     unique,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import { Chat } from '@deriv/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';
@@ -383,6 +383,7 @@ export default class NotificationStore extends BaseStore {
 
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
+
             const {
                 authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
@@ -412,6 +413,16 @@ export default class NotificationStore extends BaseStore {
 
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
+            if (status?.includes('update_fa')) {
+                this.addNotificationMessage(this.client_notifications.update_fa_required());
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.update_fa_required().key });
+                this.removeNotificationMessage({
+                    key: this.client_notifications.update_fa_required().key,
+                    should_show_again: true,
+                });
+            }
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -802,8 +813,15 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email, is_cr_account, account_settings } =
-            this.root_store.client;
+        const {
+            account_status,
+            has_enabled_two_fa,
+            setTwoFAChangedStatus,
+            logout,
+            email,
+            is_cr_account,
+            account_settings,
+        } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
         const platform_name_trader = getPlatformSettings('trader').name;
@@ -854,7 +872,7 @@ export default class NotificationStore extends BaseStore {
                 message_popup: localize('Drop your review on Trustpilot.'),
                 action: {
                     onClick: () => {
-                        window.open('https://www.trustpilot.com/evaluate/deriv.com', '_blank');
+                        window.open('https://www.trustpilot.com/review/deriv.com', '_blank');
                         this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
                         this.removeNotificationByKey({
                             key: this.client_notifications.trustpilot.key,
@@ -864,6 +882,34 @@ export default class NotificationStore extends BaseStore {
                             should_show_again: false,
                         });
                     },
+                    children: (
+                        <div
+                            className='trustpilot-widget'
+                            data-locale='en-US'
+                            data-template-id='56278e9abfbbba0bdcd568bc'
+                            data-businessunit-id='5ed4c8a9f74f310001f51bf7'
+                            data-style-height='52px'
+                            data-style-width='100%'
+                        >
+                            <a
+                                href='https://www.trustpilot.com/review/deriv.com'
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                onClick={() => {
+                                    this.markNotificationMessage({ key: this.client_notifications.trustpilot.key });
+                                    this.removeNotificationByKey({
+                                        key: this.client_notifications.trustpilot.key,
+                                    });
+                                    this.removeNotificationMessage({
+                                        key: this.client_notifications.trustpilot.key,
+                                        should_show_again: false,
+                                    });
+                                }}
+                            >
+                                {localize('Go to Trustpilot')}
+                            </a>
+                        </div>
+                    ),
                     text: localize('Go to Trustpilot'),
                 },
                 img_src: getUrlBase('/public/images/common/trustpilot_banner.png'),
@@ -1432,6 +1478,43 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Go to live chat'),
                 },
                 type: 'danger',
+            },
+            update_fa_required: () => {
+                let header, message;
+                if (is_cr_account) {
+                    if (account_status?.status?.includes('financial_information_not_complete')) {
+                        header = localize('Complete your Financial assessment');
+                    } else {
+                        header = localize('Update required');
+                    }
+                } else {
+                    header = localize('Update required');
+                }
+
+                if (is_cr_account) {
+                    if (account_status?.status?.includes('financial_information_not_complete')) {
+                        message = localize('Help us keep your information up to date by completing the assessment.');
+                    } else {
+                        message = localize(
+                            'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
+                        );
+                    }
+                } else {
+                    message = localize(
+                        'We’ve updated the financial assessment questions. Retake the assessment to keep your information accurate.'
+                    );
+                }
+                return {
+                    key: 'update_fa_required',
+                    header,
+                    message,
+                    action: {
+                        route: routes.financial_assessment,
+                        text: localize('Start now'),
+                    },
+                    type: 'warning',
+                    should_show_again: true,
+                };
             },
             withdrawal_locked: {
                 key: 'withdrawal_locked',

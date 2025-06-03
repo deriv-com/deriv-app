@@ -133,3 +133,8 @@ export const ACCOUNTS_OS_POA_URL =
     process.env.NODE_ENV === 'production'
         ? 'https://hub.deriv.com/Accounts/ProofOfAddress'
         : 'https://staging-hub.deriv.com/Accounts/ProofOfAddress';
+
+export const ACCOUNTS_OS_DFA_URL =
+    process.env.NODE_ENV === 'production'
+        ? 'https://hub.deriv.com/Accounts/Financial-Assessment'
+        : 'https://staging-hub.deriv.com/Accounts/Financial-Assessment';

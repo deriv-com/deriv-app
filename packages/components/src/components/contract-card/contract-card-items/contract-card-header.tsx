@@ -173,13 +173,7 @@ const ContractCardHeader = ({
                     ) : null}
                 </MobileWrapper>
             </div>
-            {!is_sold && is_accumulator && (
-                <TickCounterBar
-                    current_tick={tick_passed}
-                    max_ticks_duration={tick_count}
-                    label={getCardLabels().TICKS}
-                />
-            )}
+            {!is_sold && is_accumulator && <TickCounterBar current_tick={tick_passed} label={getCardLabels().TICKS} />}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>

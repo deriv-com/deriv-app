@@ -147,7 +147,8 @@ type TAPIProviderProps = {
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
     const [reconnect, setReconnect] = useState(false);
-    const activeLoginid = window.localStorage.getItem('active_loginid');
+    const activeLoginid =
+        window.sessionStorage.getItem('active_loginid') || window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
     const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();

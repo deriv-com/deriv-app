@@ -115,6 +115,11 @@ const copyConfig = base => {
             to: 'localstorage-sync.html',
             toType: 'file',
         },
+        {
+            from: path.resolve(__dirname, '../src/root_files/front-channel.html'),
+            to: 'front-channel.html',
+            toType: 'file',
+        },
         { from: path.resolve(__dirname, '../src/root_files/robots.txt'), to: 'robots.txt', toType: 'file' },
         { from: path.resolve(__dirname, '../src/root_files/sitemap.xml'), to: 'sitemap.xml', toType: 'file' },
         {
@@ -132,6 +137,10 @@ const copyConfig = base => {
             to: 'public/videos',
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
+        {
+            from: path.resolve(__dirname, '../src/public/images/common/callback_loader.gif'),
+            to: 'public/images/common/callback_loader.gif',
+        },
         {
             from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/'),
             to: 'public/images/common/logos/platform_logos/',

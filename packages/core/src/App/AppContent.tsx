@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { useRemoteConfig } from '@deriv/api';
 import {
@@ -10,15 +11,13 @@ import {
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
+    useTMB,
 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
-
-import P2PIFrame from 'Modules/P2PIFrame';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 
 import initDatadog from '../Utils/Datadog';
 import initHotjar from '../Utils/Hotjar';
@@ -54,11 +53,14 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
     const { is_dark_mode_on, setDarkMode } = store.ui;
+    const { onRenderTMBCheck, isTmbEnabled } = useTMB();
 
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
+    const location = useLocation();
+    const has_access_denied_error = location.search.includes('access_denied');
 
-    const { isOAuth2Enabled, oAuthLogout } = useOauth2({
+    const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
         },
@@ -70,7 +72,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     useSilentLoginAndLogout({
         is_client_store_initialized,
-        isOAuth2Enabled,
         oAuthLogout,
     });
 
@@ -85,6 +86,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     });
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
+    });
+    const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'duplicate-login',
     });
 
     const { data } = useRemoteConfig(true);
@@ -150,6 +154,14 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     ]);
 
     React.useEffect(() => {
+        const renderTMB = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            if (is_tmb_enabled) onRenderTMBCheck();
+        };
+        renderTMB();
+    }, [onRenderTMBCheck]);
+
+    React.useEffect(() => {
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
 
@@ -174,15 +186,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             {!isCallBackPage && <Header />}
             <ErrorBoundary root_store={store}>
                 <AppContents>
-                    {/* TODO: [trader-remove-client-base] */}
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <Footer />
+            {!(isDuplicateLoginEnabled && has_access_denied_error) && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
-            {!isOAuth2Enabled && <P2PIFrame />}
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

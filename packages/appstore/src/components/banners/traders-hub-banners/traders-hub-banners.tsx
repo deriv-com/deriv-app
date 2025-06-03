@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Loading } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
-import { useContentFlag, useGrowthbookGetFeatureValue, useStoreHasAccountDeposited } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
+
 import BookBanner from 'Components/banners/book-banner';
 import WalletsBanner from 'Components/banners/wallets-banner';
 
@@ -29,7 +31,8 @@ const DepositNowBanner = makeLazyLoader(
 )();
 
 const TradersHubBanners = observer(() => {
-    const { client, traders_hub } = useStore();
+    const { client, common, traders_hub } = useStore();
+    const { current_language } = common;
     const { is_landing_company_loaded, has_any_real_account, is_eu, has_maltainvest_account, is_low_risk } = client;
     const { is_real } = traders_hub;
     const { hasDeposited, hasTransferred, isLoaded } = useStoreHasAccountDeposited();
@@ -56,7 +59,7 @@ const TradersHubBanners = observer(() => {
         !hasTransferred;
 
     return (
-        <React.Fragment>
+        <React.Fragment key={current_language}>
             {should_add_empty_div_for_get_started_trading_banner_clever_tap && (
                 <div className='get-started-trading-banner-ct' />
             )}

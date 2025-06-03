@@ -1,10 +1,13 @@
-import { Button, Text, Icon } from '@deriv/components';
+import { useHistory } from 'react-router';
+
+import { Button, Icon, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import { useHistory } from 'react-router';
-import { routes } from '@deriv/shared';
+
 import FormFooter from '../../../Components/form-footer';
-import { observer, useStore } from '@deriv/stores';
+
 import './navigate-to-personal-details.scss';
 
 const NavigateToPersonalDetails = observer(() => {
@@ -41,7 +44,7 @@ const NavigateToPersonalDetails = observer(() => {
                     className='navigate-to-personal-details__body--text'
                     align='center'
                 >
-                    <Localize i18n_default_text='Update your personal details in account settings before starting your financial assessment.' />
+                    <Localize i18n_default_text='Update your tax details and employment status before starting your financial assessment.' />
                 </Text>
             </div>
             {isDesktop ? (

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef } from 'react';
+import classnames from 'classnames';
 import { Formik } from 'formik';
 import { Localize } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
@@ -18,10 +19,11 @@ const TransferForm = () => {
     const initialValues: TInitialTransferFormValues = {
         activeAmountFieldName: undefined,
         fromAccount: activeWallet,
-        fromAmount: 0,
+        fromAmount: '',
         isError: false,
+        lastFocusedField: undefined,
         toAccount: undefined,
-        toAmount: 0,
+        toAmount: '',
     };
 
     const onSubmit = useCallback(
@@ -37,12 +39,19 @@ const TransferForm = () => {
                 {({ handleSubmit, values }) => {
                     const { fromAccount, fromAmount, isError, toAccount, toAmount } = values;
                     const isTransferBtnDisabled =
-                        !fromAmount || !toAmount || isError || [fromAccount, toAccount].some(hasPlatformStatus);
+                        !Number(fromAmount) ||
+                        !Number(toAmount) ||
+                        isError ||
+                        [fromAccount, toAccount].some(hasPlatformStatus);
 
                     return (
                         <form className='wallets-transfer__form' onSubmit={handleSubmit}>
                             <div className='wallets-transfer__fields'>
-                                <div className='wallets-transfer__fields-section'>
+                                <div
+                                    className={classnames('wallets-transfer__fields-section', {
+                                        'wallets-transfer__fields-section--error': isError,
+                                    })}
+                                >
                                     <TransferFormAmountInput fieldName='fromAmount' />
                                     <TransferFormDropdown
                                         fieldName='fromAccount'
@@ -50,7 +59,11 @@ const TransferForm = () => {
                                     />
                                 </div>
                                 <TransferMessages />
-                                <div className='wallets-transfer__fields-section'>
+                                <div
+                                    className={classnames('wallets-transfer__fields-section', {
+                                        'wallets-transfer__fields-section--error': isError,
+                                    })}
+                                >
                                     <TransferFormAmountInput fieldName='toAmount' />
                                     <TransferFormDropdown
                                         fieldName='toAccount'

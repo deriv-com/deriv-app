@@ -1,13 +1,17 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
+    WalletLoader,
     WalletsAddMoreCarousel,
     WalletsCardLoader,
     WalletsDisclaimerBanner,
+    WalletsOutsystemsMigrationModal,
     WalletsResponsiveLoader,
 } from '../../components';
+import { useModal } from '../../components/ModalProvider';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
@@ -22,12 +26,21 @@ const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirec
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { show } = useModal();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
 
-    if (isHubRedirectionEnabled) {
-        return null;
+    useEffect(() => {
+        if (!isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
+            show(<WalletsOutsystemsMigrationModal />);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHubRedirectionEnabled, isOutsystemsMigrationModalClosed]);
+
+    if (isOutsystemsMigrationModalClosed && isHubRedirectionEnabled) {
+        return <WalletLoader />;
     }
 
     return (

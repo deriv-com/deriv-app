@@ -23,6 +23,7 @@ const DefaultHeader = observer(() => {
         is_dxtrade_allowed,
         is_logged_in,
         is_logging_in,
+        is_single_logging_in,
         is_mt5_allowed,
         is_switching,
         is_landing_company_loaded,
@@ -112,7 +113,7 @@ const DefaultHeader = observer(() => {
                         'header__menu-right--hidden': !isDesktop && is_logging_in,
                     })}
                 >
-                    {(is_logging_in || is_switching) && (
+                    {(is_logging_in || is_single_logging_in || is_switching) && (
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {

@@ -9,15 +9,8 @@ import { LabelPairedChevronsDownCaptionRegularIcon, LabelPairedChevronsUpCaption
 import './payout-selector.scss';
 
 const PayoutSelector = observer(() => {
-    const {
-        barrier_1,
-        payout_choices,
-        setPayoutPerPoint,
-        togglePayoutWheelPicker,
-        payout_per_point,
-        currency,
-        contract_type,
-    } = useTraderStore();
+    const { barrier_1, payout_choices, setPayoutPerPoint, togglePayoutWheelPicker, payout_per_point, currency } =
+        useTraderStore();
     const { isMobile } = useDevice();
 
     const header_tooltip_text = (
@@ -54,7 +47,6 @@ const PayoutSelector = observer(() => {
 
     return (
         <PayoutPerPointInput
-            contract_type={contract_type}
             currency={currency}
             defaultPayout={payout_per_point}
             payoutOptions={payout_choices}

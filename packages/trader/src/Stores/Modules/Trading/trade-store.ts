@@ -718,9 +718,7 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
-            this.root_store.contract_trade.clearAccumulatorBarriersData();
-        }
+        this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
     }
 
     setV2ParamsInitialValues({
@@ -1229,6 +1227,17 @@ export default class TradeStore extends BaseStore {
                                 });
                             }
 
+                            // Auto-scroll to bottom of page to show chart fully after contract is opened
+                            setTimeout(() => {
+                                const scrollContainer = document.querySelector('.bottom-nav-selection');
+                                if (scrollContainer) {
+                                    scrollContainer.scrollTo({
+                                        top: scrollContainer.scrollHeight,
+                                        behavior: 'smooth',
+                                    });
+                                }
+                            }, 100);
+
                             this.is_purchasing_contract = false;
                             return;
                         }
@@ -1664,13 +1673,14 @@ export default class TradeStore extends BaseStore {
             if (this.is_vanilla && response.error.details?.barrier_choices) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
 
+                // Store the current barrier value before updating choices
+                const previous_barrier = this.barrier_1;
+
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setBarrierChoices(barrier_choices as string[]);
-                if (!this.barrier_choices.includes(this.barrier_1)) {
-                    // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
-                    // The new list is set and the mid value is assigned
-                    const index = Math.floor(this.barrier_choices.length / 2);
-                    this.barrier_1 = this.barrier_choices[index];
+                if (!this.barrier_choices.includes(previous_barrier)) {
+                    // Find the closest value instead of defaulting to median
+                    this.barrier_1 = this.findClosestBarrierValue(previous_barrier, this.barrier_choices);
                     this.onChange({
                         target: {
                             name: 'barrier_1',
@@ -1696,8 +1706,23 @@ export default class TradeStore extends BaseStore {
             this.validateAllProperties();
             if (this.is_vanilla) {
                 const { max_stake, min_stake, barrier_choices } = response.proposal ?? {};
+
+                // Store the current barrier value before updating choices
+                const previous_barrier = this.barrier_1;
+
                 this.setBarrierChoices(barrier_choices as string[]);
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
+
+                // If the current barrier is not in the new choices, find the closest match
+                if (barrier_choices && !barrier_choices.includes(previous_barrier)) {
+                    this.barrier_1 = this.findClosestBarrierValue(previous_barrier, barrier_choices as string[]);
+                    this.onChange({
+                        target: {
+                            name: 'barrier_1',
+                            value: this.barrier_1,
+                        },
+                    });
+                }
             } else if (this.is_turbos) {
                 const { max_stake, min_stake, payout_choices } = response.proposal ?? {};
                 if (payout_choices) {
@@ -1912,6 +1937,9 @@ export default class TradeStore extends BaseStore {
         // TODO: Find a more elegant solution to unmount contract-trade-store
         this.root_store.contract_trade.onUnmount();
         this.refresh();
+
+        this.resetAccumulatorData();
+
         this.resetErrorServices();
         if (this.root_store.notifications.is_notifications_visible) {
             this.root_store.notifications.toggleNotificationsModal();
@@ -1959,8 +1987,19 @@ export default class TradeStore extends BaseStore {
                 const { close, pip_size } = args[0].ohlc as { close: string; pip_size: number };
                 if (close && pip_size) this.setTickData({ pip_size, quote: Number(close) });
             }
+            interface AccumulatorBarriersData {
+                current_spot?: number;
+                current_spot_time?: number;
+                tick_update_timestamp?: number;
+                accumulators_high_barrier?: string;
+                accumulators_low_barrier?: string;
+                barrier_spot_distance?: string;
+                previous_spot_time?: number;
+            }
+
             if (this.is_accumulator) {
-                let current_spot_data = {};
+                let current_spot_data: AccumulatorBarriersData = {};
+
                 if ('tick' in args[0]) {
                     const { epoch, quote, symbol } = args[0].tick as TickSpotData;
                     if (this.symbol !== symbol) return;
@@ -1975,11 +2014,36 @@ export default class TradeStore extends BaseStore {
                     current_spot_data = {
                         current_spot: prices?.[prices?.length - 1],
                         current_spot_time: times?.[times?.length - 1],
-                        prev_spot_time: times?.[times?.length - 2],
+                        previous_spot_time: times?.[times?.length - 2],
                     };
                 } else {
                     return;
                 }
+
+                // If switching accounts, include previous barrier values
+                if (this.root_store.client.is_switching) {
+                    const barriers_data = this.root_store.contract_trade
+                        .accumulator_barriers_data as AccumulatorBarriersData;
+
+                    if (
+                        current_spot_data.current_spot !== undefined &&
+                        barriers_data.barrier_spot_distance !== undefined
+                    ) {
+                        const barrier_spot_distance_num = parseFloat(barriers_data.barrier_spot_distance);
+
+                        current_spot_data = {
+                            ...current_spot_data,
+                            accumulators_high_barrier: String(
+                                current_spot_data.current_spot + barrier_spot_distance_num
+                            ),
+                            accumulators_low_barrier: String(
+                                current_spot_data.current_spot - barrier_spot_distance_num
+                            ),
+                            barrier_spot_distance: barriers_data.barrier_spot_distance,
+                        };
+                    }
+                }
+
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
@@ -2119,6 +2183,41 @@ export default class TradeStore extends BaseStore {
 
     setContractTypesListV2(contract_types_list: TContractTypesList) {
         this.contract_types_list_v2 = contract_types_list;
+    }
+
+    /**
+     * Finds the closest barrier value from the available choices
+     * @param current_value - The current barrier value selected by the user
+     * @param barrier_choices - The list of available barrier choices
+     * @returns The closest available barrier value to the user's selection
+     */
+    findClosestBarrierValue(current_value: string, barrier_choices: string[]): string {
+        if (!barrier_choices.length) return current_value;
+        if (barrier_choices.includes(current_value)) return current_value;
+
+        // Convert strings to numbers for comparison
+        // Handle both formats: absolute values like "1790.00" and relative values like "+0.650"
+        const isRelative = current_value.startsWith('+') || current_value.startsWith('-');
+        const current_numeric = parseFloat(current_value);
+
+        // Find the closest value
+        return barrier_choices.reduce(
+            (closest, choice) => {
+                const choice_numeric = parseFloat(choice);
+
+                // If both are relative or both are absolute, compare directly
+                if (
+                    (isRelative && (choice.startsWith('+') || choice.startsWith('-'))) ||
+                    (!isRelative && !choice.startsWith('+') && !choice.startsWith('-'))
+                ) {
+                    if (Math.abs(choice_numeric - current_numeric) < Math.abs(parseFloat(closest) - current_numeric)) {
+                        return choice;
+                    }
+                }
+                return closest;
+            },
+            barrier_choices[Math.floor(barrier_choices.length / 2)]
+        ); // Default to median if comparison fails
     }
 
     setBarrierChoices(barrier_choices: string[]) {

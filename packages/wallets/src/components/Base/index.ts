@@ -1,4 +1,3 @@
-export * from './ATMAmountInput';
 export * from './IconButton';
 export * from './ModalStepWrapper';
 export * from './ModalWrapper';
@@ -12,3 +11,4 @@ export * from './WalletLink';
 export * from './WalletLoader';
 export * from './WalletPasswordFieldLazy';
 export * from './WalletTextField';
+export * from './WalletTransferAmountInput';

@@ -1,5 +1,5 @@
 import { useTranslations } from '@deriv-com/translations';
-import { getStaticUrl, getUrlSmartTrader } from '../helpers/urls';
+import { getStaticUrl, getUrlBot, getUrlSmartTrader } from '../helpers/urls';
 
 type TOptionsAndMultipliersContent = {
     availability: 'All' | 'EU' | 'Non-EU';
@@ -8,6 +8,27 @@ type TOptionsAndMultipliersContent = {
     key: string;
     redirect: string;
     title: string;
+};
+
+/**
+ * Appends current URL search parameters to a given URL
+ * @param url - The base URL to append parameters to
+ * @returns The URL with search parameters appended
+ */
+export const appendSearchParamsToUrl = (url: string): string => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (!searchParams.toString()) return url;
+
+    const urlObj = new URL(url, window.location.origin);
+    const existingParams = urlObj.searchParams;
+
+    searchParams.forEach((value, key) => {
+        existingParams.set(key, value);
+    });
+
+    urlObj.search = existingParams.toString();
+
+    return url.startsWith('http') ? urlObj.toString() : `${urlObj.pathname}${urlObj.search}`;
 };
 
 export const getOptionsAndMultipliersContent = (
@@ -28,7 +49,7 @@ export const getOptionsAndMultipliersContent = (
         description: localize('The ultimate bot trading platform.'),
         isExternal: true,
         key: 'bot',
-        redirect: '/bot',
+        redirect: appendSearchParamsToUrl(getUrlBot()),
         title: 'Deriv Bot',
     },
     {
@@ -36,7 +57,7 @@ export const getOptionsAndMultipliersContent = (
         description: localize('The legacy options trading platform.'),
         isExternal: true,
         key: 'smarttrader',
-        redirect: getUrlSmartTrader(),
+        redirect: appendSearchParamsToUrl(getUrlSmartTrader()),
         title: 'SmartTrader',
     },
     {

@@ -1,0 +1,63 @@
+.access-denied {
+    &__main-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: calc(100vh - 7.2rem - 48px - 36px);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 7.2rem;
+    }
+
+    &__logo {
+        max-width: 190px;
+    }
+
+    &__title {
+        font-size: 18px !important;
+        margin-top: 24px;
+    }
+
+    &__description {
+        margin-top: 16px;
+    }
+
+    &__actions {
+        margin-top: 24px;
+        width: 368px;
+    }
+
+    &__button {
+        border-radius: 100px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
+        color: var(--text-colored-background);
+        font-size: 16px;
+        font-weight: 500;
+        background-color: var(--button-primary-default);
+        cursor: pointer;
+    }
+
+    &__button:hover {
+        background-color: var(--button-primary-hover);
+    }
+
+    &__button--switch {
+        background-color: transparent;
+        border: 1px solid var(--button-secondary-default);
+        color: var(--text-general);
+        margin-top: 8px;
+    }
+
+    &__button--switch:hover {
+        background-color: var(--button-secondary-hover);
+    }
+}

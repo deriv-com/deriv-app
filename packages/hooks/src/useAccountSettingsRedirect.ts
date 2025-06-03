@@ -3,7 +3,10 @@ import { useStore } from '@deriv/stores';
 
 import useIsHubRedirectionEnabled from './useIsHubRedirectionEnabled';
 
-export const useAccountSettingsRedirect = (redirect_to = 'home') => {
+// Define allowed redirect destinations as a type-safe enum
+export type RedirectDestination = 'home' | 'account-limits';
+
+export const useAccountSettingsRedirect = (redirect_to: RedirectDestination = 'home') => {
     const { client } = useStore();
     const { has_wallet } = client;
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
@@ -22,7 +25,16 @@ export const useAccountSettingsRedirect = (redirect_to = 'home') => {
         redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;
         mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;
     } else {
-        redirect_url = routes.personal_details;
+        // Map redirect_to values to specific routes when not using hub redirection
+        switch (redirect_to) {
+            case 'account-limits':
+                redirect_url = routes.account_limits;
+                break;
+            case 'home':
+            default:
+                redirect_url = routes.personal_details;
+                break;
+        }
         mobile_redirect_url = routes.account;
     }
 

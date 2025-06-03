@@ -12,6 +12,7 @@ type TVideoPlayerProps = {
     className?: string;
     data_testid?: string;
     height?: string;
+    hide_volume_control?: boolean;
     is_mobile?: boolean;
     is_v2?: boolean;
     increased_drag_area?: boolean;
@@ -32,6 +33,7 @@ const VideoPlayer = ({
     className,
     data_testid,
     height,
+    hide_volume_control = false,
     is_mobile,
     is_v2,
     increased_drag_area,
@@ -152,7 +154,7 @@ const VideoPlayer = ({
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
         is_dragging.current = false;
-        should_check_time_ref.current = true;
+        should_check_time_ref.current = false;
 
         debouncedRewind();
 
@@ -180,7 +182,7 @@ const VideoPlayer = ({
         video_ref.current.currentTime = new_time;
         new_time_ref.current = new_time;
         setCurrentTime(new_time);
-        should_check_time_ref.current = true;
+        should_check_time_ref.current = false;
 
         debouncedRewind();
     };
@@ -363,8 +365,8 @@ const VideoPlayer = ({
                 onEnded={onEnded}
                 onPlay={() => setIsPlaying(true)}
                 onLoadedMetaData={onLoadedMetaData}
-                onSeeked={() => (should_check_time_ref.current = true)}
-                onSeeking={() => (should_check_time_ref.current = true)}
+                onSeeked={() => (should_check_time_ref.current = false)}
+                onSeeking={() => (should_check_time_ref.current = false)}
                 playbackRate={playback_rate}
                 volume={volume}
             />
@@ -388,6 +390,7 @@ const VideoPlayer = ({
                 current_time={current_time}
                 dragStartHandler={dragStartHandler}
                 has_enlarged_dot={has_enlarged_dot}
+                hide_volume_control={hide_volume_control}
                 is_animated={is_animated}
                 is_ended={is_ended.current}
                 is_playing={is_playing}

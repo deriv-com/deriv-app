@@ -17,13 +17,13 @@ const useAvailableMT5Accounts = () => {
         payload: { platform: 'mt5' },
         options: { enabled: isSuccess },
     });
+    const financialPlatforms = ['svg', 'bvi', 'vanuatu', 'dml'];
 
     const modified_mt5_available_accounts = useMemo(
         () =>
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
                 const shouldUpdateForex =
-                    account.product === 'financial' &&
-                    ['svg', 'bvi', 'vanuatu', 'dml'].includes(account.shortcode ?? '');
+                    account.product === 'financial' && financialPlatforms.includes(account.shortcode ?? '');
                 const accountWithInstruments = account as typeof account & { instruments?: string[] };
                 return {
                     ...account,

@@ -1,17 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Icon, Popover } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { useAccountSettingsRedirect } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
+import { observer } from '@deriv/stores';
 
-export const AccountLimits = ({ showPopover }) => (
-    <Link to={routes.account_limits} className='footer__link'>
-        {showPopover ? (
-            <Popover alignment='top' message={localize('Account limits')} zIndex={9999}>
+export const AccountLimits = observer(({ showPopover }) => {
+    // Use the useAccountSettingsRedirect hook with 'account-limits' as the redirect_to value
+    const { redirect_url } = useAccountSettingsRedirect('account-limits');
+
+    return (
+        <a className='footer__link' href={redirect_url}>
+            {showPopover ? (
+                <Popover alignment='top' message={localize('Account limits')} zIndex={9999}>
+                    <Icon icon='IcAccountLimits' className='footer__icon ic-deriv__icon' />
+                </Popover>
+            ) : (
                 <Icon icon='IcAccountLimits' className='footer__icon ic-deriv__icon' />
-            </Popover>
-        ) : (
-            <Icon icon='IcAccountLimits' className='footer__icon ic-deriv__icon' />
-        )}
-    </Link>
-);
+            )}
+        </a>
+    );
+});

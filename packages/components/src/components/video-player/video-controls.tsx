@@ -12,6 +12,7 @@ type TVideoControls = {
     current_time?: number;
     dragStartHandler: (e: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>) => void;
     has_enlarged_dot?: boolean;
+    hide_volume_control?: boolean;
     is_animated?: boolean;
     is_ended?: boolean;
     is_playing?: boolean;
@@ -39,6 +40,7 @@ const VideoControls = ({
     current_time,
     dragStartHandler,
     has_enlarged_dot,
+    hide_volume_control = false,
     is_animated,
     is_ended,
     is_playing,
@@ -84,14 +86,16 @@ const VideoControls = ({
                     })}
                 >
                     <div className='controls__right--v2'>
-                        <VolumeControl
-                            onVolumeChange={onVolumeChange}
-                            volume={volume}
-                            is_mobile={is_mobile}
-                            is_muted={is_muted}
-                            toggleMute={toggleMute}
-                            is_v2
-                        />
+                        {!hide_volume_control && (
+                            <VolumeControl
+                                onVolumeChange={onVolumeChange}
+                                volume={volume}
+                                is_mobile={is_mobile}
+                                is_muted={is_muted}
+                                toggleMute={toggleMute}
+                                is_v2
+                            />
+                        )}
                         <PlaybackRateControl
                             onPlaybackRateChange={onPlaybackRateChange}
                             is_mobile={is_mobile}
@@ -166,14 +170,16 @@ const VideoControls = ({
                             </Text>
                         </div>
                     </div>
-                    <div className='player__controls__bottom-bar controls__right'>
-                        <VolumeControl
-                            onVolumeChange={onVolumeChange}
-                            volume={volume}
-                            is_mobile={is_mobile}
-                            is_muted={is_muted}
-                            toggleMute={toggleMute}
-                        />
+                    <div className='player__controls__bottom-bar'>
+                        {!hide_volume_control && (
+                            <VolumeControl
+                                onVolumeChange={onVolumeChange}
+                                volume={volume}
+                                is_mobile={is_mobile}
+                                is_muted={is_muted}
+                                toggleMute={toggleMute}
+                            />
+                        )}
                         <PlaybackRateControl
                             onPlaybackRateChange={onPlaybackRateChange}
                             is_mobile={is_mobile}

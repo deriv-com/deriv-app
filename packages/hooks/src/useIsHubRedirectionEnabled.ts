@@ -1,39 +1,30 @@
 import Cookies from 'js-cookie';
 
+import { useRemoteConfig } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
-import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
-
-type THubEnabledCountryList = {
-    hub_enabled_country_list: string[];
-};
-
 const useIsHubRedirectionEnabled = () => {
-    const [hubEnabledCountryList, isHubRedirectionLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'hub_enabled_country_list',
-    });
+    const { data } = useRemoteConfig(true);
+    const hub_enabled_country_list = data?.hub_enabled_country_list ?? [];
     const { client } = useStore();
     const { account_settings, clients_country } = client;
 
     const cookieCountry = JSON.parse(Cookies.get('client_information') || '{}')?.residence;
-
-    const userCountry = cookieCountry || account_settings.country_code;
+    const userCountry = cookieCountry || account_settings?.country_code;
 
     const isHubRedirectionEnabled =
-        typeof hubEnabledCountryList === 'object' &&
-        hubEnabledCountryList !== null &&
-        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
-        userCountry &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(userCountry);
+        Array.isArray(hub_enabled_country_list) && userCountry && hub_enabled_country_list.includes(userCountry);
 
     const isChangingToHubAppId =
-        typeof hubEnabledCountryList === 'object' &&
-        hubEnabledCountryList !== null &&
-        Array.isArray((hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list) &&
+        Array.isArray(hub_enabled_country_list) &&
         clients_country &&
-        (hubEnabledCountryList as THubEnabledCountryList).hub_enabled_country_list.includes(clients_country);
+        hub_enabled_country_list.includes(clients_country);
 
-    return { isHubRedirectionEnabled, isChangingToHubAppId, isHubRedirectionLoaded };
+    return {
+        isHubRedirectionEnabled,
+        isChangingToHubAppId,
+        isHubRedirectionLoaded: !!hub_enabled_country_list.length,
+    };
 };
 
 export default useIsHubRedirectionEnabled;

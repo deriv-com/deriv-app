@@ -1,20 +1,26 @@
 import React, { useEffect } from 'react';
-import { routes, WS, cacheTrackEvents } from '@deriv/shared';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { useHistory } from 'react-router';
+import classNames from 'classnames';
+import Cookies from 'js-cookie';
+import { Loading } from '@deriv/components';
+import { useGrowthbookGetFeatureValue, useIsHubRedirectionEnabled, useSettings } from '@deriv/hooks';
+import { cacheTrackEvents, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import Routes from 'Components/routes/routes';
-import classNames from 'classnames';
 import './app.scss';
 import './temporary-overrides.scss';
-import { useHistory } from 'react-router';
 
 const AppContent: React.FC = observer(() => {
     const { ui, traders_hub, client } = useStore();
     const history = useHistory();
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
+    const { data: settingsData } = useSettings();
 
     const { is_dark_mode_on, setShouldShowOneTimeDepositModal } = ui;
     const { selected_account_type } = traders_hub;
-    const { is_logged_in, is_logging_in } = client;
+    const { is_logged_in, is_logging_in, is_client_store_initialized, is_logging_out, prevent_redirect_to_hub } =
+        client;
 
     /**
      * Trigger one time deposit modal after real account creation
@@ -65,6 +71,17 @@ const AppContent: React.FC = observer(() => {
             }
         }
     }, [selected_account_type]);
+
+    if (
+        isHubRedirectionEnabled &&
+        (isOutsystemsMigrationModalClosed || settingsData?.feature_flag?.wallet !== 0) &&
+        !is_logging_out &&
+        is_logged_in &&
+        !prevent_redirect_to_hub &&
+        is_client_store_initialized
+    ) {
+        return <Loading />;
+    }
 
     return (
         <main

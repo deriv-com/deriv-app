@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled, useOauth2, useSettings } from '@deriv/hooks';
 import { moduleLoader, deriv_urls } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -35,6 +35,7 @@ const RootComponent = observer(props => {
         is_logged_in,
         setPreventSingleLogin,
     } = client;
+    const { data: settingsData } = useSettings();
 
     const { oAuthLogout } = useOauth2({ handleLogout: logout });
 
@@ -54,8 +55,7 @@ const RootComponent = observer(props => {
     useEffect(() => {
         if (
             isHubRedirectionEnabled &&
-            isOutsystemsMigrationModalClosed &&
-            has_wallet &&
+            (isOutsystemsMigrationModalClosed || settingsData?.feature_flag?.wallet !== 0) &&
             !is_logging_out &&
             is_logged_in &&
             !prevent_redirect_to_hub &&
@@ -75,14 +75,18 @@ const RootComponent = observer(props => {
             const url_params = new URLSearchParams(url_query_string);
             const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
 
-            switch (redirect_to_lowcode) {
-                case 'wallet':
-                    localStorage.setItem('wallet_redirect_done', true);
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
-                    break;
-                default:
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
-                    break;
+            if (has_wallet) {
+                switch (redirect_to_lowcode) {
+                    case 'wallet':
+                        localStorage.setItem('wallet_redirect_done', true);
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                        break;
+                    default:
+                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+                        break;
+                }
+            } else {
+                window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
             }
         }
 

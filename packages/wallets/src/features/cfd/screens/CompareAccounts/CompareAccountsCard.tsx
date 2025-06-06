@@ -22,7 +22,6 @@ const CompareAccountsCard = ({ account, isDemo, isEuRegion }: TCompareAccountsCa
     const product = account.platform === 'mt5' ? account.product : undefined;
     //@ts-expect-error need update api-types
     const productDetails = account.platform === 'mt5' ? account.product_details : undefined;
-    //@ts-expect-error need update api-types
     const instruments = account.platform === 'mt5' ? account.instruments : undefined;
     //@ts-expect-error need update api-types
     const isNewBadgeVisible = product === PRODUCT.ZEROSPREAD || product === PRODUCT.GOLD;

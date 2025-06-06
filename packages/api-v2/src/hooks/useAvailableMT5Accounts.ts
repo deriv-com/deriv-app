@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
+
 import useQuery from '../useQuery';
+
 import useAuthorize from './useAuthorize';
 
 const market_type_to_leverage_mapper: Record<string, number> = {
@@ -15,16 +17,28 @@ const useAvailableMT5Accounts = () => {
         payload: { platform: 'mt5' },
         options: { enabled: isSuccess },
     });
+    const financialPlatforms = ['svg', 'bvi', 'vanuatu', 'dml'];
 
     const modified_mt5_available_accounts = useMemo(
         () =>
             mt5_available_accounts?.trading_platform_available_accounts?.map(account => {
+                const shouldUpdateForex =
+                    account.product === 'financial' && financialPlatforms.includes(account.shortcode ?? '');
+                const accountWithInstruments = account as typeof account & { instruments?: string[] };
                 return {
                     ...account,
                     /** The market type for the account */
                     market_type: account.market_type === 'gaming' ? 'synthetic' : account.market_type,
                     /** The platform for the account */
                     platform: 'mt5',
+                    /** Updated instruments array */
+                    ...(shouldUpdateForex && accountWithInstruments.instruments
+                        ? {
+                              instruments: accountWithInstruments.instruments.map((instrument: string) =>
+                                  instrument === 'Forex: standard/micro' ? 'Forex' : instrument
+                              ),
+                          }
+                        : {}),
                     /** Leverage for the account */
                     leverage:
                         market_type_to_leverage_mapper[

@@ -2311,6 +2311,8 @@ export default class ClientStore extends BaseStore {
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
+
+        this.setIsLoggingIn(false);
     }
 
     async setUserLogin(login_new_user) {

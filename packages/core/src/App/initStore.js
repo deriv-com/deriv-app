@@ -54,7 +54,7 @@ const startPerformanceMetrics = (url_query_string, url_params) => {
     }
 };
 
-const initStore = notification_messages => {
+const initStore = (notification_messages, accounts) => {
     // Check Endpoint from URL need to be done before initializing store to avoid
     // race condition with setting up user session from URL
     const url_query_string = window.location.search;
@@ -79,7 +79,7 @@ const initStore = notification_messages => {
     setStorageEvents(root_store);
 
     NetworkMonitor.init(root_store);
-    root_store.client.init();
+    root_store.client.init(accounts);
     root_store.common.init();
     root_store.ui.init(notification_messages);
 

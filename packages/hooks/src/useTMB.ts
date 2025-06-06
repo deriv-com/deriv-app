@@ -161,6 +161,22 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                         item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
                 );
 
+                if (
+                    !demoAccount &&
+                    (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))
+                ) {
+                    sessionStorage.removeItem('active_loginid');
+                    localStorage.removeItem('active_loginid');
+                }
+
+                if (
+                    !demoWalletAccount &&
+                    (sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid'))
+                ) {
+                    sessionStorage.removeItem('active_wallet_loginid');
+                    localStorage.removeItem('active_wallet_loginid');
+                }
+
                 setAccountInSessionStorage(demoAccount?.loginid);
                 setAccountInSessionStorage(demoWalletAccount?.loginid, true);
             } else {
@@ -168,8 +184,8 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                 const realAccount = activeSessions?.tokens?.find(
                     (item: TMBApiReturnedValue['tokens']) =>
                         item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
-                        (item?.loginid.startsWith('CR') || item?.loginid.startsWith('MF')) &&
-                        (!item.loginid.startsWith('CRW') || !item.loginid.startsWith('MFW'))
+                        ((item?.loginid.startsWith('CR') && !item?.loginid.startsWith('CRW')) ||
+                            (item?.loginid.startsWith('MF') && !item.loginid.startsWith('MFW')))
                 );
 
                 const realWalletAccount = activeSessions?.tokens?.find(
@@ -177,6 +193,22 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
                         item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
                         (item?.loginid.startsWith('CRW') || item?.loginid.startsWith('MFW'))
                 );
+
+                if (
+                    !realAccount &&
+                    (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))
+                ) {
+                    sessionStorage.removeItem('active_loginid');
+                    localStorage.removeItem('active_loginid');
+                }
+
+                if (
+                    !realWalletAccount &&
+                    (sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid'))
+                ) {
+                    sessionStorage.removeItem('active_wallet_loginid');
+                    localStorage.removeItem('active_wallet_loginid');
+                }
 
                 setAccountInSessionStorage(realAccount?.loginid);
                 setAccountInSessionStorage(realWalletAccount?.loginid, true);

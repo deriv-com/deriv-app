@@ -6,4 +6,7 @@ module.exports = {
         '^.+\\.jsx?$': 'babel-jest',
         '^.+\\.(ts|tsx)?$': 'ts-jest',
     },
+    moduleNameMapper: {
+        '@deriv/utils': '<rootDir>/../../__mocks__/utils.mock.js',
+    },
 };

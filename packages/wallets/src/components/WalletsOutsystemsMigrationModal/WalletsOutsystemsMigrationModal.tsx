@@ -37,10 +37,10 @@ const WalletsOustystemsMigrationModal = () => {
                     <DerivLightUpgradeWalletsOutsystems height={150} width={210} />
                     <div className='wallets-outsystems-migration-modal__body'>
                         <Text align='center' size={isMobile ? 'xl' : 'md'} weight='bold'>
-                            <Localize i18n_default_text='New look, same Deriv' />
+                            <Localize i18n_default_text="Meet the new Trader's Hub" />
                         </Text>
                         <Text align='center' size={isMobile ? 'lg' : 'sm'}>
-                            <Localize i18n_default_text="We've polished up the page to serve you better. Same account, same details—just easier to use." />
+                            <Localize i18n_default_text='Faster to use, easier navigation, better account management, same login details.' />
                         </Text>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ const WalletsOustystemsMigrationModal = () => {
                     }
                 >
                     <Button isFullWidth onClick={redirectToOutsystems} rounded='lg' size='lg' textSize='md'>
-                        <Localize i18n_default_text='Take me there' />
+                        <Localize i18n_default_text='Try it now' />
                     </Button>
                 </div>
             </div>

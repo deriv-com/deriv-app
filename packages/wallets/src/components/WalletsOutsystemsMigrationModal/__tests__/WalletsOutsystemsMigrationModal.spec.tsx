@@ -42,13 +42,11 @@ describe('WalletsOustystemsMigrationModal', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         render(<WalletsOustystemsMigrationModal />, { wrapper });
 
-        expect(screen.getByText('New look, same Deriv')).toBeInTheDocument();
+        expect(screen.getByText("Meet the new Trader's Hub")).toBeInTheDocument();
         expect(
-            screen.getByText(
-                "We've polished up the page to serve you better. Same account, same details—just easier to use."
-            )
+            screen.getByText('Faster to use, easier navigation, better account management, same login details.')
         ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Take me there' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try it now' })).toBeInTheDocument();
     });
 
     it('redirects to Outsystems on button click', async () => {
@@ -58,7 +56,7 @@ describe('WalletsOustystemsMigrationModal', () => {
 
         render(<WalletsOustystemsMigrationModal />, { wrapper });
 
-        const button = screen.getByRole('button', { name: 'Take me there' });
+        const button = screen.getByRole('button', { name: 'Try it now' });
         await userEvent.click(button);
 
         expect(setItemSpy).toHaveBeenCalledWith('redirect_to_th_os');

@@ -100,18 +100,21 @@ const HeaderLegacy = observer(() => {
                     ) : (
                         <React.Fragment>
                             {is_from_tradershub_os ? (
-                                <ToggleMenuDrawerAccountsOS
-                                    platform_config={filterPlatformsForClients(platform_config)}
-                                />
+                                <>
+                                    <ToggleMenuDrawerAccountsOS
+                                        platform_config={filterPlatformsForClients(platform_config)}
+                                    />
+                                    <DerivShortLogo />
+                                </>
                             ) : (
                                 <>
                                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                                    <DerivShortLogo />
                                     {header_extension && is_logged_in && (
                                         <div className='header__menu-left-extensions'>{header_extension}</div>
                                     )}
                                 </>
                             )}
-                            <DerivShortLogo />
                         </React.Fragment>
                     )}
                     <MenuLinks is_traders_hub_routes={traders_hub_routes} />
@@ -134,13 +137,12 @@ const HeaderLegacy = observer(() => {
                         <div
                             id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {
-                                'acc-info__preloader__dtrader': !traders_hub_routes,
-                                'acc-info__preloader__dtrader--no-currency': !currency,
+                                'acc-info__preloader--no-currency': !currency,
                             })}
                         >
                             <AccountsInfoLoader
                                 is_logged_in={is_logged_in}
-                                is_mobile={!isDesktop}
+                                is_desktop={isDesktop}
                                 speed={3}
                                 is_traders_hub_routes={traders_hub_routes}
                             />

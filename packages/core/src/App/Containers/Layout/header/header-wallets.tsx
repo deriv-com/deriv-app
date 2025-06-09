@@ -77,9 +77,9 @@ const MenuLeft = observer(() => {
 
 const MenuRight = observer(() => {
     const { pathname } = useLocation();
-    const { client, ui } = useStore();
-    const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid, is_crypto } = client;
-    const { is_mobile } = ui;
+    const { client } = useStore();
+    const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid } = client;
+    const { isDesktop } = useDevice();
 
     const history = useHistory();
 
@@ -100,13 +100,12 @@ const MenuRight = observer(() => {
                 <div
                     id='dt_core_header_acc-info-preloader'
                     className={classNames('acc-info__preloader', {
-                        'acc-info__preloader__dtrader': !traders_hub_routes,
-                        'acc-info__preloader__dtrader--no-currency': !currency,
+                        'acc-info__preloader--no-currency': !currency,
                     })}
                 >
                     <AccountsInfoLoaderWallets
                         is_logged_in={is_logged_in}
-                        is_mobile={is_mobile}
+                        is_desktop={isDesktop}
                         is_traders_hub_routes={traders_hub_routes}
                         speed={3}
                     />

@@ -54,10 +54,6 @@
         p {
             margin-bottom: 0.8rem;
             color: #101213;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
         }
     }
 
@@ -66,7 +62,6 @@
         background-color: var(--general-section-1);
         border-radius: 0.8rem;
         padding: 2.4rem;
-        margin-bottom: 1.6rem;
 
         h3 {
             margin-bottom: 1.6rem;
@@ -184,4 +179,16 @@
     margin: 1.6rem auto;
     width: 100%;
     align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.wallets-nakala-modal-maintenance {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.6rem;
+    margin-left: 0.7rem;
+
+    span {
+        color: #999999;
+    }
 }

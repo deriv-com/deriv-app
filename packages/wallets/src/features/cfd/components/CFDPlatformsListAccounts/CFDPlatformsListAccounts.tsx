@@ -158,7 +158,9 @@ const CFDPlatformsListAccounts: React.FC = () => {
                         {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
                     </>
                 )}
-                {IsEnabledNakala && !isVirtual && hasMT5StandardAccount?.is_added && <AvailableNakalaTradeAccount />}
+                {IsEnabledNakala && !isVirtual && hasMT5StandardAccount?.is_added && (
+                    <AvailableNakalaTradeAccount account={hasMT5StandardAccount} />
+                )}
             </div>
         </React.Fragment>
     );

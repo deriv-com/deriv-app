@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useSortedMT5Accounts } from '@deriv/api-v2';
-import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
+import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import DerivNakalaIcon from '../../../../public/images/ic-brand-deriv-nakala.svg';
+import NakalaMT5LinkedIcon from '../../../../public/images/ic-nakala-mt5-linked.svg';
 import NakalaQRIcon from '../../../../public/images/ic-nakala-qr-code.svg';
 import { TAddedMT5Account } from '../../../../types';
 import { MT5TradeDetailsItem } from '../../screens/MT5TradeScreen/MT5TradeDetailsItem';
@@ -16,14 +17,24 @@ interface CFDDerivNakalaModalProps {
 
 const ModalInfo = () => {
     return (
-        <div className='wallets-nakala-modal-info'>
-            <div className='wallets-nakala-modal-info_icon'>
-                <LabelPairedCircleExclamationMdFillIcon fill='#377CFC' />
+        <>
+            <div className='wallets-nakala-modal-info'>
+                <div className='wallets-nakala-modal-info_icon'>
+                    <LabelPairedCircleExclamationMdFillIcon fill='#377CFC' />
+                </div>
+                <Text size='xs'>
+                    <Localize i18n_default_text='Use your MT5 password when linking your account.' />
+                </Text>
             </div>
-            <Text size='xs'>
-                <Localize i18n_default_text='Use your MT5 password when linking your account.' />
-            </Text>
-        </div>
+            <div className='wallets-nakala-modal-maintenance'>
+                <div className='wallets-nakala-modal-maintenance_icon'>
+                    <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
+                </div>
+                <Text size='xs'>
+                    <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
+                </Text>
+            </div>
+        </>
     );
 };
 
@@ -47,11 +58,8 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
                 </div>
 
                 <div className='wallets-cfd-nakala-modal__description'>
-                    <Text as='p' size='md'>
+                    <Text align='center' as='p' size='md'>
                         <Localize i18n_default_text='Follow top global traders and copy their strategies.' />
-                    </Text>
-                    <Text as='p' size='md'>
-                        <Localize i18n_default_text='Become a signal provider and earn from your expertise.' />
                     </Text>
                 </div>
 
@@ -109,7 +117,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
         mt5AccountsList && (mt5AccountsList.find(account => account.product === 'standard') as TAddedMT5Account);
     const details = StandardMt5;
 
-    useEffect(() => {
+    const manageNakalaCookie = () => {
         const nakalaLinkedCookie = 'nakala_linked';
 
         const nakalaLinkedCookieExist = Cookies.get(nakalaLinkedCookie);
@@ -119,10 +127,19 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
         const nakalaLinkedCookieExpiry = 365; // days
 
         Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
-            domain: '.deriv.com',
+            // domain: '.deriv.com',
             expires: nakalaLinkedCookieExpiry,
         });
-    }, []);
+    };
+
+    useEffect(() => {
+        isDesktop && manageNakalaCookie();
+    }, [isDesktop]);
+
+    const onClickOpenApp = () => {
+        manageNakalaCookie();
+        window.open('https://onelink.to/uuuxmw', '_blank');
+    };
 
     return (
         <div className='wallets-cfd-nakala-modal'>
@@ -138,7 +155,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
             <div className='wallets-cfd-nakala-modal__body'>
                 <div className='wallets-cfd-nakala-modal__logo-container'>
                     <div className='wallets-cfd-nakala-modal__logo'>
-                        {isSuccess ? <LegacyWonIcon iconSize='xl' /> : <DerivNakalaIcon height={64} width={64} />}
+                        <NakalaMT5LinkedIcon height={64} width={176} />
                     </div>
                 </div>
 
@@ -182,22 +199,21 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                             </a>
                         </Text>
                     </div>
-                    <div className='wallets-cfd-nakala-modal__qr-section-code'>
-                        <NakalaQRIcon height={80} width={80} />
-                    </div>
-                    <div className='wallets-cfd-nakala-modal__qr-section-text'>
-                        <Text size='xs'>{localize('Scan to download the mobile app.')}</Text>
-                    </div>
+                    {isDesktop && (
+                        <React.Fragment>
+                            <div className='wallets-cfd-nakala-modal__qr-section-code'>
+                                <NakalaQRIcon height={80} width={80} />
+                            </div>
+                            <div className='wallets-cfd-nakala-modal__qr-section-text'>
+                                <Text size='xs'>{localize('Scan to download the mobile app.')}</Text>
+                            </div>
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
             {!isDesktop && (
                 <div className={`wallets-cfd-nakala-modal__footer wallets-cfd-nakala-modal__footer--mobile`}>
-                    <Button
-                        color='primary'
-                        onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')}
-                        size='lg'
-                        type='button'
-                    >
+                    <Button color='primary' onClick={onClickOpenApp} size='lg' type='button'>
                         <Localize i18n_default_text='Open Deriv Nakala mobile app' />
                     </Button>
                 </div>

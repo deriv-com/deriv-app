@@ -1,7 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
+import PropTypes from 'prop-types';
+
 import { Button } from '@deriv/components';
+import { useTMB } from '@deriv/hooks';
 import { isStaging, redirectToLogin } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
@@ -9,6 +11,7 @@ import { requestOidcAuthentication } from '@deriv-com/auth-client';
 const LoginButton = ({ className }) => {
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const has_wallet_cookie = Cookies.get('wallet_account');
+    const { isTmbEnabled } = useTMB();
     return (
         <Button
             id='dt_login_button'
@@ -23,7 +26,8 @@ const LoginButton = ({ className }) => {
                         location.href = 'https://hub.deriv.com/tradershub/login';
                     }
                 }
-                if (is_deriv_com) {
+                const is_tmb_enabled = await isTmbEnabled();
+                if (is_deriv_com && !is_tmb_enabled) {
                     try {
                         await requestOidcAuthentication({
                             redirectCallbackUri: `${window.location.origin}/callback`,

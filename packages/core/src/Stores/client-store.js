@@ -2444,7 +2444,7 @@ export default class ClientStore extends BaseStore {
             // eslint-disable-next-line no-console
             console.error(e);
             // by default it will fallback to true if firebase error happens
-            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : true;
+            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : false;
         }
 
         return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;

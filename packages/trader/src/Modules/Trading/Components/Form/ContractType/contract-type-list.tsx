@@ -38,8 +38,6 @@ const List = ({ handleSelect, list, should_show_info_banner, value }: TListProps
                 return [...acc, { ...contract_type, value: newValue }];
             }, []);
 
-            const is_new = /(Accumulators|Turbos|Vanillas)/i.test(contract_category.key);
-
             return (
                 <div
                     key={contract_category.key}
@@ -53,11 +51,6 @@ const List = ({ handleSelect, list, should_show_info_banner, value }: TListProps
                         <Text size='xs' className='contract-type-list__label'>
                             {contract_category.label}
                         </Text>
-                        {is_new && (
-                            <span className={classNames('dc-vertical-tab__header--new', 'contract-type-item__new')}>
-                                {localize('NEW!')}
-                            </span>
-                        )}
                     </div>
                     <div className='contract-type-list__wrapper'>
                         <Item

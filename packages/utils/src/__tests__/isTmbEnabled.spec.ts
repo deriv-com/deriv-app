@@ -169,7 +169,7 @@ describe('isTmbEnabled', () => {
 
             const result = await isTmbEnabled();
 
-            expect(result).toBe(true);
+            expect(result).toBe(false);
             expect(consoleSpy).toHaveBeenCalledWith(new Error('Network error'));
 
             consoleSpy.mockRestore();
@@ -198,7 +198,7 @@ describe('isTmbEnabled', () => {
 
             const result = await isTmbEnabled();
 
-            expect(result).toBe(true);
+            expect(result).toBe(false);
             expect(consoleSpy).toHaveBeenCalledWith(new Error('JSON parse error'));
 
             consoleSpy.mockRestore();
@@ -283,7 +283,7 @@ describe('isTmbEnabled', () => {
 
             const result = await isTmbEnabled();
 
-            expect(result).toBe(true); // Default fallback
+            expect(result).toBe(false); // Default fallback
             expect(consoleSpy).toHaveBeenCalled();
 
             consoleSpy.mockRestore();

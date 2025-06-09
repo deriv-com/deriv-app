@@ -12,7 +12,7 @@ const isTmbEnabled = async () => {
         // eslint-disable-next-line no-console
         console.error(e);
         // by default it will fallback to true if firebase error happens
-        return storedValue !== null ? storedValue === 'true' : true;
+        return storedValue !== null ? storedValue === 'true' : false;
     }
 };
 

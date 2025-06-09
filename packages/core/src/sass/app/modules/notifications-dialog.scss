@@ -45,9 +45,9 @@
     }
     /** @define notifications-dialog; weak */
     &-dialog {
-        position: absolute;
+        position: fixed;
         top: 48px;
-        left: calc(-50% - 10rem);
+        left: calc(100vw - 28.4rem);
         width: 264px;
         height: 525px;
         background: var(--general-main-2);
@@ -128,8 +128,8 @@
             opacity: 0;
             transform: translate3d(0, -20px, 0);
         }
-        &--shifted {
-            left: calc(-50% - 18rem);
+        @include desktop-screen {
+            top: 58px;
         }
         @include mobile-screen {
             opacity: unset;

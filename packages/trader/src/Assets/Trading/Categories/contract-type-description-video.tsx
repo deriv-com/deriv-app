@@ -21,6 +21,8 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                 is_mobile={is_mobile}
                 data_testid={data_testid}
                 should_show_controls={true}
+                muted={true}
+                hide_volume_control={true}
             />
         </div>
     );

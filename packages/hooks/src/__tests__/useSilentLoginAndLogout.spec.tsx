@@ -1,11 +1,12 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useSilentLoginAndLogout from '../useSilentLoginAndLogout';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { waitFor } from '@testing-library/react';
 
 jest.mock('js-cookie', () => ({
     get: jest.fn(),
@@ -13,6 +14,13 @@ jest.mock('js-cookie', () => ({
 
 jest.mock('@deriv-com/auth-client', () => ({
     requestOidcAuthentication: jest.fn(),
+}));
+
+jest.mock('../useTMB', () => ({
+    __esModule: true,
+    default: () => ({
+        isTmbEnabled: jest.fn(() => Promise.resolve(false)),
+    }),
 }));
 
 describe('useSilentLoginAndLogout', () => {
@@ -31,6 +39,9 @@ describe('useSilentLoginAndLogout', () => {
             if (key === 'client.accounts') {
                 return JSON.stringify({});
             }
+            if (key === 'is_tmb_enabled') {
+                return null;
+            }
             return null;
         });
 
@@ -47,11 +58,19 @@ describe('useSilentLoginAndLogout', () => {
         jest.restoreAllMocks();
     });
 
-    it('should call requestOidcAuthentication for silent login if conditions are met', () => {
+    it('should call requestOidcAuthentication for silent login if conditions are met', async () => {
         // Mock `loggedState` to 'true'
         (Cookies.get as jest.Mock).mockImplementation(() => 'true');
 
-        jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({}));
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
+            if (key === 'client.accounts') {
+                return JSON.stringify({});
+            }
+            if (key === 'is_tmb_enabled') {
+                return null; // or 'false' if you want to explicitly set it to false
+            }
+            return null;
+        });
 
         renderHook(
             () =>
@@ -62,9 +81,11 @@ describe('useSilentLoginAndLogout', () => {
             { wrapper }
         );
 
-        expect(requestOidcAuthentication).toHaveBeenCalledWith({
-            redirectCallbackUri: `${window.location.origin}/callback`,
-            postLoginRedirectUri: window.location.href,
+        await waitFor(() => {
+            expect(requestOidcAuthentication).toHaveBeenCalledWith({
+                redirectCallbackUri: `${window.location.origin}/callback`,
+                postLoginRedirectUri: window.location.href,
+            });
         });
         expect(mockOAuthLogout).not.toHaveBeenCalled();
     });
@@ -110,10 +131,18 @@ describe('useSilentLoginAndLogout', () => {
         expect(mockOAuthLogout).not.toHaveBeenCalled();
     });
 
-    it('should call oAuthLogout if conditions for single logout are met', () => {
+    it('should call oAuthLogout if conditions for single logout are met', async () => {
         (Cookies.get as jest.Mock).mockImplementation(() => 'false');
 
-        jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify({ account1: {}, account2: {} }));
+        jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
+            if (key === 'client.accounts') {
+                return JSON.stringify({ account1: {}, account2: {} });
+            }
+            if (key === 'is_tmb_enabled') {
+                return null; // or 'false' if you want to explicitly set it to false
+            }
+            return null;
+        });
 
         renderHook(
             () =>
@@ -124,8 +153,11 @@ describe('useSilentLoginAndLogout', () => {
             { wrapper }
         );
 
+        await waitFor(() => {
+            expect(mockOAuthLogout).toHaveBeenCalled();
+        });
         expect(requestOidcAuthentication).not.toHaveBeenCalled();
-        expect(mockOAuthLogout).toHaveBeenCalled();
+        // expect(mockOAuthLogout).toHaveBeenCalled();
     });
 
     it('should skip both silent login and logout if conditions are not met', () => {

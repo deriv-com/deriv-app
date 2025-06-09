@@ -4,7 +4,7 @@ import { useRemoteConfig } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
 const useIsHubRedirectionEnabled = () => {
-    const { data } = useRemoteConfig();
+    const { data } = useRemoteConfig(true);
     const hub_enabled_country_list = data?.hub_enabled_country_list ?? [];
     const { client } = useStore();
     const { account_settings, clients_country } = client;

@@ -8,28 +8,23 @@ const mocked_props: React.ComponentProps<typeof VideoControls> = {
     is_animated: true,
     is_ended: false,
     is_playing: true,
-    is_muted: false,
     onRewind: jest.fn(),
-    onVolumeChange: jest.fn(),
     onPlaybackRateChange: jest.fn(),
     progress_bar_filled_ref: { current: null },
     progress_bar_ref: { current: null },
     progress_dot_ref: { current: null },
     show_controls: true,
     togglePlay: jest.fn(),
-    toggleMute: jest.fn(),
     video_duration: 33,
-    volume: 0.5,
     playback_rate: 1,
+    onUserActivity: jest.fn(),
 };
 
-const volume_control = 'VolumeControl component';
 const playback_rate_control = 'PlaybackRateControl component';
 const progress_bar = 'dt_progress_bar';
 const progress_bar_filled = 'dt_progress_bar_filled';
 const progress_bar_dot = 'dt_progress_bar_dot';
 
-jest.mock('../volume-control', () => jest.fn(() => <div>{volume_control}</div>));
 jest.mock('../playback-rate-control', () => jest.fn(() => <div>{playback_rate_control}</div>));
 
 describe('<VideoControls />', () => {
@@ -39,7 +34,6 @@ describe('<VideoControls />', () => {
         expect(screen.getByTestId(progress_bar)).toBeInTheDocument();
         expect(screen.getByTestId(progress_bar_filled)).toBeInTheDocument();
         expect(screen.getByText(/00:03 \/ 00:33/i)).toBeInTheDocument();
-        expect(screen.getByText(volume_control)).toBeInTheDocument();
         expect(screen.getByText(playback_rate_control)).toBeInTheDocument();
     });
 

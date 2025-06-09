@@ -92,6 +92,36 @@ describe('extractInfoFromShortcode', () => {
             growth_frequency: '1',
             barrier_1: '',
         });
+        expect(extractInfoFromShortcode('MULTUP_RB100_10.00_30_1748490183_4902163199_0_0.00_N1_0')).toMatchObject({
+            category: 'Multup',
+            underlying: 'RB100',
+            multiplier: '30',
+            start_time: '1748490183',
+            payout_tick: '',
+            growth_rate: '',
+            growth_frequency: '',
+            barrier_1: '',
+        });
+        expect(extractInfoFromShortcode('MULTUP_RB200_20.00_50_1748490183_4902163199_0_0.00_N1_0')).toMatchObject({
+            category: 'Multup',
+            underlying: 'RB200',
+            multiplier: '50',
+            start_time: '1748490183',
+            payout_tick: '',
+            growth_rate: '',
+            growth_frequency: '',
+            barrier_1: '',
+        });
+        expect(extractInfoFromShortcode('MULTDOWN_RB100_15.00_40_1748490183_4902163199_0_0.00_N1_0')).toMatchObject({
+            category: 'Multdown',
+            underlying: 'RB100',
+            multiplier: '40',
+            start_time: '1748490183',
+            payout_tick: '',
+            growth_rate: '',
+            growth_frequency: '',
+            barrier_1: '',
+        });
     });
     it('should return an empty object if shortcode is empty', () => {
         expect(extractInfoFromShortcode('')).toMatchObject({});

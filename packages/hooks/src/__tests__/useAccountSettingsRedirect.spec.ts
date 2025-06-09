@@ -166,11 +166,11 @@ describe('useAccountSettingsRedirect', () => {
             isHubRedirectionEnabled: true,
         });
 
-        const { result } = renderHook(() => useAccountSettingsRedirect('trading-assessment'));
+        const { result } = renderHook(() => useAccountSettingsRedirect('account-limits'));
 
         // Both URLs should contain the custom redirect_to value
         const expectedUrl =
-            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=trading-assessment&account=demo';
+            'https://staging-hub.deriv.com/accounts/redirect?action=redirect_to&redirect_to=account-limits&account=demo';
 
         expect(result.current.redirect_url).toBe(expectedUrl);
         expect(result.current.mobile_redirect_url).toBe(expectedUrl);
@@ -187,10 +187,27 @@ describe('useAccountSettingsRedirect', () => {
             isHubRedirectionEnabled: false,
         });
 
-        const { result } = renderHook(() => useAccountSettingsRedirect('custom-page'));
+        const { result } = renderHook(() => useAccountSettingsRedirect('home'));
 
-        // Should still return the default routes regardless of the redirect_to parameter
         expect(result.current.redirect_url).toBe(routes.personal_details);
+        expect(result.current.mobile_redirect_url).toBe(routes.account);
+    });
+
+    it('should map account-limits redirect_to to routes.account_limits when hub redirection is disabled', () => {
+        (useStore as jest.Mock).mockReturnValue({
+            client: {
+                has_wallet: false,
+            },
+        });
+
+        (useIsHubRedirectionEnabled as jest.Mock).mockReturnValue({
+            isHubRedirectionEnabled: false,
+        });
+
+        const { result } = renderHook(() => useAccountSettingsRedirect('account-limits'));
+
+        // Should map to account_limits route when hub redirection is disabled
+        expect(result.current.redirect_url).toBe(routes.account_limits);
         expect(result.current.mobile_redirect_url).toBe(routes.account);
     });
 });

@@ -193,7 +193,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => localize('Self exclusion'),
+                        getTitle: () => localize('Self-exclusion'),
                     },
                     {
                         path: routes.account_limits,

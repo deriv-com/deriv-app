@@ -1,7 +1,9 @@
 import { redirectToLogin } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
-import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useStore } from '@deriv/stores';
+import { getLanguage, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+import { OAuth2Logout, requestOidcAuthentication } from '@deriv-com/auth-client';
+
 import useTMB from './useTMB';
 
 /**
@@ -47,6 +49,7 @@ const useOauth2 = ({ handleLogout }: { handleLogout: () => Promise<void> }) => {
                 redirectCallbackUri: `${window.location.origin}/callback`,
                 postLogoutRedirectUri: `${window.location.origin}/`,
             });
+            Analytics.reset();
         } catch (error) {
             // eslint-disable-next-line no-console
             console.error(error);

@@ -64,6 +64,8 @@ export const validLength = (value = '', options: TOptions) =>
     (options.max ? value.length <= Number(options.max) : true);
 export const validPassword = (value: string) => /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/.test(value);
 export const validEmail = (value: string) => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+export const validAddressState = (value: string) => /^[\w\s\W'.;,-]{0,99}$/.test(value);
+
 const validBarrier = (value: string) => {
     if (value === '+' || value === '-') {
         return {

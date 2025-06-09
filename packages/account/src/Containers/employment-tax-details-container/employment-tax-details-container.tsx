@@ -153,7 +153,9 @@ const EmploymentTaxDetailsContainer = observer(
                     required={is_employment_status_mandatory}
                     is_feature_flag_disabled={is_feature_flag_disabled}
                     is_disabled={isFieldDisabled('employment_status')}
-                    fieldFocused={should_focus_fields && !account_settings.employment_status}
+                    fieldFocused={
+                        should_focus_fields && (!account_settings.employment_status || !values.employment_status)
+                    }
                     version={version}
                 />
 

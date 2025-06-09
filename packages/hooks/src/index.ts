@@ -110,4 +110,5 @@ export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimi
 export { default as useSilentLoginAndLogout } from './useSilentLoginAndLogout';
 export { default as useAccountSettingsRedirect } from './useAccountSettingsRedirect';
 export { default as useIsEnabledNakala } from './useIsEnabledNakala';
+export { default as useTMB } from './useTMB';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

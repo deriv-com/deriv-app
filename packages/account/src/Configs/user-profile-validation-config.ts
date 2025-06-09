@@ -6,16 +6,8 @@ import { ValidationConstants } from '@deriv-com/utils';
 
 import { TEmployeeDetailsTinValidationConfig } from '../Types';
 
-const {
-    taxIdentificationNumber,
-    address,
-    addressCity,
-    addressState,
-    postalCode,
-    phoneNumber,
-    name,
-    postalOfficeBoxNumber,
-} = ValidationConstants.patterns;
+const { taxIdentificationNumber, address, addressCity, postalCode, phoneNumber, name, postalOfficeBoxNumber } =
+    ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
 type TINDepdendents = {
@@ -184,7 +176,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) =>
         address_postcode: Yup.string()
             .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
             .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
-        address_state: Yup.string().matches(addressState, localize('State is not in a proper format')),
+        address_state: Yup.string().matches(/^[\w\s\W'.;,-]{0,99}$/, localize('State is not in a proper format')),
     });
 
 export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isCountryCodeDropdownEnabled?: boolean) =>

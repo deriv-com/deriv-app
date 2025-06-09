@@ -4025,7 +4025,6 @@
     "-1419311086": "Pagamento por ponto",
     "-1636919806": "Recebe um pagamento na data de expiração se o preço à vista nunca ultrapassar a barreira durante o período do contrato. Caso contrário, o seu contrato será rescindido antecipadamente.",
     "-1775944645": "Distância até ao preço atual:",
-    "-1790089996": "NOVIDADE!",
     "-253521386": "Este é o preço à vista do último tick na data de expiração, ou seja, o preço de fecho.",
     "-1890561510": "Hora de fechamento",
     "-878534036": "Se selecionar <0>\"Call\"</0>, recebe um <1>pagamento</1> se o <1>preço final</1> for superior ao <1>preço de exercício</1> na <1>data de expiração</1>. Caso contrário, não recebe um pagamento.",

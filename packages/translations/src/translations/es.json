@@ -4025,7 +4025,6 @@
     "-1419311086": "Pago por punto",
     "-1636919806": "Recibirá un pago al vencimiento si el precio al contado nunca toca o supera la barrera durante toda la duración del contrato. En caso contrario, su contrato finalizará anticipadamente.",
     "-1775944645": "Distancia al punto actual:",
-    "-1790089996": "NUEVO!",
     "-253521386": "Este es el precio spot del último tick al vencimiento, es decir, el precio de salida.",
     "-1890561510": "Hora límite",
     "-878534036": "Si selecciona \"Call\", recibirá un pago si el precio final está por encima del precio de ejercicio al vencimiento. De lo contrario, no recibirá ningún pago.",

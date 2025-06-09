@@ -210,7 +210,7 @@ const getModules = () => {
                         {
                             path: routes.self_exclusion,
                             component: Account,
-                            getTitle: () => localize('Self exclusion'),
+                            getTitle: () => localize('Self-exclusion'),
                         },
                         {
                             path: routes.account_limits,

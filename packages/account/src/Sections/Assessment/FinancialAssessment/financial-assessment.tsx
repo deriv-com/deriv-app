@@ -223,6 +223,8 @@ const FinancialAssessment = observer(() => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
     const [initial_form_values, setInitialFormValues] = React.useState<Partial<GetFinancialAssessment>>({});
+    const [financial_information_version, setFinancialInformationVersion] = React.useState('');
+    const [account_status, setAccountStatus] = React.useState([]);
     const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
     const url_lang = URLUtils.getQueryParameter('lang');
     const i18n_language = localize_language || url_lang || 'en';
@@ -254,7 +256,8 @@ const FinancialAssessment = observer(() => {
         } else {
             WS.authorized.storage.getFinancialAssessment().then(async (data: GetFinancialAssessmentResponse) => {
                 try {
-                    await WS.wait('get_account_status');
+                    const status = await WS.wait('get_account_status');
+                    setAccountStatus(status?.get_account_status?.status ?? []);
                     setHasTradingExperience(
                         (is_financial_account || is_trading_experience_incomplete) && !is_svg && !is_mf
                     );
@@ -269,7 +272,10 @@ const FinancialAssessment = observer(() => {
                         setApiInitialLoadError(data.error.message);
                         return;
                     }
-                    if (data?.get_financial_assessment) setInitialFormValues(data.get_financial_assessment);
+                    if (data?.get_financial_assessment) {
+                        setInitialFormValues(data.get_financial_assessment);
+                        setFinancialInformationVersion(data.get_financial_assessment?.financial_information_version);
+                    }
                     setIsLoading(false);
                 } catch (e) {
                     // eslint-disable-next-line no-console
@@ -411,6 +417,7 @@ const FinancialAssessment = observer(() => {
     };
 
     if (
+        (account_status?.includes('update_fa') && financial_information_version === 'v1') ||
         !employment_status ||
         !account_settings.account_opening_reason ||
         !account_settings.tax_residence ||

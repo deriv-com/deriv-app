@@ -1,16 +1,18 @@
 import React from 'react';
+import { useHistory, withRouter } from 'react-router';
+import { Form, Formik } from 'formik';
+
+import { Button, Dropdown, FormSubmitButton, Loading, SelectNative, Text } from '@deriv/components';
+import { routes, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
+
 import FormBody from 'Components/form-body';
+import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
 import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
-import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv/components';
-import FormFooter from 'Components/form-footer';
-import { routes, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import { useHistory, withRouter } from 'react-router';
-import { Formik, Form } from 'formik';
-import { useDevice } from '@deriv-com/ui';
 
 const populateData = form_data => {
     return {
@@ -39,6 +41,7 @@ const TradingAssessment = observer(() => {
     const [should_accept_risk, setShouldAcceptRisk] = React.useState(false);
     const [should_show_warning_modal, setShouldShowWarningModal] = React.useState(false);
     const [form_data, setFormData] = React.useState({});
+    const [financial_information_version, setFinancialInformationVersion] = React.useState('');
 
     React.useEffect(() => {
         if (is_virtual) {
@@ -48,6 +51,7 @@ const TradingAssessment = observer(() => {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // set initial form data
                 setInitialFormValues(() => populateData(data.get_financial_assessment));
+                setFinancialInformationVersion(data.get_financial_assessment?.financial_information_version);
                 setIsLoading(false);
                 setIsSubmitSuccess(false);
             });
@@ -78,6 +82,7 @@ const TradingAssessment = observer(() => {
                     trading_experience_financial_instruments: values.trading_experience_financial_instruments,
                     trading_frequency_financial_instruments: values.trading_frequency_financial_instruments,
                 },
+                financial_information_version: financial_information_version || 'v2',
             };
             const data = await setFinancialAndTradingAssessment(form_payload);
             const { trading_score } = data?.set_financial_assessment;

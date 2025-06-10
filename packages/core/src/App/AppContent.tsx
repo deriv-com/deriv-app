@@ -11,7 +11,6 @@ import {
     useLiveChat,
     useOauth2,
     useSilentLoginAndLogout,
-    useTMB,
 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
@@ -50,10 +49,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         setIsCountryCodeDropdownEnabled,
         accounts,
     } = store.client;
-    const { first_name, last_name } = account_settings;
     const { current_language, changeSelectedLanguage } = store.common;
     const { is_dark_mode_on, setDarkMode } = store.ui;
-    const { onRenderTMBCheck, isTmbEnabled } = useTMB();
 
     const { isMobile } = useDevice();
     const { switchLanguage } = useTranslations();
@@ -103,8 +100,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         currency,
         residence,
         email,
-        first_name,
-        last_name,
+        first_name: account_settings?.first_name,
+        last_name: account_settings?.last_name,
     };
 
     useLiveChat(livechat_client_information);
@@ -152,14 +149,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         isMobile,
         setIsPasskeySupported,
     ]);
-
-    React.useEffect(() => {
-        const renderTMB = async () => {
-            const is_tmb_enabled = await isTmbEnabled();
-            if (is_tmb_enabled) onRenderTMBCheck();
-        };
-        renderTMB();
-    }, [onRenderTMBCheck]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

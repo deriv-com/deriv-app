@@ -3,13 +3,10 @@ import Cookies from 'js-cookie';
 
 import { Button, Icon, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import { TAdditionalDetailsOfEachMT5Loginid } from '@deriv/stores/types';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-import { TTradingPlatformAccounts } from '../../Components/props.types';
 import SpecBox from '../../Components/specbox';
-import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 import './account-nakala-modal.scss';
 
@@ -90,19 +87,16 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
 
 interface TCFDDerivNakalaLinkAccountProps {
     isSuccess?: boolean;
+    nakalaInfo: {
+        loginId: string | null;
+        serverName: string | null;
+    };
 }
 
 export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAccountProps) => {
-    const { isSuccess = false } = props;
-    const { traders_hub } = useStore();
-    const { combined_cfd_mt5_accounts } = traders_hub;
+    const { isSuccess = false, nakalaInfo } = props;
 
-    const mt5_trade_account = combined_cfd_mt5_accounts.find(
-        account =>
-            account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
-    );
-
-    useEffect(() => {
+    const manageNakalaCookie = () => {
         const nakalaLinkedCookie = 'nakala_linked';
 
         const nakalaLinkedCookieExist = Cookies.get(nakalaLinkedCookie);
@@ -112,10 +106,21 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
         const nakalaLinkedCookieExpiry = 365; // days
 
         Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
-            domain: '.deriv.com',
+            // domain: '.deriv.com',
             expires: nakalaLinkedCookieExpiry,
         });
-    }, []);
+    };
+
+    const isDesktopDevice = isDesktop();
+
+    useEffect(() => {
+        isDesktopDevice && manageNakalaCookie();
+    }, [isDesktopDevice]);
+
+    const onClickOpenApp = () => {
+        manageNakalaCookie();
+        window.open('https://onelink.to/uuuxmw', '_blank');
+    };
 
     return (
         <React.Fragment>
@@ -157,14 +162,11 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                 <div className='cfd-nakala-modal__login-specs'>
                     <div className='cfd-nakala-modal__login-specs-item'>
                         <Text className='cfd-nakala-modal--paragraph'>{localize('Server')}</Text>
-                        <SpecBox
-                            is_bold
-                            value={(mt5_trade_account as TAdditionalDetailsOfEachMT5Loginid)?.server_info?.environment}
-                        />
+                        <SpecBox is_bold value={nakalaInfo.serverName ?? ''} />
                     </div>
                     <div className='cfd-nakala-modal__login-specs-item'>
                         <Text className='cfd-nakala-modal--paragraph'>{localize('Login id')}</Text>
-                        <SpecBox is_bold value={(mt5_trade_account as TTradingPlatformAccounts)?.display_login} />
+                        <SpecBox is_bold value={nakalaInfo.loginId ?? ''} />
                     </div>
                     <ModalInfo />
                 </div>
@@ -178,22 +180,21 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                             </a>
                         </Text>
                     </div>
-                    <div className='cfd-nakala-modal__qr-section-code'>
-                        <Icon icon='IcRebrandingNakalaQrCode' height={80} width={80} />
-                    </div>
-                    <div className='cfd-nakala-modal__qr-section-text'>
-                        <Text size='xxs'>{localize('Scan to download the mobile app.')}</Text>
-                    </div>
+                    {isDesktopDevice && (
+                        <React.Fragment>
+                            <div className='cfd-nakala-modal__qr-section-code'>
+                                <Icon icon='IcRebrandingNakalaQrCode' height={80} width={80} />
+                            </div>
+                            <div className='cfd-nakala-modal__qr-section-text'>
+                                <Text size='xxs'>{localize('Scan to download the mobile app.')}</Text>
+                            </div>
+                        </React.Fragment>
+                    )}
                 </div>
             </div>
-            {!isDesktop() && (
+            {!isDesktopDevice && (
                 <div className={`cfd-nakala-modal__footer cfd-nakala-modal__footer--info-mobile`}>
-                    <Button
-                        type='button'
-                        onClick={() => window.open('https://onelink.to/uuuxmw', '_blank')}
-                        primary
-                        large
-                    >
+                    <Button type='button' onClick={onClickOpenApp} primary large>
                         <Localize i18n_default_text='Open Deriv Nakala mobile app' />
                     </Button>
                 </div>

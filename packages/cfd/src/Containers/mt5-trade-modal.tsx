@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Div100vhContainer, Modal, PageOverlay, UILoader } from '@deriv/components';
+import { useIsEnabledNakala } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -36,10 +37,16 @@ const MT5TradeModal = observer(
         } = useStore();
         const { is_nakala_banner_visible } = cfd;
 
-        const { show_eu_related_content } = traders_hub;
+        const { show_eu_related_content, combined_cfd_mt5_accounts } = traders_hub;
         const { platform } = common;
 
         const { mt5_trade_account, dxtrade_tokens, ctrader_tokens, product } = useCfdStore();
+
+        const mt5Account = combined_cfd_mt5_accounts.filter(
+            account => account.product === 'standard' && account.action_type !== 'get'
+        );
+
+        const { nakalaServerInfo, loginId } = useIsEnabledNakala(mt5Account);
 
         const CFDTradeModal = () => {
             if (platform === 'mt5') {
@@ -80,7 +87,11 @@ const MT5TradeModal = observer(
                         width={is_nakala_banner_visible ? '485px' : '600px'}
                         exit_classname='cfd-modal--custom-exit'
                     >
-                        {is_nakala_banner_visible ? <CFDDerivNakalaLinkAccount /> : <CFDTradeModal />}
+                        {is_nakala_banner_visible ? (
+                            <CFDDerivNakalaLinkAccount nakalaInfo={{ loginId, serverName: nakalaServerInfo }} />
+                        ) : (
+                            <CFDTradeModal />
+                        )}
                     </Modal>
                 ) : (
                     <PageOverlay
@@ -91,7 +102,11 @@ const MT5TradeModal = observer(
                         header_classname='cfd-trade-modal__mobile-title'
                     >
                         <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
-                            {is_nakala_banner_visible ? <CFDDerivNakalaLinkAccount /> : <CFDTradeModal />}
+                            {is_nakala_banner_visible ? (
+                                <CFDDerivNakalaLinkAccount nakalaInfo={{ loginId, serverName: nakalaServerInfo }} />
+                            ) : (
+                                <CFDTradeModal />
+                            )}
                         </Div100vhContainer>
                     </PageOverlay>
                 )}

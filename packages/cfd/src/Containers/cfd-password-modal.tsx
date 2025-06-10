@@ -41,6 +41,7 @@ import CFDDerivNakalaInfo, { CFDDerivNakalaLinkAccount } from './account-nakala-
 import CFDEnterPasswordModalTitle from './cfd-enter-password-modal-title';
 
 import '../sass/cfd.scss';
+import { useIsEnabledNakala } from '@deriv/hooks';
 
 const MT5CreatePassword = makeLazyLoader(
     () => moduleLoader(() => import('./mt5-create-password/mt5-create-password')),
@@ -593,6 +594,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [new_password_value, setNewPasswordValue] = React.useState('');
     const [is_nakala_info_visible, setIsNakalaInfoVisible] = React.useState(is_nakala_banner_visible);
 
+    const mt5_trade_account = mt5_login_list.find(account => account.product === 'standard');
+    console.log('mt5_trade_account', mt5_trade_account);
+    const { nakalaServerInfo, loginId } = useIsEnabledNakala([mt5_trade_account]);
+
     // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
     // It is to avoid the flickering of the modal.
     React.useEffect(() => {
@@ -994,7 +999,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     renderTitle={() => localize('Deriv Nakala')}
                     width={isDesktop ? '485px' : '100%'}
                 >
-                    <CFDDerivNakalaLinkAccount isSuccess />
+                    <CFDDerivNakalaLinkAccount isSuccess nakalaInfo={{ loginId, serverName: nakalaServerInfo }} />
                 </Modal>
             );
         }
@@ -1007,7 +1012,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 header_classname='cfd-trade-modal__mobile-title'
             >
                 <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
-                    <CFDDerivNakalaLinkAccount isSuccess />
+                    <CFDDerivNakalaLinkAccount isSuccess nakalaInfo={{ loginId, serverName: nakalaServerInfo }} />
                 </Div100vhContainer>
             </PageOverlay>
         );

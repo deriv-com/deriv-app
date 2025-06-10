@@ -3,12 +3,13 @@ import Cookies from 'js-cookie';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 import Chat from '../chat';
-// Import after setting up the mock
 import getActiveAccounts from '../getActiveAccounts';
+import isTmbEnabled from '../isTmbEnabled';
 
 jest.mock('js-cookie');
 jest.mock('@deriv-com/auth-client');
 jest.mock('../chat');
+jest.mock('../isTmbEnabled');
 
 // Mock the entire window.location at the module level before importing the module under test
 const mockLocation = {
@@ -27,6 +28,7 @@ Object.defineProperty(window, 'location', {
 const mockRequestSessionActive = requestSessionActive as jest.MockedFunction<typeof requestSessionActive>;
 const mockCookiesSet = Cookies.set as jest.MockedFunction<typeof Cookies.set>;
 const mockChatClear = Chat.clear as jest.MockedFunction<typeof Chat.clear>;
+const mockIsTmbEnabled = isTmbEnabled as jest.MockedFunction<typeof isTmbEnabled>;
 
 // Mock window.LC_API and LiveChatWidget
 Object.defineProperty(window, 'LC_API', {
@@ -68,6 +70,9 @@ describe('getActiveAccounts', () => {
         mockLocation.pathname = '/traders-hub';
         mockLocation.search = '';
         mockLocation.hash = '';
+
+        // Mock isTmbEnabled to return true by default
+        mockIsTmbEnabled.mockResolvedValue(true);
 
         // Mock URLSearchParams
         delete (window as any).URLSearchParams;

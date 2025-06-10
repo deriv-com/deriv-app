@@ -61,7 +61,8 @@ const CFDPlatformsListAccounts: React.FC = () => {
     const hasCTraderAccount = !!ctraderAccountsList?.length;
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
 
-    const hasMT5StandardAccount = mt5AccountsList && mt5AccountsList.find(account => account.product === 'standard');
+    const hasMT5StandardAccounts = mt5AccountsList && mt5AccountsList.filter(account => account.product === 'standard');
+    const hasMT5StandardAccount = hasMT5StandardAccounts?.length ? hasMT5StandardAccounts[0] : ({} as TAddedMT5Account);
 
     const financialRestrictedCountry =
         landingCompany?.financial_company?.shortcode === 'svg' && !landingCompany?.gaming_company;
@@ -69,7 +70,9 @@ const CFDPlatformsListAccounts: React.FC = () => {
         landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
     const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
-    const { IsEnabledNakala, nakalaServerInfo } = useIsEnabledNakala('40123954');
+    const { IsEnabledNakala, loginId, nakalaServerInfo } = useIsEnabledNakala(
+        hasMT5StandardAccounts || ([] as TAvailableMT5Account[])
+    );
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
 
     const showNakala = !isVirtual && !isNakalaLinked && IsEnabledNakala;
@@ -107,7 +110,12 @@ const CFDPlatformsListAccounts: React.FC = () => {
 
     const onButtonClick = () => {
         if (hasMT5StandardAccount?.is_added) {
-            return show(<CFDDerivNakalaLinkAccount onclickAction={hide} />);
+            return show(
+                <CFDDerivNakalaLinkAccount
+                    nakalaInfo={{ loginId, serverName: nakalaServerInfo }}
+                    onclickAction={hide}
+                />
+            );
         }
 
         const account = hasMT5StandardAccount as TAvailableMT5Account;
@@ -159,7 +167,10 @@ const CFDPlatformsListAccounts: React.FC = () => {
                     </>
                 )}
                 {IsEnabledNakala && !isVirtual && hasMT5StandardAccount?.is_added && (
-                    <AvailableNakalaTradeAccount account={hasMT5StandardAccount} serverName={nakalaServerInfo} />
+                    <AvailableNakalaTradeAccount
+                        account={hasMT5StandardAccount as TAddedMT5Account}
+                        nakalaInfo={{ loginId, serverName: nakalaServerInfo }}
+                    />
                 )}
             </div>
         </React.Fragment>

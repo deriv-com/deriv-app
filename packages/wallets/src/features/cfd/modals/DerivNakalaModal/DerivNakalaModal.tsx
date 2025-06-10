@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useSortedMT5Accounts } from '@deriv/api-v2';
 import { LabelPairedCircleExclamationMdFillIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 import DerivNakalaIcon from '../../../../public/images/ic-brand-deriv-nakala.svg';
 import NakalaMT5LinkedIcon from '../../../../public/images/ic-nakala-mt5-linked.svg';
 import NakalaQRIcon from '../../../../public/images/ic-nakala-qr-code.svg';
-import { TAddedMT5Account } from '../../../../types';
 import { MT5TradeDetailsItem } from '../../screens/MT5TradeScreen/MT5TradeDetailsItem';
 import './DerivNakalaModal.scss';
 
@@ -106,17 +104,15 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
 
 interface CFDDerivNakalaAccountModalProps extends CFDDerivNakalaModalProps {
     isSuccess?: boolean;
-    serverName?: string | null;
+    nakalaInfo: {
+        loginId: string | null;
+        serverName: string | null;
+    };
 }
 
 export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps) => {
     const { isDesktop } = useDevice();
-    const { isSuccess = false, onclickAction, serverName } = props;
-
-    const { data: mt5AccountsList } = useSortedMT5Accounts();
-    const StandardMt5 =
-        mt5AccountsList && (mt5AccountsList.find(account => account.product === 'standard') as TAddedMT5Account);
-    const details = StandardMt5;
+    const { isSuccess = false, nakalaInfo, onclickAction } = props;
 
     const manageNakalaCookie = () => {
         const nakalaLinkedCookie = 'nakala_linked';
@@ -185,8 +181,8 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                 </div>
 
                 <div className='wallets-cfd-nakala-modal__login-specs'>
-                    <MT5TradeDetailsItem label={localize('Server')} value={serverName} />
-                    <MT5TradeDetailsItem label={localize('Login ID')} value={details?.display_login ?? ''} />
+                    <MT5TradeDetailsItem label={localize('Server')} value={nakalaInfo?.serverName ?? ''} />
+                    <MT5TradeDetailsItem label={localize('Login ID')} value={nakalaInfo?.loginId ?? ''} />
 
                     <ModalInfo />
                 </div>

@@ -1,11 +1,19 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useIsEuRegion, useMT5AccountsList, usePOA, usePOI } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useIsEuRegion,
+    useMT5AccountsList,
+    usePOA,
+    usePOI,
+    useSortedMT5Accounts,
+} from '@deriv/api-v2';
+import { useIsEnabledNakala } from '@deriv/hooks';
 import { Localize, useTranslations } from '@deriv-com/translations';
 import { Button, useDevice } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper, WalletButtonGroup } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
+import { TAddedMT5Account, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import {
     CFD_PLATFORMS,
     companyNamesAndUrls,
@@ -37,6 +45,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, isNakala, marketType, platform, 
     const { getModalState, hide } = useModal();
 
     const addedAccount = mt5Accounts?.find(acc => acc.login === account?.login);
+
+    const { data: mt5AccountsList } = useSortedMT5Accounts();
+    const StandardMt5 =
+        mt5AccountsList && (mt5AccountsList.find(account => account.product === 'standard') as TAddedMT5Account);
+    const details = StandardMt5;
+
+    const { nakalaServerInfo } = useIsEnabledNakala([details]);
 
     const isLoading =
         isActiveWalletAccountLoading ||
@@ -125,7 +140,13 @@ const MT5AccountAdded: FC<TProps> = ({ account, isNakala, marketType, platform, 
         if (isLoading) return null;
 
         if (isNakala) {
-            return <CFDDerivNakalaLinkAccount isSuccess onclickAction={hide} />;
+            return (
+                <CFDDerivNakalaLinkAccount
+                    isSuccess
+                    nakalaInfo={{ loginId: details?.display_login ?? '', serverName: nakalaServerInfo ?? '' }}
+                    onclickAction={hide}
+                />
+            );
         }
 
         return (
@@ -165,6 +186,8 @@ const MT5AccountAdded: FC<TProps> = ({ account, isNakala, marketType, platform, 
         product,
         isNakala,
         hide,
+        nakalaServerInfo,
+        details?.display_login,
     ]);
 
     if (isLoading) return null;

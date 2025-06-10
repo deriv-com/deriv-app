@@ -20,21 +20,24 @@ type TDisabledPlatformStatus = (typeof DISABLED_PLATFORM_STATUSES)[number];
 
 interface IAvailableNakalaTradeAccountProps {
     account: TAddedMT5Account;
-    serverName: string | null;
+    nakalaInfo: {
+        loginId: string | null;
+        serverName: string | null;
+    };
 }
 
 const AvailableNakalaTradeAccount = (props: IAvailableNakalaTradeAccountProps) => {
     const isRtl = useIsRtl();
-    const { account, serverName } = props;
+    const { account, nakalaInfo } = props;
 
     const { hide, show } = useModal();
     const { isAccountDisabled, platformStatus } = useAddedMT5Account(account);
 
     const onPressNakala = () => {
         if (isDesktop()) {
-            return show(<CFDDerivNakalaLinkAccount onclickAction={hide} serverName={serverName} />);
+            return show(<CFDDerivNakalaLinkAccount nakalaInfo={nakalaInfo} onclickAction={hide} />);
         }
-        return show(<CFDDerivNakalaLinkAccount onclickAction={hide} serverName={serverName} />, {
+        return show(<CFDDerivNakalaLinkAccount nakalaInfo={nakalaInfo} onclickAction={hide} />, {
             defaultRootId: 'wallets_modal_show_header_root',
         });
     };

@@ -178,7 +178,11 @@ const MT5AccountAdded: FC<TProps> = ({ account, isNakala, marketType, platform, 
     }
 
     return (
-        <ModalStepWrapper renderFooter={() => renderAccountSuccessButton(isDemo)}>
+        <ModalStepWrapper
+            renderFooter={() => renderAccountSuccessButton(isDemo)}
+            shouldHideFooter={isNakala}
+            shouldHideHeader={isNakala}
+        >
             <div className='wallets-mt5-password-modal wallets-mt5-password-modal__body'>{renderMainContent}</div>
         </ModalStepWrapper>
     );

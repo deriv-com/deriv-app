@@ -4,6 +4,7 @@ import {
     LabelPairedChevronLeftCaptionRegularIcon,
     LabelPairedChevronRightCaptionRegularIcon,
 } from '@deriv/quill-icons';
+import { isDesktop } from '@deriv/shared';
 import { Localize } from '@deriv-com/translations';
 import { Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
@@ -12,7 +13,6 @@ import useIsRtl from '../../../../../hooks/useIsRtl';
 import DerivNakalaIcon from '../../../../../public/images/ic-brand-deriv-nakala.svg';
 import { PlatformStatusBadge } from '../../../components';
 import { DISABLED_PLATFORM_STATUSES } from '../../../constants';
-import { TradingPlatformStatusModal } from '../../../modals';
 import { CFDDerivNakalaLinkAccount } from '../../../modals/DerivNakalaModal/DerivNakalaModal';
 import { useAddedMT5Account } from '../../MT5/AddedMT5AccountsList/hooks';
 
@@ -22,15 +22,15 @@ const AvailableNakalaTradeAccount = (account: TAddedMT5Account) => {
     const isRtl = useIsRtl();
 
     const { hide, show } = useModal();
-    const { hasDisabledPlatformStatus, isAccountDisabled, platformStatus } = useAddedMT5Account(account);
+    const { isAccountDisabled, platformStatus } = useAddedMT5Account(account);
 
     const onPressNakala = () => {
-        if (hasDisabledPlatformStatus) {
-            return show(<TradingPlatformStatusModal status={platformStatus as TDisabledPlatformStatus} />, {
-                defaultRootId: 'wallets_modal_root',
-            });
+        if (isDesktop()) {
+            return show(<CFDDerivNakalaLinkAccount onclickAction={hide} />);
         }
-        return show(<CFDDerivNakalaLinkAccount onclickAction={hide} />);
+        return show(<CFDDerivNakalaLinkAccount onclickAction={hide} />, {
+            defaultRootId: 'wallets_modal_show_header_root',
+        });
     };
 
     return (

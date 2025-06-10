@@ -106,11 +106,12 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
 
 interface CFDDerivNakalaAccountModalProps extends CFDDerivNakalaModalProps {
     isSuccess?: boolean;
+    serverName?: string | null;
 }
 
 export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps) => {
     const { isDesktop } = useDevice();
-    const { isSuccess = false, onclickAction } = props;
+    const { isSuccess = false, onclickAction, serverName } = props;
 
     const { data: mt5AccountsList } = useSortedMT5Accounts();
     const StandardMt5 =
@@ -184,7 +185,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
                 </div>
 
                 <div className='wallets-cfd-nakala-modal__login-specs'>
-                    <MT5TradeDetailsItem label={localize('Server')} value={details?.server_info?.environment ?? ''} />
+                    <MT5TradeDetailsItem label={localize('Server')} value={serverName} />
                     <MT5TradeDetailsItem label={localize('Login ID')} value={details?.display_login ?? ''} />
 
                     <ModalInfo />

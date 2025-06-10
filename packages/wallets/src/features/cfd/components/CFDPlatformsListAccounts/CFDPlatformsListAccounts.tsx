@@ -69,7 +69,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
         landingCompany?.gaming_company?.shortcode === 'svg' && !landingCompany.financial_company;
     const isRestricted = financialRestrictedCountry || cfdRestrictedCountry;
 
-    const { IsEnabledNakala } = useIsEnabledNakala();
+    const { IsEnabledNakala, nakalaServerInfo } = useIsEnabledNakala('40123954');
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
 
     const showNakala = !isVirtual && !isNakalaLinked && IsEnabledNakala;
@@ -159,7 +159,7 @@ const CFDPlatformsListAccounts: React.FC = () => {
                     </>
                 )}
                 {IsEnabledNakala && !isVirtual && hasMT5StandardAccount?.is_added && (
-                    <AvailableNakalaTradeAccount account={hasMT5StandardAccount} />
+                    <AvailableNakalaTradeAccount account={hasMT5StandardAccount} serverName={nakalaServerInfo} />
                 )}
             </div>
         </React.Fragment>

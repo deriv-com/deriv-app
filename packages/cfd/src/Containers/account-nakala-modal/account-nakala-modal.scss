@@ -13,6 +13,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        .linked {
+            width: 176px;
+            height: 64px;
+        }
     }
 
     &__title {
@@ -23,7 +28,7 @@
     }
 
     &__description {
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -169,4 +174,16 @@
     gap: 0.8rem;
     margin: 1.6rem auto;
     width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.nakala-modal-maintenance {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.6rem;
+    margin-left: 0.7rem;
+
+    span {
+        color: #999999;
+    }
 }

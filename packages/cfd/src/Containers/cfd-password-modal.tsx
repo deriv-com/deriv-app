@@ -549,7 +549,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateAccountStatus,
         updateMT5Status,
     } = client;
-    const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
+    const { show_eu_related_content, is_eu_user, toggleAccountTransferModal, combined_cfd_mt5_accounts } = traders_hub;
     const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
     const {
@@ -594,8 +594,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const [new_password_value, setNewPasswordValue] = React.useState('');
     const [is_nakala_info_visible, setIsNakalaInfoVisible] = React.useState(is_nakala_banner_visible);
 
-    const mt5_trade_account = mt5_login_list.find(account => account.product === 'standard');
-    console.log('mt5_trade_account', mt5_trade_account);
+    const mt5_trade_account = combined_cfd_mt5_accounts.find(account => account.product === 'standard');
     const { nakalaServerInfo, loginId } = useIsEnabledNakala([mt5_trade_account]);
 
     // Usecase: Added this timeout to render the Password Change modal after the password modal is closed.
@@ -663,6 +662,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const onCloseNakalaSuccessModal = () => {
+        console.log('nakala success modal closed');
         setNakalaBannerVisible(false);
         updateMT5Status();
         closeDialogs();
@@ -995,7 +995,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     hasfull_height={isDesktop ? undefined : true}
                     is_open={should_show_success && is_nakala_banner_visible}
                     toggleModal={onCloseNakalaSuccessModal}
-                    should_header_stick_body
+                    should_header_stick_body={false}
                     renderTitle={() => localize('Deriv Nakala')}
                     width={isDesktop ? '485px' : '100%'}
                 >
@@ -1007,9 +1007,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             <PageOverlay
                 is_open={should_show_success && is_nakala_banner_visible}
                 portal_id='deriv_app'
-                header='Trade'
-                toggleModal={onCloseNakalaSuccessModal}
+                onClickClose={onCloseNakalaSuccessModal}
                 header_classname='cfd-trade-modal__mobile-title'
+                header=' '
             >
                 <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
                     <CFDDerivNakalaLinkAccount isSuccess nakalaInfo={{ loginId, serverName: nakalaServerInfo }} />

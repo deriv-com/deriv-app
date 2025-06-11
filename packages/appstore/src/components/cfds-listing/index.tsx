@@ -119,7 +119,8 @@ const CFDsListing = observer(() => {
     );
 
     const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
-    const { IsEnabledNakala } = useIsEnabledNakala();
+    const mt5_trade_account = combined_cfd_mt5_accounts.find(account => account.product === 'standard');
+    const { IsEnabledNakala } = useIsEnabledNakala([mt5_trade_account]);
 
     const showNakala = is_real && !isNakalaLinked && IsEnabledNakala;
 
@@ -291,19 +292,15 @@ const CFDsListing = observer(() => {
                     </div>
                 )
             }
-            description={
-                <div>
-                    <CFDsDescription />
-                    {showNakala && (
-                        <NakalaLinkedBanner
-                            description={localize('Copy trading with Deriv Nakala')}
-                            onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
-                        />
-                    )}
-                </div>
-            }
+            description={<CFDsDescription />}
         >
             {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
+            {showNakala && (
+                <NakalaLinkedBanner
+                    description={localize('Copy trading with Deriv Nakala')}
+                    onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
+                />
+            )}
             <AddDerivAccount />
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
@@ -746,6 +743,10 @@ const CFDsListing = observer(() => {
                         description={localize('Copy trading for CFDs on MT5')}
                         onAction={onOpenNakala}
                         key={`trading_app_card_${'Deriv Nakala'}`}
+                        mt5_acc_auth_status={getMT5AccountAuthStatus(
+                            mt5_trade_account?.status,
+                            mt5_trade_account?.landing_company_short
+                        )}
                         is_new
                     />
                 </Fragment>

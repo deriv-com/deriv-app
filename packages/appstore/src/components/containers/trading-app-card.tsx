@@ -240,7 +240,8 @@ const TradingAppCard = ({
                     >
                         {getAppDescription()}
                     </Text>
-                    {mt5_acc_auth_status && action_type === 'multi-action' && (
+                    {console.log(mt5_acc_auth_status, (action_type === 'multi-action' || name === 'Deriv Nakala'))}
+                    {mt5_acc_auth_status && (action_type === 'multi-action' || name === 'Deriv Nakala') && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}

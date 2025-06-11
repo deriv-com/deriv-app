@@ -97,7 +97,7 @@ const MT5TradeModal = observer(
                     <PageOverlay
                         is_open={is_open}
                         portal_id='deriv_app'
-                        header='Trade'
+                        header={is_nakala_banner_visible ? 'Deriv Nakala' : 'Trade'}
                         onClickClose={toggleModal}
                         header_classname='cfd-trade-modal__mobile-title'
                     >

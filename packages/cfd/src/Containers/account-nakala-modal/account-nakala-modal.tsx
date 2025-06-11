@@ -16,14 +16,24 @@ interface CFDDerivNakalaModalProps {
 
 const ModalInfo = () => {
     return (
-        <div className='nakala-modal-info'>
-            <div className='nakala-modal-info_icon'>
-                <Icon icon='IcInfoLight' />
+        <React.Fragment>
+            <div className='nakala-modal-info'>
+                <div className='nakala-modal-info_icon'>
+                    <Icon icon='IcInfoLight' />
+                </div>
+                <Text size='xxxs'>
+                    <Localize i18n_default_text='Use your MT5 password when linking your account.' />
+                </Text>
             </div>
-            <Text size='xxxs'>
-                <Localize i18n_default_text='Use your MT5 password when linking your account.' />
-            </Text>
-        </div>
+            <div className='nakala-modal-maintenance'>
+                <div className='nakala-modal-maintenance_icon'>
+                    <Icon icon='IcInfoYellow' />
+                </div>
+                <Text size='xxxs'>
+                    <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
+                </Text>
+            </div>
+        </React.Fragment>
     );
 };
 
@@ -40,9 +50,6 @@ const CFDDerivNakalaInfo = (props: CFDDerivNakalaModalProps) => {
                 <div className='cfd-nakala-modal__description'>
                     <Text as='p' size='s'>
                         <Localize i18n_default_text='Follow top global traders and copy their strategies.' />
-                    </Text>
-                    <Text as='p' size='s'>
-                        <Localize i18n_default_text='Become a signal provider and earn from your expertise.' />
                     </Text>
                 </div>
 
@@ -106,7 +113,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
         const nakalaLinkedCookieExpiry = 365; // days
 
         Cookies.set(nakalaLinkedCookie, nakalaLinkedCookieValue, {
-            // domain: '.deriv.com',
+            //domain: '.deriv.com',
             expires: nakalaLinkedCookieExpiry,
         });
     };
@@ -127,11 +134,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
             <div className='cfd-nakala-modal'>
                 <div className='cfd-nakala-modal__logo-container'>
                     <div className='cfd-nakala-modal__logo'>
-                        {isSuccess ? (
-                            <Icon icon='IcRebrandingNakalaLinkedSuccess' width={64} height={64} />
-                        ) : (
-                            <Icon icon='IcRebrandingDerivNakala' size={64} />
-                        )}
+                        <Icon icon='IcRebrandingNakalaMt5Linked' className='linked' />
                     </div>
                 </div>
 
@@ -165,7 +168,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                         <SpecBox is_bold value={nakalaInfo.serverName ?? ''} />
                     </div>
                     <div className='cfd-nakala-modal__login-specs-item'>
-                        <Text className='cfd-nakala-modal--paragraph'>{localize('Login id')}</Text>
+                        <Text className='cfd-nakala-modal--paragraph'>{localize('Account no.')}</Text>
                         <SpecBox is_bold value={nakalaInfo.loginId ?? ''} />
                     </div>
                     <ModalInfo />

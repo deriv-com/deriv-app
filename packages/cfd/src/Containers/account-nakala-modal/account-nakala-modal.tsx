@@ -148,17 +148,10 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
 
                 <div className='cfd-nakala-modal__description'>
                     <Text align='center' as='p'>
-                        {isSuccess ? (
-                            <Localize
-                                components={[<strong key={0} />]}
-                                i18n_default_text='Link your MT5 Standard account to the <0>Deriv Nakala mobile app</0> using these details:'
-                            />
-                        ) : (
-                            <Localize
-                                components={[<strong key={0} />]}
-                                i18n_default_text='<0>Deriv Nakala mobile app</0> should be linked to your MT5 Standard Account, using these details:'
-                            />
-                        )}
+                        <Localize
+                            components={[<strong key={0} />]}
+                            i18n_default_text='Link your MT5 Standard account to the <0>Deriv Nakala mobile app</0> using these details:'
+                        />
                     </Text>
                 </div>
 

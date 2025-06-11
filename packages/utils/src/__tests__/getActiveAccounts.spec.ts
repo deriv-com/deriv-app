@@ -3,12 +3,13 @@ import Cookies from 'js-cookie';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 import Chat from '../chat';
-// Import after setting up the mock
 import getActiveAccounts from '../getActiveAccounts';
+import isTmbEnabled from '../isTmbEnabled';
 
 jest.mock('js-cookie');
 jest.mock('@deriv-com/auth-client');
 jest.mock('../chat');
+jest.mock('../isTmbEnabled');
 
 // Mock the entire window.location at the module level before importing the module under test
 const mockLocation = {
@@ -27,6 +28,7 @@ Object.defineProperty(window, 'location', {
 const mockRequestSessionActive = requestSessionActive as jest.MockedFunction<typeof requestSessionActive>;
 const mockCookiesSet = Cookies.set as jest.MockedFunction<typeof Cookies.set>;
 const mockChatClear = Chat.clear as jest.MockedFunction<typeof Chat.clear>;
+const mockIsTmbEnabled = isTmbEnabled as jest.MockedFunction<typeof isTmbEnabled>;
 
 // Mock window.LC_API and LiveChatWidget
 Object.defineProperty(window, 'LC_API', {
@@ -68,6 +70,9 @@ describe('getActiveAccounts', () => {
         mockLocation.pathname = '/traders-hub';
         mockLocation.search = '';
         mockLocation.hash = '';
+
+        // Mock isTmbEnabled to return true by default
+        mockIsTmbEnabled.mockResolvedValue(true);
 
         // Mock URLSearchParams
         delete (window as any).URLSearchParams;
@@ -211,6 +216,80 @@ describe('getActiveAccounts', () => {
             const result = await getActiveAccounts();
 
             expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?account=demo');
+        });
+
+        it('should handle loginID param for demo account', async () => {
+            mockLocation.search = '?loginid=VRTC456';
+
+            const result = await getActiveAccounts();
+
+            expect(window.history.replaceState).toHaveBeenCalledWith(
+                {},
+                '',
+                '/traders-hub?loginid=VRTC456&account=demo'
+            );
+            expect(sessionStorage.getItem('active_loginid')).toBe('VRTC456');
+            expect(sessionStorage.getItem('active_wallet_loginid')).toBe('VRW101');
+            expect(localStorage.getItem('clientAccounts')).toBe(JSON.stringify(mockTokens));
+        });
+
+        it('should handle loginID param for real account', async () => {
+            mockLocation.search = '?loginid=CR123';
+
+            const result = await getActiveAccounts();
+
+            expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?loginid=CR123&account=USD');
+            expect(sessionStorage.getItem('active_loginid')).toBe('CR123');
+            expect(sessionStorage.getItem('active_wallet_loginid')).toBe('CRW789');
+            expect(localStorage.getItem('clientAccounts')).toBe(JSON.stringify(mockTokens));
+        });
+
+        it('should handle loginID param for wallet account', async () => {
+            mockLocation.search = '?loginid=CRW789';
+
+            const result = await getActiveAccounts();
+
+            expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?loginid=CRW789&account=USD');
+        });
+
+        it('should handle invalid loginID param gracefully', async () => {
+            mockLocation.search = '?loginid=INVALID123';
+
+            const result = await getActiveAccounts();
+
+            // Should not update URL or set session storage for invalid loginID
+            expect(window.history.replaceState).not.toHaveBeenCalled();
+        });
+
+        it('should prioritize loginID over account param when both are present', async () => {
+            mockLocation.search = '?account=demo&loginid=CR123';
+
+            const result = await getActiveAccounts();
+
+            expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?account=USD&loginid=CR123');
+            expect(sessionStorage.getItem('active_loginid')).toBe('CR123');
+            expect(sessionStorage.getItem('active_wallet_loginid')).toBe('CRW789');
+        });
+
+        it('should handle loginID param with different currency tokens', async () => {
+            const multiCurrencyTokens = [
+                { loginid: 'CR123', token: 'token1', cur: 'USD' },
+                { loginid: 'CR456', token: 'token2', cur: 'EUR' },
+                { loginid: 'VRTC789', token: 'token3', cur: 'USD' },
+                { loginid: 'CRW101', token: 'token4', cur: 'EUR' },
+            ];
+
+            mockRequestSessionActive.mockResolvedValue({
+                active: true,
+                tokens: multiCurrencyTokens,
+                exp: (Date.now() + 3600000).toString(),
+            });
+
+            mockLocation.search = '?loginid=CR456';
+
+            const result = await getActiveAccounts();
+
+            expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?loginid=CR456&account=EUR');
         });
 
         it('should remove session storage when demo accounts are not found', async () => {

@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 import Chat from './chat';
+import isTmbEnabled from './isTmbEnabled';
 
 type TMBApiReturnedValue = {
     tokens?: {
@@ -68,6 +69,12 @@ const getActiveSessions = async () => {
 };
 
 const getActiveAccounts = async () => {
+    const is_tmb_enabled = await isTmbEnabled();
+
+    if (!is_tmb_enabled) {
+        return undefined;
+    }
+
     const activeSessions = await getActiveSessions();
 
     if (!activeSessions?.active) {
@@ -89,9 +96,13 @@ const getActiveAccounts = async () => {
         // Get account from URL params and set the loginid to session storage
         const params = new URLSearchParams(location.search);
         let account = params.get('account');
+        const loginID =
+            params.get('loginid') ||
+            sessionStorage.getItem('active_wallet_loginid') ||
+            sessionStorage.getItem('active_loginid');
 
         // If no account in params, determine from first available account
-        if (!account && activeSessions?.tokens?.length > 0) {
+        if (!account && !loginID && activeSessions?.tokens?.length > 0) {
             const firstAccount = activeSessions.tokens[0];
 
             // Set account based on account type (demo or real)
@@ -101,10 +112,33 @@ const getActiveAccounts = async () => {
             params.set('account', account ?? '');
             const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
             window.history.replaceState({}, '', newUrl);
+        } else if (loginID && activeSessions?.tokens?.length > 0) {
+            // Handle case where loginID is provided in query params
+            const matchingToken = activeSessions.tokens.find(token => token.loginid === loginID);
+
+            if (matchingToken) {
+                // Set account based on the loginID's currency and type
+                account = matchingToken.loginid.startsWith('VR') ? 'demo' : matchingToken.cur;
+
+                // Update URL params to reflect the selected account
+                params.set('account', account ?? '');
+                const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+                window.history.replaceState({}, '', newUrl);
+            } else {
+                const firstAccount = activeSessions.tokens[0];
+
+                // Set account based on account type (demo or real)
+                account = firstAccount.loginid.startsWith('VR') ? 'demo' : firstAccount.cur;
+
+                // Update URL params to reflect the selected account
+                params.set('account', account ?? '');
+                const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+                window.history.replaceState({}, '', newUrl);
+            }
         }
 
-        // Handle account selection based on type (demo or real)
         if (account?.toLocaleUpperCase() === 'DEMO') {
+            // Handle account selection based on type (demo or real)
             // For demo accounts, find virtual accounts with USD currency
             const demoAccount = activeSessions?.tokens?.find(
                 item => item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')

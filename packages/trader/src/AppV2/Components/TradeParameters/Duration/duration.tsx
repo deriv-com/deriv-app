@@ -55,7 +55,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const { server_time } = common;
 
     useEffect(() => {
-        if (expiry_epoch && duration_unit !== 'd') {
+        if (expiry_epoch && duration_unit !== 'd' && !saved_expiry_date_v2) {
             // Set expiry time to end of day
             setExpiryTimeString('23:59:59');
 

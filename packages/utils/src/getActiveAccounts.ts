@@ -112,7 +112,7 @@ const getActiveAccounts = async () => {
             params.set('account', account ?? '');
             const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
             window.history.replaceState({}, '', newUrl);
-        } else if (loginID && activeSessions?.tokens?.length > 0) {
+        } else if (!account && loginID && activeSessions?.tokens?.length > 0) {
             // Handle case where loginID is provided in query params
             const matchingToken = activeSessions.tokens.find(token => token.loginid === loginID);
 

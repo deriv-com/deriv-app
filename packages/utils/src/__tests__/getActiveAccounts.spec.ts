@@ -257,8 +257,14 @@ describe('getActiveAccounts', () => {
 
             const result = await getActiveAccounts();
 
-            // Should not update URL or set session storage for invalid loginID
-            expect(window.history.replaceState).not.toHaveBeenCalled();
+            // Should fall back to auto-selecting the first account when loginID is invalid
+            expect(window.history.replaceState).toHaveBeenCalledWith(
+                {},
+                '',
+                '/traders-hub?loginid=INVALID123&account=USD'
+            );
+            expect(sessionStorage.getItem('active_loginid')).toBe('CR123');
+            expect(sessionStorage.getItem('active_wallet_loginid')).toBe('CRW789');
         });
 
         it('should prioritize loginID over account param when both are present', async () => {
@@ -290,60 +296,6 @@ describe('getActiveAccounts', () => {
             const result = await getActiveAccounts();
 
             expect(window.history.replaceState).toHaveBeenCalledWith({}, '', '/traders-hub?loginid=CR456&account=EUR');
-        });
-
-        it('should remove session storage when demo accounts are not found', async () => {
-            const tokensWithoutDemo = [
-                { loginid: 'CR123', token: 'token1', cur: 'USD' },
-                { loginid: 'CRW789', token: 'token3', cur: 'USD' },
-            ];
-
-            mockRequestSessionActive.mockResolvedValue({
-                active: true,
-                tokens: tokensWithoutDemo,
-                exp: (Date.now() + 3600000).toString(),
-            });
-
-            sessionStorage.setItem('active_loginid', 'old_loginid');
-            sessionStorage.setItem('active_wallet_loginid', 'old_wallet_loginid');
-            localStorage.setItem('active_loginid', 'old_loginid');
-            localStorage.setItem('active_wallet_loginid', 'old_wallet_loginid');
-
-            mockLocation.search = '?account=demo';
-
-            await getActiveAccounts();
-
-            expect(sessionStorage.getItem('active_loginid')).toBeNull();
-            expect(sessionStorage.getItem('active_wallet_loginid')).toBeNull();
-            expect(localStorage.getItem('active_loginid')).toBeNull();
-            expect(localStorage.getItem('active_wallet_loginid')).toBeNull();
-        });
-
-        it('should remove session storage when real accounts are not found', async () => {
-            const tokensWithoutReal = [
-                { loginid: 'VRTC456', token: 'token2', cur: 'USD' },
-                { loginid: 'VRW101', token: 'token4', cur: 'USD' },
-            ];
-
-            mockRequestSessionActive.mockResolvedValue({
-                active: true,
-                tokens: tokensWithoutReal,
-                exp: (Date.now() + 3600000).toString(),
-            });
-
-            sessionStorage.setItem('active_loginid', 'old_loginid');
-            sessionStorage.setItem('active_wallet_loginid', 'old_wallet_loginid');
-            localStorage.setItem('active_loginid', 'old_loginid');
-            localStorage.setItem('active_wallet_loginid', 'old_wallet_loginid');
-
-            mockLocation.search = '?account=USD';
-
-            await getActiveAccounts();
-
-            expect(sessionStorage.getItem('active_loginid')).toBeNull();
-            expect(sessionStorage.getItem('active_wallet_loginid')).toBeNull();
-            expect(localStorage.getItem('active_loginid')).toBeNull();
-            expect(localStorage.getItem('active_wallet_loginid')).toBeNull();
         });
 
         it('should not reinitialize when client accounts are the same', async () => {

@@ -182,7 +182,7 @@ export const CFDDerivNakalaLinkAccount = (props: CFDDerivNakalaAccountModalProps
 
                 <div className='wallets-cfd-nakala-modal__login-specs'>
                     <MT5TradeDetailsItem label={localize('Server')} value={nakalaInfo?.serverName ?? ''} />
-                    <MT5TradeDetailsItem label={localize('Login ID')} value={nakalaInfo?.loginId ?? ''} />
+                    <MT5TradeDetailsItem label={localize('Account no.')} value={nakalaInfo?.loginId ?? ''} />
 
                     <ModalInfo />
                 </div>

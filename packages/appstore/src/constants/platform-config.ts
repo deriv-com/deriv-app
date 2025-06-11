@@ -68,7 +68,7 @@ export const appendSearchParamsToUrl = (url: string): string => {
 
     // Get currency from client.accounts if active_loginid exists
     if (active_loginid) {
-        const client_accounts_str = localStorage.getItem('client.accounts') || '';
+        const client_accounts_str = localStorage.getItem('client.accounts') || '{}';
 
         if (client_accounts_str) {
             const client_accounts: Record<string, ClientAccount> = JSON.parse(client_accounts_str);

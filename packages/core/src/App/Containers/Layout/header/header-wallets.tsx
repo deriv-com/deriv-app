@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { routes, platforms } from '@deriv/shared';
@@ -13,15 +13,23 @@ import NewVersionNotification from 'App/Containers/new-version-notification.jsx'
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
 import TradersHubHomeButton from './traders-hub-home-button';
+import DerivShortLogo from './deriv-short-logo';
 
 const MenuLeft = observer(() => {
-    const { client, common, ui, traders_hub } = useStore();
+    const { client, common, traders_hub, ui } = useStore();
+    const { isDesktop } = useDevice();
+    const { pathname } = useLocation();
+
     const { is_bot_allowed, is_logged_in, is_mt5_allowed, is_dxtrade_allowed } = client;
     const { app_routing_history, current_language } = common;
-    const { header_extension } = ui;
     const { setTogglePlatformType } = traders_hub;
+    const { header_extension } = ui;
 
-    const { isDesktop } = useDevice();
+    const traders_hub_routes =
+        [routes.traders_hub].includes(pathname) ||
+        [routes.account, routes.wallets, routes.settings, routes.wallets_compare_accounts, routes.compare_cfds].some(
+            route => pathname.startsWith(route)
+        );
 
     const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
@@ -41,58 +49,77 @@ const MenuLeft = observer(() => {
         <div className='header__menu-left'>
             {isDesktop ? (
                 <React.Fragment>
+                    <DerivShortLogo />
+                    <div className='header__divider' />
                     <TradersHubHomeButton />
-                    <div className='traders-hub-header__divider traders-hub-header__divider--wallets' />
-                    <PlatformSwitcher
-                        app_routing_history={app_routing_history}
-                        platform_config={filterPlatformsForClients(platform_config)}
-                        setTogglePlatformType={setTogglePlatformType}
-                        current_language={current_language}
-                    />
                 </React.Fragment>
             ) : (
                 <React.Fragment>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                    <DerivShortLogo />
                     {header_extension && is_logged_in && (
                         <div className='header__menu-left-extensions'>{header_extension}</div>
                     )}
                 </React.Fragment>
             )}
-            <MenuLinks />
+            <MenuLinks is_traders_hub_routes={traders_hub_routes} />
+            {isDesktop && !traders_hub_routes && (
+                <PlatformSwitcher
+                    app_routing_history={app_routing_history}
+                    platform_config={filterPlatformsForClients(platform_config)}
+                    setTogglePlatformType={setTogglePlatformType}
+                    current_language={current_language}
+                />
+            )}
         </div>
     );
 });
 
 const MenuRight = observer(() => {
-    const { client, ui } = useStore();
-    const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid, is_crypto } = client;
-    const { is_mobile } = ui;
+    const { pathname } = useLocation();
+    const { client } = useStore();
+    const { is_logged_in, is_logging_in, is_single_logging_in, is_switching, accounts, loginid } = client;
+    const { isDesktop } = useDevice();
+
+    const history = useHistory();
+
+    const isRedirectPage = history.location.pathname.includes(routes.redirect);
+
+    const traders_hub_routes =
+        [routes.traders_hub].includes(pathname) ||
+        [routes.account, routes.wallets, routes.settings, routes.wallets_compare_accounts, routes.compare_cfds].some(
+            route => pathname.startsWith(route)
+        );
 
     const active_account = accounts?.[loginid ?? ''];
     const currency = active_account?.currency ?? '';
 
     return (
         <div className='header__menu-right'>
-            {is_logging_in || is_single_logging_in || is_switching ? (
+            {is_logging_in || is_single_logging_in || is_switching || isRedirectPage ? (
                 <div
                     id='dt_core_header_acc-info-preloader'
-                    className={classNames('acc-info__preloader__dtrader acc-info__preloader__dtrader--wallets', {
-                        'acc-info__preloader__dtrader--no-currency': !currency,
-                        'acc-info__preloader__dtrader--is-crypto': is_crypto(currency),
+                    className={classNames('acc-info__preloader', {
+                        'acc-info__preloader--no-currency': !currency,
                     })}
                 >
-                    <AccountsInfoLoaderWallets is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />
+                    <AccountsInfoLoaderWallets
+                        is_logged_in={is_logged_in}
+                        is_desktop={isDesktop}
+                        is_traders_hub_routes={traders_hub_routes}
+                        speed={3}
+                    />
                 </div>
             ) : (
                 <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
-                    <AccountActionsWallets />
+                    <AccountActionsWallets is_traders_hub_routes={traders_hub_routes} />
                 </div>
             )}
         </div>
     );
 });
 
-const DTraderHeaderWallets = observer(() => {
+const HeaderWallets = observer(() => {
     const { common, ui, notifications } = useStore();
     const { platform } = common;
     const { is_app_disabled, is_route_modal_on } = ui;
@@ -127,4 +154,4 @@ const DTraderHeaderWallets = observer(() => {
     );
 });
 
-export default withRouter(DTraderHeaderWallets);
+export default withRouter(HeaderWallets);

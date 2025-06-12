@@ -1,11 +1,9 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-
-import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
+import { platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
@@ -14,12 +12,11 @@ import platform_config from 'App/Constants/platform-config';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-
 import DerivShortLogo from './deriv-short-logo';
 import HeaderAccountActions from './header-account-actions';
 import TradersHubHomeButton from './traders-hub-home-button';
 
-const DTraderHeader = observer(() => {
+const HeaderLegacy = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();
     const {
         currency,
@@ -33,14 +30,22 @@ const DTraderHeader = observer(() => {
         is_virtual,
         is_switching,
     } = client;
-    const { app_routing_history, platform, current_language, is_from_tradershub_os } = common;
+    const { app_routing_history, current_language, platform, is_from_tradershub_os } = common;
     const { header_extension, is_app_disabled, is_route_modal_on, toggleReadyToDepositModal, is_real_acc_signup_on } =
         ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
     const { setTogglePlatformType } = traders_hub;
 
+    const { isDesktop } = useDevice();
+
     const history = useHistory();
-    const { isDesktop, isMobile } = useDevice();
+    const { pathname } = useLocation();
+
+    const traders_hub_routes =
+        [routes.traders_hub].includes(pathname) ||
+        [routes.account, routes.settings, routes.wallets_compare_accounts, routes.compare_cfds].some(route =>
+            pathname.startsWith(route)
+        );
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications?.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -61,7 +66,7 @@ const DTraderHeader = observer(() => {
         }
     };
 
-    const filterPlatformsForClients = payload =>
+    const filterPlatformsForClients = (payload: typeof platform_config) =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
@@ -86,35 +91,41 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {!isDesktop ? (
+                    {isDesktop ? (
+                        <React.Fragment>
+                            <DerivShortLogo />
+                            <div className='header__divider' />
+                            <TradersHubHomeButton />
+                        </React.Fragment>
+                    ) : (
                         <React.Fragment>
                             {is_from_tradershub_os ? (
-                                <ToggleMenuDrawerAccountsOS
-                                    platform_config={filterPlatformsForClients(platform_config)}
-                                />
+                                <>
+                                    <ToggleMenuDrawerAccountsOS
+                                        platform_config={filterPlatformsForClients(platform_config)}
+                                    />
+                                    <DerivShortLogo />
+                                </>
                             ) : (
                                 <>
                                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                                    <DerivShortLogo />
                                     {header_extension && is_logged_in && (
                                         <div className='header__menu-left-extensions'>{header_extension}</div>
                                     )}
                                 </>
                             )}
                         </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <DerivShortLogo />
-                            <div className='header__divider' />
-                            <TradersHubHomeButton />
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                setTogglePlatformType={setTogglePlatformType}
-                                current_language={current_language}
-                            />
-                        </React.Fragment>
                     )}
-                    <MenuLinks />
+                    <MenuLinks is_traders_hub_routes={traders_hub_routes} />
+                    {isDesktop && !traders_hub_routes && !location.pathname.includes(routes.cashier) && (
+                        <PlatformSwitcher
+                            app_routing_history={app_routing_history}
+                            platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
+                        />
+                    )}
                 </div>
 
                 <div
@@ -122,23 +133,28 @@ const DTraderHeader = observer(() => {
                         'header__menu-right--hidden': !isDesktop && is_logging_in,
                     })}
                 >
-                    {isDesktop && (
-                        <div className='header__menu--dtrader--separator--account'>
-                            <div className='header__menu--dtrader--separator' />
-                        </div>
-                    )}
-                    {(is_logging_in || is_single_logging_in || is_switching) && (
+                    {is_logging_in || is_single_logging_in || is_switching ? (
                         <div
                             id='dt_core_header_acc-info-preloader'
-                            className={classNames('acc-info__preloader__dtrader', {
-                                'acc-info__preloader__dtrader--no-currency': !currency,
-                                'acc-info__preloader__dtrader--is-crypto': getDecimalPlaces(currency) > 2,
+                            className={classNames('acc-info__preloader', {
+                                'acc-info__preloader--no-currency': !currency,
                             })}
                         >
-                            <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={!isDesktop} speed={3} />
+                            <AccountsInfoLoader
+                                is_logged_in={is_logged_in}
+                                is_desktop={isDesktop}
+                                speed={3}
+                                is_traders_hub_routes={traders_hub_routes}
+                            />
                         </div>
+                    ) : (
+                        !is_from_tradershub_os && (
+                            <HeaderAccountActions
+                                onClickDeposit={handleClickCashier}
+                                is_traders_hub_routes={traders_hub_routes}
+                            />
+                        )
                     )}
-                    {!is_from_tradershub_os && <HeaderAccountActions onClickDeposit={handleClickCashier} />}
                 </div>
             </div>
             {is_real_acc_signup_on && <RealAccountSignup />}
@@ -148,4 +164,4 @@ const DTraderHeader = observer(() => {
     );
 });
 
-export default DTraderHeader;
+export default HeaderLegacy;

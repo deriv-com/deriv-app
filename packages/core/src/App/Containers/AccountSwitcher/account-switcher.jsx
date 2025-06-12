@@ -18,7 +18,7 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency, useOauth2 } from '@deriv/hooks';
+import { useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
@@ -42,7 +42,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         is_virtual,
         has_fiat,
         mt5_login_list,
-        logout: logoutClient,
         obj_total_balance,
         switchAccount,
         resetVirtualBalance,
@@ -56,14 +55,11 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const { show_eu_related_content, content_flag, selectRegion, setTogglePlatformType } = traders_hub;
     const {
         is_dark_mode_on,
-        is_positions_drawer_on,
         openRealAccountSignup,
         toggleAccountsDialog,
-        togglePositionsDrawer,
         toggleSetCurrencyModal,
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
-        setIsForcedToExitPnv,
     } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -92,33 +88,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             default:
                 return false;
         }
-    };
-
-    const logoutHandler = async () => {
-        // for DBot we need to logout first and only after this redirect to TH
-        if (window.location.pathname.startsWith(routes.bot)) {
-            await logoutClient();
-            history.push(routes.traders_hub);
-        } else {
-            if (window.location.pathname.startsWith(routes.phone_verification)) {
-                setIsForcedToExitPnv(true);
-                // Add a small delay to ensure state is updated before navigation because adding await doesn't work here
-                await new Promise(resolve => setTimeout(resolve, 0));
-            }
-            history.push(routes.traders_hub);
-            await logoutClient();
-        }
-    };
-
-    const { oAuthLogout } = useOauth2({ handleLogout: logoutHandler });
-
-    const handleLogout = async () => {
-        closeAccountsDialog();
-        if (is_positions_drawer_on) {
-            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-        }
-
-        await oAuthLogout();
     };
 
     const closeAccountsDialog = () => {
@@ -262,77 +231,74 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         <div ref={scroll_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 {!is_eu || is_low_risk ? (
-                    <React.Fragment>
-                        <AccountWrapper
-                            className='acc-switcher__title'
-                            header={
-                                is_low_risk && has_maltainvest_account
-                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                                    : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                            }
-                            is_visible={is_non_eu_regulator_visible}
-                            toggleVisibility={() => {
-                                toggleVisibility('real_deriv');
-                            }}
-                        >
-                            <div className='acc-switcher__accounts'>
-                                {getSortedAccountList(account_list, accounts)
-                                    .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
-                                    .map(account => {
-                                        return (
-                                            <AccountList
-                                                account_type={account_type}
-                                                is_dark_mode_on={is_dark_mode_on}
-                                                key={account.loginid}
-                                                balance={accounts[account.loginid].balance}
-                                                currency={accounts[account.loginid].currency}
-                                                currency_icon={`IcCurrency-${account.icon}`}
-                                                display_type={'currency'}
-                                                has_balance={'balance' in accounts[account.loginid]}
-                                                is_disabled={account.is_disabled}
-                                                is_virtual={account.is_virtual}
-                                                is_eu={is_eu}
-                                                loginid={account.loginid}
-                                                redirectAccount={
-                                                    account.is_disabled ? undefined : () => doSwitch(account.loginid)
+                    <AccountWrapper
+                        className='acc-switcher__title'
+                        header={
+                            is_low_risk && has_maltainvest_account
+                                ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                                : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                        }
+                        is_visible={is_non_eu_regulator_visible}
+                        toggleVisibility={() => {
+                            toggleVisibility('real_deriv');
+                        }}
+                    >
+                        <div className='acc-switcher__accounts'>
+                            {getSortedAccountList(account_list, accounts)
+                                .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
+                                .map(account => {
+                                    return (
+                                        <AccountList
+                                            account_type={account_type}
+                                            is_dark_mode_on={is_dark_mode_on}
+                                            key={account.loginid}
+                                            balance={accounts[account.loginid].balance}
+                                            currency={accounts[account.loginid].currency}
+                                            currency_icon={`IcCurrency-${account.icon}`}
+                                            display_type={'currency'}
+                                            has_balance={'balance' in accounts[account.loginid]}
+                                            is_disabled={account.is_disabled}
+                                            is_virtual={account.is_virtual}
+                                            is_eu={is_eu}
+                                            loginid={account.loginid}
+                                            redirectAccount={
+                                                account.is_disabled ? undefined : () => doSwitch(account.loginid)
+                                            }
+                                            selected_loginid={account_loginid}
+                                            should_show_server_name={checkMultipleSvgAcc()}
+                                        />
+                                    );
+                                })}
+                        </div>
+                        {!has_cr_account &&
+                            getRemainingRealAccounts()
+                                .filter(account => account === 'svg')
+                                .map((account, index) => (
+                                    <div key={index} className='acc-switcher__new-account'>
+                                        <Icon icon='IcDeriv' size={24} />
+                                        <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                            {getAccountTitle(account)}
+                                        </Text>
+                                        <Button
+                                            id='dt_core_account-switcher_add-new-account'
+                                            onClick={() => {
+                                                if (real_account_creation_unlock_date) {
+                                                    closeAccountsDialog();
+                                                    setShouldShowCooldownModal(true);
+                                                } else {
+                                                    selectRegion('Non-EU');
+                                                    openRealAccountSignup('svg');
                                                 }
-                                                selected_loginid={account_loginid}
-                                                should_show_server_name={checkMultipleSvgAcc()}
-                                            />
-                                        );
-                                    })}
-                            </div>
-                            {!has_cr_account &&
-                                getRemainingRealAccounts()
-                                    .filter(account => account === 'svg')
-                                    .map((account, index) => (
-                                        <div key={index} className='acc-switcher__new-account'>
-                                            <Icon icon='IcDeriv' size={24} />
-                                            <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                                {getAccountTitle(account)}
-                                            </Text>
-                                            <Button
-                                                id='dt_core_account-switcher_add-new-account'
-                                                onClick={() => {
-                                                    if (real_account_creation_unlock_date) {
-                                                        closeAccountsDialog();
-                                                        setShouldShowCooldownModal(true);
-                                                    } else {
-                                                        selectRegion('Non-EU');
-                                                        openRealAccountSignup('svg');
-                                                    }
-                                                }}
-                                                className='acc-switcher__new-account-btn'
-                                                secondary
-                                                small
-                                            >
-                                                {localize('Add')}
-                                            </Button>
-                                        </div>
-                                    ))}
-                        </AccountWrapper>
-                        <div className='acc-switcher__separator' />
-                    </React.Fragment>
+                                            }}
+                                            className='acc-switcher__new-account-btn'
+                                            secondary
+                                            small
+                                        >
+                                            {localize('Add')}
+                                        </Button>
+                                    </div>
+                                ))}
+                    </AccountWrapper>
                 ) : null}
                 {(!is_high_risk && has_maltainvest_account) || is_eu ? (
                     <AccountWrapper
@@ -433,7 +399,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                             </Text>
                         </BinaryLink>
                     </div>
-                    <div className='acc-switcher__separator' />
                 </React.Fragment>
             );
         };
@@ -510,30 +475,25 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                         {localize('Total assets in your Deriv accounts.')}
                     </Text>
                     <div className='acc-switcher__separator' />
-
                     <TradersHubRedirect />
-
-                    <div className='acc-switcher__footer'>
-                        {isRealAccountTab && has_active_real_account && !is_virtual && (
-                            <Button
-                                className='acc-switcher__btn--traders_hub'
-                                secondary
-                                onClick={
-                                    has_any_real_account && (!hasSetCurrency || !currency)
-                                        ? setAccountCurrency
-                                        : () => openRealAccountSignup('manage')
-                                }
-                            >
-                                {localize('Manage accounts')}
-                            </Button>
-                        )}
-                        <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
-                            <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
-                                {localize('Log out')}
-                            </Text>
-                            <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' />
-                        </div>
-                    </div>
+                    {isRealAccountTab && has_active_real_account && !is_virtual && (
+                        <>
+                            <div className='acc-switcher__separator' />
+                            <div className='acc-switcher__footer'>
+                                <Button
+                                    className='acc-switcher__btn--traders_hub'
+                                    secondary
+                                    onClick={
+                                        has_any_real_account && (!hasSetCurrency || !currency)
+                                            ? setAccountCurrency
+                                            : () => openRealAccountSignup('manage')
+                                    }
+                                >
+                                    {localize('Manage accounts')}
+                                </Button>
+                            </div>
+                        </>
+                    )}
                 </React.Fragment>
             ) : (
                 <Loading is_fullscreen={false} />

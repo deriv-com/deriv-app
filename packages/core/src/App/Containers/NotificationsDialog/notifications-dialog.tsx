@@ -21,7 +21,6 @@ const NotificationsDialog = observer(() => {
     } = notifications;
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
-    const [is_outside, setIsOutside] = React.useState(false);
     const { isMobile } = useDevice();
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,15 +61,6 @@ const NotificationsDialog = observer(() => {
 
     useOnClickOutside(wrapper_ref, handleClickOutside);
 
-    React.useEffect(() => {
-        const should_check_position = !isMobile && is_notifications_visible && wrapper_ref.current;
-
-        if (should_check_position) {
-            const { right } = wrapper_ref.current.getBoundingClientRect();
-            setIsOutside(right > window.innerWidth);
-        }
-    }, [isMobile, is_notifications_visible]);
-
     if (isMobile) {
         return (
             <MobileDialog
@@ -94,14 +84,9 @@ const NotificationsDialog = observer(() => {
                 exit: 'notifications-dialog--exit',
             }}
             timeout={150}
-            onExited={() => setIsOutside(false)}
             unmountOnExit
         >
-            <NotificationListWrapper
-                clearNotifications={clearNotifications}
-                is_outside={is_outside}
-                ref={wrapper_ref}
-            />
+            <NotificationListWrapper clearNotifications={clearNotifications} ref={wrapper_ref} />
         </CSSTransition>
     );
 });

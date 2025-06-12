@@ -28,6 +28,15 @@ jest.mock('../../../../../components/ModalProvider', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsEnabledNakala: jest.fn(() => ({
+        IsEnabledNakala: false,
+        loginId: '',
+        nakalaServerInfo: null,
+    })),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(() => ({

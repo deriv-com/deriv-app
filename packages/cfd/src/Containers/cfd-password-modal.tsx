@@ -662,7 +662,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     };
 
     const onCloseNakalaSuccessModal = () => {
-        console.log('nakala success modal closed');
         setNakalaBannerVisible(false);
         updateMT5Status();
         closeDialogs();

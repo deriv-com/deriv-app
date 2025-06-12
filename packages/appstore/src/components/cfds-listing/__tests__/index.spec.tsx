@@ -30,7 +30,7 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
 >;
 
 const mockUseIsEnabledNakala = useIsEnabledNakala as jest.MockedFunction<typeof useIsEnabledNakala>;
-mockUseIsEnabledNakala.mockReturnValue({ IsEnabledNakala: true });
+mockUseIsEnabledNakala.mockReturnValue({ IsEnabledNakala: true, nakalaServerInfo: null, loginId: '1231231' });
 
 mockUseGrowthbookGetFeatureValue.mockReturnValue([true, true]);
 

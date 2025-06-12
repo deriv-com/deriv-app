@@ -10,6 +10,7 @@ import {
     useIsMounted,
     WS,
 } from '@deriv/shared';
+import { useOauth2 } from '@deriv/hooks';
 import { useTranslations } from '@deriv-com/translations';
 import DemoMessage from '../../../Components/demo-message';
 import '../../../Components/self-exclusion/self-exclusion.scss';
@@ -88,8 +89,8 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
     const is_cr = standpoint.svg;
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
-        max_open_positions: 999999999,
-        six_weeks: 60480, // in minutes
+        max_open_positions: 100,
+        max_24_days: 34560, // in minutes
     });
 
     const exclusion_texts = {
@@ -149,6 +150,11 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         },
         initial_state
     );
+    const { oAuthLogout } = useOauth2({
+        handleLogout: async () => {
+            await logout();
+        },
+    });
 
     useEffect(() => {
         if (is_virtual) {
@@ -186,7 +192,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         // Regex
         const max_number = exclusion_fields_settings.max_number;
         const max_open_positions = exclusion_fields_settings.max_open_positions;
-        const six_weeks = exclusion_fields_settings.six_weeks; // in minutes
+        const max_24_days = exclusion_fields_settings.max_24_days; // in minutes
 
         const more_than_zero_message = localize('Please input number greater than 0');
 
@@ -253,13 +259,13 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
             const result = validNumber(values.session_duration_limit, {
                 type: 'integer',
                 min: Number(is_eu),
-                max: is_eu ? state.self_exclusions?.session_duration_limit : six_weeks,
+                max: is_eu ? state.self_exclusions?.session_duration_limit : max_24_days,
             });
             const { is_ok, message } = typeof result === 'object' ? result : { is_ok: result, message: null };
             if (!is_ok) errors.session_duration_limit = message;
-            if (values.session_duration_limit > six_weeks) {
+            if (values.session_duration_limit > max_24_days) {
                 errors.session_duration_limit = localize(
-                    'Enter a value in minutes, up to 60480 minutes (equivalent to 6 weeks).'
+                    'Enter a value in minutes, up to 34560 minutes (equivalent to 24 days).'
                 );
             }
         }
@@ -319,7 +325,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
                         submit_error_message: response.error.message,
                     });
                 } else {
-                    logout();
+                    oAuthLogout();
                 }
             } else {
                 setState({ show_confirm: true });
@@ -431,9 +437,9 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         return <LoadErrorMessage error_message={state.error_message} />;
     }
 
-    const { six_weeks } = exclusion_fields_settings;
+    const { max_24_days } = exclusion_fields_settings;
     const currency_display = getCurrencyDisplayCode(currency);
-    const session_duration_digits = six_weeks.toString().length;
+    const session_duration_digits = max_24_days.toString().length;
 
     const context_value = {
         is_app_settings,

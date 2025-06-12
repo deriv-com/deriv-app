@@ -57,7 +57,7 @@ const DTraderHeader = observer(() => {
         if (!has_any_real_account && is_virtual) {
             toggleReadyToDepositModal();
         } else {
-            history.push(routes.cashier_deposit);
+            history.push(routes.cashier_deposit, { is_from_traders: window.location.pathname?.includes('dtrader') });
         }
     };
 

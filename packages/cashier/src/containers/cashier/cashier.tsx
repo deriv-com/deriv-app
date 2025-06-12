@@ -77,10 +77,19 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         p2p_settings,
         rest: { isSubscribed },
     } = useP2PSettings();
+    const is_location_from_traders = location?.state?.is_from_traders;
+    const [close_route, setCloseRoute] = React.useState(routes.traders_hub);
+
+    React.useEffect(() => {
+        if (is_location_from_traders) {
+            setCloseRoute(routes.trade);
+        }
+    }, [is_location_from_traders]);
+
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
 
-    const onClickClose = () => history.push(routes.traders_hub);
+    const onClickClose = () => history.push(close_route);
     const getMenuOptions = useMemo(() => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {

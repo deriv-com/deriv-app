@@ -9,11 +9,13 @@ const useIsEnabledNakala = (accounts: any[]) => {
         if (!accounts?.length) return null;
 
         // Priority: svg > vanuatu > bvi
-        const priorityOrder = ['svg', 'vanuatu', '"bvi"'];
+        const priorityOrder = ['svg', 'vanuatu', 'bvi'];
 
         const account = priorityOrder.reduce((found, company) => {
             if (found) return found;
-            return accounts.find(acc => acc.landing_company_name?.toLowerCase() === company);
+            return accounts.find(
+                acc => acc.landing_company_name?.toLowerCase() === company || acc.landing_company_short === company
+            );
         }, null);
         if (account) return account;
 
@@ -26,7 +28,7 @@ const useIsEnabledNakala = (accounts: any[]) => {
     const [nakalaServerInfo, setNakalaServerInfo] = useState(null);
 
     useEffect(() => {
-        getNakalaServerInfo();
+        loginId != '' && getNakalaServerInfo();
     }, [loginId]);
 
     const [is_nakala_enabled] = useGrowthbookGetFeatureValue({

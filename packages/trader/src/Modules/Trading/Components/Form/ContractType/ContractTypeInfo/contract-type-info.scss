@@ -1,0 +1,25 @@
+.contract-type-info {
+    &__content-glossary {
+        &--heading {
+            margin-top: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+        &--highlight {
+            animation: highlight-term 1s ease-out;
+        }
+    }
+}
+@keyframes highlight-term {
+    0% {
+        border: 2px solid transparent;
+    }
+    20% {
+        border: 2px solid var(--brand-red-coral);
+    }
+    80% {
+        border: 2px solid var(--brand-red-coral);
+    }
+    100% {
+        border: 2px solid transparent;
+    }
+}

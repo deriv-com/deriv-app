@@ -1,0 +1,189 @@
+.cfd-nakala-modal {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px 0;
+
+    &__logo-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2.4rem;
+    }
+
+    &__logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .linked {
+            width: 176px;
+            height: 64px;
+        }
+    }
+
+    &__title {
+        h3 {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+    }
+
+    &__description {
+        margin-bottom: 2rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            margin-bottom: 0.8rem;
+            color: #101213;
+            text-align: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__getting-started {
+        width: 100%;
+        background-color: var(--general-section-1);
+        border-radius: 0.8rem;
+        padding: 2.4rem;
+        margin-bottom: 1.6rem;
+
+        h3 {
+            margin-bottom: 1.6rem;
+        }
+    }
+
+    &__steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+    }
+
+    &__step {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.2rem;
+    }
+
+    &__step-number {
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 50%;
+        background-color: var(--text-prominent);
+        color: var(--text-colored-background);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    &__qr-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 2rem auto;
+        width: 100%;
+        max-width: 240px;
+
+        &-help {
+            margin-bottom: 1.6rem;
+            text-align: center;
+
+            a {
+                text-decoration: underline;
+                font-weight: bold;
+            }
+        }
+
+        &-code {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 0.8rem;
+        }
+
+        &-text {
+            font-size: 12px;
+            color: var(--text-less-prominent);
+            text-align: center;
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        box-shadow: 0px -2px 0px 0px var(--border-divider);
+        padding: 15px 24px;
+    }
+
+    &__footer--mobile {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    &__footer--info-mobile {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    .cfd-nakala-modal {
+        &--paragraph {
+            @include typeface(--paragraph-left-normal-black, none);
+            color: var(--text-less-prominent);
+            line-height: 1.45;
+        }
+
+        &__login-specs {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+            border-radius: 0.8rem;
+            overflow: hidden;
+
+            &-item {
+                display: flex;
+                padding: 0.8rem 1.2rem;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--general-section-1);
+            }
+        }
+    }
+}
+
+.nakala-modal-info {
+    border-radius: 0.4rem;
+    background: rgba(55, 124, 252, 0.16);
+    display: flex;
+    padding: 0.8rem;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin: 1.6rem auto;
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.nakala-modal-maintenance {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.6rem;
+    margin-left: 0.7rem;
+
+    span {
+        color: #999999;
+    }
+}

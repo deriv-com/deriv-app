@@ -11,7 +11,7 @@ on:
 jobs:
   build_and_test:
     name: Analyze Bundle
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: ubuntu-latest
     environment: Preview
     permissions:
       contents: read

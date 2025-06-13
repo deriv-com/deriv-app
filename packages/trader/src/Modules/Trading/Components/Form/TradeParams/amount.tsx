@@ -182,6 +182,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
             />
             {is_multiplier && (
                 <React.Fragment>
+                    <div className='trade-container__multiplier-header'>{localize('Multiplier')}</div>
                     <Multiplier />
                     <MultipliersInfo
                         className='trade-container__multipliers-trade-info'

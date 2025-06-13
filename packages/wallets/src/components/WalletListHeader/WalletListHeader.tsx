@@ -29,6 +29,8 @@ const WalletListHeader: React.FC = () => {
     const [isChecked, setIsChecked] = useState(!isDemo);
 
     useEffect(() => {
+        if (!shouldShowSwitcher) return;
+
         const updateWidths = () => {
             if (demoTextRef.current && realTextRef.current) {
                 const demoWidth = demoTextRef.current.offsetWidth;
@@ -40,13 +42,13 @@ const WalletListHeader: React.FC = () => {
         updateWidths();
 
         const resizeObserver = new ResizeObserver(updateWidths);
-        resizeObserver.observe(demoTextRef.current as Element);
-        resizeObserver.observe(realTextRef.current as Element);
+        if (demoTextRef.current) resizeObserver.observe(demoTextRef.current);
+        if (realTextRef.current) resizeObserver.observe(realTextRef.current);
 
         return () => {
             resizeObserver.disconnect();
         };
-    }, [language]);
+    }, [language, shouldShowSwitcher]);
 
     const handleToggle = () => {
         setIsChecked(prev => !prev);

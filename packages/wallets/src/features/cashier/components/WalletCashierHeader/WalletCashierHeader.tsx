@@ -20,7 +20,7 @@ import './WalletCashierHeader.scss';
 
 type TProps = {
     hideWalletDetails: boolean;
-    is_dtrader?: boolean;
+    isDtrader?: boolean;
 };
 
 const getRealAccountTabs = () => {
@@ -72,7 +72,7 @@ const getVirtualAccountTabs = () => {
     return virtualAccountTabs;
 };
 
-const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails, is_dtrader = false }) => {
+const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails, isDtrader = false }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
     const { isDesktop } = useDevice();
@@ -155,7 +155,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails, is_dtrader =
                             data-testid='dt_close_btn'
                             iconSize='xs'
                             onClick={() => {
-                                is_dtrader
+                                isDtrader
                                     ? history.push('/dtrader')
                                     : history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current });
                             }}

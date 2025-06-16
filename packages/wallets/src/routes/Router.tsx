@@ -24,7 +24,7 @@ type TWalletsRoute =
     | '/wallet/transactions'
     | '/wallet/withdrawal';
 
-export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
+export type TRoute = '/dtrader' | '/endpoint' | `?${string}` | `${TWalletsRoute}`;
 
 type TRouterProps = {
     isHubRedirectionEnabled: boolean;

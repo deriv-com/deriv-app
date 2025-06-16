@@ -469,6 +469,8 @@ export type TClientStore = {
     };
     email_address: string;
     has_any_real_account: boolean;
+    should_redirect_user_to_login: boolean;
+    setShouldRedirectToLogin: (value: boolean) => void;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
     getTwoFAStatus: () => Promise<
         | boolean

@@ -21,7 +21,13 @@ const getHighlightedIconLabel = (
             return localize('Forex');
         } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return localize('Forex: standard/exotic');
-        } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD) {
+        } else if (
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_GOLD ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_SVG ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_BVI ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_DML
+        ) {
             return localize('Forex');
         } else if (
             (trading_platforms.platform === CFD_PLATFORMS.MT5 &&

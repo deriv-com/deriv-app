@@ -94,6 +94,7 @@ const AppWithoutTranslation = ({ root_store }) => {
     }, [i18n, i18n.language]);
 
     React.useEffect(() => {
+        sessionStorage.removeItem('redirect_url');
         initCashierStore();
         initCFDStore();
         const loadSmartchartsStyles = () => {

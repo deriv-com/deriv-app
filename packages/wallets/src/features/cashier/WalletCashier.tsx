@@ -4,9 +4,11 @@ import { WalletLoader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
+import { useHistory } from 'react-router-dom';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();
+    const { location } = useHistory();
 
     const [onCashierScroll, setOnCashierScroll] = useState<React.UIEventHandler<HTMLDivElement> | null>(null);
 
@@ -25,7 +27,10 @@ const WalletCashier = () => {
 
     return (
         <div className='wallets-cashier'>
-            <WalletCashierHeader hideWalletDetails={isContentScrolled} />
+            <WalletCashierHeader
+                hideWalletDetails={isContentScrolled}
+                is_dtrader={Boolean(location?.state?.is_from_traders)}
+            />
             <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
                 <div
                     className='wallets-cashier-content'

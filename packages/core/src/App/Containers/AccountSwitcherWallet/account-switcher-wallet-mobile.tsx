@@ -53,7 +53,10 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
 
             window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         } else {
-            history.push(routes.wallets_transfer, { toAccountLoginId: loginid });
+            history.push(routes.wallets_transfer, {
+                toAccountLoginId: loginid,
+                is_from_traders: window.location.pathname?.includes('dtrader'),
+            });
         }
     };
 

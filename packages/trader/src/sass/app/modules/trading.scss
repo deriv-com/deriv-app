@@ -627,14 +627,6 @@
         display: flex;
         flex-direction: column;
 
-        &-header {
-            margin-top: 1.2rem;
-            margin-bottom: 1.2rem;
-            font-size: 14px;
-            color: var(--text-general);
-            text-align: center;
-        }
-
         &-dropdown {
             margin-top: 0.8rem;
             /* postcss-bem-linter: ignore */

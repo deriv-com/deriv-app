@@ -116,85 +116,90 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
     };
 
     return (
-        <Fieldset
-            className='trade-container__fieldset center-text'
-            header={
-                contract_type === TRADE_TYPES.HIGH_LOW || is_multiplier || is_accumulator || is_vanilla || is_turbos
-                    ? localize('Stake')
-                    : undefined
-            }
-        >
-            {basis_list.length > 1 && (
-                <ButtonToggle
-                    id='dt_amount_toggle'
-                    buttons_arr={getBasisList()}
-                    className='dropdown--no-margin'
-                    is_animated
-                    name='basis'
-                    onChange={onChange}
-                    value={basis}
-                />
+        <React.Fragment>
+            {is_multiplier && (
+                <Fieldset className='trade-container__fieldset center-text' header={localize('Multiplier')}>
+                    <Multiplier />
+                </Fieldset>
             )}
-            {!is_single_currency ? (
-                <div className='trade-container__currency-options'>
+            <Fieldset
+                className='trade-container__fieldset center-text'
+                header={
+                    contract_type === TRADE_TYPES.HIGH_LOW || is_multiplier || is_accumulator || is_vanilla || is_turbos
+                        ? localize('Stake')
+                        : undefined
+                }
+            >
+                {basis_list.length > 1 && (
+                    <ButtonToggle
+                        id='dt_amount_toggle'
+                        buttons_arr={getBasisList()}
+                        className='dropdown--no-margin'
+                        is_animated
+                        name='basis'
+                        onChange={onChange}
+                        value={basis}
+                    />
+                )}
+                {!is_single_currency ? (
+                    <div className='trade-container__currency-options'>
+                        <Input
+                            amount={amount}
+                            currency={currency}
+                            current_focus={current_focus}
+                            error_messages={error_messages}
+                            is_single_currency={is_single_currency}
+                            onChange={changeAmount}
+                            setCurrentFocus={setCurrentFocus}
+                        />
+                        <Dropdown
+                            className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
+                            is_alignment_left
+                            is_nativepicker={false}
+                            list={currencies_list}
+                            name='currency'
+                            initial_offset={256}
+                            no_border={true}
+                            value={currency}
+                            onChange={onChange}
+                        />
+                    </div>
+                ) : (
                     <Input
                         amount={amount}
                         currency={currency}
                         current_focus={current_focus}
                         error_messages={error_messages}
                         is_single_currency={is_single_currency}
+                        is_disabled={has_open_accu_contract}
                         onChange={changeAmount}
                         setCurrentFocus={setCurrentFocus}
                     />
-                    <Dropdown
-                        className={classNames({ 'dc-dropdown-container__currency': !is_single_currency })}
-                        is_alignment_left
-                        is_nativepicker={false}
-                        list={currencies_list}
-                        name='currency'
-                        initial_offset={256}
-                        no_border={true}
-                        value={currency}
-                        onChange={onChange}
-                    />
-                </div>
-            ) : (
-                <Input
-                    amount={amount}
-                    currency={currency}
-                    current_focus={current_focus}
-                    error_messages={error_messages}
-                    is_single_currency={is_single_currency}
-                    is_disabled={has_open_accu_contract}
-                    onChange={changeAmount}
-                    setCurrentFocus={setCurrentFocus}
+                )}
+                <AllowEquals
+                    contract_start_type={contract_start_type}
+                    contract_type={contract_type}
+                    contract_types_list={contract_types_list}
+                    duration_unit={duration_unit}
+                    expiry_type={expiry_type}
+                    onChange={changeAllowEquals}
+                    value={Number(is_equal)}
+                    has_equals_only={has_equals_only}
                 />
-            )}
-            <AllowEquals
-                contract_start_type={contract_start_type}
-                contract_type={contract_type}
-                contract_types_list={contract_types_list}
-                duration_unit={duration_unit}
-                expiry_type={expiry_type}
-                onChange={changeAllowEquals}
-                value={Number(is_equal)}
-                has_equals_only={has_equals_only}
-            />
-            {is_multiplier && (
-                <React.Fragment>
-                    <div className='trade-container__multiplier-header'>{localize('Multiplier')}</div>
-                    <Multiplier />
-                    <MultipliersInfo
-                        className='trade-container__multipliers-trade-info'
-                        should_show_tooltip
-                        is_tooltip_relative
-                    />
-                </React.Fragment>
-            )}
-            {(is_turbos || is_vanilla) && (
-                <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
-            )}
-        </Fieldset>
+                {is_multiplier && (
+                    <React.Fragment>
+                        <MultipliersInfo
+                            className='trade-container__multipliers-trade-info'
+                            should_show_tooltip
+                            is_tooltip_relative
+                        />
+                    </React.Fragment>
+                )}
+                {(is_turbos || is_vanilla) && (
+                    <MinMaxStakeInfo currency={currency} max_stake={max_stake} min_stake={min_stake} />
+                )}
+            </Fieldset>
+        </React.Fragment>
     );
 });
 

@@ -11,7 +11,7 @@ const WalletCashier = () => {
     const { location } = useHistory();
 
     // Using type assertion to handle the property that might not be in all route states
-    const is_location_from_traders = location?.state
+    const isLocationFromTraders = location?.state
         ? (location.state as Record<string, unknown>).is_from_traders
         : undefined;
 
@@ -32,7 +32,7 @@ const WalletCashier = () => {
 
     return (
         <div className='wallets-cashier'>
-            <WalletCashierHeader hideWalletDetails={isContentScrolled} isDtrader={Boolean(is_location_from_traders)} />
+            <WalletCashierHeader hideWalletDetails={isContentScrolled} isDtrader={Boolean(isLocationFromTraders)} />
             <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
                 <div
                     className='wallets-cashier-content'

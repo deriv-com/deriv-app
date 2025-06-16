@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 
 import { ThemedScrollbars } from '@deriv/components';
 import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
-import { CookieStorage, platforms, routes, TRACKING_STATUS_KEY, WS } from '@deriv/shared';
+import { CookieStorage, platforms, redirectToLogin, routes, TRACKING_STATUS_KEY, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 
@@ -27,7 +28,8 @@ const AppContents = observer(({ children }) => {
     const location = useLocation();
     const has_access_denied_error = location.search.includes('access_denied');
 
-    const { is_eu_country, is_logged_in, is_logging_in } = client;
+    const { is_eu_country, is_logged_in, is_logging_in, should_redirect_user_to_login, setShouldRedirectToLogin } =
+        client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -53,6 +55,12 @@ const AppContents = observer(({ children }) => {
     const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'duplicate-login',
     });
+    React.useEffect(() => {
+        if (should_redirect_user_to_login) {
+            setShouldRedirectToLogin(false);
+            redirectToLogin(is_logged_in, getLanguage());
+        }
+    }, [should_redirect_user_to_login, is_logged_in, setShouldRedirectToLogin]);
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

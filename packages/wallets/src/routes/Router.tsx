@@ -24,7 +24,7 @@ type TWalletsRoute =
     | '/wallet/transactions'
     | '/wallet/withdrawal';
 
-export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
+export type TRoute = '/dtrader' | '/endpoint' | `?${string}` | `${TWalletsRoute}`;
 
 type TRouterProps = {
     isHubRedirectionEnabled: boolean;
@@ -35,6 +35,7 @@ interface WalletsRouteState {
     '/': { accountsActiveTabIndex: number };
     '/wallet/account-transfer': {
         accountsActiveTabIndex: number;
+        is_from_traders?: boolean;
         shouldSelectDefaultWallet: boolean;
         toAccountLoginId: string;
     };

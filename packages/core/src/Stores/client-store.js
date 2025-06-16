@@ -79,6 +79,7 @@ export default class ClientStore extends BaseStore {
     is_populating_dxtrade_account_list = true;
     is_populating_ctrader_account_list = true;
     is_logging_out = false;
+    should_redirect_user_to_login = false;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -221,6 +222,7 @@ export default class ClientStore extends BaseStore {
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
+            should_redirect_user_to_login: observable,
             has_enabled_two_fa: observable,
             has_changed_two_fa: observable,
             landing_companies: observable,
@@ -295,6 +297,7 @@ export default class ClientStore extends BaseStore {
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
+            setShouldRedirectToLogin: action.bound,
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
@@ -2209,6 +2212,10 @@ export default class ClientStore extends BaseStore {
         });
         this.root_store.notifications.removeAllNotificationMessages(true);
         this.syncWithLegacyPlatforms(this.loginid, this.accounts);
+    }
+
+    setShouldRedirectToLogin(should_redirect_user_to_login) {
+        this.should_redirect_user_to_login = should_redirect_user_to_login;
     }
 
     async logout() {

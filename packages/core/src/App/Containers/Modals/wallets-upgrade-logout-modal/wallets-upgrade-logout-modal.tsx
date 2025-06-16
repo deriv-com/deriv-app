@@ -26,7 +26,7 @@ const trackAnalyticsEvent = (
 
 const WalletsUpgradeLogoutModal = observer(() => {
     const { client, ui } = useStore();
-    const { is_virtual, logout } = client;
+    const { is_virtual, logout, setShouldRedirectToLogin } = client;
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
@@ -47,6 +47,9 @@ const WalletsUpgradeLogoutModal = observer(() => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }
+            }
+            if (is_tmb_enabled) {
+                setShouldRedirectToLogin(true);
             }
         },
     });

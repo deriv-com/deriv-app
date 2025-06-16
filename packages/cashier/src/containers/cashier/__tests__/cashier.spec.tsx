@@ -12,6 +12,20 @@ import getRoutesConfig from 'Constants/routes-config';
 import CashierProviders from '../../../cashier-providers';
 import Cashier from '../cashier';
 
+// Mock modules before importing components that use them
+jest.mock('@deriv/shared', () => {
+    const original_module = jest.requireActual('@deriv/shared');
+    return {
+        ...original_module,
+        getActivePlatform: jest.fn(() => 'Not Deriv Trader'),
+        WS: {
+            wait: (...payload: unknown[]) => {
+                return Promise.resolve([...payload]);
+            },
+        },
+    };
+});
+
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isDesktop: true })),
@@ -41,19 +55,6 @@ jest.mock('@deriv/components', () => {
     return {
         ...original_module,
         Loading: jest.fn(() => 'mockedLoading'),
-    };
-});
-
-jest.mock('@deriv/shared', () => {
-    const original_module = jest.requireActual('@deriv/shared');
-
-    return {
-        ...original_module,
-        WS: {
-            wait: (...payload: unknown[]) => {
-                return Promise.resolve([...payload]);
-            },
-        },
     };
 });
 

@@ -178,21 +178,36 @@ const getActiveAccounts = async () => {
                     (item?.loginid.startsWith('CRW') || item?.loginid.startsWith('MFW'))
             );
 
-            if (!realAccount && (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))) {
+            // Check if stored loginid exists in active sessions before removing
+            const storedLoginid = sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid');
+            const storedWalletLoginid =
+                sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid');
+
+            const storedLoginidExists =
+                storedLoginid && activeSessions?.tokens?.some(token => token.loginid === storedLoginid);
+            const storedWalletLoginidExists =
+                storedWalletLoginid && activeSessions?.tokens?.some(token => token.loginid === storedWalletLoginid);
+
+            if (!realAccount && storedLoginid && !storedLoginidExists) {
                 sessionStorage.removeItem('active_loginid');
                 localStorage.removeItem('active_loginid');
             }
 
-            if (
-                !realWalletAccount &&
-                (sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid'))
-            ) {
+            if (!realWalletAccount && storedWalletLoginid && !storedWalletLoginidExists) {
                 sessionStorage.removeItem('active_wallet_loginid');
                 localStorage.removeItem('active_wallet_loginid');
             }
 
-            setAccountInSessionStorage(realAccount?.loginid);
-            setAccountInSessionStorage(realWalletAccount?.loginid, true);
+            // If we have a stored loginid that exists in active sessions, use that instead of realAccount
+            const accountToUse = storedLoginidExists
+                ? activeSessions?.tokens?.find(token => token.loginid === storedLoginid)
+                : realAccount;
+            const walletAccountToUse = storedWalletLoginidExists
+                ? activeSessions?.tokens?.find(token => token.loginid === storedWalletLoginid)
+                : realWalletAccount;
+
+            setAccountInSessionStorage(accountToUse?.loginid);
+            setAccountInSessionStorage(walletAccountToUse?.loginid, true);
         }
 
         const convertedResult = {};

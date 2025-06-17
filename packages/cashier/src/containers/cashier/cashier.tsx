@@ -12,7 +12,14 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS } from '@deriv/shared';
+import {
+    getSelectedRoute,
+    matchRoute,
+    routes,
+    setPerformanceValue,
+    WS,
+    getCahierClickFromPathName,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
@@ -77,19 +84,14 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         p2p_settings,
         rest: { isSubscribed },
     } = useP2PSettings();
-    const is_location_from_dtrader = location?.state?.is_from_dtrader;
-    const [close_route, setCloseRoute] = React.useState(routes.traders_hub);
-
-    React.useEffect(() => {
-        if (is_location_from_dtrader) {
-            setCloseRoute(routes.trade);
-        }
-    }, [is_location_from_dtrader]);
 
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
 
-    const onClickClose = () => history.push(close_route);
+    const onClickClose = () => {
+        const pathname = getCahierClickFromPathName(common.app_routing_history);
+        history.push(pathname === '/dtrader' ? routes.trade : routes.traders_hub);
+    };
     const getMenuOptions = useMemo(() => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {

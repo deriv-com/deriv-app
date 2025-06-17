@@ -6,13 +6,13 @@ const isTmbEnabled = async () => {
         platform = url_params.get('platform');
     }
     // add deriv and impersonation check
-    const triggerImpersonateLogin =
+    const triggerImplicitFlow =
         document.referrer.includes('backoffice.binary.com') ||
         document.referrer.includes('.deriv.dev') ||
         platform === 'derivgo' ||
         sessionStorage.getItem('is_disable_tmb') === 'true';
 
-    if (triggerImpersonateLogin) {
+    if (triggerImplicitFlow) {
         sessionStorage.setItem('is_disable_tmb', 'true');
     }
 
@@ -24,7 +24,7 @@ const isTmbEnabled = async () => {
                 : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
         const response = await fetch(url);
         const result = await response.json();
-        return storedValue !== null ? storedValue === 'true' : !triggerImpersonateLogin && !!result.app;
+        return storedValue !== null ? storedValue === 'true' : !triggerImplicitFlow && !!result.app;
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);

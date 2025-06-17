@@ -77,14 +77,14 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         p2p_settings,
         rest: { isSubscribed },
     } = useP2PSettings();
-    const is_location_from_traders = location?.state?.is_from_traders;
+    const is_location_from_dtrader = location?.state?.is_from_dtrader;
     const [close_route, setCloseRoute] = React.useState(routes.traders_hub);
 
     React.useEffect(() => {
-        if (is_location_from_traders) {
+        if (is_location_from_dtrader) {
             setCloseRoute(routes.trade);
         }
-    }, [is_location_from_traders]);
+    }, [is_location_from_dtrader]);
 
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();

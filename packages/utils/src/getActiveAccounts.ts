@@ -141,11 +141,11 @@ const getActiveAccounts = async () => {
             // Handle account selection based on type (demo or real)
             // For demo accounts, find virtual accounts with USD currency
             const demoAccount = activeSessions?.tokens?.find(
-                item => item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
+                item => item?.cur?.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
             );
 
             const demoWalletAccount = activeSessions?.tokens?.find(
-                item => item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
+                item => item?.cur?.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
             );
 
             if (!demoAccount && (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))) {
@@ -167,14 +167,14 @@ const getActiveAccounts = async () => {
             // For real accounts, find accounts matching the selected currency
             const realAccount = activeSessions?.tokens?.find(
                 item =>
-                    item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                    item?.cur?.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
                     ((item?.loginid.startsWith('CR') && !item?.loginid.startsWith('CRW')) ||
                         (item?.loginid.startsWith('MF') && !item.loginid.startsWith('MFW')))
             );
 
             const realWalletAccount = activeSessions?.tokens?.find(
                 item =>
-                    item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                    item?.cur?.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
                     (item?.loginid.startsWith('CRW') || item?.loginid.startsWith('MFW'))
             );
 

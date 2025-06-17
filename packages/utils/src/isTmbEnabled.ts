@@ -1,11 +1,23 @@
 const isTmbEnabled = async () => {
     // add deriv and impersonation check
-    const isFromBo = document.referrer.includes('https://backoffice.binary.com');
+    const isFromBo = document.referrer.includes('backoffice.binary.com') || document.referrer.includes('.deriv.dev');
     if (isFromBo) {
-        sessionStorage.setItem('is_from_bo', 'true');
+        sessionStorage.setItem('is_disable_tmb', 'true');
     }
 
-    const sessionFromBo = sessionStorage.getItem('is_from_bo') === 'true';
+    // add deriv go check
+    const search = window.location.search;
+    if (search) {
+        const url_params = new URLSearchParams(search);
+        const platform = url_params.get('platform');
+        const isFromDerivGo = platform === 'derivgo';
+
+        if (isFromDerivGo) {
+            sessionStorage.setItem('is_disable_tmb', 'true');
+        }
+    }
+
+    const sessionFromBo = sessionStorage.getItem('is_disable_tmb') === 'true';
     const storedValue = localStorage.getItem('is_tmb_enabled');
     try {
         const url =

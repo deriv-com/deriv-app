@@ -110,6 +110,8 @@ const GuideDescriptionModal = ({
                     increased_drag_area
                     src={video_src}
                     onModalClose={toggleVideoPlayer}
+                    muted={true}
+                    hide_volume_control={true}
                 />
             </PortalModal>
         </React.Fragment>

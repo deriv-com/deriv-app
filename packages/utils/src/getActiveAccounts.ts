@@ -199,12 +199,9 @@ const getActiveAccounts = async () => {
             }
 
             // If we have a stored loginid that exists in active sessions, use that instead of realAccount
-            const accountToUse = storedLoginidExists
-                ? activeSessions?.tokens?.find(token => token.loginid === storedLoginid)
-                : realAccount;
-            const walletAccountToUse = storedWalletLoginidExists
-                ? activeSessions?.tokens?.find(token => token.loginid === storedWalletLoginid)
-                : realWalletAccount;
+            const accountToUse = realAccount ?? activeSessions?.tokens?.find(token => token.loginid === storedLoginid);
+            const walletAccountToUse =
+                realWalletAccount ?? activeSessions?.tokens?.find(token => token.loginid === storedWalletLoginid);
 
             setAccountInSessionStorage(accountToUse?.loginid);
             setAccountInSessionStorage(walletAccountToUse?.loginid, true);

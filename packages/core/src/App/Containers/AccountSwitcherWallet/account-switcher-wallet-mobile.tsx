@@ -55,7 +55,7 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
         } else {
             history.push(routes.wallets_transfer as unknown as Parameters<typeof history.push>[0], {
                 toAccountLoginId: loginid,
-                is_from_traders: window.location.pathname?.includes('dtrader'),
+                is_from_dtrader: window.location.pathname?.includes('dtrader'),
             });
         }
     };

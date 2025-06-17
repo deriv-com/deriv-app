@@ -35,7 +35,7 @@ interface WalletsRouteState {
     '/': { accountsActiveTabIndex: number };
     '/wallet/account-transfer': {
         accountsActiveTabIndex: number;
-        is_from_traders?: boolean;
+        is_from_dtrader?: boolean;
         shouldSelectDefaultWallet: boolean;
         toAccountLoginId: string;
     };

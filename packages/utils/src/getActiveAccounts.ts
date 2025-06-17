@@ -141,11 +141,11 @@ const getActiveAccounts = async () => {
             // Handle account selection based on type (demo or real)
             // For demo accounts, find virtual accounts with USD currency
             const demoAccount = activeSessions?.tokens?.find(
-                item => item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
+                item => item?.cur?.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRTC')
             );
 
             const demoWalletAccount = activeSessions?.tokens?.find(
-                item => item?.cur.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
+                item => item?.cur?.toLocaleUpperCase() === 'USD' && item.loginid.startsWith('VRW')
             );
 
             if (!demoAccount && (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))) {
@@ -167,32 +167,44 @@ const getActiveAccounts = async () => {
             // For real accounts, find accounts matching the selected currency
             const realAccount = activeSessions?.tokens?.find(
                 item =>
-                    item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                    item?.cur?.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
                     ((item?.loginid.startsWith('CR') && !item?.loginid.startsWith('CRW')) ||
                         (item?.loginid.startsWith('MF') && !item.loginid.startsWith('MFW')))
             );
 
             const realWalletAccount = activeSessions?.tokens?.find(
                 item =>
-                    item?.cur.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
+                    item?.cur?.toLocaleUpperCase() === account?.toLocaleUpperCase() &&
                     (item?.loginid.startsWith('CRW') || item?.loginid.startsWith('MFW'))
             );
 
-            if (!realAccount && (sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid'))) {
+            // Check if stored loginid exists in active sessions before removing
+            const storedLoginid = sessionStorage.getItem('active_loginid') || localStorage.getItem('active_loginid');
+            const storedWalletLoginid =
+                sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid');
+
+            const storedLoginidExists =
+                storedLoginid && activeSessions?.tokens?.some(token => token.loginid === storedLoginid);
+            const storedWalletLoginidExists =
+                storedWalletLoginid && activeSessions?.tokens?.some(token => token.loginid === storedWalletLoginid);
+
+            if (!realAccount && storedLoginid && !storedLoginidExists) {
                 sessionStorage.removeItem('active_loginid');
                 localStorage.removeItem('active_loginid');
             }
 
-            if (
-                !realWalletAccount &&
-                (sessionStorage.getItem('active_wallet_loginid') || localStorage.getItem('active_wallet_loginid'))
-            ) {
+            if (!realWalletAccount && storedWalletLoginid && !storedWalletLoginidExists) {
                 sessionStorage.removeItem('active_wallet_loginid');
                 localStorage.removeItem('active_wallet_loginid');
             }
 
-            setAccountInSessionStorage(realAccount?.loginid);
-            setAccountInSessionStorage(realWalletAccount?.loginid, true);
+            // If we have a stored loginid that exists in active sessions, use that instead of realAccount
+            const accountToUse = realAccount ?? activeSessions?.tokens?.find(token => token.loginid === storedLoginid);
+            const walletAccountToUse =
+                realWalletAccount ?? activeSessions?.tokens?.find(token => token.loginid === storedWalletLoginid);
+
+            setAccountInSessionStorage(accountToUse?.loginid);
+            setAccountInSessionStorage(walletAccountToUse?.loginid, true);
         }
 
         const convertedResult = {};

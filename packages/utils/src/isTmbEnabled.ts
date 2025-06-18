@@ -1,4 +1,21 @@
 const isTmbEnabled = async () => {
+    const search = window.location.search;
+    let platform;
+    if (search) {
+        const url_params = new URLSearchParams(search);
+        platform = url_params.get('platform');
+    }
+    // add deriv and impersonation check
+    const triggerImplicitFlow =
+        document.referrer.includes('backoffice.binary.com') ||
+        document.referrer.includes('.deriv.dev') ||
+        platform === 'derivgo' ||
+        sessionStorage.getItem('is_disable_tmb') === 'true';
+
+    if (triggerImplicitFlow) {
+        sessionStorage.setItem('is_disable_tmb', 'true');
+    }
+
     const storedValue = localStorage.getItem('is_tmb_enabled');
     try {
         const url =
@@ -7,7 +24,7 @@ const isTmbEnabled = async () => {
                 : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
         const response = await fetch(url);
         const result = await response.json();
-        return storedValue !== null ? storedValue === 'true' : !!result.app;
+        return storedValue !== null ? storedValue === 'true' : !triggerImplicitFlow && !!result.app;
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);

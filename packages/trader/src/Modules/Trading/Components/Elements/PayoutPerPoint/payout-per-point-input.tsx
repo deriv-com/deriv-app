@@ -43,7 +43,7 @@ const PayoutPerPointInput = ({
             />
             <Fieldset className='actions-wrapper'>
                 <Text size='xxxs' line_height='l' color='default' align='center' as='p'>
-                    <Localize i18n_default_text='Distance to current spot' />
+                    <Localize i18n_default_text='Barrier' />
                 </Text>
                 <Popover
                     alignment='left'

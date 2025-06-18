@@ -84,9 +84,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const [isCountryCodeDropdownEnabled, isCountryCodeDropdownGBLoaded] = useGrowthbookGetFeatureValue({
         featureFlag: 'enable_country_code_dropdown',
     });
-    const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
-        featureFlag: 'duplicate-login',
-    });
 
     const { data } = useRemoteConfig(true);
     const { tracking_datadog } = data;
@@ -178,7 +175,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            {!(isDuplicateLoginEnabled && has_access_denied_error) && <Footer />}
+            {!has_access_denied_error && <Footer />}
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

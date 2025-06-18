@@ -1,6 +1,10 @@
 name: Run Smoke Tests - Manually
 run-name: Manual run of tests
 
+permissions:
+  contents: read
+  actions: write
+
 on:
   workflow_dispatch:
 
@@ -32,4 +36,3 @@ jobs:
             inputs: workflowInputs
           });
           console.log('Workflow dispatched successfully:', response);
-

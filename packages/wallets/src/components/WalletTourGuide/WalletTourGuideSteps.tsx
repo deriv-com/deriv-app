@@ -89,7 +89,7 @@ export const desktopStepTourGuide = (allWalletsAreAdded: boolean, isRtl: boolean
         ),
         placement: 'bottom',
         styles: { spotlight: { borderRadius: '0 0 0.8rem 0.8rem' } },
-        target: '.traders-hub-header__tradershub--onboarding--logo',
+        target: '.traders-hub-onboarding__toggle',
         title: (
             <Text color='red' size='sm' weight='bold'>
                 <Localize i18n_default_text="Trader's Hub tour" />
@@ -180,7 +180,7 @@ export const mobileStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
         disableScrolling: !!allWalletsAreAdded,
         placement: 'bottom',
         styles: { spotlight: { borderRadius: '0 0 0.8rem 0.8rem' } },
-        target: '.traders-hub-header__tradershub--onboarding--logo',
+        target: '.traders-hub-onboarding__toggle',
         title: (
             <Text color='red' size='sm' weight='bold'>
                 <Localize i18n_default_text="Trader's Hub tour" />

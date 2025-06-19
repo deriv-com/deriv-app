@@ -99,8 +99,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
-    const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
     React.useEffect(() => {
         if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
@@ -392,7 +390,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <MobileDrawer.Item>
                                     <MenuLink
                                         link_to={handleTradershubRedirect()}
-                                        icon={TradersHubIcon}
+                                        icon={'IcAppstoreTradersHubHome'}
                                         text={localize("Trader's Hub")}
                                         onClickLink={toggleDrawer}
                                         is_active={route === routes.traders_hub}

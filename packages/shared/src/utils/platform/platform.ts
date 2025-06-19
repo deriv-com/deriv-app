@@ -90,6 +90,7 @@ export const getActivePlatform = (routing_history: TRoutingHistory) => {
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
     if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
     if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
+    if (window.location.pathname === '/') return '';
     return platform_name.DTrader;
 };
 

@@ -2,12 +2,16 @@ import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WalletCashier from '../WalletCashier';
+import { useHistory } from 'react-router-dom';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
 }));
-
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}));
 jest.mock('../../../components', () => ({
     ...jest.requireActual('../../../components'),
     WalletLoader: () => <div>Loading...</div>,
@@ -26,6 +30,12 @@ jest.mock('../components/', () => ({
 }));
 
 describe('<WalletCashier />', () => {
+    beforeEach(() => {
+        // Mock useHistory implementation
+        (useHistory as jest.Mock).mockReturnValue({
+            location: { state: {} },
+        });
+    });
     it('should show the loader until the response from API has been received', () => {
         // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         (useActiveWalletAccount as jest.MockedFunction<typeof useActiveWalletAccount>).mockReturnValue({

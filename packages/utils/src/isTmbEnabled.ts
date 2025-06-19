@@ -8,7 +8,6 @@ const isTmbEnabled = async () => {
     // add deriv and impersonation check
     const triggerImplicitFlow =
         document.referrer.includes('backoffice.binary.com') ||
-        document.referrer.includes('.deriv.dev') ||
         platform === 'derivgo' ||
         sessionStorage.getItem('is_disable_tmb') === 'true';
 

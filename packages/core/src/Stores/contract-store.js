@@ -27,7 +27,6 @@ import {
     BARRIER_COLORS,
     getContractStatus,
     setLimitOrderBarriers,
-    LocalStore,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
@@ -70,7 +69,6 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
-            updatePositionStatus: action.bound,
             getContractsArray: action.bound,
         });
 
@@ -422,21 +420,6 @@ export default class ContractStore extends BaseStore {
                 // Update portfolio store
                 this.root_store.portfolio.populateContractUpdate(response, this.contract_id);
             });
-    }
-
-    updatePositionStatus(contract_id, is_closed) {
-        if (!contract_id) return;
-
-        // Store position state in sessionStorage
-        const position_states = JSON.parse(LocalStore.get('position_states') || '{}');
-        position_states[contract_id] = { is_closed, timestamp: Date.now() };
-        LocalStore.set('position_states', JSON.stringify(position_states));
-
-        // If position is closed, reset barrier color to blue
-        if (is_closed && isAccumulatorContract(this.contract_info?.contract_type)) {
-            // Force reset of contract data in contract-trade-store
-            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
-        }
     }
 
     getContractsArray() {

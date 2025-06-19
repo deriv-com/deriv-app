@@ -11,6 +11,7 @@ import ToggleMenuDrawerAccountsOS from 'App/Components/Layout/Header/toggle-menu
 import platform_config from 'App/Constants/platform-config';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
+import CurrencySelectionModal from 'App/Containers/CurrencySelectionModal';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import DerivShortLogo from './deriv-short-logo';
 import HeaderAccountActions from './header-account-actions';
@@ -34,7 +35,7 @@ const HeaderLegacy = observer(() => {
     const { header_extension, is_app_disabled, is_route_modal_on, toggleReadyToDepositModal, is_real_acc_signup_on } =
         ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
-    const { setTogglePlatformType } = traders_hub;
+    const { setTogglePlatformType, modal_data } = traders_hub;
 
     const { isDesktop } = useDevice();
 
@@ -159,6 +160,7 @@ const HeaderLegacy = observer(() => {
             </div>
             {is_real_acc_signup_on && <RealAccountSignup />}
             <SetAccountCurrencyModal />
+            <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>
     );

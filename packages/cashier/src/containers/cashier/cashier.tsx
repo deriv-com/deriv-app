@@ -12,7 +12,15 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS, getActivePlatform } from '@deriv/shared';
+import {
+    getSelectedRoute,
+    matchRoute,
+    routes,
+    setPerformanceValue,
+    WS,
+    getActivePlatform,
+    platform_name,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
@@ -82,7 +90,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     const onClickClose = () => {
         const pathname = getActivePlatform(common.app_routing_history);
-        history.push(pathname === '/dtrader' ? routes.trade : routes.traders_hub);
+        history.push(pathname === platform_name.DTrader ? routes.trade : routes.traders_hub);
     };
     const getMenuOptions = useMemo(() => {
         const options: TCashierOptions[] = [];

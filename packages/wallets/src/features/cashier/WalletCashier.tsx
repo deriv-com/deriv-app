@@ -8,12 +8,6 @@ import { useHistory } from 'react-router-dom';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();
-    const { location } = useHistory();
-
-    // Using type assertion to handle the property that might not be in all route states
-    const isLocationFromDTrader = location?.state
-        ? (location.state as Record<string, unknown>).is_from_dtrader
-        : undefined;
 
     const [onCashierScroll, setOnCashierScroll] = useState<React.UIEventHandler<HTMLDivElement> | null>(null);
 
@@ -32,7 +26,7 @@ const WalletCashier = () => {
 
     return (
         <div className='wallets-cashier'>
-            <WalletCashierHeader hideWalletDetails={isContentScrolled} isDtrader={Boolean(isLocationFromDTrader)} />
+            <WalletCashierHeader hideWalletDetails={isContentScrolled} />
             <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
                 <div
                     className='wallets-cashier-content'

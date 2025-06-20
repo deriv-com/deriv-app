@@ -14,13 +14,21 @@ type TContractCardsSections = {
 };
 
 const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions, currency }: TContractCardsSections) => {
-    const formatTime = (time: number) => toMoment(time).format('DD MMM YYYY');
+    const formatTime = (time: number | string) => {
+        if (typeof time === 'string') {
+            const parts = time.split(' ');
+            return `${parts[0]} ${parts[1]} ${parts[2]}`;
+        }
+        return toMoment(time).format('DD MMM YYYY');
+    };
 
     const dates = positions?.map(element => {
-        const purchaseTime = element.contract_info.purchase_time_unix;
-        return purchaseTime && formatTime(purchaseTime);
+        // Use sell_time for closed contracts
+        if (element.contract_info.sell_time) {
+            return formatTime(element.contract_info.sell_time);
+        }
+        return element.contract_info.purchase_time_unix && formatTime(element.contract_info.purchase_time_unix);
     });
-
     const uniqueDates = [...new Set(dates)];
 
     if (!positions?.length) return null;
@@ -39,8 +47,14 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions, curr
                         </Text>
                         <ContractCardList
                             positions={positions.filter(position => {
-                                const purchaseTime = position.contract_info.purchase_time_unix;
-                                return purchaseTime && formatTime(purchaseTime) === date;
+                                // Use sell_time for closed contracts
+                                if (position.contract_info.sell_time) {
+                                    return formatTime(position.contract_info.sell_time) === date;
+                                }
+                                return (
+                                    position.contract_info.purchase_time_unix &&
+                                    formatTime(position.contract_info.purchase_time_unix) === date
+                                );
                             })}
                             currency={currency}
                         />

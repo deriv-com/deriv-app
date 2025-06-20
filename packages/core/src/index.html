@@ -117,19 +117,35 @@
         <script type="text/javascript">
             (function (l) {
                 if (l.search) {
-                    var q = {};
+                    // Create object without prototype to prevent pollution
+                    var q = Object.create(null);
+
                     l.search
                         .slice(1)
                         .split('&')
                         .forEach(function (v) {
                             var a = v.split('=');
-                            q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+                            var key = a[0];
+
+                            // Security checks
+                            if (!key || key.length === 0) return;
+                            if (key.indexOf('__proto__') !== -1) return;
+                            if (key.indexOf('constructor') !== -1) return;
+                            if (key.indexOf('prototype') !== -1) return;
+
+                            var value = a.slice(1).join('=').replace(/~and~/g, '&');
+                            q[key] = value;
                         });
-                    if (q.p !== undefined) {
+
+                    // Use hasOwnProperty equivalent for prototype-less object
+                    if (Object.prototype.hasOwnProperty.call(q, 'p')) {
                         window.history.replaceState(
                             null,
                             null,
-                            l.pathname.slice(0, -1) + (q.p || '') + (q.q ? '?' + q.q : '') + l.hash
+                            l.pathname.slice(0, -1) +
+                                (q.p || '') +
+                                (Object.prototype.hasOwnProperty.call(q, 'q') ? '?' + q.q : '') +
+                                l.hash
                         );
                     }
                 }

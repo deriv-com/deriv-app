@@ -1,4 +1,8 @@
 name: Deriv App PR Test Workflow
+
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:

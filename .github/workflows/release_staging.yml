@@ -1,4 +1,8 @@
 name: Deriv App Staging Workflow
+
+permissions:
+  contents: write
+
 on:
   push:
     branches:

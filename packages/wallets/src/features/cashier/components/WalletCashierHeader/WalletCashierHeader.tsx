@@ -78,6 +78,8 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    // Using type assertion to handle the property that might not be in all route states
+    const isFromDTrader = location?.state ? (location.state as Record<string, unknown>).is_from_dtrader : undefined;
     const accountsActiveTabIndexRef = useRef<number>(location.state?.accountsActiveTabIndex ?? 0);
 
     const tabs = activeWallet?.is_virtual ? getVirtualAccountTabs() : getRealAccountTabs();
@@ -153,9 +155,11 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             })}
                             data-testid='dt_close_btn'
                             iconSize='xs'
-                            onClick={() =>
-                                history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current })
-                            }
+                            onClick={() => {
+                                isFromDTrader
+                                    ? history.push('/dtrader')
+                                    : history.push('/', { accountsActiveTabIndex: accountsActiveTabIndexRef?.current });
+                            }}
                         />
                     </div>
                 </section>

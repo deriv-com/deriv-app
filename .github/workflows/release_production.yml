@@ -58,7 +58,7 @@ jobs:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@26f96dfa697d77e81fd5907df203aa23a56210a8
+      uses: actions/upload-artifact@v4
       with:
         name: build
         path: packages/core/dist
@@ -99,7 +99,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
       - name: Download Build Artifact
-        uses: actions/download-artifact@6b208ae046db98c579e8a3aa621ab581ff575935
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: build
           path: packages/core/dist
@@ -113,7 +113,7 @@ jobs:
           ENVIRONMENT: Production
           VERCEL_SCOPE: deriv
           ALIAS_DOMAIN_URL: 'app-dr.binary.sx'
-        
+
       - name: Send DR Slack Notification
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
         if: ${{ steps.vercel-upload.outcome != 'success' }}

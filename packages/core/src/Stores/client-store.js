@@ -1518,7 +1518,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.notifications.removeNotifications(true);
         this.root_store.notifications.removeTradeNotifications();
         this.root_store.notifications.removeAllNotificationMessages(true);
-        if (!this.is_virtual && /VRTC|VRW/.test(loginid)) {
+        if (!this.is_virtual && /^(VRTC|VRW)/.test(loginid)) {
             this.setPrevRealAccountLoginid(this.loginid);
         }
         this.setSwitched(loginid);
@@ -2010,7 +2010,7 @@ export default class ClientStore extends BaseStore {
         // if real to virtual --> switch to blue
         // if virtual to real --> switch to green
         // else keep the existing connection
-        const should_switch_socket_connection = this.is_virtual || /VRTC|VRW/.test(from_login_id);
+        const should_switch_socket_connection = this.is_virtual || /^(VRTC|VRW)/.test(from_login_id);
 
         if (should_switch_socket_connection) {
             BinarySocket.closeAndOpenNewConnection();

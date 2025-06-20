@@ -193,3 +193,23 @@ export const isDtraderV2DesktopEnabled = (is_desktop: boolean) => {
         (window.location.pathname.startsWith(routes.trade) || window.location.pathname.startsWith('/contract/'))
     );
 };
+
+/**
+ * Returns the appropriate pathname from the routing history based on specific conditions.
+ * If the first path is '/cashier/deposit' and the second path is '/cashier',
+ * it returns the third path in the history. Otherwise, it returns the first path.
+ *
+ * @param {TRoutingHistory} routing_history - The routing history array
+ * @returns {string} The appropriate pathname
+ */
+export const getCahierClickFromPathName = (routing_history: TRoutingHistory) => {
+    if (
+        routing_history?.length >= 3 &&
+        routing_history[0]?.pathname.includes('cashier') &&
+        routing_history[1]?.pathname.includes('cashier')
+    ) {
+        return routing_history?.[2]?.pathname || '';
+    }
+
+    return routing_history?.[1]?.pathname || '';
+};

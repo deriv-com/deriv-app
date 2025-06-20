@@ -2462,9 +2462,9 @@ export default class ClientStore extends BaseStore {
     // Helper method to validate action parameter and prevent prototype pollution
     _isValidAction(action) {
         if (!action || typeof action !== 'string') return false;
-        if (action.indexOf('__proto__') !== -1) return false;
-        if (action.indexOf('constructor') !== -1) return false;
-        if (action.indexOf('prototype') !== -1) return false;
+        if (action.includes('__proto__')) return false;
+        if (action.includes('constructor')) return false;
+        if (action.includes('prototype')) return false;
         return true;
     }
 

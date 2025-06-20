@@ -129,9 +129,9 @@
 
                             // Security checks
                             if (!key || key.length === 0) return;
-                            if (key.indexOf('__proto__') !== -1) return;
-                            if (key.indexOf('constructor') !== -1) return;
-                            if (key.indexOf('prototype') !== -1) return;
+                            if (key.includes('__proto__')) return;
+                            if (key.includes('constructor')) return;
+                            if (key.includes('prototype')) return;
 
                             var value = a.slice(1).join('=').replace(/~and~/g, '&');
                             q[key] = value;

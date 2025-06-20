@@ -24,8 +24,6 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
-            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute: TDefaultSubroute = route.routes?.find(r => r.default);
             const pathname = removeBranchName(location.pathname);

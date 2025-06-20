@@ -2459,7 +2459,18 @@ export default class ClientStore extends BaseStore {
         return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;
     }
 
+    // Helper method to validate action parameter and prevent prototype pollution
+    _isValidAction(action) {
+        if (!action || typeof action !== 'string') return false;
+        if (action.indexOf('__proto__') !== -1) return false;
+        if (action.indexOf('constructor') !== -1) return false;
+        if (action.indexOf('prototype') !== -1) return false;
+        return true;
+    }
+
     setVerificationCode(code, action) {
+        if (!this._isValidAction(action)) return;
+
         this.verification_code[action] = code;
         if (action !== 'phone_number_verification') {
             if (code) {
@@ -2475,6 +2486,8 @@ export default class ClientStore extends BaseStore {
     }
 
     setNewEmail(email, action) {
+        if (!this._isValidAction(action)) return;
+
         this.new_email[action] = email;
         if (email) {
             LocalStore.set(`new_email.${action}`, email);

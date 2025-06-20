@@ -4,7 +4,6 @@ import { WalletLoader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
 import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
-import { useHistory } from 'react-router-dom';
 
 const WalletCashier = () => {
     const { isLoading } = useActiveWalletAccount();

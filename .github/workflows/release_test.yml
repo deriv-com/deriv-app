@@ -8,6 +8,9 @@ jobs:
   build_test_and_publish:
     name: Build, Test and Publish to Cloudflare Test
     runs-on: Runner_8cores_Deriv-app
+    permissions:
+      contents: read
+      actions: write
     environment: Staging
     steps:
     - name: Checkout
@@ -40,6 +43,9 @@ jobs:
       run: npm test
     - name: Publish to Cloudflare Pages Test
       uses: "./.github/actions/publish_to_pages_test"
+      permissions:
+      contents: read
+      actions: read
       with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

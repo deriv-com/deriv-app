@@ -75,6 +75,17 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
         }
     }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
 
+    // Cleanup timeout on unmount or route change
+    React.useEffect(() => {
+        return () => {
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+                setTransitionExit(false);
+                setIsOpen(false);
+            }
+        };
+    }, [route]);
+
     React.useEffect(() => {
         const processRoutes = () => {
             const routes_config = getRoutesConfig();

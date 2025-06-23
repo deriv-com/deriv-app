@@ -238,7 +238,7 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poi_verified);
         } else if (
             !['none', 'pending', 'expired'].includes(identity.status) ||
-            (status.includes('allow_poi_resubmission') && identity.status !== "pending")
+            (status.includes('allow_poi_resubmission') && identity.status !== 'pending')
         ) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
@@ -256,7 +256,7 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
         } else if (
             !['none', 'pending', 'expired'].includes(document.status) ||
-            (status.includes('allow_poa_resubmission') && document.status !== "pending")
+            (status.includes('allow_poa_resubmission') && document.status !== 'pending')
         ) {
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }

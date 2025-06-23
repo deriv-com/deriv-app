@@ -238,7 +238,7 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poi_verified);
         } else if (
             !['none', 'pending', 'expired'].includes(identity.status) ||
-            status.includes('allow_poi_resubmission')
+            (status.includes('allow_poi_resubmission') && identity.status !== "pending")
         ) {
             this.addNotificationMessage(this.client_notifications.poi_failed);
         }
@@ -258,7 +258,6 @@ export default class NotificationStore extends BaseStore {
             !['none', 'pending', 'expired'].includes(document.status) ||
             (status.includes('allow_poa_resubmission') && document.status !== "pending")
         ) {
-            console.log("===>noti", {status, dd: document.status})
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }

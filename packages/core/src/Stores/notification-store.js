@@ -256,8 +256,9 @@ export default class NotificationStore extends BaseStore {
             this.addNotificationMessage(this.client_notifications.poa_rejected_for_mt5);
         } else if (
             !['none', 'pending', 'expired'].includes(document.status) ||
-            status.includes('allow_poa_resubmission')
+            (status.includes('allow_poa_resubmission') && document.status !== "pending")
         ) {
+            console.log("===>noti", {status, dd: document.status})
             this.addNotificationMessage(this.client_notifications.poa_failed);
         }
     }

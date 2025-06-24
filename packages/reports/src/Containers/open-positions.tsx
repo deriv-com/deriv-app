@@ -1,27 +1,27 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv/components';
-import { useDevice } from '@deriv-com/ui';
+import { DataList, Dropdown, SelectNative, usePrevious } from '@deriv/components';
 import {
+    CONTRACT_STORAGE_VALUES,
+    getGrowthRatePercentage,
+    getTotalProfit,
     isAccumulatorContract,
     isMultiplierContract,
-    getTotalProfit,
-    getGrowthRatePercentage,
     toMoment,
-    CONTRACT_STORAGE_VALUES,
 } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
 import {
-    getOpenPositionsColumnsTemplate,
     getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
+    getOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
-import { observer, useStore } from '@deriv/stores';
 import { TColIndex } from 'Types';
-import { OpenPositionsTable } from './open-positions-table';
-import { MobileRowRenderer } from './mobile-row-renderer';
 import { getLatestContractType } from '../Constants/contract-types';
+import { MobileRowRenderer } from './mobile-row-renderer';
+import { OpenPositionsTable } from './open-positions-table';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
@@ -242,6 +242,15 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.value || 'options'
     );
+
+    // Custom setter that updates both state and localStorage
+    const updateContractTypeValue = React.useCallback((value: string, is_user_selection = false) => {
+        setContractTypeValue(value);
+        // Only save to localStorage if it's a user selection
+        if (is_user_selection) {
+            localStorage.setItem('contract_type_value', value);
+        }
+    }, []);
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
         { text: localize('All growth rates'), value: 'all growth rates' },
@@ -292,7 +301,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     React.useEffect(() => {
         const contract_type = getLatestContractType(active_positions, contract_type_value);
-        setContractTypeValue(contract_type);
+        updateContractTypeValue(contract_type, false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
@@ -415,7 +424,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={e => updateContractTypeValue(e.target.value, true)}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -444,7 +453,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             value={contract_type_value}
                             should_show_empty_option={false}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                setContractTypeValue(e.target.value)
+                                updateContractTypeValue(e.target.value, true)
                             }
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (

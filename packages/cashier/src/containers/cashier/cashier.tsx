@@ -12,7 +12,7 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS } from '@deriv/shared';
+import { getSelectedRoute, matchRoute, routes, setPerformanceValue, WS, getActivePlatform } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
@@ -60,6 +60,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = general_store;
     // We should use this computed property instead of the hook, to prevent the hook's data from becoming stale after a WebSocket reconnection during the first login.
     const { is_payment_agent_visible } = payment_agent;
+
+    const active_platform = getActivePlatform(common.app_routing_history);
+    const isDtraderPlatform = active_platform === 'Deriv Trader';
     const {
         data: is_payment_agent_transfer_visible,
         isLoading: is_payment_agent_transfer_checking,
@@ -80,7 +83,13 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
 
-    const onClickClose = () => history.push(routes.traders_hub);
+    const onClickClose = () => {
+        if (isDtraderPlatform) {
+            history.push(routes.trade);
+        } else {
+            history.push(routes.traders_hub);
+        }
+    };
     const getMenuOptions = useMemo(() => {
         const options: TCashierOptions[] = [];
         routes_config.forEach(route => {

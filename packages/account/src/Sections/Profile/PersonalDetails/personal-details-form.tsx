@@ -38,7 +38,6 @@ import FormSelectField from '../../../Components/forms/form-select-field';
 import LeaveConfirm from '../../../Components/leave-confirm';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
-import EmploymentTaxDetailsContainer from '../../../Containers/employment-tax-details-container';
 import { isFieldImmutable } from '../../../Helpers/utils';
 import { useScrollElementToTop } from '../../../hooks';
 import { PersonalDetailsValueTypes } from '../../../Types';
@@ -149,7 +148,6 @@ const PersonalDetailsForm = observer(() => {
     });
 
     const notification_timeout = useRef<NodeJS.Timeout>();
-    const scroll_div_ref = useRef(null);
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = useState<{
         is_timeout_started: boolean;
@@ -304,20 +302,6 @@ const PersonalDetailsForm = observer(() => {
         return !!account_settings?.immutable_fields?.includes(name);
     };
 
-    const employment_tax_editable_fields = useMemo(() => {
-        const fields_to_disable = ['employment_status', 'tax_identification_number'].filter(field =>
-            isFieldImmutable(field, account_settings?.immutable_fields)
-        );
-        /*
-            [TODO]: Will be removed once BE enables tax_residence in immutable_fields
-            If Tax_residence value is present in response, then it must not be editable
-        */
-        if (!account_settings?.tax_residence) {
-            fields_to_disable.push('tax_residence');
-        }
-        return fields_to_disable;
-    }, [account_settings?.immutable_fields, account_settings?.tax_residence]);
-
     const { api_error, show_form } = rest_state;
     const loadTimer = useRef<NodeJS.Timeout>();
 
@@ -415,20 +399,6 @@ const PersonalDetailsForm = observer(() => {
         checkForInitialCarriersSupported(),
         isCountryCodeDropdownEnabled
     );
-
-    const getAccountOpeningReason = () => {
-        const result = account_opening_reason_new_list_array.find(
-            item => item.value === initialValues?.account_opening_reason
-        );
-
-        if (result) return account_opening_reason_new_list_array;
-
-        const item = account_opening_reason_list_array.find(
-            item => item.value === initialValues?.account_opening_reason
-        );
-
-        return item ? [item, ...account_opening_reason_new_list_array] : account_opening_reason_new_list_array;
-    };
 
     return (
         <Formik

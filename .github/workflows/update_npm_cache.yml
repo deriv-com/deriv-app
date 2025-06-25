@@ -9,6 +9,9 @@ jobs:
   build_cache:
     name: Build cache
     runs-on: Runner_16cores_Deriv-app
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11

@@ -243,14 +243,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         contract_types.find(type => type.is_default)?.value || 'options'
     );
 
-    // Custom setter that updates both state and localStorage
-    const updateContractTypeValue = React.useCallback((value: string, is_user_selection = false) => {
-        setContractTypeValue(value);
-        // Only save to localStorage if it's a user selection
-        if (is_user_selection) {
-            localStorage.setItem('contract_type_value', value);
-        }
-    }, []);
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
         { text: localize('All growth rates'), value: 'all growth rates' },
@@ -300,8 +292,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        const contract_type = getLatestContractType(active_positions, contract_type_value);
-        updateContractTypeValue(contract_type, false);
+        const contract_type = getLatestContractType(active_positions);
+        setContractTypeValue(contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
@@ -424,7 +416,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => updateContractTypeValue(e.target.value, true)}
+                                onChange={e => setContractTypeValue(e.target.value)}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -453,7 +445,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             value={contract_type_value}
                             should_show_empty_option={false}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                updateContractTypeValue(e.target.value, true)
+                                setContractTypeValue(e.target.value)
                             }
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (

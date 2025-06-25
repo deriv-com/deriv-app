@@ -38,11 +38,9 @@ import FormSelectField from '../../../Components/forms/form-select-field';
 import LeaveConfirm from '../../../Components/leave-confirm';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
-import { isFieldImmutable } from '../../../Helpers/utils';
 import { useScrollElementToTop } from '../../../hooks';
 import { PersonalDetailsValueTypes } from '../../../Types';
 
-import { account_opening_reason_list, account_opening_reason_new_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import { VerifyButton } from './verify-button';
@@ -97,7 +95,6 @@ const PersonalDetailsForm = observer(() => {
         fetchAccountSettings,
         residence,
         is_svg,
-        is_mf_account,
     } = client;
 
     const { field_ref_to_focus, setFieldRefToFocus } = ui;
@@ -115,9 +112,6 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
-    const account_opening_reason_list_array = account_opening_reason_list();
-
-    const account_opening_reason_new_list_array = account_opening_reason_new_list();
     useEffect(() => {
         if (isDynamicFAEnabled) {
             WS.authorized.storage

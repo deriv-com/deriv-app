@@ -34,7 +34,6 @@ import FormBody from '../../../Components/form-body';
 import FormFooter from '../../../Components/form-footer';
 import FormSubHeader from '../../../Components/form-sub-header';
 import { DateOfBirthField } from '../../../Components/forms/form-fields';
-import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
 import FormSelectField from '../../../Components/forms/form-select-field';
 import LeaveConfirm from '../../../Components/leave-confirm';
 import LoadErrorMessage from '../../../Components/load-error-message';
@@ -699,31 +698,10 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                             )}
                                         </fieldset>
-                                        <AccountOpeningReasonField
-                                            account_opening_reason_list={getAccountOpeningReason()}
-                                            setFieldValue={setFieldValue}
-                                            disabled={isFieldDisabled('account_opening_reason')}
-                                            required
-                                            fieldFocused={
-                                                !account_settings.account_opening_reason &&
-                                                field_ref_to_focus === 'account-opening-reason'
-                                            }
-                                        />
                                     </Fragment>
                                 )}
                                 {!is_virtual && (
                                     <div className='employment-tin-section'>
-                                        <FormSubHeader title={localize('Employment and tax information')} />
-                                        <EmploymentTaxDetailsContainer
-                                            editable_fields={employment_tax_editable_fields}
-                                            parent_ref={scroll_div_ref}
-                                            handleChange={mutate}
-                                            tin_validation_config={tin_validation_config}
-                                            should_display_long_message={is_mf_account}
-                                            should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
-                                            version={should_update_fa ? 'v2' : versionRef.current}
-                                            is_feature_flag_disabled={isDynamicFALoaded && !isDynamicFAEnabled}
-                                        />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                         <FormSubHeader title={localize('Address')} />
                                         <div className='account-address__details-section'>

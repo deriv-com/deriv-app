@@ -75,9 +75,10 @@
     }
     &__balance {
         @include typeface(--title-center-bold-green, default);
-        line-height: 2.4rem;
+        line-height: 2.2rem;
         pointer-events: none;
         margin-right: 0.8rem;
+        font-size: 1.4rem;
     }
     &__account-type-and-balance {
         display: flex;
@@ -91,12 +92,15 @@
         transform: rotate(0);
         transform-origin: 50% 45%;
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        font-size: 1.2rem;
+        color: var(--text-less-prominent);
         @extend %inline-icon;
 
         &--invert {
             transform: rotate(180deg);
         }
     }
+
     @include desktop-screen {
         &:hover:not(.show):not(&--is-disabled) {
             background: var(--state-hover);
@@ -159,6 +163,31 @@
             color: var(--text-general);
             margin-right: 0;
         }
+    }
+
+    &__account-type-header {
+        display: flex;
+        align-items: center;
+    }
+
+    &__account-type {
+        font-weight: 400;
+        color: var(--text-general);
+        margin-right: 0.4rem;
+        margin-bottom: 0;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__balance-section {
+        display: flex;
+        flex-direction: column;
+        line-height: 2.2rem;
     }
 }
 

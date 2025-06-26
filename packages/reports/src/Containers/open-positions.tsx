@@ -191,7 +191,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const generateContractTypes = () => {
         const queryParams = new URLSearchParams(location.search);
         const contract_type_bot = queryParams.get('contract_type_bots');
-        const default_contract_type = getLatestContractType(active_positions);
+        const default_contract_type = getLatestContractType(active_positions, contract_type_value);
 
         if (!contract_type_bot) {
             return [
@@ -241,7 +241,9 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     // Get the initial contract type value directly to avoid flicker
     const initialContractType = React.useMemo(() => {
-        return getLatestContractType(active_positions);
+        // Get stored value from localStorage or use undefined for initial load
+        const stored_contract_type = localStorage.getItem('contract_type_value') ?? undefined;
+        return getLatestContractType(active_positions, stored_contract_type);
     }, []);
 
     const [contract_type_value, setContractTypeValue] = React.useState(initialContractType);
@@ -304,7 +306,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     React.useEffect(() => {
         // Only update if positions have changed to avoid unnecessary re-renders
         if (previous_active_positions !== active_positions) {
-            const contract_type = getLatestContractType(active_positions);
+            const contract_type = getLatestContractType(active_positions, contract_type_value);
             updateContractTypeValue(contract_type);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

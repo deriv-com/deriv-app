@@ -366,11 +366,7 @@ const PersonalDetailsForm = observer(() => {
     };
 
     const initialValues = getPersonalDetailsInitialValues(
-        {
-            ...account_settings,
-            employment_status:
-                should_update_fa && versionRef.current === 'v1' ? undefined : account_settings.employment_status,
-        },
+        account_settings,
         residence_list,
         states_list,
         is_virtual,

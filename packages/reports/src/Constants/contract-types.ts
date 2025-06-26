@@ -19,7 +19,13 @@ const getContractCategory = (contract_type: string) => {
 };
 
 export const getLatestContractType = (positions: TPortfolioStore['active_positions']): string => {
-    // Find the latest contract and its type.
+    // If no positions, fall back to stored or default.
+    if (positions.length === 0) {
+        const stored_value = localStorage.getItem('contract_type_value');
+        return isValidContractType(stored_value) ? stored_value : CONTRACT_STORAGE_VALUES.OPTIONS;
+    }
+
+    // First priority: find the latest contract and its type.
     const latest_contract = positions.reduce((latest, current) => {
         const current_date_start = current.contract_info?.date_start || 0;
         const latest_date_start = latest.contract_info?.date_start || 0;

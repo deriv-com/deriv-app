@@ -239,9 +239,19 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const contract_types = React.useMemo(() => generateContractTypes(), [previous_active_positions]);
 
-    const [contract_type_value, setContractTypeValue] = React.useState(
-        contract_types.find(type => type.is_default)?.value || 'options'
-    );
+    // Get the initial contract type value directly to avoid flicker
+    const initialContractType = React.useMemo(() => {
+        return getLatestContractType(active_positions);
+    }, []);
+
+    const [contract_type_value, setContractTypeValue] = React.useState(initialContractType);
+
+    // Custom setter that updates both state and localStorage
+    const updateContractTypeValue = React.useCallback((value: string) => {
+        setContractTypeValue(value);
+        // Save to localStorage to persist the latest contract type
+        localStorage.setItem('contract_type_value', value);
+    }, []);
 
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
@@ -292,8 +302,11 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        const contract_type = getLatestContractType(active_positions);
-        setContractTypeValue(contract_type);
+        // Only update if positions have changed to avoid unnecessary re-renders
+        if (previous_active_positions !== active_positions) {
+            const contract_type = getLatestContractType(active_positions);
+            updateContractTypeValue(contract_type);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
@@ -416,7 +429,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={e => updateContractTypeValue(e.target.value)}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -445,7 +458,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             value={contract_type_value}
                             should_show_empty_option={false}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                setContractTypeValue(e.target.value)
+                                updateContractTypeValue(e.target.value)
                             }
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (

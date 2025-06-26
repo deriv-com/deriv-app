@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
@@ -22,7 +22,6 @@ import {
     usePhoneNumberVerificationSetTimer,
     useResidenceList,
     useStatesList,
-    useTinValidations,
 } from '@deriv/hooks';
 import { AUTH_STATUS_CODES, getBrandWebsiteName, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -72,8 +71,6 @@ const PersonalDetailsForm = observer(() => {
     });
 
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
-
-    const { tin_validation_config, mutate } = useTinValidations();
 
     const scrollToTop = useScrollElementToTop();
 
@@ -349,19 +346,7 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const is_tin_auto_set = Boolean(account_settings?.tin_skipped);
-
-    const is_employment_status_tin_mandatory = Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
-
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(
-        is_virtual,
-        is_svg,
-        tin_validation_config,
-        is_tin_auto_set,
-        account_settings?.immutable_fields,
-        is_employment_status_tin_mandatory,
-        isCountryCodeDropdownEnabled
-    );
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg);
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {
             return (

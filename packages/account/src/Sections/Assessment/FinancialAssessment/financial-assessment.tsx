@@ -46,8 +46,6 @@ import {
     getSourceOfWealthList,
 } from '../../../Constants/financial-information-list';
 
-import NavigateToPersonalDetails from './NavigateToPersonalDetails';
-
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
     onSubmit: () => void;

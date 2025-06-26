@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { DataList, Dropdown, SelectNative, usePrevious } from '@deriv/components';
 import {
     CONTRACT_STORAGE_VALUES,
@@ -13,13 +14,16 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
+
 import {
     getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
     getOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
 import { TColIndex } from 'Types';
+
 import { getLatestContractType } from '../Constants/contract-types';
+
 import { MobileRowRenderer } from './mobile-row-renderer';
 import { OpenPositionsTable } from './open-positions-table';
 
@@ -191,7 +195,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const generateContractTypes = () => {
         const queryParams = new URLSearchParams(location.search);
         const contract_type_bot = queryParams.get('contract_type_bots');
-        const default_contract_type = getLatestContractType(active_positions, contract_type_value);
+        const default_contract_type = getLatestContractType(active_positions);
 
         if (!contract_type_bot) {
             return [
@@ -239,22 +243,14 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const contract_types = React.useMemo(() => generateContractTypes(), [previous_active_positions]);
 
-    // Get the initial contract type value directly to avoid flicker
-    const initialContractType = React.useMemo(() => {
-        // Get stored value from localStorage or use undefined for initial load
-        const stored_contract_type = localStorage.getItem('contract_type_value') ?? undefined;
-        return getLatestContractType(active_positions, stored_contract_type);
-    }, []);
-
-    const [contract_type_value, setContractTypeValue] = React.useState(initialContractType);
-
-    // Custom setter that updates both state and localStorage
-    const updateContractTypeValue = React.useCallback((value: string) => {
-        setContractTypeValue(value);
-        // Save to localStorage to persist the latest contract type
-        localStorage.setItem('contract_type_value', value);
-    }, []);
-
+    // Get the initial contract type value directly from localStorage or fallback to contract_types
+    const [contract_type_value, setContractTypeValue] = React.useState(() => {
+        const stored_value = localStorage.getItem('contract_type_value');
+        if (stored_value && Object.values(CONTRACT_STORAGE_VALUES).includes(stored_value)) {
+            return stored_value;
+        }
+        return contract_types.find(type => type.is_default)?.value || 'options';
+    });
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
         { text: localize('All growth rates'), value: 'all growth rates' },
@@ -304,11 +300,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        // Only update if positions have changed to avoid unnecessary re-renders
-        if (previous_active_positions !== active_positions) {
-            const contract_type = getLatestContractType(active_positions, contract_type_value);
-            updateContractTypeValue(contract_type);
-        }
+        const contract_type = getLatestContractType(active_positions, contract_type_value);
+        setContractTypeValue(contract_type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_active_positions]);
 
@@ -431,7 +424,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => updateContractTypeValue(e.target.value)}
+                                onChange={e => setContractTypeValue(e.target.value)}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -460,7 +453,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             value={contract_type_value}
                             should_show_empty_option={false}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                updateContractTypeValue(e.target.value)
+                                setContractTypeValue(e.target.value)
                             }
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (

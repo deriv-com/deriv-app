@@ -40,7 +40,7 @@ export const getLatestContractType = (
         return isValidContractType(stored_value) ? stored_value : CONTRACT_STORAGE_VALUES.OPTIONS;
     }
 
-    // Otherwise, find the latest contract and its type.
+    // Otherwise, find the latest contract and its type
     const latest_contract = positions.reduce((latest, current) => {
         const current_date_start = current.contract_info?.date_start || 0;
         const latest_date_start = latest.contract_info?.date_start || 0;

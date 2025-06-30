@@ -300,16 +300,13 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        // Only update if positions have changed to avoid unnecessary re-renders
-        if (previous_active_positions !== active_positions) {
-            const contract_type = getLatestContractType(active_positions, contract_type_value);
-            if (contract_type !== contract_type_value) {
-                setContractTypeValue(contract_type);
-                localStorage.setItem('contract_type_value', contract_type);
-            }
+        // Update contract type whenever positions change or component mounts
+        const contract_type = getLatestContractType(active_positions, contract_type_value);
+        if (contract_type !== contract_type_value) {
+            setContractTypeValue(contract_type);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [previous_active_positions, active_positions]);
+    }, [active_positions]);
 
     React.useEffect(() => {
         if (prev_contract_type_value) {

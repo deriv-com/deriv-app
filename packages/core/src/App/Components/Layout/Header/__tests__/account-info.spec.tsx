@@ -4,10 +4,10 @@ import userEvent from '@testing-library/user-event';
 import AccountInfo from '../account-info.jsx';
 
 describe('AccountInfo component', () => {
-    it('should show "disabled_message" when "is_disabled" property is "true"', () => {
+    it('should show "disabled_message" when "is_disabled" property is "true"', async () => {
         render(<AccountInfo is_disabled acc_switcher_disabled_message='Test disabled message' />);
         const popover = screen.getByTestId('dt_popover_wrapper');
-        userEvent.hover(popover);
+        await userEvent.hover(popover);
         const disabled_message = screen.getByText(/test disabled message/i);
         expect(disabled_message).toBeInTheDocument();
     });
@@ -30,11 +30,11 @@ describe('AccountInfo component', () => {
         expect(div_element).not.toHaveClass('acc-info--show');
     });
 
-    it('can not "toggleDialog" when "is_disabled" property is "true"', () => {
+    it('can not "toggleDialog" when "is_disabled" property is "true"', async () => {
         const toggleDialog = jest.fn();
         render(<AccountInfo is_disabled toggleDialog={toggleDialog} />);
         const div_element = screen.getByTestId('dt_acc_info');
-        userEvent.click(div_element);
+        await userEvent.click(div_element);
         expect(toggleDialog).toHaveBeenCalledTimes(0);
     });
 
@@ -81,5 +81,53 @@ describe('AccountInfo component', () => {
         const text = screen.getByText(/123456789 usd/i);
         expect(text).toBeInTheDocument();
         expect(screen.queryByText(/no currency assigned/i)).not.toBeInTheDocument();
+    });
+
+    it('should display "Real" account type label for real accounts', () => {
+        render(<AccountInfo is_virtual={false} currency='USD' balance='1000' />);
+        const accountTypeLabel = screen.getByText('Real');
+        expect(accountTypeLabel).toBeInTheDocument();
+        expect(accountTypeLabel).toHaveClass('acc-info__account-type');
+    });
+
+    it('should display "Demo" account type label for virtual accounts', () => {
+        render(<AccountInfo is_virtual={true} currency='USD' balance='1000' />);
+        const accountTypeLabel = screen.getByText('Demo');
+        expect(accountTypeLabel).toBeInTheDocument();
+        expect(accountTypeLabel).toHaveClass('acc-info__account-type');
+    });
+
+    it('should display account type label in header section when currency is assigned', () => {
+        render(<AccountInfo is_virtual={false} currency='USD' balance='1000' />);
+        const accountTypeLabel = screen.getByText('Real');
+        const balanceElement = screen.getByText(/1000 usd/i);
+
+        expect(accountTypeLabel).toBeInTheDocument();
+        expect(balanceElement).toBeInTheDocument();
+
+        // Verify both elements are within the same container
+        const container = screen.getByTestId('dt_acc_info');
+        expect(container).toContainElement(accountTypeLabel);
+        expect(container).toContainElement(balanceElement);
+    });
+
+    it('should display dropdown arrow next to account type in header', () => {
+        render(<AccountInfo is_virtual={false} currency='USD' balance='1000' />);
+        const accountTypeLabel = screen.getByText('Real');
+        const dropdownArrow = screen.getByTestId('dt_select_arrow');
+
+        expect(accountTypeLabel).toBeInTheDocument();
+        expect(dropdownArrow).toBeInTheDocument();
+        expect(dropdownArrow).toHaveClass('acc-info__select-arrow');
+    });
+
+    it('should display lock icon instead of dropdown arrow when disabled', () => {
+        render(<AccountInfo is_disabled={true} currency='USD' balance='1000' />);
+        const lockIcon = screen.getByTestId('dt_lock_icon');
+        const dropdownArrow = screen.queryByTestId('dt_select_arrow');
+
+        expect(lockIcon).toBeInTheDocument();
+        expect(lockIcon).toHaveClass('acc-info__select-arrow');
+        expect(dropdownArrow).not.toBeInTheDocument();
     });
 });

@@ -1559,7 +1559,7 @@ export default class TradeStore extends BaseStore {
 
         // add/update expiration or date_expiry for crypto indices from proposal
         const date_expiry = response.proposal?.date_expiry;
-        this.expiry_epoch = date_expiry || this.expiry_epoch;
+        this.expiry_epoch = date_expiry || '';
 
         if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;
@@ -1769,7 +1769,8 @@ export default class TradeStore extends BaseStore {
 
     changeDurationValidationRules() {
         if (this.expiry_type === 'endtime') {
-            this.validation_errors.duration = [];
+            delete this.validation_rules.duration;
+            this.validateAllProperties();
             return;
         }
 

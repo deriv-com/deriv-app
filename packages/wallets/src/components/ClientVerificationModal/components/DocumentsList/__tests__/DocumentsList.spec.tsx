@@ -299,7 +299,7 @@ describe('<DocumentsList />', () => {
         await userEvent.click(additionalInfoTile);
 
         await waitFor(() => {
-            expect(mockHistoryPush).toBeCalledWith('/account/personal-details');
+            expect(mockHistoryPush).toBeCalledWith('/account/financial-assessment');
         });
     });
 

@@ -9,13 +9,16 @@ type TAccountSwitcherWalletListProps = {
 };
 
 export const AccountSwitcherWalletList = ({ wallets, closeAccountsDialog }: TAccountSwitcherWalletListProps) => {
-    // Sort wallets by available balance (highest first)
+    // Sort wallets: real accounts by balance (highest first), then demo accounts by balance
     const sortedWallets = [...(wallets || [])].sort((a, b) => {
-        // Handle cases where dtrade_balance might be undefined or null
+        // First, ensure demo accounts are always at the bottom
+        if (a.is_virtual || b.is_virtual) {
+            return a.is_virtual ? 1 : -1;
+        }
+
+        // For accounts of the same type (both real), sort by balance (highest first)
         const balance_a = a.dtrade_balance || 0;
         const balance_b = b.dtrade_balance || 0;
-
-        // Sort in descending order (highest first)
         return balance_b - balance_a;
     });
 

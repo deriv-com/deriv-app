@@ -10,6 +10,9 @@ jobs:
     name: Build, Test and Publish to Cloudflare Pages Production
     environment: Production
     runs-on: Runner_16cores_Deriv-app
+    permissions:
+      contents: read
+      actions: write
     outputs:
       RELEASE_VERSION: ${{ steps.extract_version.outputs.RELEASE_VERSION }}
     steps:

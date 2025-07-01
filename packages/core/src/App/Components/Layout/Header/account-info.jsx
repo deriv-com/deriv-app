@@ -10,17 +10,14 @@ import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
 import AccountInfoIcon from './account-info-icon';
-import DisplayAccountType from './display-account-type';
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
-    account_type = '',
     balance,
     currency,
     disableApp,
     enableApp,
     is_dialog_on,
-    is_eu,
     is_virtual,
     toggleDialog,
     is_disabled,
@@ -91,9 +88,6 @@ const AccountInfo = ({
                                         `${balance} ${getCurrencyDisplayCode(currency)}`
                                     )}
                                 </p>
-                                <Text size='xxxs' line_height='s'>
-                                    <DisplayAccountType account_type={account_type} is_eu={is_eu} />
-                                </Text>
                             </div>
                         )}
                     </div>
@@ -129,14 +123,12 @@ const AccountInfo = ({
 
 AccountInfo.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    account_type: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
-    is_eu: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_mobile: PropTypes.bool,
     loginid: PropTypes.string,

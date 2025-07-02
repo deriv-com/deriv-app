@@ -43,7 +43,6 @@ export * from './WalletsContainer';
 export * from './WalletsDisabledAccountsBanner';
 export * from './WalletsDisclaimerBanner';
 export * from './WalletsErrorScreen';
-export * from './WalletsOutsystemsMigrationModal';
 export * from './WalletsPercentageSelector';
 export * from './WalletsResetMT5Password';
 export * from './WalletStatusBadge';

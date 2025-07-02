@@ -243,12 +243,15 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const contract_types = React.useMemo(() => generateContractTypes(), [previous_active_positions]);
 
-    // Get the initial contract type value directly from localStorage or fallback to contract_types
+    // Get the initial contract type value from localStorage (user selection) or fallback to contract_types
     const [contract_type_value, setContractTypeValue] = React.useState(() => {
-        const stored_value = localStorage.getItem('contract_type_value');
-        if (stored_value && Object.values(CONTRACT_STORAGE_VALUES).includes(stored_value)) {
-            return stored_value;
+        // First check if user has made a selection on the open positions page
+        const user_selection = localStorage.getItem('open_positions_filter');
+        if (user_selection && Object.values(CONTRACT_STORAGE_VALUES).includes(user_selection)) {
+            return user_selection;
         }
+
+        // Otherwise use the default from contract_types
         return contract_types.find(type => type.is_default)?.value || 'options';
     });
     const prev_contract_type_value = usePrevious(contract_type_value);
@@ -300,13 +303,18 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        // Update contract type whenever positions change or component mounts
+        // If there are no active positions, clear the user selection
+        if (active_positions.length === 0) {
+            localStorage.removeItem('open_positions_filter');
+            return;
+        }
+
         const contract_type = getLatestContractType(active_positions, contract_type_value);
         if (contract_type !== contract_type_value) {
             setContractTypeValue(contract_type);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [active_positions]);
+    }, [previous_active_positions, active_positions]);
 
     React.useEffect(() => {
         if (prev_contract_type_value) {
@@ -331,6 +339,12 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accumulator_rate]);
+
+    // Handle contract type selection
+    const handleContractTypeChange = (value: string) => {
+        setContractTypeValue(value);
+        localStorage.setItem('open_positions_filter', value);
+    };
 
     if (error) return <p>{error}</p>;
 
@@ -427,7 +441,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                                 name='contract_types'
                                 list={contract_types_list}
                                 value={contract_type_value}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={e => handleContractTypeChange(e.target.value)}
                             />
                         </div>
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
@@ -455,11 +469,9 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                             list_items={contract_types_list}
                             value={contract_type_value}
                             should_show_empty_option={false}
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) => {
-                                const value = e.target.value;
-                                setContractTypeValue(value);
-                                localStorage.setItem('contract_type_value', value);
-                            }}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
+                                handleContractTypeChange(e.target.value)
+                            }
                         />
                         {is_accumulator_selected && !hide_accu_in_dropdown && (
                             <SelectNative

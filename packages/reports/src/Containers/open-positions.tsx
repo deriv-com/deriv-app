@@ -246,7 +246,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // Get the initial contract type value from localStorage (user selection) or fallback to contract_types
     const [contract_type_value, setContractTypeValue] = React.useState(() => {
         // First check if user has made a selection on the open positions page
-        const user_selection = localStorage.getItem('open_positions_filter');
+        const user_selection = sessionStorage.getItem('open_positions_filter');
         if (user_selection && Object.values(CONTRACT_STORAGE_VALUES).includes(user_selection)) {
             return user_selection;
         }
@@ -337,7 +337,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     // Handle contract type selection
     const handleContractTypeChange = (value: string) => {
         setContractTypeValue(value);
-        localStorage.setItem('open_positions_filter', value);
+        sessionStorage.setItem('open_positions_filter', value);
     };
 
     if (error) return <p>{error}</p>;

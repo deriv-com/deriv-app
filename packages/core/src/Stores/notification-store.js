@@ -611,7 +611,7 @@ export default class NotificationStore extends BaseStore {
                     }
                 }
 
-                const exclude_statuses = ["pending", "none", "verified"];
+                const exclude_statuses = ['pending', 'none', 'verified'];
 
                 if (has_tusdt_account) this.addNotificationMessage(this.client_notifications.has_tusdt_account);
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);

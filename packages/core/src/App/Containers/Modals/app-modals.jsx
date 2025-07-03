@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration, useIsTNCNeeded } from '@deriv/hooks';
+import { useIsTNCNeeded, useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -10,23 +10,27 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 
+import CompleteUserProfile from './complete-user-profile-modal/complete-user-profile-modal';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
-import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
-import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 
 const SameDOBPhoneModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "same-dob-phone-modal" */ './same-dob-phone-modal'))
 );
 
 const TradingAssessmentExistingUser = React.lazy(() =>
-    moduleLoader(() =>
-        import(/* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user')
+    moduleLoader(
+        () =>
+            import(
+                /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user'
+            )
     )
 );
 
@@ -45,8 +49,8 @@ const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
 
-const UnlinkPasswordModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
+const UnlinkPasswordModal = React.lazy(
+    () => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
 );
 
 const RedirectToLoginModal = React.lazy(() =>
@@ -59,20 +63,20 @@ const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-emai
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
 
-const WarningCloseCreateRealAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
+const WarningCloseCreateRealAccountModal = React.lazy(
+    () => import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
-const VerificationDocumentSubmitted = React.lazy(() =>
-    import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
+const VerificationDocumentSubmitted = React.lazy(
+    () => import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
 );
 
-const OneTimeDepositModal = React.lazy(() =>
-    import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
+const OneTimeDepositModal = React.lazy(
+    () => import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
 );
 
-const TncStatusUpdateModal = React.lazy(() =>
-    import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
+const TncStatusUpdateModal = React.lazy(
+    () => import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
 );
 
 const AppModals = observer(() => {
@@ -179,6 +183,9 @@ const AppModals = observer(() => {
             break;
     }
     if (!url_action_param) {
+        if (!has_wallet && is_logged_in) {
+            ComponentToLoad = <CompleteUserProfile />;
+        }
         if (should_show_trading_assessment_existing_user_form) {
             ComponentToLoad = <TradingAssessmentExistingUser />;
         } else if (is_closing_create_real_account_modal) {

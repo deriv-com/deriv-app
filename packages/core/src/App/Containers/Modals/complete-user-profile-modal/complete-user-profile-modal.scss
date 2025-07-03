@@ -1,0 +1,28 @@
+.complete-user-profile-modal__form {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+.complete-user-profile-modal__heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--border-normal);
+        display: block;
+        margin-left: 8px; // optional, for spacing between text and line
+    }
+}
+
+.complete-user-profile-modal__bottom-margin {
+    margin-bottom: 24px;
+}
+
+.complete-user-profile-modal__bottom-margin-field {
+    margin-bottom: calc(24px + 18px);
+}

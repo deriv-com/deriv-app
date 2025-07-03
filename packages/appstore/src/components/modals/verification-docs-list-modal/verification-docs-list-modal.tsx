@@ -43,7 +43,7 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'tax',
             text: 'Additional information',
             status: valid_tin,
-            route: routes.personal_details,
+            route: routes.financial_assessment,
         },
     ].filter(Boolean) as TItems[];
 

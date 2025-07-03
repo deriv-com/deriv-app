@@ -51,7 +51,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
     }, []);
 
     const onClickClose = () => {
-        localStorage.removeItem('open_positions_filter');
+        sessionStorage.removeItem('open_positions_filter');
         routeBackInApp(history);
     };
 

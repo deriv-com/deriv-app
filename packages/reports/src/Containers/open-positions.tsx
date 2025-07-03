@@ -304,7 +304,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     React.useEffect(() => {
         // If there are no active positions, clear the user selection
-        if (active_positions.length === 0) {
+        if (active_positions.length === 0 && previous_active_positions !== undefined) {
             localStorage.removeItem('open_positions_filter');
             return;
         }

@@ -611,9 +611,13 @@ export default class NotificationStore extends BaseStore {
                     }
                 }
 
+                const exclude_statuses = ["pending", "none", "verified"];
+
                 if (has_tusdt_account) this.addNotificationMessage(this.client_notifications.has_tusdt_account);
                 if (mt5_withdrawal_locked) this.addNotificationMessage(this.client_notifications.mt5_withdrawal_locked);
-                if (document_needs_action) this.addNotificationMessage(this.client_notifications.document_needs_action);
+                if (document_needs_action && (!exclude_statuses.includes(document.status) || !exclude_statuses.includes(identity.status))) {
+                    this.addNotificationMessage(this.client_notifications.document_needs_action)
+                };
                 if (is_p2p_enabled) {
                     this.addNotificationMessage(this.client_notifications.dp2p);
 

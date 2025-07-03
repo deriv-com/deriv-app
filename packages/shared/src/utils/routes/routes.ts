@@ -11,8 +11,6 @@ export const routes = {
     contract: '/contract/:contract_id',
 
     // platforms
-    mt5: '/mt5',
-    dxtrade: '/derivx',
     bot: '/bot',
     trade: '/dtrader',
     trader_positions: '/dtrader/positions',

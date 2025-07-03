@@ -26,13 +26,6 @@ const Reports = React.lazy(() => {
     return import(/* webpackChunkName: "reports" */ '@deriv/reports');
 });
 
-const CFD = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "cfd" */ '@deriv/cfd');
-    })
-);
-
 const Account = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -102,19 +95,9 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.dxtrade,
-            component: props => <CFD {...props} platform='dxtrade' />,
-            getTitle: () => localize('Deriv X'),
-        },
-        {
             path: routes.compare_cfds,
             component: CFDCompareAccounts,
             getTitle: () => localize('Compare CFD accounts'),
-        },
-        {
-            path: routes.mt5,
-            component: props => <CFD {...props} platform='mt5' />,
-            getTitle: () => localize('MT5'),
         },
         {
             path: routes.account_closed,

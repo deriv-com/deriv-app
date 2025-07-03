@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, FieldProps, Form, Formik, FormikHandlers, FormikHelpers, FormikState } from 'formik';
+import { Field, FieldProps, Form, Formik, FormikHandlers, FormikHelpers, FormikState, FormikValues } from 'formik';
 
 import {
     Autocomplete,
@@ -11,7 +11,7 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { useResidenceList, useStatesList } from '@deriv/hooks';
-import { formatDate } from '@deriv/shared';
+import { filterObjProperties, formatDate, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { InlineMessage, useDevice } from '@deriv-com/ui';
@@ -48,20 +48,51 @@ type TCompleteUserProfileFormProps = TPersonalDetailsFormProps &
     TAddressDetailFormProps;
 
 const CompleteUserProfile = observer(() => {
-    const { client } = useStore();
-    const { residence, account_settings } = client;
-    const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
+    const { client, ui } = useStore();
+    const { residence, account_settings, getChangeableFields } = client;
+    const { is_complete_user_profile_modal_open, setShouldShowCompleteUserProfileModal } = ui;
     const { isDesktop } = useDevice();
     const { data: residence_list, isFetched: residence_list_fetched } = useResidenceList();
+    const changeable_fields = getChangeableFields();
 
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
-    const [residence_to_display, setResidenceToDisplay] = React.useState('');
     const [citizen_to_display, setCitizenToDisplay] = React.useState('');
 
-    const handleSubmit = (values: TCompleteUserProfileFormProps) => {
-        // TODO: Implement form submission logic
-        // eslint-disable-next-line no-console
-        console.log('Form submitted with values:', values);
+    const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
+
+    const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
+        const request = filterObjProperties(values, changeable_fields);
+
+        if (request.first_name) {
+            request.first_name = request.first_name.trim();
+        }
+        if (request.last_name) {
+            request.last_name = request.last_name.trim();
+        }
+        if (request.date_of_birth) {
+            request.date_of_birth = formatDate(request.date_of_birth, 'YYYY-MM-DD');
+        }
+
+        return request;
+    };
+
+    const handleSubmit = async (
+        values: TCompleteUserProfileFormProps,
+        { setSubmitting, setStatus }: FormikHelpers<TCompleteUserProfileFormProps>
+    ) => {
+        setSubmitting(true);
+
+        const request = makeSettingsRequest(values, changeable_fields);
+
+        const data = await WS.setSettings(request);
+
+        if (data?.error) {
+            setStatus({ error_message: data.error?.code });
+            setSubmitting(false);
+            return;
+        }
+        setSubmitting(false);
+        setShouldShowCompleteUserProfileModal(false);
     };
 
     const initial_values: TCompleteUserProfileFormProps = {
@@ -142,9 +173,8 @@ const CompleteUserProfile = observer(() => {
                                                     data-lpignore='true'
                                                     autoComplete='off'
                                                     list_items={residence_list}
-                                                    onItemSelection={({ value, text }: TAutoComplete) => {
-                                                        setFieldValue('residence', value ? text : '', true);
-                                                        setResidenceToDisplay('');
+                                                    onItemSelection={({ text }: TAutoComplete) => {
+                                                        setFieldValue('residence', text, true);
                                                     }}
                                                     list_portal_id='modal_root'
                                                     hint={localize('Select the country where you currently live.')}
@@ -155,12 +185,11 @@ const CompleteUserProfile = observer(() => {
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
                                                     label={localize('Country of residence')}
-                                                    value={residence_to_display || values.residence}
+                                                    value={values.residence}
                                                     list_items={residence_list}
                                                     use_text={true}
-                                                    onChange={(e: { target: { value: string } }) => {
-                                                        setFieldValue('residence', e.target.value, true);
-                                                        setAddressStateToDisplay('');
+                                                    onChange={({ text }: TAutoComplete) => {
+                                                        setFieldValue('residence', text, true);
                                                     }}
                                                     hint={localize('Select the country where you currently live.')}
                                                     className='complete-user-profile-modal__bottom-margin-field'
@@ -191,15 +220,15 @@ const CompleteUserProfile = observer(() => {
                                                     label={localize('Citizenship')}
                                                     list_items={residence_list}
                                                     onItemSelection={({ value, text }: TAutoComplete) => {
-                                                        setFieldValue('citizen', value ? text : '', true);
-                                                        setCitizenToDisplay('');
+                                                        setFieldValue('citizen', value, true);
+                                                        setCitizenToDisplay(text);
                                                     }}
                                                     list_portal_id='modal_root'
                                                     hint={localize(
                                                         'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                     )}
                                                     className='complete-user-profile-modal__bottom-margin-field'
-                                                    value={values.citizen}
+                                                    value={citizen_to_display}
                                                 />
                                             ) : (
                                                 <SelectNative
@@ -208,9 +237,9 @@ const CompleteUserProfile = observer(() => {
                                                     value={citizen_to_display || values.citizen}
                                                     list_items={residence_list}
                                                     use_text={true}
-                                                    onChange={(e: { target: { value: string } }) => {
-                                                        setFieldValue('citizen', e.target.value, true);
-                                                        setCitizenToDisplay('');
+                                                    onChange={({ value, text }: TAutoComplete) => {
+                                                        setFieldValue('citizen', value, true);
+                                                        setCitizenToDisplay(text);
                                                     }}
                                                     hint={localize(
                                                         'Select your citizenship/nationality as it appears on your passport or other government-issued ID'

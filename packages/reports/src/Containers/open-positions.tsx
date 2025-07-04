@@ -303,12 +303,27 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     }, []);
 
     React.useEffect(() => {
-        const contract_type = getLatestContractType(active_positions, contract_type_value);
-        if (contract_type !== contract_type_value) {
-            setContractTypeValue(contract_type);
+        const user_selection = sessionStorage.getItem('open_positions_filter');
+
+        // Check if positions have actually changed (contracts closed/sold)
+        const positionsChanged =
+            previous_active_positions && previous_active_positions.length > active_positions.length;
+
+        // If positions changed and user had a selection, clear it to allow auto-switching
+        if (positionsChanged && user_selection) {
+            sessionStorage.removeItem('open_positions_filter');
+        }
+
+        // If there's no user selection (or we just cleared it), use getLatestContractType logic
+        const current_user_selection = sessionStorage.getItem('open_positions_filter');
+        if (!current_user_selection || !Object.values(CONTRACT_STORAGE_VALUES).includes(current_user_selection)) {
+            const contract_type = getLatestContractType(active_positions, contract_type_value);
+            if (contract_type !== contract_type_value) {
+                setContractTypeValue(contract_type);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [previous_active_positions, active_positions]);
+    }, [previous_active_positions, active_positions, active_positions_filtered.length]);
 
     React.useEffect(() => {
         if (prev_contract_type_value) {

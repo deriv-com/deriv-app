@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Button, useNotifications } from '@deriv-com/quill-ui';
+import { Button, useNotifications, useSnackbar } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import {
     getCardLabelsV2,
@@ -31,8 +31,13 @@ const BASIS_NAME = 'basis';
 
 const PurchaseButton = observer(() => {
     const [loading_button_index, setLoadingButtonIndex] = React.useState<number | null>(null);
+    const [error_info, setErrorInfo] = React.useState<{ has_error: boolean; message: string | null }>({
+        has_error: false,
+        message: null,
+    });
     const { isMobile } = useDevice();
     const { addBanner } = useNotifications();
+    const { addSnackbar } = useSnackbar();
     const {
         portfolio: { all_positions, onClickSell, open_accu_contract, active_positions },
         client: { is_logged_in },
@@ -151,6 +156,40 @@ const PurchaseButton = observer(() => {
         setIsSellButtonVisibile(is_accumulator ? has_open_accu_contract : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_accumulator, has_open_accu_contract]);
+
+    React.useEffect(() => {
+        // Check each proposal info object directly for errors
+        if (proposal_info && contract_types.length === Object.keys(proposal_info).length) {
+            let message = '';
+            // Using some() to break out of the loop once we find the first error
+            const has_error = Object.values(proposal_info).some(info => {
+                if (info.has_error && info.message) {
+                    message = info.message || '';
+                    return true; // This breaks out of the loop
+                }
+                return false;
+            });
+            setErrorInfo({ has_error, message: message || '' });
+        }
+    }, [proposal_info]);
+
+    React.useEffect(() => {
+        if (error_info.has_error && error_info.message) {
+            addSnackbar({
+                message: error_info.message,
+                status: 'fail',
+                hasCloseButton: true,
+                hasFixedHeight: false,
+                style: {
+                    marginBottom: '0',
+                    width: 'calc(100% - var(--core-spacing-800)',
+                },
+            });
+
+            // Clear the error state after showing the snackbar
+            setErrorInfo({ has_error: false, message: null });
+        }
+    }, [error_info.has_error]);
 
     return (
         <React.Fragment>

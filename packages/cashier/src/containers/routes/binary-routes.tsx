@@ -17,8 +17,8 @@ type TBinaryRoutesProps = {
 
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { client } = useStore();
-    const { has_wallet } = client;
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
+    const { has_wallet } = client;
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 

@@ -37,10 +37,10 @@ type CountryandCitizenshipFormProps = {
 
 type TAddressDetailFormProps = {
     address_line_1: string;
-    address_line_2?: string;
+    address_line_2: string;
     address_city: string;
-    address_state?: string;
-    address_postcode?: string;
+    address_state: string;
+    address_postcode: string;
 };
 
 type TCompleteUserProfileFormProps = TPersonalDetailsFormProps &
@@ -116,9 +116,9 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
         <Modal
             is_open={is_complete_user_profile_modal_open}
             title='Complete your profile'
-            height='640px'
+            height='auto'
             width='440px'
-            should_header_stick_body
+            should_header_stick_body={true}
             has_close_icon={false}
             className='complete-user-profile-modal'
         >
@@ -154,7 +154,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                     </Text>
                                     <DateOfBirthField
                                         name='date_of_birth'
-                                        label={localize('Date of birth')}
+                                        label={localize('Date of birth*')}
                                         hint={localize('Your date of birth as in your identity document.')}
                                         portal_id='modal_root'
                                         data_testid='date_of_birth'
@@ -187,7 +187,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                             {isDesktop ? (
                                                                 <Autocomplete
                                                                     {...field}
-                                                                    label={localize('Country of residence')}
+                                                                    label={localize('Country of residence*')}
                                                                     data-lpignore='true'
                                                                     autoComplete='off'
                                                                     list_items={residence_list}
@@ -204,7 +204,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                             ) : (
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
-                                                                    label={localize('Country of residence')}
+                                                                    label={localize('Country of residence*')}
                                                                     value={residence_to_display}
                                                                     list_items={residence_list}
                                                                     use_text={true}
@@ -230,8 +230,8 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                 <FormInputField
                                                     className='complete-user-profile-modal__bottom-margin'
                                                     name='address_state'
-                                                    label={localize('Country of residence')}
-                                                    placeholder={localize('Country of residence')}
+                                                    label={localize('Country of residence*')}
+                                                    placeholder={localize('Country of residence*')}
                                                     hint={localize('Select the country where you currently live.')}
                                                 />
                                             )}
@@ -248,7 +248,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                                     {...field}
                                                                     data-lpignore='true'
                                                                     autoComplete='off' // prevent chrome autocomplete
-                                                                    label={localize('Citizenship')}
+                                                                    label={localize('Citizenship*')}
                                                                     list_items={residence_list}
                                                                     onItemSelection={({ value, text }) => {
                                                                         setFieldValue('citizen', value, true);
@@ -260,22 +260,24 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                                     )}
                                                                     className='complete-user-profile-modal__bottom-margin-field'
                                                                     value={citizen_to_display || values.citizen}
+                                                                    required
                                                                 />
                                                             ) : (
                                                                 <SelectNative
-                                                                    placeholder={localize('Please select')}
-                                                                    label={localize('Citizenship')}
-                                                                    value={citizen_to_display || values.citizen}
+                                                                    {...field}
+                                                                    placeholder={localize('Citizenship')}
+                                                                    label={localize('Citizenship*')}
                                                                     list_items={residence_list}
-                                                                    use_text={true}
-                                                                    onChange={({ text, value }) => {
-                                                                        setFieldValue('citizen', value, true);
-                                                                        setCitizenToDisplay(text);
+                                                                    onChange={e => {
+                                                                        handleChange(e);
+                                                                        setFieldValue('citizen', e.target.value, true);
+                                                                        setCitizenToDisplay(e.target.text);
                                                                     }}
                                                                     hint={localize(
                                                                         'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                                     )}
                                                                     className='complete-user-profile-modal__bottom-margin-field'
+                                                                    required
                                                                 />
                                                             )}
                                                         </>
@@ -286,11 +288,12 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                 <FormInputField
                                                     className='complete-user-profile-modal__bottom-margin-field'
                                                     name='address_state'
-                                                    label={localize('Citizenship')}
+                                                    label={localize('Citizenship*')}
                                                     placeholder={localize('Citizenship')}
                                                     hint={localize(
                                                         'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                     )}
+                                                    required
                                                 />
                                             )}
                                         </>
@@ -418,8 +421,13 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                     </div>
                                 </>
                             )}
-                            <Modal.Footer>
-                                <FormSubmitButton label={localize('Submit')} disabled={isSubmitting} />
+                            <Modal.Footer className='complete-user-profile-modal__footer'>
+                                <FormSubmitButton
+                                    label={localize('Submit')}
+                                    disabled={isSubmitting}
+                                    is_loading={isSubmitting}
+                                    className='complete-user-profile-modal__submit-button'
+                                />
                             </Modal.Footer>
                         </Form>
                     )}

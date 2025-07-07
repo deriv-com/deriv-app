@@ -1,7 +1,16 @@
+.dc-modal-header--complete-user-profile-modal {
+    border-bottom: 1px solid var(--border-divider);
+}
+
 .complete-user-profile-modal__form {
     display: flex;
     flex-direction: column;
     padding: 24px;
+}
+
+.complete-user-profile-modal__footer.dc-modal-footer {
+    padding: 0;
+    padding-top: 24px;
 }
 
 .complete-user-profile-modal__heading {
@@ -13,9 +22,9 @@
         content: '';
         flex: 1;
         height: 1px;
-        background: var(--border-normal);
+        background: var(--border-divider);
         display: block;
-        margin-left: 8px; // optional, for spacing between text and line
+        margin-left: 8px;
     }
 }
 
@@ -25,4 +34,16 @@
 
 .complete-user-profile-modal__bottom-margin-field {
     margin-bottom: calc(24px + 18px);
+}
+
+.complete-user-profile-modal__submit-button.dc-form-submit-button {
+    @include mobile {
+        display: unset;
+    }
+}
+
+.complete-user-profile-modal__submit-button.dc-form-submit-button > .dc-btn {
+    @include mobile {
+        width: 100%;
+    }
 }

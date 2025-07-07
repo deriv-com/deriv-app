@@ -61,36 +61,31 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
     const changeable_fields = getChangeableFields();
 
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
+    const [residence_to_display, setResidenceToDisplay] = React.useState(residence || '');
     const [citizen_to_display, setCitizenToDisplay] = React.useState('');
 
-    const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
+    const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence_to_display ?? residence);
 
-    const { citizen, date_of_birth, address_line_1, address_city, address_state, address_postcode } =
+    const { citizen, date_of_birth, address_line_1, address_line_2, address_city, address_state, address_postcode } =
         account_settings || {};
 
     const initial_values: TCompleteUserProfileFormProps = {
-        residence: '',
-        citizen: '',
-        date_of_birth: '',
-        address_line_1: '',
-        address_city: '',
-        address_state: '',
-        address_postcode: '',
+        residence: residence || '',
+        citizen: citizen || '',
+        date_of_birth: date_of_birth || '',
+        address_line_1: address_line_1 || '',
+        address_line_2: address_line_2 || '',
+        address_city: address_city || '',
+        address_state: address_state || '',
+        address_postcode: address_postcode || '',
     };
 
-    const showPersonalDetailsFields = !date_of_birth;
     const showCountryAndCitizenshipFields = !(residence && citizen);
     const showAddressDetailsFields = !(address_line_1 && address_city && address_state && address_postcode);
 
     const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
         const request = filterObjProperties(values, changeable_fields);
 
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
         if (request.date_of_birth) {
             request.date_of_birth = formatDate(request.date_of_birth, 'YYYY-MM-DD');
         }
@@ -149,7 +144,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                     <Localize i18n_default_text='To continue trading, provide your additional details below.' />
                                 </Text>
                             </InlineMessage>
-                            {showPersonalDetailsFields && (
+                            {!date_of_birth && (
                                 <>
                                     <Text
                                         weight='bold'
@@ -177,114 +172,128 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                     >
                                         <Localize i18n_default_text='Country and citizenship' />
                                     </Text>
-                                    {!residence_list_fetched && (
-                                        <div className='details-form__loader'>
-                                            <Loading is_fullscreen={false} />
-                                        </div>
-                                    )}
-                                    {residence_list?.length > 0 ? (
-                                        <Field name='residence'>
-                                            {({ field }: FieldProps) => (
-                                                <>
-                                                    {isDesktop ? (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            label={localize('Country of residence')}
-                                                            data-lpignore='true'
-                                                            autoComplete='off'
-                                                            list_items={residence_list}
-                                                            onItemSelection={({ text }: TAutoComplete) => {
-                                                                setFieldValue('residence', text, true);
-                                                            }}
-                                                            list_portal_id='modal_root'
-                                                            hint={localize(
-                                                                'Select the country where you currently live.'
+                                    {/* Residence */}
+                                    {!residence && (
+                                        <>
+                                            {!residence_list_fetched && (
+                                                <div className='details-form__loader'>
+                                                    <Loading is_fullscreen={false} />
+                                                </div>
+                                            )}
+                                            {residence_list?.length > 0 ? (
+                                                <Field name='residence'>
+                                                    {({ field }: FieldProps) => (
+                                                        <>
+                                                            {isDesktop ? (
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    label={localize('Country of residence')}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off'
+                                                                    list_items={residence_list}
+                                                                    onItemSelection={({ text }: TAutoComplete) => {
+                                                                        setFieldValue('residence', text, true);
+                                                                    }}
+                                                                    list_portal_id='modal_root'
+                                                                    hint={localize(
+                                                                        'Select the country where you currently live.'
+                                                                    )}
+                                                                    className='complete-user-profile-modal__bottom-margin-field'
+                                                                    value={residence_to_display}
+                                                                />
+                                                            ) : (
+                                                                <SelectNative
+                                                                    placeholder={localize('Please select')}
+                                                                    label={localize('Country of residence')}
+                                                                    value={residence_to_display}
+                                                                    list_items={residence_list}
+                                                                    use_text={true}
+                                                                    onChange={(e: { target: { value: string } }) => {
+                                                                        setFieldValue(
+                                                                            'residence',
+                                                                            e.target.value,
+                                                                            true
+                                                                        );
+                                                                        setResidenceToDisplay(e.target.value);
+                                                                    }}
+                                                                    hint={localize(
+                                                                        'Select the country where you currently live.'
+                                                                    )}
+                                                                    className='complete-user-profile-modal__bottom-margin-field'
+                                                                />
                                                             )}
-                                                            className='complete-user-profile-modal__bottom-margin-field'
-                                                            value={values.residence}
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            label={localize('Country of residence')}
-                                                            value={values.residence}
-                                                            list_items={residence_list}
-                                                            use_text={true}
-                                                            onChange={({ text }: TAutoComplete) => {
-                                                                setFieldValue('residence', text, true);
-                                                            }}
-                                                            hint={localize(
-                                                                'Select the country where you currently live.'
-                                                            )}
-                                                            className='complete-user-profile-modal__bottom-margin-field'
-                                                        />
+                                                        </>
                                                     )}
-                                                </>
+                                                </Field>
+                                            ) : (
+                                                // Fallback to input field when states list is empty / unavailable for country
+                                                <FormInputField
+                                                    className='complete-user-profile-modal__bottom-margin'
+                                                    name='address_state'
+                                                    label={localize('Country of residence')}
+                                                    placeholder={localize('Country of residence')}
+                                                    hint={localize('Select the country where you currently live.')}
+                                                />
                                             )}
-                                        </Field>
-                                    ) : (
-                                        // Fallback to input field when states list is empty / unavailable for country
-                                        <FormInputField
-                                            className='complete-user-profile-modal__bottom-margin'
-                                            name='address_state'
-                                            label={localize('Country of residence')}
-                                            placeholder={localize('Country of residence')}
-                                            hint={localize('Select the country where you currently live.')}
-                                        />
+                                        </>
                                     )}
-                                    {residence_list?.length > 0 ? (
-                                        <Field name='citizen'>
-                                            {({ field }: FieldProps) => (
-                                                <>
-                                                    {isDesktop ? (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            label={localize('Citizenship')}
-                                                            list_items={residence_list}
-                                                            onItemSelection={({ value, text }: TAutoComplete) => {
-                                                                setFieldValue('citizen', value, true);
-                                                                setCitizenToDisplay(text);
-                                                            }}
-                                                            list_portal_id='modal_root'
-                                                            hint={localize(
-                                                                'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
+                                    {!citizen && (
+                                        <>
+                                            {residence_list?.length > 0 ? (
+                                                <Field name='citizen'>
+                                                    {({ field }: FieldProps) => (
+                                                        <>
+                                                            {isDesktop ? (
+                                                                <Autocomplete
+                                                                    {...field}
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    label={localize('Citizenship')}
+                                                                    list_items={residence_list}
+                                                                    onItemSelection={({ value, text }) => {
+                                                                        setFieldValue('citizen', value, true);
+                                                                        setCitizenToDisplay(text);
+                                                                    }}
+                                                                    list_portal_id='modal_root'
+                                                                    hint={localize(
+                                                                        'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
+                                                                    )}
+                                                                    className='complete-user-profile-modal__bottom-margin-field'
+                                                                    value={citizen_to_display || values.citizen}
+                                                                />
+                                                            ) : (
+                                                                <SelectNative
+                                                                    placeholder={localize('Please select')}
+                                                                    label={localize('Citizenship')}
+                                                                    value={citizen_to_display || values.citizen}
+                                                                    list_items={residence_list}
+                                                                    use_text={true}
+                                                                    onChange={({ text, value }) => {
+                                                                        setFieldValue('citizen', value, true);
+                                                                        setCitizenToDisplay(text);
+                                                                    }}
+                                                                    hint={localize(
+                                                                        'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
+                                                                    )}
+                                                                    className='complete-user-profile-modal__bottom-margin-field'
+                                                                />
                                                             )}
-                                                            className='complete-user-profile-modal__bottom-margin-field'
-                                                            value={citizen_to_display}
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            label={localize('Citizenship')}
-                                                            value={citizen_to_display || values.citizen}
-                                                            list_items={residence_list}
-                                                            use_text={true}
-                                                            onChange={({ value, text }: TAutoComplete) => {
-                                                                setFieldValue('citizen', value, true);
-                                                                setCitizenToDisplay(text);
-                                                            }}
-                                                            hint={localize(
-                                                                'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
-                                                            )}
-                                                            className='complete-user-profile-modal__bottom-margin-field'
-                                                        />
+                                                        </>
                                                     )}
-                                                </>
+                                                </Field>
+                                            ) : (
+                                                // Fallback to input field when states list is empty / unavailable for country
+                                                <FormInputField
+                                                    className='complete-user-profile-modal__bottom-margin-field'
+                                                    name='address_state'
+                                                    label={localize('Citizenship')}
+                                                    placeholder={localize('Citizenship')}
+                                                    hint={localize(
+                                                        'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
+                                                    )}
+                                                />
                                             )}
-                                        </Field>
-                                    ) : (
-                                        // Fallback to input field when states list is empty / unavailable for country
-                                        <FormInputField
-                                            className='complete-user-profile-modal__bottom-margin-field'
-                                            name='address_state'
-                                            label={localize('Citizenship')}
-                                            placeholder={localize('Citizenship')}
-                                            hint={localize(
-                                                'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
-                                            )}
-                                        />
+                                        </>
                                     )}
                                 </>
                             )}
@@ -297,91 +306,115 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                         <Localize i18n_default_text='Address Details' />
                                     </Text>
                                     <div>
-                                        <FormInputField
-                                            name='address_line_1'
-                                            required
-                                            label={localize('First line of address*')}
-                                            maxLength={255}
-                                            placeholder={localize('First line of address')}
-                                        />
-                                        <FormInputField
-                                            name='address_line_2'
-                                            label={localize('Second line of address')}
-                                            maxLength={255}
-                                            placeholder={localize('Second line of address')}
-                                        />
-                                        <FormInputField
-                                            name='address_city'
-                                            required
-                                            label={localize('Town/City*')}
-                                            placeholder={localize('Town/City')}
-                                        />
-                                        {!state_list_fetched && (
-                                            <div className='details-form__loader'>
-                                                <Loading is_fullscreen={false} />
-                                            </div>
+                                        {!address_line_1 && (
+                                            <>
+                                                <FormInputField
+                                                    name='address_line_1'
+                                                    required
+                                                    label={localize('First line of address*')}
+                                                    maxLength={255}
+                                                    placeholder={localize('First line of address')}
+                                                    values={values.address_line_1}
+                                                />
+                                                <FormInputField
+                                                    name='address_line_2'
+                                                    label={localize('Second line of address')}
+                                                    maxLength={255}
+                                                    placeholder={localize('Second line of address')}
+                                                    values={values.address_line_2}
+                                                />
+                                            </>
                                         )}
-                                        {states_list?.length > 0 ? (
-                                            <Field name='address_state'>
-                                                {({ field }: FieldProps) => (
-                                                    <>
-                                                        {isDesktop ? (
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete='off'
-                                                                label={localize('State/Province')}
-                                                                list_items={states_list}
-                                                                onItemSelection={({ value, text }: TAutoComplete) => {
-                                                                    setFieldValue(
-                                                                        'address_state',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    );
-                                                                    setAddressStateToDisplay('');
-                                                                }}
-                                                                list_portal_id='modal_root'
-                                                                className='complete-user-profile-modal__bottom-margin'
-                                                            />
-                                                        ) : (
-                                                            <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                label={localize('State/Province')}
-                                                                value={address_state_to_display || values.address_state}
-                                                                list_items={states_list}
-                                                                use_text={true}
-                                                                onChange={(e: { target: { value: string } }) => {
-                                                                    setFieldValue(
-                                                                        'address_state',
-                                                                        e.target.value,
-                                                                        true
-                                                                    );
-                                                                    setAddressStateToDisplay('');
-                                                                }}
-                                                                className='complete-user-profile-modal__bottom-margin'
-                                                            />
-                                                        )}
-                                                    </>
-                                                )}
-                                            </Field>
-                                        ) : (
-                                            // Fallback to input field when states list is empty / unavailable for country
+                                        {!address_city && (
                                             <FormInputField
-                                                name='address_state'
-                                                label={localize('State/Province')}
-                                                placeholder={localize('State/Province')}
-                                                className='complete-user-profile-modal__bottom-margin'
+                                                name='address_city'
+                                                required
+                                                label={localize('Town/City*')}
+                                                placeholder={localize('Town/City')}
+                                                values={values.address_city}
                                             />
                                         )}
-                                        <FormInputField
-                                            name='address_postcode'
-                                            label={localize('Postal/ZIP Code')}
-                                            placeholder={localize('Postal/ZIP Code')}
-                                            onChange={e => {
-                                                setFieldTouched('address_postcode', true);
-                                                handleChange(e);
-                                            }}
-                                        />
+                                        {!address_state && (
+                                            <>
+                                                {!state_list_fetched && (
+                                                    <div className='details-form__loader'>
+                                                        <Loading is_fullscreen={false} />
+                                                    </div>
+                                                )}
+                                                {states_list?.length > 0 ? (
+                                                    <Field name='address_state'>
+                                                        {({ field }: FieldProps) => (
+                                                            <>
+                                                                {isDesktop ? (
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='off'
+                                                                        label={localize('State/Province')}
+                                                                        list_items={states_list}
+                                                                        onItemSelection={({
+                                                                            value,
+                                                                            text,
+                                                                        }: TAutoComplete) => {
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            );
+                                                                            setAddressStateToDisplay('');
+                                                                        }}
+                                                                        list_portal_id='modal_root'
+                                                                        className='complete-user-profile-modal__bottom-margin'
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize('Please select')}
+                                                                        label={localize('State/Province')}
+                                                                        value={
+                                                                            address_state_to_display ||
+                                                                            values.address_state
+                                                                        }
+                                                                        list_items={states_list}
+                                                                        use_text={true}
+                                                                        onChange={(e: {
+                                                                            target: { value: string };
+                                                                        }) => {
+                                                                            setFieldValue(
+                                                                                'address_state',
+                                                                                e.target.value,
+                                                                                true
+                                                                            );
+                                                                            setAddressStateToDisplay('');
+                                                                        }}
+                                                                        className='complete-user-profile-modal__bottom-margin'
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </Field>
+                                                ) : (
+                                                    // Fallback to input field when states list is empty / unavailable for country
+                                                    <FormInputField
+                                                        name='address_state'
+                                                        label={localize('State/Province')}
+                                                        placeholder={localize('State/Province')}
+                                                        className='complete-user-profile-modal__bottom-margin'
+                                                    />
+                                                )}
+                                            </>
+                                        )}
+                                        {!address_postcode && (
+                                            <FormInputField
+                                                name='address_postcode'
+                                                label={localize('Postal/ZIP Code')}
+                                                placeholder={localize('Postal/ZIP Code')}
+                                                onChange={e => {
+                                                    setFieldTouched('address_postcode', true);
+                                                    handleChange(e);
+                                                }}
+                                                values={values.address_postcode}
+                                            />
+                                        )}
                                     </div>
                                 </>
                             )}

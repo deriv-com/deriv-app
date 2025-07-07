@@ -181,7 +181,7 @@ const PurchaseButton = observer(() => {
                 hasCloseButton: true,
                 hasFixedHeight: false,
                 style: {
-                    marginBottom: '60px',
+                    marginBottom: is_logged_in ? '48px' : '-8px',
                     width: 'calc(100% - var(--core-spacing-800)',
                 },
             });

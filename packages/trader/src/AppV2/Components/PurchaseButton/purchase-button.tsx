@@ -181,7 +181,7 @@ const PurchaseButton = observer(() => {
                 hasCloseButton: true,
                 hasFixedHeight: false,
                 style: {
-                    marginBottom: '0',
+                    marginBottom: '60px',
                     width: 'calc(100% - var(--core-spacing-800)',
                 },
             });

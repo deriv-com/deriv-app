@@ -50,7 +50,10 @@ const Reports = observer(({ history, location, routes }: TReports) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickClose = () => routeBackInApp(history);
+    const onClickClose = () => {
+        sessionStorage.removeItem('open_positions_filter');
+        routeBackInApp(history);
+    };
 
     const handleRouteChange = (e: React.ChangeEvent<HTMLSelectElement>) => history.push(e.target.value);
 

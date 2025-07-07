@@ -89,6 +89,8 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
+        account_settings,
+        residence,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -112,6 +114,8 @@ const AppModals = observer(() => {
         should_show_same_dob_phone_modal,
         is_tnc_update_modal_open,
         toggleTncUpdateModal,
+        setShouldShowCompleteUserProfileModal,
+        is_complete_user_profile_modal_open,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -138,6 +142,38 @@ const AppModals = observer(() => {
             });
         }
     }, [is_logged_in, is_authorize]);
+
+    React.useEffect(() => {
+        // Only run if account_settings and residence are loaded
+        if (!account_settings || !residence) return;
+
+        const { citizen, date_of_birth, address_line_1, address_city, address_state, address_postcode } =
+            account_settings;
+
+        const should_show_complete_user_profile_modal =
+            !residence ||
+            !citizen ||
+            !date_of_birth ||
+            !address_line_1 ||
+            !address_city ||
+            !address_state ||
+            !address_postcode;
+
+        if (!has_wallet && is_logged_in && should_show_complete_user_profile_modal) {
+            setShouldShowCompleteUserProfileModal(true);
+        }
+    }, [
+        has_wallet,
+        is_logged_in,
+        is_authorize,
+        residence,
+        account_settings?.citizen,
+        account_settings?.date_of_birth,
+        account_settings?.address_line_1,
+        account_settings?.address_city,
+        account_settings?.address_state,
+        account_settings?.address_postcode,
+    ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 
@@ -183,9 +219,6 @@ const AppModals = observer(() => {
             break;
     }
     if (!url_action_param) {
-        if (!has_wallet && is_logged_in) {
-            ComponentToLoad = <CompleteUserProfile />;
-        }
         if (should_show_trading_assessment_existing_user_form) {
             ComponentToLoad = <TradingAssessmentExistingUser />;
         } else if (is_closing_create_real_account_modal) {
@@ -246,6 +279,9 @@ const AppModals = observer(() => {
 
         if (is_tnc_update_modal_open) {
             ComponentToLoad = <TncStatusUpdateModal />;
+        }
+        if (is_complete_user_profile_modal_open) {
+            ComponentToLoad = <CompleteUserProfile account_settings={account_settings} residence={residence} />;
         }
     }
 

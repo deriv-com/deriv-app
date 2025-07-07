@@ -19,7 +19,7 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
 
 export const redirectToSignUp = () => {
     const location = window.location.href;
-    const isDtraderRoute = window.location.pathname.startsWith(routes.trade);
+    const isDtraderRoute = window.location.pathname.includes(routes.trade);
 
     if (isDtraderRoute) {
         window.open(getHubSignupUrl(location));

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { platforms } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import Page404 from 'Components/page-404';
@@ -13,7 +15,15 @@ type TBinaryRoutesProps = {
 
 const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { client } = useStore();
-    const { has_wallet } = client;
+    const { has_wallet, loginid } = client;
+    const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
+
+    const is_wallet_login = /^((CRW|MFW|VRW)\d+)/.test(loginid ?? '');
+
+    if (has_wallet && is_wallet_login && isHubRedirectionEnabled) {
+        window.location.replace(`${platforms.tradershub_os.url}/wallets`);
+        return null;
+    }
 
     if (has_wallet) return <Page404 />;
 

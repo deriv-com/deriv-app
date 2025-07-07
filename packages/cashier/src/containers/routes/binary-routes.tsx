@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
@@ -7,7 +7,6 @@ import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { deriv_urls } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
-import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 
 import RouteWithSubRoutes from './route-with-sub-routes';

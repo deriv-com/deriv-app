@@ -27,7 +27,12 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
 
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
-            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
+
+            const client_accounts = JSON.parse(window.localStorage.getItem('client_accounts') || '{}');
+            const active_wallet_loginid = window.sessionStorage.getItem('active_wallet_loginid');
+            const account_currency =
+                client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
+
             window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         }
     }, [isHubRedirectionEnabled, has_wallet, is_logging_out, is_logged_in, is_client_store_initialized]);

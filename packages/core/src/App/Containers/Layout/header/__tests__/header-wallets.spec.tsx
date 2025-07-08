@@ -77,13 +77,14 @@ describe('HeaderWallets', () => {
     const history = createBrowserHistory();
     const default_mock = {
         client: {
+            has_wallet: false,
+            is_client_store_initialized: true,
             is_logged_in: true,
             is_logging_in: false,
             is_single_logging_in: false,
             is_switching: false,
             is_bot_allowed: true,
             is_mt5_allowed: true,
-            is_dxtrade_allowed: true,
             is_crypto: jest.fn(() => false),
         },
         common: {

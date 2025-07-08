@@ -81,7 +81,9 @@ describe('HeaderLegacy', () => {
         client: {
             currency: 'USD',
             has_any_real_account: true,
+            has_wallet: false,
             is_bot_allowed: true,
+            is_client_store_initialized: true,
             is_dxtrade_allowed: true,
             is_logged_in: true,
             is_logging_in: false,

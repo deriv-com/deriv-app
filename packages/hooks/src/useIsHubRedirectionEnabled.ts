@@ -5,12 +5,12 @@ import { useStore } from '@deriv/stores';
 
 const useIsHubRedirectionEnabled = () => {
     const { data } = useRemoteConfig(true);
-    const hub_enabled_country_list: string[] = data?.hub_enabled_country_list ?? [];
+    const hub_enabled_country_list = (data?.hub_enabled_country_list as string[]) ?? [];
     const { client } = useStore();
     const { account_settings, clients_country } = client;
 
-    const cookieCountry: string | null | undefined = JSON.parse(Cookies.get('client_information') || '{}')?.residence;
-    const userCountry: string | null | undefined = cookieCountry || account_settings?.country_code;
+    const cookieCountry = JSON.parse(Cookies.get('client_information') || '{}')?.residence;
+    const userCountry = cookieCountry || account_settings?.country_code;
 
     const isHubRedirectionEnabled =
         Array.isArray(hub_enabled_country_list) && userCountry && hub_enabled_country_list.includes(userCountry);

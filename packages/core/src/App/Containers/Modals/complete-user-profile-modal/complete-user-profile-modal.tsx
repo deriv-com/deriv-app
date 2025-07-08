@@ -18,6 +18,7 @@ import { InlineMessage, useDevice } from '@deriv-com/ui';
 
 import DateOfBirthField from './date-of-birth-field';
 import FormInputField from './form-input-field';
+import { ValidationSchema } from './validation';
 
 import './complete-user-profile-modal.scss';
 
@@ -52,9 +53,29 @@ type TCompleteUserProfileProps = {
     residence: string;
 };
 
+const makeSettingsRequest = (
+    values: FormikValues,
+    changeable_fields: string[],
+    account_settings: TCompleteUserProfileFormProps = initial_values
+) => {
+    const request = filterObjProperties(values, changeable_fields);
+
+    Object.keys(request).forEach(key => {
+        if (account_settings && account_settings[key] !== undefined && account_settings[key] === request[key]) {
+            delete request[key];
+        }
+    });
+
+    if (request.date_of_birth) {
+        request.date_of_birth = formatDate(request.date_of_birth, 'YYYY-MM-DD');
+    }
+
+    return request;
+};
+
 const CompleteUserProfile = observer(({ account_settings, residence }: TCompleteUserProfileProps) => {
     const { client, ui } = useStore();
-    const { getChangeableFields } = client;
+    const { getChangeableFields, is_svg } = client;
     const { is_complete_user_profile_modal_open, setShouldShowCompleteUserProfileModal } = ui;
     const { isDesktop } = useDevice();
     const { data: residence_list, isFetched: residence_list_fetched } = useResidenceList();
@@ -80,18 +101,8 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
         address_postcode: address_postcode || '',
     };
 
-    const showCountryAndCitizenshipFields = !(residence && citizen);
-    const showAddressDetailsFields = !(address_line_1 && address_city && address_state && address_postcode);
-
-    const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
-        const request = filterObjProperties(values, changeable_fields);
-
-        if (request.date_of_birth) {
-            request.date_of_birth = formatDate(request.date_of_birth, 'YYYY-MM-DD');
-        }
-
-        return request;
-    };
+    const showCountryAndCitizenshipFields = !residence || !citizen;
+    const showAddressDetailsFields = !address_line_1 || !address_city;
 
     const handleSubmit = async (
         values: TCompleteUserProfileFormProps,
@@ -99,7 +110,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
     ) => {
         setSubmitting(true);
 
-        const request = makeSettingsRequest(values, changeable_fields);
+        const request = makeSettingsRequest(values, changeable_fields, account_settings);
 
         const data = await WS.setSettings(request);
 
@@ -123,7 +134,12 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
             className='complete-user-profile-modal'
         >
             <ThemedScrollbars autohide={false}>
-                <Formik initialValues={initial_values} validateOnMount onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={initial_values}
+                    validateOnMount
+                    onSubmit={handleSubmit}
+                    validationSchema={ValidationSchema(is_svg, account_settings)}
+                >
                     {({
                         handleSubmit,
                         isSubmitting,
@@ -131,6 +147,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                         setFieldValue,
                         handleChange,
                         setFieldTouched,
+                        isValid,
                     }: FormikHandlers &
                         FormikHelpers<TCompleteUserProfileFormProps> &
                         FormikState<TCompleteUserProfileFormProps>) => (
@@ -172,7 +189,6 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                     >
                                         <Localize i18n_default_text='Country and citizenship' />
                                     </Text>
-                                    {/* Residence */}
                                     {!residence && (
                                         <>
                                             {!residence_list_fetched && (
@@ -226,7 +242,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                     )}
                                                 </Field>
                                             ) : (
-                                                // Fallback to input field when states list is empty / unavailable for country
+                                                // Fallback to input field when residence list is empty
                                                 <FormInputField
                                                     className='complete-user-profile-modal__bottom-margin'
                                                     name='address_state'
@@ -284,7 +300,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                     )}
                                                 </Field>
                                             ) : (
-                                                // Fallback to input field when states list is empty / unavailable for country
+                                                // Fallback to input field when residence list is empty
                                                 <FormInputField
                                                     className='complete-user-profile-modal__bottom-margin-field'
                                                     name='address_state'
@@ -317,14 +333,12 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                     label={localize('First line of address*')}
                                                     maxLength={255}
                                                     placeholder={localize('First line of address')}
-                                                    values={values.address_line_1}
                                                 />
                                                 <FormInputField
                                                     name='address_line_2'
                                                     label={localize('Second line of address')}
                                                     maxLength={255}
                                                     placeholder={localize('Second line of address')}
-                                                    values={values.address_line_2}
                                                 />
                                             </>
                                         )}
@@ -334,7 +348,6 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                                                 required
                                                 label={localize('Town/City*')}
                                                 placeholder={localize('Town/City')}
-                                                values={values.address_city}
                                             />
                                         )}
                                         {!address_state && (
@@ -424,7 +437,7 @@ const CompleteUserProfile = observer(({ account_settings, residence }: TComplete
                             <Modal.Footer className='complete-user-profile-modal__footer'>
                                 <FormSubmitButton
                                     label={localize('Submit')}
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !isValid}
                                     is_loading={isSubmitting}
                                     className='complete-user-profile-modal__submit-button'
                                 />

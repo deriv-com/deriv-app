@@ -147,17 +147,10 @@ const AppModals = observer(() => {
         // Only run if account_settings and residence are loaded
         if (!account_settings || !residence) return;
 
-        const { citizen, date_of_birth, address_line_1, address_city, address_state, address_postcode } =
-            account_settings;
+        const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
 
         const should_show_complete_user_profile_modal =
-            !residence ||
-            !citizen ||
-            !date_of_birth ||
-            !address_line_1 ||
-            !address_city ||
-            !address_state ||
-            !address_postcode;
+            !residence || !citizen || !date_of_birth || !address_line_1 || !address_city;
 
         if (!has_wallet && is_logged_in && should_show_complete_user_profile_modal) {
             setShouldShowCompleteUserProfileModal(true);
@@ -167,12 +160,12 @@ const AppModals = observer(() => {
         is_logged_in,
         is_authorize,
         residence,
-        account_settings?.citizen,
-        account_settings?.date_of_birth,
-        account_settings?.address_line_1,
-        account_settings?.address_city,
-        account_settings?.address_state,
-        account_settings?.address_postcode,
+        account_settings.citizen,
+        account_settings.date_of_birth,
+        account_settings.address_line_1,
+        account_settings.address_city,
+        account_settings,
+        setShouldShowCompleteUserProfileModal,
     ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);

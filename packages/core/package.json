@@ -154,6 +154,8 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "usehooks-ts": "^2.7.0"
+        "usehooks-ts": "^2.7.0",
+        "yup": "^0.32.11",
+        "dayjs": "^1.11.11"
     }
 }

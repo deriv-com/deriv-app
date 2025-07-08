@@ -85,6 +85,7 @@ describe('HeaderWallets', () => {
             is_switching: false,
             is_bot_allowed: true,
             is_mt5_allowed: true,
+            is_dxtrade_allowed: true,
             is_crypto: jest.fn(() => false),
         },
         common: {

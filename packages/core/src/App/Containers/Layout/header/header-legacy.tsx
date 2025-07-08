@@ -1,18 +1,22 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
+
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import ToggleMenuDrawerAccountsOS from 'App/Components/Layout/Header/toggle-menu-drawer-accounts-os.jsx';
 import platform_config from 'App/Constants/platform-config';
+import CurrencySelectionModal from 'App/Containers/CurrencySelectionModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
-import CurrencySelectionModal from 'App/Containers/CurrencySelectionModal';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
+
 import DerivShortLogo from './deriv-short-logo';
 import HeaderAccountActions from './header-account-actions';
 import TradersHubHomeButton from './traders-hub-home-button';
@@ -22,6 +26,7 @@ const HeaderLegacy = observer(() => {
     const {
         currency,
         has_any_real_account,
+        has_wallet,
         is_bot_allowed,
         is_dxtrade_allowed,
         is_logged_in,
@@ -30,12 +35,14 @@ const HeaderLegacy = observer(() => {
         is_mt5_allowed,
         is_virtual,
         is_switching,
+        is_client_store_initialized,
     } = client;
     const { app_routing_history, current_language, platform, is_from_tradershub_os } = common;
     const { header_extension, is_app_disabled, is_route_modal_on, toggleReadyToDepositModal, is_real_acc_signup_on } =
         ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
     const { setTogglePlatformType, modal_data } = traders_hub;
+    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
     const { isDesktop } = useDevice();
 
@@ -80,6 +87,26 @@ const HeaderLegacy = observer(() => {
             }
             return true;
         });
+
+    const excludedRoutes = [
+        routes.trade,
+        routes.trader_positions,
+        routes.complaints_policy,
+        routes.endpoint,
+        routes.redirect,
+        routes.index,
+        routes.error404,
+    ];
+
+    const isExcludedRoute = excludedRoutes.some(route => window.location.pathname.includes(route));
+
+    if (
+        (!is_client_store_initialized && !isExcludedRoute) ||
+        (has_wallet && !isHubRedirectionLoaded && !isExcludedRoute) ||
+        (has_wallet && isHubRedirectionLoaded && !isExcludedRoute && isHubRedirectionEnabled)
+    ) {
+        return null;
+    }
 
     return (
         <header

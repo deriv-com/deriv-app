@@ -78,7 +78,7 @@ const RootComponent = observer(props => {
             switch (redirect_to_lowcode) {
                 case 'wallet':
                     localStorage.setItem('wallet_redirect_done', true);
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
                     break;
                 default:
                     window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
@@ -101,7 +101,13 @@ const RootComponent = observer(props => {
         is_client_store_initialized,
     ]);
 
-    if (has_wallet && !isHubRedirectionLoaded) return <Loading is_fullscreen />;
+    if (
+        !is_client_store_initialized ||
+        (has_wallet && !isHubRedirectionLoaded) ||
+        (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)
+    ) {
+        return <Loading is_fullscreen />;
+    }
 
     return has_wallet ? (
         <Wallets

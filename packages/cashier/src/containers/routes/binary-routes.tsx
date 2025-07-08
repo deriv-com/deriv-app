@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Switch } from 'react-router-dom';
 
 import { useRemoteConfig } from '@deriv/api';
@@ -26,29 +26,25 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
-    useEffect(() => {
-        if (hub_enabled_country_list.length > 0) {
-            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+    const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
 
-            const client_accounts = JSON.parse(window.localStorage.getItem('client_accounts') || '{}');
-            const active_wallet_loginid = window.sessionStorage.getItem('active_wallet_loginid');
-            const account_currency =
-                client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
-
-            if (
-                has_wallet &&
-                Array.isArray(hub_enabled_country_list) &&
-                account_settings.country_code &&
-                hub_enabled_country_list.includes(account_settings.country_code)
-            )
-                window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
-        }
-    }, [has_wallet, hub_enabled_country_list, account_settings.country_code]);
+    const client_accounts = JSON.parse(window.localStorage.getItem('client_accounts') || '{}');
+    const active_wallet_loginid = window.sessionStorage.getItem('active_wallet_loginid');
+    const account_currency = client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
 
     if (has_wallet && hub_enabled_country_list.length === 0) return <Loading is_fullscreen />;
+
+    if (
+        has_wallet &&
+        hub_enabled_country_list.length > 0 &&
+        account_settings.country_code &&
+        hub_enabled_country_list.includes(account_settings.country_code)
+    ) {
+        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
+    }
 
     return (
         <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>

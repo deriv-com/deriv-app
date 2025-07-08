@@ -261,7 +261,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     useEffect(() => {
         if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
-            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
+            const redirectUrl = window.location.hostname.includes('staging')
+                ? STAGING_REDIRECT_URL
+                : PRODUCTION_REDIRECT_URL;
+
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
             const client_accounts = JSON.parse(window.localStorage.getItem('client_accounts') || '{}');

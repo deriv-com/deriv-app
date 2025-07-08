@@ -22,7 +22,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     useEffect(() => {
-        if (isHubRedirectionEnabled && isHubRedirectionLoaded && has_wallet) {
+        if (isHubRedirectionLoaded) {
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;
@@ -33,11 +33,12 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
             const account_currency =
                 client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
 
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            if (has_wallet && isHubRedirectionEnabled)
+                window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
         }
     }, [isHubRedirectionEnabled, isHubRedirectionLoaded, has_wallet]);
 
-    if (has_wallet) return <Loading is_fullscreen />;
+    if (has_wallet && !isHubRedirectionLoaded) return <Loading is_fullscreen />;
 
     return (
         <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>

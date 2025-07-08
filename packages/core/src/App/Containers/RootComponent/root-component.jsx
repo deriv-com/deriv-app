@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
+
+import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
 import { deriv_urls, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -98,6 +100,8 @@ const RootComponent = observer(props => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
+
+    if (has_wallet && !isHubRedirectionLoaded) return <Loading is_fullscreen />;
 
     return has_wallet ? (
         <Wallets

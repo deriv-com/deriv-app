@@ -217,11 +217,11 @@ $POSITIONS_DRAWER_MARGIN: 8px;
 $HEADER_HEIGHT: 48px;
 $FOOTER_HEIGHT: 36px;
 
-$MOBILE_HEADER_HEIGHT: 40px;
-$MOBILE_HEADER_DTRADER_V2_HEIGHT: 40px;
+$MOBILE_HEADER_HEIGHT: 48px;
+$MOBILE_HEADER_DTRADER_V2_HEIGHT: 48px;
 $MOBILE_HEADER_DTRADER_V2_WITH_BANNER_HEIGHT: 128px;
 $MOBILE_HEADER_HEIGHT_DASHBOARD: 48px;
-$MOBILE_WRAPPER_HEADER_HEIGHT: 40px;
+$MOBILE_WRAPPER_HEADER_HEIGHT: 48px;
 $MOBILE_WRAPPER_FOOTER_HEIGHT: 70px;
 
 $SIDEBAR_WIDTH: 240px;
@@ -255,5 +255,9 @@ $ready-banner-tick-bg-color: #4ab4b3;
 $wallet-demo-bg-color: #fff8f9;
 $wallet-dark-demo-bg-color: #140506;
 $wallet-demo-divider-color: #fff0f1;
-$wallet-box-shadow: 0px 12px 16px -4px rgba(14, 14, 14, 0.08), 0px 4px 6px -2px rgba(14, 14, 14, 0.03);
-$btn-shadow: 0px 24px 24px 0px rgba(0, 0, 0, 0.08), 0px 0px 24px 0px rgba(0, 0, 0, 0.08);
+$wallet-box-shadow:
+    0px 12px 16px -4px rgba(14, 14, 14, 0.08),
+    0px 4px 6px -2px rgba(14, 14, 14, 0.03);
+$btn-shadow:
+    0px 24px 24px 0px rgba(0, 0, 0, 0.08),
+    0px 0px 24px 0px rgba(0, 0, 0, 0.08);

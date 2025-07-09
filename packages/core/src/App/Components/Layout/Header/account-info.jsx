@@ -3,24 +3,21 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
 import AccountInfoIcon from './account-info-icon';
-import DisplayAccountType from './display-account-type';
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
-    account_type = '',
     balance,
     currency,
     disableApp,
     enableApp,
     is_dialog_on,
-    is_eu,
     is_virtual,
     toggleDialog,
     is_disabled,
@@ -56,34 +53,44 @@ const AccountInfo = ({
                             )
                         )}
                     </span>
-                    {(typeof balance !== 'undefined' || !currency) && (
-                        <div className='acc-info__account-type-and-balance'>
-                            <p
-                                data-testid='dt_balance'
-                                className={classNames('acc-info__balance', {
-                                    'acc-info__balance--no-currency': !currency && !is_virtual,
-                                })}
-                            >
-                                {!currency ? (
-                                    <Localize i18n_default_text='No currency assigned' />
-                                ) : (
-                                    `${balance} ${getCurrencyDisplayCode(currency)}`
-                                )}
-                            </p>
-                            <Text size='xxxs' line_height='s'>
-                                <DisplayAccountType account_type={account_type} is_eu={is_eu} />
+                    <div className='acc-info__content'>
+                        <div className='acc-info__account-type-header'>
+                            <Text as='p' size='xxs' className='acc-info__account-type'>
+                                {is_virtual ? localize('Demo') : localize('Real')}
                             </Text>
+                            {is_disabled ? (
+                                <Icon
+                                    data_testid='dt_lock_icon'
+                                    icon='IcLock'
+                                    className='acc-info__select-arrow'
+                                    size={12}
+                                />
+                            ) : (
+                                <Icon
+                                    data_testid='dt_select_arrow'
+                                    icon='IcChevronDownBold'
+                                    className='acc-info__select-arrow'
+                                    size={12}
+                                />
+                            )}
                         </div>
-                    )}
-                    {is_disabled ? (
-                        <Icon data_testid='dt_lock_icon' icon='IcLock' />
-                    ) : (
-                        <Icon
-                            data_testid='dt_select_arrow'
-                            icon='IcChevronDownBold'
-                            className='acc-info__select-arrow'
-                        />
-                    )}
+                        {(typeof balance !== 'undefined' || !currency) && (
+                            <div className='acc-info__balance-section'>
+                                <p
+                                    data-testid='dt_balance'
+                                    className={classNames('acc-info__balance', {
+                                        'acc-info__balance--no-currency': !currency && !is_virtual,
+                                    })}
+                                >
+                                    {!currency ? (
+                                        <Localize i18n_default_text='No currency assigned' />
+                                    ) : (
+                                        `${balance} ${getCurrencyDisplayCode(currency)}`
+                                    )}
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </AccountInfoWrapper>
             <div className='acc-info__separator' />
@@ -116,14 +123,12 @@ const AccountInfo = ({
 
 AccountInfo.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
-    account_type: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_dialog_on: PropTypes.bool,
     is_disabled: PropTypes.bool,
-    is_eu: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_mobile: PropTypes.bool,
     loginid: PropTypes.string,

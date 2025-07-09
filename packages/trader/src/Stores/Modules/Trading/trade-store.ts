@@ -1127,6 +1127,10 @@ export default class TradeStore extends BaseStore {
                         if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
                             throw new Error('Proposal ID does not match.');
                         }
+
+                        // Clear open positions filter from session storage when a new contract is purchased
+                        sessionStorage.removeItem('open_positions_filter');
+
                         const contract_data: TContractDataForGTM = {
                             ...this.proposal_requests[type],
                             ...this.proposal_info[type],

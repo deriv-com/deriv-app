@@ -9,13 +9,13 @@ import { CountryUtils } from '@deriv-com/utils';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 
 export const AnalyticsInitializer = async () => {
-    const client_information = JSON.parse(Cookies.get('client_information') || 'null');
-    const account_type = client_information?.loginid?.match(/[a-zA-Z]+/g)?.join('');
     if (process.env.REMOTE_CONFIG_URL) {
         const flags = await fetch(process.env.REMOTE_CONFIG_URL)
             .then(res => res.json())
             .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
+            const client_information = JSON.parse(Cookies.get('client_information') || 'null');
+            const account_type = client_information?.loginid?.match(/[a-zA-Z]+/g)?.join('');
             const ppc_campaign_cookies =
                 JSON.parse(Cookies.get('utm_data') || 'null') === 'null'
                     ? {

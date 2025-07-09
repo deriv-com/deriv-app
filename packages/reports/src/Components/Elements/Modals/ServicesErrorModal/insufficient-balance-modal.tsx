@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Modal } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { getDomainUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
@@ -38,8 +38,8 @@ const InsufficientBalanceModal = observer(
                         onClick={() => {
                             if (!is_virtual) {
                                 if (has_wallet && isHubRedirectionEnabled) {
-                                    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-                                    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+                                    const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
+                                    const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
                                     const redirectUrl =
                                         process.env.NODE_ENV === 'production'
                                             ? PRODUCTION_REDIRECT_URL

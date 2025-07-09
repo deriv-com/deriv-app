@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
-import { isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
+import { getDomainUrl, isEmptyObject, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, Localize } from '@deriv/translations';
 import { ActionSheet } from '@deriv-com/quill-ui';
@@ -50,8 +50,8 @@ const ServiceErrorSheet = observer(() => {
                         resetServicesError();
                         if (!is_virtual) {
                             if (has_wallet && isHubRedirectionEnabled) {
-                                const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-                                const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+                                const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
+                                const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
                                 const redirectUrl =
                                     process.env.NODE_ENV === 'production'
                                         ? PRODUCTION_REDIRECT_URL

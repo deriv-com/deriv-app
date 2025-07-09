@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, getDomainUrl } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 import Page404 from 'Components/page-404';
@@ -30,8 +30,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         setPreventSingleLogin,
     } = client;
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+    const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         if (

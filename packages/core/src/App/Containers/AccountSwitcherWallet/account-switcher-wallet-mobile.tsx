@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Icon, MobileDialog, Text } from '@deriv/components';
-import { platforms, routes } from '@deriv/shared';
+import { getDomainUrl, platforms, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import { useIsHubRedirectionEnabled, useIsRtl, useStoreWalletAccountsList } from '@deriv/hooks';
@@ -43,8 +43,8 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
         if (isHubRedirectionEnabled) {
-            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
+            const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;

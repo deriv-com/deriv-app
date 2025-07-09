@@ -1,3 +1,4 @@
+import { getDomainUrl } from '../url';
 import { getUrlSmartTrader } from '../url/helpers';
 
 export const routes = {
@@ -122,19 +123,19 @@ export const isDisabledLandscapeBlockerRoute = (path: string) => {
 
 export const ACCOUNTS_OS_POI_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/Accounts/ProofOfIdentity'
-        : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentity';
+        ? `https://hub${getDomainUrl()}/Accounts/ProofOfIdentity`
+        : `https://staging-hub${getDomainUrl()}/Accounts/ProofOfIdentity`;
 export const ACCOUNTS_OS_POI_STATUS_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/Accounts/ProofOfIdentityStatus'
-        : 'https://staging-hub.deriv.com/Accounts/ProofOfIdentityStatus';
+        ? `https://hub${getDomainUrl()}/Accounts/ProofOfIdentityStatus`
+        : `https://staging-hub${getDomainUrl()}/Accounts/ProofOfIdentityStatus`;
 
 export const ACCOUNTS_OS_POA_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/Accounts/ProofOfAddress'
-        : 'https://staging-hub.deriv.com/Accounts/ProofOfAddress';
+        ? `https://hub${getDomainUrl()}/Accounts/ProofOfAddress`
+        : `https://staging-hub${getDomainUrl()}/Accounts/ProofOfAddress`;
 
 export const ACCOUNTS_OS_DFA_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/Accounts/Financial-Assessment'
-        : 'https://staging-hub.deriv.com/Accounts/Financial-Assessment';
+        ? `https://hub${getDomainUrl()}/Accounts/Financial-Assessment`
+        : `https://staging-hub${getDomainUrl()}/Accounts/Financial-Assessment`;

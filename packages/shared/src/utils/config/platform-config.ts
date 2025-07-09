@@ -3,6 +3,7 @@ import { getInitialLanguage } from '@deriv/translations';
 import i18n from 'i18next';
 import { setLocale, initMoment } from '../date';
 import { routes } from '../routes';
+import { getDomainUrl } from '../url';
 
 type TPlatform = {
     icon_text?: string;
@@ -15,8 +16,8 @@ type TPlatform = {
 type TPlatforms = Record<'p2p' | 'p2p_v2' | 'derivgo' | 'tradershub_os', TPlatform>;
 export const tradershub_os_url =
     process.env.NODE_ENV === 'production'
-        ? 'https://hub.deriv.com/tradershub'
-        : 'https://staging-hub.deriv.com/tradershub';
+        ? `https://hub${getDomainUrl()}/tradershub`
+        : `https://staging-hub${getDomainUrl()}/tradershub`;
 
 // TODO: This should be moved to PlatformContext
 export const platforms: TPlatforms = {

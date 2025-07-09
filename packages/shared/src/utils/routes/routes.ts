@@ -1,5 +1,17 @@
-import { getDomainUrl } from '../url';
 import { getUrlSmartTrader } from '../url/helpers';
+
+// Local function to get domain to avoid circular dependency
+const getDomainUrl = () => {
+    const hostname = window.location.hostname;
+
+    if (hostname.includes('.deriv.be')) {
+        return '.deriv.be';
+    }
+    if (hostname.includes('.deriv.me')) {
+        return '.deriv.me';
+    }
+    return '.deriv.com';
+};
 
 export const routes = {
     callback_page: '/callback',

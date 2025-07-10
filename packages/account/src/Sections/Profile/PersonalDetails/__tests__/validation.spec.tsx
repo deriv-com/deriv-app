@@ -135,9 +135,6 @@ describe('makeSettingsRequest', () => {
     it('should return correct request object for non-virtual user', () => {
         const mock_settings = {
             ...account_settings,
-            tax_residence: 'Indonesia',
-            tax_identification_number: '123',
-            residence: 'Indonesia',
         };
         const result = makeSettingsRequest(mock_settings, mock_residence_list, mock_state_list, false);
         expect(result).toEqual({
@@ -145,8 +142,6 @@ describe('makeSettingsRequest', () => {
             last_name: 'Doe',
             place_of_birth: '',
             address_state: '',
-            tax_identification_number: '123',
-            tax_residence: 'id',
         });
     });
 });

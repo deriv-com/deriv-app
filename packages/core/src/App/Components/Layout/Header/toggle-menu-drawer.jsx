@@ -99,13 +99,22 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
 
-    const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
     React.useEffect(() => {
         if (isSuccess && !isSubscribed && is_authorize) {
             subscribe();
         }
     }, [isSuccess, p2p_settings, subscribe, isSubscribed, is_authorize]);
+
+    // Cleanup timeout on unmount or route change
+    React.useEffect(() => {
+        return () => {
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+                setTransitionExit(false);
+                setIsOpen(false);
+            }
+        };
+    }, [route]);
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -392,7 +401,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <MobileDrawer.Item>
                                     <MenuLink
                                         link_to={handleTradershubRedirect()}
-                                        icon={TradersHubIcon}
+                                        icon={'IcAppstoreTradersHubHome'}
                                         text={localize("Trader's Hub")}
                                         onClickLink={toggleDrawer}
                                         is_active={route === routes.traders_hub}

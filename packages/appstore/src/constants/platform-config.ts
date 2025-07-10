@@ -31,13 +31,65 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
+// Type definition for client account object
+type ClientAccount = {
+    loginid?: string;
+    currency?: string;
+    account_category?: string;
+    account_type?: string;
+    broker?: string;
+    created_at?: number;
+    balance?: number;
+    currency_type?: string;
+    email?: string;
+    excluded_until?: string;
+    is_disabled?: number;
+    is_virtual?: number;
+    landing_company_name?: string;
+    landing_company_shortcode?: string;
+    linked_to?: unknown[];
+    residence?: string;
+    session_start?: number;
+    token?: string;
+    accepted_bch?: number;
+};
+
 /**
  * Appends current URL search parameters to a given URL
+ * If there's any login id provided will check on that first
  * @param url - The base URL to append parameters to
  * @returns The URL with search parameters appended
  */
 export const appendSearchParamsToUrl = (url: string): string => {
     const search_params = new URLSearchParams(window.location.search);
+
+    // Get active loginid from sessionStorage
+    const active_loginid = sessionStorage.getItem('active_wallet_loginid') || sessionStorage.getItem('active_loginid');
+
+    // Get currency from client.accounts if active_loginid exists
+    if (active_loginid) {
+        const client_accounts_str = localStorage.getItem('client.accounts') || '{}';
+
+        if (client_accounts_str) {
+            const client_accounts: Record<string, ClientAccount> = JSON.parse(client_accounts_str);
+
+            // Find the account that matches the active loginid
+            const active_account = client_accounts[active_loginid];
+
+            // If account found, set account parameter based on account type
+            if (active_account) {
+                // If loginid contains VRW or VRTC, it's a demo account
+                if (active_loginid?.includes('VRW') || active_loginid?.includes('VRTC')) {
+                    search_params.set('account', 'demo');
+                } else if (active_account.currency) {
+                    // Otherwise use the currency
+                    search_params.set('account', active_account.currency);
+                }
+            }
+        }
+    }
+
+    // If no search params to append, return original URL
     if (!search_params.toString()) return url;
 
     const url_obj = new URL(url, window.location.origin);
@@ -56,7 +108,7 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
         app_desc: localize('The options and multipliers trading platform.'),
-        link_to: routes.trade,
+        link_to: appendSearchParamsToUrl(routes.trade),
     },
     {
         name: getPlatformSettingsAppstore('dbot').name,

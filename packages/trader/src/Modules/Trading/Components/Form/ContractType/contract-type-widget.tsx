@@ -229,9 +229,7 @@ const ContractTypeWidget = observer(
                 categories.push({
                     label: localize('Options'),
                     contract_categories: options_category,
-                    component: options_category.some(category => /Vanillas|Turbos/i.test(category.key)) ? (
-                        <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
-                    ) : null,
+                    component: null,
                     key: 'Options',
                     icon: '',
                 });
@@ -241,7 +239,7 @@ const ContractTypeWidget = observer(
                 categories.push({
                     label: localize('Accumulators'),
                     contract_categories: accumulators_category,
-                    component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
+                    component: null,
                     key: 'Accumulators',
                     icon: '',
                 });

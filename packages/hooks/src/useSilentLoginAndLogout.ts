@@ -38,13 +38,17 @@ const useSilentLoginAndLogout = ({
     const { isTmbEnabled } = useTMB();
 
     useEffect(() => {
-        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
-        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
-        if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded) {
-            setClientIsSingleLoggingIn(true);
-        } else {
-            setClientIsSingleLoggingIn(false);
-        }
+        const renderSLO = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
+            const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
+            if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded && !is_tmb_enabled) {
+                setClientIsSingleLoggingIn(true);
+            } else {
+                setClientIsSingleLoggingIn(false);
+            }
+        };
+        renderSLO();
     }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
     const requestOidcLogin = async () => {

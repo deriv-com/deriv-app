@@ -6,6 +6,9 @@ jobs:
   build_test_and_publish:
     name: Build, Test and Publish to Cloudflare UAT2
     runs-on: Runner_16cores_Deriv-app
+    permissions:
+      contents: read
+      actions: write
     environment: Staging
     steps:
     - name: Checkout

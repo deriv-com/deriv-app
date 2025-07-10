@@ -86,11 +86,14 @@ export const getPlatformInformation = (routing_history: TRoutingHistory) => {
 };
 
 export const getActivePlatform = (routing_history: TRoutingHistory) => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
-    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return platform_name.DXtrade;
-    if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
-    return platform_name.DTrader;
+    switch (true) {
+        case isNavigationFromExternalPlatform(routing_history, routes.smarttrader):
+            return platform_name.SmartTrader;
+        case isNavigationFromPlatform(routing_history, '/'):
+            return '';
+        default:
+            return platform_name.DTrader;
+    }
 };
 
 export const getPlatformRedirect = (routing_history: TRoutingHistory) => {

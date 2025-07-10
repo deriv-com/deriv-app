@@ -79,6 +79,7 @@ export default class ClientStore extends BaseStore {
     is_populating_dxtrade_account_list = true;
     is_populating_ctrader_account_list = true;
     is_logging_out = false;
+    should_redirect_user_to_login = false;
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -221,6 +222,7 @@ export default class ClientStore extends BaseStore {
             has_logged_out: observable,
             is_landing_company_loaded: observable,
             is_account_setting_loaded: observable,
+            should_redirect_user_to_login: observable,
             has_enabled_two_fa: observable,
             has_changed_two_fa: observable,
             landing_companies: observable,
@@ -295,6 +297,7 @@ export default class ClientStore extends BaseStore {
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
+            setShouldRedirectToLogin: action.bound,
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
@@ -2211,6 +2214,10 @@ export default class ClientStore extends BaseStore {
         this.syncWithLegacyPlatforms(this.loginid, this.accounts);
     }
 
+    setShouldRedirectToLogin(should_redirect_user_to_login) {
+        this.should_redirect_user_to_login = should_redirect_user_to_login;
+    }
+
     async logout() {
         // makes sure to clear the cached traders-hub data when logging out
         localStorage.removeItem('traders_hub_store');
@@ -2311,6 +2318,8 @@ export default class ClientStore extends BaseStore {
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
+
+        this.setIsLoggingIn(false);
     }
 
     async setUserLogin(login_new_user) {
@@ -2450,7 +2459,18 @@ export default class ClientStore extends BaseStore {
         return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;
     }
 
+    // Helper method to validate action parameter and prevent prototype pollution
+    _isValidAction(action) {
+        if (!action || typeof action !== 'string') return false;
+        if (action.includes('__proto__')) return false;
+        if (action.includes('constructor')) return false;
+        if (action.includes('prototype')) return false;
+        return true;
+    }
+
     setVerificationCode(code, action) {
+        if (!this._isValidAction(action)) return;
+
         this.verification_code[action] = code;
         if (action !== 'phone_number_verification') {
             if (code) {
@@ -2466,6 +2486,8 @@ export default class ClientStore extends BaseStore {
     }
 
     setNewEmail(email, action) {
+        if (!this._isValidAction(action)) return;
+
         this.new_email[action] = email;
         if (email) {
             LocalStore.set(`new_email.${action}`, email);

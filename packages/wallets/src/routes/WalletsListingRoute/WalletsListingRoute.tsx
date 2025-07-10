@@ -1,6 +1,5 @@
-import React, { lazy, useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion, useSettings } from '@deriv/api-v2';
+import React, { lazy } from 'react';
+import { useActiveWalletAccount, useAllWalletAccounts, useIsEuRegion } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import {
     WalletListHeader,
@@ -8,10 +7,8 @@ import {
     WalletsAddMoreCarousel,
     WalletsCardLoader,
     WalletsDisclaimerBanner,
-    WalletsOutsystemsMigrationModal,
     WalletsResponsiveLoader,
 } from '../../components';
-import { useModal } from '../../components/ModalProvider';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
 
@@ -25,39 +22,12 @@ const LazyDesktopWalletsList = lazy(() => import('../../components/DesktopWallet
 const WalletsListingRoute: React.FC<TWalletsListingRouteProps> = ({ isHubRedirectionEnabled }) => {
     const { isDesktop } = useDevice();
     const { data: isEuRegion, isLoading: isEuRegionLoading } = useIsEuRegion();
-    const { data: settingsData, isLoading: isSettingsLoading } = useSettings();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { show } = useModal();
     const { data: allWallets, isLoading: isAllWalletsLoading } = useAllWalletAccounts();
     const hasAddedWallet = allWallets?.some(wallet => wallet.is_added);
     const shouldHideAddMoreCarousel = isAllWalletsLoading || isEuRegionLoading || (isEuRegion && hasAddedWallet);
-    const isOutsystemsMigrationModalClosed = Cookies.get('wallet_account');
-    const [shouldShowOutsystemsMigrationModal, setShouldShowOutsystemsMigrationModal] = useState(false);
 
-    useEffect(() => {
-        if (!isSettingsLoading) {
-            const isWalletFlagDisabled = settingsData?.feature_flag?.wallet === 0;
-            // Fallback to cookie if BE flag is not available
-            setShouldShowOutsystemsMigrationModal(
-                settingsData?.feature_flag?.wallet !== undefined
-                    ? isWalletFlagDisabled
-                    : !isOutsystemsMigrationModalClosed
-            );
-        }
-    }, [isSettingsLoading, settingsData, isOutsystemsMigrationModalClosed]);
-
-    useEffect(() => {
-        if (isHubRedirectionEnabled && shouldShowOutsystemsMigrationModal) {
-            show(<WalletsOutsystemsMigrationModal />);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isHubRedirectionEnabled, shouldShowOutsystemsMigrationModal]);
-
-    if (isSettingsLoading) {
-        return <WalletLoader />;
-    }
-
-    if (!shouldShowOutsystemsMigrationModal && isHubRedirectionEnabled) {
+    if (isHubRedirectionEnabled) {
         return <WalletLoader />;
     }
 

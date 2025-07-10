@@ -8,15 +8,12 @@ import { Localize } from '@deriv/translations';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
-    const { ui, client } = useStore();
-    const { is_dark_mode_on } = ui;
+    const { client } = useStore();
     const history = useHistory();
     const location = useLocation();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
     const { has_wallet } = client;
     const { pathname } = location;
-
-    const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     const handleTradershubRedirect = () => {
         if (isHubRedirectionEnabled && has_wallet) {
@@ -44,7 +41,7 @@ const TradersHubHomeButton = observer(() => {
             onClick={handleTradershubRedirect}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
-                <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />
+                <Icon icon={'IcAppstoreTradersHubHome'} size={16} />
             </div>
             <Text className='traders-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's Hub" />

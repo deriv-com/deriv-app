@@ -8,6 +8,9 @@ jobs:
   generate_and_push_deriv_api_types:
     if: github.repository == 'deriv-com/deriv-app'
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Setup node
         id: step1

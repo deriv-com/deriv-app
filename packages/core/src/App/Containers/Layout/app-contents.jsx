@@ -52,9 +52,6 @@ const AppContents = observer(({ children }) => {
     const [dtrader_v2_enabled_desktop] = useGrowthbookGetFeatureValue({
         featureFlag: 'dtrader_v2_enabled_desktop',
     });
-    const [isDuplicateLoginEnabled] = useGrowthbookGetFeatureValue({
-        featureFlag: 'duplicate-login',
-    });
     React.useEffect(() => {
         if (should_redirect_user_to_login) {
             setShouldRedirectToLogin(false);
@@ -137,8 +134,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden':
-                    (isDuplicateLoginEnabled && has_access_denied_error) ||
-                    (platforms[platform] && !(is_from_tradershub_os && isMobile)),
+                    has_access_denied_error || (platforms[platform] && !(is_from_tradershub_os && isMobile)),
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
                 'app-contents--is-dtrader-v2': dtrader_v2_enabled_mobile || dtrader_v2_enabled_desktop,
             })}

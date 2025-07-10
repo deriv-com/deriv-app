@@ -200,7 +200,7 @@ export const getDomainUrl = () => {
         return 'deriv.be';
     }
     if (hostname.includes('.deriv.me')) {
-        return '.deriv.me';
+        return 'deriv.me';
     }
     return 'deriv.com';
 };

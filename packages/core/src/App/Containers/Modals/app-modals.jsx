@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useIsTNCNeeded, useWalletMigration } from '@deriv/hooks';
+import { useHasSetCurrency, useIsTNCNeeded, useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -129,6 +129,8 @@ const AppModals = observer(() => {
 
     const is_tnc_needed = useIsTNCNeeded();
 
+    const has_set_currency = useHasSetCurrency();
+
     React.useEffect(() => {
         if (is_tnc_needed) {
             toggleTncUpdateModal(true);
@@ -150,13 +152,14 @@ const AppModals = observer(() => {
         const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
 
         const should_show_complete_user_profile_modal =
-            !residence || !citizen || !date_of_birth || !address_line_1 || !address_city;
+            !residence || !citizen || !date_of_birth || !address_line_1 || !address_city || !has_set_currency;
 
-        if (!has_wallet && is_logged_in && should_show_complete_user_profile_modal) {
+        if (!has_wallet && is_logged_in && is_authorize && should_show_complete_user_profile_modal) {
             setShouldShowCompleteUserProfileModal(true);
         }
     }, [
         has_wallet,
+        has_set_currency,
         is_logged_in,
         is_authorize,
         residence,
@@ -274,7 +277,13 @@ const AppModals = observer(() => {
             ComponentToLoad = <TncStatusUpdateModal />;
         }
         if (is_complete_user_profile_modal_open) {
-            ComponentToLoad = <CompleteUserProfile account_settings={account_settings} residence={residence} />;
+            ComponentToLoad = (
+                <CompleteUserProfile
+                    account_settings={account_settings}
+                    residence={residence}
+                    noCurrency={!has_set_currency}
+                />
+            );
         }
     }
 

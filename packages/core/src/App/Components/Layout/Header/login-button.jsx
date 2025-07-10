@@ -21,9 +21,9 @@ const LoginButton = ({ className }) => {
             onClick={async () => {
                 if (has_wallet_cookie) {
                     if (isStaging()) {
-                        location.href = `https://staging-hub${getDomainUrl()}/tradershub/login`;
+                        location.href = `https://staging-hub.${getDomainUrl()}/tradershub/login`;
                     } else {
-                        location.href = `https://hub${getDomainUrl()}/tradershub/login`;
+                        location.href = `https://hub.${getDomainUrl()}/tradershub/login`;
                     }
                 }
                 const is_tmb_enabled = await isTmbEnabled();

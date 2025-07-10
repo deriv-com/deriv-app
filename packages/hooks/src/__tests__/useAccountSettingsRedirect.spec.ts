@@ -16,7 +16,7 @@ jest.mock('@deriv/stores', () => ({
 }));
 
 jest.mock('@deriv/shared', () => ({
-    getDomainUrl: jest.fn(() => '.deriv.com'),
+    getDomainUrl: jest.fn(() => 'deriv.com'),
     routes: {
         personal_details: '/account/personal-details',
         account: '/account',

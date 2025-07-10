@@ -43,8 +43,8 @@ export const AccountSwitcherWalletMobile = observer(({ is_visible, toggle, login
     const handleManageFundsRedirect = () => {
         closeAccountsDialog();
         if (isHubRedirectionEnabled) {
-            const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
-            const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
+            const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+            const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;

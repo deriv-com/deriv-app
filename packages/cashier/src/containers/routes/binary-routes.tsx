@@ -30,8 +30,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         setPreventSingleLogin,
     } = client;
 
-    const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
-    const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         if (

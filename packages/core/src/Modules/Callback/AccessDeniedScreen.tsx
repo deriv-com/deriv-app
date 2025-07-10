@@ -13,8 +13,8 @@ import { Text } from '@deriv-com/ui';
 
 import './AccessDeniedScreen.scss';
 
-const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
-const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
+const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
 const AccessDeniedScreen = observer(() => {
     const client_information = JSON.parse(Cookies.get('client_information') || '{}');

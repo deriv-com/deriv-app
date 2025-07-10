@@ -43,8 +43,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
-    const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         setPreventSingleLogin(true);

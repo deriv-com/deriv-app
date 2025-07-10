@@ -197,10 +197,10 @@ export const getDomainUrl = () => {
     const hostname = window.location.hostname;
 
     if (hostname.includes('.deriv.be')) {
-        return '.deriv.be';
+        return 'deriv.be';
     }
     if (hostname.includes('.deriv.me')) {
         return '.deriv.me';
     }
-    return '.deriv.com';
+    return 'deriv.com';
 };

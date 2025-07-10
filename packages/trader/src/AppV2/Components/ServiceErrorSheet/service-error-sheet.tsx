@@ -50,8 +50,8 @@ const ServiceErrorSheet = observer(() => {
                         resetServicesError();
                         if (!is_virtual) {
                             if (has_wallet && isHubRedirectionEnabled) {
-                                const PRODUCTION_REDIRECT_URL = `https://hub${getDomainUrl()}/tradershub`;
-                                const STAGING_REDIRECT_URL = `https://staging-hub${getDomainUrl()}/tradershub`;
+                                const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+                                const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
                                 const redirectUrl =
                                     process.env.NODE_ENV === 'production'
                                         ? PRODUCTION_REDIRECT_URL

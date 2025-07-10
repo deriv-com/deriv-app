@@ -25,8 +25,8 @@ export const isProduction = () => {
 };
 
 export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
-    PRODUCTION: `https://hub${getDomainUrl()}/tradershub`,
-    STAGING: `https://staging-hub${getDomainUrl()}/tradershub`,
+    PRODUCTION: `https://hub.${getDomainUrl()}/tradershub`,
+    STAGING: `https://staging-hub.${getDomainUrl()}/tradershub`,
 });
 
 export const redirectToOutSystems = (landingCompany?: string) => {

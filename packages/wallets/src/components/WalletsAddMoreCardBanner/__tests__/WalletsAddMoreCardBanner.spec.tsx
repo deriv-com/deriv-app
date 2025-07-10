@@ -28,7 +28,7 @@ type TWalletAddedSuccess = {
 };
 
 jest.mock('@deriv/shared', () => ({
-    getDomainUrl: jest.fn(() => '.deriv.com'),
+    getDomainUrl: jest.fn(() => 'deriv.com'),
 }));
 
 jest.mock('@deriv/api-v2', () => ({

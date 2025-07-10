@@ -7,8 +7,13 @@ import { ValidationConstants } from '@deriv-com/utils';
 const { address, addressCity, postalCode, postalOfficeBoxNumber } = ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
-export const ValidationSchema = (is_svg: boolean, account_settings?: Record<string, unknown>) =>
+export const ValidationSchema = (is_svg: boolean, account_settings?: Record<string, unknown>, noCurrency) =>
     Yup.object({
+        currency: Yup.string().when([], {
+            is: () => noCurrency,
+            then: schema => schema.required(),
+            otherwise: schema => schema,
+        }),
         date_of_birth: Yup.string().when([], {
             is: () => !account_settings?.date_of_birth,
             then: schema =>

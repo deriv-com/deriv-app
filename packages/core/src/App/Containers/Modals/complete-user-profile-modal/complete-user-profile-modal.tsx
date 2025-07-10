@@ -6,6 +6,7 @@ import {
     AutoHeightWrapper,
     Dropdown,
     FormSubmitButton,
+    Icon,
     Loading,
     Modal,
     SelectNative,
@@ -13,7 +14,14 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { useResidenceList, useStatesList } from '@deriv/hooks';
-import { CURRENCY_TYPE, filterObjProperties, formatDate, reorderCurrencies, WS } from '@deriv/shared';
+import {
+    capitalizeFirstLetter,
+    CURRENCY_TYPE,
+    filterObjProperties,
+    formatDate,
+    reorderCurrencies,
+    WS,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { InlineMessage, useDevice } from '@deriv-com/ui';
@@ -146,11 +154,18 @@ const CompleteUserProfile = observer(
 
         const currency_list = [...(reorderFiat || []), ...(reorderCrypto || [])];
 
-        const dropdownList = (currency_list || []).map(currency => {
+        const reorder_currency_list = (currency_list || []).map(currency => {
+            const icon_name = `IcCurrency${capitalizeFirstLetter(currency?.value.toLowerCase())}`;
             return {
                 ...currency,
-                text: `${currency.name} (${currency.value})`,
-                value: currency.value,
+                text: (
+                    <div className='complete-user-profile-modal__dropdown-list'>
+                        <Icon icon={icon_name} />
+                        <Text size='xs'>
+                            {currency.name} ({currency.value})
+                        </Text>
+                    </div>
+                ),
             };
         });
 
@@ -207,7 +222,8 @@ const CompleteUserProfile = observer(
                                 initialValues={initial_values}
                                 validateOnMount
                                 onSubmit={handleSubmit}
-                                validationSchema={ValidationSchema(is_svg, account_settings)}
+                                validationSchema={ValidationSchema(is_svg, account_settings, noCurrency)}
+                                initialStatus={{ error_message: '' }}
                             >
                                 {({
                                     handleSubmit,
@@ -254,7 +270,7 @@ const CompleteUserProfile = observer(
                                                                 {...field}
                                                                 className='complete-user-profile-modal__bottom-margin-field'
                                                                 is_align_text_left
-                                                                list={dropdownList}
+                                                                list={reorder_currency_list}
                                                                 placeholder={localize('Select currency*')}
                                                                 onChange={(e: {
                                                                     target: { name: string; value: string };

@@ -13,6 +13,7 @@ import MT5TradeScreen from '../MT5TradeScreen';
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
+    withRouter: (Component: React.ComponentType<any>) => Component,
 }));
 
 jest.mock('@deriv/api-v2', () => ({

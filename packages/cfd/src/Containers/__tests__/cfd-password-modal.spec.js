@@ -32,6 +32,15 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockedMT5Icon'));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useIsEnabledNakala: jest.fn(() => ({
+        IsEnabledNakala: false,
+        nakalaServerInfo: null,
+        loginId: '',
+    })),
+}));
 describe('<CFDPasswordModal/>', () => {
     const mockFn = jest.fn();
     const mockDisableCFDPasswordModalFn = jest.fn();

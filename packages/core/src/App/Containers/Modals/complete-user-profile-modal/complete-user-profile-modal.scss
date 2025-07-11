@@ -5,7 +5,7 @@
 .complete-user-profile-modal__form {
     display: flex;
     flex-direction: column;
-    padding: 24px;
+    padding: 2.4rem;
 }
 
 .complete-user-profile-modal__dropdown-list {
@@ -21,7 +21,7 @@
 .complete-user-profile-modal__heading {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.8rem;
 
     &:after {
         content: '';
@@ -29,16 +29,16 @@
         height: 1px;
         background: var(--border-divider);
         display: block;
-        margin-left: 8px;
+        margin-inline-start: 0.8rem;
     }
 }
 
 .complete-user-profile-modal__bottom-margin {
-    margin-bottom: 24px;
+    margin-bottom: 2.4rem;
 }
 
 .complete-user-profile-modal__bottom-margin-field {
-    margin-bottom: calc(24px + 18px);
+    margin-bottom: calc(2.4rem + 1.8rem);
 }
 
 .complete-user-profile-modal__submit-button.dc-form-submit-button {

@@ -91,6 +91,8 @@ const AppModals = observer(() => {
         is_trading_experience_incomplete,
         account_settings,
         residence,
+        accounts,
+        loginid,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -131,6 +133,12 @@ const AppModals = observer(() => {
 
     const has_set_currency = useHasSetCurrency();
 
+    const active_account = accounts?.[loginid ?? ''];
+    const is_virtual = active_account?.is_virtual;
+    const currency = active_account?.currency;
+
+    const no_currency = !has_set_currency || (!is_virtual && !currency);
+
     React.useEffect(() => {
         if (is_tnc_needed) {
             toggleTncUpdateModal(true);
@@ -151,14 +159,17 @@ const AppModals = observer(() => {
 
         const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
 
-        const should_show_complete_user_profile_modal =
-            !residence || !citizen || !date_of_birth || !address_line_1 || !address_city || !has_set_currency;
-
-        if (!has_wallet && is_logged_in && is_authorize && should_show_complete_user_profile_modal) {
+        if (
+            !has_wallet &&
+            is_logged_in &&
+            is_authorize &&
+            (!residence || !citizen || !date_of_birth || !address_line_1 || !address_city || no_currency)
+        ) {
             setShouldShowCompleteUserProfileModal(true);
         }
     }, [
         has_wallet,
+        accounts,
         has_set_currency,
         is_logged_in,
         is_authorize,
@@ -169,6 +180,7 @@ const AppModals = observer(() => {
         account_settings.address_city,
         account_settings,
         setShouldShowCompleteUserProfileModal,
+        no_currency,
     ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
@@ -281,7 +293,7 @@ const AppModals = observer(() => {
                 <CompleteUserProfile
                     account_settings={account_settings}
                     residence={residence}
-                    noCurrency={!has_set_currency}
+                    noCurrency={no_currency}
                 />
             );
         }

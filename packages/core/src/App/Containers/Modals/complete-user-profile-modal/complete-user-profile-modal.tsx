@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, FieldProps, Form, Formik, FormikHandlers, FormikHelpers, FormikState, FormikValues } from 'formik';
+import { Field, FieldProps, Form, Formik, FormikHelpers, FormikValues } from 'formik';
 
 import {
     Autocomplete,
@@ -81,7 +81,11 @@ const makeSettingsRequest = (
     }
 
     Object.keys(request).forEach(key => {
-        if (account_settings && account_settings[key] !== undefined && account_settings[key] === request[key]) {
+        if (
+            account_settings &&
+            account_settings[key as keyof TCompleteUserProfileFormProps] !== undefined &&
+            account_settings[key as keyof TCompleteUserProfileFormProps] === request[key]
+        ) {
             delete request[key];
         }
     });
@@ -100,8 +104,9 @@ const CompleteUserProfile = observer(
             getChangeableFields,
             is_svg,
             upgradeable_currencies: legal_allowed_currencies,
-            setAccountCurrency: setCurrency,
-            createCryptoAccount,
+            setAccountCurrency,
+            available_crypto_currencies,
+            has_fiat,
         } = client;
         const { is_complete_user_profile_modal_open, setShouldShowCompleteUserProfileModal } = ui;
         const { isDesktop } = useDevice();
@@ -111,6 +116,7 @@ const CompleteUserProfile = observer(
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
         const [residence_to_display, setResidenceToDisplay] = React.useState(residence || '');
         const [citizen_to_display, setCitizenToDisplay] = React.useState('');
+        const [submitting_currency, setSubmittingCurrency] = React.useState(false);
 
         const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence_to_display ?? residence);
 
@@ -139,9 +145,12 @@ const CompleteUserProfile = observer(
         const showCountryAndCitizenshipFields = !residence || !citizen;
         const showAddressDetailsFields = !address_line_1 || !address_city;
 
-        // Wrapped with String() to avoid type mismatch
+        const available_crypto_codes = new Set(available_crypto_currencies.map(c => c.value));
+
         const crypto = legal_allowed_currencies.filter(
-            selected_currency => String(selected_currency.type) === CURRENCY_TYPE.CRYPTO
+            selected_currency =>
+                String(selected_currency.type) === CURRENCY_TYPE.CRYPTO &&
+                available_crypto_codes.has(String(selected_currency?.value))
         );
 
         // Wrapped with String() to avoid type mismatch
@@ -149,10 +158,12 @@ const CompleteUserProfile = observer(
             selected_currency => String(selected_currency.type) === CURRENCY_TYPE.FIAT
         );
 
-        const reorderFiat = reorderCurrencies(fiat as keyof typeof reorderCurrencies, 'fiat');
-        const reorderCrypto = reorderCurrencies(crypto as keyof typeof reorderCurrencies, 'crypto');
+        const reorderFiat = reorderCurrencies(fiat as keyof typeof reorderCurrencies, CURRENCY_TYPE.FIAT);
+        const reorderCrypto = reorderCurrencies(crypto as keyof typeof reorderCurrencies, CURRENCY_TYPE.CRYPTO);
 
-        const currency_list = [...(reorderFiat || []), ...(reorderCrypto || [])];
+        const currency_list = has_fiat
+            ? [...(reorderCrypto || [])]
+            : [...(reorderFiat || []), ...(reorderCrypto || [])];
 
         const reorder_currency_list = (currency_list || []).map(currency => {
             const icon_name = `IcCurrency${capitalizeFirstLetter(currency?.value.toLowerCase())}`;
@@ -174,9 +185,10 @@ const CompleteUserProfile = observer(
             { setSubmitting, setStatus }: FormikHelpers<TCompleteUserProfileFormProps>
         ) => {
             setSubmitting(true);
+            if (values.currency) setSubmittingCurrency(true);
 
             try {
-                const request = makeSettingsRequest(values, changeable_fields, account_settings, initial_values);
+                const request = makeSettingsRequest(values, changeable_fields, account_settings);
                 const data = await WS.setSettings(request);
 
                 if (data?.error) {
@@ -184,23 +196,21 @@ const CompleteUserProfile = observer(
                     return;
                 }
 
-                const selected_currency_obj = currency_list.find(curr => curr.value === values.currency);
+                if (values.currency) {
+                    const selected_currency_obj = currency_list.find(curr => curr.value === values.currency);
 
-                if (!selected_currency_obj) {
-                    setStatus({ error_message: 'Missing currency list' });
-                    return;
+                    if (!selected_currency_obj) {
+                        setStatus({ error_message: 'Missing currency list' });
+                        return;
+                    }
+
+                    await setAccountCurrency(selected_currency_obj.value);
                 }
-
-                if (selected_currency_obj.type === 'fiat') {
-                    await setCurrency(selected_currency_obj.value);
-                } else {
-                    await createCryptoAccount(selected_currency_obj.value);
-                }
-
                 setShouldShowCompleteUserProfileModal(false);
             } catch (error) {
                 setStatus({ error_message: error.message || 'An error occurred' });
             } finally {
+                setSubmittingCurrency(false);
                 setSubmitting(false);
             }
         };
@@ -208,7 +218,7 @@ const CompleteUserProfile = observer(
         return (
             <Modal
                 is_open={is_complete_user_profile_modal_open}
-                title='Complete your profile'
+                title={localize('Complete your profile')}
                 height='auto'
                 width='440px'
                 should_header_stick_body={true}
@@ -234,9 +244,7 @@ const CompleteUserProfile = observer(
                                     setFieldTouched,
                                     isValid,
                                     status,
-                                }: FormikHandlers &
-                                    FormikHelpers<TCompleteUserProfileFormProps> &
-                                    FormikState<TCompleteUserProfileFormProps>) => (
+                                }) => (
                                     <Form
                                         onSubmit={handleSubmit}
                                         noValidate
@@ -255,7 +263,7 @@ const CompleteUserProfile = observer(
                                                 )}
                                             </Text>
                                         </InlineMessage>
-                                        {noCurrency && (
+                                        {(noCurrency || submitting_currency) && (
                                             <>
                                                 <Text
                                                     weight='bold'
@@ -263,7 +271,7 @@ const CompleteUserProfile = observer(
                                                 >
                                                     <Localize i18n_default_text='Account Currency' />
                                                 </Text>
-                                                {legal_allowed_currencies.length > 0 ? (
+                                                {reorder_currency_list.length > 0 ? (
                                                     <Field name='currency'>
                                                         {({ field }: FieldProps) => (
                                                             <Dropdown
@@ -586,7 +594,6 @@ const CompleteUserProfile = observer(
                                                                 setFieldTouched('address_postcode', true);
                                                                 handleChange(e);
                                                             }}
-                                                            values={values.address_postcode}
                                                         />
                                                     )}
                                                 </div>

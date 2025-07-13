@@ -27,6 +27,10 @@ type TWalletAddedSuccess = {
     onSecondaryButtonClick: () => void;
 };
 
+jest.mock('@deriv/shared', () => ({
+    getDomainUrl: jest.fn(() => 'deriv.com'),
+}));
+
 jest.mock('@deriv/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: { loginid: 'CRW1' },

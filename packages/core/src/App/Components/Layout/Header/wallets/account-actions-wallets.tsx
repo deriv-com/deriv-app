@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routes, isTabletOs } from '@deriv/shared';
+import { routes, isTabletOs, getDomainUrl } from '@deriv/shared';
 import { Button, Icon, Popover } from '@deriv/components';
 import { useIsHubRedirectionEnabled, useAccountSettingsRedirect } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
@@ -109,8 +109,8 @@ const AccountActionsWallets = observer(({ is_traders_hub_routes }: TAccountActio
 
     const handleManageFundsRedirect = () => {
         if (isHubRedirectionEnabled) {
-            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+            const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;

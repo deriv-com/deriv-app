@@ -22,16 +22,25 @@ const PlatformBox = ({ platform: { icon, description } }) => (
 );
 const appendAccountParamToUrl = (link_to, client) => {
     const { is_virtual, currency } = client;
+    let url = link_to;
 
     if (is_virtual) {
-        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=demo`;
+        url = `${url}${url.includes('?') ? '&' : '?'}account=demo`;
+    } else if (currency) {
+        url = `${url}${url.includes('?') ? '&' : '?'}account=${currency}`;
     }
 
-    if (currency) {
-        return `${link_to}${link_to.includes('?') ? '&' : '?'}account=${currency}`;
+    // Add symbol parameter if available in session storage
+    try {
+        const trade_store = JSON.parse(sessionStorage.getItem('trade_store') || '{}');
+        if (trade_store?.symbol) {
+            url = `${url}${url.includes('?') ? '&' : '?'}symbol=${trade_store.symbol}`;
+        }
+    } catch (e) {
+        // If parsing fails, continue without symbol
     }
 
-    return link_to;
+    return url;
 };
 
 const PlatformDropdownContent = ({ platform, app_routing_history, client }) => {

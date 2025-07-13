@@ -1886,9 +1886,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async getAnalyticsConfig(isLoggedOut = false) {
-        const broker = LocalStore?.get('active_loginid')
-            ?.match(/[a-zA-Z]+/g)
-            ?.join('');
+        const broker = this.loginid?.match(/[a-zA-Z]+/g)?.join('');
 
         const ppc_campaign_cookies =
             Cookies.getJSON('utm_data') === 'null'

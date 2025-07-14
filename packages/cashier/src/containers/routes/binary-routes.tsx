@@ -73,7 +73,6 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         return <Loading is_fullscreen />;
     }
 
-    if (has_wallet) return <Page404 />;
     return (
         <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
             <Switch>

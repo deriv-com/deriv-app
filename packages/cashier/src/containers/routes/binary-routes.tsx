@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Switch } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { deriv_urls, getDomainUrl } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
-import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 
 import RouteWithSubRoutes from './route-with-sub-routes';
@@ -74,8 +72,6 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     if (isHubRedirectionEnabled) {
         return <Loading is_fullscreen />;
     }
-
-    if (has_wallet) return <Page404 />;
 
     return (
         <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>

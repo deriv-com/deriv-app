@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 
 import { getAccountsFromLocalStorage } from '@deriv/utils';
 import { URLConstants } from '@deriv-com/utils';
+import { getDomainUrl } from '@deriv/shared';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -24,8 +25,8 @@ export const isProduction = () => {
 };
 
 export const OUT_SYSTEMS_TRADERSHUB = Object.freeze({
-    PRODUCTION: `https://hub.deriv.com/tradershub`,
-    STAGING: `https://staging-hub.deriv.com/tradershub`,
+    PRODUCTION: `https://hub.${getDomainUrl()}/tradershub`,
+    STAGING: `https://staging-hub.${getDomainUrl()}/tradershub`,
 });
 
 export const redirectToOutSystems = (landingCompany?: string) => {

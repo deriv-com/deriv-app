@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { useStore } from '@deriv/stores';
+import { requestOidcAuthentication } from '@deriv-com/auth-client';
+
+import useTMB from './useTMB';
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -18,7 +20,7 @@ const useSilentLoginAndLogout = ({
     is_client_store_initialized: boolean;
     oAuthLogout: () => Promise<void>;
 }) => {
-    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
     const loggedState = Cookies.get('logged_state');
 
     const { client } = useStore();
@@ -33,15 +35,20 @@ const useSilentLoginAndLogout = ({
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
     const { prevent_single_login, setIsSingleLoggingIn: setClientIsSingleLoggingIn } = client;
+    const { isTmbEnabled } = useTMB();
 
     useEffect(() => {
-        const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
-        const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
-        if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded) {
-            setClientIsSingleLoggingIn(true);
-        } else {
-            setClientIsSingleLoggingIn(false);
-        }
+        const renderSLO = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
+            const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
+            if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded && !is_tmb_enabled) {
+                setClientIsSingleLoggingIn(true);
+            } else {
+                setClientIsSingleLoggingIn(false);
+            }
+        };
+        renderSLO();
     }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
     const requestOidcLogin = async () => {
@@ -62,30 +69,41 @@ const useSilentLoginAndLogout = ({
     };
 
     useEffect(() => {
-        if (prevent_single_login || !is_client_store_initialized || isSilentLoginExcluded || !is_deriv_com) return;
+        const renderSilentLoginAndLogout = async () => {
+            const is_tmb_enabled = await isTmbEnabled();
+            if (
+                prevent_single_login ||
+                !is_client_store_initialized ||
+                isSilentLoginExcluded ||
+                !is_deriv_com ||
+                is_tmb_enabled
+            )
+                return;
 
-        // NOTE: Remove this logic once social signup is intergated with OIDC
-        const params = new URLSearchParams(window.location.search);
-        const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
-        if (isUsingLegacyFlow && loggedState === 'false' && is_deriv_com) {
-            return;
-        }
+            // NOTE: Remove this logic once social signup is intergated with OIDC
+            const params = new URLSearchParams(window.location.search);
+            const isUsingLegacyFlow = params.has('token1') && params.has('acct1');
+            if (isUsingLegacyFlow && loggedState === 'false' && is_deriv_com) {
+                return;
+            }
 
-        if (!isUsingLegacyFlow && loggedState === 'true' && !isClientAccountsPopulated) {
-            // Perform silent login
-            if (isAuthenticating.current) return;
-            isAuthenticating.current = true;
-            setClientIsSingleLoggingIn(true);
-            requestOidcLogin();
-        }
+            if (!isUsingLegacyFlow && loggedState === 'true' && !isClientAccountsPopulated) {
+                // Perform silent login
+                if (isAuthenticating.current) return;
+                isAuthenticating.current = true;
+                setClientIsSingleLoggingIn(true);
+                requestOidcLogin();
+            }
 
-        if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
-            // Perform single logout
-            if (isLoggingOut.current) return;
-            isLoggingOut.current = true;
-            setClientIsSingleLoggingIn(true);
-            oAuthLogout();
-        }
+            if (!isUsingLegacyFlow && loggedState === 'false' && isClientAccountsPopulated) {
+                // Perform single logout
+                if (isLoggingOut.current) return;
+                isLoggingOut.current = true;
+                setClientIsSingleLoggingIn(true);
+                oAuthLogout();
+            }
+        };
+        renderSilentLoginAndLogout();
     }, [
         loggedState,
         isClientAccountsPopulated,

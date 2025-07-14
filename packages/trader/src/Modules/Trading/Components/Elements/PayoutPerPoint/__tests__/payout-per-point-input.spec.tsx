@@ -54,14 +54,14 @@ describe('PayoutPerPointInput Component', () => {
     test('should render component for desktop', () => {
         renderComponent(true);
         expect(screen.getByText('Payout per Point')).toBeInTheDocument();
-        expect(screen.getByText('Distance to current spot')).toBeInTheDocument();
+        expect(screen.getByText('Barrier')).toBeInTheDocument();
         expect(screen.getByText(selectedBarrier)).toBeInTheDocument();
     });
 
     test('should not render component for mobile', () => {
         renderComponent(false);
         expect(screen.queryByText('Payout per Point')).not.toBeInTheDocument();
-        expect(screen.queryByText('Distance to current spot')).not.toBeInTheDocument();
+        expect(screen.queryByText('Barrier')).not.toBeInTheDocument();
     });
 
     test('should call onPayoutClick when an option is selected in WheelPicker', async () => {

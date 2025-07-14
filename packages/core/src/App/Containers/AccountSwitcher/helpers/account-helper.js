@@ -1,23 +1,18 @@
-import { isCryptocurrency } from '@deriv/shared';
-
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:
-    // top is fiat, then crypto (each alphabetically by currency), then demo
+    // highest balance first, then demo accounts last
     return [...account_list].sort((a, b) => {
-        const a_currency = accounts[a.loginid].currency;
-        const b_currency = accounts[b.loginid].currency;
-        const a_is_crypto = isCryptocurrency(a_currency);
-        const b_is_crypto = isCryptocurrency(b_currency);
-        const a_is_fiat = !a_is_crypto;
-        const b_is_fiat = !b_is_crypto;
+        // Always put virtual (demo) accounts last
         if (a.is_virtual || b.is_virtual) {
             return a.is_virtual ? 1 : -1;
-        } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-            return a_currency < b_currency ? -1 : 1;
-        } else if (a_is_fiat && b_is_crypto) {
-            return -1;
         }
-        return 1;
+
+        // For non-virtual accounts, sort by balance (highest first)
+        const a_balance = parseFloat(accounts[a.loginid].balance);
+        const b_balance = parseFloat(accounts[b.loginid].balance);
+
+        // Sort in descending order (higher balance first)
+        return b_balance - a_balance;
     });
 };
 

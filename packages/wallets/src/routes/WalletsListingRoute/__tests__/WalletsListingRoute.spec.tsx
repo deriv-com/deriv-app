@@ -1,5 +1,12 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider, useActiveWalletAccount, useIsEuRegion, useWalletAccountsList } from '@deriv/api-v2';
+import {
+    APIProvider,
+    AuthProvider,
+    useActiveWalletAccount,
+    useIsEuRegion,
+    useSettings,
+    useWalletAccountsList,
+} from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
@@ -9,6 +16,7 @@ jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(() => ({ data: { is_virtual: false } })),
     useIsEuRegion: jest.fn(() => ({ data: true })),
+    useSettings: jest.fn(),
     useWalletAccountsList: jest.fn(),
 }));
 
@@ -42,6 +50,7 @@ const wrapper = ({ children }: PropsWithChildren) => (
 describe('WalletsListingRoute', () => {
     beforeEach(() => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: true });
+        (useSettings as jest.Mock).mockReturnValue({ data: { feature_flag: { wallet: 1 } }, isLoading: false });
         (useWalletAccountsList as jest.Mock).mockReturnValue({
             data: [
                 {

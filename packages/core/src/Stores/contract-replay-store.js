@@ -127,6 +127,8 @@ export default class ContractReplayStore extends BaseStore {
         this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
+
+        this.root_store.contract_trade.clearAccumulatorBarriersData(true, true);
     }
 
     populateConfig(response) {
@@ -276,6 +278,7 @@ export default class ContractReplayStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
+
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );

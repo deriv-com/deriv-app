@@ -368,6 +368,8 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
+
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
             if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                 this.root_store.notifications.addNotificationMessage(
                     contractSold(this.root_store.client.currency, response.sell.sold_for, Money)

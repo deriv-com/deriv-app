@@ -54,7 +54,7 @@ const cumulativeAccountLimitsMessageFn = ({
     );
 
     if (isDemoTransfer) {
-        if (allowedSumUSD === availableSumUSD) {
+        if (sourceAmount && allowedSumUSD === availableSumUSD) {
             message = (
                 <Localize
                     i18n_default_text='Your daily transfer limit for virtual funds is {{formattedDemoLimit}}'
@@ -139,7 +139,7 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    if (allowedSumUSD === availableSumUSD) {
+    if (sourceAmount && allowedSumUSD === availableSumUSD) {
         message = isTransferBetweenWallets ? (
             <Localize
                 i18n_default_text='The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'
@@ -162,26 +162,30 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    message = isTransferBetweenWallets ? (
-        <Localize
-            i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
-            values={{ formattedSourceCurrencyRemainder }}
-        />
-    ) : (
-        <Localize
-            i18n_default_text='The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.'
-            values={{
-                formattedSourceCurrencyRemainder,
-                sourceAccountName: sourceAccount.accountName,
-                targetAccountName: targetAccount.accountName,
-            }}
-        />
-    );
+    if (sourceAmount && sourceCurrencyRemainder - sourceAmount <= 1000) {
+        message = isTransferBetweenWallets ? (
+            <Localize
+                i18n_default_text='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
+                values={{ formattedSourceCurrencyRemainder }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text='The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.'
+                values={{
+                    formattedSourceCurrencyRemainder,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetAccountName: targetAccount.accountName,
+                }}
+            />
+        );
 
-    return {
-        message,
-        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-    };
+        return {
+            message,
+            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        };
+    }
+
+    return null;
 };
 
 export default cumulativeAccountLimitsMessageFn;

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
+
+import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { moduleLoader, deriv_urls } from '@deriv/shared';
+import { deriv_urls, getDomainUrl, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -43,8 +45,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         setPreventSingleLogin(true);
@@ -71,21 +73,16 @@ const RootComponent = observer(props => {
 
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
-            const account_currency = url_params.get('account') || window.sessionStorage.getItem('account');
+            const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
 
-            if (!localStorage.getItem('wallet_redirect_done')) {
-                switch (redirect_to_lowcode) {
-                    case 'wallet':
-                        localStorage.setItem('wallet_redirect_done', true);
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
-                        break;
-                    default:
-                        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
-                        break;
-                }
-            } else {
-                // Clear the wallet_redirect_done flag after redirection to ensure it can be set again in the future
-                localStorage.removeItem('wallet_redirect_done');
+            switch (redirect_to_lowcode) {
+                case 'wallet':
+                    localStorage.setItem('wallet_redirect_done', true);
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
+                default:
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
+                    break;
             }
         }
 
@@ -103,6 +100,14 @@ const RootComponent = observer(props => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
+
+    if (
+        !is_client_store_initialized ||
+        (has_wallet && !isHubRedirectionLoaded) ||
+        (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)
+    ) {
+        return <Loading is_fullscreen />;
+    }
 
     return has_wallet ? (
         <Wallets

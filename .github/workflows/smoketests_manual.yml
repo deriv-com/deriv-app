@@ -7,6 +7,9 @@ on:
 jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
         
     - name: Trigger deriv-app smoke tests from regentmarkets

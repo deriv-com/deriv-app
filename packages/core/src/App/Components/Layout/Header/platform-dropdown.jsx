@@ -20,13 +20,35 @@ const PlatformBox = ({ platform: { icon, description } }) => (
         </div>
     </React.Fragment>
 );
+const appendAccountParamToUrl = (link_to, client) => {
+    const { is_virtual, currency } = client;
+    let url = link_to;
 
-const PlatformDropdownContent = ({ platform, app_routing_history }) => {
+    if (is_virtual) {
+        url = `${url}${url.includes('?') ? '&' : '?'}account=demo`;
+    } else if (currency) {
+        url = `${url}${url.includes('?') ? '&' : '?'}account=${currency}`;
+    }
+
+    // Add symbol parameter if available in session storage
+    try {
+        const trade_store = JSON.parse(sessionStorage.getItem('trade_store') || '{}');
+        if (trade_store?.symbol) {
+            url = `${url}${url.includes('?') ? '&' : '?'}symbol=${trade_store.symbol}`;
+        }
+    } catch (e) {
+        // If parsing fails, continue without symbol
+    }
+
+    return url;
+};
+
+const PlatformDropdownContent = ({ platform, app_routing_history, client }) => {
     return (
         (platform.link_to && (
             <BinaryLink
                 data-testid='dt_platform_dropdown'
-                to={platform.link_to}
+                to={appendAccountParamToUrl(platform.link_to, client)}
                 // This is here because in routes-config it needs to have children, but not in menu
                 exact={platform.link_to === routes.trade}
                 className='platform-dropdown__list-platform'
@@ -38,7 +60,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
         )) || (
             <a
                 data-testid='dt_platform_dropdown_link'
-                href={platform.href}
+                href={appendAccountParamToUrl(platform.href, client)}
                 className={`platform-dropdown__list-platform ${
                     getActivePlatform(app_routing_history) === platform.name ? 'active' : ''
                 }`}
@@ -104,7 +126,11 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
                 {platform_config.map(platform => {
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
-                            <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />
+                            <PlatformDropdownContent
+                                platform={platform}
+                                app_routing_history={app_routing_history}
+                                client={client}
+                            />
                         </div>
                     );
                 })}

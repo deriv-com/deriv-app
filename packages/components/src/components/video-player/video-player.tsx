@@ -12,6 +12,7 @@ type TVideoPlayerProps = {
     className?: string;
     data_testid?: string;
     height?: string;
+    hide_volume_control?: boolean;
     is_mobile?: boolean;
     is_v2?: boolean;
     increased_drag_area?: boolean;
@@ -19,6 +20,7 @@ type TVideoPlayerProps = {
     src: string;
     show_loading?: boolean;
     onModalClose?: () => void;
+    should_show_controls?: boolean;
 };
 type TSupportedEvent = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | TouchEvent | MouseEvent;
 
@@ -31,6 +33,7 @@ const VideoPlayer = ({
     className,
     data_testid,
     height,
+    hide_volume_control = false,
     is_mobile,
     is_v2,
     increased_drag_area,
@@ -38,6 +41,7 @@ const VideoPlayer = ({
     src,
     show_loading = false,
     onModalClose,
+    should_show_controls = false,
 }: TVideoPlayerProps) => {
     const is_rtl = useIsRtl();
 
@@ -51,7 +55,18 @@ const VideoPlayer = ({
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(muted);
     const [playback_rate, setPlaybackRate] = React.useState(1);
-    const [show_controls, setShowControls] = React.useState(!should_autoplay);
+    const [show_controls, setShowControls] = React.useState(should_show_controls ? true : !should_autoplay);
+    const [is_in_initial_period, setIsInInitialPeriod] = React.useState(should_show_controls);
+
+    React.useEffect(() => {
+        if (should_show_controls) {
+            const tutorial_timeout = setTimeout(() => {
+                setShowControls(false);
+                setIsInInitialPeriod(false);
+            }, 5000);
+            return () => clearTimeout(tutorial_timeout);
+        }
+    }, [should_show_controls]);
     const [shift_X, setShiftX] = React.useState(0);
     const [video_duration, setVideoDuration] = React.useState<number>();
     const [volume, setVolume] = React.useState(0.5);
@@ -139,7 +154,7 @@ const VideoPlayer = ({
         cancelAnimationFrame(animation_ref.current);
         debouncedRewind.cancel();
         is_dragging.current = false;
-        should_check_time_ref.current = true;
+        should_check_time_ref.current = false;
 
         debouncedRewind();
 
@@ -167,7 +182,7 @@ const VideoPlayer = ({
         video_ref.current.currentTime = new_time;
         new_time_ref.current = new_time;
         setCurrentTime(new_time);
-        should_check_time_ref.current = true;
+        should_check_time_ref.current = false;
 
         debouncedRewind();
     };
@@ -332,8 +347,8 @@ const VideoPlayer = ({
     return (
         <div
             className={classNames(className, 'player__wrapper')}
-            onMouseOver={is_mobile ? undefined : () => setShowControls(true)}
-            onMouseLeave={is_mobile ? undefined : () => setShowControls(false)}
+            onMouseOver={is_mobile || is_in_initial_period ? undefined : () => setShowControls(true)}
+            onMouseLeave={is_mobile || is_in_initial_period ? undefined : () => setShowControls(false)}
             data-testid={data_testid}
         >
             <Stream
@@ -350,8 +365,8 @@ const VideoPlayer = ({
                 onEnded={onEnded}
                 onPlay={() => setIsPlaying(true)}
                 onLoadedMetaData={onLoadedMetaData}
-                onSeeked={() => (should_check_time_ref.current = true)}
-                onSeeking={() => (should_check_time_ref.current = true)}
+                onSeeked={() => (should_check_time_ref.current = false)}
+                onSeeking={() => (should_check_time_ref.current = false)}
                 playbackRate={playback_rate}
                 volume={volume}
             />
@@ -375,6 +390,7 @@ const VideoPlayer = ({
                 current_time={current_time}
                 dragStartHandler={dragStartHandler}
                 has_enlarged_dot={has_enlarged_dot}
+                hide_volume_control={hide_volume_control}
                 is_animated={is_animated}
                 is_ended={is_ended.current}
                 is_playing={is_playing}

@@ -7,22 +7,16 @@ import EmptyNotification from 'App/Components/Elements/Notifications/empty-notif
 import NotificationsClearAllFooter from './notifications-clear-all-footer';
 import NotificationsList from './notifications-list';
 
-type TNotificationListWrapper = { clearNotifications: () => void; is_outside?: boolean };
+type TNotificationListWrapper = { clearNotifications: () => void };
 
 const NotificationListWrapperForwardRef = React.forwardRef(
-    ({ clearNotifications, is_outside }: TNotificationListWrapper, ref: LegacyRef<HTMLDivElement> | undefined) => {
+    ({ clearNotifications }: TNotificationListWrapper, ref: LegacyRef<HTMLDivElement> | undefined) => {
         const { notifications, ui } = useStore();
         const { is_notifications_empty } = notifications;
         const { is_mobile } = ui;
 
         return (
-            <div
-                data-testid='dt_notifications_list_wrapper'
-                className={classNames('notifications-dialog', {
-                    'notifications-dialog--shifted': is_outside,
-                })}
-                ref={ref}
-            >
+            <div data-testid='dt_notifications_list_wrapper' className='notifications-dialog' ref={ref}>
                 <div className='notifications-dialog__header'>
                     <Text
                         as='h2'

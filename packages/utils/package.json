@@ -7,6 +7,7 @@
         "bowser": "^2.9.0",
         "lodash.groupby": "^4.6.0",
         "lodash.pickby": "^4.6.0",
+        "@deriv-com/auth-client": "1.5.2",
         "moment": "^2.29.2"
     },
     "devDependencies": {

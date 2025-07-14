@@ -130,6 +130,11 @@ export default class ContractStore extends BaseStore {
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
+
+        if (this.is_ended && isAccumulatorContract(this.contract_info.contract_type)) {
+            this.root_store.contract_trade.clearAccumulatorBarriersData(false, true);
+        }
+
         this.is_digit_contract = isDigitContract(this.contract_info.contract_type);
         // API doesn't return barrier for digit contracts (sometimes), remove this check once resolved
         if (!this.contract_info.barrier && prev_contract_info.barrier && this.is_digit_contract) {

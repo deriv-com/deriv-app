@@ -3,11 +3,15 @@ on:
   pull_request:
     branches:
     - master
-
+permissions:
+  contents: read
 jobs:
   build_and_test:
     name: Build And Test
     runs-on: Runner_8cores_Deriv-app
+    permissions:
+      contents: read
+      actions: write
     environment: Preview
     steps:
     - name: Checkout

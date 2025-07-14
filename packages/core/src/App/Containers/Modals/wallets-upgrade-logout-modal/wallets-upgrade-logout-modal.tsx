@@ -2,7 +2,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 
 import { Dialog, Icon, Text } from '@deriv/components';
-import { useOauth2 } from '@deriv/hooks';
+import { useOauth2, useTMB } from '@deriv/hooks';
 import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, Localize, localize } from '@deriv/translations';
@@ -26,15 +26,16 @@ const trackAnalyticsEvent = (
 
 const WalletsUpgradeLogoutModal = observer(() => {
     const { client, ui } = useStore();
-    const { is_virtual, logout } = client;
+    const { is_virtual, logout, setShouldRedirectToLogin } = client;
     const { is_desktop } = ui;
     const account_mode = is_virtual ? 'demo' : 'real';
-    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname);
-
+    const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
+    const { isTmbEnabled } = useTMB();
     const { oAuthLogout } = useOauth2({
         handleLogout: async () => {
             await logout();
-            if (is_deriv_com) {
+            const is_tmb_enabled = await isTmbEnabled();
+            if (is_deriv_com && !is_tmb_enabled) {
                 try {
                     await requestOidcAuthentication({
                         redirectCallbackUri: `${window.location.origin}/callback`,
@@ -46,6 +47,9 @@ const WalletsUpgradeLogoutModal = observer(() => {
                     // eslint-disable-next-line no-console
                     console.error(err);
                 }
+            }
+            if (is_tmb_enabled) {
+                setShouldRedirectToLogin(true);
             }
         },
     });

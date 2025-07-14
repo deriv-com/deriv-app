@@ -2,26 +2,23 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { getDomainUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
-    const { ui, client } = useStore();
-    const { is_dark_mode_on } = ui;
+    const { client } = useStore();
     const history = useHistory();
     const location = useLocation();
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
     const { has_wallet } = client;
     const { pathname } = location;
 
-    const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
-
     const handleTradershubRedirect = () => {
         if (isHubRedirectionEnabled && has_wallet) {
-            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+            const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;
@@ -44,7 +41,7 @@ const TradersHubHomeButton = observer(() => {
             onClick={handleTradershubRedirect}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
-                <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />
+                <Icon icon={'IcAppstoreTradersHubHome'} size={16} />
             </div>
             <Text className='traders-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's Hub" />

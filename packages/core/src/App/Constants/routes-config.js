@@ -124,7 +124,7 @@ const getModules = () => {
         {
             path: routes.account,
             component: Account,
-            getTitle: () => localize('Account Settings'),
+            getTitle: () => localize('Account settings'),
             icon_component: 'IcUserOutline',
             is_authenticated: true,
             routes: [
@@ -210,7 +210,7 @@ const getModules = () => {
                         {
                             path: routes.self_exclusion,
                             component: Account,
-                            getTitle: () => localize('Self exclusion'),
+                            getTitle: () => localize('Self-exclusion'),
                         },
                         {
                             path: routes.account_limits,

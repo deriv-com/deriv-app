@@ -76,6 +76,7 @@ describe('<Cashier />', () => {
             client: {
                 active_accounts: [],
                 currency: 'USD',
+                has_wallet: false,
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: false,
@@ -173,13 +174,16 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
     });
 
-    it("redirects to trader's hub page if the close button is clicked", () => {
+    it('redirects to the appropriate page when the close button is clicked', () => {
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mockRootStore);
 
         const close_btn = screen.getByTestId('dt_page_overlay_header_close');
         fireEvent.click(close_btn);
 
-        expect(history.location.pathname).toBe(routes.traders_hub);
+        // The onClickClose function redirects to routes.trade if the active platform is DTrader,
+        // otherwise it redirects to routes.traders_hub. Since we don't set up any routing history
+        // in the test, getActivePlatform returns platform_name.DTrader as the default.
+        expect(history.location.pathname).toBe(routes.trade);
     });
 
     it('goes to Withdrawal page in Desktop mode when clicking on Withdrawal in the Vertical tab menu', () => {

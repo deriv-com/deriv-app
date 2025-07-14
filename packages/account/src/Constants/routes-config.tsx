@@ -107,7 +107,7 @@ const initRoutesConfig = () => [
         path: routes.account,
         component: Account,
         is_authenticated: true,
-        getTitle: () => localize('Account Settings'),
+        getTitle: () => localize('Account settings'),
         icon_component: 'IcUserOutline',
         routes: [
             {
@@ -193,7 +193,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => localize('Self exclusion'),
+                        getTitle: () => localize('Self-exclusion'),
                     },
                     {
                         path: routes.account_limits,

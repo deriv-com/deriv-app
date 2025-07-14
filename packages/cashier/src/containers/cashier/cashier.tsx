@@ -6,7 +6,6 @@ import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, VerticalTab } fro
 import {
     useAccountTransferVisible,
     useAuthorize,
-    useIsHubRedirectionEnabled,
     useIsP2PEnabled,
     useOnrampVisible,
     useP2PNotificationCount,
@@ -14,13 +13,13 @@ import {
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
 import {
-    getActivePlatform,
     getSelectedRoute,
     matchRoute,
-    platform_name,
     routes,
     setPerformanceValue,
     WS,
+    getActivePlatform,
+    platform_name,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
@@ -76,16 +75,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { current_language, is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier, toggleReadyToDepositModal } = ui;
-    const {
-        account_settings,
-        currency,
-        has_wallet,
-        is_account_setting_loaded,
-        is_logged_in,
-        is_logging_in,
-        is_svg,
-        is_virtual,
-    } = client;
+    const { account_settings, currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } =
+        client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -96,10 +87,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = useP2PSettings();
     const { is_p2p_enabled, is_p2p_enabled_success, is_p2p_enabled_loading } = useIsP2PEnabled();
     const { isSuccess } = useAuthorize();
-    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
-
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
 
     const onClickClose = () => {
         const pathname = getActivePlatform(common.app_routing_history);
@@ -259,23 +246,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         toggleReadyToDepositModal,
     ]);
 
-    useEffect(() => {
-        if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
-            const redirectUrl = window.location.hostname.includes('staging')
-                ? STAGING_REDIRECT_URL
-                : PRODUCTION_REDIRECT_URL;
-
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
-            const client_accounts = JSON.parse(window.localStorage.getItem('client_accounts') || '{}');
-            const active_wallet_loginid = window.sessionStorage.getItem('active_wallet_loginid');
-            const account_currency =
-                client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
-
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
-        }
-    }, [has_wallet, isHubRedirectionEnabled, isHubRedirectionLoaded]);
-
     const is_p2p_loading = is_p2p_enabled_loading && !is_p2p_enabled_success;
     const is_cashier_loading =
         ((!is_logged_in || isMobile) && is_logging_in) ||
@@ -283,7 +253,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_checking ||
         is_p2p_loading;
 
-    if (is_cashier_loading || has_wallet) {
+    if (is_cashier_loading) {
         return <Loading is_fullscreen />;
     }
 

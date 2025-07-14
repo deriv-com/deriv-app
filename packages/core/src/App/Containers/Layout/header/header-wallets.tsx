@@ -1,23 +1,19 @@
 import React from 'react';
-import { useHistory, useLocation, withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-
-import { useIsHubRedirectionEnabled } from '@deriv/hooks';
-import { platforms, routes } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { withRouter, useLocation, useHistory } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
-
+import { observer, useStore } from '@deriv/stores';
+import { routes, platforms } from '@deriv/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountActionsWallets } from 'App/Components/Layout/Header/wallets/account-actions-wallets';
-import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
 import platform_config from 'App/Constants/platform-config';
-import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-
-import DerivShortLogo from './deriv-short-logo';
+import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
 import TradersHubHomeButton from './traders-hub-home-button';
+import DerivShortLogo from './deriv-short-logo';
 
 const MenuLeft = observer(() => {
     const { client, common, traders_hub, ui } = useStore();
@@ -124,12 +120,10 @@ const MenuRight = observer(() => {
 });
 
 const HeaderWallets = observer(() => {
-    const { client, common, ui, notifications } = useStore();
-    const { has_wallet, is_client_store_initialized } = client;
+    const { common, ui, notifications } = useStore();
     const { platform } = common;
     const { is_app_disabled, is_route_modal_on } = ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
-    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -141,26 +135,6 @@ const HeaderWallets = observer(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
     }, [removeUpdateNotification]);
-
-    const excludedRoutes = [
-        routes.trade,
-        routes.trader_positions,
-        routes.complaints_policy,
-        routes.endpoint,
-        routes.redirect,
-        routes.index,
-        routes.error404,
-    ];
-
-    const isExcludedRoute = excludedRoutes.some(route => window.location.pathname.includes(route));
-
-    if (
-        (!is_client_store_initialized && !isExcludedRoute) ||
-        (has_wallet && !isHubRedirectionLoaded && !isExcludedRoute) ||
-        (has_wallet && isHubRedirectionLoaded && !isExcludedRoute && isHubRedirectionEnabled)
-    ) {
-        return null;
-    }
 
     return (
         <header

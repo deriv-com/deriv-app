@@ -1,4 +1,8 @@
 name: Deriv App Production Workflow
+
+permissions:
+  contents: write
+
 on:
   push:
     tags:

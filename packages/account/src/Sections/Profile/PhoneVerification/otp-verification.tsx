@@ -164,7 +164,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 {should_show_phone_number_otp ? (
                     <Localize i18n_default_text='Step 3 of 3: Verify your number' />
                 ) : (
-                    <Localize i18n_default_text='Step 1 of 3: Email verification needed' />
+                    <Localize i18n_default_text='Step 1 of 3: Confirm your request' />
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
@@ -201,13 +201,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     <Fragment>
                         <Text size='sm'>
                             <Localize
-                                i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
+                                i18n_default_text='Enter the code sent to <0>{{users_email}}</0>.'
                                 values={{ users_email: account_settings?.email }}
                                 components={[<strong key={0} />]}
                             />
-                        </Text>
-                        <Text size='sm'>
-                            <Localize i18n_default_text="Enter the code below to verify it's you." />
                         </Text>
                     </Fragment>
                 )}

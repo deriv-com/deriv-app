@@ -17,4 +17,3 @@ export { default as isTmbEnabled } from './isTmbEnabled';
 export * from './parse-url';
 export * from './moment';
 export * from './files';
-export * from './logging';

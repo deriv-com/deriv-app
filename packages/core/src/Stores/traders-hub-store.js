@@ -12,7 +12,6 @@ import {
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';
-import { logError } from '@deriv/utils';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
@@ -914,9 +913,6 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
-        if (value) {
-            logError('Wallets migration failed popup', { loginid: this.root_store.client.loginid });
-        }
     }
 
     cleanup() {

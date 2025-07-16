@@ -285,7 +285,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     if (
         is_cashier_loading ||
-        (has_wallet && (!isHubRedirectionLoaded || isHubRedirectionEnabled))
+        (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)
     ) {
         return <Loading is_fullscreen />;
     }

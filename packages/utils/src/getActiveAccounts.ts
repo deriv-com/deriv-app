@@ -77,7 +77,11 @@ const getActiveAccounts = async () => {
 
     const activeSessions = await getActiveSessions();
 
-    if (!activeSessions?.active) {
+    if (!activeSessions) {
+        return undefined;
+    }
+
+    if (!activeSessions.active) {
         handleLogout();
         return undefined;
     }

@@ -119,7 +119,13 @@ const useTMB = (options: { showErrorModal?: VoidFunction } = {}): UseTMBReturn =
     const onRenderTMBCheck = useCallback(async () => {
         setIsLoggingIn(true);
         const activeSessions = await getActiveSessions();
-        if (!activeSessions?.active) {
+
+        if (!activeSessions) {
+            setIsLoggingIn(false);
+            return;
+        }
+
+        if (!activeSessions.active) {
             setIsLoggingIn(false);
             return handleLogout();
         }

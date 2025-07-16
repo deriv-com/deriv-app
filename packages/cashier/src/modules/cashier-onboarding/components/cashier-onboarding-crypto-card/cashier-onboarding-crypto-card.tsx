@@ -24,7 +24,7 @@ const CashierOnboardingCryptoCard: React.FC = observer(() => {
 
     const onClick = () => {
         setDepositTarget('/cashier/deposit');
-        if (currency_config.is_crypto || has_crypto_account) {
+        if (currency_config?.is_crypto || has_crypto_account) {
             openRealAccountSignup('choose');
             shouldNavigateAfterChooseCrypto('/cashier/deposit');
         } else {

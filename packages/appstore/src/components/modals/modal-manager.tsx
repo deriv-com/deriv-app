@@ -222,6 +222,7 @@ const ModalManager = () => {
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
         should_show_assessment_complete_modal,
+        is_complete_user_profile_modal_open,
     } = ui;
     const {
         is_demo,
@@ -302,14 +303,18 @@ const ModalManager = () => {
     const url_action_param = url_params.get('action');
 
     const should_show_wallets_non_eu_upgrade_modal =
-        !is_eu && !is_tnc_needed && (is_eligible || is_real_wallets_upgrade_on || is_in_progress);
+        !is_eu &&
+        !is_tnc_needed &&
+        (is_eligible || is_real_wallets_upgrade_on || is_in_progress) &&
+        !is_complete_user_profile_modal_open;
 
     const should_show_wallets_eu_upgrade_modal =
         is_eu &&
         (is_virtual || !is_trading_experience_incomplete) &&
         !should_show_assessment_complete_modal &&
         (is_eligible || is_real_wallets_upgrade_on) &&
-        !url_action_param;
+        !url_action_param &&
+        !is_complete_user_profile_modal_open;
 
     return (
         <React.Fragment>

@@ -23,7 +23,8 @@ const useIsHubRedirectionEnabled = () => {
     return {
         isHubRedirectionEnabled,
         isChangingToHubAppId,
-        isHubRedirectionLoaded: Array.isArray(data?.hub_enabled_country_list),
+        // treat remote config as loaded even if the hub list isn't present
+        isHubRedirectionLoaded: !!data,
     };
 };
 

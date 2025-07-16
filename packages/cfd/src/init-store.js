@@ -3,7 +3,7 @@ import RootStore from './Stores';
 import { setWebsocket } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 
-configure({ enforceActions: 'observed' });
+configure({ enforceActions: 'observed', isolateGlobalState: true });
 
 let root_store;
 

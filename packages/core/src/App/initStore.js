@@ -3,7 +3,7 @@ import { excludeParamsFromUrlQuery, startPerformanceEventTimer } from '@deriv/sh
 import NetworkMonitor from 'Services/network-monitor';
 import RootStore from 'Stores';
 
-configure({ enforceActions: 'observed' });
+configure({ enforceActions: 'observed', isolateGlobalState: true });
 
 const setStorageEvents = root_store => {
     window.addEventListener('storage', evt => {

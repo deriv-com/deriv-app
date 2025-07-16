@@ -23,7 +23,7 @@ const useIsHubRedirectionEnabled = () => {
     return {
         isHubRedirectionEnabled,
         isChangingToHubAppId,
-        isHubRedirectionLoaded: !!hub_enabled_country_list.length,
+        isHubRedirectionLoaded: Array.isArray(data?.hub_enabled_country_list),
     };
 };
 

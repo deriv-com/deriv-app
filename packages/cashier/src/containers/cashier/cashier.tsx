@@ -196,13 +196,17 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     }, [toggleCashier]);
 
     useEffect(() => {
+        let is_mounted = true;
         (async () => {
             await WS?.wait('authorize');
-            if (is_logged_in) {
+            if (is_mounted && is_logged_in) {
                 onMount();
                 setAccountSwitchListener();
             }
         })();
+        return () => {
+            is_mounted = false;
+        };
     }, [is_logged_in, onMount, setAccountSwitchListener]);
 
     React.useEffect(() => {
@@ -283,10 +287,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_checking ||
         is_p2p_loading;
 
-    if (
-        is_cashier_loading ||
-        (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)
-    ) {
+    if (is_cashier_loading || (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)) {
         return <Loading is_fullscreen />;
     }
 

@@ -63,19 +63,23 @@ Before running or contribute to this project, you need to have the setup of the 
 > - Find and copy nx-cloud accessToken
 > - Make a copy of `nx-cloud.env.example` from root directory of the project and name it `nx-cloud.env` and replace the `<token>` with provided token.
 
-3.  **Enter project directory**
+3.  **Enable Nx Cloud caching (recommended)**
+
+    Create a `nx-cloud.env` file with your `NX_CLOUD_ACCESS_TOKEN`. This enables remote caching so repeated builds can reuse previous outputs.
+
+4.  **Enter project directory**
 
     ```sh
     cd deriv-app
     ```
 
-4.  **Install your dependencies:**
+5.  **Install your dependencies:**
 
     ```sh
     npm run bootstrap
     ```
 
-5.  **Build packages:**
+6.  **Build packages:**
 
     ```sh
     npm run build:all

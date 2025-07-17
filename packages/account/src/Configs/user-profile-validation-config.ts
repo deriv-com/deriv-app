@@ -152,7 +152,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) =>
                 `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
             )
             .when({
-                is: () => is_svg,
+                is: () => !is_svg,
                 then: Yup.string().test(
                     'po_box',
                     localize('P.O. Box is not accepted in address'),
@@ -166,7 +166,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) =>
                 `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
             )
             .when({
-                is: () => is_svg,
+                is: () => !is_svg,
                 then: Yup.string().test(
                     'po_box',
                     localize('P.O. Box is not accepted in address'),

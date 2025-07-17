@@ -51,7 +51,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
             const url_params = new URLSearchParams(url_query_string);
             const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
             localStorage.setItem('wallet_redirect_done', true);
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            window.location.href = redirect_path;
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
@@ -68,8 +69,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
-
-    if (isHubRedirectionEnabled) {
+    if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
         return <Loading is_fullscreen />;
     }
 

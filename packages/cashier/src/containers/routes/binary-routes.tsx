@@ -32,6 +32,15 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
+        console.log('BinaryRoutes: checking redirection', {
+            isHubRedirectionEnabled,
+            has_wallet,
+            is_logging_out,
+            is_logged_in,
+            prevent_redirect_to_hub,
+            is_client_store_initialized,
+        });
+
         if (
             isHubRedirectionEnabled &&
             has_wallet &&
@@ -51,7 +60,9 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
             const url_params = new URLSearchParams(url_query_string);
             const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
             localStorage.setItem('wallet_redirect_done', true);
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            console.log('BinaryRoutes: redirecting to', redirect_path);
+            window.location.href = redirect_path;
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
@@ -69,7 +80,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         is_client_store_initialized,
     ]);
 
-    if (isHubRedirectionEnabled) {
+    if (isHubRedirectionEnabled && has_wallet) {
+        console.log('BinaryRoutes: displaying loading screen while redirecting');
         return <Loading is_fullscreen />;
     }
 

@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 const TurbosTradeDescription = ({
     onClick,
 }: {
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    onClick: (term: string, e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
 }) => {
     const content = [
         {
@@ -20,8 +20,8 @@ const TurbosTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('payout', e)}
+                            onKeyDown={e => onClick('payout', e)}
                             key={0}
                         />,
                     ]}
@@ -51,8 +51,8 @@ const TurbosTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('payout_per_point', e)}
+                            onKeyDown={e => onClick('payout_per_point', e)}
                             key={0}
                         />,
                     ]}
@@ -66,8 +66,8 @@ const TurbosTradeDescription = ({
                     components={[
                         <span
                             className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                            onClick={e => onClick('contract_value', e)}
+                            onKeyDown={e => onClick('contract_value', e)}
                             key={0}
                         />,
                     ]}

@@ -295,7 +295,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         0
     );
 
-    // measure performance metrics (load cashier time)
+    // Measure performance metrics (load cashier time)
     setPerformanceValue('load_cashier_time');
 
     return (

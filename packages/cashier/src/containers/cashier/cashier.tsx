@@ -272,7 +272,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             const account_currency =
                 client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
 
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
+            const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
+            window.location.href = redirect_path;
         }
     }, [has_wallet, isHubRedirectionEnabled, isHubRedirectionLoaded]);
 
@@ -283,7 +284,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_checking ||
         is_p2p_loading;
 
-    if (is_cashier_loading || has_wallet) {
+    if (is_cashier_loading || (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)) {
         return <Loading is_fullscreen />;
     }
 
@@ -294,7 +295,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         0
     );
 
-    // measure performance metrics (load cashier time)
+    // Measure performance metrics (load cashier time)
     setPerformanceValue('load_cashier_time');
 
     return (

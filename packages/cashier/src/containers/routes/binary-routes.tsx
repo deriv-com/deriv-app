@@ -69,7 +69,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
-    if (isHubRedirectionEnabled && (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)) {
+    if (isHubRedirectionEnabled && has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
         return <Loading is_fullscreen />;
     }
 

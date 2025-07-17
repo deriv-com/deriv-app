@@ -291,7 +291,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_payment_agent_transfer_checking ||
         is_p2p_loading;
 
-    if (is_cashier_loading || has_wallet) {
+    if (is_cashier_loading || (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
         console.log('Cashier: showing loading screen', {
             is_cashier_loading,
             has_wallet,

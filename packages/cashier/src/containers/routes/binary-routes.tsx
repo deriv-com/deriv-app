@@ -79,8 +79,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
-
-    if (isHubRedirectionEnabled && has_wallet) {
+    if (isHubRedirectionEnabled && (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)) {
         console.log('BinaryRoutes: displaying loading screen while redirecting');
         return <Loading is_fullscreen />;
     }

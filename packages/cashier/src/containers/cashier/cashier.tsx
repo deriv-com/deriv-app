@@ -260,12 +260,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     ]);
 
     useEffect(() => {
-        console.log('Cashier: checking wallet redirection', {
-            has_wallet,
-            isHubRedirectionLoaded,
-            isHubRedirectionEnabled,
-        });
-
         if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
             const redirectUrl = window.location.hostname.includes('staging')
                 ? STAGING_REDIRECT_URL
@@ -279,7 +273,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 client_accounts?.[active_wallet_loginid || '']?.currency || url_params.get('account');
 
             const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
-            console.log('Cashier: redirecting to', redirect_path);
             window.location.href = redirect_path;
         }
     }, [has_wallet, isHubRedirectionEnabled, isHubRedirectionLoaded]);
@@ -292,10 +285,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_p2p_loading;
 
     if (is_cashier_loading || (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
-        console.log('Cashier: showing loading screen', {
-            is_cashier_loading,
-            has_wallet,
-        });
         return <Loading is_fullscreen />;
     }
 

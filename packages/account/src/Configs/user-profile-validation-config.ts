@@ -210,49 +210,95 @@ export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fiel
         }),
     });
 
-export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isCountryCodeDropdownEnabled?: boolean) =>
+export const getPersonalDetailsBaseValidationSchema = (
+    broker_code?: string,
+    isCountryCodeDropdownEnabled?: boolean,
+    immutable_fields?: string[]
+) =>
     Yup.object({
-        salutation: Yup.string().when({
-            is: () => broker_code === 'maltainvest',
-            then: Yup.string().required(localize('Salutation is required.')),
+        salutation: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('salutation'),
+            then: schema =>
+                schema.when([], {
+                    is: () => broker_code === 'maltainvest',
+                    then: schema => schema.required(localize('Salutation is required.')),
+                    otherwise: schema => schema.optional(),
+                }),
+            otherwise: schema => schema.nullable().optional(),
         }),
-        account_opening_reason: Yup.string().required(localize('Account opening reason is required.')),
-        first_name: Yup.string()
-            .required(localize('First name is required.'))
-            .max(50, localize('Enter no more than 50 characters.'))
-            .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
-        last_name: Yup.string()
-            .required(localize('Last name is required.'))
-            .max(50, localize('Enter no more than 50 characters.'))
-            .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
-        date_of_birth: Yup.string()
-            .required('Date of birth is required.')
-            .test({
-                name: 'validate_dob',
-                test: value => dayjs(value).isValid() && dayjs(value).isBefore(dayjs().subtract(18, 'years')),
-                message: localize('You must be 18 years old and above.'),
-            }),
-        phone: Yup.string()
-            .required(localize('Phone is required.'))
-            // @ts-expect-error yup validation giving type error
-            .validatePhoneNumberLength(
-                isCountryCodeDropdownEnabled
-                    ? localize('You should enter 5-15 numbers.')
-                    : localize('You should enter 9-20 numbers.'),
-                isCountryCodeDropdownEnabled
-            )
-            .matches(
-                isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : phoneNumber,
-                localize('Please enter a valid phone number (e.g. +15417541234).')
-            ),
+        account_opening_reason: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('account_opening_reason'),
+            then: schema => schema.required(localize('Account opening reason is required.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        first_name: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('first_name'),
+            then: schema =>
+                schema
+                    .required(localize('First name is required.'))
+                    .max(50, localize('Enter no more than 50 characters.'))
+                    .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        last_name: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('last_name'),
+            then: schema =>
+                schema
+                    .required(localize('Last name is required.'))
+                    .max(50, localize('Enter no more than 50 characters.'))
+                    .matches(name, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        date_of_birth: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('date_of_birth'),
+            then: schema =>
+                schema.required('Date of birth is required.').test({
+                    name: 'validate_dob',
+                    test: value => dayjs(value).isValid() && dayjs(value).isBefore(dayjs().subtract(18, 'years')),
+                    message: localize('You must be 18 years old and above.'),
+                }),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        phone: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('phone'),
+            then: schema =>
+                schema
+                    .required(localize('Phone is required.'))
+                    // @ts-expect-error yup validation giving type error
+                    .validatePhoneNumberLength(
+                        isCountryCodeDropdownEnabled
+                            ? localize('You should enter 5-15 numbers.')
+                            : localize('You should enter 9-20 numbers.'),
+                        isCountryCodeDropdownEnabled
+                    )
+                    .matches(
+                        isCountryCodeDropdownEnabled ? tempPhoneNumberValidation : phoneNumber,
+                        localize('Please enter a valid phone number (e.g. +15417541234).')
+                    ),
+            otherwise: schema => schema.nullable().optional(),
+        }),
         ...(isCountryCodeDropdownEnabled && {
-            calling_country_code: Yup.string().required(localize('Code required.')),
+            calling_country_code: Yup.string().when([], {
+                is: () => !immutable_fields?.includes('calling_country_code'),
+                then: schema => schema.required(localize('Code required.')),
+                otherwise: schema => schema.nullable().optional(),
+            }),
         }),
-        place_of_birth: Yup.string().required(localize('Place of birth is required.')),
-        citizen: broker_code
-            ? Yup.string().when({
-                  is: () => broker_code === 'maltainvest',
-                  then: Yup.string().required(localize('Citizenship is required.')),
-              })
-            : Yup.string().required(localize('Citizenship is required.')),
+        place_of_birth: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('place_of_birth'),
+            then: schema => schema.required(localize('Place of birth is required.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        citizen: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('citizen'),
+            then: schema =>
+                broker_code
+                    ? schema.when([], {
+                          is: () => broker_code === 'maltainvest',
+                          then: schema => schema.required(localize('Citizenship is required.')),
+                          otherwise: schema => schema.optional(),
+                      })
+                    : schema.required(localize('Citizenship is required.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
     });

@@ -138,6 +138,8 @@ export const getEmploymentAndTaxValidationSchema = ({
     });
 };
 
+const poBoxPattern = /\bpo\s+box\b/i;
+
 export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fields?: string[]) =>
     Yup.object({
         address_city: Yup.string().when([], {
@@ -164,7 +166,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fiel
                     validationSchema = validationSchema.test(
                         'po_box',
                         localize('P.O. Box is not accepted in address'),
-                        value => !postalOfficeBoxNumber.test(value ?? '')
+                        value => !postalOfficeBoxNumber.test(value ?? '') && !poBoxPattern.test(value ?? '')
                     );
                 }
 

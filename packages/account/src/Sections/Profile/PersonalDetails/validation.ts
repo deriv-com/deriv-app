@@ -162,7 +162,7 @@ export const getPersonalDetailsValidationSchema = (
         'citizen',
     ]);
 
-    const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false, immutable_fields);
+    const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false);
 
     const employment_tin_schema = getEmploymentAndTaxValidationSchema({
         tin_config: tin_validation_config as TinValidations,

@@ -670,7 +670,7 @@ const PersonalDetailsForm = observer(() => {
                                                         is_dynamic_fa_enabled={isDynamicFAEnabled}
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||
-                                                            !isValid ||
+                                                            !!errors.phone ||
                                                             !stripped_phone_number ||
                                                             is_email_otp_timer_loading ||
                                                             (isCountryCodeDropdownEnabled &&

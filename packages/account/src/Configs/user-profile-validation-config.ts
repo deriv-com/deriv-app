@@ -138,45 +138,76 @@ export const getEmploymentAndTaxValidationSchema = ({
     });
 };
 
-export const getAddressDetailValidationSchema = (is_svg: boolean) =>
+export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fields?: string[]) =>
     Yup.object({
-        address_city: Yup.string()
-            .required(localize('City is required'))
-            .max(99, localize('Only 99 characters, please.'))
-            .matches(addressCity, localize('Only letters, periods, hyphens, apostrophes, and spaces, please.')),
-        address_line_1: Yup.string()
-            .required(localize('First line of address is required'))
-            .max(70, localize('Only 70 characters, please.'))
-            .matches(
-                address,
-                `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
-            )
-            .when({
-                is: () => !is_svg,
-                then: Yup.string().test(
-                    'po_box',
-                    localize('P.O. Box is not accepted in address'),
-                    value => !postalOfficeBoxNumber.test(value ?? '')
-                ),
-            }),
-        address_line_2: Yup.string()
-            .max(70, localize('Only 70 characters, please.'))
-            .matches(
-                address,
-                `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
-            )
-            .when({
-                is: () => !is_svg,
-                then: Yup.string().test(
-                    'po_box',
-                    localize('P.O. Box is not accepted in address'),
-                    value => !postalOfficeBoxNumber.test(value ?? '')
-                ),
-            }),
-        address_postcode: Yup.string()
-            .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
-            .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
-        address_state: Yup.string().matches(/^[\w\s\W'.;,-]{0,99}$/, localize('State is not in a proper format')),
+        address_city: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('address_city'),
+            then: schema =>
+                schema
+                    .required(localize('City is required'))
+                    .max(99, localize('Only 99 characters, please.'))
+                    .matches(addressCity, localize('Only letters, periods, hyphens, apostrophes, and spaces, please.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        address_line_1: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('address_line_1'),
+            then: schema => {
+                let validationSchema = schema
+                    .required(localize('First line of address is required'))
+                    .max(70, localize('Only 70 characters, please.'))
+                    .matches(
+                        address,
+                        `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
+                    );
+
+                if (!is_svg) {
+                    validationSchema = validationSchema.test(
+                        'po_box',
+                        localize('P.O. Box is not accepted in address'),
+                        value => !postalOfficeBoxNumber.test(value ?? '')
+                    );
+                }
+
+                return validationSchema;
+            },
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        address_line_2: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('address_line_2'),
+            then: schema => {
+                let validationSchema = schema
+                    .max(70, localize('Only 70 characters, please.'))
+                    .matches(
+                        address,
+                        `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
+                    );
+
+                if (!is_svg) {
+                    validationSchema = validationSchema.test(
+                        'po_box',
+                        localize('P.O. Box is not accepted in address'),
+                        value => !postalOfficeBoxNumber.test(value ?? '')
+                    );
+                }
+
+                return validationSchema;
+            },
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        address_postcode: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('address_postcode'),
+            then: schema =>
+                schema
+                    .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
+                    .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+
+        address_state: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('address_state'),
+            then: schema => schema.matches(/^[\w\s\W'.;,-]{0,99}$/, localize('State is not in a proper format')),
+            otherwise: schema => schema.nullable().optional(),
+        }),
     });
 
 export const getPersonalDetailsBaseValidationSchema = (broker_code?: string, isCountryCodeDropdownEnabled?: boolean) =>

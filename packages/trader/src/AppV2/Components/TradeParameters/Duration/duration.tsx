@@ -10,7 +10,6 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
 import { TTradeParametersProps } from '../trade-parameters';
-import { couldStartTrivia } from 'typescript';
 
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {

@@ -3,9 +3,8 @@ import { withRouter, matchPath, RouteComponentProps } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import BinaryRoutes from 'App/Components/Routes';
-import getRoutesConfig from 'App/Constants/routes-config';
 import { observer, useStore } from '@deriv/stores';
+import BinaryRoutes from 'App/Components/Routes';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMatchPattern = { from: Array<string | undefined>; to: Array<string> };
@@ -64,31 +63,6 @@ const Routes = observer(({ history, passthrough }: TRoutesProps) => {
     React.useEffect(() => {
         if (setPromptHandler) {
             setPromptHandler(true, (route_to: RouteComponentProps['location'], action: string) => {
-                // clears portfolio when we navigate to mt5 dashboard
-                tradePageMountingMiddleware({
-                    path_from: history.location.pathname,
-                    path_to: route_to.pathname,
-                    match_patterns: [
-                        {
-                            from: getRoutesConfig()
-                                .flatMap(route => {
-                                    if (route.routes) {
-                                        return route.routes.map(subroute => subroute.path);
-                                    }
-                                    return [route.path];
-                                })
-                                .filter(path => path && path !== routes.mt5 && path !== routes.dxtrade),
-                            to: [routes.mt5, routes.dxtrade],
-                        },
-                    ],
-                    action,
-                    callback: (has_match: boolean) => {
-                        if (has_match) {
-                            onUnmountPortfolio();
-                        }
-                    },
-                });
-
                 return tradePageMountingMiddleware({
                     path_from: history.location.pathname,
                     path_to: route_to.pathname,

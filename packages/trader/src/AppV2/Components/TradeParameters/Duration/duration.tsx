@@ -10,6 +10,7 @@ import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
 import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
 import { TTradeParametersProps } from '../trade-parameters';
+import { couldStartTrivia } from 'typescript';
 
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
@@ -45,6 +46,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const [end_time, setEndTime] = useState<string>('');
     const [unit, setUnit] = useState(expiry_time ? 'd' : duration_unit);
     const contract_type_object = getDisplayedContractTypes(trade_types, contract_type, trade_type_tab);
+    console.log('validation_errors', validation_errors);
     const has_error =
         (proposal_info[contract_type_object[0]]?.has_error &&
             proposal_info[contract_type_object[0]]?.error_field === 'duration') ||

@@ -10,6 +10,28 @@ const { taxIdentificationNumber, address, addressCity, postalCode, phoneNumber, 
     ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
+// Add PO Box pattern + other variations
+const additionalPOBoxPatterns = new RegExp(
+    [
+        'po\\s+box', // PO Box, PO  Box
+        'pbox', // PBox
+        'pbag', // PBag
+        'private\\s*bag', // Private Bag
+        'post\\s*office\\s*box', // Post Office Box
+
+        // Spanish variations
+        'apartado\\s*postal', // Apartado Postal
+        'casilla\\s*postal', // Casilla Postal
+        'casilla\\s*de\\s*correo', // Casilla de Correo
+
+        // Portuguese variations
+        'caixa\\s*postal', // Caixa Postal
+        'caixa\\s*de\\s*correio', // Caixa de Correio
+        'cx\\s*postal', // Cx Postal
+    ].join('|'),
+    'i'
+);
+
 type TINDepdendents = {
     is_mf?: boolean;
     is_real?: boolean;
@@ -138,8 +160,6 @@ export const getEmploymentAndTaxValidationSchema = ({
     });
 };
 
-const poBoxPattern = /\bpo\s+box\b/i;
-
 export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fields?: string[]) =>
     Yup.object({
         address_city: Yup.string().when([], {
@@ -166,7 +186,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fiel
                     validationSchema = validationSchema.test(
                         'po_box',
                         localize('P.O. Box is not accepted in address'),
-                        value => !postalOfficeBoxNumber.test(value ?? '') && !poBoxPattern.test(value ?? '')
+                        value => !postalOfficeBoxNumber.test(value ?? '') && !additionalPOBoxPatterns.test(value ?? '')
                     );
                 }
 
@@ -188,7 +208,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean, immutable_fiel
                     validationSchema = validationSchema.test(
                         'po_box',
                         localize('P.O. Box is not accepted in address'),
-                        value => !postalOfficeBoxNumber.test(value ?? '') && !poBoxPattern.test(value ?? '')
+                        value => !postalOfficeBoxNumber.test(value ?? '') && !additionalPOBoxPatterns.test(value ?? '')
                     );
                 }
 

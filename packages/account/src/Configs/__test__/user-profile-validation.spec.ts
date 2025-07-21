@@ -273,6 +273,27 @@ describe('getAddressDetailValidationSchema', () => {
     const maxCharsMessage = 'Only 70 characters, please.';
     const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
+    const poBoxAddresses = [
+        // English variations
+        'P.O. Box 121',
+        'P O Box 456',
+        'PO Box 789',
+        'PBox 123',
+        'PBag 456',
+        'Private Bag 789',
+        'Post Office Box 321',
+
+        // Spanish variations
+        'Apartado Postal 123',
+        'Casilla Postal 456',
+        'Casilla de Correo 789',
+
+        // Portuguese variations
+        'Caixa Postal 123',
+        'Caixa de Correio 456',
+        'Cx Postal 789',
+    ];
+
     it('validates address_line_1 correctly without svg flag', async () => {
         const { address_line_1 } = getAddressDetailValidationSchema(false).fields;
 
@@ -282,13 +303,32 @@ describe('getAddressDetailValidationSchema', () => {
             `Use only the following special characters: ${addressPermittedSpecialCharacters}`
         );
         await expect(address_line_1.validate('a'.repeat(71))).rejects.toThrow(maxCharsMessage);
-        await expect(address_line_1.validate('P.O. Box 121')).rejects.toThrow('P.O. Box is not accepted in address');
     });
 
-    it('PO box should exist for SVG ', async () => {
+    it('rejects P.O. Box addresses in all supported languages when SVG flag is false', async () => {
+        const { address_line_1, address_line_2 } = getAddressDetailValidationSchema(false).fields;
+
+        await Promise.all(
+            poBoxAddresses.map(address =>
+                expect(address_line_1.validate(address)).rejects.toThrow('P.O. Box is not accepted in address')
+            )
+        );
+        await Promise.all(
+            poBoxAddresses.map(address =>
+                expect(address_line_2.validate(address)).rejects.toThrow('P.O. Box is not accepted in address')
+            )
+        );
+    });
+
+    it('allows P.O. Box addresses in all supported languages when SVG flag is true', async () => {
         const { address_line_1, address_line_2 } = getAddressDetailValidationSchema(true).fields;
-        await expect(address_line_1.validate('P.O. Box 123')).resolves.toBe('P.O. Box 123');
-        await expect(address_line_2.validate('P.O. Box 124')).resolves.toBe('P.O. Box 124');
+
+        await Promise.all(
+            poBoxAddresses.map(address => expect(address_line_1.validate(address)).resolves.toBe(address))
+        );
+        await Promise.all(
+            poBoxAddresses.map(address => expect(address_line_2.validate(address)).resolves.toBe(address))
+        );
     });
 
     it('validates address_line_2 correctly', async () => {
@@ -299,7 +339,6 @@ describe('getAddressDetailValidationSchema', () => {
             `Use only the following special characters: ${addressPermittedSpecialCharacters}`
         );
         await expect(address_line_2.validate('a'.repeat(71))).rejects.toThrow(maxCharsMessage);
-        await expect(address_line_2.validate('P.O. Box 120')).rejects.toThrow('P.O. Box is not accepted in address');
     });
 
     it('validates address_postcode correctly with country id', async () => {

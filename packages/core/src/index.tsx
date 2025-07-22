@@ -10,7 +10,7 @@ import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
 import { AnalyticsInitializer } from 'Utils/Analytics';
-import { getActiveAccounts, isTmbEnabled } from '@deriv/utils';
+import { getActiveAccounts } from '@deriv/utils';
 
 AnalyticsInitializer();
 if (
@@ -26,11 +26,8 @@ const has_endpoint_url = checkAndSetEndpointFromUrl();
 // if has endpoint url, APP will be redirected
 if (!has_endpoint_url) {
     const initApp = async () => {
-        const is_tmb_enabled = await isTmbEnabled();
         const accounts = await getActiveAccounts();
-        const root_store = is_tmb_enabled
-            ? initStore(AppNotificationMessages, accounts)
-            : initStore(AppNotificationMessages);
+        const root_store = initStore(AppNotificationMessages, accounts);
 
         const wrapper = document.getElementById('deriv_app');
         if (wrapper) {

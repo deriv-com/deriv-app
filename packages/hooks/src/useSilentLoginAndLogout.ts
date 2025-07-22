@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 import { useStore } from '@deriv/stores';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
-import useTMB from './useTMB';
 /**
  * Handles silent login and single logout logic for OAuth2.
  *
@@ -35,20 +34,9 @@ const useSilentLoginAndLogout = ({
     const isAuthenticating = useRef(false);
     const isLoggingOut = useRef(false);
     const { prevent_single_login, setIsSingleLoggingIn: setClientIsSingleLoggingIn } = client;
-    const { isTmbEnabled } = useTMB();
 
     useEffect(() => {
-        const renderSLO = async () => {
-            const is_tmb_enabled = await isTmbEnabled();
-            const willEventuallySSO = loggedState === 'true' && !isClientAccountsPopulated && !isClientTokensPopulated;
-            const willEventuallySLO = loggedState === 'false' && isClientAccountsPopulated && !isClientTokensPopulated;
-            if ((willEventuallySSO || willEventuallySLO) && !isSilentLoginExcluded && !is_tmb_enabled) {
-                setClientIsSingleLoggingIn(true);
-            } else {
-                setClientIsSingleLoggingIn(false);
-            }
-        };
-        renderSLO();
+        setClientIsSingleLoggingIn(false);
     }, [isClientAccountsPopulated, isClientTokensPopulated, loggedState]);
 
     const requestOidcLogin = async () => {
@@ -70,13 +58,11 @@ const useSilentLoginAndLogout = ({
 
     useEffect(() => {
         const renderSilentLoginAndLogout = async () => {
-            const is_tmb_enabled = await isTmbEnabled();
             if (
                 prevent_single_login ||
                 !is_client_store_initialized ||
                 isSilentLoginExcluded ||
-                !is_deriv_com ||
-                is_tmb_enabled
+                !is_deriv_com
             )
                 return;
 

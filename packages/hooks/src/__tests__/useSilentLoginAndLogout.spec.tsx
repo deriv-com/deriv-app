@@ -18,9 +18,7 @@ jest.mock('@deriv-com/auth-client', () => ({
 
 jest.mock('../useTMB', () => ({
     __esModule: true,
-    default: () => ({
-        isTmbEnabled: jest.fn(() => Promise.resolve(false)),
-    }),
+    default: () => ({}),
 }));
 
 describe('useSilentLoginAndLogout', () => {
@@ -38,9 +36,6 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
             if (key === 'client.accounts') {
                 return JSON.stringify({});
-            }
-            if (key === 'is_tmb_enabled') {
-                return null;
             }
             return null;
         });
@@ -65,9 +60,6 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
             if (key === 'client.accounts') {
                 return JSON.stringify({});
-            }
-            if (key === 'is_tmb_enabled') {
-                return null; // or 'false' if you want to explicitly set it to false
             }
             return null;
         });
@@ -137,9 +129,6 @@ describe('useSilentLoginAndLogout', () => {
         jest.spyOn(Storage.prototype, 'getItem').mockImplementation(key => {
             if (key === 'client.accounts') {
                 return JSON.stringify({ account1: {}, account2: {} });
-            }
-            if (key === 'is_tmb_enabled') {
-                return null; // or 'false' if you want to explicitly set it to false
             }
             return null;
         });

@@ -3,13 +3,12 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
-import { useIsHubRedirectionEnabled, useTMB } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { getDomainName, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
 import { Analytics } from '@deriv-com/analytics';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 
 import { WS } from 'Services';
 
@@ -18,7 +17,6 @@ const Redirect = observer(() => {
     const { client, ui } = useStore();
     const [queryCurrency, setQueryCurrency] = useState('USD');
     const is_deriv_com = /deriv\.(com)/.test(window.location.hostname) || /localhost:8443/.test(window.location.host);
-    const { isTmbEnabled } = useTMB();
 
     const {
         authorize_accounts_list,
@@ -355,7 +353,6 @@ const Redirect = observer(() => {
 
     useEffect(() => {
         const checkTmbAndRedirect = async () => {
-            const is_tmb_enabled = await isTmbEnabled();
             const account_currency = queryCurrency;
             if (
                 !redirected_to_route &&
@@ -392,22 +389,7 @@ const Redirect = observer(() => {
                     updated_search = `${params.toString()}`;
                 }
 
-                if (should_retrigger_oidc && authorize_accounts_list.length > 0 && is_deriv_com && !is_tmb_enabled) {
-                    try {
-                        requestOidcAuthentication({
-                            redirectCallbackUri: `${window.location.origin}/callback`,
-                            postLoginRedirectUri: `redirect?${updated_search}`,
-                        }).catch(err => {
-                            // eslint-disable-next-line no-console
-                            console.error(err);
-                        });
-                    } catch (err) {
-                        // eslint-disable-next-line no-console
-                        console.error(err);
-                    }
-                }
-
-                if (account_currency && !is_tmb_enabled) {
+                if (account_currency) {
                     let matching_loginid;
 
                     const converted_account_currency = account_currency.toUpperCase();

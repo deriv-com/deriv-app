@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import { requestSessionActive } from '@deriv-com/auth-client';
 
 import Chat from './chat';
-import isTmbEnabled from './isTmbEnabled';
 
 type TMBApiReturnedValue = {
     tokens?: {
@@ -69,11 +68,6 @@ const getActiveSessions = async () => {
 };
 
 const getActiveAccounts = async () => {
-    const is_tmb_enabled = await isTmbEnabled();
-
-    if (!is_tmb_enabled) {
-        return undefined;
-    }
 
     const activeSessions = await getActiveSessions();
 

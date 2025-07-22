@@ -6,7 +6,6 @@ import Page404 from 'Modules/Page404';
 import { observer, useStore } from '@deriv/stores';
 import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { getLanguage } from '@deriv/translations';
-import { isTmbEnabled } from '@deriv/utils';
 
 const RouteWithSubRoutes = observer(route => {
     const { common, client } = useStore();
@@ -66,52 +65,10 @@ const RouteWithSubRoutes = observer(route => {
                 window.localStorage.removeItem('is_redirecting');
 
                 if (isTotallyLoggedOut) {
-                    isTmbEnabled().then(isTMBEnabled => {
-                        if (isTMBEnabled) {
-                            redirectToLogin(route.is_logged_in, getLanguage());
-                        } else {
-                            setTimeout(() => {
-                                try {
-                                    setPreventSingleLogin(true);
-                                    requestOidcAuthentication({
-                                        redirectCallbackUri: `${window.location.origin}/callback`,
-                                        postLoginRedirectUri: window.location.href,
-                                    }).catch(err => {
-                                        setPreventSingleLogin(false);
-                                        // eslint-disable-next-line no-console
-                                        console.error(err);
-                                    });
-                                } catch (err) {
-                                    setPreventSingleLogin(false);
-                                    // eslint-disable-next-line no-console
-                                    console.error(err);
-                                }
-                            }, 3000);
-                        }
-                    });
+                    redirectToLogin(route.is_logged_in, getLanguage());
                 }
             } else if (isTotallyLoggedOut) {
-                isTmbEnabled().then(isTMBEnabled => {
-                    if (isTMBEnabled) {
-                        redirectToLogin(route.is_logged_in, getLanguage());
-                    } else {
-                        try {
-                            setPreventSingleLogin(true);
-                            requestOidcAuthentication({
-                                redirectCallbackUri: `${window.location.origin}/callback`,
-                                postLoginRedirectUri: window.location.href,
-                            }).catch(err => {
-                                setPreventSingleLogin(false);
-                                // eslint-disable-next-line no-console
-                                console.error(err);
-                            });
-                        } catch (err) {
-                            setPreventSingleLogin(false);
-                            // eslint-disable-next-line no-console
-                            console.error(err);
-                        }
-                    }
-                });
+                redirectToLogin(route.is_logged_in, getLanguage());
             }
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};

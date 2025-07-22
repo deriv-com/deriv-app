@@ -120,76 +120,103 @@ export const getEmploymentAndTaxValidationSchema = ({
     is_tin_auto_set = false,
     is_duplicate_account = false,
     is_employment_status_tin_mandatory = false,
+    immutable_fields,
 }: TEmployeeDetailsTinValidationConfig) => {
     return Yup.object({
-        employment_status: Yup.string().when('is_employment_status_tin_mandatory', {
-            is: () => is_employment_status_tin_mandatory,
-            then: Yup.string().required(localize('Employment status is required.')),
-            otherwise: Yup.string().notRequired(),
+        employment_status: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('employment_status'),
+            then: schema =>
+                schema.when('is_employment_status_tin_mandatory', {
+                    is: () => is_employment_status_tin_mandatory,
+                    then: Yup.string().required(localize('Employment status is required.')),
+                    otherwise: Yup.string().notRequired(),
+                }),
+            otherwise: schema => schema.nullable().optional(),
         }),
-        tax_residence: Yup.string().when('is_mf', {
-            is: () => is_mf,
-            then: Yup.string().required(localize('Tax residence is required.')),
-            otherwise: Yup.string().notRequired(),
+        tax_residence: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('tax_residence'),
+            then: schema =>
+                schema.when('is_mf', {
+                    is: () => is_mf,
+                    then: Yup.string().required(localize('Tax residence is required.')),
+                    otherwise: Yup.string().notRequired(),
+                }),
+            otherwise: schema => schema.nullable().optional(),
         }),
-        tin_skipped: Yup.number().oneOf([0, 1]).default(0),
-        tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
-            is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
-                tax_identification_number && tax_residence && !tin_skipped && !is_duplicate_account,
-            then: Yup.bool().required().oneOf([true]),
-            otherwise: Yup.bool().notRequired(),
+        tin_skipped: Yup.number().when([], {
+            is: () => !immutable_fields?.includes('tin_skipped'),
+            then: schema => schema.oneOf([0, 1]).default(0),
+            otherwise: schema => schema.nullable().optional(),
         }),
-        tax_identification_number: Yup.string()
-            .when(['tin_skipped'], {
-                is: (tin_skipped: boolean) =>
-                    makeTinOptional({
-                        is_mf,
-                        is_real,
-                        tin_skipped,
-                        is_tin_auto_set,
-                        is_employment_status_tin_mandatory,
-                        is_required_for_tax_residence: Boolean(tin_config?.is_tin_mandatory),
+        tax_identification_confirm: Yup.bool().when([], {
+            is: () => !immutable_fields?.includes('tax_identification_confirm'),
+            then: schema =>
+                schema.when(['tax_identification_number', 'tax_residence', 'tin_skipped'], {
+                    is: (tax_identification_number: string, tax_residence: string, tin_skipped: boolean) =>
+                        tax_identification_number && tax_residence && !tin_skipped && !is_duplicate_account,
+                    then: Yup.bool().required().oneOf([true]),
+                    otherwise: Yup.bool().notRequired(),
+                }),
+            otherwise: schema => schema.nullable().optional(),
+        }),
+        tax_identification_number: Yup.string().when([], {
+            is: () => !immutable_fields?.includes('tax_identification_number'),
+            then: schema =>
+                schema
+                    .when(['tin_skipped'], {
+                        is: (tin_skipped: boolean) =>
+                            makeTinOptional({
+                                is_mf,
+                                is_real,
+                                tin_skipped,
+                                is_tin_auto_set,
+                                is_employment_status_tin_mandatory,
+                                is_required_for_tax_residence: Boolean(tin_config?.is_tin_mandatory),
+                            }),
+                        then: Yup.string().notRequired(),
+                        otherwise: Yup.string().required(localize('Tax identification number is required.')),
+                    })
+                    .max(25, localize("Tax identification number can't be longer than 25 characters."))
+                    .matches(taxIdentificationNumber, {
+                        excludeEmptyString: true,
+                        message: localize(
+                            'Only letters, numbers, space, hyphen, period, and forward slash are allowed.'
+                        ),
+                    })
+                    .test({
+                        name: 'validate-tin',
+                        test: (value, context) => {
+                            const { tax_residence } = context.parent;
+                            if (value && !tax_residence) {
+                                return context.createError({ message: localize('Please fill in tax residence.') });
+                            }
+
+                            if (
+                                value &&
+                                tin_config?.tin_format?.length &&
+                                !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
+                            ) {
+                                return context.createError({
+                                    message: localize('Tax identification number is not properly formatted.'),
+                                });
+                            }
+
+                            if (
+                                value &&
+                                tin_config?.invalid_patterns?.length &&
+                                tin_config?.invalid_patterns?.some(invalid_pattern =>
+                                    new RegExp(invalid_pattern).test(value as string)
+                                )
+                            ) {
+                                return context.createError({
+                                    message: localize('Tax identification number is not properly formatted.'),
+                                });
+                            }
+                            return true;
+                        },
                     }),
-                then: Yup.string().notRequired(),
-                otherwise: Yup.string().required(localize('Tax identification number is required.')),
-            })
-            .max(25, localize("Tax identification number can't be longer than 25 characters."))
-            .matches(taxIdentificationNumber, {
-                excludeEmptyString: true,
-                message: localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.'),
-            })
-            .test({
-                name: 'validate-tin',
-                test: (value, context) => {
-                    const { tax_residence } = context.parent;
-                    if (value && !tax_residence) {
-                        return context.createError({ message: localize('Please fill in tax residence.') });
-                    }
-
-                    if (
-                        value &&
-                        tin_config?.tin_format?.length &&
-                        !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
-                    ) {
-                        return context.createError({
-                            message: localize('Tax identification number is not properly formatted.'),
-                        });
-                    }
-
-                    if (
-                        value &&
-                        tin_config?.invalid_patterns?.length &&
-                        tin_config?.invalid_patterns?.some(invalid_pattern =>
-                            new RegExp(invalid_pattern).test(value as string)
-                        )
-                    ) {
-                        return context.createError({
-                            message: localize('Tax identification number is not properly formatted.'),
-                        });
-                    }
-                    return true;
-                },
-            }),
+            otherwise: schema => schema.nullable().optional(),
+        }),
     });
 };
 

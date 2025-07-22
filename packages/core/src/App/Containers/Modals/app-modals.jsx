@@ -90,6 +90,7 @@ const AppModals = observer(() => {
         residence,
         accounts,
         loginid,
+        is_client_store_initialized,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -150,31 +151,20 @@ const AppModals = observer(() => {
     }, [is_logged_in, is_authorize]);
 
     React.useEffect(() => {
+        if (!is_client_store_initialized || !account_settings) return;
+
         const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
 
-        if (
+        const shouldShow =
             !has_wallet &&
             is_logged_in &&
             is_authorize &&
-            (!residence || !citizen || !date_of_birth || !address_line_1 || !address_city || no_currency)
-        ) {
+            (!residence || !citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+
+        if (shouldShow) {
             setShouldShowCompleteUserProfileModal(true);
         }
-    }, [
-        has_wallet,
-        accounts,
-        has_set_currency,
-        is_logged_in,
-        is_authorize,
-        residence,
-        account_settings.citizen,
-        account_settings.date_of_birth,
-        account_settings.address_line_1,
-        account_settings.address_city,
-        account_settings,
-        setShouldShowCompleteUserProfileModal,
-        no_currency,
-    ]);
+    }, [is_logged_in, is_authorize, account_settings, residence, has_wallet, no_currency, is_client_store_initialized]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 

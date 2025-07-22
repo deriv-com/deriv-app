@@ -349,39 +349,42 @@ const CompleteUserProfile = observer(
                                                                                 list_items={residence_list}
                                                                                 onItemSelection={({
                                                                                     text,
+                                                                                    value,
                                                                                 }: TAutoComplete) => {
                                                                                     setFieldValue(
                                                                                         'residence',
-                                                                                        text,
+                                                                                        value,
                                                                                         true
                                                                                     );
+                                                                                    setResidenceToDisplay(text);
                                                                                 }}
                                                                                 list_portal_id='modal_root'
                                                                                 hint={localize(
                                                                                     'Select the country where you currently live.'
                                                                                 )}
                                                                                 className='complete-user-profile-modal__bottom-margin-field'
-                                                                                value={residence_to_display}
+                                                                                value={
+                                                                                    residence_to_display ||
+                                                                                    values.residence
+                                                                                }
                                                                             />
                                                                         ) : (
                                                                             <SelectNative
+                                                                                {...field}
                                                                                 placeholder={localize('Please select')}
                                                                                 label={localize(
                                                                                     'Country of residence*'
                                                                                 )}
-                                                                                value={residence_to_display}
+                                                                                value={field.value}
                                                                                 list_items={residence_list}
-                                                                                use_text={true}
-                                                                                onChange={(e: {
-                                                                                    target: { value: string };
-                                                                                }) => {
+                                                                                onChange={(
+                                                                                    e: React.ChangeEvent<HTMLSelectElement>
+                                                                                ) => {
+                                                                                    field.onChange(e);
                                                                                     setFieldValue(
                                                                                         'residence',
                                                                                         e.target.value,
                                                                                         true
-                                                                                    );
-                                                                                    setResidenceToDisplay(
-                                                                                        e.target.value
                                                                                     );
                                                                                 }}
                                                                                 hint={localize(

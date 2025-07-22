@@ -13,23 +13,56 @@ const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 // Add PO Box pattern + other variations
 const additionalPOBoxPatterns = new RegExp(
     [
-        'po\\s+box', // PO Box, PO  Box
-        'pbox', // PBox
-        'pbag', // PBag
-        'private\\s*bag', // Private Bag
-        'post\\s*office\\s*box', // Post Office Box
+        // English variations
+        '\\b(?:p\\s*\\.?\\s*o\\s*\\.?|post\\s*office)\\s*box\\b',
+        '\\bpo\\s*box\\b',
+        '\\bpbox\\b',
+        '\\bpbag\\b',
+        '\\bprivate\\s*bag\\b',
+        '\\bpost\\s*box\\b',
+        '\\bpostal\\s*box\\b',
 
         // Spanish variations
-        'apartado\\s*postal', // Apartado Postal
-        'casilla\\s*postal', // Casilla Postal
-        'casilla\\s*de\\s*correo', // Casilla de Correo
+        '\\bapartado\\s*postal\\b',
+        '\\bcasilla\\s*postal\\b',
+        '\\bcasilla\\s*de\\s*correo\\b',
 
         // Portuguese variations
-        'caixa\\s*postal', // Caixa Postal
-        'caixa\\s*de\\s*correio', // Caixa de Correio
-        'cx\\s*postal', // Cx Postal
+        '\\bcaixa\\s*postal\\b',
+        '\\bcaixa\\s*de\\s*correio\\b',
+        '\\bcx\\s*postal\\b',
+
+        // French variations
+        '\\bbo[iî]te\\s*postale\\b',
+        '\\bb\\s*\\.?\\s*p\\.?\\b',
+
+        // German variations
+        '\\bpostfach\\b',
+
+        // Italian variations
+        '\\bcasella\\s*postale\\b',
+        '\\bc\\s*\\.?\\s*p\\.?\\b',
+
+        // Dutch variations
+        '\\bpostbus\\b',
+
+        // Russian variations (no word boundaries for Cyrillic)
+        'абонентский\\s*ящик',
+        'а\\s*\\/?\\s*я',
+
+        // Polish variations
+        '\\bskrytka\\s*pocztowa\\b',
+
+        // Swedish variations
+        '\\bpostbox\\b',
+
+        // Japanese variations (no word boundaries for CJK)
+        '私書箱',
+
+        // Chinese variations (no word boundaries for CJK)
+        '邮政信箱',
     ].join('|'),
-    'i'
+    'iu'
 );
 
 type TINDepdendents = {

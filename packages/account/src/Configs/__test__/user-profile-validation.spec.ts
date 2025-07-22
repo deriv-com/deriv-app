@@ -292,6 +292,49 @@ describe('getAddressDetailValidationSchema', () => {
         'Caixa Postal 123',
         'Caixa de Correio 456',
         'Cx Postal 789',
+
+        // French
+        'Boîte Postale 123',
+        'Boite Postale 456',
+        'B.P. 789',
+        'B P 321',
+        'BP 654',
+
+        // German
+        'Postfach 123',
+        'POSTFACH 456',
+
+        // Italian
+        'Casella Postale 123',
+        'C.P. 456',
+        'C P 789',
+        'CP 321',
+
+        // Dutch
+        'Postbus 123',
+        'POSTBUS 456',
+
+        // Russian
+        'Абонентский ящик 123',
+        'абонентский ящик 456',
+        'А/Я 789',
+        'а/я 321',
+        'А Я 654',
+        'а я 987',
+
+        // Polish
+        'Skrytka pocztowa 123',
+
+        // Swedish
+        'Postbox 123',
+
+        // Japanese
+        '私書箱 123',
+        '私書箱123',
+
+        // Chinese
+        '邮政信箱 456',
+        '邮政信箱456',
     ];
 
     it('validates address_line_1 correctly without svg flag', async () => {

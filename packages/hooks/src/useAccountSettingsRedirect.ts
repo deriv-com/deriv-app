@@ -1,4 +1,4 @@
-import { routes } from '@deriv/shared';
+import { getDomainUrl, routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 import useIsHubRedirectionEnabled from './useIsHubRedirectionEnabled';
@@ -20,7 +20,9 @@ export const useAccountSettingsRedirect = (redirect_to: RedirectDestination = 'h
 
     if (should_use_hub) {
         const base_url =
-            process.env.NODE_ENV === 'production' ? 'https://hub.deriv.com' : 'https://staging-hub.deriv.com';
+            process.env.NODE_ENV === 'production'
+                ? `https://hub.${getDomainUrl()}`
+                : `https://staging-hub.${getDomainUrl()}`;
 
         redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;
         mobile_redirect_url = `${base_url}/accounts/redirect?action=redirect_to&redirect_to=${redirect_to}&account=${account_type}`;

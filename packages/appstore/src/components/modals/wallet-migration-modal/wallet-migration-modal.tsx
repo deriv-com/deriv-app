@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Button, Carousel, Icon, MobileDialog, Modal, Text, VideoPlayer } from '@deriv/components';
-import { useWalletMigration } from '@deriv/hooks';
-import { observer } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue, useWalletMigration } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 
 import { WalletMigrationContent } from './wallet-migration-content';
@@ -10,9 +10,20 @@ import { WalletMigrationContent } from './wallet-migration-content';
 import './wallet-migration-modal.scss';
 
 const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) => {
+    const { traders_hub } = useStore();
+    const { is_real_wallets_upgrade_on } = traders_hub;
     const [current_slide, setCurrentSlide] = React.useState(0);
-    const { startMigration } = useWalletMigration();
+    const { is_eligible, is_migrating, is_in_progress, startMigration } = useWalletMigration();
     const { isDesktop } = useDevice();
+    const [is_wallet_force_migration_enabled] = useGrowthbookGetFeatureValue({
+        featureFlag: 'wallet_force_migration',
+        defaultValue: false,
+    });
+    const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
+    const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
+    const is_modal_open_for_force_migration = is_wallet_force_migration_enabled && !(is_in_progress || is_migrating);
+    const is_modal_open_for_non_force_migration = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
+    const is_modal_open = is_modal_open_for_force_migration || is_modal_open_for_non_force_migration;
 
     const slides = WalletMigrationContent({ is_eu, is_mobile: !isDesktop });
 
@@ -37,12 +48,11 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
 
     const handleButtonClick = () => {
         if (current_slide < slides.length - 1) {
-            // Navigate to next slide
             const next_slide = current_slide + 1;
             setCurrentSlide(next_slide);
         } else {
-            // Last slide - handle completion (close modal, etc.)
             handleMigrationComplete();
+            setModalOpen(false);
         }
     };
 
@@ -90,7 +100,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
             <MobileDialog
                 portal_element_id='deriv_app'
                 wrapper_classname='wallets-migration-modal__modal'
-                visible={true}
+                visible={is_modal_open}
                 has_full_height
                 footer={
                     <div className='wallets-migration-modal__footer-mobile'>
@@ -105,7 +115,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
     return (
         <Modal
             className='wallets-migration-modal'
-            is_open={true}
+            is_open={is_modal_open}
             title=' '
             has_close_icon={false}
             width={is_first_slide ? '44rem' : '74.2rem'}

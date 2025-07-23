@@ -59,7 +59,3 @@ export const WalletMigrationContent = ({ is_eu = false, is_mobile = false }) => 
         },
     ];
 };
-
-// Usage:
-// For mobile: WalletMigrationContent({ is_eu: false, is_mobile: true })
-// For desktop: WalletMigrationContent({ is_eu: false, is_mobile: false })

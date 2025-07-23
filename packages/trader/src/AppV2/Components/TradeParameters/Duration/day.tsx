@@ -217,9 +217,10 @@ const DayInput = ({
     const handleDate = (date: Date) => {
         const difference_in_time = date.getTime() - new Date().getTime();
         const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
-        setDay(Number(difference_in_days));
+        const duration_days = difference_in_days <= 0 ? 1 : difference_in_days;
+        setDay(Number(duration_days));
         setCalendarDateInput(date);
-        if (difference_in_days == 0) {
+        if (difference_in_days <= 0) {
             setEndTime(adjusted_start_time);
             const today = new Date().toISOString().split('T')[0];
             setUnsavedExpiryDateV2(today);

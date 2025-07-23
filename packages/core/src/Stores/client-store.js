@@ -34,6 +34,7 @@ import {
 import { getLanguage, getRedirectionLanguage, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { CountryUtils, URLConstants } from '@deriv-com/utils';
+import { logError } from '@deriv/utils';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -1886,9 +1887,7 @@ export default class ClientStore extends BaseStore {
     }
 
     async getAnalyticsConfig(isLoggedOut = false) {
-        const broker = LocalStore?.get('active_loginid')
-            ?.match(/[a-zA-Z]+/g)
-            ?.join('');
+        const broker = this.loginid?.match(/[a-zA-Z]+/g)?.join('');
 
         const ppc_campaign_cookies =
             Cookies.getJSON('utm_data') === 'null'
@@ -2919,6 +2918,9 @@ export default class ClientStore extends BaseStore {
 
     setWalletMigrationState(state) {
         this.wallet_migration_state = state;
+        if (state === 'failed') {
+            logError('Wallet migration failed', { loginid: this.loginid });
+        }
     }
 
     setIsWalletMigrationRequestIsInProgress(value) {
@@ -2930,8 +2932,10 @@ export default class ClientStore extends BaseStore {
             const response = await WS.authorized.getWalletMigrationState();
             if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            logError('getWalletMigrationState error', {
+                code: error?.error?.code,
+                message: error?.error?.message,
+            });
         }
     }
 
@@ -2941,8 +2945,10 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.startWalletMigration();
             await this.getWalletMigrationState();
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            logError('startWalletMigration error', {
+                code: error?.error?.code,
+                message: error?.error?.message,
+            });
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2954,8 +2960,10 @@ export default class ClientStore extends BaseStore {
             await WS.authorized.resetWalletMigration();
             this.getWalletMigrationState();
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            logError('resetWalletMigration error', {
+                code: error?.error?.code,
+                message: error?.error?.message,
+            });
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }

@@ -3,7 +3,7 @@
 }
 
 .dc-modal__container_wallets-migration-modal .dc-modal-footer {
-    padding: 2.4rem 3.2rem;
+    border-top: 1px solid var(--border-disabled);
 }
 
 .wallets-migration-modal__text-container {
@@ -12,15 +12,10 @@
     gap: 2.4rem;
 }
 
-.wallets-migration-modal__button {
-    border: 1px solid var(--button-primary-default);
-    background: transparent;
-}
-
 .wallets-migration-modal__carousel {
     width: 100%;
     height: 100%;
-    padding: 0 3.2rem;
+    padding-bottom: 1.6rem;
 }
 
 .wallets-migration-modal__video-container {
@@ -34,5 +29,20 @@
 }
 
 .dc-modal-header .dc-modal-header--wallets-migration-modal {
+    display: none;
+}
+
+// Mobile specific styles
+.wallets-migration-modal__footer-mobile {
+    padding: 1.6rem;
+    border-top: 1px solid var(--border-disabled);
+}
+
+.dc-mobile-dialog__content {
+    padding: 0;
+    margin: 0;
+}
+
+.dc-mobile-dialog__header {
     display: none;
 }

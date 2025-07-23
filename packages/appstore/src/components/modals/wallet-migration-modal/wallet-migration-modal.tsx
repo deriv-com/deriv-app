@@ -1,32 +1,29 @@
 import React from 'react';
 
-import { Button, Carousel, Icon, Modal, Text, VideoPlayer } from '@deriv/components';
+import { Button, Carousel, Icon, MobileDialog, Modal, Text, VideoPlayer } from '@deriv/components';
 import { useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 import { WalletMigrationContent } from './wallet-migration-content';
 
 import './wallet-migration-modal.scss';
 
-const WalletMigrationModal = observer(({ is_eu = false }) => {
+const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalProps) => {
     const { ui } = useStore();
     const [current_slide, setCurrentSlide] = React.useState(0);
     const { is_desktop, is_mobile } = ui;
     const { startMigration } = useWalletMigration();
+    const { isDesktop } = useDevice();
 
-    const slides = WalletMigrationContent({ is_eu });
+    const slides = WalletMigrationContent({ is_eu, is_mobile: !isDesktop });
 
     // Create the carousel slides
     const CarouselSlide = slides.map((content, index) => (
         <div key={index} className='wallets-migration-modal__slide'>
             <div className='wallets-migration-modal__video-container'>
                 {content.src ? (
-                    <VideoPlayer
-                        src={content.src}
-                        height={is_desktop ? '311px' : '157px'}
-                        is_mobile={is_mobile}
-                        muted
-                    />
+                    <VideoPlayer src={content.src} height={'326px'} muted />
                 ) : (
                     <Icon icon='IcAppstoreWalletMigration' width={158} height={200} />
                 )}
@@ -61,12 +58,58 @@ const WalletMigrationModal = observer(({ is_eu = false }) => {
 
     const current_content = slides[current_slide];
     const is_last_slide = current_slide === slides.length - 1;
+    const is_first_slide = current_slide === 0;
+
+    const ModalButton = () => (
+        <Button
+            large
+            secondary={!is_last_slide}
+            primary={is_last_slide}
+            wide={is_mobile}
+            text={is_last_slide ? 'Get Started' : current_content.buttonLabel}
+            onClick={handleButtonClick}
+        />
+    );
+
+    if (!isDesktop)
+        return (
+            <MobileDialog
+                portal_element_id='deriv_app'
+                wrapper_classname='wallets-migration-modal__modal'
+                visible={true}
+                has_full_height
+                footer={
+                    <div className='wallets-migration-modal__footer-mobile'>
+                        <ModalButton />
+                    </div>
+                }
+            >
+                <Carousel
+                    className='wallets-migration-modal__carousel'
+                    key={current_slide}
+                    list={CarouselSlide}
+                    initial_index={current_slide}
+                    onItemSelect={handleSlideChange}
+                    show_bullet={true}
+                    show_nav={false}
+                    disable_swipe={is_mobile}
+                    bullet_position='bottom'
+                    active_bullet_color='var(--button-primary-default)'
+                    width={325}
+                />
+            </MobileDialog>
+        );
 
     return (
-        <Modal className='wallets-migration-modal' is_open={true} title=' ' has_close_icon={false} width='51.2rem'>
+        <Modal
+            className='wallets-migration-modal'
+            is_open={true}
+            title=' '
+            has_close_icon={false}
+            width={is_first_slide ? '44rem' : '74.2rem'}
+        >
             <Carousel
                 className='wallets-migration-modal__carousel'
-                key={current_slide}
                 list={CarouselSlide}
                 initial_index={current_slide}
                 onItemSelect={handleSlideChange}
@@ -75,18 +118,10 @@ const WalletMigrationModal = observer(({ is_eu = false }) => {
                 disable_swipe={is_mobile}
                 bullet_position='bottom'
                 active_bullet_color='var(--button-primary-default)'
+                width={is_first_slide ? 400 : 678}
             />
             <Modal.Footer>
-                <Button
-                    rounded
-                    large
-                    wide
-                    tertiary={!is_last_slide}
-                    primary={is_last_slide}
-                    text={is_last_slide ? 'Get Started' : current_content.buttonLabel}
-                    className={is_last_slide ? '' : 'wallets-migration-modal__button'}
-                    onClick={handleButtonClick}
-                />
+                <ModalButton />
             </Modal.Footer>
         </Modal>
     );

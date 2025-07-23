@@ -2,17 +2,15 @@ import React from 'react';
 
 import { Button, Carousel, Icon, MobileDialog, Modal, Text, VideoPlayer } from '@deriv/components';
 import { useWalletMigration } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 
 import { WalletMigrationContent } from './wallet-migration-content';
 
 import './wallet-migration-modal.scss';
 
-const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalProps) => {
-    const { ui } = useStore();
+const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) => {
     const [current_slide, setCurrentSlide] = React.useState(0);
-    const { is_desktop, is_mobile } = ui;
     const { startMigration } = useWalletMigration();
     const { isDesktop } = useDevice();
 
@@ -29,10 +27,10 @@ const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalPr
                 )}
             </div>
             <div className='wallets-migration-modal__text-container'>
-                <Text size={is_desktop ? 'm' : 's'} weight='bold'>
+                <Text size={isDesktop ? 'm' : 's'} weight='bold'>
                     {content.title}
                 </Text>
-                <Text size={is_desktop ? 's' : 'xs'}>{content.description}</Text>
+                <Text size={isDesktop ? 's' : 'xs'}>{content.description}</Text>
             </div>
         </div>
     ));
@@ -65,9 +63,25 @@ const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalPr
             large
             secondary={!is_last_slide}
             primary={is_last_slide}
-            wide={is_mobile}
+            wide={!isDesktop}
             text={is_last_slide ? 'Get Started' : current_content.buttonLabel}
             onClick={handleButtonClick}
+        />
+    );
+
+    const CarouselContent = ({ width }: { width?: React.ComponentProps<typeof Carousel>['width'] }) => (
+        <Carousel
+            className='wallets-migration-modal__carousel'
+            key={current_slide}
+            list={CarouselSlide}
+            initial_index={current_slide}
+            onItemSelect={handleSlideChange}
+            show_bullet={true}
+            show_nav={false}
+            disable_swipe={!isDesktop}
+            bullet_position='bottom'
+            active_bullet_color='var(--button-primary-default)'
+            width={width}
         />
     );
 
@@ -84,19 +98,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalPr
                     </div>
                 }
             >
-                <Carousel
-                    className='wallets-migration-modal__carousel'
-                    key={current_slide}
-                    list={CarouselSlide}
-                    initial_index={current_slide}
-                    onItemSelect={handleSlideChange}
-                    show_bullet={true}
-                    show_nav={false}
-                    disable_swipe={is_mobile}
-                    bullet_position='bottom'
-                    active_bullet_color='var(--button-primary-default)'
-                    width={325}
-                />
+                <CarouselContent width={325} />
             </MobileDialog>
         );
 
@@ -108,18 +110,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: WalletMigrationModalPr
             has_close_icon={false}
             width={is_first_slide ? '44rem' : '74.2rem'}
         >
-            <Carousel
-                className='wallets-migration-modal__carousel'
-                list={CarouselSlide}
-                initial_index={current_slide}
-                onItemSelect={handleSlideChange}
-                show_bullet={true}
-                show_nav={false}
-                disable_swipe={is_mobile}
-                bullet_position='bottom'
-                active_bullet_color='var(--button-primary-default)'
-                width={is_first_slide ? 400 : 678}
-            />
+            <CarouselContent width={is_first_slide ? 376 : 678} />
             <Modal.Footer>
                 <ModalButton />
             </Modal.Footer>

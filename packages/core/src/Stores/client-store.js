@@ -2431,30 +2431,13 @@ export default class ClientStore extends BaseStore {
     }
 
     async canStoreClientAccounts(obj_params, account_list) {
-        let is_TMB_enabled;
+        const is_TMB_enabled = true;
         const is_ready_to_process = account_list && isEmptyObject(this.accounts);
         const accts = Object.keys(obj_params).filter(value => /^acct./.test(value));
 
         const is_cross_checked = accts.every(acct =>
             account_list.some(account => account.loginid === obj_params[acct])
         );
-
-        const storedValue = localStorage.getItem('is_tmb_enabled');
-        try {
-            const url =
-                process.env.NODE_ENV === 'production'
-                    ? 'https://app-config-prod.firebaseio.com/remote_config/oauth/is_tmb_enabled.json'
-                    : 'https://app-config-staging.firebaseio.com/remote_config/oauth/is_tmb_enabled.json';
-            const response = await fetch(url);
-            const result = await response.json();
-
-            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : !!result.app;
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e);
-            // by default it will fallback to true if firebase error happens
-            is_TMB_enabled = storedValue !== null ? storedValue === 'true' : false;
-        }
 
         return (is_ready_to_process && is_cross_checked) || is_TMB_enabled;
     }

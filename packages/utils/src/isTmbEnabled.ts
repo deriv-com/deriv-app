@@ -1,4 +1,4 @@
-const isTmbEnabled = async () => {
+const isTmbEnabled = async (referrer: string = document.referrer) => {
     const search = window.location.search;
     let platform;
     if (search) {
@@ -7,7 +7,7 @@ const isTmbEnabled = async () => {
     }
     // add deriv and impersonation check
     const triggerImplicitFlow =
-        document.referrer.includes('backoffice.binary.com') ||
+        referrer.includes('backoffice.binary.com') ||
         platform === 'derivgo' ||
         sessionStorage.getItem('is_disable_tmb') === 'true';
 

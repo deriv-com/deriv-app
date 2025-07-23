@@ -38,8 +38,7 @@ describe('isTmbEnabled', () => {
     });
 
     it('returns false if document.referrer includes backoffice.binary.com', async () => {
-        Object.defineProperty(document, 'referrer', { value: 'https://backoffice.binary.com', configurable: true });
-        const result = await isTmbEnabled();
+        const result = await isTmbEnabled('https://backoffice.binary.com');
         expect(result).toBe(false);
         expect(sessionStorage.getItem('is_disable_tmb')).toBe('true');
     });

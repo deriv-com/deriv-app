@@ -38,7 +38,7 @@ const useIsEnabledNakala = (accounts: any[]) => {
     const getNakalaServerInfo = async () => {
         try {
             const response = await axios.get(
-                `https://deriv-app.xano.io/api:V98H-ia9:nakala/nakala_servers?mt5_login_id=${loginId}`
+                `https://staging-api-gateway.deriv.com/nakala/v1/nakala-servers?mt5_login_id=${loginId}`
             );
             setNakalaServerInfo(response.data?.server_name);
         } catch (error) {

@@ -223,7 +223,7 @@ const TradingAppCard = ({
                         >
                             {name}
                         </Text>
-                        {is_new && name === CFD_PRODUCTS_TITLE.GOLD && (
+                        {is_new && (name === CFD_PRODUCTS_TITLE.GOLD || name === 'Deriv Nakala') && (
                             <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
                                 <Localize i18n_default_text='NEW' />
                             </Text>
@@ -240,7 +240,7 @@ const TradingAppCard = ({
                     >
                         {getAppDescription()}
                     </Text>
-                    {mt5_acc_auth_status && action_type === 'multi-action' && (
+                    {mt5_acc_auth_status && (action_type === 'multi-action' || name === 'Deriv Nakala') && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}

@@ -1,4 +1,4 @@
-const isTmbEnabled = async (referrer: string = document.referrer) => {
+const isTmbEnabled = async () => {
     const search = window.location.search;
     let platform;
     if (search) {

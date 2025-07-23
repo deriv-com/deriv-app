@@ -37,12 +37,6 @@ describe('isTmbEnabled', () => {
         expect(sessionStorage.getItem('is_disable_tmb')).toBe('true');
     });
 
-    it('returns false if document.referrer includes backoffice.binary.com', async () => {
-        const result = await isTmbEnabled('https://backoffice.binary.com');
-        expect(result).toBe(false);
-        expect(sessionStorage.getItem('is_disable_tmb')).toBe('true');
-    });
-
     it('returns true if localStorage is_tmb_enabled is true', async () => {
         localStorage.setItem('is_tmb_enabled', 'true');
         const result = await isTmbEnabled();

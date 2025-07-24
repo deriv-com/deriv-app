@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Carousel, Icon, MobileDialog, Modal, Text, VideoPlayer } from '@deriv/components';
 import { useGrowthbookGetFeatureValue, useWalletMigration } from '@deriv/hooks';
+import { getDomainUrl } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 
@@ -10,7 +11,8 @@ import { WalletMigrationContent } from './wallet-migration-content';
 import './wallet-migration-modal.scss';
 
 const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) => {
-    const { traders_hub } = useStore();
+    const { traders_hub, client } = useStore();
+    const { setPreventRedirectToHub, currency } = client;
     const { is_real_wallets_upgrade_on } = traders_hub;
     const [current_slide, setCurrentSlide] = React.useState(0);
     const { is_eligible, is_migrating, is_in_progress, startMigration } = useWalletMigration();
@@ -24,6 +26,10 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
     const is_modal_open_for_force_migration = is_wallet_force_migration_enabled && !(is_in_progress || is_migrating);
     const is_modal_open_for_non_force_migration = (is_eligible && modalOpen) || is_real_wallets_upgrade_on;
     const is_modal_open = is_modal_open_for_force_migration || is_modal_open_for_non_force_migration;
+
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
+    const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
     const slides = WalletMigrationContent({ is_eu, is_mobile: !isDesktop });
 
@@ -51,15 +57,16 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
             const next_slide = current_slide + 1;
             setCurrentSlide(next_slide);
         } else {
-            handleMigrationComplete();
-            setModalOpen(false);
+            onConfirmHandler();
         }
     };
 
-    const handleMigrationComplete = () => {
+    const onConfirmHandler = () => {
         startMigration();
+        setPreventRedirectToHub(false);
+        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${currency ? `&account=${currency}` : ''}`;
+        setModalOpen(false);
     };
-
     const handleSlideChange = (index: number) => {
         setCurrentSlide(index);
     };

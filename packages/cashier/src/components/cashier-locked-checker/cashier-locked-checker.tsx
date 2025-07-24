@@ -10,7 +10,7 @@ import PageContainer from '../page-container';
 
 const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { client } = useStore();
-    const { is_virtual, is_switching } = client;
+    const { is_virtual } = client;
     const currency_config = useCurrentCurrencyConfig();
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
@@ -35,7 +35,7 @@ const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observe
         }
     }
 
-    if (is_cashier_locked && !is_switching)
+    if (is_cashier_locked)
         return (
             <PageContainer hide_breadcrumb right={<React.Fragment />}>
                 <CashierLocked />

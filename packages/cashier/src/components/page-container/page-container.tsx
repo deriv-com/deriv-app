@@ -1,8 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
+
 import './page-container.scss';
 
 const CashierBreadcrumb = React.lazy(
@@ -22,8 +24,8 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
             common: { is_from_outside_cashier },
         } = useStore();
         const { isDesktop } = useDevice();
-        const { is_authorize } = client;
-        const is_loading = !is_authorize;
+        const { is_authorize, is_switching } = client;
+        const is_loading = !is_authorize || is_switching;
 
         return (
             <div

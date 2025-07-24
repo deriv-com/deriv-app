@@ -12,7 +12,7 @@ import './wallet-migration-modal.scss';
 
 const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) => {
     const { traders_hub, client } = useStore();
-    const { setPreventRedirectToHub, currency } = client;
+    const { setPreventRedirectToHub } = client;
     const { is_real_wallets_upgrade_on } = traders_hub;
     const [current_slide, setCurrentSlide] = React.useState(0);
     const { is_eligible, is_migrating, is_in_progress, startMigration } = useWalletMigration();
@@ -64,7 +64,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
     const onConfirmHandler = () => {
         startMigration();
         setPreventRedirectToHub(false);
-        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${currency ? `&account=${currency}` : ''}`;
+        window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home`;
         setModalOpen(false);
     };
     const handleSlideChange = (index: number) => {

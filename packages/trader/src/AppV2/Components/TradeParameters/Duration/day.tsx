@@ -171,6 +171,7 @@ const DayInput = ({
         day: 'numeric',
         month: 'short',
         year: 'numeric',
+        timeZone: 'GMT',
     });
 
     React.useEffect(() => {
@@ -208,9 +209,16 @@ const DayInput = ({
     const parsedFormattedDate = new Date(Date.parse(`${formatted_date} 00:00:00`));
 
     const isSameDate =
-        parsedFormattedDate.getFullYear() === server_time.year() &&
-        parsedFormattedDate.getMonth() === server_time.month() &&
-        parsedFormattedDate.getDate() === server_time.date();
+        // Get the year, month, and date directly from formatted_date string (dd MMM yyyy)
+        (() => {
+            const [dayStr, monthStr, yearStr] = formatted_date.split(' ');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const year = Number(yearStr);
+            const month = months.indexOf(monthStr);
+            const date = Number(dayStr);
+
+            return year === server_time.year() && month === server_time.month() && date === server_time.date();
+        })();
 
     is_24_hours_contract = (!!start_date || isSameDate) && has_intraday_duration_unit;
 
@@ -222,8 +230,17 @@ const DayInput = ({
         setCalendarDateInput(date);
         if (difference_in_days <= 0) {
             setEndTime(adjusted_start_time);
-            const today = new Date().toISOString().split('T')[0];
-            setUnsavedExpiryDateV2(today);
+
+            const selecteddate = new Date(date);
+
+            // Use local date parts (ignoring timezone adjustments)
+            const year = selecteddate.getFullYear();
+            const month = String(selecteddate.getMonth() + 1).padStart(2, '0');
+            const day = String(selecteddate.getDate()).padStart(2, '0');
+
+            const output = `${year}-${month}-${day}`;
+
+            setUnsavedExpiryDateV2(output);
         } else {
             setEndTime('');
             setUnsavedExpiryDateV2(
@@ -293,12 +310,18 @@ const DayInput = ({
                     />
                     {open && (
                         <DaysDatepicker
-                            start_date={getDatePickerStartDate(
-                                duration_units_list,
-                                server_time,
-                                start_time,
-                                duration_min_max
-                            )}
+                            start_date={
+                                new Date(
+                                    getDatePickerStartDate(
+                                        duration_units_list,
+                                        server_time,
+                                        start_time,
+                                        duration_min_max
+                                    )
+                                        ?.toISOString()
+                                        ?.split('T')?.[0]
+                                )
+                            }
                             end_date={calendar_date_input}
                             setEndDate={handleDate}
                         />

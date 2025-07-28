@@ -231,12 +231,12 @@ const DayInput = ({
         if (difference_in_days <= 0) {
             setEndTime(adjusted_start_time);
 
-            const selecteddate = new Date(date);
+            const selected_date = new Date(date);
 
             // Use local date parts (ignoring timezone adjustments)
-            const year = selecteddate.getFullYear();
-            const month = String(selecteddate.getMonth() + 1).padStart(2, '0');
-            const day = String(selecteddate.getDate()).padStart(2, '0');
+            const year = selected_date.getFullYear();
+            const month = String(selected_date.getMonth() + 1).padStart(2, '0');
+            const day = String(selected_date.getDate()).padStart(2, '0');
 
             const output = `${year}-${month}-${day}`;
 

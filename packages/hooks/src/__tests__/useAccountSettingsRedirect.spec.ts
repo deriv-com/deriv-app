@@ -1,7 +1,9 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
-import { useStore } from '@deriv/stores';
+
 import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import { renderHook } from '@testing-library/react-hooks';
+
 import useAccountSettingsRedirect from '../useAccountSettingsRedirect';
 import useIsHubRedirectionEnabled from '../useIsHubRedirectionEnabled';
 
@@ -11,6 +13,15 @@ const originalNodeEnv = process.env.NODE_ENV;
 // Mock the dependencies
 jest.mock('@deriv/stores', () => ({
     useStore: jest.fn(),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    getDomainUrl: jest.fn(() => 'deriv.com'),
+    routes: {
+        personal_details: '/account/personal-details',
+        account: '/account',
+        account_limits: '/account/account-limits',
+    },
 }));
 
 jest.mock('../useIsHubRedirectionEnabled', () => ({

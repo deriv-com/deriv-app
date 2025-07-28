@@ -76,6 +76,7 @@ describe('<Cashier />', () => {
             client: {
                 active_accounts: [],
                 currency: 'USD',
+                has_wallet: false,
                 is_account_setting_loaded: true,
                 is_logged_in: true,
                 is_logging_in: false,

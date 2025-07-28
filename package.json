@@ -107,11 +107,12 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.24.7",
-        "@deriv-com/analytics": "1.31.3",
+        "@deriv-com/analytics": "1.31.6",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^29.7.0",
         "dotenv": "^8.2.0",
+        "form-data": "^4.0.4",
         "nth-check": "2.0.1",
         "pbkdf2": "^3.1.3",
         "react": "^17.0.2",

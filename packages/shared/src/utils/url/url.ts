@@ -159,12 +159,13 @@ export const getStaticUrl = (path = '', is_document = false, is_eu_url = false) 
     return `${host}${lang}/${normalizePath(path)}`;
 };
 
-export const getHubSignupUrl = () => {
+export const getHubSignupUrl = (redirect_url?: string) => {
     const current_domain = process.env.NODE_ENV === 'production' ? deriv_urls.HUB_PRODUCTION : deriv_urls.HUB_STAGING;
 
     const lang = `?lang=${default_language?.toLowerCase() || 'en'}`;
+    const redirect_param = redirect_url ? `&redirect_url=${encodeURIComponent(redirect_url)}` : '';
 
-    return `${current_domain}/signup${lang}`;
+    return `${current_domain}/signup${lang}${redirect_param}`;
 };
 
 export const getPath = (route_path: string, parameters = {}) =>
@@ -190,4 +191,16 @@ export const excludeParamsFromUrlQuery = (search_param: string, excluded_keys: s
     const search_params = new URLSearchParams(search_param);
     const filtered_queries = [...search_params].filter(([key]) => !excluded_keys.includes(key));
     return filtered_queries.length ? `?${new URLSearchParams(filtered_queries).toString()}` : '';
+};
+
+export const getDomainUrl = () => {
+    const hostname = window.location.hostname;
+
+    if (hostname.includes('.deriv.be')) {
+        return 'deriv.be';
+    }
+    if (hostname.includes('.deriv.me')) {
+        return 'deriv.me';
+    }
+    return 'deriv.com';
 };

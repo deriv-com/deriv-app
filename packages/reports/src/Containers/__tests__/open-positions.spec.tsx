@@ -278,6 +278,9 @@ describe('OpenPositions', () => {
         expect(dropdown).toHaveTextContent(multipliers);
     });
     it('should set 1% Growth rate filter when it is selected from the dropdown for Accumulators on desktop', async () => {
+        // Clear any previous sessionStorage state
+        sessionStorage.clear();
+
         store = mockStore({
             portfolio: {
                 active_positions: [accumulators_position],
@@ -298,6 +301,9 @@ describe('OpenPositions', () => {
         expect(dropdowns[1]).toHaveTextContent(one_percent);
     });
     it('should set 5% Growth rate filter when it is selected from the dropdown for Accumulators on mobile', async () => {
+        // Clear any previous sessionStorage state
+        sessionStorage.clear();
+
         (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         store = mockStore({
             portfolio: {

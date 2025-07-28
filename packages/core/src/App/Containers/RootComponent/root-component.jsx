@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
+
+import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
-import { deriv_urls, moduleLoader } from '@deriv/shared';
+import { deriv_urls, getDomainUrl, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>
@@ -43,8 +45,8 @@ const RootComponent = observer(props => {
     };
     const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         setPreventSingleLogin(true);
@@ -76,7 +78,7 @@ const RootComponent = observer(props => {
             switch (redirect_to_lowcode) {
                 case 'wallet':
                     localStorage.setItem('wallet_redirect_done', true);
-                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+                    window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet_home${account_currency ? `&account=${account_currency}` : ''}`;
                     break;
                 default:
                     window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=home${account_currency ? `&account=${account_currency}` : ''}`;
@@ -98,6 +100,14 @@ const RootComponent = observer(props => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
+
+    if (
+        !is_client_store_initialized ||
+        (has_wallet && !isHubRedirectionLoaded) ||
+        (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled)
+    ) {
+        return <Loading is_fullscreen />;
+    }
 
     return has_wallet ? (
         <Wallets

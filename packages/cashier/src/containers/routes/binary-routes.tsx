@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { Switch } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, getDomainUrl } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
-import Page404 from 'Components/page-404';
 import getRoutesConfig from 'Constants/routes-config';
 
 import RouteWithSubRoutes from './route-with-sub-routes';
@@ -30,8 +28,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         setPreventSingleLogin,
     } = client;
 
-    const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-    const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         if (
@@ -53,7 +51,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
             const url_params = new URLSearchParams(url_query_string);
             const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
             localStorage.setItem('wallet_redirect_done', true);
-            window.location.href = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            window.location.href = redirect_path;
         }
 
         const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
@@ -70,12 +69,9 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
-
-    if (isHubRedirectionEnabled) {
+    if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
         return <Loading is_fullscreen />;
     }
-
-    if (has_wallet) return <Page404 />;
 
     return (
         <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>

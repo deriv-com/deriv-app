@@ -14,7 +14,7 @@ import {
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
+import { getDomainUrl, getOSNameWithUAParser, getStaticUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -333,8 +333,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const handleTradershubRedirect = () => {
         if (isHubRedirectionEnabled && has_wallet) {
-            const PRODUCTION_REDIRECT_URL = 'https://hub.deriv.com/tradershub';
-            const STAGING_REDIRECT_URL = 'https://staging-hub.deriv.com/tradershub';
+            const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+            const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
             const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
             const url_query_string = window.location.search;

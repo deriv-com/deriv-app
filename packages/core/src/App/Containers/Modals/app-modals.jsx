@@ -56,6 +56,9 @@ const UnlinkPasswordModal = React.lazy(
 const RedirectToLoginModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal'))
 );
+const SetResidenceModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal'))
+);
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
@@ -96,6 +99,7 @@ const AppModals = observer(() => {
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
+        is_set_residence_modal_visible,
         should_show_cooldown_modal,
         should_show_assessment_complete_modal,
         toggleAccountSignupModal,
@@ -204,7 +208,9 @@ const AppModals = observer(() => {
             ComponentToLoad = <UpdateEmailModal />;
             break;
         default:
-            ComponentToLoad = null;
+            if (is_set_residence_modal_visible) {
+                ComponentToLoad = <SetResidenceModal />;
+            }
             break;
     }
     if (!url_action_param) {

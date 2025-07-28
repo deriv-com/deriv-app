@@ -206,7 +206,6 @@ const DayInput = ({
     let is_24_hours_contract = false;
 
     const has_intraday_duration_unit = hasIntradayDurationUnit(duration_units_list);
-    const parsedFormattedDate = new Date(Date.parse(`${formatted_date} 00:00:00`));
 
     const isSameDate =
         // Get the year, month, and date directly from formatted_date string (dd MMM yyyy)

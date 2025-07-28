@@ -273,6 +273,70 @@ describe('getAddressDetailValidationSchema', () => {
     const maxCharsMessage = 'Only 70 characters, please.';
     const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
+    const poBoxAddresses = [
+        // English variations
+        'P.O. Box 121',
+        'P O Box 456',
+        'PO Box 789',
+        'PBox 123',
+        'PBag 456',
+        'Private Bag 789',
+        'Post Office Box 321',
+
+        // Spanish variations
+        'Apartado Postal 123',
+        'Casilla Postal 456',
+        'Casilla de Correo 789',
+
+        // Portuguese variations
+        'Caixa Postal 123',
+        'Caixa de Correio 456',
+        'Cx Postal 789',
+
+        // French
+        'Boîte Postale 123',
+        'Boite Postale 456',
+        'B.P. 789',
+        'B P 321',
+        'BP 654',
+
+        // German
+        'Postfach 123',
+        'POSTFACH 456',
+
+        // Italian
+        'Casella Postale 123',
+        'C.P. 456',
+        'C P 789',
+        'CP 321',
+
+        // Dutch
+        'Postbus 123',
+        'POSTBUS 456',
+
+        // Russian
+        'Абонентский ящик 123',
+        'абонентский ящик 456',
+        'А/Я 789',
+        'а/я 321',
+        'А Я 654',
+        'а я 987',
+
+        // Polish
+        'Skrytka pocztowa 123',
+
+        // Swedish
+        'Postbox 123',
+
+        // Japanese
+        '私書箱 123',
+        '私書箱123',
+
+        // Chinese
+        '邮政信箱 456',
+        '邮政信箱456',
+    ];
+
     it('validates address_line_1 correctly without svg flag', async () => {
         const { address_line_1 } = getAddressDetailValidationSchema(false).fields;
 
@@ -282,12 +346,32 @@ describe('getAddressDetailValidationSchema', () => {
             `Use only the following special characters: ${addressPermittedSpecialCharacters}`
         );
         await expect(address_line_1.validate('a'.repeat(71))).rejects.toThrow(maxCharsMessage);
-        await expect(address_line_1.validate('P.O. Box 121')).resolves.toBe('P.O. Box 121');
     });
 
-    it("PO box shouldn't exist for SVG ", async () => {
-        const { address_line_1 } = getAddressDetailValidationSchema(true).fields;
-        await expect(address_line_1.validate('P.O. Box 123')).rejects.toThrow('P.O. Box is not accepted in address');
+    it('rejects P.O. Box addresses in all supported languages when SVG flag is false', async () => {
+        const { address_line_1, address_line_2 } = getAddressDetailValidationSchema(false).fields;
+
+        await Promise.all(
+            poBoxAddresses.map(address =>
+                expect(address_line_1.validate(address)).rejects.toThrow('P.O. Box is not accepted in address')
+            )
+        );
+        await Promise.all(
+            poBoxAddresses.map(address =>
+                expect(address_line_2.validate(address)).rejects.toThrow('P.O. Box is not accepted in address')
+            )
+        );
+    });
+
+    it('allows P.O. Box addresses in all supported languages when SVG flag is true', async () => {
+        const { address_line_1, address_line_2 } = getAddressDetailValidationSchema(true).fields;
+
+        await Promise.all(
+            poBoxAddresses.map(address => expect(address_line_1.validate(address)).resolves.toBe(address))
+        );
+        await Promise.all(
+            poBoxAddresses.map(address => expect(address_line_2.validate(address)).resolves.toBe(address))
+        );
     });
 
     it('validates address_line_2 correctly', async () => {
@@ -298,13 +382,6 @@ describe('getAddressDetailValidationSchema', () => {
             `Use only the following special characters: ${addressPermittedSpecialCharacters}`
         );
         await expect(address_line_2.validate('a'.repeat(71))).rejects.toThrow(maxCharsMessage);
-        await expect(address_line_2.validate('P.O. Box 120')).resolves.toBe('P.O. Box 120');
-    });
-
-    it('validates address_line_2 correctly with svg flag', async () => {
-        const { address_line_2 } = getAddressDetailValidationSchema(true).fields;
-
-        await expect(address_line_2.validate('P.O. Box 122')).rejects.toThrow('P.O. Box is not accepted in address');
     });
 
     it('validates address_postcode correctly with country id', async () => {

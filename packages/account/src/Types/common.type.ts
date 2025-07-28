@@ -345,6 +345,7 @@ export type TEmployeeDetailsTinValidationConfig = {
     is_tin_auto_set?: boolean;
     is_duplicate_account?: boolean;
     is_employment_status_tin_mandatory?: boolean;
+    immutable_fields?: string[];
 };
 
 type ReqRule = ['req', React.ReactNode];

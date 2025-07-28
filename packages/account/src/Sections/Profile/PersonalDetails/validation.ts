@@ -153,7 +153,11 @@ export const getPersonalDetailsValidationSchema = (
 ) => {
     if (is_virtual) return Yup.object();
 
-    const personal_details_schema = getPersonalDetailsBaseValidationSchema('', !!isCountryCodeDropdownEnabled).pick([
+    const personal_details_schema = getPersonalDetailsBaseValidationSchema(
+        '',
+        !!isCountryCodeDropdownEnabled,
+        immutable_fields
+    ).pick([
         'first_name',
         'last_name',
         'phone',
@@ -162,7 +166,7 @@ export const getPersonalDetailsValidationSchema = (
         'citizen',
     ]);
 
-    const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false);
+    const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false, immutable_fields);
 
     const employment_tin_schema = getEmploymentAndTaxValidationSchema({
         tin_config: tin_validation_config as TinValidations,

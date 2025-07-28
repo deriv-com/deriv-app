@@ -155,7 +155,7 @@ const AppModals = observer(() => {
     }, [is_logged_in, is_authorize]);
 
     React.useEffect(() => {
-        if (!is_client_store_initialized || !account_settings) return;
+        if (!is_client_store_initialized || !account_settings || is_tnc_update_modal_open) return;
 
         const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
 
@@ -163,12 +163,21 @@ const AppModals = observer(() => {
             !has_wallet &&
             is_logged_in &&
             is_authorize &&
-            (!residence || !citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+            (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
 
         if (shouldShow) {
             setShouldShowCompleteUserProfileModal(true);
         }
-    }, [is_logged_in, is_authorize, account_settings, residence, has_wallet, no_currency, is_client_store_initialized]);
+    }, [
+        is_logged_in,
+        is_authorize,
+        account_settings,
+        has_wallet,
+        no_currency,
+        is_client_store_initialized,
+        setShouldShowCompleteUserProfileModal,
+        is_tnc_update_modal_open,
+    ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 
@@ -275,6 +284,7 @@ const AppModals = observer(() => {
         if (is_tnc_update_modal_open) {
             ComponentToLoad = <TncStatusUpdateModal />;
         }
+
         if (is_complete_user_profile_modal_open) {
             ComponentToLoad = (
                 <CompleteUserProfile

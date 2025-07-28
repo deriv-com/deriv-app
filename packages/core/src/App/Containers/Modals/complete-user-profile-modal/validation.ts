@@ -7,7 +7,7 @@ import { ValidationConstants } from '@deriv-com/utils';
 const { address, addressCity, postalCode, postalOfficeBoxNumber } = ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
-export const ValidationSchema = (is_svg: boolean, account_settings?: Record<string, unknown>, noCurrency) =>
+export const ValidationSchema = (is_svg: boolean, account_settings?: Record<string, unknown>, noCurrency?: boolean) =>
     Yup.object({
         currency: Yup.string().when([], {
             is: () => noCurrency,
@@ -22,11 +22,6 @@ export const ValidationSchema = (is_svg: boolean, account_settings?: Record<stri
                     test: value => dayjs(value).isValid() && dayjs(value).isBefore(dayjs().subtract(18, 'years')),
                     message: localize('You must be 18 years old and above.'),
                 }),
-            otherwise: schema => schema,
-        }),
-        residence: Yup.string().when([], {
-            is: () => !account_settings?.residence,
-            then: schema => schema.required(localize('Citizenship is required.')),
             otherwise: schema => schema,
         }),
         citizen: Yup.string().when([], {

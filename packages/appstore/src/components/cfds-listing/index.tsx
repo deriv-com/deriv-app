@@ -122,7 +122,7 @@ const CFDsListing = observer(() => {
     const mt5_trade_account = combined_cfd_mt5_accounts.find(account => account.product === 'standard');
     const { IsEnabledNakala } = useIsEnabledNakala([mt5_trade_account]);
 
-    const showNakala = is_real && !isNakalaLinked && IsEnabledNakala;
+    const showNakala = is_real && !is_eu_user && !isNakalaLinked && IsEnabledNakala;
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
@@ -729,7 +729,7 @@ const CFDsListing = observer(() => {
                 </Fragment>
             )}
 
-            {IsEnabledNakala && is_real && has_mt5_standard_account && (
+            {IsEnabledNakala && !is_eu_user && is_real && has_mt5_standard_account && (
                 <Fragment>
                     <div className='cfd-full-row'>
                         <hr className='divider' />

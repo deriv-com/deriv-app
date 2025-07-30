@@ -336,7 +336,8 @@ const CompleteUserProfile = observer(
                                                                     <Autocomplete
                                                                         {...field}
                                                                         data-lpignore='true'
-                                                                        autoComplete='off' // prevent chrome autocomplete
+                                                                        autoComplete='none'
+                                                                        type='text'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
                                                                         onItemSelection={({ value, text }) => {

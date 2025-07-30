@@ -48,7 +48,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const has_error =
         (proposal_info[contract_type_object[0]]?.has_error &&
             proposal_info[contract_type_object[0]]?.error_field === 'duration') ||
-        validation_errors?.duration?.length > 0;
+        validation_errors.duration.length > 0;
     const isInitialMount = useRef(true);
     const { common, client } = useStore();
     const { is_logged_in } = client;

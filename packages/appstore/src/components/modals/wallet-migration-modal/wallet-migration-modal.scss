@@ -1,3 +1,20 @@
+.wallets-migration-modal__carousel--first-slide {
+    padding-bottom: 1.6rem;
+}
+
+.wallets-migration-modal__carousel--first-slide .dc-carousel__container {
+    height: 444px;
+}
+
+.wallets-migration-modal__carousel--first-slide .dc-carousel__card {
+    justify-content: center;
+}
+
+.wallets-migration-modal__carousel--first-slide .wallets-migration-modal__slide {
+    padding-top: 32px;
+    margin-top: unset;
+}
+
 .dc-modal-header.dc-modal-header--wallets-migration-modal {
     display: none;
 }

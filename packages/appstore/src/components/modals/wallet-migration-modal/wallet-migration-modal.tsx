@@ -87,7 +87,11 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
 
     const CarouselContent = ({ width }: { width?: React.ComponentProps<typeof Carousel>['width'] }) => (
         <Carousel
-            className='wallets-migration-modal__carousel'
+            className={
+                isDesktop && is_first_slide
+                    ? 'wallets-migration-modal__carousel--first-slide'
+                    : 'wallets-migration-modal__carousel'
+            }
             key={current_slide}
             list={CarouselSlide}
             initial_index={current_slide}

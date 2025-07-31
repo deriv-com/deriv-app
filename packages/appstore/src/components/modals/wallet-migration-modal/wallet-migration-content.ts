@@ -42,10 +42,10 @@ export const WalletMigrationContent = ({ is_eu = false, is_mobile = false }) => 
             title: localize('Explore the main tabs'),
             description: is_eu
                 ? localize(
-                      'Move seamlessly between the Home, CFDs, Options, and Wallets tabs. Track accounts, monitor positions, and manage your funds more strategically.'
+                      'Move seamlessly between the Home, CFDs, Multipliers, and Wallets tabs. Track accounts, monitor positions, and manage your funds more strategically.'
                   )
                 : localize(
-                      'Move seamlessly between the Home, CFDs, Multipliers, and Wallets tabs. Track accounts, monitor positions, and manage your funds more strategically.'
+                      'Move seamlessly between the Home, CFDs, Options, and Wallets tabs. Track accounts, monitor positions, and manage your funds more strategically.'
                   ),
             buttonLabel: localize('Next'),
         },

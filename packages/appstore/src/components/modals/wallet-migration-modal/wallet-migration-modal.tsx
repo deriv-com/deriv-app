@@ -33,21 +33,20 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
 
     const slides = WalletMigrationContent({ is_eu, is_mobile: !isDesktop });
 
-    // Create the carousel slides
     const CarouselSlide = slides.map((content, index) => (
         <div key={index} className='wallets-migration-modal__slide'>
             <div className='wallets-migration-modal__video-container'>
                 {content.src ? (
-                    <VideoPlayer src={content.src} height={'326px'} muted />
+                    <VideoPlayer src={content.src} height='326px' muted show_loading />
                 ) : (
                     <Icon icon='IcAppstoreWalletMigration' width={158} height={200} />
                 )}
             </div>
             <div className='wallets-migration-modal__text-container'>
-                <Text size={isDesktop ? 'm' : 's'} weight='bold'>
+                <Text size='m' weight='bold'>
                     {content.title}
                 </Text>
-                <Text size={isDesktop ? 's' : 'xs'}>{content.description}</Text>
+                <Text size='s'>{content.description}</Text>
             </div>
         </div>
     ));

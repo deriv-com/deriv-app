@@ -351,6 +351,25 @@ const CompleteUserProfile = observer(
                                                                         className='complete-user-profile-modal__bottom-margin-field'
                                                                         value={citizen_to_display || values.citizen}
                                                                         required
+                                                                        onChange={e => {
+                                                                            if (citizen_to_display) {
+                                                                                setCitizenToDisplay('');
+                                                                            }
+                                                                            setFieldValue('citizen', '', false);
+                                                                            field.onChange(e);
+                                                                        }}
+                                                                        onBlur={e => {
+                                                                            if (!e.target.value && values.citizen) {
+                                                                                setCitizenToDisplay(
+                                                                                    residence_list.find(
+                                                                                        item =>
+                                                                                            item.value ===
+                                                                                            values.citizen
+                                                                                    )?.text || values.citizen
+                                                                                );
+                                                                            }
+                                                                            field.onBlur(e);
+                                                                        }}
                                                                     />
                                                                 ) : (
                                                                     <SelectNative

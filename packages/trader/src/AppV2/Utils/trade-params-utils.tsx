@@ -399,9 +399,10 @@ export const getDatePickerStartDate = (
 
     const setMinTime = (dateObj: Date, time?: string) => {
         const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
-        dateObj?.setHours(Number(hour));
-        dateObj?.setMinutes(Number(minute) || 0);
-        dateObj?.setSeconds(Number(second) || 0);
+        dateObj?.setUTCHours(Number(hour));
+        dateObj?.setUTCMinutes(Number(minute) || 0);
+        dateObj?.setUTCSeconds(Number(second) || 0);
+
         return dateObj;
     };
 

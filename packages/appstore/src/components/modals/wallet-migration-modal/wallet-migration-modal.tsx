@@ -37,7 +37,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
         <div key={index} className='wallets-migration-modal__slide'>
             <div className='wallets-migration-modal__video-container'>
                 {content.src ? (
-                    <VideoPlayer src={content.src} height='326px' muted show_loading />
+                    <VideoPlayer src={content.src} height='326px' muted show_loading hide_volume_control />
                 ) : (
                     <Icon icon='IcAppstoreWalletMigration' width={158} height={200} />
                 )}

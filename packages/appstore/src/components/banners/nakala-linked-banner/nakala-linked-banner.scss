@@ -1,0 +1,33 @@
+.product-linked-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    width: 373px;
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
+
+    &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    &__content {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
+    }
+}

@@ -75,8 +75,6 @@ export const routes = {
     // cashier
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
-    // alias for the deposit page
-    cashier_deposit_page: '/cashier/deposit',
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',

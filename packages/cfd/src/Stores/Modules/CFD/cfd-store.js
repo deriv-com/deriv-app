@@ -46,6 +46,7 @@ export default class CFDStore extends BaseStore {
     current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
     error_type = undefined;
+    error_details = undefined;
 
     dxtrade_tokens = {
         demo: '',
@@ -86,6 +87,7 @@ export default class CFDStore extends BaseStore {
             is_sent_email_modal_enabled: observable,
             current_account: observable,
             error_type: observable,
+            error_details: observable,
             product: observable,
             dxtrade_tokens: observable,
             ctrader_tokens: observable,
@@ -238,6 +240,7 @@ export default class CFDStore extends BaseStore {
     resetFormErrors() {
         this.error_message = '';
         this.error_type = undefined;
+        this.error_details = undefined;
         this.has_cfd_error = false;
     }
 
@@ -538,6 +541,7 @@ export default class CFDStore extends BaseStore {
         this.has_cfd_error = state;
         this.error_message = obj ? obj.message : '';
         this.error_type = obj?.code ?? undefined;
+        this.error_details = obj?.details ?? undefined;
     }
 
     setCFDNewAccount(cfd_new_account) {

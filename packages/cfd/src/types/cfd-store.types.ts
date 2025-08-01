@@ -49,6 +49,9 @@ export type TCFDStore = {
     disableCFDPasswordModal: () => void;
     error_message: string;
     error_type?: string;
+    error_details?: {
+        missing: string[];
+    };
     getAccountStatus: (platform: string) => void;
     mt5_migration_error: string;
     has_cfd_error: boolean;

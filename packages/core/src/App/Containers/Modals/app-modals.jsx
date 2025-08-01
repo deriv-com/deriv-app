@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration, useIsTNCNeeded } from '@deriv/hooks';
+import { useHasSetCurrency, useIsTNCNeeded, useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -10,23 +10,27 @@ import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 
+import CompleteUserProfile from './complete-user-profile-modal/complete-user-profile-modal';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
-import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
-import CryptoTransactionProcessingModal from './crypto-transaction-processing-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
 
 const SameDOBPhoneModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "same-dob-phone-modal" */ './same-dob-phone-modal'))
 );
 
 const TradingAssessmentExistingUser = React.lazy(() =>
-    moduleLoader(() =>
-        import(/* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user')
+    moduleLoader(
+        () =>
+            import(
+                /* webpackChunkName: "trading-assessment-existing-user-modal" */ './trading-assessment-existing-user'
+            )
     )
 );
 
@@ -45,8 +49,8 @@ const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
 
-const UnlinkPasswordModal = React.lazy(() =>
-    import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
+const UnlinkPasswordModal = React.lazy(
+    () => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
 );
 
 const RedirectToLoginModal = React.lazy(() =>
@@ -59,20 +63,20 @@ const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-emai
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
 
-const WarningCloseCreateRealAccountModal = React.lazy(() =>
-    import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
+const WarningCloseCreateRealAccountModal = React.lazy(
+    () => import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
-const VerificationDocumentSubmitted = React.lazy(() =>
-    import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
+const VerificationDocumentSubmitted = React.lazy(
+    () => import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
 );
 
-const OneTimeDepositModal = React.lazy(() =>
-    import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
+const OneTimeDepositModal = React.lazy(
+    () => import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
 );
 
-const TncStatusUpdateModal = React.lazy(() =>
-    import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
+const TncStatusUpdateModal = React.lazy(
+    () => import(/* webpackChunkName: "tnc-status-update-modal" */ './tnc-status-update-modal')
 );
 
 const AppModals = observer(() => {
@@ -85,6 +89,11 @@ const AppModals = observer(() => {
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
+        account_settings,
+        residence,
+        accounts,
+        loginid,
+        is_client_store_initialized,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -108,6 +117,8 @@ const AppModals = observer(() => {
         should_show_same_dob_phone_modal,
         is_tnc_update_modal_open,
         toggleTncUpdateModal,
+        setShouldShowCompleteUserProfileModal,
+        is_complete_user_profile_modal_open,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -120,6 +131,14 @@ const AppModals = observer(() => {
     const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
     const is_tnc_needed = useIsTNCNeeded();
+
+    const has_set_currency = useHasSetCurrency();
+
+    const active_account = accounts?.[loginid ?? ''];
+    const is_virtual = active_account?.is_virtual;
+    const currency = active_account?.currency;
+
+    const no_currency = !has_set_currency || (!is_virtual && !currency);
 
     React.useEffect(() => {
         if (is_tnc_needed) {
@@ -134,6 +153,31 @@ const AppModals = observer(() => {
             });
         }
     }, [is_logged_in, is_authorize]);
+
+    React.useEffect(() => {
+        if (!is_client_store_initialized || !account_settings || is_tnc_update_modal_open) return;
+
+        const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
+
+        const shouldShow =
+            !has_wallet &&
+            is_logged_in &&
+            is_authorize &&
+            (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+
+        if (shouldShow) {
+            setShouldShowCompleteUserProfileModal(true);
+        }
+    }, [
+        is_logged_in,
+        is_authorize,
+        account_settings,
+        has_wallet,
+        no_currency,
+        is_client_store_initialized,
+        setShouldShowCompleteUserProfileModal,
+        is_tnc_update_modal_open,
+    ]);
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 
@@ -239,6 +283,16 @@ const AppModals = observer(() => {
 
         if (is_tnc_update_modal_open) {
             ComponentToLoad = <TncStatusUpdateModal />;
+        }
+
+        if (is_complete_user_profile_modal_open) {
+            ComponentToLoad = (
+                <CompleteUserProfile
+                    account_settings={account_settings}
+                    residence={residence}
+                    noCurrency={no_currency}
+                />
+            );
         }
     }
 

@@ -39,7 +39,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
 
         if (
             isHubRedirectionEnabled &&
-            Boolean(has_wallet) &&
+        has_wallet &&
             !is_logging_out &&
             is_logged_in &&
             !prevent_redirect_to_hub &&

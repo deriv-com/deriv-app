@@ -33,27 +33,24 @@ export const WalletMigrationContent = ({ is_eu = false, is_mobile = false }) => 
             src: null,
             title: localize("Meet the new Trader's Hub"),
             description: localize('Easier navigation, better account management, same login details.'),
-            buttonLabel: localize('Next'),
         },
         {
             src: src_values.funds_management[device][region],
             title: localize('Introducing Wallets'),
             description: localize(
-                'Deposit and withdraw funds with ease. Transfer between Wallets and trading accounts whenever you need, giving you more control and flexibility.'
+                'Deposit and withdraw funds anytime. Transfer between Wallets and trading accounts whenever you need, giving you more control and flexibility.'
             ),
-            buttonLabel: localize('Next'),
         },
         {
             src: src_values.explore_tabs[device][region],
-            title: localize('Navigate with ease'),
+            title: localize('Everything you need in 4 tabs'),
             description: is_eu
                 ? localize(
-                      'Move seamlessly between the Home, CFDs, Multipliers, and Wallets tabs. Each section is designed to help you track accounts, manage positions, and control your funds.'
+                      'Switch between the Home, CFDs, Multipliers, and Wallets tabs. Get a clear view of your accounts, trade across platforms, and keep your funds in check.'
                   )
                 : localize(
-                      'Move seamlessly between the Home, CFDs, Options, and Wallets tabs. Each section is designed to help you track accounts, manage positions, and control your funds.'
+                      'Switch between the Home, CFDs, Options, and Wallets tabs. Get a clear view of your accounts, trade across platforms, and keep your funds in check.'
                   ),
-            buttonLabel: localize('Get Started'),
         },
     ];
 };

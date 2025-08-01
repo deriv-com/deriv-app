@@ -15,8 +15,8 @@
     margin-top: unset;
 }
 
-.dc-modal-header.dc-modal-header--wallets-migration-modal {
-    display: none;
+.dc-modal-header .dc-modal-header--wallets-migration-modal {
+    border-bottom: 1px solid var(--border-disabled);
 }
 
 .dc-modal__container_wallets-migration-modal .dc-modal-footer {
@@ -40,26 +40,34 @@
     text-align: center;
 }
 
-.wallets-migration-modal__slide {
-    padding-bottom: 2.4rem;
-    margin-top: auto;
-}
+.wallets-migration-modal {
+    &__slide {
+        padding-bottom: 2.4rem;
+        margin-top: auto;
 
-.dc-modal-header .dc-modal-header--wallets-migration-modal {
-    display: none;
+        &--narrow {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-content: center;
+
+            .wallets-migration-modal__video-container,
+            .wallets-migration-modal__text-container {
+                max-width: 376px;
+            }
+        }
+    }
 }
 
 // Mobile specific styles
 .wallets-migration-modal__footer-mobile {
     padding: 1.6rem;
     border-top: 1px solid var(--border-disabled);
+    display: flex;
+    gap: 0.8rem;
 }
 
 .dc-mobile-dialog__content {
     padding: 0;
     margin: 0;
-}
-
-.dc-mobile-dialog__header {
-    display: none;
 }

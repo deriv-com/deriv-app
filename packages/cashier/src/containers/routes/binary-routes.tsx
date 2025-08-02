@@ -1,10 +1,13 @@
-/* eslint-disable simple-import-sort/imports */
 import React, { useEffect } from 'react';
-import { Switch } from 'react-router';
+import { Switch } from 'react-router-dom';
+
 import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
+import { getDomainUrl } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+
 import getRoutesConfig from 'Constants/routes-config';
+
 import RouteWithSubRoutes from './route-with-sub-routes';
 
 class RouteErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: unknown }> {

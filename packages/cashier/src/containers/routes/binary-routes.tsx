@@ -1,14 +1,34 @@
+/* eslint-disable simple-import-sort/imports */
 import React, { useEffect } from 'react';
-import { Switch } from 'react-router-dom';
-
+import { Switch } from 'react-router';
 import { Loading } from '@deriv/components';
 import { useIsHubRedirectionEnabled } from '@deriv/hooks';
-import { getDomainUrl } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-
 import getRoutesConfig from 'Constants/routes-config';
-
 import RouteWithSubRoutes from './route-with-sub-routes';
+
+class RouteErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: unknown }> {
+    constructor(props: { children: React.ReactNode }) {
+        super(props);
+        this.state = { hasError: false, error: null };
+    }
+    static getDerivedStateFromError(error: unknown) {
+        // If it's a chunk load error, reload the page
+        if (error && typeof error === 'object' && 'name' in error && (error as Error).name === 'ChunkLoadError') {
+            if (window.TrackJS) window.TrackJS.track(error);
+            window.location.reload();
+        }
+        return { hasError: true, error };
+    }
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div style={{ padding: 32, textAlign: 'center' }}>Error loading route: {String(this.state.error)}</div>
+            );
+        }
+        return this.props.children;
+    }
+}
 
 type TBinaryRoutesProps = {
     is_logged_in: boolean;
@@ -75,13 +95,15 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     }
 
     return (
-        <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
-            <Switch>
-                {getRoutesConfig().map((route, idx) => (
-                    <RouteWithSubRoutes key={idx} {...route} {...props} />
-                ))}
-            </Switch>
-        </React.Suspense>
+        <RouteErrorBoundary>
+            <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
+                <Switch>
+                    {getRoutesConfig().map((route, idx) => (
+                        <RouteWithSubRoutes key={idx} {...route} {...props} />
+                    ))}
+                </Switch>
+            </React.Suspense>
+        </RouteErrorBoundary>
     );
 };
 

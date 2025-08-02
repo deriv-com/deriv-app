@@ -18,7 +18,6 @@ class RouteErrorBoundary extends React.Component<{ children: React.ReactNode }, 
     static getDerivedStateFromError(error: unknown) {
         // If it's a chunk load error, reload the page
         if (error && typeof error === 'object' && 'name' in error && (error as Error).name === 'ChunkLoadError') {
-            if (window.TrackJS) window.TrackJS.track(error);
             window.location.reload();
         }
         return { hasError: true, error };

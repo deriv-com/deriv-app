@@ -1,4 +1,8 @@
 name: Deriv App Release to UAT Environment
+
+permissions:
+  contents: write
+
 on:
   pull_request:
     branches:

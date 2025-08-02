@@ -1,4 +1,8 @@
 name: Deriv App Release to Test environment Workflow
+
+permissions:
+  contents: write
+
 on:
   push:
     branches:

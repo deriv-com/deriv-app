@@ -70,7 +70,7 @@ module.exports = function (env) {
             },
         },
         output: {
-            filename: 'js/core.[name].[contenthash].js',
+            filename: 'js/core.[name].[contenthash].js', // already uses contenthash, no change needed
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
         },

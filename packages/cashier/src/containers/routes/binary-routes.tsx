@@ -10,10 +10,6 @@ import getRoutesConfig from 'Constants/routes-config';
 
 import RouteWithSubRoutes from './route-with-sub-routes';
 
-/** ---------------------------
- * RouteErrorBoundary Component
- -----------------------------*/
-
 type ErrorBoundaryProps = { children: React.ReactNode };
 type ErrorBoundaryState = { hasError: boolean; error: unknown | null };
 
@@ -44,10 +40,6 @@ class RouteErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBounda
         return this.props.children;
     }
 }
-
-/** ---------------------------
- * BinaryRoutes Component
- -----------------------------*/
 
 type TBinaryRoutesProps = {
     is_logged_in: boolean;

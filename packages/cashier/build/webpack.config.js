@@ -32,7 +32,7 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
         },
         output: {
-            filename: 'cashier/js/[name].[contenthash].js',
+            filename: 'cashier/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'cashier/js/cashier.[name].[contenthash].js',

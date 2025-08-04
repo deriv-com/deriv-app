@@ -10,46 +10,17 @@ import getRoutesConfig from 'Constants/routes-config';
 
 import RouteWithSubRoutes from './route-with-sub-routes';
 
-type ErrorBoundaryProps = { children: React.ReactNode };
-type ErrorBoundaryState = { hasError: boolean; error: unknown | null };
-
-class RouteErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    constructor(props: ErrorBoundaryProps) {
-        super(props);
-        this.state = { hasError: false, error: null };
-    }
-
-    static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
-        if (error && typeof error === 'object' && 'name' in error && (error as Error).name === 'ChunkLoadError') {
-            window.location.reload();
-        }
-        return { hasError: true, error };
-    }
-
-    componentDidCatch(error: unknown, info: React.ErrorInfo) {
-        // eslint-disable-next-line no-console
-        console.error('Error caught in RouteErrorBoundary:', error, info);
-    }
-
-    render() {
-        if (this.state.hasError) {
-            return (
-                <div style={{ padding: 32, textAlign: 'center' }}>Error loading route: {String(this.state.error)}</div>
-            );
-        }
-        return this.props.children;
-    }
-}
-
 type TBinaryRoutesProps = {
     is_logged_in: boolean;
     is_logging_in: boolean;
 };
 
-const BinaryRoutes = ({ is_logged_in, is_logging_in }: TBinaryRoutesProps) => {
+const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { client } = useStore();
+    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
     const {
         has_wallet,
+        is_logged_in,
         is_logging_out,
         prevent_redirect_to_hub,
         is_client_store_initialized,
@@ -57,11 +28,8 @@ const BinaryRoutes = ({ is_logged_in, is_logging_in }: TBinaryRoutesProps) => {
         setPreventSingleLogin,
     } = client;
 
-    const { isHubRedirectionEnabled, isHubRedirectionLoaded } = useIsHubRedirectionEnabled();
-
-    const domain = getDomainUrl();
-    const PRODUCTION_REDIRECT_URL = `https://hub.${domain}/tradershub`;
-    const STAGING_REDIRECT_URL = `https://staging-hub.${domain}/tradershub`;
+    const PRODUCTION_REDIRECT_URL = `https://hub.${getDomainUrl()}/tradershub`;
+    const STAGING_REDIRECT_URL = `https://staging-hub.${getDomainUrl()}/tradershub`;
 
     useEffect(() => {
         if (has_wallet === undefined) {
@@ -69,36 +37,32 @@ const BinaryRoutes = ({ is_logged_in, is_logging_in }: TBinaryRoutesProps) => {
             console.error('Unable to retrieve wallet information from API.');
         }
 
-        const shouldRedirectToHub =
+        if (
             isHubRedirectionEnabled &&
             has_wallet &&
             !is_logging_out &&
             is_logged_in &&
             !prevent_redirect_to_hub &&
-            is_client_store_initialized;
+            is_client_store_initialized
+        ) {
+            const redirectUrl = process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
 
-        if (shouldRedirectToHub) {
-            const redirect_base =
-                process.env.NODE_ENV === 'production' ? PRODUCTION_REDIRECT_URL : STAGING_REDIRECT_URL;
-            const url_params = new URLSearchParams(window.location.search);
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
             const account_currency = window.sessionStorage.getItem('account') || url_params.get('account');
-            const redirect_url = `${redirect_base}/redirect?action=redirect_to&redirect_to=wallet${
-                account_currency ? `&account=${account_currency}` : ''
-            }`;
-
             localStorage.setItem('wallet_redirect_done', 'true');
-            window.location.href = redirect_url;
+            const redirect_path = `${redirectUrl}/redirect?action=redirect_to&redirect_to=wallet${account_currency ? `&account=${account_currency}` : ''}`;
+            window.location.href = redirect_path;
         }
 
-        const shouldStayInApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
-
-        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInApp) {
+        const shouldStayInDerivApp = !isHubRedirectionEnabled || !has_wallet || prevent_redirect_to_hub;
+        if (prevent_single_login && isHubRedirectionLoaded && is_client_store_initialized && shouldStayInDerivApp) {
             setPreventSingleLogin(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        isHubRedirectionEnabled,
         isHubRedirectionLoaded,
+        isHubRedirectionEnabled,
         has_wallet,
         is_logging_out,
         is_logged_in,
@@ -106,26 +70,18 @@ const BinaryRoutes = ({ is_logged_in, is_logging_in }: TBinaryRoutesProps) => {
         prevent_single_login,
         is_client_store_initialized,
     ]);
-
     if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {
         return <Loading is_fullscreen />;
     }
 
     return (
-        <RouteErrorBoundary>
-            <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
-                <Switch>
-                    {getRoutesConfig().map((route, idx) => (
-                        <RouteWithSubRoutes
-                            key={idx}
-                            {...route}
-                            is_logged_in={is_logged_in}
-                            is_logging_in={is_logging_in}
-                        />
-                    ))}
-                </Switch>
-            </React.Suspense>
-        </RouteErrorBoundary>
+        <React.Suspense fallback={<Loading className='cashier__loader' is_fullscreen={false} />}>
+            <Switch>
+                {getRoutesConfig().map((route, idx) => (
+                    <RouteWithSubRoutes key={idx} {...route} {...props} />
+                ))}
+            </Switch>
+        </React.Suspense>
     );
 };
 

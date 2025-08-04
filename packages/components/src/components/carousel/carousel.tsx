@@ -1,11 +1,15 @@
 import React from 'react';
-import classNames from 'classnames';
 import { useSwipeable } from 'react-swipeable';
+import classNames from 'classnames';
+
+import { useIsRtl } from '@deriv/hooks';
+
+import { useInterval } from '../../hooks';
+import Button from '../button/button';
+import Icon from '../icon';
+
 import Card from './carousel-card';
 import Nav from './carousel-nav';
-import Icon from '../icon';
-import Button from '../button/button';
-import { useInterval } from '../../hooks';
 
 type TCarousel = {
     active_bullet_color?: string;
@@ -47,6 +51,7 @@ const Carousel = ({
         return Math.min(item_per_window, list.length);
     }, [item_per_window, list]);
     const sliced_list_length = list.slice(computed_item_per_window - 1).length;
+    const is_rtl = useIsRtl();
 
     React.useEffect(() => {
         if (list.slice(computed_item_per_window - 1).length <= 1) {
@@ -82,13 +87,18 @@ const Carousel = ({
     }, [active_index, onItemSelect]);
 
     const swipe_handlers = useSwipeable({
-        onSwipedLeft: handleNextClick,
-        onSwipedRight: handlePrevClick,
+        onSwipedLeft: is_rtl ? handlePrevClick : handleNextClick,
+        onSwipedRight: is_rtl ? handleNextClick : handlePrevClick,
     });
+
+    const getTransformDirection = () => {
+        const translateX = width * active_index;
+        return is_rtl ? translateX : -translateX;
+    };
 
     return (
         <div {...(disable_swipe ? {} : swipe_handlers)} className={className}>
-            <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
+            <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5, 'dc-carousel--rtl': is_rtl })}>
                 {sliced_list_length > 1 && (
                     <Nav
                         active_index={active_index}
@@ -128,7 +138,7 @@ const Carousel = ({
                     >
                         <div
                             className={classNames('dc-carousel__wrapper', { 'dc-carousel__wrapper--mt5': is_mt5 })}
-                            style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
+                            style={{ transform: `translate3d(${getTransformDirection()}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
                                 <Card key={idx} width={width}>
@@ -164,6 +174,7 @@ const Carousel = ({
                         show_nav={show_nav && nav_position === 'bottom'}
                         list={list}
                         item_per_window={computed_item_per_window}
+                        is_rtl={is_rtl}
                     />
                 )}
             </div>

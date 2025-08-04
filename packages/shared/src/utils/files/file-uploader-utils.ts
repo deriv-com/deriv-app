@@ -87,8 +87,6 @@ export const readFiles = (
 
 export const max_document_size = 8388608;
 
-export const not_used_max_document_size_test = 8388607;
-
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
 export const UPLOAD_FILE_TYPE = Object.freeze({

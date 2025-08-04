@@ -1,35 +1,29 @@
 /* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/no-named-as-default */
-import React from 'react';
 import ReactDOM from 'react-dom';
-
-import { checkAndSetEndpointFromUrl } from '@deriv/shared';
-import { getActiveAccounts, isTmbEnabled } from '@deriv/utils';
-
-import App from 'App/app.jsx';
-import initStore from 'App/initStore';
-import { AnalyticsInitializer } from 'Utils/Analytics';
+import React from 'react';
+import 'promise-polyfill';
 // eslint-disable-next-line
 import registerServiceWorker from 'Utils/pwa';
-
+import initStore from 'App/initStore';
+import App from 'App/app.jsx';
+import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
-
-import 'promise-polyfill';
+import { AnalyticsInitializer } from 'Utils/Analytics';
+import { getActiveAccounts, isTmbEnabled } from '@deriv/utils';
 
 AnalyticsInitializer();
-
-const hostname = window.location.hostname;
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development
-    (!hostname.startsWith('localhost') && !/binary\.sx/.test(hostname)) ||
-    hostname === 'deriv-app.binary.sx'
+    (!window.location.hostname.startsWith('localhost') && !/binary\.sx/.test(window.location.hostname)) ||
+    window.location.hostname === 'deriv-app.binary.sx'
 ) {
     registerServiceWorker();
 }
 
 const has_endpoint_url = checkAndSetEndpointFromUrl();
 
-// if has endpoint url, APP will redirect
+// if has endpoint url, APP will be redirected
 if (!has_endpoint_url) {
     const initApp = async () => {
         const is_tmb_enabled = await isTmbEnabled();

@@ -79,12 +79,10 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
             className='wallets-migration-modal__carousel'
             list={CarouselSlide}
             show_bullet={true}
-            show_nav={false}
             disable_swipe={!isDesktop}
             bullet_position='bottom'
             active_bullet_color='var(--button-primary-default)'
             width={width}
-            autoplay_time={5000}
         />
     );
 
@@ -101,7 +99,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
                     </div>
                 }
                 onClose={() => closeModal()}
-                title={<Localize i18n_default_text='The all-new Trader’s Hub' />}
+                title={<Localize i18n_default_text="Trader's Hub" />}
             >
                 <CarouselContent width={325} />
             </MobileDialog>
@@ -111,7 +109,7 @@ const WalletMigrationModal = observer(({ is_eu = false }: { is_eu?: boolean }) =
         <Modal
             className='wallets-migration-modal'
             is_open={is_modal_open}
-            title={localize('The all-new Trader’s Hub')}
+            title={localize("Trader's Hub")}
             width='78.8rem'
             toggleModal={() => closeModal()}
         >

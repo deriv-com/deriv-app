@@ -59,6 +59,15 @@
     }
 }
 
+.wallets-migration-modal__carousel .dc-carousel__nav {
+    justify-content: center;
+    gap: 0.8rem;
+}
+
+.wallets-migration-modal__carousel .dc-carousel__nav-list {
+    margin: unset;
+}
+
 // Mobile specific styles
 .wallets-migration-modal__footer-mobile {
     padding: 1.6rem;

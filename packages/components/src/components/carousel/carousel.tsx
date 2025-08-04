@@ -112,6 +112,7 @@ const Carousel = ({
                         show_nav={show_nav && nav_position === 'top'}
                         list={list}
                         item_per_window={computed_item_per_window}
+                        is_rtl={is_rtl}
                     />
                 )}
                 <div className='dc-carousel__container'>

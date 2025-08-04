@@ -70,7 +70,8 @@ module.exports = function (env) {
             },
         },
         output: {
-            filename: 'js/core.[name].[contenthash].js',
+            filename: 'js/core.[name].[fullhash].js',
+            chunkFilename: 'js/core.chunk.[name].[fullhash].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
         },

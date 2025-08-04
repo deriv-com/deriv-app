@@ -308,8 +308,8 @@ const htmlPreloadConfig = () => ({
 });
 
 const cssConfig = () => ({
-    filename: 'css/core.[name].[fullhash].main.css',
-    chunkFilename: 'css/core.chunk.[name].[fullhash].css',
+    filename: 'css/core.[name].[contenthash].main.css',
+    chunkFilename: 'css/core.chunk.[name].[contenthash].css',
 });
 
 const stylelintConfig = () => ({

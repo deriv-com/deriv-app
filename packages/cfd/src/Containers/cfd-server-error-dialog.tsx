@@ -57,7 +57,7 @@ const CFDServerErrorDialog = observer(() => {
                 enableApp={enableApp}
                 is_visible={should_show_error}
             >
-                {localize('To continue, provide the required information in the Personal details sectionsssss.')}
+                {localize('To continue, provide the required information in the Personal details section.')}
             </Dialog>
         );
     }

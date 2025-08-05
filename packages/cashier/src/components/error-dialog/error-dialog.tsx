@@ -114,6 +114,14 @@ const ErrorDialog = observer(({ className, error = {} }: TErrorDialogProps) => {
                     message: error_message,
                     has_close_icon: true,
                 });
+            } else if (error_code === 'HighRiskNotAuthenticated') {
+                setDetails({
+                    title: localize('Verify your ID again'),
+                    cancel_button_text: undefined,
+                    confirm_button_text: localize('Start verification'),
+                    onConfirm: () => history.push(routes.proof_of_identity),
+                    message: localize('To continue with the transfer, resubmit your proof of identity.'),
+                });
             } else {
                 setDetails({
                     title: localize('Cashier Error'),

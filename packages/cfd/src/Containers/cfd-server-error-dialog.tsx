@@ -23,6 +23,10 @@ const CFDServerErrorDialog = observer(() => {
 
     const show_update_pob = error_details?.missing?.includes('place_of_birth');
 
+    const goToHome = () => {
+        clearCFDError();
+    };
+
     const getRedirection = () => {
         clearCFDError();
         history.push(routes.personal_details);
@@ -37,9 +41,12 @@ const CFDServerErrorDialog = observer(() => {
             <Dialog
                 title={localize('Add your place of birth')}
                 confirm_button_text={localize('Add now')}
+                cancel_button_text={localize('Go to Home')}
+                onCancel={goToHome}
                 onConfirm={getRedirection}
                 disableApp={disableApp}
                 enableApp={enableApp}
+                has_close_icon
                 is_visible={should_show_error}
             >
                 {localize(`You're missing this detail in your profile. Add it now to continue.`)}

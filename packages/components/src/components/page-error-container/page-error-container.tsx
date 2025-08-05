@@ -23,7 +23,7 @@ const PageErrorContainer = ({ error_header, error_messages, ...props }: TPageErr
     }
 
     // eslint-disable-next-line no-console
-    console.error('Unhandled error in PageErrorContainer:', error_header);
+    console.error('Unhandled error in PageErrorContainer: ', error_header);
 
     return <UnhandledErrorModal />;
 };

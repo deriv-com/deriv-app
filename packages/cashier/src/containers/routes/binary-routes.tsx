@@ -34,7 +34,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     useEffect(() => {
         if (has_wallet === undefined) {
             // eslint-disable-next-line no-console
-            console.error('Unable to retrieve wallet information from this API');
+            console.error('Unable to retrieve wallet information from API.');
         }
 
         if (

@@ -109,5 +109,6 @@ export { default as useOauth2 } from './useOauth2';
 export { default as useGetWithdrawalLimitsDetails } from './useGetWithdrawalLimitsDetails';
 export { default as useSilentLoginAndLogout } from './useSilentLoginAndLogout';
 export { default as useAccountSettingsRedirect } from './useAccountSettingsRedirect';
+export { default as useIsEnabledNakala } from './useIsEnabledNakala';
 export { default as useTMB } from './useTMB';
 export type { TradingPlatformStatus } from './useTradingPlatformStatus';

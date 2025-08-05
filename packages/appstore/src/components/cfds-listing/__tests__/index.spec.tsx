@@ -1,7 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useMT5SVGEligibleToMigrate, useTradingPlatformStatus, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import {
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
+    useGrowthbookGetFeatureValue,
+    useIsEnabledNakala,
+} from '@deriv/hooks';
 
 import CFDsListing from '../index';
 
@@ -23,6 +28,9 @@ const mockUseTradingPlatformStatus = useTradingPlatformStatus as jest.MockedFunc
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
     typeof useMT5SVGEligibleToMigrate
 >;
+
+const mockUseIsEnabledNakala = useIsEnabledNakala as jest.MockedFunction<typeof useIsEnabledNakala>;
+mockUseIsEnabledNakala.mockReturnValue({ IsEnabledNakala: true, nakalaServerInfo: null, loginId: '1231231' });
 
 mockUseGrowthbookGetFeatureValue.mockReturnValue([true, true]);
 

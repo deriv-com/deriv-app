@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import Icon from '../icon';
 
 type TNav = {
@@ -14,6 +15,7 @@ type TNav = {
     show_bullet: boolean;
     show_nav: boolean;
     item_per_window: number;
+    is_rtl: boolean;
 };
 
 const Nav = ({
@@ -28,14 +30,20 @@ const Nav = ({
     show_bullet,
     show_nav,
     item_per_window,
+    is_rtl = false,
 }: TNav) => {
     if (!show_bullet && !show_nav) return null;
+
+    const getBulletTransform = () => {
+        const translateX = 24 * active_index;
+        return is_rtl ? -translateX : translateX;
+    };
 
     return (
         <nav id='dt_components_carousel-nav_nav-tag' className={classNames('dc-carousel__nav', className)}>
             {show_nav && (
                 <span id='dt_contract_info_left_nav' className='dc-carousel__icon' onClick={handlePrevClick}>
-                    <Icon icon='IcChevronLeft' />
+                    {is_rtl ? <Icon icon='IcChevronRight' /> : <Icon icon='IcChevronLeft' />}
                 </span>
             )}
             {show_bullet && (
@@ -43,7 +51,7 @@ const Nav = ({
                     <li
                         className={classNames('dc-carousel__nav-item', 'dc-carousel__nav-item--active')}
                         style={{
-                            transform: `translate3d(${24 * active_index}px, 0, 0)`,
+                            transform: `translate3d(${getBulletTransform()}px, 0, 0)`,
                             backgroundColor: active_bullet_color,
                         }}
                     />
@@ -61,7 +69,7 @@ const Nav = ({
             )}
             {show_nav && (
                 <span id='dt_contract_info_right_nav' className='dc-carousel__icon' onClick={handleNextClick}>
-                    <Icon icon='IcChevronRight' />
+                    {is_rtl ? <Icon icon='IcChevronLeft' /> : <Icon icon='IcChevronRight' />}
                 </span>
             )}
         </nav>

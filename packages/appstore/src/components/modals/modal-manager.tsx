@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router';
 import { observer } from 'mobx-react-lite';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import CFDResetPasswordModal from '@deriv/cfd/src/Containers/cfd-reset-password-modal';
 import { Loading } from '@deriv/components';
@@ -44,17 +45,6 @@ const WalletsMigrationFailed = makeLazyLoader(
         moduleLoader(
             () => import(/* webpackChunkName: "modal_wallets-migration-failed" */ './wallets-migration-failed')
         ),
-    () => <Loading />
-)();
-
-const WalletsUpgradeModal = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "modal_wallets-upgrade-modal" */ './wallets-upgrade-modal')),
-    () => <Loading />
-)();
-
-const WalletsEUUpgradeModal = makeLazyLoader(
-    () =>
-        moduleLoader(() => import(/* webpackChunkName: "modal_wallets-upgrade-modal" */ './wallets-eu-upgrade-modal')),
     () => <Loading />
 )();
 
@@ -174,6 +164,11 @@ const SetupRealAccountOrGoToDemoModal = makeLazyLoader(
                     /* webpackChunkName: "modal_setup-real-account-or-go-to-demo" */ './setup-real-account-or-go-to-demo-modal'
                 )
         ),
+    () => <Loading />
+)();
+
+const WalletMigrationModal = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "modal_wallets-upgrade-modal" */ './wallet-migration-modal')),
     () => <Loading />
 )();
 
@@ -365,8 +360,9 @@ const ModalManager = () => {
             {is_verification_docs_list_modal_visible && <VerificationDocsListModal />}
             <React.Fragment>
                 {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                {should_show_wallets_non_eu_upgrade_modal && <WalletsUpgradeModal />}
-                {should_show_wallets_eu_upgrade_modal && <WalletsEUUpgradeModal />}
+                {(should_show_wallets_non_eu_upgrade_modal || should_show_wallets_eu_upgrade_modal) && (
+                    <WalletMigrationModal is_eu={is_eu} />
+                )}
             </React.Fragment>
             {is_setup_real_account_or_go_to_demo_modal_visible && <SetupRealAccountOrGoToDemoModal />}
         </React.Fragment>

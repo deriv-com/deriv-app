@@ -1,3 +1,4 @@
+/*rtl:begin:ignore*/
 .dc-carousel {
     height: 100%;
     display: flex;
@@ -13,6 +14,16 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
+
+        @include rtl {
+            .dc-carousel__icon--prev {
+                order: 2;
+            }
+
+            .dc-carousel__icon--next {
+                order: 0;
+            }
+        }
     }
     &__box {
         overflow: hidden;
@@ -48,6 +59,16 @@
         margin-bottom: 2.4rem;
         justify-content: space-between;
 
+        @include rtl {
+            .dc-carousel__icon--prev {
+                order: 2;
+            }
+
+            .dc-carousel__icon--next {
+                order: 0;
+            }
+        }
+
         &--upper {
             margin-bottom: 0;
         }
@@ -74,6 +95,11 @@
                 left: 0;
                 cursor: initial;
                 transition: transform 0.3s linear;
+
+                @include rtl {
+                    right: 0;
+                    left: unset;
+                }
             }
         }
     }
@@ -97,3 +123,4 @@
         }
     }
 }
+/*rtl:end:ignore*/

@@ -64,7 +64,9 @@
         gap: 1.6rem;
         margin: 10px 5px;
         position: relative;
+    }
 
+    &__steps--with-line {
         &:before {
             content: '';
             position: absolute;

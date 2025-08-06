@@ -148,7 +148,7 @@ export const CFDDerivNakalaLinkAccount = observer((props: TCFDDerivNakalaLinkAcc
                     </div>
                 )}
 
-                <div className='cfd-nakala-modal__steps'>
+                <div className='cfd-nakala-modal__steps cfd-nakala-modal__steps--with-line'>
                     <div className='cfd-nakala-modal__step'>
                         <div className='cfd-nakala-modal__step-number'>
                             <Text weight='bold' color='colored-background'>

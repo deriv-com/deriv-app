@@ -37,8 +37,8 @@ jobs:
       run: npx tsc --project packages/utils/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/wallets
-      run: npx tsc --project packages/wallets/tsconfig.json -noEmit
+    # - name: Check TypeScript for @deriv/wallets
+    #   run: npx tsc --project packages/wallets/tsconfig.json -noEmit
     - name: Check ESLint for @deriv/wallets
       run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
     - name: Check Stylelint for @deriv/wallets

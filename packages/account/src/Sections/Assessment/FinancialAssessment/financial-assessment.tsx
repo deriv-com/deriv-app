@@ -46,8 +46,6 @@ import {
     getSourceOfWealthList,
 } from '../../../Constants/financial-information-list';
 
-import NavigateToPersonalDetails from './NavigateToPersonalDetails';
-
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
     onSubmit: () => void;
@@ -415,16 +413,6 @@ const FinancialAssessment = observer(() => {
         }
         return form_data;
     };
-
-    if (
-        (account_status?.includes('update_fa') && financial_information_version === 'v1') ||
-        !employment_status ||
-        !account_settings.account_opening_reason ||
-        !account_settings.tax_residence ||
-        !account_settings.tax_identification_number
-    ) {
-        return <NavigateToPersonalDetails />;
-    }
 
     const getFormattedURL = (url_link: string) => {
         const url = new URL(url_link);

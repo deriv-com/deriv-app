@@ -1,18 +1,16 @@
 import * as Yup from 'yup';
 
-import { TinValidations } from '@deriv/api/types';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { formatDate, getLocation, toMoment } from '@deriv/shared';
 
 import {
     getAddressDetailValidationSchema,
-    getEmploymentAndTaxValidationSchema,
     getPersonalDetailsBaseValidationSchema,
 } from 'Configs/user-profile-validation-config';
 import { PersonalDetailsValueTypes } from 'Types';
 
 export const getPersonalDetailsInitialValues = (
-    account_settings: GetSettings & { tin_skipped?: 0 | 1 },
+    account_settings: GetSettings,
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual?: boolean,
@@ -44,18 +42,12 @@ export const getPersonalDetailsInitialValues = (
         phone: isCountryCodeDropdownEnabled
             ? account_settings.phone?.replace(/\D/g, '')
             : `+${account_settings.phone?.replace(/\D/g, '')}`,
-        account_opening_reason: account_settings.account_opening_reason,
-        employment_status: account_settings?.employment_status,
-        tax_residence:
-            (account_settings?.tax_residence
-                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text
-                : account_settings?.residence) || '',
     };
 
     const isGetSettingsKey = (value: string): value is keyof GetSettings =>
         Object.keys(account_settings).includes(value);
 
-    ['citizen', 'place_of_birth', 'tax_residence'].forEach(key => {
+    ['citizen', 'place_of_birth'].forEach(key => {
         if (isGetSettingsKey(key)) {
             if (account_settings[key]) {
                 // @ts-expect-error keys will always be available
@@ -63,13 +55,6 @@ export const getPersonalDetailsInitialValues = (
             }
         }
     });
-
-    if (account_settings?.tin_skipped) {
-        initialValues.tin_skipped = account_settings.tin_skipped;
-        initialValues.tax_identification_number = '';
-    } else {
-        initialValues.tax_identification_number = account_settings.tax_identification_number ?? '';
-    }
 
     if (account_settings.address_state) {
         initialValues.address_state = states_list.length
@@ -79,13 +64,6 @@ export const getPersonalDetailsInitialValues = (
 
     if (account_settings.request_professional_status) {
         initialValues.request_professional_status = account_settings.request_professional_status;
-    }
-
-    // Setting default value of `I confirm that my tax information is accurate and complete.` checkbox
-    if (account_settings.tax_residence && account_settings.tax_identification_number && !account_settings.tin_skipped) {
-        initialValues.tax_identification_confirm = true;
-    } else {
-        initialValues.tax_identification_confirm = false;
     }
 
     return initialValues;
@@ -114,14 +92,6 @@ export const makeSettingsRequest = (
         request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
     }
 
-    if (request.tax_residence) {
-        request.tax_residence = getLocation(residence_list, request.tax_residence, 'value');
-    }
-
-    if (request.tax_identification_number) {
-        request.tax_identification_number = request.tax_identification_number.trim();
-    }
-
     if (request.citizen) {
         request.citizen = getLocation(residence_list, request.citizen, 'value');
     }
@@ -137,7 +107,6 @@ export const makeSettingsRequest = (
             ? getLocation(states_list, request.address_state, 'value')
             : request.address_state;
     }
-    delete request.tax_identification_confirm;
 
     return request;
 };
@@ -145,10 +114,6 @@ export const makeSettingsRequest = (
 export const getPersonalDetailsValidationSchema = (
     is_virtual?: boolean,
     is_svg?: boolean,
-    tin_validation_config?: TinValidations,
-    is_tin_auto_set?: boolean,
-    immutable_fields?: string[],
-    is_employment_status_tin_mandatory?: boolean,
     isCountryCodeDropdownEnabled?: string | boolean
 ) => {
     if (is_virtual) return Yup.object();
@@ -168,15 +133,5 @@ export const getPersonalDetailsValidationSchema = (
 
     const address_detail_schema = getAddressDetailValidationSchema(is_svg ?? false, immutable_fields);
 
-    const employment_tin_schema = getEmploymentAndTaxValidationSchema({
-        tin_config: tin_validation_config as TinValidations,
-        is_mf: !is_svg,
-        is_real: !is_virtual,
-        is_tin_auto_set,
-        is_duplicate_account:
-            immutable_fields?.includes('tax_identification_number') || immutable_fields?.includes('tax_residence'),
-        is_employment_status_tin_mandatory,
-    });
-
-    return personal_details_schema.concat(address_detail_schema).concat(employment_tin_schema);
+    return personal_details_schema.concat(address_detail_schema);
 };

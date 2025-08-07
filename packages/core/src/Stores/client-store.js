@@ -2199,9 +2199,16 @@ export default class ClientStore extends BaseStore {
         this.ctrader_accounts_list = [];
         this.landing_companies = {};
         LocalStore.set('marked_notifications', JSON.stringify([]));
-        localStorage.setItem('active_loginid', this.loginid);
+        // Remove cached login information instead of setting it to `null`.
+        // Using `setItem` with a null value stores the string "null" in
+        // localStorage. Other parts of the app expect a valid loginid and will
+        // attempt to read properties such as `landing_company_name` from the
+        // stored account. Storing "null" results in these lookups returning
+        // `undefined`, causing runtime errors when accessing those properties
+        // during logout.
+        localStorage.removeItem('active_loginid');
         sessionStorage.removeItem('active_loginid');
-        localStorage.setItem('active_user_id', this.user_id);
+        localStorage.removeItem('active_user_id');
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
         Analytics.reset();

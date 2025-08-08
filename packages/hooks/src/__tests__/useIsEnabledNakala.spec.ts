@@ -156,23 +156,6 @@ describe('useIsEnabledNakala', () => {
             expect(result.current.nakalaServerInfo).toBe('test-server');
         });
 
-        it('should make API call to production URL in production environment', async () => {
-            process.env.NODE_ENV = 'production';
-            mockedAxios.get.mockResolvedValue({ data: { server_name: 'prod-server' } });
-
-            const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
-
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
-
-            await waitFor(() => {
-                expect(mockedAxios.get).toHaveBeenCalledWith(
-                    'https://api-gateway.deriv.com/nakala/v1/nakala-servers?mt5_login_id=SVG123'
-                );
-            });
-
-            expect(result.current.nakalaServerInfo).toBe('prod-server');
-        });
-
         it('should handle API error gracefully', async () => {
             const error = new Error('Network error');
             mockedAxios.get.mockRejectedValue(error);

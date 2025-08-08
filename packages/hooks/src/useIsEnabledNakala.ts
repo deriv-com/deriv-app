@@ -42,8 +42,9 @@ const useIsEnabledNakala = (accounts: any[]) => {
 
     const getNakalaServerInfo = async () => {
         try {
-            const isProduction = process.env.NODE_ENV === 'production';
-            const apiUrl = isProduction ? NAKALA_INFO_BASEURL.PRODUCTION : NAKALA_INFO_BASEURL.STAGING;
+            const hostname = window.location.hostname;
+            const isProductionApp = ['app.deriv.com', 'app.deriv.me', 'app.deriv.be'].includes(hostname);
+            const apiUrl = isProductionApp ? NAKALA_INFO_BASEURL.PRODUCTION : NAKALA_INFO_BASEURL.STAGING;
 
             const response = await axios.get(`${apiUrl}/nakala/v1/nakala-servers?mt5_login_id=${loginId}`);
             setNakalaServerInfo(response.data?.server_name);

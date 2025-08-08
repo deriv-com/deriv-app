@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
@@ -22,7 +22,6 @@ import {
     usePhoneNumberVerificationSetTimer,
     useResidenceList,
     useStatesList,
-    useTinValidations,
 } from '@deriv/hooks';
 import { AUTH_STATUS_CODES, getBrandWebsiteName, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -34,17 +33,13 @@ import FormBody from '../../../Components/form-body';
 import FormFooter from '../../../Components/form-footer';
 import FormSubHeader from '../../../Components/form-sub-header';
 import { DateOfBirthField } from '../../../Components/forms/form-fields';
-import AccountOpeningReasonField from '../../../Components/forms/form-fields/account-opening-reason';
 import FormSelectField from '../../../Components/forms/form-select-field';
 import LeaveConfirm from '../../../Components/leave-confirm';
 import LoadErrorMessage from '../../../Components/load-error-message';
 import POAAddressMismatchHintBox from '../../../Components/poa-address-mismatch-hint-box';
-import EmploymentTaxDetailsContainer from '../../../Containers/employment-tax-details-container';
-import { isFieldImmutable } from '../../../Helpers/utils';
 import { useScrollElementToTop } from '../../../hooks';
 import { PersonalDetailsValueTypes } from '../../../Types';
 
-import { account_opening_reason_list, account_opening_reason_new_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import { VerifyButton } from './verify-button';
@@ -77,8 +72,6 @@ const PersonalDetailsForm = observer(() => {
 
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
 
-    const { tin_validation_config, mutate } = useTinValidations();
-
     const scrollToTop = useScrollElementToTop();
 
     const {
@@ -99,7 +92,6 @@ const PersonalDetailsForm = observer(() => {
         fetchAccountSettings,
         residence,
         is_svg,
-        is_mf_account,
     } = client;
 
     const { field_ref_to_focus, setFieldRefToFocus } = ui;
@@ -117,9 +109,6 @@ const PersonalDetailsForm = observer(() => {
 
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
-    const account_opening_reason_list_array = account_opening_reason_list();
-
-    const account_opening_reason_new_list_array = account_opening_reason_new_list();
     useEffect(() => {
         if (isDynamicFAEnabled) {
             WS.authorized.storage
@@ -150,7 +139,6 @@ const PersonalDetailsForm = observer(() => {
     });
 
     const notification_timeout = useRef<NodeJS.Timeout>();
-    const scroll_div_ref = useRef(null);
 
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = useState<{
         is_timeout_started: boolean;
@@ -305,20 +293,6 @@ const PersonalDetailsForm = observer(() => {
         return !!account_settings?.immutable_fields?.includes(name);
     };
 
-    const employment_tax_editable_fields = useMemo(() => {
-        const fields_to_disable = ['employment_status', 'tax_identification_number'].filter(field =>
-            isFieldImmutable(field, account_settings?.immutable_fields)
-        );
-        /*
-            [TODO]: Will be removed once BE enables tax_residence in immutable_fields
-            If Tax_residence value is present in response, then it must not be editable
-        */
-        if (!account_settings?.tax_residence) {
-            fields_to_disable.push('tax_residence');
-        }
-        return fields_to_disable;
-    }, [account_settings?.immutable_fields, account_settings?.tax_residence]);
-
     const { api_error, show_form } = rest_state;
     const loadTimer = useRef<NodeJS.Timeout>();
 
@@ -372,19 +346,11 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const is_tin_auto_set = Boolean(account_settings?.tin_skipped);
-
-    const is_employment_status_tin_mandatory = Boolean(account_status?.status?.includes('mt5_additional_kyc_required'));
-
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema({
         is_virtual,
         is_svg,
-        tin_validation_config,
-        is_tin_auto_set,
-        account_settings?.immutable_fields,
-        is_employment_status_tin_mandatory,
-        isCountryCodeDropdownEnabled
-    );
+        immutable_fields: account_settings?.immutable_fields,
+    });
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {
             return (
@@ -404,11 +370,7 @@ const PersonalDetailsForm = observer(() => {
     };
 
     const initialValues = getPersonalDetailsInitialValues(
-        {
-            ...account_settings,
-            employment_status:
-                should_update_fa && versionRef.current === 'v1' ? undefined : account_settings.employment_status,
-        },
+        account_settings,
         residence_list,
         states_list,
         is_virtual,
@@ -416,20 +378,6 @@ const PersonalDetailsForm = observer(() => {
         checkForInitialCarriersSupported(),
         isCountryCodeDropdownEnabled
     );
-
-    const getAccountOpeningReason = () => {
-        const result = account_opening_reason_new_list_array.find(
-            item => item.value === initialValues?.account_opening_reason
-        );
-
-        if (result) return account_opening_reason_new_list_array;
-
-        const item = account_opening_reason_list_array.find(
-            item => item.value === initialValues?.account_opening_reason
-        );
-
-        return item ? [item, ...account_opening_reason_new_list_array] : account_opening_reason_new_list_array;
-    };
 
     return (
         <Formik
@@ -699,31 +647,10 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                             )}
                                         </fieldset>
-                                        <AccountOpeningReasonField
-                                            account_opening_reason_list={getAccountOpeningReason()}
-                                            setFieldValue={setFieldValue}
-                                            disabled={isFieldDisabled('account_opening_reason')}
-                                            required
-                                            fieldFocused={
-                                                !account_settings.account_opening_reason &&
-                                                field_ref_to_focus === 'account-opening-reason'
-                                            }
-                                        />
                                     </Fragment>
                                 )}
                                 {!is_virtual && (
                                     <div className='employment-tin-section'>
-                                        <FormSubHeader title={localize('Employment and tax information')} />
-                                        <EmploymentTaxDetailsContainer
-                                            editable_fields={employment_tax_editable_fields}
-                                            parent_ref={scroll_div_ref}
-                                            handleChange={mutate}
-                                            tin_validation_config={tin_validation_config}
-                                            should_display_long_message={is_mf_account}
-                                            should_focus_fields={field_ref_to_focus === 'employment-tax-section'}
-                                            version={should_update_fa ? 'v2' : versionRef.current}
-                                            is_feature_flag_disabled={isDynamicFALoaded && !isDynamicFAEnabled}
-                                        />
                                         {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                         <FormSubHeader title={localize('Address')} />
                                         <div className='account-address__details-section'>

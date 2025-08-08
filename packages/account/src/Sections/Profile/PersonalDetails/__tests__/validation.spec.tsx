@@ -29,13 +29,13 @@ describe('getPersonalDetailsValidationSchema', () => {
     };
 
     it('should validate a valid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema();
+        const validationSchema = getPersonalDetailsValidationSchema({});
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should not validate an invalid input for non-eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema();
+        const validationSchema = getPersonalDetailsValidationSchema({});
         try {
             await validationSchema.isValid(invalid_data);
         } catch (error) {
@@ -45,13 +45,13 @@ describe('getPersonalDetailsValidationSchema', () => {
     });
 
     it('should validate a valid input for eu users', async () => {
-        const validationSchema = getPersonalDetailsValidationSchema();
+        const validationSchema = getPersonalDetailsValidationSchema({});
         const isValid = await validationSchema.isValid(valid_data);
         expect(isValid).toBe(true);
     });
 
     it('should return empty object for virtual account', () => {
-        const validationSchema = getPersonalDetailsValidationSchema(true);
+        const validationSchema = getPersonalDetailsValidationSchema({ is_virtual: true });
         expect(validationSchema.fields).toEqual({});
     });
 });
@@ -135,9 +135,6 @@ describe('makeSettingsRequest', () => {
     it('should return correct request object for non-virtual user', () => {
         const mock_settings = {
             ...account_settings,
-            tax_residence: 'Indonesia',
-            tax_identification_number: '123',
-            residence: 'Indonesia',
         };
         const result = makeSettingsRequest(mock_settings, mock_residence_list, mock_state_list, false);
         expect(result).toEqual({
@@ -145,8 +142,6 @@ describe('makeSettingsRequest', () => {
             last_name: 'Doe',
             place_of_birth: '',
             address_state: '',
-            tax_identification_number: '123',
-            tax_residence: 'id',
         });
     });
 });

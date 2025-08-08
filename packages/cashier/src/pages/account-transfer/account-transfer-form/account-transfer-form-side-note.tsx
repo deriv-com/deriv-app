@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
+
 import { SideNote, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
-import { useCashierStore } from '../../../stores/useCashierStores';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import { useCashierStore } from '../../../stores/useCashierStores';
 
 const AccountTransferFormSideNoteBullet = ({ children }: React.PropsWithChildren) => (
     <div className='account-transfer-form__bullet-wrapper'>
@@ -22,7 +24,9 @@ const AccountTransferFormSideNote = observer(() => {
 
     const { account_transfer } = useCashierStore();
 
-    const { minimum_fee, selected_from, selected_to, transfer_fee } = account_transfer;
+    const { minimum_fee, selected_from, selected_to, transfer_fee, accounts_list } = account_transfer;
+
+    const hasDxTradeAccount = accounts_list.some(account => account.is_dxtrade);
 
     const { daily_transfers } = account_limits;
     const mt5_remaining_transfers = daily_transfers?.mt5;
@@ -41,21 +45,39 @@ const AccountTransferFormSideNote = observer(() => {
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
 
+    const getZeroTransferFeeString = (is_dxtrade_allowed: boolean, hasDxTradeAccount: boolean): string => {
+        if (is_dxtrade_allowed) {
+            if (hasDxTradeAccount) {
+                return localize(
+                    'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts, between your Deriv fiat and {{platform_name_ctrader}} accounts, and between your Deriv fiat and {{platform_name_dxtrade}} accounts.',
+                    {
+                        platform_name_mt5,
+                        platform_name_ctrader,
+                        platform_name_dxtrade,
+                    }
+                );
+            }
+            return localize(
+                'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_ctrader}} accounts.',
+                {
+                    platform_name_mt5,
+                    platform_name_ctrader,
+                }
+            );
+        }
+        return localize(
+            "You'll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.",
+            {
+                platform_name_mt5,
+            }
+        );
+    };
+
     const getTransferFeeNote = useCallback(() => {
         if (transfer_fee === 0) {
-            return is_dxtrade_allowed ? (
-                <Localize
-                    i18n_default_text='We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts, between your Deriv fiat and {{platform_name_ctrader}} accounts, and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
-                    values={{ platform_name_dxtrade, platform_name_mt5, platform_name_ctrader }}
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='You’ll not be charged a transfer fee for transfers in the same currency between your Deriv fiat and {{platform_name_mt5}} accounts.'
-                    values={{ platform_name_mt5 }}
-                />
-            );
+            return getZeroTransferFeeString(is_dxtrade_allowed, hasDxTradeAccount);
         } else if (transfer_fee === 1) {
-            return is_dxtrade_allowed ? (
+            return is_dxtrade_allowed && hasDxTradeAccount ? (
                 <Localize
                     i18n_default_text='We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and {{platform_name_mt5}} accounts and between your Deriv fiat and {{platform_name_dxtrade}} accounts.'
                     values={{ platform_name_dxtrade, platform_name_mt5 }}
@@ -123,7 +145,7 @@ const AccountTransferFormSideNote = observer(() => {
     ]);
 
     const getDxtradeAllowedNotes = useCallback(() => {
-        if (is_dxtrade_allowed) {
+        if (hasDxTradeAccount && is_dxtrade_allowed) {
             return (
                 <React.Fragment>
                     <AccountTransferFormSideNoteBullet>
@@ -170,6 +192,7 @@ const AccountTransferFormSideNote = observer(() => {
             </React.Fragment>
         );
     }, [
+        hasDxTradeAccount,
         allowed_transfers_count?.dxtrade,
         allowed_transfers_count?.internal,
         allowed_transfers_count?.ctrader,

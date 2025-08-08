@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Text } from '@deriv/components';
-import { redirectToLogin, CFD_PLATFORMS } from '@deriv/shared';
+import { redirectToLogin } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize } from '@deriv/translations';
 
@@ -15,13 +15,7 @@ import './cfds-listing-logged-out.scss';
 
 const CFDsListingLoggedOut = observer(() => {
     const { traders_hub, client } = useStore();
-    const {
-        available_dxtrade_accounts,
-        available_ctrader_accounts,
-        combined_cfd_mt5_accounts,
-        selected_region,
-        is_eu_user,
-    } = traders_hub;
+    const { available_ctrader_accounts, combined_cfd_mt5_accounts, selected_region, is_eu_user } = traders_hub;
     const { is_eu } = client;
 
     return (
@@ -68,33 +62,6 @@ const CFDsListingLoggedOut = observer(() => {
                 </div>
             )}
             {available_ctrader_accounts.map(account => (
-                <TradingAppCard
-                    action_type='get'
-                    availability={selected_region}
-                    clickable_icon
-                    icon={account.icon}
-                    name={account.name}
-                    platform={account.platform}
-                    description={account.description}
-                    onAction={() => redirectToLogin(false, getLanguage())}
-                    key={`trading_app_card_${account.name}`}
-                    market_type='all'
-                />
-            ))}
-            {!is_eu_user && (
-                <React.Fragment>
-                    <div className='cfds-listing-logged-out__cfd-full-row'>
-                        <hr className='cfds-listing-logged-out__divider' />
-                    </div>
-
-                    <div className='cfds-listing-logged-out__cfd-full-row'>
-                        <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Deriv X')}
-                        </Text>
-                    </div>
-                </React.Fragment>
-            )}
-            {available_dxtrade_accounts?.map(account => (
                 <TradingAppCard
                     action_type='get'
                     availability={selected_region}

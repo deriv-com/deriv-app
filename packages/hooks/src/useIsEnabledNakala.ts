@@ -4,6 +4,11 @@ import axios from 'axios';
 
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
+const NAKALA_INFO_BASEURL = {
+    PRODUCTION: `https://api-gateway.deriv.com`,
+    STAGING: `https://staging-api-gateway.deriv.com`,
+};
+
 const useIsEnabledNakala = (accounts: any[]) => {
     const getMT5Account = (accounts: any[]) => {
         if (!accounts?.length) return null;
@@ -14,7 +19,7 @@ const useIsEnabledNakala = (accounts: any[]) => {
         const account = priorityOrder.reduce((found, company) => {
             if (found) return found;
             return accounts.find(
-                acc => acc.landing_company_name?.toLowerCase() === company || acc.landing_company_short === company
+                acc => acc?.landing_company_name?.toLowerCase() === company || acc?.landing_company_short === company
             );
         }, null);
         if (account) return account;
@@ -37,9 +42,10 @@ const useIsEnabledNakala = (accounts: any[]) => {
 
     const getNakalaServerInfo = async () => {
         try {
-            const response = await axios.get(
-                `https://staging-api-gateway.deriv.com/nakala/v1/nakala-servers?mt5_login_id=${loginId}`
-            );
+            const isProduction = process.env.NODE_ENV === 'production';
+            const apiUrl = isProduction ? NAKALA_INFO_BASEURL.PRODUCTION : NAKALA_INFO_BASEURL.STAGING;
+
+            const response = await axios.get(`${apiUrl}/nakala/v1/nakala-servers?mt5_login_id=${loginId}`);
             setNakalaServerInfo(response.data?.server_name);
         } catch (error) {
             // eslint-disable-next-line no-console

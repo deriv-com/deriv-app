@@ -19,9 +19,7 @@ const useIsEnabledNakala = (accounts: any[]) => {
         const account = priorityOrder.reduce((found, company) => {
             if (found) return found;
             return accounts.find(
-                acc =>
-                    acc &&
-                    (acc.landing_company_name?.toLowerCase() === company || acc.landing_company_short === company)
+                acc => acc?.landing_company_name?.toLowerCase() === company || acc?.landing_company_short === company
             );
         }, null);
         if (account) return account;

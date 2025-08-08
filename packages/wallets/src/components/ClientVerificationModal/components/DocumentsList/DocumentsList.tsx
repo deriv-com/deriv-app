@@ -106,7 +106,7 @@ const DocumentsList: React.FC<TDocumentsListProps> = ({ account }) => {
             {isTinRequired && (
                 <DocumentTile
                     // @ts-expect-error the following link is not part of wallets routes config
-                    onClick={() => history.push('/account/personal-details')}
+                    onClick={() => history.push('/account/financial-assessment')}
                     title={localize('Additional information')}
                 />
             )}

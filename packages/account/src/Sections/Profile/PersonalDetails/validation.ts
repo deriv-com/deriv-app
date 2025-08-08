@@ -41,6 +41,7 @@ export const getPersonalDetailsInitialValues = (
         date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
+        place_of_birth: account_settings.place_of_birth,
         phone: isCountryCodeDropdownEnabled
             ? account_settings.phone?.replace(/\D/g, '')
             : `+${account_settings.phone?.replace(/\D/g, '')}`,

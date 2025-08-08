@@ -63,6 +63,20 @@ describe('<ErrorDialog />', () => {
         expect(screen.getByText('OK')).toBeInTheDocument();
     });
 
+    it('should show "Verify your ID again" message and "Start verification" button', () => {
+        const error = {
+            code: 'HighRiskNotAuthenticated',
+            message: 'Error has occurred',
+        };
+        render(<ErrorDialog error={error} />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
+        });
+
+        expect(screen.getByText('Verify your ID again')).toBeInTheDocument();
+        expect(screen.getByText('To continue with the transfer, resubmit your proof of identity.')).toBeInTheDocument();
+        expect(screen.getByText('Start verification')).toBeInTheDocument();
+    });
+
     it('should not show "Cashier Error" message, when "OK" button was clicked', async () => {
         const error = {
             code: '',

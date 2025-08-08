@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
-const NAKALA_INFO_ENDPOINT = {
+const NAKALA_INFO_BASEURL = {
     PRODUCTION: `https://api-gateway.deriv.com`,
     STAGING: `https://staging-api-gateway.deriv.com`,
 };
@@ -43,7 +43,7 @@ const useIsEnabledNakala = (accounts: any[]) => {
     const getNakalaServerInfo = async () => {
         try {
             const isProduction = process.env.NODE_ENV === 'production';
-            const apiUrl = isProduction ? NAKALA_INFO_ENDPOINT.PRODUCTION : NAKALA_INFO_ENDPOINT.STAGING;
+            const apiUrl = isProduction ? NAKALA_INFO_BASEURL.PRODUCTION : NAKALA_INFO_BASEURL.STAGING;
 
             const response = await axios.get(`${apiUrl}/nakala/v1/nakala-servers?mt5_login_id=${loginId}`);
             setNakalaServerInfo(response.data?.server_name);

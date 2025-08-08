@@ -111,11 +111,19 @@ export const makeSettingsRequest = (
     return request;
 };
 
-export const getPersonalDetailsValidationSchema = (
-    is_virtual?: boolean,
-    is_svg?: boolean,
-    isCountryCodeDropdownEnabled?: string | boolean
-) => {
+interface PersonalValidationScheam {
+    is_virtual?: boolean;
+    is_svg?: boolean;
+    isCountryCodeDropdownEnabled?: string | boolean;
+    immutable_fields?: string[];
+}
+
+export const getPersonalDetailsValidationSchema = ({
+    is_virtual,
+    is_svg,
+    isCountryCodeDropdownEnabled,
+    immutable_fields,
+}: PersonalValidationScheam) => {
     if (is_virtual) return Yup.object();
 
     const personal_details_schema = getPersonalDetailsBaseValidationSchema(

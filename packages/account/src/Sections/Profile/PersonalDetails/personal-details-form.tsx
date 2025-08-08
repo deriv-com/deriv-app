@@ -346,7 +346,11 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg);
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema({
+        is_virtual,
+        is_svg,
+        immutable_fields: account_settings?.immutable_fields,
+    });
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {
             return (

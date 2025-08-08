@@ -1,24 +1,16 @@
 import React from 'react';
 
 import { Loading } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { ACCOUNTS_OS_POA_URL, getSocketURL } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
-import { useKycAuthStatus } from '../../../hooks';
-
-import ProofOfAddress from './proof-of-address';
-
 const ProofOfAddressFlow = observer(() => {
     const {
-        client: { getToken, residence },
+        client: { getToken },
         common: { is_from_tradershub_os },
     } = useStore();
-    const { kyc_auth_status, isLoading: isKYCLoading } = useKycAuthStatus({ country: residence });
-    const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'redirect_to_poa_in_accounts_os',
-    });
+
     const localize_language = LocalStorageUtils.getValue<string>('i18n_language');
     const url_lang = URLUtils.getQueryParameter('lang');
     const i18n_language = localize_language || url_lang || 'en';
@@ -44,13 +36,7 @@ const ProofOfAddressFlow = observer(() => {
         return url.toString();
     };
 
-    if (isRedirectToAccountsOSAppFFLoaded && !isKYCLoading) {
-        if (shouldRedirectToAccountsOSApp && kyc_auth_status) {
-            window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
-        } else {
-            return <ProofOfAddress />;
-        }
-    }
+    window.location.replace(getFormattedURL(ACCOUNTS_OS_POA_URL));
 
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });

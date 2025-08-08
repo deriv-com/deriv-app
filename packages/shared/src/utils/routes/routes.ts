@@ -150,4 +150,4 @@ export const ACCOUNTS_OS_POA_URL =
 export const ACCOUNTS_OS_DFA_URL =
     process.env.NODE_ENV === 'production'
         ? `https://hub.${getDomainUrl()}/Accounts/UserFinancialAssessment`
-        : `https://staging-hub.${getDomainUrl()}/Accounts/UserFinancialAssessment`;
+        : `https://dev-hub.${getDomainUrl()}/Accounts/UserFinancialAssessment`;

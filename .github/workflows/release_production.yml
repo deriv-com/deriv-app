@@ -73,6 +73,8 @@ jobs:
     environment: Production
     if: failure()
     needs: [build_test_and_publish]
+    permissions:
+      contents: read
     steps:
       - name: Send Slack Notification
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
@@ -86,6 +88,8 @@ jobs:
     environment: Production
     if: success()
     needs: [build_test_and_publish]
+    permissions:
+      contents: read
     steps:
       - name: Send Slack Notification
         uses: "deriv-com/shared-actions/.github/actions/send_slack_notification@master"
@@ -98,6 +102,9 @@ jobs:
     runs-on: Runner_8cores_Deriv-app
     environment: Production
     needs: [build_test_and_publish]
+    permissions:
+      contents: read
+      actions: read
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11

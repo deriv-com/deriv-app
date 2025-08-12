@@ -1,5 +1,7 @@
+import React from 'react';
 import axios from 'axios';
 
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
@@ -18,6 +20,12 @@ const mockedUseGrowthbookGetFeatureValue = useGrowthbookGetFeatureValue as jest.
 const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 describe('useIsEnabledNakala', () => {
+    const mock_store = mockStore({
+        traders_hub: {
+            is_demo: false,
+        },
+    });
+
     beforeEach(() => {
         jest.clearAllMocks();
         consoleSpy.mockClear();
@@ -25,6 +33,10 @@ describe('useIsEnabledNakala', () => {
         // Default mock for feature flag
         mockedUseGrowthbookGetFeatureValue.mockReturnValue([false]);
     });
+
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store}>{children}</StoreProvider>
+    );
 
     afterEach(() => {
         delete process.env.NODE_ENV;
@@ -38,7 +50,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'vanuatu', display_login: 'VU123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('SVG123');
         });
@@ -49,7 +61,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'vanuatu', display_login: 'VU123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('VU123');
         });
@@ -60,7 +72,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'bvi', display_login: 'BVI123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('BVI123');
         });
@@ -71,7 +83,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_short: 'bvi', display_login: 'BVI123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('SVG123');
         });
@@ -82,19 +94,19 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'other2', display_login: 'OTHER2' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('OTHER1');
         });
 
         it('should return empty loginId when accounts array is empty', () => {
-            const { result } = renderHook(() => useIsEnabledNakala([]));
+            const { result } = renderHook(() => useIsEnabledNakala([]), { wrapper });
 
             expect(result.current.loginId).toBe('');
         });
 
         it('should return empty loginId when accounts array is null/undefined', () => {
-            const { result } = renderHook(() => useIsEnabledNakala(null as unknown as never[]));
+            const { result } = renderHook(() => useIsEnabledNakala(null as unknown as never[]), { wrapper });
 
             expect(result.current.loginId).toBe('');
         });
@@ -102,7 +114,7 @@ describe('useIsEnabledNakala', () => {
         it('should handle accounts with undefined display_login', () => {
             const accounts = [{ landing_company_name: 'svg', display_login: undefined }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('');
         });
@@ -113,7 +125,7 @@ describe('useIsEnabledNakala', () => {
             mockedUseGrowthbookGetFeatureValue.mockReturnValue([true]);
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.IsEnabledNakala).toBe(true);
         });
@@ -122,7 +134,7 @@ describe('useIsEnabledNakala', () => {
             mockedUseGrowthbookGetFeatureValue.mockReturnValue([false]);
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.IsEnabledNakala).toBe(false);
         });
@@ -130,7 +142,7 @@ describe('useIsEnabledNakala', () => {
         it('should call useGrowthbookGetFeatureValue with correct feature flag', () => {
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            renderHook(() => useIsEnabledNakala(accounts));
+            renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(mockedUseGrowthbookGetFeatureValue).toHaveBeenCalledWith({
                 featureFlag: 'is_nakala_enabled',
@@ -145,7 +157,7 @@ describe('useIsEnabledNakala', () => {
 
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             await waitFor(() => {
                 expect(mockedAxios.get).toHaveBeenCalledWith(
@@ -162,7 +174,7 @@ describe('useIsEnabledNakala', () => {
 
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             await waitFor(() => {
                 expect(mockedAxios.get).toHaveBeenCalled();
@@ -175,7 +187,7 @@ describe('useIsEnabledNakala', () => {
         it('should not make API call when loginId is empty', () => {
             const accounts: never[] = [];
 
-            renderHook(() => useIsEnabledNakala(accounts));
+            renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(mockedAxios.get).not.toHaveBeenCalled();
         });
@@ -186,6 +198,7 @@ describe('useIsEnabledNakala', () => {
             const initialAccounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
             const { rerender } = renderHook(({ accounts }) => useIsEnabledNakala(accounts), {
                 initialProps: { accounts: initialAccounts },
+                wrapper,
             });
 
             await waitFor(() => {
@@ -214,7 +227,7 @@ describe('useIsEnabledNakala', () => {
 
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             await waitFor(() => {
                 expect(mockedAxios.get).toHaveBeenCalled();
@@ -228,7 +241,7 @@ describe('useIsEnabledNakala', () => {
 
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             await waitFor(() => {
                 expect(mockedAxios.get).toHaveBeenCalled();
@@ -243,7 +256,7 @@ describe('useIsEnabledNakala', () => {
             mockedUseGrowthbookGetFeatureValue.mockReturnValue([true]);
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current).toHaveProperty('IsEnabledNakala');
             expect(result.current).toHaveProperty('nakalaServerInfo');
@@ -255,7 +268,7 @@ describe('useIsEnabledNakala', () => {
         it('should initialize nakalaServerInfo as null', () => {
             const accounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.nakalaServerInfo).toBe(null);
         });
@@ -268,7 +281,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'bvi', display_login: 'BVI123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('SVG123');
         });
@@ -279,7 +292,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'BVI', display_login: 'BVI123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('SVG123');
         });
@@ -290,7 +303,7 @@ describe('useIsEnabledNakala', () => {
                 { landing_company_name: 'Bvi', display_login: 'BVI123' },
             ];
 
-            const { result } = renderHook(() => useIsEnabledNakala(accounts));
+            const { result } = renderHook(() => useIsEnabledNakala(accounts), { wrapper });
 
             expect(result.current.loginId).toBe('SVG123');
         });

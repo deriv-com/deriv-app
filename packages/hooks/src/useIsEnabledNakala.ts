@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { useStore } from '@deriv/stores';
+
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
 const NAKALA_INFO_BASEURL = {
@@ -10,6 +12,8 @@ const NAKALA_INFO_BASEURL = {
 };
 
 const useIsEnabledNakala = (accounts: any[]) => {
+    const { traders_hub } = useStore();
+    const { is_demo } = traders_hub;
     const getMT5Account = (accounts: any[]) => {
         if (!accounts?.length) return null;
 
@@ -33,8 +37,8 @@ const useIsEnabledNakala = (accounts: any[]) => {
     const [nakalaServerInfo, setNakalaServerInfo] = useState(null);
 
     useEffect(() => {
-        loginId != '' && getNakalaServerInfo();
-    }, [loginId]);
+        loginId != '' && !is_demo && getNakalaServerInfo();
+    }, [loginId, is_demo]);
 
     const [is_nakala_enabled] = useGrowthbookGetFeatureValue({
         featureFlag: 'is_nakala_enabled',

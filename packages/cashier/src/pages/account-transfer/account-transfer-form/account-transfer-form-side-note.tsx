@@ -20,7 +20,7 @@ const AccountTransferFormSideNote = observer(() => {
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     const { client } = useStore();
-    const { account_limits, is_dxtrade_allowed } = client;
+    const { account_limits, is_dxtrade_allowed, is_ctrader_allowed } = client;
 
     const { account_transfer } = useCashierStore();
 
@@ -99,7 +99,7 @@ const AccountTransferFormSideNote = observer(() => {
                 />
             );
         } else if (transfer_fee === 2 && (is_mt_transfer || is_dxtrade_transfer)) {
-            return is_dxtrade_allowed ? (
+            return is_dxtrade_allowed && hasDxTradeAccount ? (
                 <Localize
                     i18n_default_text='We’ll charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts and between your Deriv cryptocurrency and {{platform_name_dxtrade}} accounts.'
                     values={{
@@ -145,7 +145,7 @@ const AccountTransferFormSideNote = observer(() => {
     ]);
 
     const getDxtradeAllowedNotes = useCallback(() => {
-        if (hasDxTradeAccount && is_dxtrade_allowed) {
+        if (hasDxTradeAccount) {
             return (
                 <React.Fragment>
                     <AccountTransferFormSideNoteBullet>
@@ -163,6 +163,29 @@ const AccountTransferFormSideNote = observer(() => {
                                 allowed_dxtrade: allowed_transfers_count?.dxtrade,
                                 allowed_ctrader: allowed_transfers_count?.ctrader,
                                 platform_name_dxtrade,
+                                platform_name_mt5,
+                                platform_name_ctrader,
+                            }}
+                        />
+                    </AccountTransferFormSideNoteBullet>
+                </React.Fragment>
+            );
+        } else if (is_ctrader_allowed) {
+            return (
+                <React.Fragment>
+                    <AccountTransferFormSideNoteBullet>
+                        <Localize
+                            i18n_default_text='You may transfer between your Deriv fiat, cryptocurrency, {{platform_name_mt5}}, and {{platform_name_ctrader}} accounts.'
+                            values={{ platform_name_mt5, platform_name_ctrader }}
+                        />
+                    </AccountTransferFormSideNoteBullet>
+                    <AccountTransferFormSideNoteBullet>
+                        <Localize
+                            i18n_default_text='Each day, you can make up to {{ allowed_internal }} transfers between your Deriv accounts, up to {{ allowed_mt5 }} transfers between your Deriv and {{platform_name_mt5}} accounts, and up to {{ allowed_ctrader }} transfers between your Deriv and {{platform_name_ctrader}} accounts.'
+                            values={{
+                                allowed_internal: allowed_transfers_count?.internal,
+                                allowed_mt5: allowed_transfers_count?.mt5,
+                                allowed_ctrader: allowed_transfers_count?.ctrader,
                                 platform_name_mt5,
                                 platform_name_ctrader,
                             }}
@@ -198,6 +221,7 @@ const AccountTransferFormSideNote = observer(() => {
         allowed_transfers_count?.ctrader,
         allowed_transfers_count?.mt5,
         is_dxtrade_allowed,
+        is_ctrader_allowed,
         platform_name_dxtrade,
         platform_name_mt5,
         platform_name_ctrader,

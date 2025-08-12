@@ -34,7 +34,15 @@ describe('useIsEnabledNakala', () => {
         mockedUseGrowthbookGetFeatureValue.mockReturnValue([false]);
     });
 
-    const wrapper = ({ children }: { children: JSX.Element }) => (
+    type AccountsProps = {
+        accounts: Array<{
+            landing_company_name?: string;
+            landing_company_short?: string;
+            display_login?: string;
+        }>;
+    };
+
+    const wrapper: React.FC<React.PropsWithChildren<AccountsProps>> = ({ children }) => (
         <StoreProvider store={mock_store}>{children}</StoreProvider>
     );
 
@@ -196,7 +204,7 @@ describe('useIsEnabledNakala', () => {
             mockedAxios.get.mockResolvedValue({ data: { server_name: 'server1' } });
 
             const initialAccounts = [{ landing_company_name: 'svg', display_login: 'SVG123' }];
-            const { rerender } = renderHook(({ accounts }) => useIsEnabledNakala(accounts), {
+            const { rerender } = renderHook((props: AccountsProps) => useIsEnabledNakala(props.accounts), {
                 initialProps: { accounts: initialAccounts },
                 wrapper,
             });

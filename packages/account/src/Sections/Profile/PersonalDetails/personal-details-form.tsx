@@ -350,6 +350,7 @@ const PersonalDetailsForm = observer(() => {
         is_virtual,
         is_svg,
         immutable_fields: account_settings?.immutable_fields,
+        isCountryCodeDropdownEnabled,
     });
     const displayErrorMessage = (status: { code: string; msg: string }) => {
         if (status?.code === 'PhoneNumberTaken') {

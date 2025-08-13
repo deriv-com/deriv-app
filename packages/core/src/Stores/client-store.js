@@ -1106,6 +1106,9 @@ export default class ClientStore extends BaseStore {
      * @param loginid
      */
     resetLocalStorageValues(loginid) {
+        // add a check for loginid to start with 'CR' or 'MF' or 'VR' to mitigate object pollution attacks
+        if (!/^(CR|MF|VRTC|CRW|MFW|VRW)\d/.test(loginid)) return;
+
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         if (/^(CR|MF|VRTC)\d/.test(loginid)) sessionStorage.setItem('active_loginid', loginid);

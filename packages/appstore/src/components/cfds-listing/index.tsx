@@ -113,6 +113,10 @@ const CFDsListing = observer(() => {
         defaultValue: false,
     });
 
+    const is_mt5_standard_available = combined_cfd_mt5_accounts.some(
+        account => account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard'
+    );
+
     const has_mt5_standard_account = combined_cfd_mt5_accounts.some(
         account =>
             account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
@@ -122,7 +126,7 @@ const CFDsListing = observer(() => {
     const mt5_trade_account = combined_cfd_mt5_accounts.find(account => account.product === 'standard');
     const { IsEnabledNakala } = useIsEnabledNakala([mt5_trade_account]);
 
-    const showNakala = is_real && !is_eu_user && !isNakalaLinked && IsEnabledNakala;
+    const showNakala = is_real && !is_eu_user && !isNakalaLinked && IsEnabledNakala && is_mt5_standard_available;
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 

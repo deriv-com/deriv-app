@@ -74,6 +74,10 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
         changed_password_type: '',
     });
 
+    const resetUrl = () => {
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    };
+
     const renderErrorBox = (error: TError) => {
         setState({
             ...state,
@@ -141,6 +145,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
                 });
                 clearAddressBar();
             }
+            resetUrl();
             setSubmitting(false);
         });
     };

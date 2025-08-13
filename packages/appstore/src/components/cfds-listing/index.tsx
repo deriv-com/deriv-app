@@ -1,31 +1,37 @@
-import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
+import React, { Fragment, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Loading, Text } from '@deriv/components';
 import {
-    CFD_PLATFORMS,
-    formatMoney,
-    MT5_ACCOUNT_STATUS,
-    TRADING_PLATFORM_STATUS,
-    makeLazyLoader,
-    moduleLoader,
-    setPerformanceValue,
-    cacheTrackEvents,
-} from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
-import { localize } from '@deriv/translations';
-import ListingContainer from 'Components/containers/listing-container';
-import AddOptionsAccount from 'Components/add-options-account';
-import TradingAppCard from 'Components/containers/trading-app-card';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
-import CompareAccount from 'Components/compare-account';
-import CFDsDescription from 'Components/elements/cfds-description';
-import { getHasDivider } from 'Constants/utils';
-import {
-    useMT5SVGEligibleToMigrate,
-    useTradingPlatformStatus,
     TradingPlatformStatus,
     useGrowthbookGetFeatureValue,
+    useIsEnabledNakala,
+    useMT5SVGEligibleToMigrate,
+    useTradingPlatformStatus,
 } from '@deriv/hooks';
+import {
+    cacheTrackEvents,
+    CFD_PLATFORMS,
+    formatMoney,
+    makeLazyLoader,
+    moduleLoader,
+    MT5_ACCOUNT_STATUS,
+    setPerformanceValue,
+    TRADING_PLATFORM_STATUS,
+} from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
+
+import AddOptionsAccount from 'Components/add-options-account';
+import NakalaLinkedBanner from 'Components/banners/nakala-linked-banner';
+import CompareAccount from 'Components/compare-account';
+import ListingContainer from 'Components/containers/listing-container';
+import TradingAppCard from 'Components/containers/trading-app-card';
+import CFDsDescription from 'Components/elements/cfds-description';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
+import { getHasDivider } from 'Constants/utils';
 
 import './cfds-listing.scss';
 
@@ -39,6 +45,11 @@ const MigrationBanner = makeLazyLoader(
         ),
     () => <Loading />
 )();
+
+interface INakalaAcount extends DetailsOfEachMT5Loginid {
+    platform: string;
+    product: string;
+}
 
 const CFDsListing = observer(() => {
     const { isDesktop } = useDevice();
@@ -79,6 +90,7 @@ const CFDsListing = observer(() => {
         setServerMaintenanceModal,
         setProduct,
         setJurisdictionSelectedShortcode,
+        setNakalaBannerVisible,
     } = cfd;
 
     const {
@@ -101,6 +113,17 @@ const CFDsListing = observer(() => {
         defaultValue: false,
     });
 
+    const has_mt5_standard_account = combined_cfd_mt5_accounts.some(
+        account =>
+            account.platform === CFD_PLATFORMS.MT5 && account.product === 'standard' && account.action_type !== 'get'
+    );
+
+    const [isNakalaLinked, setIsNakalaLinked] = useState(() => Cookies.get('nakala_linked') === 'true');
+    const mt5_trade_account = combined_cfd_mt5_accounts.find(account => account.product === 'standard');
+    const { IsEnabledNakala } = useIsEnabledNakala([mt5_trade_account]);
+
+    const showNakala = is_real && !is_eu_user && !isNakalaLinked && IsEnabledNakala;
+
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
     const { getPlatformStatus } = useTradingPlatformStatus();
@@ -119,6 +142,27 @@ const CFDsListing = observer(() => {
                 break;
         }
     };
+
+    useEffect(() => {
+        const checkNakalaCookie = () => {
+            const isLinked = Cookies.get('nakala_linked') === 'true';
+            setIsNakalaLinked(isLinked);
+        };
+
+        window.addEventListener('storage', checkNakalaCookie);
+
+        const originalSet = Cookies.set;
+        Cookies.set = function (...args) {
+            const result = originalSet.apply(this, args);
+            checkNakalaCookie();
+            return result;
+        };
+
+        return () => {
+            window.removeEventListener('storage', checkNakalaCookie);
+            Cookies.set = originalSet;
+        };
+    }, []);
 
     const hasUnavailableAccount = combined_cfd_mt5_accounts.some(
         account => account.status === TRADING_PLATFORM_STATUS.UNAVAILABLE
@@ -204,6 +248,38 @@ const CFDsListing = observer(() => {
         return null;
     }
 
+    const onGetAccount = (account: INakalaAcount, isNakala?: boolean) => {
+        let existing_account = account as INakalaAcount;
+        if (isNakala) {
+            setNakalaBannerVisible(true);
+            existing_account = {
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'synthetic',
+                product: 'standard',
+            };
+        } else {
+            setNakalaBannerVisible(false);
+        }
+        setAccountType({
+            category: selected_account_type,
+            type: existing_account.market_type,
+        });
+        setProduct(existing_account.product);
+        setAppstorePlatform(existing_account.platform);
+        setJurisdictionSelectedShortcode(getDefaultJurisdiction());
+        getTradingPlatformStatus(existing_account.platform);
+    };
+
+    const onOpenNakala = () => {
+        const account: INakalaAcount = {
+            platform: CFD_PLATFORMS.MT5,
+            market_type: 'synthetic',
+            product: 'standard',
+        };
+        startTrade('mt5', account);
+        setNakalaBannerVisible(true);
+    };
+
     return (
         <ListingContainer
             title={
@@ -219,6 +295,12 @@ const CFDsListing = observer(() => {
             description={<CFDsDescription />}
         >
             {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
+            {showNakala && (
+                <NakalaLinkedBanner
+                    description={localize('Copy trading with Deriv Nakala')}
+                    onClick={() => (has_mt5_standard_account ? onOpenNakala() : onGetAccount(null, true))}
+                />
+            )}
             <AddDerivAccount />
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
@@ -275,20 +357,12 @@ const CFDsListing = observer(() => {
                                         }
                                         if (hasUnavailableAccount || hasMaintenanceStatus)
                                             return setServerMaintenanceModal(true);
-
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
                                             openDerivRealAccountNeededModal();
                                         } else {
-                                            setAccountType({
-                                                category: selected_account_type,
-                                                type: existing_account.market_type,
-                                            });
-                                            setProduct(existing_account.product);
-                                            setAppstorePlatform(existing_account.platform);
-                                            setJurisdictionSelectedShortcode(getDefaultJurisdiction());
-                                            getTradingPlatformStatus(existing_account.platform);
+                                            onGetAccount(existing_account);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
@@ -510,17 +584,7 @@ const CFDsListing = observer(() => {
                     ) : (
                         <PlatformLoader />
                     )}
-                    <React.Fragment>
-                        <div className='cfd-full-row'>
-                            <hr className='divider' />
-                        </div>
 
-                        <div className='cfd-full-row'>
-                            <Text line_height='m' weight='bold' color='prominent'>
-                                {localize('Deriv X')}
-                            </Text>
-                        </div>
-                    </React.Fragment>
                     {/* dxtrade */}
                     {is_landing_company_loaded ? (
                         available_dxtrade_accounts?.map(account => {
@@ -528,129 +592,129 @@ const CFDsListing = observer(() => {
                             const has_existing_accounts = existing_accounts.length > 0;
                             const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
 
-                            return has_existing_accounts ? (
+                            return (
+                                has_existing_accounts &&
                                 existing_accounts.map(existing_account => (
-                                    <TradingAppCard
-                                        action_type='multi-action'
-                                        availability={selected_region}
-                                        clickable_icon
-                                        icon={account.icon}
-                                        sub_title={account.name}
-                                        name={`${formatMoney(
-                                            existing_account.currency,
-                                            existing_account.display_balance,
-                                            true
-                                        )} ${existing_account.currency}`}
-                                        description={existing_account.login}
-                                        platform={account.platform}
-                                        key={`trading_app_card_${existing_account.login}`}
-                                        onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                            const button_name = e?.currentTarget?.name;
-                                            setProduct();
-                                            if (button_name === 'transfer-btn') {
-                                                if (is_traders_dashboard_tracking_enabled) {
-                                                    cacheTrackEvents.loadEvent([
-                                                        {
-                                                            event: {
-                                                                name: 'ce_tradershub_dashboard_form',
-                                                                properties: {
-                                                                    action: 'account_transfer',
-                                                                    form_name: 'traders_hub_default',
-                                                                    account_mode: selected_account_type,
-                                                                    account_name: track_account_name,
+                                    <>
+                                        <div className='cfd-full-row'>
+                                            <hr className='divider' />
+                                        </div>
+
+                                        <div className='cfd-full-row'>
+                                            <Text line_height='m' weight='bold' color='prominent'>
+                                                {localize('Deriv X')}
+                                            </Text>
+                                        </div>
+                                        <TradingAppCard
+                                            action_type='multi-action'
+                                            availability={selected_region}
+                                            clickable_icon
+                                            icon={account.icon}
+                                            sub_title={account.name}
+                                            name={`${formatMoney(
+                                                existing_account.currency,
+                                                existing_account.display_balance,
+                                                true
+                                            )} ${existing_account.currency}`}
+                                            description={existing_account.login}
+                                            platform={account.platform}
+                                            key={`trading_app_card_${existing_account.login}`}
+                                            onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                                const button_name = e?.currentTarget?.name;
+                                                setProduct();
+                                                if (button_name === 'transfer-btn') {
+                                                    if (is_traders_dashboard_tracking_enabled) {
+                                                        cacheTrackEvents.loadEvent([
+                                                            {
+                                                                event: {
+                                                                    name: 'ce_tradershub_dashboard_form',
+                                                                    properties: {
+                                                                        action: 'account_transfer',
+                                                                        form_name: 'traders_hub_default',
+                                                                        account_mode: selected_account_type,
+                                                                        account_name: track_account_name,
+                                                                    },
                                                                 },
                                                             },
-                                                        },
-                                                    ]);
-                                                }
+                                                        ]);
+                                                    }
 
-                                                toggleAccountTransferModal();
-                                                setSelectedAccount(existing_account);
-                                            } else if (button_name === 'topup-btn') {
-                                                if (is_traders_dashboard_tracking_enabled) {
-                                                    cacheTrackEvents.loadEvent([
-                                                        {
-                                                            event: {
-                                                                name: 'ce_tradershub_dashboard_form',
-                                                                properties: {
-                                                                    action: 'account_topup',
-                                                                    form_name: 'traders_hub_default',
-                                                                    account_mode: selected_account_type,
-                                                                    account_name: track_account_name,
+                                                    toggleAccountTransferModal();
+                                                    setSelectedAccount(existing_account);
+                                                } else if (button_name === 'topup-btn') {
+                                                    if (is_traders_dashboard_tracking_enabled) {
+                                                        cacheTrackEvents.loadEvent([
+                                                            {
+                                                                event: {
+                                                                    name: 'ce_tradershub_dashboard_form',
+                                                                    properties: {
+                                                                        action: 'account_topup',
+                                                                        form_name: 'traders_hub_default',
+                                                                        account_mode: selected_account_type,
+                                                                        account_name: track_account_name,
+                                                                    },
                                                                 },
                                                             },
-                                                        },
-                                                    ]);
-                                                }
+                                                        ]);
+                                                    }
 
-                                                showTopUpModal(existing_account);
-                                                setAppstorePlatform(account.platform);
-                                            } else {
-                                                if (is_traders_dashboard_tracking_enabled) {
-                                                    cacheTrackEvents.loadEvent([
-                                                        {
-                                                            event: {
-                                                                name: 'ce_tradershub_dashboard_form',
-                                                                properties: {
-                                                                    action: 'account_open',
-                                                                    form_name: 'traders_hub_default',
-                                                                    account_mode: selected_account_type,
-                                                                    account_name: track_account_name,
+                                                    showTopUpModal(existing_account);
+                                                    setAppstorePlatform(account.platform);
+                                                } else {
+                                                    if (is_traders_dashboard_tracking_enabled) {
+                                                        cacheTrackEvents.loadEvent([
+                                                            {
+                                                                event: {
+                                                                    name: 'ce_tradershub_dashboard_form',
+                                                                    properties: {
+                                                                        action: 'account_open',
+                                                                        form_name: 'traders_hub_default',
+                                                                        account_mode: selected_account_type,
+                                                                        account_name: track_account_name,
+                                                                    },
                                                                 },
                                                             },
-                                                        },
-                                                    ]);
-                                                }
+                                                        ]);
+                                                    }
 
-                                                startTrade(account.platform, existing_account);
-                                            }
-                                        }}
-                                    />
+                                                    startTrade(account.platform, existing_account);
+                                                }
+                                            }}
+                                        />
+                                    </>
                                 ))
-                            ) : (
-                                <TradingAppCard
-                                    action_type='get'
-                                    availability={selected_region}
-                                    clickable_icon
-                                    icon={account.icon}
-                                    name={account.name}
-                                    platform={account.platform}
-                                    description={account.description}
-                                    onAction={() => {
-                                        setProduct();
-                                        if (is_traders_dashboard_tracking_enabled) {
-                                            cacheTrackEvents.loadEvent([
-                                                {
-                                                    event: {
-                                                        name: 'ce_tradershub_dashboard_form',
-                                                        properties: {
-                                                            action: 'account_get',
-                                                            form_name: 'traders_hub_default',
-                                                            account_mode: selected_account_type,
-                                                            account_name: track_account_name,
-                                                        },
-                                                    },
-                                                },
-                                            ]);
-                                        }
-                                        if ((has_no_real_account || no_CR_account) && is_real) {
-                                            openDerivRealAccountNeededModal();
-                                        } else {
-                                            setAccountType({
-                                                category: selected_account_type,
-                                                type: account.market_type,
-                                            });
-                                            setAppstorePlatform(account.platform);
-                                            getTradingPlatformStatus(account.platform);
-                                        }
-                                    }}
-                                    key={`trading_app_card_${account.name}`}
-                                />
                             );
                         })
                     ) : (
                         <PlatformLoader />
                     )}
+                </Fragment>
+            )}
+
+            {IsEnabledNakala && !is_eu_user && is_real && has_mt5_standard_account && (
+                <Fragment>
+                    <div className='cfd-full-row'>
+                        <hr className='divider' />
+                    </div>
+                    <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                        <Text weight='bold'>{localize('Deriv Nakala')}</Text>
+                    </div>
+                    <TradingAppCard
+                        action_type='open'
+                        availability={selected_region}
+                        clickable_icon
+                        icon={'DerivNakala'}
+                        name={'Deriv Nakala'}
+                        platform={'mt5'}
+                        description={localize('Copy trading for CFDs on MT5')}
+                        onAction={onOpenNakala}
+                        key={`trading_app_card_${'Deriv Nakala'}`}
+                        mt5_acc_auth_status={getMT5AccountAuthStatus(
+                            mt5_trade_account?.status,
+                            mt5_trade_account?.landing_company_short
+                        )}
+                        is_new
+                    />
                 </Fragment>
             )}
         </ListingContainer>

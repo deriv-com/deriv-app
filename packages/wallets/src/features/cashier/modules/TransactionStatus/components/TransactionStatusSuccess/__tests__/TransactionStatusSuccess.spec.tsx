@@ -25,6 +25,10 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
+    withRouter:
+        <T extends Record<string, unknown>>(Component: React.FC<T>) =>
+        (props: T) =>
+            Component({ ...props, history: {}, location: {}, match: {} }),
 }));
 const mockUseHistory = useHistory as jest.Mock;
 

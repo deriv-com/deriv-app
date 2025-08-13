@@ -491,6 +491,7 @@ export type TClientStore = {
     is_deposit_lock: boolean;
     is_duplicate_dob_phone: boolean;
     is_dxtrade_allowed: boolean;
+    is_ctrader_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
     is_unwelcome: boolean;

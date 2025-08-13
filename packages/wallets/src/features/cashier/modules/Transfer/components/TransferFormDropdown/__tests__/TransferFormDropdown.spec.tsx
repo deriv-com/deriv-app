@@ -15,6 +15,10 @@ jest.mock('formik', () => ({
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
+    withRouter:
+        <T extends Record<string, unknown>>(Component: React.FC<T>) =>
+        (props: T) =>
+            Component({ ...props, history: {}, location: {}, match: {} }),
 }));
 
 jest.mock('../../../../../../../components/ModalProvider', () => ({

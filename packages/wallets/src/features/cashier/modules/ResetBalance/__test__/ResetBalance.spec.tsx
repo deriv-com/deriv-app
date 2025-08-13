@@ -17,6 +17,10 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
+    withRouter:
+        <T extends Record<string, unknown>>(Component: React.FC<T>) =>
+        (props: T) =>
+            Component({ ...props, history: {}, location: {}, match: {} }),
 }));
 
 jest.mock('../../../../../hooks/useAllBalanceSubscription', () => jest.fn());

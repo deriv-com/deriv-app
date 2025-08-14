@@ -28,14 +28,18 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts, available_ctrader_accounts } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, available_ctrader_accounts, getExistingAccounts } =
+        traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
         : getEUAvailableAccounts(trading_platform_available_accounts);
 
     // Check if dxtrade data is available
-    const has_dxtrade_account_available = available_dxtrade_accounts.length > 0;
+    const has_dxtrade_account = (available_dxtrade_accounts ?? []).some(account => {
+        const existing = getExistingAccounts(account.platform, account.market_type);
+        return existing.length > 0;
+    });
 
     const has_ctrader_account_available = available_ctrader_accounts.length > 0;
 
@@ -61,7 +65,7 @@ const CompareCFDs = observer(() => {
 
     // Calculate the card count for alignment of card in center
     const card_count =
-        has_dxtrade_account_available || has_ctrader_account_available
+        has_dxtrade_account || has_ctrader_account_available
             ? all_cfd_available_accounts.length + 1
             : all_cfd_available_accounts.length;
 
@@ -121,7 +125,7 @@ const CompareCFDs = observer(() => {
                                 />
                             )}
                             {/* Renders Deriv X data */}
-                            {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
+                            {all_cfd_available_accounts.length > 0 && has_dxtrade_account && (
                                 <CFDCompareAccountsCard
                                     trading_platforms={dxtrade_data}
                                     is_eu_user={is_eu_user}
@@ -164,7 +168,7 @@ const CompareCFDs = observer(() => {
                         />
                     )}
                     {/* Renders Deriv X data */}
-                    {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
+                    {all_cfd_available_accounts.length > 0 && has_dxtrade_account && (
                         <CFDCompareAccountsCard
                             trading_platforms={dxtrade_data}
                             is_eu_user={is_eu_user}

@@ -75,6 +75,7 @@ describe('useGetStatus', () => {
                 valid_tin: 1,
                 required_tin: 1,
             },
+            short_code: 'bvi',
         });
     });
 

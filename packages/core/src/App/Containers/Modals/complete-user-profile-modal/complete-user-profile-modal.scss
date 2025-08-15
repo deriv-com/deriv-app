@@ -1,0 +1,65 @@
+.dc-modal-header--complete-user-profile-modal {
+    border-bottom: 1px solid var(--border-divider);
+}
+
+.complete-user-profile-modal__form {
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem;
+    padding-bottom: calc(2.4rem + 7.2rem);
+}
+
+.complete-user-profile-modal__dropdown-list {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.complete-user-profile-modal__footer.dc-modal-footer {
+    padding-inline: 0;
+}
+
+.complete-user-profile-modal__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    &:after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--border-divider);
+        display: block;
+        margin-inline-start: 0.8rem;
+    }
+}
+
+.complete-user-profile-modal__bottom-margin {
+    margin-bottom: 2.4rem;
+}
+
+.complete-user-profile-modal__bottom-margin-field {
+    margin-bottom: calc(2.4rem + 1.8rem);
+}
+
+.complete-user-profile-modal__submit-button.dc-form-submit-button {
+    @include mobile {
+        display: unset;
+    }
+}
+
+.complete-user-profile-modal__submit-button.dc-form-submit-button > .dc-btn {
+    @include mobile {
+        width: 100%;
+    }
+}
+
+.dc-modal-footer.complete-user-profile-modal__footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: var(--general-main-2);
+    width: 100%;
+    padding-inline: 2.4rem;
+    border-top: 1px solid var(--border-divider);
+}

@@ -5,7 +5,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import type { TWebSocket } from 'Types';
 import RootStore from '../Stores';
 
-configure({ enforceActions: 'observed' });
+configure({ enforceActions: 'observed', isolateGlobalState: true });
 
 let root_store: TCoreStores;
 

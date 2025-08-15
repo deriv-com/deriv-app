@@ -20,6 +20,7 @@ const useGetStatus = () => {
             client_kyc_status: is_selected_MT5_account_created
                 ? existing_account?.client_kyc_status
                 : available_account_to_create?.client_kyc_status,
+            short_code: available_account_to_create?.shortcode,
         };
     }
     return {

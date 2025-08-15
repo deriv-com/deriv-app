@@ -20,6 +20,7 @@ import './verification-docs-list-modal.scss';
 type TListItemProps = {
     id: string;
     text: string;
+    shortcode?: string;
     status?: string | number;
     route: string;
 };
@@ -55,7 +56,7 @@ const getBadgeStatus = (status: TAuthStatusCodes) => {
     }
 };
 
-const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
+const ListItem = observer(({ id, text, status, shortcode, route }: TListItemProps) => {
     const { text: badge_text, icon: badge_icon, icon_size: badge_size } = getBadgeStatus(status);
     const { client, common, traders_hub, ui } = useStore();
     const { isMobile } = useDevice();
@@ -76,9 +77,11 @@ const ListItem = observer(({ id, text, status, route }: TListItemProps) => {
         const urlParams = new URLSearchParams(location.search);
         const platformConfig = urlParams.get('platform') ?? window.sessionStorage.getItem('config.platform');
         const platform = platformConfig ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+        const jurisdiction = shortcode;
 
         const params = {
             platform,
+            jurisdiction,
             appid: WebSocketUtils.getAppId(),
             lang: i18n_language,
             server: getSocketURL(),

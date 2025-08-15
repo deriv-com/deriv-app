@@ -11,6 +11,7 @@ import './verification-docs-list-modal.scss';
 type TItems = {
     id: string;
     text: string;
+    shortcode?: string;
     status: string | number;
     route: string;
 };
@@ -20,7 +21,7 @@ const VerificationDocsListModalContent = observer(() => {
         common: { platform },
     } = useStore();
     const { isMobile } = useDevice();
-    const { client_kyc_status } = useGetStatus();
+    const { client_kyc_status, short_code } = useGetStatus();
     const { is_selected_MT5_account_created } = useIsSelectedMT5AccountCreated();
     if (!client_kyc_status) return null;
     const { poi_status, poa_status, valid_tin, required_tin } = client_kyc_status;
@@ -31,12 +32,14 @@ const VerificationDocsListModalContent = observer(() => {
             id: 'identity',
             text: 'Proof of identity',
             status: poi_status,
+            shortcode: short_code,
             route: routes.proof_of_identity,
         },
         poa_status && {
             id: 'address',
             text: 'Proof of address',
             status: poa_status,
+            shortcode: short_code,
             route: routes.proof_of_address,
         },
         is_tin_required && {
@@ -59,7 +62,14 @@ const VerificationDocsListModalContent = observer(() => {
             </Text>
             <div className='verification-docs-list-modal__content-list'>
                 {items.map(item => (
-                    <ListItem key={item.id} id={item.id} text={item.text} status={item.status} route={item.route} />
+                    <ListItem
+                        key={item.id}
+                        id={item.id}
+                        text={item.text}
+                        status={item.status}
+                        shortcode={item.shortcode}
+                        route={item.route}
+                    />
                 ))}
             </div>
         </div>

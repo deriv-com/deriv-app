@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import { getDomainUrl } from '@deriv/shared/src/utils/url/url';
 import { useStore } from '@deriv/stores';
 
 import useGrowthbookGetFeatureValue from './useGrowthbookGetFeatureValue';
 
 const NAKALA_INFO_BASEURL = {
-    PRODUCTION: `https://api-gateway.deriv.com`,
+    PRODUCTION: `https://api-gateway.${getDomainUrl()}`,
     STAGING: `https://staging-api-gateway.deriv.com`,
 };
 

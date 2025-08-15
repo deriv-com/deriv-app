@@ -58,7 +58,8 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         if (expiry_epoch && duration_unit !== 'd' && !saved_expiry_date_v2) {
             // Set expiry time to end of day
             setExpiryTimeString('23:59:59');
-
+            // eslint-disable-next-line
+            //ignore comment
             // Get tomorrow's date
             const tomorrow_date = getTomorrowDate(server_time);
             setExpiryDateString(tomorrow_date);

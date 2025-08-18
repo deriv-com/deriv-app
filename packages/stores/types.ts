@@ -26,7 +26,6 @@ import type {
     Transaction,
     WebsiteStatus,
 } from '@deriv/api-types';
-
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 
 import type { FeatureFlagsStore } from './src/stores';
@@ -954,6 +953,8 @@ type TUiStore = {
     url_hashed_values: string;
     is_tnc_update_modal_open: boolean;
     toggleTncUpdateModal: (value: boolean) => void;
+    is_complete_user_profile_modal_open: boolean;
+    setShouldShowCompleteUserProfileModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

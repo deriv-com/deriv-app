@@ -417,7 +417,7 @@ const CompleteUserProfile = observer(
                                                     weight='bold'
                                                     className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
                                                 >
-                                                    <Localize i18n_default_text='Address Details' />
+                                                    <Localize i18n_default_text='Address details' />
                                                 </Text>
                                                 <div>
                                                     {!address_line_1 && (

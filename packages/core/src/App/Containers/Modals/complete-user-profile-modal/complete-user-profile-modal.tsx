@@ -265,7 +265,7 @@ const CompleteUserProfile = observer(
                                                     weight='bold'
                                                     className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
                                                 >
-                                                    <Localize i18n_default_text='Account Currency' />
+                                                    <Localize i18n_default_text='Account currency' />
                                                 </Text>
                                                 {reorder_currency_list.length > 0 ? (
                                                     <Field name='currency'>
@@ -301,7 +301,7 @@ const CompleteUserProfile = observer(
                                                     weight='bold'
                                                     className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
                                                 >
-                                                    <Localize i18n_default_text='Personal Details' />
+                                                    <Localize i18n_default_text='Personal details' />
                                                 </Text>
                                                 <DateOfBirthField
                                                     name='date_of_birth'
@@ -321,7 +321,7 @@ const CompleteUserProfile = observer(
                                                     weight='bold'
                                                     className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
                                                 >
-                                                    <Localize i18n_default_text='Country and citizenship' />
+                                                    <Localize i18n_default_text='Citizenship' />
                                                 </Text>
                                                 {!residence_list_fetched && (
                                                     <div className='details-form__loader'>

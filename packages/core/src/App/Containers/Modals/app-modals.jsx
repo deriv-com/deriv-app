@@ -94,6 +94,7 @@ const AppModals = observer(() => {
         accounts,
         loginid,
         is_client_store_initialized,
+        has_active_real_account,
     } = client;
     const { content_flag } = traders_hub;
     const {
@@ -163,6 +164,7 @@ const AppModals = observer(() => {
             !has_wallet &&
             is_logged_in &&
             is_authorize &&
+            has_active_real_account &&
             (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
 
         if (shouldShow) {
@@ -171,6 +173,7 @@ const AppModals = observer(() => {
     }, [
         is_logged_in,
         is_authorize,
+        has_active_real_account,
         account_settings,
         has_wallet,
         no_currency,

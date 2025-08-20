@@ -33,6 +33,9 @@ const Popover = ({
     zIndex = '1',
     data_testid,
     arrow_styles,
+    arrow_alignment,
+    arrow_color,
+    background_color,
 }: React.PropsWithChildren<TPopoverProps>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
@@ -157,23 +160,35 @@ const Popover = ({
                                 position={position}
                                 childRect={childRect}
                                 popoverRect={popoverRect}
-                                arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
+                                arrowColor={has_error ? 'var(--status-danger)' : arrow_color || 'var(--general-active)'}
                                 arrowSize={5}
                                 arrowStyle={
                                     relative_render
-                                        ? {
-                                              borderTop: '10px solid transparent',
-                                              borderLeft: '10px solid transparent',
-                                              borderRight: `10px solid ${
-                                                  has_error ? 'var(--status-danger)' : 'var(--general-active)'
-                                              }`,
-                                              transform: 'rotate(315deg)',
-                                              right: '0px',
-                                              top: '5px',
-                                              height: '10px',
-                                              margin: 'auto',
-                                              bottom: '0px',
-                                          }
+                                        ? arrow_alignment === 'top'
+                                            ? {
+                                                  borderBottom: `10px solid ${arrow_color || 'var(--general-active)'}`,
+                                                  borderLeft: '10px solid transparent',
+                                                  borderRight: '10px solid transparent',
+                                                  top: '0',
+                                                  left: '30%',
+                                                  transform: 'translateX(-50%)',
+                                                  margin: '0',
+                                              }
+                                            : {
+                                                  borderTop: '10px solid transparent',
+                                                  borderLeft: '10px solid transparent',
+                                                  borderRight: `10px solid ${
+                                                      has_error
+                                                          ? 'var(--status-danger)'
+                                                          : arrow_color || 'var(--general-active)'
+                                                  }`,
+                                                  transform: 'rotate(315deg)',
+                                                  right: '0px',
+                                                  top: '5px',
+                                                  height: '10px',
+                                                  margin: 'auto',
+                                                  bottom: '0px',
+                                              }
                                         : {
                                               ...arrow_styles,
                                           }
@@ -186,6 +201,7 @@ const Popover = ({
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
+                                    style={background_color ? { backgroundColor: background_color } : undefined}
                                     ref={bubble_hover_ref as (node: HTMLDivElement) => void}
                                 >
                                     {!disable_message_icon && icon === 'info' && (

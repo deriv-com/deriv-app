@@ -26,4 +26,7 @@ export type TPopoverProps = {
     zIndex?: string;
     data_testid?: string;
     arrow_styles?: React.CSSProperties;
+    arrow_alignment?: 'bottom' | 'right' | 'top' | 'left';
+    arrow_color?: string; // Custom arrow color
+    background_color?: string; // Custom background color
 };

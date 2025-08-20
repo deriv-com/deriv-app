@@ -3,12 +3,12 @@ import { Localize } from '@deriv/translations';
 import { getTerm, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
-    const { STOP_OUT_LEVEL, TAKE_PROFIT, STOP_LOSS, DEAL_CANCELLATION, SLIPPAGE_RISK } = getTerm();
+    const { STOP_OUT, TAKE_PROFIT, STOP_LOSS, DEAL_CANCELLATION, SLIPPAGE_RISK } = getTerm();
     const content = [
         {
-            type: 'general',
+            type: 'paragraph',
             text: (
-                <Localize i18n_default_text='Use multipliers to leverage your potential returns. Predict if the asset price will move upward (bullish) or downward (bearish). We’ll charge a commission when you open a multipliers trade.' />
+                <Localize i18n_default_text='Multipliers let you amplify your potential profit or loss by applying a multiplier to the asset price movement.' />
             ),
         },
         {
@@ -18,10 +18,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         {
             type: 'paragraph',
             text: (
-                <Localize
-                    i18n_default_text='If you select "<0>Up</0>", your total profit/loss will be the percentage increase in the underlying asset price, times the multiplier and stake, minus commissions.'
-                    components={[<span className='description__content--bold' key={0} />]}
-                />
+                <Localize i18n_default_text='Earn a profit if the asset price rises above the entry price at the time you close the trade.' />
             ),
         },
         {
@@ -35,10 +32,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         {
             type: 'paragraph',
             text: (
-                <Localize
-                    i18n_default_text='If you select "<0>Down</0>", your total profit/loss will be the percentage decrease in the underlying asset price, times the multiplier and stake, minus commissions.'
-                    components={[<span className='description__content--bold' key={0} />]}
-                />
+                <Localize i18n_default_text='Earn a profit if the asset price falls below the entry price at the time you close the trade.' />
             ),
         },
         {
@@ -52,13 +46,25 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         {
             type: 'paragraph',
             text: (
+                <Localize i18n_default_text='A fixed commission is charged when you open a Multipliers trade. The amount varies by asset class and market volatility.' />
+            ),
+        },
+        {
+            type: 'badge',
+            text: (
+                <Localize i18n_default_text='Profit/loss = (% of price difference × multiplier × stake) – commission' />
+            ),
+        },
+        {
+            type: 'paragraph',
+            text: (
                 <Localize
-                    i18n_default_text='Your contract will be closed when the <0>stop out level</0> is reached.'
+                    i18n_default_text='Your trade closes automatically if the <0>stop out level</0> is hit.'
                     components={[
                         <button
                             className='description__content--definition'
                             key={0}
-                            onClick={() => onTermClick(STOP_OUT_LEVEL)}
+                            onClick={() => onTermClick(STOP_OUT)}
                         />,
                     ]}
                 />
@@ -68,20 +74,20 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='Additional features are available to manage your positions: <0>Take profit</0>, <1>Stop loss</1> and <2>Deal cancellation</2> allow you to adjust your level of risk aversion.'
+                    i18n_default_text='You can manage risk with features like <0>take profit</0>, <1>stop loss</1>, and <2>deal cancellation</2> (when available).'
                     components={[
                         <button
-                            className='description__content--definition quoted-button'
+                            className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TAKE_PROFIT)}
                         />,
                         <button
-                            className='description__content--definition quoted-button'
+                            className='description__content--definition'
                             key={1}
                             onClick={() => onTermClick(STOP_LOSS)}
                         />,
                         <button
-                            className='description__content--definition quoted-button'
+                            className='description__content--definition'
                             key={2}
                             onClick={() => onTermClick(DEAL_CANCELLATION)}
                         />,
@@ -93,7 +99,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
+                    i18n_default_text='You can close your trade anytime. However, be aware that <0>slippage risk</0> may affect your final return.'
                     components={[
                         <button
                             className='description__content--definition'
@@ -102,24 +108,6 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                         />,
                     ]}
                 />
-            ),
-        },
-        {
-            type: 'paragraph',
-            text: (
-                <Localize i18n_default_text='For entry spot, we use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers.' />
-            ),
-        },
-        {
-            type: 'paragraph',
-            text: (
-                <Localize i18n_default_text='For exit spot, the latest asset price when the trade closure is processed by our servers.' />
-            ),
-        },
-        {
-            type: 'paragraph',
-            text: (
-                <Localize i18n_default_text='Note: Deal cancellation is only available for Volatility Indices on Multipliers.' />
             ),
         },
     ];

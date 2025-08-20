@@ -630,6 +630,62 @@
     }
 }
 
+.guide {
+    &__menu-container {
+        position: relative;
+        width: 95%;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        margin: 16px auto;
+    }
+
+    &__menu-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 2;
+        border: none;
+        width: 30px;
+        height: 32px;
+        border-radius: 50%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &--prev {
+            margin-right: 8px;
+        }
+
+        &--next {
+            margin-left: 8px;
+        }
+    }
+
+    &__menu {
+        position: relative;
+        flex: 1;
+        width: max-content;
+        display: flex;
+        gap: var(--core-spacing-400);
+        overflow-x: auto;
+        min-height: var(--core-spacing-1600);
+        white-space: nowrap;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        button {
+            background-color: transparent;
+        }
+    }
+}
+
 /** @define dc-contract-type */
 .dc-contract-type {
     display: flex;

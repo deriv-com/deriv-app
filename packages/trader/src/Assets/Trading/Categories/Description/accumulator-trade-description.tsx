@@ -1,83 +1,133 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+import DefinitionPopover from '../definition-popover';
 
-const AccumulatorTradeDescription = ({
-    onClick,
-}: {
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-}) => {
+const AccumulatorTradeDescription = () => {
+    const { INDEX, STAKE, GROWTH_RATE, PAYOUT, BARRIER_RANGE, PREVIOUS_SPOT_PRICE, TAKE_PROFIT, SLIPPAGE_RISK } =
+        getTerm();
     const content = [
-        <Localize
-            i18n_default_text='Accumulators allow you to express a view on the range of movement of an index and grow your stake exponentially at a fixed <0>growth rate</0>.'
-            components={[
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={0}
-                />,
-            ]}
-            key='1'
-        />,
-        <Localize
-            i18n_default_text='Your <0>payout</0> is the sum of your initial stake and profit.'
-            components={[
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={0}
-                />,
-            ]}
-            key='2'
-        />,
-        <Localize
-            i18n_default_text='Your payout will continue to grow as long as the current spot price remains within a specified <0>range</0> from the <0>previous spot price</0>. Otherwise, you lose your stake and the trade is terminated.'
-            components={[
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={0}
-                />,
-            ]}
-            key='3'
-        />,
-        <Localize
-            i18n_default_text='<0>Take profit</0> is an additional feature that lets you manage your risk by automatically closing the trade when your profit reaches the target amount. This feature is unavailable for ongoing accumulator contracts.'
-            components={[
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={0}
-                />,
-            ]}
-            key='4'
-        />,
-        <Localize
-            i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
-            components={[
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={0}
-                />,
-            ]}
-            key='5'
-        />,
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='Accumulators allow you to predict how much an <0>index</0> can move and potentially grow your <1>stake</1> exponentially at a fixed <2>growth rate</2>.'
+                    components={[
+                        <DefinitionPopover
+                            term={INDEX}
+                            id='index-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={0}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={STAKE}
+                            id='stake-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={1}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={GROWTH_RATE}
+                            id='growth-rate-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={2}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='Your <0>payout</0> is the sum of your initial stake and profit. It keeps growing as long as the spot price stays within a specified <1>barrier range</1> from the <2>previous spot price</2> at each interval.'
+                    components={[
+                        <DefinitionPopover
+                            term={PAYOUT}
+                            id='payout-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={0}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={BARRIER_RANGE}
+                            id='barrier-range-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={1}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={PREVIOUS_SPOT_PRICE}
+                            id='previous-spot-price-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={2}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='If the spot price goes outside the range, you lose your stake and the trade is terminated.'
+                    components={[]}
+                />
+            ),
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='<0>Take profit</0>: Set a target payout to automatically close your contract and secure your gains (not available for ongoing trades).'
+                    components={[
+                        <DefinitionPopover
+                            term={TAKE_PROFIT}
+                            id='take-profit-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={0}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
+                    components={[
+                        <DefinitionPopover
+                            term={SLIPPAGE_RISK}
+                            id='slippage-risk-accumulator'
+                            contract_type={CONTRACT_LIST.ACCUMULATORS}
+                            key={0}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
     ];
-    return (
-        <React.Fragment>
-            {content.map(paragraph => (
-                <Text as='p' key={paragraph.props.i18n_default_text}>
-                    {paragraph}
-                </Text>
-            ))}
-        </React.Fragment>
-    );
+
+    return <React.Fragment>{getContractDescription(content, true)}</React.Fragment>;
 };
 
 export default AccumulatorTradeDescription;

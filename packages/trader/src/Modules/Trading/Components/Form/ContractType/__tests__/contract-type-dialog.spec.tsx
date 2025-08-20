@@ -3,6 +3,11 @@ import { render, screen } from '@testing-library/react';
 import ContractTypeDialog from '../contract-type-dialog';
 import { useDevice } from '@deriv-com/ui';
 
+// Mock the components that might cause issues in tests
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: () => <div data-testid='mocked-dotlottie' />,
+}));
+
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));

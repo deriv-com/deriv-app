@@ -8,10 +8,8 @@ jest.mock('@lottiefiles/dotlottie-react', () => ({
 
 describe('EvenOddTradeDescription ', () => {
     it('should render a proper content', () => {
-        render(<EvenOddTradeDescription />);
+        render(<EvenOddTradeDescription onTermClick={jest.fn()} />);
 
-        expect(
-            screen.getByText(/you will win the payout if the last digit of the last tick is an even number/i)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Earn a payout if the last digit of the exit spot is odd/i)).toBeInTheDocument();
     });
 });

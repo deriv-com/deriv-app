@@ -8,10 +8,8 @@ jest.mock('@lottiefiles/dotlottie-react', () => ({
 
 describe('HigherLowerTradeDescription', () => {
     it('should render a proper content', () => {
-        render(<HigherLowerTradeDescription />);
+        render(<HigherLowerTradeDescription onTermClick={jest.fn()} />);
 
-        expect(
-            screen.getByText(/you win the payout if the exit spot is strictly higher than the barrier/i)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/the exit spot is strictly higher than the barrier/i)).toBeInTheDocument();
     });
 });

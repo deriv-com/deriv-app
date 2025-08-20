@@ -1,27 +1,82 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+import DefinitionPopover from '../definition-popover';
 
 const EvenOddTradeDescription = () => {
+    const { EXPIRY, EXIT_SPOT, PAYOUT } = getTerm();
+
     const content = [
-        <Localize
-            i18n_default_text='If you select "Even", you will win the payout if the last digit of the last tick is an even number (i.e., 2, 4, 6, 8, or 0).'
-            key='1'
-        />,
-        <Localize
-            i18n_default_text='If you select "Odd", you will win the payout if the last digit of the last tick is an odd number (i.e., 1, 3, 5, 7, or 9).'
-            key='2'
-        />,
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text={`Even/Odd lets you predict if the last digit of the last tick's price will be an even or odd number at contract <0>expiry</0> (<1>exit spot</1>).`}
+                    components={[
+                        <DefinitionPopover
+                            term={EXPIRY}
+                            key={0}
+                            id='even-odd-expiry'
+                            contract_type={CONTRACT_LIST.EVEN_ODD}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={EXIT_SPOT}
+                            key={1}
+                            id='even-odd-exit-spot'
+                            contract_type={CONTRACT_LIST.EVEN_ODD}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'heading',
+            text: <Localize i18n_default_text='Even' className='contract-type-info__heading' />,
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text='Earn a <0>payout</0> if the last digit of the exit spot is even (0, 2, 4, 6, or 8).'
+                    components={[
+                        <DefinitionPopover
+                            term={PAYOUT}
+                            key={0}
+                            id='even-payout'
+                            contract_type={CONTRACT_LIST.EVEN_ODD}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'video',
+            text: 'even',
+        },
+        {
+            type: 'heading',
+            text: <Localize i18n_default_text='Odd' className='contract-type-info__heading' />,
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize i18n_default_text='Earn a payout if the last digit of the exit spot is odd (1, 3, 5, 7, or 9).' />
+            ),
+        },
+        {
+            type: 'video',
+            text: 'odd',
+        },
     ];
-    return (
-        <React.Fragment>
-            {content.map(paragraph => (
-                <Text as='p' key={paragraph.props.i18n_default_text}>
-                    {paragraph}
-                </Text>
-            ))}
-        </React.Fragment>
-    );
+
+    return <React.Fragment>{getContractDescription(content, true)}</React.Fragment>;
 };
 
 export default EvenOddTradeDescription;

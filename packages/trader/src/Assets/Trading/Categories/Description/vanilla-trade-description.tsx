@@ -1,112 +1,132 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+import DefinitionPopover from '../definition-popover';
 
-const VanillaTradeDescription = ({
-    is_vanilla_fx,
-    onClick,
-}: {
-    is_vanilla_fx?: boolean;
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-}) => {
+const VanillaTradeDescription = () => {
+    const { STRIKE_PRICE, EXPIRY, EXIT_SPOT, PAYOUT, PAYOUT_PER_POINT, CONTRACT_VALUE } = getTerm();
+
     const content = [
-        <Localize
-            i18n_default_text='Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a "Call" or a "Put".'
-            key='1'
-        />,
-        <Localize
-            i18n_default_text='If you select <0>"Call"</0>, you’ll earn a <1>payout</1> if the <1>final price</1> is above the <1>strike price</1> at <1>expiry</1>. Otherwise, you won’t receive a payout.'
-            components={[
-                <strong key={0} />,
-                <span
-                    className='contract-type-info__content-definition'
-                    onClick={onClick}
-                    onKeyDown={onClick}
-                    key={1}
-                />,
-            ]}
-            key='2'
-        />,
-        <Localize
-            i18n_default_text='If you select <0>"Put"</0>, you’ll earn a payout if the final price is below the strike price at expiry. Otherwise, you won’t receive a payout.'
-            components={[<strong key={0} />]}
-            key='3'
-        />,
         {
-            content: is_vanilla_fx ? (
+            type: 'paragraph',
+            text: (
                 <Localize
-                    i18n_default_text='Your payout is equal to the <0>payout per pip</0> multiplied by the difference, <1>in pips</1>, between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                    i18n_default_text={`Vanillas allow you to predict if the underlying asset's price will be above or below the <0>strike price</0> at contract <1>expiry</1> (<2>exit spot</2>).`}
                     components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                        <DefinitionPopover
+                            term={STRIKE_PRICE}
                             key={0}
-                        />,
-                        <strong key={0} />,
+                            id='vanillas-strike-price'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={EXPIRY}
+                            key={1}
+                            id='vanillas-exit-spot'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={EXIT_SPOT}
+                            key={2}
+                            id='vanillas-expiry'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
                     ]}
-                    key='4'
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
-                    components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
-                            key={0}
-                        />,
-                    ]}
-                    key='4'
                 />
             ),
         },
         {
-            content: is_vanilla_fx ? (
+            type: 'heading',
+            text: <Localize i18n_default_text='Call' className='contract-type-info__heading' />,
+        },
+        {
+            type: 'paragraph',
+            text: (
                 <Localize
-                    i18n_default_text='You may sell the contract up to 24 hours before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                    i18n_default_text='Earn a <0>payout</0> if the exit spot is above the strike price at expiry.'
                     components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                        <DefinitionPopover
+                            term={PAYOUT}
                             key={0}
-                        />,
+                            id='vanillas-call-payout'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
                     ]}
-                    key='5'
-                />
-            ) : (
-                <Localize
-                    i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
-                    components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
-                            key={0}
-                        />,
-                    ]}
-                    key='5'
                 />
             ),
         },
-    ] as Array<JSX.Element & { content: JSX.Element }>;
-    return (
-        <React.Fragment>
-            {content.map(paragraph => {
-                const key = paragraph.props
-                    ? paragraph.props.i18n_default_text
-                    : paragraph.content?.props.i18n_default_text;
-                const text = paragraph.content ?? paragraph;
-                return (
-                    <Text as='p' key={key}>
-                        {text}
-                    </Text>
-                );
-            })}
-        </React.Fragment>
-    );
+        {
+            type: 'video',
+            text: 'vanillas_call',
+        },
+        {
+            type: 'heading',
+            text: <Localize i18n_default_text='Put' className='contract-type-info__heading' />,
+        },
+        {
+            type: 'paragraph',
+            text: <Localize i18n_default_text='Earn a payout if the exit spot is below the strike price at expiry.' />,
+        },
+        {
+            type: 'video',
+            text: 'vanillas_put',
+        },
+        {
+            type: 'heading',
+            text: <Localize i18n_default_text='Additional Information' className='contract-type-info__heading' />,
+        },
+        {
+            type: 'badge',
+            text: (
+                <Localize
+                    i18n_default_text='Payout = <0>Payout per point</0> × Difference between exit spot and strike price'
+                    components={[
+                        <DefinitionPopover
+                            term={PAYOUT_PER_POINT}
+                            key={0}
+                            id='vanillas-payout-per-point'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        {
+            type: 'paragraph',
+            text: <Localize i18n_default_text='You make a profit only if the payout is greater than your stake.' />,
+        },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize
+                    i18n_default_text={`You may sell your contract up to 60 seconds before expiry. If you do, we'll pay you the <0>contract value</0>.`}
+                    components={[
+                        <DefinitionPopover
+                            term={CONTRACT_VALUE}
+                            key={0}
+                            id='vanillas-contract-value'
+                            contract_type={CONTRACT_LIST.VANILLAS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+    ];
+
+    return <React.Fragment>{getContractDescription(content, true)}</React.Fragment>;
 };
 
 export default VanillaTradeDescription;

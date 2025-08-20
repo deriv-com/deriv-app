@@ -9,6 +9,10 @@
             inset-inline-end: 0;
             padding: 0 1.6rem;
 
+            &--ru {
+                top: 9rem;
+            }
+
             + .page-container__sidebar--right {
                 position: relative;
                 top: 100%;
@@ -17,6 +21,12 @@
             }
         }
     }
+
+    &__inline-message-link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
     &__loader {
         width: 100%;
         height: 80vh;

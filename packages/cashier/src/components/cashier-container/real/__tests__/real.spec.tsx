@@ -73,7 +73,7 @@ describe('<Real />', () => {
         expect(screen.queryByTestId('dt_doughflow_section')).toBeInTheDocument();
     });
 
-    it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
+    it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', async () => {
         render(
             <StoreProvider store={mock_root_store}>
                 <Real />
@@ -83,8 +83,30 @@ describe('<Real />', () => {
         const el_breadcrumb_cashier = screen.queryByText(/cashier/i);
 
         if (el_breadcrumb_cashier) {
-            userEvent.click(el_breadcrumb_cashier);
+            await userEvent.click(el_breadcrumb_cashier);
             expect(mocked_cashier_store.general_store?.setIsDeposit).toHaveBeenCalledWith(false);
         }
+    });
+
+    it('should render inline message with StaticUrl when country code is RU', () => {
+        const mock_store = mockStore({
+            client: {
+                account_settings: {
+                    country_code: 'ru',
+                },
+            },
+        });
+
+        render(
+            <StoreProvider store={mock_store}>
+                <Real />
+            </StoreProvider>
+        );
+
+        expect(screen.getByText(/Withdraw using the same payment method you used to deposit/i)).toBeInTheDocument();
+
+        const link = screen.getByRole('link', { name: /available payment methods/i });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', expect.stringContaining('/payment-methods'));
     });
 });

@@ -33,7 +33,7 @@ const Popover = ({
     zIndex = '1',
     data_testid,
     arrow_styles,
-    arrow_alignment,
+    is_inline_block,
     arrow_color,
     background_color,
 }: React.PropsWithChildren<TPopoverProps>) => {
@@ -75,6 +75,7 @@ const Popover = ({
                 onClick(e);
                 if (should_toggle_on_target_tap) setIsBubbleVisible(!is_bubble_visible);
             }}
+            style={is_inline_block ? { display: 'inline-block' } : undefined}
             data-testid='dt_popover_wrapper'
         >
             {relative_render && (
@@ -164,31 +165,19 @@ const Popover = ({
                                 arrowSize={5}
                                 arrowStyle={
                                     relative_render
-                                        ? arrow_alignment === 'top'
-                                            ? {
-                                                  borderBottom: `10px solid ${arrow_color || 'var(--general-active)'}`,
-                                                  borderLeft: '10px solid transparent',
-                                                  borderRight: '10px solid transparent',
-                                                  top: '0',
-                                                  left: '30%',
-                                                  transform: 'translateX(-50%)',
-                                                  margin: '0',
-                                              }
-                                            : {
-                                                  borderTop: '10px solid transparent',
-                                                  borderLeft: '10px solid transparent',
-                                                  borderRight: `10px solid ${
-                                                      has_error
-                                                          ? 'var(--status-danger)'
-                                                          : arrow_color || 'var(--general-active)'
-                                                  }`,
-                                                  transform: 'rotate(315deg)',
-                                                  right: '0px',
-                                                  top: '5px',
-                                                  height: '10px',
-                                                  margin: 'auto',
-                                                  bottom: '0px',
-                                              }
+                                        ? {
+                                              borderTop: '10px solid transparent',
+                                              borderLeft: '10px solid transparent',
+                                              borderRight: `10px solid ${
+                                                  has_error ? 'var(--status-danger)' : 'var(--general-active)'
+                                              }`,
+                                              transform: 'rotate(315deg)',
+                                              right: '0px',
+                                              top: '5px',
+                                              height: '10px',
+                                              margin: 'auto',
+                                              bottom: '0px',
+                                          }
                                         : {
                                               ...arrow_styles,
                                           }

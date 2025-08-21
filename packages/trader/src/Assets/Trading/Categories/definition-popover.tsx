@@ -33,8 +33,7 @@ const DefinitionPopover = ({ term, id, children, contract_type }: TDefinitionPop
             message={message}
             zIndex='9999'
             id={id}
-            relative_render={true}
-            arrow_alignment='top'
+            is_inline_block
             background_color='var(--icon-black-plus)'
             arrow_color='var(--icon-black-plus)'
         >

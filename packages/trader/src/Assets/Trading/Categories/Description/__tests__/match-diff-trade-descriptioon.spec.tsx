@@ -6,6 +6,8 @@ describe('<MatchDiffTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
         render(<MatchDiffTradeDescription />);
 
-        expect(screen.getByText(/If you select "Matches", you will win the payout/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Matches\/Differs lets you predict whether the last digit of the last tick's price will/i)
+        ).toBeInTheDocument();
     });
 });

@@ -67,7 +67,6 @@ export const priority_toast_messages = [
     'account_currency_closure',
     'svg',
     'need_fa',
-    'p2p_daily_limit_increase',
     'poinc_upload_limited',
     'wallets_migrated',
     'wallets_failed',
@@ -81,7 +80,6 @@ export const priority_toast_messages = [
     'poa_failed',
     'reaccept_tnc',
     'svg_poi_expired',
-    'p2p_advertiser_nickname_added',
     ...maintenance_notifications,
 ];
 

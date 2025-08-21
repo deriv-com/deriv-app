@@ -62,8 +62,6 @@ const initRoutesConfig = (): TRouteConfig[] => [
             {
                 path: routes.cashier_p2p,
                 component: () => {
-                    /* eslint-disable no-console */
-                    console.log(process.env.NODE_ENV);
                     const isProduction = process.env.NODE_ENV === 'production';
                     if (isProduction) window.location.href = 'https://p2p.deriv.com';
                     else window.location.href = 'https://staging-p2p.deriv.com';

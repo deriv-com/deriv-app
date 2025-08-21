@@ -74,19 +74,6 @@ jobs:
           echo "- [crowdin]: message.json hash is $crowdin_messages_json_hash"
           rm messages.json 
 
-          echo "Running the translation script (extract-translations.js) in p2p"
-          cd $(git rev-parse --show-toplevel)/packages/p2p/scripts
-          node extract-translations.js
-          new_p2p_messages_json_hash="$(git hash-object $(git rev-parse --show-toplevel)/packages/p2p/crowdin/messages.json)"
-          echo "- [generated]: message.json hash is $new_p2p_messages_json_hash"
-
-          echo "Downloading messages.json from Crowdin for comparison"
-          cd $(git rev-parse --show-toplevel)/packages/p2p
-          crowdin download sources -T ${{ secrets.CROWDIN_API_KEY }}
-          crowdin_p2p_messages_json_hash="$(git hash-object messages.json)"
-          echo "- [crowdin]: message.json hash is $crowdin_p2p_messages_json_hash"
-          rm messages.json 
-
           # We compare the generated messages.json with the messages.json from Crowdin.
           # Only send a Slack message and upload it to Crowdin if there were any changes made to messages.json.
           if [ "$crowdin_messages_json_hash" != "$new_messages_json_hash" ]; then
@@ -107,33 +94,8 @@ jobs:
             fi
           fi
 
-          # We compare the generated messages.json with the messages.json from Crowdin in p2p.
-          # Only send a Slack message and upload it to Crowdin if there were any changes made to messages.json.
-          if [ "$crowdin_p2p_messages_json_hash" != "$new_p2p_messages_json_hash" ]; then
-            echo "Hashes are different, uploading to Crowdin"
-            echo "- [crowdin]: $crowdin_p2p_messages_json_hash";
-            echo "- [generated]: $new_p2p_messages_json_hash";
-
-            # Upload to Crowdin.
-            cd $(git rev-parse --show-toplevel)/packages/p2p
-            echo "Uploading new strings to Crowdin"
-            crowdin upload sources -T ${{ secrets.CROWDIN_API_KEY }}
-
-            # Send a message to Slack (granted we have a webhook secret).
-            # This check also allows a repo admin to disable the Slack message by removing the secret.
-            if [ -n "${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}" ]; then
-              echo "Sending message to Slack (#team_translations)"
-              curl -X POST -H 'Content-type: application/json' --data '{"text":"There are new or updated strings available for DP2P (https://crowdin.com/project/deriv-app)."}' ${{ secrets.TRANSLATIONS_SLACK_WEBHOOK }}
-            fi
-          fi
-
           # Download latest translations from Crowdin
           cd $(git rev-parse --show-toplevel)/packages/translations
-          echo "Attempting to download updated translations from Crowdin"
-          crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
-
-          # Download latest translations from Crowdin in p2p
-          cd $(git rev-parse --show-toplevel)/packages/p2p
           echo "Attempting to download updated translations from Crowdin"
           crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
 

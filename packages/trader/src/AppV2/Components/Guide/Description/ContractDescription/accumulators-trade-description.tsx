@@ -34,7 +34,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
         },
         {
             type: 'video',
-            text: 'accumulators',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
 
         {

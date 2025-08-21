@@ -62,9 +62,9 @@ const initRoutesConfig = (): TRouteConfig[] => [
             {
                 path: routes.cashier_p2p,
                 component: () => {
-                    const isStaging = process.env.NODE_ENV === 'staging';
-                    if (isStaging) window.location.href = 'https://staging-p2p.deriv.com';
-                    else window.location.href = 'https://p2p.deriv.com';
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    if (isProduction) window.location.href = 'https://p2p.deriv.com';
+                    else window.location.href = 'https://staging-p2p.deriv.com';
                     return null;
                 },
                 getTitle: () => localize('Deriv P2P'),

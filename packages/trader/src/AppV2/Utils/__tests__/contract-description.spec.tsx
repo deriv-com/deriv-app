@@ -27,7 +27,7 @@ describe('getTermDefinition', () => {
         );
 
         expect(
-            screen.getByText('You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.')
+            screen.getByText('A feature that lets you select a percentage gain for your stake (1%, 2%, 3%, 4%, or 5%).')
         ).toBeInTheDocument();
     });
 
@@ -36,7 +36,7 @@ describe('getTermDefinition', () => {
             <div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().CONTRACT_VALUE })}</div>
         );
 
-        expect(screen.getByText(/We’ll offer to buy your contract at this price/i)).toBeInTheDocument();
+        expect(screen.getByText(/The current value of a trade contract, based on the /i)).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "contract value" if contract type is not Vanillas', () => {
@@ -48,19 +48,19 @@ describe('getTermDefinition', () => {
     it('should return specific for Vanillas definition for passed term "payout"', () => {
         render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT })}</div>);
 
-        expect(screen.getByText(/Your payout is equal/i)).toBeInTheDocument();
+        expect(screen.getByText(/The sum of your initial stake and profit./i)).toBeInTheDocument();
     });
 
     it('should return specific for Turbos definition for passed term "payout"', () => {
         render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT })}</div>);
 
-        expect(screen.getByText(/The payout at expiry is equal to/i)).toBeInTheDocument();
+        expect(screen.getByText(/The sum of your initial stake and profit./i)).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "payout" if contract type is not Vanillas or Turbos', () => {
         render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.ACCUMULATORS, term: getTerm().PAYOUT })}</div>);
 
-        expect(screen.getByText(/Payout is the sum of your initial stake and profit/i)).toBeInTheDocument();
+        expect(screen.getByText(/The sum of your initial stake and profit./i)).toBeInTheDocument();
     });
 
     it('should return specific for Vanillas definition for passed term "payout per point"', () => {
@@ -68,7 +68,9 @@ describe('getTermDefinition', () => {
             <div>{getTermDefinition({ contract_type: CONTRACT_LIST.VANILLAS, term: getTerm().PAYOUT_PER_POINT })}</div>
         );
 
-        expect(screen.getByText(/We calculate this based on/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/The money you make or lose for every one-point change in an asset’s price./i)
+        ).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "payout per point" if contract type is not Vanillas', () => {
@@ -76,7 +78,9 @@ describe('getTermDefinition', () => {
             <div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().PAYOUT_PER_POINT })}</div>
         );
 
-        expect(screen.getByText(/The amount you choose to receive at expiry/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/The money you make or lose for every one-point change in an asset’s price./i)
+        ).toBeInTheDocument();
     });
 
     it('should return specific for Accumulators definition for passed term "slippage risk"', () => {
@@ -85,14 +89,16 @@ describe('getTermDefinition', () => {
         );
 
         expect(
-            screen.getByText(/The spot price may change by the time your order reaches our servers/i)
+            screen.getByText(/The chance that your order will be executed at a worse price than you expected./i)
         ).toBeInTheDocument();
     });
 
     it('should return default definition for passed term "slippage risk" if contract type is not Accumulators', () => {
         render(<div>{getTermDefinition({ contract_type: CONTRACT_LIST.TURBOS, term: getTerm().SLIPPAGE_RISK })}</div>);
 
-        expect(screen.getByText(/Slippage happens when the asset price changes by the time/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/The chance that your order will be executed at a worse price than you expected./i)
+        ).toBeInTheDocument();
     });
 
     it('should return empty string if there is no match with object keys', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes, moduleLoader } from '@deriv/shared';
+import { getUrlP2P, routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
 import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
@@ -62,9 +62,7 @@ const initRoutesConfig = (): TRouteConfig[] => [
             {
                 path: routes.cashier_p2p,
                 component: () => {
-                    const isProduction = process.env.NODE_ENV === 'production';
-                    if (isProduction) window.location.href = 'https://p2p.deriv.com';
-                    else window.location.href = 'https://staging-p2p.deriv.com';
+                    window.location.href = getUrlP2P(false);
                     return null;
                 },
                 getTitle: () => localize('Deriv P2P'),

@@ -676,6 +676,12 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
 
+        .quill-chip {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
         &::-webkit-scrollbar {
             display: none;
         }

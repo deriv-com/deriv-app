@@ -71,17 +71,47 @@ export const useMenuNavigation = ({ selected_value }: TUseMenuNavigationProps) =
                     const containerRect = menuRef.current.getBoundingClientRect();
                     const chipRect = selectedChip.getBoundingClientRect();
 
-                    // Calculate the scroll position to center the selected chip
-                    const scrollLeft =
-                        chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
+                    const allChips = menuRef.current.querySelectorAll('[data-value]');
+                    const isLastChip = allChips[allChips.length - 1] === selectedChip;
 
-                    menuRef.current.scrollTo({
-                        left: scrollLeft + menuRef.current.scrollLeft,
-                        behavior: 'smooth',
-                    });
+                    if (isLastChip) {
+                        // Calculate the scroll position to center the selected chip
+                        const scrollLeft =
+                            chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
 
-                    // Update navigation visibility after scrolling
-                    setTimeout(updateNavVisibility, 300);
+                        menuRef.current.scrollTo({
+                            left: scrollLeft + menuRef.current.scrollLeft,
+                            behavior: 'smooth',
+                        });
+
+                        // Update navigation visibility after scrolling
+                        setTimeout(updateNavVisibility, 300);
+
+                        // Then, after a short delay, click the next icon
+                        setTimeout(() => {
+                            // Find the right navigation button in the DOM
+                            const rightNavButton = document.querySelector('.guide__menu-nav--next');
+                            if (rightNavButton) {
+                                // Simulate a click on the right navigation button
+                                (rightNavButton as HTMLElement).click();
+                            }
+
+                            // Update navigation visibility after all operations
+                            updateNavVisibility();
+                        }, 600); // S
+                    } else {
+                        // Calculate the scroll position to center the selected chip
+                        const scrollLeft =
+                            chipRect.left - containerRect.left - containerRect.width / 2 + chipRect.width / 2;
+
+                        menuRef.current.scrollTo({
+                            left: scrollLeft + menuRef.current.scrollLeft,
+                            behavior: 'smooth',
+                        });
+
+                        // Update navigation visibility after scrolling
+                        setTimeout(updateNavVisibility, 300);
+                    }
                 }
             }
         },

@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
   - name: Install npm packages
-    run: npm ci
+    run: npm ci --legacy-peer-deps
     shell: bash
   - name: Bootstrap 
     run: npm run bootstrap:ci

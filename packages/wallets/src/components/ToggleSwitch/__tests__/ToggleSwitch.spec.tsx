@@ -27,9 +27,10 @@ describe('ToggleSwitch', () => {
             return <ToggleSwitch onChange={e => setIsChecked(e.target.checked)} ref={ref} value={isChecked} />;
         };
         render(<ToggleSwitchWrapper />);
-        expect(ref.current).not.toBeNull();
-        expect(ref.current).not.toBeChecked();
-        ref.current?.click();
-        expect(ref.current).toBeChecked();
+        const checkbox = screen.getByRole('checkbox');
+        expect(checkbox).toBeInTheDocument();
+        expect(checkbox).not.toBeChecked();
+        checkbox.click();
+        expect(checkbox).toBeChecked();
     });
 });

@@ -148,7 +148,7 @@ describe('WalletListCardDropdown', () => {
         expect(screen.queryByText('BTC Wallet')).not.toBeInTheDocument();
     });
 
-    it('renders the disabled badge for a disabled wallet', () => {
+    it('renders the disabled badge for a disabled wallet', async () => {
         (useWalletAccountsList as jest.Mock).mockReturnValue({
             data: [
                 {
@@ -164,7 +164,7 @@ describe('WalletListCardDropdown', () => {
         render(<WalletListCardDropdown />, { wrapper });
 
         const input = screen.getByDisplayValue('USD Wallet');
-        userEvent.click(input);
+        await userEvent.click(input);
 
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('Disabled')).toBeInTheDocument();

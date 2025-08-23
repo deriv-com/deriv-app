@@ -1,10 +1,10 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../../../../../components/ModalProvider';
 import TransactionsPendingRowField from '../TransactionsPendingRowField';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../../../../../../../../AuthProvider';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

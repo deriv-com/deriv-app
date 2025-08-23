@@ -38,8 +38,8 @@ describe('WalletClipboard', () => {
         renderComponent();
 
         await waitFor(() => {
-            expect(screen.queryByRole('button')).toBeInTheDocument();
-            expect(screen.queryByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+            expect(screen.getByRole('button')).toBeInTheDocument();
+            expect(screen.getByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
         });
     });
     it('clears timeout on unmount', async () => {
@@ -58,7 +58,7 @@ describe('WalletClipboard', () => {
             await userEvent.hover(screen.getByRole('button'));
 
             await waitFor(() => {
-                expect(screen.queryByText('Copy')).toBeInTheDocument();
+                expect(screen.getByText('Copy')).toBeInTheDocument();
             });
         });
     });
@@ -77,7 +77,7 @@ describe('WalletClipboard', () => {
             await renderScenario();
 
             await waitFor(() => {
-                expect(screen.queryByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_legacy_won_icon')).toBeInTheDocument();
             });
         });
         it('calls copy function with textCopy', async () => {
@@ -89,7 +89,7 @@ describe('WalletClipboard', () => {
             await renderScenario();
 
             await waitFor(() => {
-                expect(screen.queryByText('Copied!')).toBeInTheDocument();
+                expect(screen.getByText('Copied!')).toBeInTheDocument();
             });
         });
         it('resets the icon and message after 2 seconds', async () => {
@@ -97,8 +97,8 @@ describe('WalletClipboard', () => {
             await renderScenario();
 
             await waitFor(() => {
-                expect(screen.queryByText('Copied!')).toBeInTheDocument();
-                expect(screen.queryByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+                expect(screen.getByText('Copied!')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_legacy_won_icon')).toBeInTheDocument();
             });
 
             act(() => {
@@ -107,7 +107,7 @@ describe('WalletClipboard', () => {
 
             await waitFor(() => {
                 expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
-                expect(screen.queryByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+                expect(screen.getByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
             });
         });
     });

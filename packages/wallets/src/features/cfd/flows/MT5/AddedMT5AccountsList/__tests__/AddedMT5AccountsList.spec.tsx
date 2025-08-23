@@ -1,12 +1,12 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../../../../AuthProvider';
 import { ModalProvider } from '../../../../../../components/ModalProvider';
 import { MT5_ACCOUNT_STATUS, PlatformDetails } from '../../../../constants';
 import AddedMT5AccountsList from '../AddedMT5AccountsList';
 import { useAddedMT5Account } from '../hooks';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../../../../../AuthProvider';
 
 // mock function to check if correct props are passed to the modal components
 const mockPropsFn = jest.fn();

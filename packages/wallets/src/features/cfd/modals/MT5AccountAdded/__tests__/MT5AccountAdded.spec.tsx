@@ -76,7 +76,7 @@ describe('MT5AccountAdded', () => {
         );
         expect(screen.getByText('Your MT5 Financial demo account is ready')).toBeInTheDocument();
         expect(screen.getByText('Practise trading with 10,000.00 USD virtual funds.')).toBeInTheDocument();
-        const okButton = screen.getAllByRole('button', { name: 'OK' })[0];
+        const okButton = screen.getByRole('button', { name: 'OK' });
         expect(okButton).toBeInTheDocument();
         expect(okButton).toBeEnabled();
         okButton.click();

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useIsEuRegion } from '@deriv/api-v2';
 import {
@@ -16,7 +17,6 @@ import { TradingAppCardLoader } from '../SkeletonLoader';
 import { TradingAccountCard } from '../TradingAccountCard';
 import LinkTitle from './LinkTitle';
 import './OptionsAndMultipliersListing.scss';
-import classNames from 'classnames';
 
 const OptionsAndMultipliersListingContentLoader = () => {
     return (

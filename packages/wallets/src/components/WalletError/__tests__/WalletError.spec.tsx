@@ -1,9 +1,9 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../AuthProvider';
 import { ModalProvider } from '../../ModalProvider';
 import WalletError from '../WalletError';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../../AuthProvider';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

@@ -90,7 +90,7 @@ describe('OptionsAndMultipliersListing', () => {
         });
         render(<OptionsAndMultipliersListing />, { wrapper });
         expect(screen.getByTestId('dt_wallets_trading_account_card')).toBeInTheDocument();
-        expect(screen.queryByText('Deriv Trader')).toBeInTheDocument();
-        expect(screen.queryByText('Custom charts, low-entry costs.')).toBeInTheDocument();
+        expect(screen.getByText('Deriv Trader')).toBeInTheDocument();
+        expect(screen.getByText('Custom charts, low-entry costs.')).toBeInTheDocument();
     });
 });

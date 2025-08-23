@@ -70,11 +70,11 @@ describe('AccountsList', () => {
             wrapper,
         });
         expect(screen.getByText('CFDs')).toBeInTheDocument();
-        expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
-
-        screen.getAllByText('Options')[0].click();
+        const optionsTab = screen.getByRole('tab', { name: 'Options' });
+        expect(optionsTab).toBeInTheDocument();
+        optionsTab.click();
         rerender(<AccountsList accountsActiveTabIndex={1} onTabClickHandler={jest.fn()} />);
-        expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
+        expect(screen.getByRole('tab', { name: 'Options' })).toBeInTheDocument();
         expect(screen.getByText('Deriv Trader')).toBeInTheDocument();
         expect(screen.getByText('Deriv Bot')).toBeInTheDocument();
         expect(screen.getByText('SmartTrader')).toBeInTheDocument();
@@ -124,7 +124,8 @@ describe('AccountsList', () => {
             wrapper,
         });
 
-        screen.getAllByText('Options')[0].click();
+        const optionsTab = screen.getByRole('tab', { name: 'Options' });
+        optionsTab.click();
         expect(onTabClickHandler).toHaveBeenCalledWith(1);
     });
 

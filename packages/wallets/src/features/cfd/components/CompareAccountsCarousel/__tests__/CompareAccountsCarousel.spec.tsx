@@ -69,30 +69,30 @@ describe('CompareAccountsCarousel', () => {
         });
     });
 
-    it('calls scrollPrev when prev button is clicked', () => {
+    it('calls scrollPrev when prev button is clicked', async () => {
         render(<CompareAccountsCarousel {...defaultProps} />);
 
-        userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_prev_button'));
+        await userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_prev_button'));
 
         expect(mockScrollPrev).toHaveBeenCalled();
     });
 
-    it('calls scrollNext when next button is clicked', () => {
+    it('calls scrollNext when next button is clicked', async () => {
         render(<CompareAccountsCarousel {...defaultProps} />);
 
-        userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_next_button'));
+        await userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_next_button'));
 
         expect(mockScrollNext).toHaveBeenCalled();
     });
 
-    it('disables buttons when emblaApi is undefined', () => {
+    it('disables buttons when emblaApi is undefined', async () => {
         mockUseEmblaCarousel.mockReturnValue([jest.fn(), undefined]);
         render(<CompareAccountsCarousel {...defaultProps} />);
 
-        userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_prev_button'));
+        await userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_prev_button'));
         expect(mockScrollPrev).not.toHaveBeenCalled();
 
-        userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_next_button'));
+        await userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_next_button'));
         expect(mockScrollNext).not.toHaveBeenCalled();
     });
 });

@@ -1,10 +1,10 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../../AuthProvider';
 import { ModalProvider } from '../../../ModalProvider';
 import ModalStepWrapper from '../ModalStepWrapper';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../../../AuthProvider';
 
 const mockhideFn = jest.fn();
 jest.mock('../../../ModalProvider', () => ({

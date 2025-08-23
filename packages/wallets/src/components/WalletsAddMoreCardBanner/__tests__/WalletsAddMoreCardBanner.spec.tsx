@@ -4,9 +4,9 @@ import {
     useActiveWalletAccount,
     useCreateWallet,
     useIsEuRegion,
+    useIsHubRedirectionEnabled,
     useLandingCompany,
     useWalletAccountsList,
-    useIsHubRedirectionEnabled,
 } from '@deriv/api-v2';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';

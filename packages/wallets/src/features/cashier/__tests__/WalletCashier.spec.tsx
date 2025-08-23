@@ -54,7 +54,7 @@ describe('<WalletCashier />', () => {
 
         render(<WalletCashier />);
 
-        expect(screen.queryByText('WalletCashierHeader')).toBeInTheDocument();
+        expect(screen.getByText('WalletCashierHeader')).toBeInTheDocument();
     });
 
     it('should hide the wallet header when content is scrolled', () => {

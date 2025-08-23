@@ -5,7 +5,7 @@
         "packages/*"
     ],
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "overrides": {
         "eslint": "^8.57.1",

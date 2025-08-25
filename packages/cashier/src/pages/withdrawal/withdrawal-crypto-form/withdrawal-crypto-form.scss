@@ -75,4 +75,13 @@
         list-style-type: disc;
         margin-left: 1.6rem;
     }
+
+    &__inline-message {
+        width: 100%;
+    }
+
+    &__inline-message-link {
+        text-decoration: underline;
+        cursor: pointer;
+    }
 }

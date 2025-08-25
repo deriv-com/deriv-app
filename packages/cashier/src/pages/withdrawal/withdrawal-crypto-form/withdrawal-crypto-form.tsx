@@ -1,10 +1,12 @@
 import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
-import { Button, InlineMessage, Input, Loading, Text } from '@deriv/components';
+
+import { Button, InlineMessage, Input, Loading, StaticUrl, Text } from '@deriv/components';
 import { useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import { useCashierStore } from '../../../stores/useCashierStores';
@@ -41,8 +43,22 @@ const Header = ({ currency }: THeaderProps) => {
                     }}
                 />
             </Text>
+            <InlineMessage className='withdrawal-crypto-form__inline-message' type='information'>
+                <Text as='span' size='xxxs'>
+                    <Localize
+                        i18n_default_text='Withdraw using the same payment method you used to deposit. If that method isn’t supported, check our <0>available payment methods.</0>'
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='withdrawal-crypto-form__inline-message-link'
+                                href='/payment-methods'
+                            />,
+                        ]}
+                    />
+                </Text>
+            </InlineMessage>
             <InlineMessage>
-                <Text as='ul' className='withdrawal-crypto-form__inline-list' size='xxs'>
+                <Text as='ul' className='withdrawal-crypto-form__inline-list' size='xxxs'>
                     <li>
                         <Localize i18n_default_text='Do not enter an address linked to an initial coin offering (ICO) purchase or crowdsale. If you do, the initial coin offering (ICO) tokens will not be credited into your account.' />
                     </li>

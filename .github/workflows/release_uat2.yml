@@ -1,4 +1,8 @@
 name: Deriv App Release to UAT2 Environment
+
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
 

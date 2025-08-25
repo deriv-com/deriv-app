@@ -78,11 +78,13 @@ const ContractTypeWidget = observer(
 
         React.useEffect(() => {
             if (typeof is_dialog_open === 'boolean') {
-                Analytics.trackEvent('ce_trade_types_form', {
-                    action: is_dialog_open ? 'open' : 'close',
-                    form_source: 'contract_set_up_form',
-                    form_name: 'default',
-                });
+                if (is_dialog_open && !is_info_dialog_open) {
+                    Analytics.trackEvent('ce_trade_types_form', {
+                        action: 'open',
+                        form_source: 'contract_set_up_form',
+                        form_name: 'default',
+                    });
+                }
             }
         }, [is_dialog_open]);
 

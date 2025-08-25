@@ -7,6 +7,11 @@ import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import { ActiveSymbols } from '@deriv/api-types';
 
+// Mock the components that might cause issues in tests
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: () => <div data-testid='mocked-dotlottie' />,
+}));
+
 const mock_connect_props = {
     modules: {
         trade: {

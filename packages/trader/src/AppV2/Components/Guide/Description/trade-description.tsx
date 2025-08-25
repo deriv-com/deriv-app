@@ -62,7 +62,7 @@ const RiseFallTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const HigherLowerTradeDescription = makeLazyLoader(
     () =>
@@ -73,7 +73,7 @@ const HigherLowerTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const TouchNoTouchTradeDescription = makeLazyLoader(
     () =>
@@ -84,7 +84,7 @@ const TouchNoTouchTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const MatchesDiffersTradeDescription = makeLazyLoader(
     () =>
@@ -95,7 +95,7 @@ const MatchesDiffersTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const EvenOddTradeDescription = makeLazyLoader(
     () =>
@@ -106,7 +106,7 @@ const EvenOddTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const OverUnderTradeDescription = makeLazyLoader(
     () =>
@@ -117,7 +117,7 @@ const OverUnderTradeDescription = makeLazyLoader(
                 )
         ),
     () => <Loading is_fullscreen={false} />
-)();
+)() as React.ComponentType<TContractDescription>;
 
 const TradeDescription = ({
     contract_type,
@@ -132,7 +132,7 @@ const TradeDescription = ({
             trade_type_template = <AccumulatorsTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.RISE_FALL:
-            trade_type_template = <RiseFallTradeDescription />;
+            trade_type_template = <RiseFallTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.MULTIPLIERS:
             trade_type_template = <MultiplierTradeDescriptions onTermClick={onTermClick} />;
@@ -144,19 +144,19 @@ const TradeDescription = ({
             trade_type_template = <TurbosTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.HIGHER_LOWER:
-            trade_type_template = <HigherLowerTradeDescription />;
+            trade_type_template = <HigherLowerTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.TOUCH_NO_TOUCH:
-            trade_type_template = <TouchNoTouchTradeDescription />;
+            trade_type_template = <TouchNoTouchTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.MATCHES_DIFFERS:
-            trade_type_template = <MatchesDiffersTradeDescription />;
+            trade_type_template = <MatchesDiffersTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.EVEN_ODD:
-            trade_type_template = <EvenOddTradeDescription />;
+            trade_type_template = <EvenOddTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.OVER_UNDER:
-            trade_type_template = <OverUnderTradeDescription />;
+            trade_type_template = <OverUnderTradeDescription onTermClick={onTermClick} />;
             break;
         default:
             trade_type_template = (

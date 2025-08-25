@@ -6,6 +6,12 @@ describe('<HighLowTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
         render(<HighLowTradeDescription />);
 
-        expect(screen.getByText(/If you select "Higher", you win the payout/i)).toBeInTheDocument();
+        expect(
+            screen.getByText((content, element) =>
+                /Higher\/Lower lets you predict if the market price will end higher or lower than a set barrier at contract/i.test(
+                    content
+                )
+            )
+        ).toBeInTheDocument();
     });
 });

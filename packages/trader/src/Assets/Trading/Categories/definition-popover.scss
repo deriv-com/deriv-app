@@ -1,0 +1,21 @@
+.definition {
+    &__popover {
+        &-content {
+            padding: 8px;
+            max-width: 250px; // Limit the width of the popover content
+        }
+
+        &-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--du-general-main-1);
+            margin-bottom: 4px;
+        }
+
+        &-text {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--du-general-main-3);
+        }
+    }
+}

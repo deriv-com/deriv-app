@@ -6,6 +6,8 @@ describe('<OverUnderTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
         render(<OverUnderTradeDescription />);
 
-        expect(screen.getByText(/If you select "Over", you will win the payout/i)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Earn a payout if the last digit of the exit spot is less than your chosen number/i)
+        ).toBeInTheDocument();
     });
 });

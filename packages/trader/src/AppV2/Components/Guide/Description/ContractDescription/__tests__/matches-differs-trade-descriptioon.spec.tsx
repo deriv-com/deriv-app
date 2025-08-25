@@ -8,12 +8,10 @@ jest.mock('@lottiefiles/dotlottie-react', () => ({
 
 describe('MatchesDiffersTradeDescription', () => {
     it('should render a proper content', () => {
-        render(<MatchesDiffersTradeDescription />);
+        render(<MatchesDiffersTradeDescription onTermClick={jest.fn()} />);
 
         expect(
-            screen.getByText(
-                /you will win the payout if the last digit of the last tick is not the same as your prediction/i
-            )
+            screen.getByText(/Earn a payout if the last digit of the exit spot differs from your prediction./i)
         ).toBeInTheDocument();
     });
 });

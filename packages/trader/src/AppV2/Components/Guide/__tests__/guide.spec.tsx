@@ -140,7 +140,8 @@ describe('Guide', () => {
     it('should render term definition if user clicked on it', async () => {
         renderGuide();
 
-        const term_definition = 'You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.';
+        const term_definition =
+            'A feature that lets you select a percentage gain for your stake (1%, 2%, 3%, 4%, or 5%).';
         expect(screen.queryByText(term_definition)).not.toBeInTheDocument();
 
         await userEvent.click(screen.getByText('Guide'));

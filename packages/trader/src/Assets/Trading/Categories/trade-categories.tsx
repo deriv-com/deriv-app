@@ -38,7 +38,7 @@ const TradeCategories = ({
     if (category) {
         switch (category) {
             case TRADE_TYPES.ACCUMULATOR:
-                TradeTypeTemplate = <AccumulatorTradeDescription onClick={onClick} />;
+                TradeTypeTemplate = <AccumulatorTradeDescription />;
                 break;
             case TRADE_TYPES.RISE_FALL:
             case TRADE_TYPES.RISE_FALL_EQUAL:
@@ -90,17 +90,15 @@ const TradeCategories = ({
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
             case TRADE_TYPES.MULTIPLIER:
-                TradeTypeTemplate = (
-                    <MultiplierTradeDescription is_multiplier_fx={is_multiplier_fx} onClick={onClick} />
-                );
+                TradeTypeTemplate = <MultiplierTradeDescription />;
                 break;
             case TRADE_TYPES.TURBOS.LONG:
             case TRADE_TYPES.TURBOS.SHORT:
-                TradeTypeTemplate = <TurbosTradeDescription onClick={onClick} />;
+                TradeTypeTemplate = <TurbosTradeDescription />;
                 break;
             case TRADE_TYPES.VANILLA.CALL:
             case TRADE_TYPES.VANILLA.PUT:
-                TradeTypeTemplate = <VanillaTradeDescription is_vanilla_fx={is_vanilla_fx} onClick={onClick} />;
+                TradeTypeTemplate = <VanillaTradeDescription />;
                 break;
             default:
                 TradeTypeTemplate = (

@@ -8,9 +8,10 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 type TVideoFragment = {
     contract_type: string;
+    is_mobile_forced?: boolean;
 };
 
-const VideoFragment = ({ contract_type }: TVideoFragment) => {
+const VideoFragment = ({ contract_type, is_mobile_forced = false }: TVideoFragment) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [dotLottie, setDotLottie] = React.useState<EventTarget | null>(null);
 
@@ -19,7 +20,9 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
     // memoize file paths for videos and open the modal only after we get them
     const getVideoSource = React.useCallback(
         (extension: string) =>
-            getUrlBase(`/public/videos/${contract_type.toLowerCase()}_${isMobile ? 'mobile' : 'desktop'}.${extension}`),
+            getUrlBase(
+                `/public/videos/${contract_type.toLowerCase()}_${is_mobile_forced ? 'mobile' : isMobile ? 'mobile' : 'desktop'}.${extension}`
+            ),
         [contract_type, isMobile]
     );
     const lottie_src = React.useMemo(() => getVideoSource('lottie'), [getVideoSource]);
@@ -43,6 +46,7 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
         >
             {is_loading && <Skeleton width={248} height={161} className='skeleton-video-loader' />}
             <DotLottieReact
+                className='video-fragment__wrapper--lottie'
                 autoplay
                 dotLottieRefCallback={
                     ((dotLottie: EventTarget | null) => setDotLottie(dotLottie)) as React.ComponentProps<

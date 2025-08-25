@@ -1,95 +1,134 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription, getTerm } from 'AppV2/Utils/contract-description-utils';
+import DefinitionPopover from '../definition-popover';
 
-const TurbosTradeDescription = ({
-    onClick,
-}: {
-    onClick: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-}) => {
+const TurbosTradeDescription = () => {
+    const { PAYOUT, EXPIRY, BARRIER, PAYOUT_PER_POINT, SPOT_PRICE, EXIT_SPOT, STAKE } = getTerm();
+
     const content = [
         {
+            type: 'paragraph',
             text: (
-                <Localize i18n_default_text='Turbo options allow you to predict the direction of the underlying asset’s movements.' />
+                <Localize i18n_default_text="Turbos allow you to predict the direction of the underlying asset's movements." />
             ),
         },
+        { type: 'heading', text: <Localize i18n_default_text='Up' /> },
         {
+            type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='You receive a <0>payout</0> at <0>expiry</0> if the spot price never breaches the <0>barrier</0> during the contract period. If it does, your contract will be terminated early.'
+                    i18n_default_text='Earn a <0>payout</0> if the <1>spot price</1> never falls below the <2>barrier</2> during the contract period.'
                     components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                        <DefinitionPopover
+                            term={PAYOUT}
                             key={0}
-                        />,
+                            id='turbos-payout'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={SPOT_PRICE}
+                            key={1}
+                            id='turbos-spot-price'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={BARRIER}
+                            key={2}
+                            id='turbos-barrier'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                    ]}
+                />
+            ),
+        },
+        { type: 'video', text: 'turbos_up' },
+        { type: 'heading', text: <Localize i18n_default_text='Down' /> },
+        {
+            type: 'paragraph',
+            text: (
+                <Localize i18n_default_text='Earn a payout if the spot price never rises above the barrier during the contract period.' />
+            ),
+        },
+        { type: 'video', text: 'turbos_down' },
+        { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
+        {
+            type: 'paragraph',
+            text: <Localize i18n_default_text='If the barrier is breached at any time, your contract ends early.' />,
+        },
+        {
+            type: 'badge',
+            text: (
+                <Localize
+                    i18n_default_text='Payout = <0>Payout per point</0> × Distance between <1>exit spot</1> and barrier'
+                    components={[
+                        <DefinitionPopover
+                            term={PAYOUT_PER_POINT}
+                            key={0}
+                            id='turbos-payout-per-point'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
+                        <DefinitionPopover
+                            term={EXIT_SPOT}
+                            key={1}
+                            id='turbos-exit-spot'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
                     ]}
                 />
             ),
         },
         {
+            type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='If you select <0>"Up"</0>, you’ll earn a payout if the spot price never drops below the barrier.'
-                    components={[<strong key={0} />]}
-                />
-            ),
-        },
-        {
-            text: (
-                <Localize
-                    i18n_default_text='If you select <0>"Down"</0>, you’ll earn a payout if the spot price never rises above the barrier.'
-                    components={[<strong key={0} />]}
-                />
-            ),
-        },
-        {
-            text: (
-                <Localize
-                    i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the distance between the <0>final price</0> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
+                    i18n_default_text='You make a profit only if your payout is more than your <0>stake</0>.'
                     components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
-                            key={0}
-                        />,
+                        <DefinitionPopover term={STAKE} key={0} id='turbos-stake' contract_type={CONTRACT_LIST.TURBOS}>
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
                     ]}
                 />
             ),
         },
         {
+            type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='You may sell the contract up to 15 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                    i18n_default_text={`You may sell your contract up to 15 seconds before <0>expiry</0>. If you do, we'll pay you the contract value.`}
                     components={[
-                        <span
-                            className='contract-type-info__content-definition'
-                            onClick={onClick}
-                            onKeyDown={onClick}
+                        <DefinitionPopover
+                            term={EXPIRY}
                             key={0}
-                        />,
+                            id='turbos-expiry'
+                            contract_type={CONTRACT_LIST.TURBOS}
+                        >
+                            <span className='contract-type-info__content-definition' />
+                        </DefinitionPopover>,
                     ]}
                 />
             ),
         },
         {
+            type: 'paragraph',
             text: (
-                <Localize i18n_default_text='If you choose your duration in number of ticks, you won’t be able to terminate your contract early.' />
+                <Localize i18n_default_text='If you set your duration in ticks, you cannot close the contract early.' />
             ),
         },
     ];
 
-    return (
-        <React.Fragment>
-            {content.map(({ text }, index) => (
-                <Text as='p' key={index.toString() + text}>
-                    {text}
-                </Text>
-            ))}
-        </React.Fragment>
-    );
+    return <React.Fragment>{getContractDescription(content, true)}</React.Fragment>;
 };
 
 export default TurbosTradeDescription;

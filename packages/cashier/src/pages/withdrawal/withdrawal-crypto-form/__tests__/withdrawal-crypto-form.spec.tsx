@@ -192,9 +192,7 @@ describe('<WithdrawalCryptoForm />', () => {
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
 
-    it('should render inline message with StaticUrl when country code is RU', () => {
-        mockRootStore.client.account_settings.country_code = 'ru';
-
+    it('should render inline message with StaticUrl', () => {
         render(
             <CashierProviders store={mockRootStore}>
                 <WithdrawalCryptoForm />

@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
+
 import { Button, Dropdown, InlineMessage, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
+import { useExchangeRate, useMFAccountStatus } from '@deriv/hooks';
 import {
     CFD_PLATFORMS,
     getCurrencyDisplayCode,
@@ -17,15 +19,16 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
+
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
 import { useCashierStore } from '../../../stores/useCashierStores';
-import { TAccount, TAccountsList, TError, TReactChangeEvent, TradingPlatformStatusResponse } from '../../../types';
+import { TAccount, TAccountsList, TError, TradingPlatformStatusResponse, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
+
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -154,7 +157,7 @@ const AccountTransferForm = observer(
             traders_hub: { closeAccountTransferModal },
         } = useStore();
         const { isDesktop, isMobile } = useDevice();
-        const { account_limits, authentication_status, getLimits: onMount } = client;
+        const { account_limits, account_settings, authentication_status, getLimits: onMount } = client;
 
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
@@ -444,6 +447,22 @@ const AccountTransferForm = observer(
             selected_from?.status?.includes('poa_failed') &&
             authentication_status?.document_status !== 'verified';
 
+        const is_russia_restricted =
+            account_settings?.country_code?.toLowerCase() === 'ru' &&
+            // specific restriction for fiat CR <=> crypto CR accounts
+            ((selected_from?.is_crypto &&
+                !selected_to?.is_crypto &&
+                !selected_to?.is_ctrader &&
+                !selected_to?.is_derivez &&
+                !selected_to?.is_dxtrade &&
+                !selected_to?.is_mt) ||
+                (!selected_from?.is_crypto &&
+                    !selected_from?.is_ctrader &&
+                    !selected_from?.is_derivez &&
+                    !selected_from?.is_dxtrade &&
+                    !selected_from?.is_mt &&
+                    selected_to?.is_crypto));
+
         const poa_pending_msg = localize(
             'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
         );
@@ -499,6 +518,19 @@ const AccountTransferForm = observer(
                     >
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>
+                )}
+                {is_russia_restricted && (
+                    <InlineMessage className='account-transfer-form__inline-message' type='warning'>
+                        <Text as='span' size='xxxs'>
+                            <Localize
+                                i18n_default_text={
+                                    selected_from?.is_crypto
+                                        ? 'Transfers from crypto accounts to fiat accounts are not supported.'
+                                        : 'Transfers from fiat accounts to crypto accounts are not supported.'
+                                }
+                            />
+                        </Text>
+                    </InlineMessage>
                 )}
                 <Formik
                     initialValues={{
@@ -757,7 +789,8 @@ const AccountTransferForm = observer(
                                                         shouldShowTransferButton(values.amount) ||
                                                         is_mt5_restricted ||
                                                         is_unavailable_status_present ||
-                                                        is_maintenance_status_present
+                                                        is_maintenance_status_present ||
+                                                        is_russia_restricted
                                                     }
                                                     primary
                                                     large

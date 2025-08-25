@@ -16,7 +16,6 @@ import WithdrawalCryptoPriority from '../withdrawal-crypto-priority';
 import './withdrawal-crypto-form.scss';
 
 type THeaderProps = {
-    country_code: string;
     currency: string;
 };
 
@@ -29,7 +28,7 @@ const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
 const DEFAULT_FIAT_CURRENCY = 'USD';
 
-const Header = ({ country_code, currency }: THeaderProps) => {
+const Header = ({ currency }: THeaderProps) => {
     const currency_name = getCurrencyName(currency);
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
@@ -44,22 +43,20 @@ const Header = ({ country_code, currency }: THeaderProps) => {
                     }}
                 />
             </Text>
-            {country_code?.toLowerCase() === 'ru' && (
-                <InlineMessage className='withdrawal-crypto-form__inline-message' type='information'>
-                    <Text as='span' size='xxxs'>
-                        <Localize
-                            i18n_default_text='Withdraw using the same payment method you used to deposit. If that method isn’t supported, check our <0>available payment methods.</0>'
-                            components={[
-                                <StaticUrl
-                                    key={0}
-                                    className='withdrawal-crypto-form__inline-message-link'
-                                    href='/payment-methods'
-                                />,
-                            ]}
-                        />
-                    </Text>
-                </InlineMessage>
-            )}
+            <InlineMessage className='withdrawal-crypto-form__inline-message' type='information'>
+                <Text as='span' size='xxxs'>
+                    <Localize
+                        i18n_default_text='Withdraw using the same payment method you used to deposit. If that method isn’t supported, check our <0>available payment methods.</0>'
+                        components={[
+                            <StaticUrl
+                                key={0}
+                                className='withdrawal-crypto-form__inline-message-link'
+                                href='/payment-methods'
+                            />,
+                        ]}
+                    />
+                </Text>
+            </InlineMessage>
             <InlineMessage>
                 <Text as='ul' className='withdrawal-crypto-form__inline-list' size='xxxs'>
                     <li>
@@ -78,7 +75,6 @@ const WithdrawalCryptoForm = observer(() => {
     const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
     const { client } = useStore();
     const {
-        account_settings,
         balance,
         currency,
         current_fiat_currency = 'USD',
@@ -140,7 +136,7 @@ const WithdrawalCryptoForm = observer(() => {
 
     return (
         <div className='withdrawal-crypto-form__wrapper' data-testid='dt_withdrawal_crypto_form'>
-            <Header country_code={account_settings.country_code || ''} currency={currency} />
+            <Header currency={currency} />
             <Formik
                 initialValues={{
                     address: '',

@@ -9,8 +9,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
 const Real = observer(() => {
-    const { client, ui } = useStore();
-    const { account_settings } = client;
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { iframe, general_store } = useCashierStore();
     const { clearIframe, iframe_height, iframe_url, checkIframeLoaded, setContainerHeight } = iframe;
@@ -34,7 +33,7 @@ const Real = observer(() => {
             {should_show_loader && <Loading className='real__loader' />}
             {iframe_url && (
                 <>
-                    {account_settings.country_code?.toLowerCase() === 'ru' && !should_show_loader && (
+                    {!should_show_loader && (
                         <InlineMessage type='information'>
                             <Text as='span' size='xxxs'>
                                 <Localize
@@ -52,9 +51,7 @@ const Real = observer(() => {
                         </InlineMessage>
                     )}
                     <iframe
-                        className={`cashier__content real__iframe ${
-                            account_settings.country_code?.toLowerCase() === 'ru' ? 'real__iframe--ru' : ''
-                        }`}
+                        className='cashier__content real__iframe'
                         height={iframe_height}
                         src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
                         frameBorder='0'

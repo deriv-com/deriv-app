@@ -88,17 +88,9 @@ describe('<Real />', () => {
         }
     });
 
-    it('should render inline message with StaticUrl when country code is RU', () => {
-        const mock_store = mockStore({
-            client: {
-                account_settings: {
-                    country_code: 'ru',
-                },
-            },
-        });
-
+    it('should render inline message with StaticUrl', () => {
         render(
-            <StoreProvider store={mock_store}>
+            <StoreProvider store={mock_root_store}>
                 <Real />
             </StoreProvider>
         );

@@ -48,7 +48,6 @@ module.exports = function (env) {
                 'react-router': 'react-router',
                 mobx: 'mobx',
                 'mobx-react-lite': 'mobx-react-lite',
-                '@deriv/p2p': '@deriv/p2p',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',

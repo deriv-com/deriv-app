@@ -9,7 +9,6 @@ import {
     useIsHubRedirectionEnabled,
     useIsP2PEnabled,
     useOnrampVisible,
-    useP2PNotificationCount,
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
@@ -88,7 +87,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
-    const p2p_notification_count = useP2PNotificationCount();
     const {
         subscribe,
         p2p_settings,
@@ -117,7 +115,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
                 options.push({
-                    ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),
                     default: route.default,
                     icon: route.icon_component,
                     label: route.getTitle(),
@@ -135,7 +132,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_p2p_enabled,
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
-        p2p_notification_count,
         account_settings.preferred_language,
         current_language,
         routes_config,
@@ -226,38 +222,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             history.push(routes.cashier_deposit);
         }
     }, [history, is_onramp_visible]);
-
-    useEffect(() => {
-        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
-            const url_params = new URLSearchParams(history.location.search);
-            const advert_id = url_params.get('advert_id');
-
-            history.push(routes.cashier_deposit);
-
-            if (advert_id) {
-                if (is_virtual) {
-                    toggleReadyToDepositModal();
-                } else {
-                    error.setErrorMessage({
-                        code: 'ShareMyAdsError',
-                        message:
-                            currency !== 'USD' && is_svg
-                                ? localize('Deriv P2P is currently unavailable in this currency.')
-                                : localize('Deriv P2P is currently unavailable in your country.'),
-                    });
-                }
-            }
-        }
-    }, [
-        currency,
-        error,
-        history,
-        is_p2p_enabled,
-        is_p2p_enabled_success,
-        is_svg,
-        is_virtual,
-        toggleReadyToDepositModal,
-    ]);
 
     useEffect(() => {
         if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {

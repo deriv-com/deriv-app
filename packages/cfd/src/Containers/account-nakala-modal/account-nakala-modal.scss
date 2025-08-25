@@ -3,6 +3,12 @@
     flex-direction: column;
     padding: 30px 20px;
 
+    @include desktop {
+        max-height: 64rem;
+        margin-inline-end: 0.4rem;
+        overflow: auto;
+    }
+
     &__logo-container {
         display: flex;
         justify-content: center;
@@ -187,6 +193,9 @@
         flex-direction: column;
         gap: 0.6rem;
         border-radius: 0.8rem;
+        @include desktop {
+            overflow: unset;
+        }
         overflow: hidden;
 
         &-item {

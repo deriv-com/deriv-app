@@ -124,7 +124,7 @@ describe('WithdrawalErrorScreen', () => {
 
         expect(screen.getByText('Error')).toBeInTheDocument();
         expect(screen.getByText('Crypto Limit Age Verified Error')).toBeInTheDocument();
-        expect(screen.queryByText('Verify identity')).toBeInTheDocument();
+        expect(screen.getByText('Verify identity')).toBeInTheDocument();
     });
 
     it('should show redirect the user to the account/proof-of-identity when the user clicks on `Verify identity` after receiving crypto age limit verified error', async () => {

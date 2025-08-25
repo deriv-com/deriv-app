@@ -2,20 +2,20 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useGrowthbookGetFeatureValue } from '@deriv/api-v2';
 import {
+    ACCOUNTS_OS_POA_URL,
     ACCOUNTS_OS_POI_STATUS_URL,
     ACCOUNTS_OS_POI_URL,
-    ACCOUNTS_OS_POA_URL,
     getSocketURL,
     isNavigationFromTradersHubOS,
 } from '@deriv/shared';
-import { useTranslations } from '@deriv-com/translations';
 import { getToken } from '@deriv/utils';
+import { useTranslations } from '@deriv-com/translations';
+import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 import { TModifiedMT5Account, TWalletsMFAccountStatus } from '../../../../types';
 import { getClientVerification } from '../../../../utils';
 import { ClientVerificationStatusBadge } from '../../../ClientVerificationBadge';
 import { DocumentTile } from './components';
 import './DocumentsList.scss';
-import { LocalStorageUtils, URLUtils, WebSocketUtils } from '@deriv-com/utils';
 
 type TDocumentsListProps = {
     account: TModifiedMT5Account | TWalletsMFAccountStatus;

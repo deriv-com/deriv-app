@@ -29,7 +29,7 @@
         "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "homepage": "https://github.com/deriv-com/deriv-app",
     "devDependencies": {

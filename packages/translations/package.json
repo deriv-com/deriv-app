@@ -11,7 +11,7 @@
         "url": "git+https://github.com/deriv-com/deriv-app.git"
     },
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "scripts": {
         "build": "echo \"No build specified\"",

@@ -19,7 +19,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "repository": {
         "type": "git",

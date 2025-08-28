@@ -113,7 +113,7 @@ const CompleteUserProfile = observer(
         const changeable_fields = getChangeableFields();
 
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
-        const [citizen_to_display, setCitizenToDisplay] = React.useState('');
+        const [setCitizenToDisplay] = React.useState('');
         const [submitting_currency, setSubmittingCurrency] = React.useState(false);
 
         const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
@@ -340,36 +340,19 @@ const CompleteUserProfile = observer(
                                                                         type='text'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
-                                                                        onItemSelection={({ value, text }) => {
-                                                                            setFieldValue('citizen', value, true);
-                                                                            setCitizenToDisplay(text);
-                                                                        }}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'citizen',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
                                                                         list_portal_id='modal_root'
                                                                         hint={localize(
                                                                             'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                                         )}
                                                                         className='complete-user-profile-modal__bottom-margin-field'
-                                                                        value={citizen_to_display || values.citizen}
                                                                         required
-                                                                        onChange={e => {
-                                                                            if (citizen_to_display) {
-                                                                                setCitizenToDisplay('');
-                                                                            }
-                                                                            setFieldValue('citizen', '', false);
-                                                                            field.onChange(e);
-                                                                        }}
-                                                                        onBlur={e => {
-                                                                            if (!e.target.value && values.citizen) {
-                                                                                setCitizenToDisplay(
-                                                                                    residence_list.find(
-                                                                                        item =>
-                                                                                            item.value ===
-                                                                                            values.citizen
-                                                                                    )?.text || values.citizen
-                                                                                );
-                                                                            }
-                                                                            field.onBlur(e);
-                                                                        }}
                                                                     />
                                                                 ) : (
                                                                     <SelectNative

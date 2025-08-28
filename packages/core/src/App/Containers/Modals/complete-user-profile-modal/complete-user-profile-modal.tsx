@@ -339,9 +339,13 @@ const CompleteUserProfile = observer(
                                                                         autoComplete='off'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
-                                                                        onItemSelection={({ value }) =>
-                                                                            setFieldValue('citizen', value || '', true)
-                                                                        }
+                                                                        onItemSelection={({ value, text }) => {
+                                                                            setFieldValue(
+                                                                                'citizen',
+                                                                                (value && text) ?? '',
+                                                                                true
+                                                                            );
+                                                                        }}
                                                                         list_portal_id='modal_root'
                                                                         hint={localize(
                                                                             'Select your citizenship/nationality as it appears on your passport or other government-issued ID'

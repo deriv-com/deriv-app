@@ -336,16 +336,12 @@ const CompleteUserProfile = observer(
                                                                     <Autocomplete
                                                                         {...field}
                                                                         data-lpignore='true'
-                                                                        autoComplete='none'
+                                                                        autoComplete='off'
                                                                         type='text'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'citizen',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
+                                                                        onItemSelection={({ value }) =>
+                                                                            setFieldValue('citizen', value || '', true)
                                                                         }
                                                                         list_portal_id='modal_root'
                                                                         hint={localize(

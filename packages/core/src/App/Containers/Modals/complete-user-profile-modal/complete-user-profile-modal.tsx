@@ -113,7 +113,7 @@ const CompleteUserProfile = observer(
         const changeable_fields = getChangeableFields();
 
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
-        const [, setCitizenToDisplay] = React.useState('');
+        const [citizen_to_display, setCitizenToDisplay] = React.useState('');
         const [submitting_currency, setSubmittingCurrency] = React.useState(false);
 
         const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
@@ -336,22 +336,66 @@ const CompleteUserProfile = observer(
                                                                     <Autocomplete
                                                                         {...field}
                                                                         data-lpignore='true'
-                                                                        autoComplete='off'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
+                                                                        autoComplete='new-password'
+                                                                        // @ts-expect-error This needs to fixed in AutoComplete component
                                                                         onItemSelection={({ value, text }) => {
-                                                                            setFieldValue(
-                                                                                'citizen',
-                                                                                (value && text) ?? '',
-                                                                                true
-                                                                            );
+                                                                            setFieldValue('citizen', value, true);
+                                                                            setCitizenToDisplay(text);
                                                                         }}
+                                                                        value={citizen_to_display || values.citizen}
                                                                         list_portal_id='modal_root'
                                                                         hint={localize(
                                                                             'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                                         )}
                                                                         className='complete-user-profile-modal__bottom-margin-field'
                                                                         required
+                                                                        onChange={e => {
+                                                                            if (citizen_to_display) {
+                                                                                setCitizenToDisplay('');
+                                                                            }
+                                                                            setFieldValue('citizen', '', false);
+                                                                            field.onChange(e);
+                                                                        }}
+                                                                        onBlur={e => {
+                                                                            const typed_value = e.target.value.trim();
+
+                                                                            if (typed_value) {
+                                                                                const exact_match = residence_list.find(
+                                                                                    item =>
+                                                                                        item.text.toLowerCase() ===
+                                                                                        typed_value.toLowerCase()
+                                                                                );
+
+                                                                                if (exact_match) {
+                                                                                    // If exact match found, use the country code (value)
+                                                                                    setFieldValue(
+                                                                                        'citizen',
+                                                                                        exact_match.value,
+                                                                                        true
+                                                                                    );
+                                                                                    setCitizenToDisplay(
+                                                                                        exact_match.text
+                                                                                    );
+                                                                                } else {
+                                                                                    // If no exact match, clear the field
+                                                                                    setFieldValue('citizen', '', true);
+                                                                                    setCitizenToDisplay('');
+                                                                                }
+                                                                            } else if (values.citizen) {
+                                                                                // If input is empty but there's a stored value, restore the display
+                                                                                setCitizenToDisplay(
+                                                                                    residence_list.find(
+                                                                                        item =>
+                                                                                            item.value ===
+                                                                                            values.citizen
+                                                                                    )?.text || values.citizen
+                                                                                );
+                                                                            }
+
+                                                                            field.onBlur(e);
+                                                                        }}
                                                                     />
                                                                 ) : (
                                                                     <SelectNative

@@ -11,7 +11,7 @@ const useIsEuRegion = () => {
     const isMFAccount = activeWallet?.loginid?.startsWith('MF');
 
     const isEuRegion = useMemo(() => {
-        if (!landing_company) return false;
+        if (!landing_company || !isMFAccount) return false;
 
         /** Regular expressions for EU shortcodes and excluded residence */
         const eu_shortcode_regex = /^maltainvest$/;
@@ -41,7 +41,7 @@ const useIsEuRegion = () => {
 
     // New method to test, if this works will remove the legacy method above
     const isEUCountry = useMemo(() => {
-        if (!landing_company) return;
+        if (!landing_company || !isMFAccount) return;
 
         const { gaming_company, financial_company } = landing_company;
         const isEuRegion = isMFAccount && !gaming_company && financial_company?.shortcode === 'maltainvest';

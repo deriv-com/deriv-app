@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
+
+import useActiveWalletAccount from './useActiveWalletAccount';
 import useLandingCompany from './useLandingCompany';
 
 /** * A hook to determine if region is Eu using the useLandingCompany hook */
 const useIsEuRegion = () => {
     /** Retrieve landing company data*/
     const { data: landing_company, ...rest } = useLandingCompany();
+    const { data: activeWallet } = useActiveWalletAccount();
+    const isMFAccount = activeWallet?.loginid?.startsWith('MF');
 
     const isEuRegion = useMemo(() => {
         if (!landing_company) return false;
@@ -32,18 +36,18 @@ const useIsEuRegion = () => {
         /** is region Eu based on residence */
         const is_eu_based_on_residence = !shortcodes && is_residence_eu;
 
-        return is_financial_maltainvest || is_eu_based_on_shortcodes || is_eu_based_on_residence;
-    }, [landing_company]);
+        return isMFAccount && (is_financial_maltainvest || is_eu_based_on_shortcodes || is_eu_based_on_residence);
+    }, [isMFAccount, landing_company]);
 
     // New method to test, if this works will remove the legacy method above
     const isEUCountry = useMemo(() => {
         if (!landing_company) return;
 
         const { gaming_company, financial_company } = landing_company;
-        const isEuRegion = !gaming_company && financial_company?.shortcode === 'maltainvest';
+        const isEuRegion = isMFAccount && !gaming_company && financial_company?.shortcode === 'maltainvest';
 
         return isEuRegion;
-    }, [landing_company]);
+    }, [isMFAccount, landing_company]);
 
     return {
         /** A boolean flag indicating if the region is within the EU */

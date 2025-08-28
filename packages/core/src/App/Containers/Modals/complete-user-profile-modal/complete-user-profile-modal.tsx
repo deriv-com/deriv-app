@@ -113,7 +113,7 @@ const CompleteUserProfile = observer(
         const changeable_fields = getChangeableFields();
 
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
-        const [setCitizenToDisplay] = React.useState('');
+        const [, setCitizenToDisplay] = React.useState('');
         const [submitting_currency, setSubmittingCurrency] = React.useState(false);
 
         const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
@@ -337,7 +337,6 @@ const CompleteUserProfile = observer(
                                                                         {...field}
                                                                         data-lpignore='true'
                                                                         autoComplete='off'
-                                                                        type='text'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
                                                                         onItemSelection={({ value }) =>

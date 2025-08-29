@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Field, FieldProps, Form, Formik, FormikHelpers, FormikValues } from 'formik';
 
 import {
@@ -400,21 +400,25 @@ const CompleteUserProfile = observer(
                                                                 ) : (
                                                                     <SelectNative
                                                                         {...field}
+                                                                        name={field.name}
                                                                         placeholder={localize('Citizenship')}
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
-                                                                        onChange={e => {
-                                                                            handleChange(e);
+                                                                        value={values.citizen}
+                                                                        onChange={(
+                                                                            e: ChangeEvent<HTMLSelectElement>
+                                                                        ) => {
+                                                                            field.onChange(e);
                                                                             setFieldValue(
                                                                                 'citizen',
                                                                                 e.target.value,
                                                                                 true
                                                                             );
-                                                                            setCitizenToDisplay(e.target.text);
                                                                         }}
                                                                         hint={localize(
                                                                             'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                                         )}
+                                                                        should_hide_disabled_options={false}
                                                                         className='complete-user-profile-modal__bottom-margin-field'
                                                                         required
                                                                     />

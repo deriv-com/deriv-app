@@ -340,7 +340,7 @@ const CompleteUserProfile = observer(
                                                                             <Autocomplete
                                                                                 {...field}
                                                                                 data-lpignore='true'
-                                                                                autoComplete='none'
+                                                                                autoComplete='new-password'
                                                                                 type='text'
                                                                                 label={localize('Place of birth*')}
                                                                                 list_items={residence_list}
@@ -363,23 +363,57 @@ const CompleteUserProfile = observer(
                                                                                     if (place_of_birth_to_display) {
                                                                                         setPlaceOfBirthToDisplay('');
                                                                                     }
-                                                                                    setFieldValue('citizen', '', false);
+                                                                                    setFieldValue(
+                                                                                        'place_of_birth',
+                                                                                        '',
+                                                                                        false
+                                                                                    );
                                                                                     field.onChange(e);
                                                                                 }}
                                                                                 onBlur={e => {
-                                                                                    if (
-                                                                                        !e.target.value &&
-                                                                                        values.citizen
-                                                                                    ) {
+                                                                                    const typed_value =
+                                                                                        e.target.value.trim();
+
+                                                                                    if (typed_value) {
+                                                                                        const exact_match =
+                                                                                            residence_list.find(
+                                                                                                item =>
+                                                                                                    item.text.toLowerCase() ===
+                                                                                                    typed_value.toLowerCase()
+                                                                                            );
+
+                                                                                        if (exact_match) {
+                                                                                            // If exact match found, use the country code (value)
+                                                                                            setFieldValue(
+                                                                                                'place_of_birth',
+                                                                                                exact_match.value,
+                                                                                                true
+                                                                                            );
+                                                                                            setPlaceOfBirthToDisplay(
+                                                                                                exact_match.text
+                                                                                            );
+                                                                                        } else {
+                                                                                            // If no exact match, clear the field
+                                                                                            setFieldValue(
+                                                                                                'place_of_birth',
+                                                                                                '',
+                                                                                                true
+                                                                                            );
+                                                                                            setPlaceOfBirthToDisplay(
+                                                                                                ''
+                                                                                            );
+                                                                                        }
+                                                                                    } else if (values.place_of_birth) {
+                                                                                        // If input is empty but there's a stored value, restore the display
                                                                                         setPlaceOfBirthToDisplay(
                                                                                             residence_list.find(
                                                                                                 item =>
                                                                                                     item.value ===
-                                                                                                    values.place_of_birth
-                                                                                            )?.text ||
-                                                                                                values.place_of_birth
+                                                                                                    values.citizen
+                                                                                            )?.text || values.citizen
                                                                                         );
                                                                                     }
+
                                                                                     field.onBlur(e);
                                                                                 }}
                                                                             />
@@ -442,7 +476,7 @@ const CompleteUserProfile = observer(
                                                                     <Autocomplete
                                                                         {...field}
                                                                         data-lpignore='true'
-                                                                        autoComplete='none'
+                                                                        autoComplete='new-password'
                                                                         type='text'
                                                                         label={localize('Citizenship*')}
                                                                         list_items={residence_list}
@@ -465,7 +499,32 @@ const CompleteUserProfile = observer(
                                                                             field.onChange(e);
                                                                         }}
                                                                         onBlur={e => {
-                                                                            if (!e.target.value && values.citizen) {
+                                                                            const typed_value = e.target.value.trim();
+
+                                                                            if (typed_value) {
+                                                                                const exact_match = residence_list.find(
+                                                                                    item =>
+                                                                                        item.text.toLowerCase() ===
+                                                                                        typed_value.toLowerCase()
+                                                                                );
+
+                                                                                if (exact_match) {
+                                                                                    // If exact match found, use the country code (value)
+                                                                                    setFieldValue(
+                                                                                        'citizen',
+                                                                                        exact_match.value,
+                                                                                        true
+                                                                                    );
+                                                                                    setCitizenToDisplay(
+                                                                                        exact_match.text
+                                                                                    );
+                                                                                } else {
+                                                                                    // If no exact match, clear the field
+                                                                                    setFieldValue('citizen', '', true);
+                                                                                    setCitizenToDisplay('');
+                                                                                }
+                                                                            } else if (values.citizen) {
+                                                                                // If input is empty but there's a stored value, restore the display
                                                                                 setCitizenToDisplay(
                                                                                     residence_list.find(
                                                                                         item =>
@@ -474,6 +533,7 @@ const CompleteUserProfile = observer(
                                                                                     )?.text || values.citizen
                                                                                 );
                                                                             }
+
                                                                             field.onBlur(e);
                                                                         }}
                                                                     />

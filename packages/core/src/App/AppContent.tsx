@@ -9,8 +9,6 @@ import {
     useIntercom,
     useIsHubRedirectionEnabled,
     useLiveChat,
-    useOauth2,
-    useSilentLoginAndLogout,
 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { ThemeProvider } from '@deriv-com/quill-ui';
@@ -41,7 +39,6 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         landing_company_shortcode,
         currency,
         residence,
-        logout,
         email,
         setIsPasskeySupported,
         account_settings,
@@ -57,20 +54,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const location = useLocation();
     const has_access_denied_error = location.search.includes('access_denied');
 
-    const { oAuthLogout } = useOauth2({
-        handleLogout: async () => {
-            await logout();
-        },
-    });
     const { isChangingToHubAppId } = useIsHubRedirectionEnabled();
 
     const is_app_id_set = localStorage.getItem('config.app_id');
     const is_change_login_app_id_set = localStorage.getItem('change_login_app_id');
-
-    useSilentLoginAndLogout({
-        is_client_store_initialized,
-        oAuthLogout,
-    });
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',

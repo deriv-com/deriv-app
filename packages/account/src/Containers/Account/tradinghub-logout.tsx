@@ -1,5 +1,4 @@
 import React from 'react';
-import { useOauth2 } from '@deriv/hooks';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
@@ -10,15 +9,14 @@ import { Localize } from '@deriv/translations';
  * @returns React Component
  */
 const TradingHubLogout = ({ handleOnLogout }: { handleOnLogout: () => Promise<void> }) => {
-    const { oAuthLogout } = useOauth2({ handleLogout: handleOnLogout });
     return (
         <div
             className='dc-vertical-tab__header-account__logout-tab'
-            onClick={oAuthLogout}
+            onClick={handleOnLogout}
             data-testid='dt_logout_tab'
             onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                    oAuthLogout();
+                    handleOnLogout();
                 }
             }}
             role='button'

@@ -24,6 +24,11 @@ export const ValidationSchema = (is_svg: boolean, account_settings?: Record<stri
                 }),
             otherwise: schema => schema,
         }),
+        place_of_birth: Yup.string().when([], {
+            is: () => !account_settings?.place_of_birth,
+            then: schema => schema.required(localize('Place of birth is required.')),
+            otherwise: schema => schema,
+        }),
         citizen: Yup.string().when([], {
             is: () => !account_settings?.citizen,
             then: schema => schema.required(localize('Citizenship is required.')),

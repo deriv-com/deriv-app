@@ -3,12 +3,11 @@ import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { Icon, Loading } from '@deriv/components';
-import { useIsHubRedirectionEnabled, useOauth2 } from '@deriv/hooks';
+import { useIsHubRedirectionEnabled } from '@deriv/hooks';
 import { BrandBrandLightDerivWordmarkHorizontal25YearsEnglishIcon as DerivLogo } from '@deriv/quill-icons';
 import { getDomainUrl, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { requestOidcAuthentication } from '@deriv-com/auth-client';
 import { Text } from '@deriv-com/ui';
 
 import './AccessDeniedScreen.scss';
@@ -26,24 +25,11 @@ const AccessDeniedScreen = observer(() => {
     const { client } = useStore();
     const { has_wallet, logout } = client;
     const { isHubRedirectionEnabled } = useIsHubRedirectionEnabled();
-    const { oAuthLogout } = useOauth2({
-        handleLogout: async () => {
-            setIsLoading(true);
-
-            try {
-                await logout();
-                await requestOidcAuthentication({
-                    redirectCallbackUri: `${window.location.origin}/callback`,
-                });
-
-                setIsLoading(false);
-            } catch (err) {
-                // eslint-disable-next-line no-console
-                console.error(err);
-                setIsLoading(false);
-            }
-        },
-    });
+    const handleLogout = async () => {
+        setIsLoading(true);
+        await logout();
+        setIsLoading(false);
+    };
 
     const continueOnClick = () => {
         if (isHubRedirectionEnabled && has_wallet) {
@@ -82,7 +68,7 @@ const AccessDeniedScreen = observer(() => {
                             </button>
                             <button
                                 className='access-denied__button access-denied__button--switch'
-                                onClick={oAuthLogout}
+                                onClick={handleLogout}
                             >
                                 {localize('Switch account')}
                             </button>

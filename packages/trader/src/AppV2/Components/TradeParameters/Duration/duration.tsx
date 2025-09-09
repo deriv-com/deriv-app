@@ -28,7 +28,6 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         setSavedExpiryDateV2,
         setUnsavedExpiryDateV2,
         start_time,
-        symbol,
         trade_type_tab,
         trade_types,
         unsaved_expiry_date_v2,
@@ -110,7 +109,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         setEndDate(new Date(start_date));
 
         return () => clearTimeout(start_duration);
-    }, [symbol, contract_type, duration_min_max, duration_units_list]);
+    }, [contract_type, duration_min_max, duration_units_list]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

@@ -3,10 +3,10 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-const is_release =
+const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
-const svg_loaders = [
+const svgLoaders = [
     {
         loader: 'babel-loader',
         options: {
@@ -35,7 +35,7 @@ module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
-        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
+        devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             index: path.resolve(__dirname, './src', 'index.tsx'),
         },
@@ -57,7 +57,7 @@ module.exports = function (env) {
             /^@deriv\/shared\/.+$/,
             /^@deriv\/translations\/.+$/,
         ],
-        mode: is_release ? 'production' : 'development',
+        mode: isRelease ? 'production' : 'development',
         module: {
             rules: [
                 {
@@ -85,7 +85,7 @@ module.exports = function (env) {
                 // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
                 {
                     loader: 'source-map-loader',
-                    test: input => is_release && /\.js$/.test(input),
+                    test: input => isRelease && /\.js$/.test(input),
                 },
                 {
                     test: /\.(sc|sa|c)ss$/,
@@ -133,22 +133,22 @@ module.exports = function (env) {
                         filename: 'wallets/public/[name].[contenthash][ext]',
                     },
                     include: /public\//,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.scss/,
+                    issuer: /\/packages\/wallets\/.*(\/)?\.*.scss/,
                     test: /\.svg$/,
                     type: 'asset/resource',
                 },
                 {
                     exclude: /node_modules/,
                     include: /public\//,
-                    issuer: /\/packages\/wallets\/.*(\/)?.*.tsx/,
+                    issuer: /\/packages\/wallets\/.*(\/)?\.*.tsx/,
                     test: /\.svg$/,
-                    use: svg_loaders,
+                    use: svgLoaders,
                 },
             ],
         },
         optimization: {
-            minimize: is_release,
-            minimizer: is_release
+            minimize: isRelease,
+            minimizer: isRelease
                 ? [
                       new TerserPlugin({
                           parallel: 2,

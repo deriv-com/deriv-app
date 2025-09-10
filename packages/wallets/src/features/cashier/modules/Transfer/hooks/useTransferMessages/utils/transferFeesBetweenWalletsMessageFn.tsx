@@ -21,7 +21,7 @@ const transferFeesBetweenWalletsMessageFn = ({
 
     const isTransferBetweenCryptoWallets =
         sourceAccount.account_type === 'crypto' && targetAccount.account_type === 'crypto';
-    const minimumFeeAmount = 1 / Math.pow(10, sourceAccount.currencyConfig.fractional_digits);
+    const minimumFeeAmount = 1 / 10 ** sourceAccount.currencyConfig.fractional_digits;
 
     const minimumFeeText = displayMoney?.(
         minimumFeeAmount,

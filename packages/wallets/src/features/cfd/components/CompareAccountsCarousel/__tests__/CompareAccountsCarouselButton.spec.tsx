@@ -73,11 +73,11 @@ describe('CompareAccountsCarouselButton', () => {
         expect(screen.getByTestId('dt_compare_accounts_carousel_button')).toBeDisabled();
     });
 
-    it('calls onClick event when button is clicked', () => {
+    it('calls onClick event when button is clicked', async () => {
         const mockOnClick = jest.fn();
         render(<CompareAccountsCarouselButton {...defaultProps} onClick={mockOnClick} />);
 
-        userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_button'));
+        await userEvent.click(screen.getByTestId('dt_compare_accounts_carousel_button'));
         expect(mockOnClick).toHaveBeenCalledTimes(1);
     });
 });

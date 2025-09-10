@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import WalletsAuthProvider from '../../../AuthProvider';
 import { ModalProvider } from '../../ModalProvider';
 import WalletSuccessChangeMT5Password from '../WalletSuccessChangeMT5Password';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../../AuthProvider';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

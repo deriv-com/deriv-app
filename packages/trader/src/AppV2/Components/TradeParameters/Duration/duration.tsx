@@ -83,12 +83,15 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     }, [duration_unit]);
 
     useEffect(() => {
+        console.log(isInitialMount.current);
+
         if (isInitialMount.current) {
             const timer = setTimeout(() => {
                 isInitialMount.current = false;
             }, 500);
             return () => clearTimeout(timer);
         }
+        console.log('here');
 
         const result = getSmallestDuration(duration_min_max, duration_units_list);
         if (result?.unit == 'd') {

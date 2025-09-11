@@ -519,6 +519,11 @@ const AccountTransferForm = observer(
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>
                 )}
+                <InlineMessage className='account-transfer-form__inline-message' type='information'>
+                    <Text as='span' size='xxxs'>
+                        <Localize i18n_default_text='Transfers between accounts are only available for trading, not withdrawals. To withdraw funds, use the same method you used to deposit.' />
+                    </Text>
+                </InlineMessage>
                 {is_russia_restricted && (
                     <InlineMessage className='account-transfer-form__inline-message' type='warning'>
                         <Text as='span' size='xxxs'>

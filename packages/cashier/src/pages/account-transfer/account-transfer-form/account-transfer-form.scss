@@ -12,10 +12,12 @@
     }
 
     &__inline-message {
+        width: 36rem;
         margin: 0 0 2.4rem;
 
         @include mobile-or-tablet-screen {
             margin: 0 0 1.6rem;
+            width: unset;
         }
     }
 

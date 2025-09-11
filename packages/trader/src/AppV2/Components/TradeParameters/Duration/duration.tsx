@@ -91,7 +91,7 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             }, 500);
             return () => clearTimeout(timer);
         }
-        console.log('here');
+        console.log('here', duration_min_max);
 
         const result = getSmallestDuration(duration_min_max, duration_units_list);
         if (result?.unit == 'd') {
@@ -113,6 +113,10 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
 
         return () => clearTimeout(start_duration);
     }, [contract_type, duration_min_max, duration_units_list]);
+
+    useEffect(() => {
+        console.log('duration_min_max', duration_min_max, contract_type, duration_units_list);
+    }, [duration_min_max, contract_type, duration_units_list]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

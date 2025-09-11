@@ -94,24 +94,20 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         if (result?.unit == 'd') {
             setEndDate(new Date());
         }
-        const isDurationUnitInList = duration_units_list?.some(unitObj => unitObj.value === duration_unit);
-        if (!isDurationUnitInList && duration_units_list?.length > 0) {
-            const start_duration = setTimeout(() => {
-                onChangeMultiple({
-                    duration_unit: result?.unit,
-                    duration: result?.value,
-                    expiry_time: null,
-                    expiry_type: 'duration',
-                });
-            }, 10);
-
-            return () => clearTimeout(start_duration);
-        }
+        const start_duration = setTimeout(() => {
+            onChangeMultiple({
+                duration_unit: result?.unit,
+                duration: result?.value,
+                expiry_time: null,
+                expiry_type: 'duration',
+            });
+        }, 10);
 
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
         setEndDate(new Date(start_date));
-    }, [contract_type, duration_min_max, duration_units_list]);
+        return () => clearTimeout(start_duration);
+    }, [duration_min_max, duration_units_list]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

@@ -213,7 +213,7 @@ const DayInput = ({
             const [dayStr, monthStr, yearStr] = formatted_date.split(' ');
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             const year = Number(yearStr);
-            const month = months.indexOf(monthStr);
+            const month = months.indexOf(monthStr.slice(0, 3));
             const date = Number(dayStr);
 
             return year === server_time.year() && month === server_time.month() && date === server_time.date();

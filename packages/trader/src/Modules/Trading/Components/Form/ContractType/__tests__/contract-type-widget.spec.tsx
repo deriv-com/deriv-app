@@ -5,6 +5,11 @@ import { mockStore } from '@deriv/stores';
 import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
+// Mock the components that might cause issues in tests
+jest.mock('@lottiefiles/dotlottie-react', () => ({
+    DotLottieReact: () => <div data-testid='mocked-dotlottie' />,
+}));
+
 const mock_connect_props = {
     modules: {
         trade: {
@@ -109,7 +114,7 @@ describe('<ContractTypeWidget />', () => {
         value: item.value,
     };
 
-    it('should render <ContractTypeMenu /> component when click on ', () => {
+    it('should render the contract type widget component', () => {
         render(<ContractTypeWidget {...mocked_default_props} />, {
             wrapper: ({ children }) => (
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>

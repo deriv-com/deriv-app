@@ -39,3 +39,45 @@ const mock_onfido = {
 };
 
 window.Onfido = mock_onfido;
+
+// Mock IntersectionObserver which is used by @lottiefiles/dotlottie-react
+class IntersectionObserver {
+    constructor(callback) {
+        this.callback = callback;
+    }
+
+    observe() {
+        return null;
+    }
+
+    unobserve() {
+        return null;
+    }
+
+    disconnect() {
+        return null;
+    }
+}
+
+global.IntersectionObserver = IntersectionObserver;
+
+// Mock ResizeObserver which is also used by @lottiefiles/dotlottie-react
+class ResizeObserver {
+    constructor(callback) {
+        this.callback = callback;
+    }
+
+    observe() {
+        return null;
+    }
+
+    unobserve() {
+        return null;
+    }
+
+    disconnect() {
+        return null;
+    }
+}
+
+global.ResizeObserver = ResizeObserver;

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Text } from '@deriv/components';
-import { useOauth2 } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv-com/translations';
 import { URLUtils } from '@deriv-com/utils';
@@ -9,11 +8,6 @@ import { URLUtils } from '@deriv-com/utils';
 const AccountClosed = observer(() => {
     const { client } = useStore();
     const { logout } = client;
-    const { oAuthLogout } = useOauth2({
-        handleLogout: async () => {
-            await logout();
-        },
-    });
     const [is_modal_open, setModalState] = useState(true);
     const [timer, setTimer] = useState(10);
 
@@ -27,12 +21,12 @@ const AccountClosed = observer(() => {
 
     useEffect(() => {
         window.history.pushState(null, '', '/');
-        oAuthLogout();
+        logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
-    }, [timer, is_modal_open, logout, counter, oAuthLogout]);
+    }, [timer, is_modal_open, logout, counter]);
 
     return (
         <Modal

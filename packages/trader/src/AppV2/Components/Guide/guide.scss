@@ -132,6 +132,15 @@
         padding-block-end: var(--component-actionSheet-spacing-padding-sm);
     }
 
+    &__badge {
+        background-color: var(--semantic-color-monochrome-surface-normal-lowest);
+        border-radius: var(--core-borderRadius-800);
+        padding: var(--component-actionSheet-spacing-padding-md);
+        margin-block: var(--component-actionSheet-spacing-padding-sm);
+        font-size: 1.4rem;
+        color: var(--component-textIcon-normal-default);
+    }
+
     &__content {
         &--definition {
             all: unset;

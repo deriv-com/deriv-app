@@ -1,71 +1,73 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { getTerm } from 'AppV2/Utils/contract-description-utils';
+import { render, screen, fireEvent } from '@testing-library/react';
 import VanillasTradeDescription from '../vanillas-trade-description';
+import { getTerm } from 'AppV2/Utils/contract-description-utils';
 
 jest.mock('@lottiefiles/dotlottie-react', () => ({
     DotLottieReact: jest.fn(() => <div>DotLottieReact</div>),
 }));
 
 describe('VanillasTradeDescription', () => {
-    it('should render a proper content', () => {
-        render(<VanillasTradeDescription onTermClick={jest.fn()} />);
+    const mockOnTermClick = jest.fn();
 
-        expect(screen.getByText(/Vanilla options allow you to predict an upward/i)).toBeInTheDocument();
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-    it('should call onTermClick if user clicks on term "payout"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
+    it('should render the video fragments', () => {
+        render(<VanillasTradeDescription onTermClick={mockOnTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT.toLowerCase() }));
-
-        expect(onTermClick).toHaveBeenCalled();
+        // Check if the DotLottieReact components are rendered
+        expect(screen.getAllByText('DotLottieReact')).toHaveLength(2); // Two videos: vanillas_call and vanillas_put
     });
 
-    it('should call onTermClick if user clicks on term "final price"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
+    it('should render all section headings', () => {
+        render(<VanillasTradeDescription onTermClick={mockOnTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().FINAL_PRICE.toLowerCase() }));
-
-        expect(onTermClick).toHaveBeenCalled();
+        // Check if all headings are rendered
+        expect(screen.getByText('Call')).toBeInTheDocument();
+        expect(screen.getByText('Put')).toBeInTheDocument();
+        expect(screen.getByText('Additional Information')).toBeInTheDocument();
     });
 
-    it('should call onTermClick if user clicks on term "strike price"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
+    it('should call onTermClick with the correct term when a term button is clicked', () => {
+        render(<VanillasTradeDescription onTermClick={mockOnTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().STRIKE_PRICE.toLowerCase() }));
+        const terms = getTerm();
 
-        expect(onTermClick).toHaveBeenCalled();
+        // Get all term buttons and test each one
+        const strikePriceButton = screen.getAllByRole('button')[0]; // STRIKE_PRICE term
+        fireEvent.click(strikePriceButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.STRIKE_PRICE);
+
+        const expiryButton = screen.getAllByRole('button')[1]; // EXPIRY term
+        fireEvent.click(expiryButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.EXPIRY);
+
+        const exitSpotButton = screen.getAllByRole('button')[2]; // EXIT_SPOT term
+        fireEvent.click(exitSpotButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.EXIT_SPOT);
+
+        const payoutButton = screen.getAllByRole('button')[3]; // PAYOUT term
+        fireEvent.click(payoutButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.PAYOUT);
+
+        const payoutPerPointButton = screen.getAllByRole('button')[4]; // PAYOUT_PER_POINT term
+        fireEvent.click(payoutPerPointButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.PAYOUT_PER_POINT);
+
+        const contractValueButton = screen.getAllByRole('button')[5]; // CONTRACT_VALUE term
+        fireEvent.click(contractValueButton);
+        expect(mockOnTermClick).toHaveBeenCalledWith(terms.CONTRACT_VALUE);
     });
 
-    it('should call onTermClick if user clicks on term "expiry"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
+    it('should render all expected paragraphs and content sections', () => {
+        render(<VanillasTradeDescription onTermClick={mockOnTermClick} />);
 
-        userEvent.click(screen.getByRole('button', { name: getTerm().EXPIRY.toLowerCase() }));
+        // Check for specific content sections that should be rendered
+        expect(screen.getByText(/Vanillas allow you to predict if the underlying/i)).toBeInTheDocument();
 
-        expect(onTermClick).toHaveBeenCalled();
-    });
-
-    it('should call onTermClick if user clicks on term "payout per point"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
-
-        userEvent.click(screen.getByRole('button', { name: getTerm().PAYOUT_PER_POINT.toLowerCase() }));
-
-        expect(onTermClick).toHaveBeenCalled();
-    });
-
-    it('should call onTermClick if user clicks on term "contract value"', () => {
-        const onTermClick = jest.fn();
-        render(<VanillasTradeDescription onTermClick={onTermClick} />);
-
-        userEvent.click(screen.getByRole('button', { name: getTerm().CONTRACT_VALUE.toLowerCase() }));
-
-        expect(onTermClick).toHaveBeenCalled();
+        // Check for the video components
+        expect(screen.getAllByText('DotLottieReact')).toHaveLength(2);
     });
 });

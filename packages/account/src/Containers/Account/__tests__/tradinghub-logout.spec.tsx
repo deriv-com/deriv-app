@@ -5,13 +5,6 @@ import userEvent from '@testing-library/user-event';
 
 import TradingHubLogout from '../tradinghub-logout';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useOauth2: jest.fn(({ handleLogout }) => ({
-        isOAuth2Enabled: true,
-        oAuthLogout: jest.fn(() => handleLogout && handleLogout()),
-    })),
-}));
 describe('TradingHubLogout', () => {
     const mock_props: React.ComponentProps<typeof TradingHubLogout> = {
         handleOnLogout: jest.fn(),

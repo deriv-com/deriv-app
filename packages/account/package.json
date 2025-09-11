@@ -11,7 +11,7 @@
         "url": "https://github.com/deriv-com/deriv-app/issues"
     },
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "scripts": {
         "analyze:stats": "f () { NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./build/webpack.config.js\" --env base=$1 --profile --json=stats.json;}; f",

@@ -4,10 +4,10 @@ import TurbosTradeDescription from '../turbos-trade-description';
 
 describe('<TurbosTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
-        render(<TurbosTradeDescription onClick={jest.fn()} />);
+        render(<TurbosTradeDescription />);
 
         expect(
-            screen.getByText(/Turbo options allow you to predict the direction of the underlying asset’s movements./i)
+            screen.getByText(/Turbos allow you to predict the direction of the underlying asset's/i)
         ).toBeInTheDocument();
     });
 });

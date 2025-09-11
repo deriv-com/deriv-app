@@ -33,6 +33,9 @@ const Popover = ({
     zIndex = '1',
     data_testid,
     arrow_styles,
+    is_inline_block,
+    arrow_color,
+    background_color,
 }: React.PropsWithChildren<TPopoverProps>) => {
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
@@ -72,6 +75,7 @@ const Popover = ({
                 onClick(e);
                 if (should_toggle_on_target_tap) setIsBubbleVisible(!is_bubble_visible);
             }}
+            style={is_inline_block ? { display: 'inline-block' } : undefined}
             data-testid='dt_popover_wrapper'
         >
             {relative_render && (
@@ -157,7 +161,7 @@ const Popover = ({
                                 position={position}
                                 childRect={childRect}
                                 popoverRect={popoverRect}
-                                arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
+                                arrowColor={has_error ? 'var(--status-danger)' : arrow_color || 'var(--general-active)'}
                                 arrowSize={5}
                                 arrowStyle={
                                     relative_render
@@ -186,6 +190,7 @@ const Popover = ({
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
+                                    style={background_color ? { backgroundColor: background_color } : undefined}
                                     ref={bubble_hover_ref as (node: HTMLDivElement) => void}
                                 >
                                     {!disable_message_icon && icon === 'info' && (

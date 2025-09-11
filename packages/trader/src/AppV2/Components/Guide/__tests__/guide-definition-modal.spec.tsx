@@ -20,7 +20,7 @@ describe('GuideDefinitionModal', () => {
 
         expect(screen.getByText(getTerm().GROWTH_RATE)).toBeInTheDocument();
         expect(
-            screen.getByText(/You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%/i)
+            screen.getByText(/A feature that lets you select a percentage gain for your stake/i)
         ).toBeInTheDocument();
     });
 });

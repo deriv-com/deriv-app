@@ -83,40 +83,35 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     }, [duration_unit]);
 
     useEffect(() => {
-        console.log(isInitialMount.current);
-
         if (isInitialMount.current) {
             const timer = setTimeout(() => {
                 isInitialMount.current = false;
             }, 500);
             return () => clearTimeout(timer);
         }
-        console.log('here', duration_min_max);
 
         const result = getSmallestDuration(duration_min_max, duration_units_list);
         if (result?.unit == 'd') {
             setEndDate(new Date());
         }
+        const isDurationUnitInList = duration_units_list?.some(unitObj => unitObj.value === duration_unit);
+        if (!isDurationUnitInList && duration_units_list?.length > 0) {
+            const start_duration = setTimeout(() => {
+                onChangeMultiple({
+                    duration_unit: result?.unit,
+                    duration: result?.value,
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
+            }, 10);
 
-        const start_duration = setTimeout(() => {
-            onChangeMultiple({
-                duration_unit: result?.unit,
-                duration: result?.value,
-                expiry_time: null,
-                expiry_type: 'duration',
-            });
-        }, 10);
+            return () => clearTimeout(start_duration);
+        }
 
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
 
         setEndDate(new Date(start_date));
-
-        return () => clearTimeout(start_duration);
     }, [contract_type, duration_min_max, duration_units_list]);
-
-    useEffect(() => {
-        console.log('duration_min_max', duration_min_max, contract_type, duration_units_list);
-    }, [duration_min_max, contract_type, duration_units_list]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

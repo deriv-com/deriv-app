@@ -504,3 +504,58 @@ export const getPayoutInfo = (proposal_info: ReturnType<typeof getProposalInfo>)
 
     return { contract_payout, max_payout, error: proposal_error_message };
 };
+
+export const isValidPersistedDuration = (
+    duration: number | null | undefined,
+    duration_unit: string | null | undefined,
+    duration_min_max: Record<string, { min: number; max: number }> | undefined,
+    duration_units_list: { value: string }[] | undefined
+): boolean => {
+    // Check if basic values exist
+    if (!duration || !duration_unit || !duration_min_max || !duration_units_list) {
+        return false;
+    }
+
+    // Check if the duration unit is available for current contract
+    const isUnitAvailable = duration_units_list.some(unit => unit.value === duration_unit);
+    if (!isUnitAvailable) {
+        return false;
+    }
+
+    // Validate against appropriate constraint category based on duration unit
+    if (duration_unit === 't') {
+        // For ticks, validate directly against tick constraints
+        if (duration_min_max.tick) {
+            return duration >= duration_min_max.tick.min && duration <= duration_min_max.tick.max;
+        }
+        return false;
+    }
+
+    // Convert duration to seconds for time-based units
+    let durationInSeconds: number;
+    switch (duration_unit) {
+        case 's': // seconds
+            durationInSeconds = duration;
+            break;
+        case 'm': // minutes
+            durationInSeconds = duration * 60;
+            break;
+        case 'h': // hours
+            durationInSeconds = duration * 3600;
+            break;
+        case 'd': // days
+            durationInSeconds = duration * 86400;
+            break;
+        default:
+            return false;
+    }
+
+    // Validate time-based durations against appropriate constraints
+    if (['s', 'm', 'h'].includes(duration_unit) && duration_min_max.intraday) {
+        return durationInSeconds >= duration_min_max.intraday.min && durationInSeconds <= duration_min_max.intraday.max;
+    } else if (duration_unit === 'd' && duration_min_max.daily) {
+        return durationInSeconds >= duration_min_max.daily.min && durationInSeconds <= duration_min_max.daily.max;
+    }
+
+    return false;
+};

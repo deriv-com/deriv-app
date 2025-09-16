@@ -1,6 +1,6 @@
 import { getExpiryType, getDurationMinMaxValues } from '@deriv/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import { TTradeStore } from 'Types';
+import { TTextValueStrings, TTradeStore } from 'Types';
 
 type TOnChangeExpiry = (store: TTradeStore) => {
     contract_expiry_type: string;
@@ -8,9 +8,6 @@ type TOnChangeExpiry = (store: TTradeStore) => {
     barrier_1?: string;
     barrier_2?: string;
 };
-type TAssertDurationParams = Partial<
-    Pick<TTradeStore, 'contract_expiry_type' | 'duration' | 'duration_min_max' | 'duration_unit'>
->;
 
 export const onChangeExpiry: TOnChangeExpiry = store => {
     const contract_expiry_type = getExpiryType(store);
@@ -26,25 +23,45 @@ export const onChangeExpiry: TOnChangeExpiry = store => {
     };
 };
 
-export const onChangeContractType = (store: TTradeStore) => {
+export const onChangeContractType = (store: TTradeStore, prev_duration_unit: string) => {
     const contract_expiry_type = getExpiryType(store);
 
-    const { duration, duration_min_max, duration_unit } = store;
+    const { duration, duration_min_max, duration_unit, duration_units_list } = store;
 
-    const obj_duration = assertDuration({ contract_expiry_type, duration, duration_min_max, duration_unit });
+    const obj_duration = assertDuration({
+        contract_expiry_type,
+        duration,
+        duration_min_max,
+        duration_unit,
+        prev_duration_unit,
+        duration_units_list,
+    });
 
     return {
         ...obj_duration,
     };
 };
 
-const assertDuration = ({
+export const assertDuration = ({
     contract_expiry_type,
     duration,
     duration_min_max,
     duration_unit,
-}: TAssertDurationParams = {}) => {
+    prev_duration_unit,
+    duration_units_list,
+}: {
+    contract_expiry_type: string;
+    duration: number;
+    duration_min_max: TTradeStore['duration_min_max'];
+    duration_unit: string;
+    prev_duration_unit?: string;
+    duration_units_list?: TTextValueStrings[];
+}) => {
     const [min, max] = getDurationMinMaxValues(duration_min_max ?? {}, contract_expiry_type ?? '', duration_unit ?? '');
+
+    if (prev_duration_unit && !duration_units_list?.map(unit => unit.value).includes(prev_duration_unit)) {
+        return { duration: min };
+    }
 
     if (Number(duration) < Number(min)) {
         return { duration: min };

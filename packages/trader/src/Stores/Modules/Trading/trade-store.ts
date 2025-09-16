@@ -953,36 +953,6 @@ export default class TradeStore extends BaseStore {
             this.stop_loss = '';
         }
 
-        // Reset duration and barrier when switching TO Vanilla contracts
-        if (name === 'contract_type' && value) {
-            const is_switching_to_vanilla = isVanillaContract(value as string);
-            const was_vanilla = isVanillaContract(this.contract_type);
-
-            if (is_switching_to_vanilla) {
-                // Reset expiry type to duration for ALL Vanilla contract selections
-                // This ensures the duration toggle always resets to "Duration" tab
-                this.expiry_type = 'duration';
-                this.root_store.ui.advanced_expiry_type = 'duration';
-                this.expiry_time = null;
-                this.expiry_date = null;
-
-                // ALWAYS reset duration_unit to minutes for ALL Vanilla contract switches
-                // This ensures that switching back to Vanilla always shows minutes, not days/hours
-                this.duration_unit = 'm';
-
-                // Also reset UI store duration units to ensure dropdowns show minutes
-                this.root_store.ui.advanced_duration_unit = 'm';
-                this.root_store.ui.simple_duration_unit = 'm';
-
-                // Only reset other defaults when switching from non-Vanilla to Vanilla
-                if (!was_vanilla) {
-                    // Reset to safe defaults for Vanilla contracts
-                    // Use minutes (m) with duration 5 to ensure relative barriers (+/-)
-                    this.duration = 5;
-                }
-            }
-        }
-
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
@@ -1453,7 +1423,6 @@ export default class TradeStore extends BaseStore {
                     this.root_store.ui.is_advanced_duration = false;
                 }
             }
-
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
             await processTradeParams(this, new_state);

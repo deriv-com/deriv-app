@@ -189,92 +189,122 @@ describe('onChangeContractType', () => {
 
     it('should return an empty object if duration is correct, i.e. between min & max values', () => {
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 5000,
-                duration_min_max: { intraday: intraday_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 5000,
+                    duration_min_max: { intraday: intraday_min_max },
+                },
+                'm'
+            )
         ).toMatchObject({});
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration_unit: 'h',
-                duration: 3,
-                duration_min_max: { daily: daily_min_max, intraday: intraday_min_max, tick: tick_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration_unit: 'h',
+                    duration: 3,
+                    duration_min_max: { daily: daily_min_max, intraday: intraday_min_max, tick: tick_min_max },
+                },
+                'h'
+            )
         ).toMatchObject({});
     });
     it('should return an object with a correct min duration if duration is less than min value in seconds', () => {
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 0,
-                duration_min_max: { intraday: intraday_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 0,
+                    duration_min_max: { intraday: intraday_min_max },
+                },
+                'm'
+            )
         ).toMatchObject({
             duration: 1,
         });
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 3,
-                duration_min_max: { tick: tick_min_max },
-                duration_unit: 't',
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 3,
+                    duration_min_max: { tick: tick_min_max },
+                    duration_unit: 't',
+                },
+                't'
+            )
         ).toMatchObject({
             duration: 5,
         });
     });
     it('should return an object with a correct max duration if duration is more than max value in seconds', () => {
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 1500,
-                duration_min_max: { intraday: intraday_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 1500,
+                    duration_min_max: { intraday: intraday_min_max },
+                },
+                'm'
+            )
         ).toMatchObject({
             duration: 1440,
         });
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 1500,
-                duration_min_max: { daily: daily_min_max },
-                duration_unit: 'd',
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 1500,
+                    duration_min_max: { daily: daily_min_max },
+                    duration_unit: 'd',
+                },
+                'd'
+            )
         ).toMatchObject({
             duration: 365,
         });
     });
     it('should return an empty object if duration, duration_unit, or duration_min_max are not available for intraday expiry_type', () => {
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: undefined,
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: undefined,
+                },
+                'm'
+            )
         ).toMatchObject({});
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration_unit: undefined,
-                duration: 1,
-                duration_min_max: { intraday: intraday_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration_unit: undefined,
+                    duration: 1,
+                    duration_min_max: { intraday: intraday_min_max },
+                },
+                'm'
+            )
         ).toMatchObject({});
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration_unit: 'h',
-                duration: 1,
-                duration_min_max: {},
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration_unit: 'h',
+                    duration: 1,
+                    duration_min_max: {},
+                },
+                'h'
+            )
         ).toMatchObject({});
         expect(
-            onChangeContractType({
-                ...trade_store,
-                duration: 1,
-                duration_min_max: { daily: daily_min_max },
-            })
+            onChangeContractType(
+                {
+                    ...trade_store,
+                    duration: 1,
+                    duration_min_max: { daily: daily_min_max },
+                },
+                'm'
+            )
         ).toMatchObject({});
     });
 });

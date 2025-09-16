@@ -7,7 +7,7 @@ import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
 import { getDisplayedContractTypes } from 'AppV2/Utils/trade-types-utils';
-import { getDatePickerStartDate } from 'AppV2/Utils/trade-params-utils';
+import { getDatePickerStartDate, getSmallestDuration } from 'AppV2/Utils/trade-params-utils';
 import { useStore } from '@deriv/stores';
 import { TTradeParametersProps } from '../trade-parameters';
 
@@ -97,6 +97,29 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
         setEndDate(new Date(start_date));
     }, [symbol, duration_min_max, duration_units_list, duration, duration_unit]);
+
+    useEffect(() => {
+        if (duration_unit === 'd') {
+            const result = getSmallestDuration(duration_min_max, duration_units_list);
+            if (result?.unit == 'd') {
+                setEndDate(new Date());
+            }
+
+            const start_duration = setTimeout(() => {
+                onChangeMultiple({
+                    duration_unit: result?.unit,
+                    duration: result?.value,
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
+            }, 10);
+
+            const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
+            setEndDate(new Date(start_date));
+
+            return () => clearTimeout(start_duration);
+        }
+    }, [duration_units_list, duration_min_max, symbol, contract_type]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

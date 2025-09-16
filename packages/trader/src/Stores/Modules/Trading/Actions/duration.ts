@@ -42,7 +42,7 @@ export const onChangeContractType = (store: TTradeStore, prev_duration_unit: str
     };
 };
 
-export const assertDuration = ({
+const assertDuration = ({
     contract_expiry_type,
     duration,
     duration_min_max,

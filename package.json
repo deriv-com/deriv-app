@@ -30,7 +30,9 @@
         "micromatch": "^4.0.8",
         "svg-baker": "^1.7.0",
         "svg-baker-runtime": "^1.4.7",
-        "svg-sprite-loader": "^2.0.3"
+        "svg-sprite-loader": "^2.0.3",
+        "eslint-import-resolver-typescript": "^3.6.1",
+        "@typescript-eslint/utils": "^8.44.0"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",

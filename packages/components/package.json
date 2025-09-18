@@ -61,7 +61,7 @@
         "sass-loader": "^12.6.0",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",
-        "svg-sprite-loader": "^6.0.11",
+        "svg-sprite-loader": "^2.0.3",
         "svgo-loader": "^3.0.0",
         "typescript": "^4.6.3",
         "webpack": "^5.81.0",
@@ -72,6 +72,7 @@
         "@cloudflare/stream-react": "^1.9.1",
         "@contentpass/zxcvbn": "^4.4.3",
         "@deriv-com/ui": "1.36.4",
+        "@deriv/deriv-charts": "1.4.2",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
@@ -97,6 +98,8 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-virtualized": "^9.22.5",
+        "resolve-url-loader": "5.0.0",
+        "stylelint": "16.24.0",
         "usehooks-ts": "^2.7.0"
     }
 }

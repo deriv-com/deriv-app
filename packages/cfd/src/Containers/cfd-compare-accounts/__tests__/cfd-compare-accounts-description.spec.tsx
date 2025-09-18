@@ -62,7 +62,7 @@ describe('<CFDCompareAccountsDescription />', () => {
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
 
-        expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();
+        expect(screen.getByText('Up to 1:10000')).toBeInTheDocument();
         expect(screen.getByText('0.2 pips')).toBeInTheDocument();
     });
 
@@ -106,7 +106,7 @@ describe('<CFDCompareAccountsDescription />', () => {
                 market_type: 'financial',
                 shortcode: 'maltainvest',
                 instruments: ['Forex', 'Cryptocurrencies'],
-                product_details: { max_leverage: '1:30', min_spread: '0.5' },
+                product_details: { max_leverage: '1:10000', min_spread: '0.5' },
                 platform: 'ctrader',
             },
             is_demo: false,
@@ -116,7 +116,7 @@ describe('<CFDCompareAccountsDescription />', () => {
                 <CFDCompareAccountsDescription {...mocked_props} />
             </StoreProvider>
         );
-        expect(screen.getByText('Up to 1:30')).toBeInTheDocument();
+        expect(screen.getByText('Up to 1:10000')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
     });
 });

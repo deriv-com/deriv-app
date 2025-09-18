@@ -213,8 +213,28 @@ const cfd_config = () => ({
     regulator_license: '',
 });
 
+// Config specifically for cTrader
+const ctrader_config = () => ({
+    leverage: '1:10000',
+    leverage_description: localize('Maximum leverage'),
+    spread: '0.5 pips',
+    spread_description: localize('Spreads from'),
+    counterparty_company: 'Deriv (SVG) LLC',
+    counterparty_company_description: localize('Counterparty company'),
+    jurisdiction: 'St. Vincent & Grenadines',
+    jurisdiction_description: localize('Jurisdiction'),
+    regulator: localize('Financial Commission'),
+    regulator_description: localize('Regulator/External dispute resolution'),
+    regulator_license: '',
+});
+
 // Map the Jurisdictions with the config
 const getJuridisctionDescription = (shortcode: string, trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
+    // If platform is ctrader, use ctrader_config
+    if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
+        return ctrader_config();
+    }
+    
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC:
         case MARKET_TYPE_SHORTCODE.FINANCIAL:
@@ -421,6 +441,8 @@ export {
     getEUAvailableAccounts,
     dxtrade_data,
     ctrader_data,
+    cfd_config,
+    ctrader_config,
     getHeaderColor,
     platformsHeaderLabel,
     getMT5DemoData,

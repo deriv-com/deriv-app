@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CompareAccountsDescription from '../CompareAccountsDescription';
+import { CFD_PLATFORMS } from '../../../constants';
 
 describe('CompareAccountsDescription', () => {
     const defaultProps = {
@@ -18,6 +19,22 @@ describe('CompareAccountsDescription', () => {
         expect(screen.getByText('Up to 1:1000')).toBeInTheDocument();
         expect(screen.getByText('Maximum leverage')).toBeInTheDocument();
         expect(screen.getByText('0.6 pips')).toBeInTheDocument();
+        expect(screen.getByText('Spreads from')).toBeInTheDocument();
+    });
+    
+    it('renders cTrader account with 1:10000 leverage', () => {
+        render(<CompareAccountsDescription 
+            {...defaultProps} 
+            platform={CFD_PLATFORMS.CTRADER}
+            productDetails={{
+                max_leverage: '1:10000',
+                min_spread: '0.5',
+            }}
+        />);
+
+        expect(screen.getByText('Up to 1:10000')).toBeInTheDocument();
+        expect(screen.getByText('Maximum leverage')).toBeInTheDocument();
+        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
     });
 

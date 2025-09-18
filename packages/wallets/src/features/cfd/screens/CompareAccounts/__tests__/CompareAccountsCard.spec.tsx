@@ -36,6 +36,24 @@ describe('CompareAccountsCard', () => {
         expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
     });
+    
+    it('renders cTrader account with 1:10000 leverage', () => {
+        //@ts-expect-error we only need partial types
+        render(<CompareAccountsCard {...defaultProps} account={{
+            platform: 'ctrader',
+            product: 'ctrader',
+            product_details: {
+                max_leverage: '1:10000',
+                min_spread: '0.5',
+            },
+        }} />, { wrapper });
+
+        expect(screen.getByText('Deriv cTrader')).toBeInTheDocument();
+        expect(screen.getByText('Up to 1:10000')).toBeInTheDocument();
+        expect(screen.getByText('Maximum leverage')).toBeInTheDocument();
+        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
+        expect(screen.getByText('Spreads from')).toBeInTheDocument();
+    });
 
     it('renders the new banner for Zero Spread and Gold platforms', () => {
         const { rerender } = render(

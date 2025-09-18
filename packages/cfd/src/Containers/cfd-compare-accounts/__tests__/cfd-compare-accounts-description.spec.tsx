@@ -116,7 +116,7 @@ describe('<CFDCompareAccountsDescription />', () => {
                 <CFDCompareAccountsDescription {...mocked_props} />
             </StoreProvider>
         );
-        expect(screen.getByText('Up to 1:30')).toBeInTheDocument();
-        expect(screen.getByText('Leverage')).toBeInTheDocument();
+        expect(screen.getByText('Up to 1:10000')).toBeInTheDocument();
+        expect(screen.getByText('Maximum leverage')).toBeInTheDocument();
     });
 });

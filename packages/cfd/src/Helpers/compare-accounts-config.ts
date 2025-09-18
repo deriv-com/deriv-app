@@ -213,8 +213,19 @@ const cfd_config = () => ({
     regulator_license: '',
 });
 
+// Config specifically for cTrader platform
+const ctrader_config = () => ({
+    ...cfd_config(),
+    leverage: '1:10000',  // Updated leverage for cTrader
+});
+
 // Map the Jurisdictions with the config
 const getJuridisctionDescription = (shortcode: string, trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
+    // Check if platform is cTrader and return ctrader_config
+    if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
+        return ctrader_config();
+    }
+    
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC:
         case MARKET_TYPE_SHORTCODE.FINANCIAL:
@@ -421,6 +432,8 @@ export {
     getEUAvailableAccounts,
     dxtrade_data,
     ctrader_data,
+    cfd_config,
+    ctrader_config,
     getHeaderColor,
     platformsHeaderLabel,
     getMT5DemoData,

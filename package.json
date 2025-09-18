@@ -32,7 +32,9 @@
         "svg-baker-runtime": "^1.4.7",
         "svg-sprite-loader": "^2.0.3",
         "eslint-import-resolver-typescript": "^3.6.1",
-        "@typescript-eslint/utils": "^8.44.0"
+        "@typescript-eslint/utils": "^8.44.0",
+        "stylelint": "^15.11.0",
+        "stylelint-webpack-plugin": "^4.1.1"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
@@ -81,7 +83,7 @@
         "postcss": "^8.4.31",
         "prettier": "^3.0.0",
         "storybook": "^8.3.5",
-        "stylelint": "^16.24.0",
+        "stylelint": "^15.11.0",
         "stylelint-config-prettier": "^8.0.2",
         "stylelint-formatter-pretty": "^2.1.1",
         "stylelint-no-unsupported-browser-features": "^4.0.0",
@@ -98,9 +100,9 @@
         "test:eslint-all": "nx run-many --target=test:eslint",
         "test:eslint-one": "f () { nx test @deriv/$1 --target=test:eslint ;}; f",
         "test:eslint-since": "f () { nx affected --target=eslint ;}; f",
-        "bootstrap:ci": "npm ci --legacy-peer-deps --verbose",
-        "bootstrap": "npm ci --strict-peer-deps --verbose",
-        "bootstrap:dev": "npm install --strict-peer-deps --verbose",
+        "bootstrap:ci": "npm ci --no-strict-peer-deps --verbose",
+        "bootstrap": "npm ci --no-strict-peer-deps --verbose",
+        "bootstrap:dev": "npm install --no-strict-peer-deps --verbose",
         "build:publish": "npm run build:publish --workspace=@deriv/* --",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
         "build:travis": "nx run-many --projects=@deriv/shared,@deriv/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports --target=build:travis",

@@ -11,7 +11,14 @@
         "eslint": "^8.57.1",
         "react-dom": "^17.0.2",
         "nth-check": "2.0.1",
-        "sha.js": "^2.4.12"
+        "sha.js": "^2.4.12",
+        "webpack-dev-middleware": "^5.3.4",
+        "axios": "^1.12.2"
+    },
+    "resolutions": {
+        "**/braces": "^3.0.3",
+        "**/micromatch": "^4.0.8", 
+        "**/lodash.set": "^4.3.2"
     },
     "devDependencies": {
         "@babel/core": "^7.25.2",
@@ -111,7 +118,9 @@
         "@deriv-com/analytics": "1.31.6",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
+        "axios": "1.8.2",
         "babel-jest": "^29.7.0",
+        "braces": "3.0.3",
         "dotenv": "^8.2.0",
         "form-data": "^4.0.4",
         "nth-check": "2.0.1",

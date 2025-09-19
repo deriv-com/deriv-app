@@ -9,6 +9,13 @@
         height: 2.4rem;
         cursor: pointer;
         background-color: var(--general-section-1);
+
+        &--disabled {
+            width: 100%;
+            height: 2.4rem;
+            cursor: not-allowed;
+            background-color: var(--general-section-3);
+        }
     }
 
     &__block-container {

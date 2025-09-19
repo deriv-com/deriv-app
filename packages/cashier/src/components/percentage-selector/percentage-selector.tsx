@@ -7,6 +7,7 @@ import { useExchangeRate } from '@deriv/hooks';
 
 type TPercentageSelectorProps = {
     amount: number;
+    disabled?: boolean;
     from_account?: string;
     getCalculatedAmount: (amount: string, converted_amount: number) => void;
     percentage: number;
@@ -20,6 +21,7 @@ type TCalculateAmountInputEvent = { target: { id: number } };
 
 const PercentageSelector = ({
     amount,
+    disabled,
     from_account,
     getCalculatedAmount,
     percentage,
@@ -50,6 +52,8 @@ const PercentageSelector = ({
     }, [from_account, to_account]);
 
     const calculateAmount = (e: TCalculateAmountInputEvent | TReactMouseEvent, percent: number) => {
+        if (disabled) return;
+
         let new_percentage = percent;
         const is_percentage_selected = percent > 0 && percent === Number(selected_percentage);
         if (is_percentage_selected) new_percentage -= 25;
@@ -88,7 +92,7 @@ const PercentageSelector = ({
                     </Text>
                     <div
                         id='1'
-                        className='percentage-selector-block'
+                        className={disabled ? 'percentage-selector-block--disabled' : 'percentage-selector-block'}
                         onClick={e => calculateAmount(e, 25)}
                         data-testid='dt_percentage_selector_block_id_1'
                     />
@@ -99,7 +103,7 @@ const PercentageSelector = ({
                     </Text>
                     <div
                         id='2'
-                        className='percentage-selector-block'
+                        className={disabled ? 'percentage-selector-block--disabled' : 'percentage-selector-block'}
                         onClick={e => calculateAmount(e, 50)}
                         data-testid='dt_percentage_selector_block_id_2'
                     />
@@ -110,7 +114,7 @@ const PercentageSelector = ({
                     </Text>
                     <div
                         id='3'
-                        className='percentage-selector-block'
+                        className={disabled ? 'percentage-selector-block--disabled' : 'percentage-selector-block'}
                         onClick={e => calculateAmount(e, 75)}
                         data-testid='dt_percentage_selector_block_id_3'
                     />
@@ -121,7 +125,7 @@ const PercentageSelector = ({
                     </Text>
                     <div
                         id='4'
-                        className='percentage-selector-block'
+                        className={disabled ? 'percentage-selector-block--disabled' : 'percentage-selector-block'}
                         onClick={e => calculateAmount(e, 100)}
                         data-testid='dt_percentage_selector_block_id_4'
                     />

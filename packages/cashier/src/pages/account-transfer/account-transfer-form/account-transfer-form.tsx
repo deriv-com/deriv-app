@@ -695,7 +695,7 @@ const AccountTransferForm = observer(
                                                                 ''
                                                             )
                                                         }
-                                                        disabled={is_mt5_restricted}
+                                                        disabled={is_mt5_restricted || is_russia_restricted}
                                                     />
                                                 )}
                                             </Field>
@@ -710,6 +710,7 @@ const AccountTransferForm = observer(
                                                         amount={
                                                             selected_from.balance ? Number(selected_from.balance) : 0
                                                         }
+                                                        disabled={is_russia_restricted}
                                                         from_account={selected_from.value}
                                                         getCalculatedAmount={setTransferPercentageSelectorResult}
                                                         percentage={percentage}
@@ -748,6 +749,7 @@ const AccountTransferForm = observer(
                                                             ''
                                                         )
                                                     }
+                                                    disabled={is_russia_restricted}
                                                     onChangeConverterFromAmount={onChangeConverterFromAmount}
                                                     onChangeConverterToAmount={onChangeConverterToAmount}
                                                     resetConverter={resetConverter}

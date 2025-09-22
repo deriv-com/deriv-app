@@ -41,6 +41,13 @@ const getMethodsList = (
     new_state: Parameters<typeof processTradeParams>[1]
 ) => {
     const filtered_keys = Object.keys(new_state).filter(key => /\b(symbol|contract_type|is_equal)\b/.test(key));
+    const old_duration_unit = store.duration_unit;
+
+    // Create a modified version of Duration.onChangeContractType that includes old_duration_unit
+    const onChangeContractTypeWithOldUnit = (snapshot: TTradeStore) => {
+        return Duration.onChangeContractType(snapshot, old_duration_unit);
+    };
+
     return [
         ContractTypeHelper.getContractCategories,
         ContractType.onChangeContractTypeList,
@@ -50,7 +57,7 @@ const getMethodsList = (
         StartDate.onChangeStartDate,
         Duration.onChangeExpiry, // it should be always after StartDate.onChangeStartDate
         ...(filtered_keys.length || !store.contract_type // symbol/contract_type changed or contract_type not set yet
-            ? [Duration.onChangeContractType]
+            ? [onChangeContractTypeWithOldUnit]
             : []),
     ];
 };

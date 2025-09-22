@@ -1423,7 +1423,6 @@ export default class TradeStore extends BaseStore {
                     this.root_store.ui.is_advanced_duration = false;
                 }
             }
-
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
             await processTradeParams(this, new_state);

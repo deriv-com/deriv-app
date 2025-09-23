@@ -6,6 +6,6 @@ describe('<EvenOddTradeDescription />', () => {
     it('a proper text of description should be rendered', () => {
         render(<EvenOddTradeDescription />);
 
-        expect(screen.getByText(/lets you predict if the last digit of the last tick's price/i)).toBeInTheDocument();
+        expect(screen.getByText(/lets you predict if the last digit of the last tick’s price/i)).toBeInTheDocument();
     });
 });

@@ -3911,7 +3911,7 @@
     "-2085502570": "Gagnez un paiement si le prix spot ne dépasse jamais la barrière pendant la durée du contrat.",
     "-1506063734": "Vous ne réalisez un profit que si votre paiement est supérieur à votre <0>mise</0>.",
     "-778270618": "Si vous définissez votre durée en ticks, vous ne pouvez pas clôturer le contrat avant son terme.",
-    "-1606707762": "Les Vanillas vous permettent de prédire si le prix de l'actif sous-jacent sera au-dessus ou en dessous du <0>prix d'exercice</0> à l'expiration du contrat <1>expiry</1> (<2>spot de sortie</2>).",
+    "-1606707762": "Les Vanillas vous permettent de prédire si le prix de l'actif sous-jacent sera supérieur ou inférieur au <0>prix d'exercice</0> à l'expiration du contrat <1>à la date d'échéance</1> (<2>spot de sortie</2>).",
     "-633419635": "Gagnez un <0>paiement</0> si le spot de sortie est au-dessus du prix d'exercice à l'expiration.",
     "-1763848396": "Put",
     "-295922424": "Vous ne réalisez un profit que si le paiement est supérieur à votre mise.",

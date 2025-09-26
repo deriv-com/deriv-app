@@ -3911,7 +3911,7 @@
     "-2085502570": "Ganhe um pagamento se o preço à vista nunca subir acima da barreira durante o período do contrato.",
     "-1506063734": "Só lucra se o seu pagamento for superior à sua <0>entrada</0>.",
     "-778270618": "Se definir a duração em ticks, não pode encerrar o contrato antecipadamente.",
-    "-1606707762": "Os Vanillas permitem prever se o preço do ativo subjacente estará acima ou abaixo do <0>preço de exercício</0> na <1>expiração</1> do contrato (<2>preço de saída</2>).",
+    "-1606707762": "Vanillas permitem prever se o preço do ativo subjacente estará acima ou abaixo do <0>preço de exercício</0> na <1>expiração</1> do contrato (<2>preço de saída</2>).",
     "-633419635": "Ganhe um <0>pagamento</0> se o preço de saída estiver acima do preço de exercício na expiração.",
     "-1763848396": "Put",
     "-295922424": "Só lucra se o pagamento for superior à sua entrada.",

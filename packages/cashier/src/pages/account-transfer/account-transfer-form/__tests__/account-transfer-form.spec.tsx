@@ -143,6 +143,11 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Transfers within accounts are only available for trading, not withdrawals. To withdraw funds, use the same method you used to deposit.'
+            )
+        ).toBeInTheDocument();
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 

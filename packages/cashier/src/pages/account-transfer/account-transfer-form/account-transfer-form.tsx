@@ -523,7 +523,7 @@ const AccountTransferForm = observer(
                     <Text as='span' size='xxxs'>
                         <Localize
                             className='account-transfer-form__inline-message--text'
-                            i18n_default_text='Transfers between accounts are only available for trading, not withdrawals. To withdraw funds, use the same method you used to deposit.'
+                            i18n_default_text='Transfers within accounts are only available for trading, not withdrawals. To withdraw funds, use the same method you used to deposit.'
                         />
                     </Text>
                 </InlineMessage>

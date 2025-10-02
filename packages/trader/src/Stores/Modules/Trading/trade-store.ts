@@ -1380,17 +1380,11 @@ export default class TradeStore extends BaseStore {
         // Set stake to default one (from contracts_for) on symbol or contract type switch.
         // On contract type we also additionally reset take profit
         if (this.default_stake && this.is_dtrader_v2) {
-            const has_symbol_changed = obj_new_values.symbol && this.symbol && this.symbol !== obj_new_values.symbol;
             const has_contract_type_changed =
                 obj_new_values.contract_type &&
                 obj_old_values?.contract_type &&
                 obj_new_values.contract_type !== obj_old_values.contract_type;
 
-            if (has_symbol_changed || has_contract_type_changed) {
-                const is_crypto = isCryptocurrency(this.currency ?? '');
-                const default_crypto_value = getMinPayout(this.currency ?? '') ?? '';
-                obj_new_values.amount = is_crypto ? default_crypto_value : this.default_stake;
-            }
             if (has_contract_type_changed) {
                 obj_new_values.has_take_profit = false;
                 obj_new_values.take_profit = '';
@@ -1423,7 +1417,6 @@ export default class TradeStore extends BaseStore {
                     this.root_store.ui.is_advanced_duration = false;
                 }
             }
-
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
             await processTradeParams(this, new_state);

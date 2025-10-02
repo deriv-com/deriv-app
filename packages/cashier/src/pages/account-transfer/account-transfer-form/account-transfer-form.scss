@@ -16,9 +16,12 @@
         width: 100%;
         margin: 0 auto 2.4rem;
 
+        &.transfer-restriction {
+            margin: 0 auto 1.6rem;
+        }
+
         @include mobile-or-tablet-screen {
             margin: 0 0 1.6rem;
-            width: unset;
         }
 
         &--text {

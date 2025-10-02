@@ -87,7 +87,7 @@ const PercentageSelector = ({
         <React.Fragment>
             <div className='percentage-selector' data-testid='dt_percentage_selector_id'>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs' className='percentage-selector__text'>
+                    <Text color={disabled ? 'disabled-1' : 'prominent'} size='xs' className='percentage-selector__text'>
                         {'25%'}
                     </Text>
                     <div
@@ -98,7 +98,7 @@ const PercentageSelector = ({
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs' className='percentage-selector__text'>
+                    <Text color={disabled ? 'disabled-1' : 'prominent'} size='xs' className='percentage-selector__text'>
                         {'50%'}
                     </Text>
                     <div
@@ -109,7 +109,7 @@ const PercentageSelector = ({
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs' className='percentage-selector__text'>
+                    <Text color={disabled ? 'disabled-1' : 'prominent'} size='xs' className='percentage-selector__text'>
                         {'75%'}
                     </Text>
                     <div
@@ -120,7 +120,7 @@ const PercentageSelector = ({
                     />
                 </div>
                 <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs' className='percentage-selector__text'>
+                    <Text color={disabled ? 'disabled-1' : 'prominent'} size='xs' className='percentage-selector__text'>
                         <Localize i18n_default_text='All' />
                     </Text>
                     <div

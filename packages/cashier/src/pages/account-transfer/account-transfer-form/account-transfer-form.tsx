@@ -519,7 +519,10 @@ const AccountTransferForm = observer(
                         {localize('Transfer between your accounts in Deriv')}
                     </Text>
                 )}
-                <InlineMessage className='account-transfer-form__inline-message' type='information'>
+                <InlineMessage
+                    className='account-transfer-form__inline-message transfer-restriction'
+                    type='information'
+                >
                     <Text as='span' size='xxxs'>
                         <Localize
                             className='account-transfer-form__inline-message--text'

@@ -158,7 +158,7 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(
-            screen.getByText('Transfers from fiat accounts to crypto accounts are not supported.')
+            screen.getByText('Transfers from fiat account to crypto accounts are not supported.')
         ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });

@@ -535,7 +535,7 @@ const AccountTransferForm = observer(
                                 i18n_default_text={
                                     selected_from?.is_crypto
                                         ? 'Transfers from crypto accounts to fiat accounts are not supported.'
-                                        : 'Transfers from fiat accounts to crypto accounts are not supported.'
+                                        : 'Transfers from fiat account to crypto accounts are not supported.'
                                 }
                             />
                         </Text>

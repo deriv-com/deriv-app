@@ -59,15 +59,9 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container:
-        | 'account_transfer'
-        | 'deposit'
-        | 'payment_agent'
-        | 'payment_agent_transfer'
-        | 'withdraw'
-        | 'onramp' = 'deposit';
+    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw';
     cashier_route_tab_index = 0;
-    deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
+    deposit_target: '/cashier/deposit' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -168,7 +162,7 @@ export default class GeneralStore extends BaseStore {
     async onMountCommon(should_remount?: boolean) {
         const { client, common, modules } = this.root_store;
         const { is_from_derivgo, routeTo } = common;
-        const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
+        const { account_transfer, payment_agent, transaction_history } = modules.cashier;
 
         if (!client.is_logged_in || this.is_populating_values) {
             return;
@@ -191,10 +185,6 @@ export default class GeneralStore extends BaseStore {
         }
 
         if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-            routeTo(routes.cashier_deposit);
-        }
-
-        if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
             routeTo(routes.cashier_deposit);
         }
 

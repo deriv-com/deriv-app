@@ -1,14 +1,16 @@
 import React from 'react';
-import { Analytics } from '@deriv-com/analytics';
+
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
+
 import './cashier-onboarding-card.scss';
 
 type TProps = {
     title: string;
     description: string;
-    depositCategory: 'crypto' | 'fiat' | 'fiat_onramp' | 'payment_agent' | 'p2p';
+    depositCategory: 'crypto' | 'fiat' | 'payment_agent' | 'p2p';
     onClick?: VoidFunction;
 };
 

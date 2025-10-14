@@ -1,9 +1,11 @@
-import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, IReactionDisposer, makeObservable, observable, reaction } from 'mobx';
+
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
-import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
+import { localize } from '@deriv/translations';
+
+import type { TOnRampProvider, TRootStore, TServerError, TWebSocket } from '../types';
+
 import BaseStore from './base-store';
-import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from '../types';
 
 export default class OnRampStore extends BaseStore {
     constructor(
@@ -46,10 +48,6 @@ export default class OnRampStore extends BaseStore {
         });
 
         this.WS = WS;
-
-        this.onClientInit(async () => {
-            this.setOnrampProviders([createBanxaProvider(this)]);
-        });
     }
 
     /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */

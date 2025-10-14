@@ -168,9 +168,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 case routes.cashier_acc_transfer:
                     setActiveTab('account_transfer');
                     break;
-                case routes.cashier_onramp:
-                    setActiveTab('onramp');
-                    break;
                 default:
                     setActiveTab('deposit');
                     break;

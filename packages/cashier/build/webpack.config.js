@@ -12,6 +12,7 @@ module.exports = function (env) {
             'cashier-store': 'Stores/cashier-store',
             'account-transfer': 'Pages/account-transfer',
             deposit: 'Pages/deposit',
+            'on-ramp': 'Pages/on-ramp',
             'payment-agent': 'Pages/payment-agent',
             'payment-agent-transfer': 'Pages/payment-agent-transfer',
             withdrawal: 'Pages/withdrawal',

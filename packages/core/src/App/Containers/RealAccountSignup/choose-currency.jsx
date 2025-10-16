@@ -1,15 +1,12 @@
-import React from 'react';
 import { Field, Formik } from 'formik';
-
-import { CurrencyRadioButton, CurrencyRadioButtonGroup } from '@deriv/account';
+import React from 'react';
 import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { usePaymentAgentList } from '@deriv/hooks';
-import { reorderCurrencies, routes } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
+import { reorderCurrencies, routes } from '@deriv/shared';
+import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import CurrencyProvider from './choose-currency';
-
+import { observer, useStore } from '@deriv/stores';
 import './currency-selector.scss';
 
 const CRYPTO_CURRENCY_TYPE = 'crypto';
@@ -58,10 +55,15 @@ const ChooseCurrency = observer(() => {
             account_list
         );
 
+        const allowed_currencies_onramp_availability =
+            CurrencyProvider.currenciesOnRampAvailability(legal_allowed_currencies);
+
         const getReorderCryptoCurrencies = () => {
             let currencies_to_filter;
 
-            if (should_show_all_available_currencies) {
+            if (deposit_target === routes.cashier_onramp) {
+                currencies_to_filter = allowed_currencies_onramp_availability;
+            } else if (should_show_all_available_currencies) {
                 currencies_to_filter = allowed_currencies_payment_agent_availability;
             } else {
                 currencies_to_filter = allowed_currencies_payment_agent_availability?.filter(
@@ -82,6 +84,16 @@ const ChooseCurrency = observer(() => {
             switch (deposit_target) {
                 case routes.cashier_pa:
                     return !has_fiat || !hasAllCryptos();
+                case routes.cashier_onramp: {
+                    const can_add_onramp_supported_crypto_account =
+                        legal_allowed_currencies.filter(
+                            currency =>
+                                currency.type === CRYPTO_CURRENCY_TYPE &&
+                                currency.platform.ramp.length > 0 &&
+                                !account_list.some(x => x.title === currency.value)
+                        ).length > 0;
+                    return can_add_onramp_supported_crypto_account;
+                }
                 default:
                     return !hasAllCryptos();
             }

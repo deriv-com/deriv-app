@@ -1,11 +1,9 @@
 import { configure } from 'mobx';
-
-import { ContentFlag, routes } from '@deriv/shared';
-import { mockStore } from '@deriv/stores';
 import { waitFor } from '@testing-library/react';
-
-import type { TRootStore, TWebSocket } from '../../types';
+import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
+import type { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -47,6 +45,9 @@ beforeEach(() => {
                 },
                 iframe: {
                     clearIframe: jest.fn(),
+                },
+                onramp: {
+                    is_onramp_tab_visible: false,
                 },
                 payment_agent: {
                     setPaymentAgentList: jest.fn().mockResolvedValueOnce([]),
@@ -188,6 +189,21 @@ describe('GeneralStore', () => {
         (
             general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList as jest.Mock
         ).mockResolvedValueOnce([]);
+        general_store.root_store.client.is_logged_in = true;
+        await general_store.onMountCommon(false);
+
+        expect(general_store.root_store.common.routeTo).toHaveBeenCalledWith(routes.cashier_deposit);
+        jest.restoreAllMocks();
+    });
+
+    it('should route to deposit page of onramp tab is not visible and location.pahname = /cashier/on-ramp when onMountCommon was called', async () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: routes.cashier_onramp,
+            },
+        }));
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 

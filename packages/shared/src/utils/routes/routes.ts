@@ -79,6 +79,8 @@ export const routes = {
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
     cashier_transactions_crypto: '/cashier/crypto-transactions',
+    // cashier_offramp: '/cashier/off-ramp',
+    cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
 

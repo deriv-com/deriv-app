@@ -6,6 +6,7 @@ import {
     useAccountTransferVisible,
     useAuthorize,
     useIsP2PEnabled,
+    useOnrampVisible,
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
@@ -46,6 +47,7 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
     const { is_payment_agent_visible } = payment_agent;
     const is_account_transfer_visible = useAccountTransferVisible();
     const { isSuccess } = useAuthorize();
+    const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
 
@@ -196,6 +198,7 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
+                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
                             return (

@@ -9,6 +9,7 @@ import {
     useAccountTransferVisible,
     useAuthorize,
     useIsHubRedirectionEnabled,
+    useOnrampVisible,
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
@@ -66,6 +67,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_account_transfer_visible = useAccountTransferVisible();
     const { mobile_redirect_url } = useAccountSettingsRedirect();
     const { isSuccess } = useAuthorize();
+    const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
 
     const { pathname: route } = useLocation();
@@ -258,6 +260,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_available) &&
+                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
                             return (

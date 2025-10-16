@@ -2,25 +2,22 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-
+import { useDevice } from '@deriv-com/ui';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
-import { moduleLoader, routes, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
-import { useDevice } from '@deriv-com/ui';
-
+import { observer, useStore } from '@deriv/stores';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
 import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
-import NewStatusDialogContainer from './new-status-dialog-container.jsx';
 import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
-
+import NewStatusDialogContainer from './new-status-dialog-container.jsx';
+import { Analytics } from '@deriv-com/analytics';
 import 'Sass/account-wizard.scss';
 
 const AccountWizard = React.lazy(() =>
@@ -94,7 +91,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         is_trading_assessment_for_new_user_enabled,
     } = ui;
     const { show_eu_related_content } = traders_hub;
-    const deposit_target = modules.cashier.general_store;
+    const { deposit_target, setDepositTarget } = modules.cashier.general_store;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
     const [current_action, setCurrentAction] = React.useState(null);
@@ -471,6 +468,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             sessionStorage.removeItem('post_real_account_signup');
             localStorage.removeItem('real_account_signup_wizard');
         }
+
+        if (deposit_target === routes.cashier_onramp) setDepositTarget('');
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);

@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
 
 import { useIsHubRedirectionEnabled, useTMB } from '@deriv/hooks';
-import { getDomainName, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
+import { getDomainName, isProduction, loginUrl, platforms, redirectToLogin, routes, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Chat } from '@deriv/utils';
@@ -331,7 +331,9 @@ const Redirect = observer(() => {
         }
         case 'ctrader_account_transfer': {
             if (!is_logged_in) {
-                window.location.href = 'https://home.deriv.com/dashboard/portfolio';
+                isProduction()
+                    ? (window.location.href = 'https://home.deriv.com/dashboard/portfolio')
+                    : (window.location.href = 'https://staging-home.deriv.com/dashboard/portfolio');
             } else if (isHubRedirectionEnabled && (has_wallet || hasVRWorCRW)) {
                 window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
             } else if (has_wallet) {

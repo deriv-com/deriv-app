@@ -330,7 +330,9 @@ const Redirect = observer(() => {
             break;
         }
         case 'ctrader_account_transfer': {
-            if (isHubRedirectionEnabled && (has_wallet || hasVRWorCRW)) {
+            if (!is_logged_in) {
+                window.location.href = 'https://home.deriv.com/dashboard/portfolio';
+            } else if (isHubRedirectionEnabled && (has_wallet || hasVRWorCRW)) {
                 window.location.assign(`${platforms.tradershub_os.url}/wallets/transfer`);
             } else if (has_wallet) {
                 history.push(routes.wallets_transfer);

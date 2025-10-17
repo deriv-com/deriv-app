@@ -7,7 +7,7 @@ describe('<MatchDiffTradeDescription />', () => {
         render(<MatchDiffTradeDescription />);
 
         expect(
-            screen.getByText(/Matches\/Differs lets you predict whether the last digit of the last tick's price will/i)
+            screen.getByText(/Matches\/Differs lets you predict whether the last digit of the last tick’s price will/i)
         ).toBeInTheDocument();
     });
 });

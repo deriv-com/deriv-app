@@ -12,7 +12,7 @@ const VanillaTradeDescription = () => {
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text={`Vanillas allow you to predict if the underlying asset's price will be above or below the <0>strike price</0> at contract <1>expiry</1> (<2>exit spot</2>).`}
+                    i18n_default_text={`Vanillas allow you to predict if the underlying asset’s price will be above or below the <0>strike price</0> at contract <1>expiry</1> (<2>exit spot</2>).`}
                     components={[
                         <DefinitionPopover
                             term={STRIKE_PRICE}

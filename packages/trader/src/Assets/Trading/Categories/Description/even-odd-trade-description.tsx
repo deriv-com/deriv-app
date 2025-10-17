@@ -12,7 +12,7 @@ const EvenOddTradeDescription = () => {
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text={`Even/Odd lets you predict if the last digit of the last tick's price will be an even or odd number at contract <0>expiry</0> (<1>exit spot</1>).`}
+                    i18n_default_text={`Even/Odd lets you predict if the last digit of the last tick’s price will be an even or odd number at contract <0>expiry</0> (<1>exit spot</1>).`}
                     components={[
                         <DefinitionPopover
                             term={EXPIRY}

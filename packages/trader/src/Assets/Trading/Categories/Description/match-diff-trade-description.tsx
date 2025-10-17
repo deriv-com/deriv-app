@@ -12,7 +12,7 @@ const MatchDiffTradeDescription = () => {
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text={`Matches/Differs lets you predict whether the last digit of the last tick's price will match your chosen number at contract <0>expiry</0> (<1>exit spot</1>).`}
+                    i18n_default_text={`Matches/Differs lets you predict whether the last digit of the last tick’s price will match your chosen number at contract <0>expiry</0> (<1>exit spot</1>).`}
                     components={[
                         <DefinitionPopover
                             term={EXPIRY}

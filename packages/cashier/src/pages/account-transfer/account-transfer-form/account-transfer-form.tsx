@@ -533,14 +533,17 @@ const AccountTransferForm = observer(
                 {is_russia_restricted && (
                     <InlineMessage className='account-transfer-form__inline-message' type='warning'>
                         <Text as='span' size='xxxs'>
-                            <Localize
-                                className='account-transfer-form__inline-message--text'
-                                i18n_default_text={
-                                    selected_from?.is_crypto
-                                        ? 'Transfers from crypto accounts to fiat accounts are not supported.'
-                                        : 'Transfers from fiat account to crypto accounts are not supported.'
-                                }
-                            />
+                            {selected_from?.is_crypto ? (
+                                <Localize
+                                    className='account-transfer-form__inline-message--text'
+                                    i18n_default_text='Transfers from crypto accounts to fiat accounts are not supported.'
+                                />
+                            ) : (
+                                <Localize
+                                    className='account-transfer-form__inline-message--text'
+                                    i18n_default_text='Transfers from fiat account to crypto accounts are not supported.'
+                                />
+                            )}
                         </Text>
                     </InlineMessage>
                 )}

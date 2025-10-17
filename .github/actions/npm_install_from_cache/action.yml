@@ -4,7 +4,10 @@ runs:
   using: composite
   steps:
   - name: Install npm packages
-    run: npm ci
+    # Using --legacy-peer-deps to bypass npm peer dependency checks
+    # This is needed due to some dependency conflicts after Node.js 20.x upgrade
+    # TODO: Consider auditing and resolving these conflicts to remove this flag in the future
+    run: npm ci --legacy-peer-deps
     shell: bash
   - name: Bootstrap 
     run: npm run bootstrap:ci

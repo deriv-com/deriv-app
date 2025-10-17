@@ -36,7 +36,7 @@ const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({
     size = 'md',
     width,
 }) => {
-    const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
+    const isFiat = fiatIcons.includes(currency as (typeof fiatIcons)[number]);
     const IconSize = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     const Icon = rounded || isFiat ? roundedCurrencyIcons[currency] : horizontalCurrencyIcons[currency];
 

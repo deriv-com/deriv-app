@@ -41,14 +41,14 @@ describe('FormDropdown', () => {
 
         setup({ list: [{ text: 'Option 1', value: 'option1' }], name: 'test', validationSchema });
 
-        userEvent.click(screen.getByText('Select Option 1'));
+        await userEvent.click(screen.getByText('Select Option 1'));
 
         await waitFor(() => {
             expect(screen.queryByText('Required')).not.toBeInTheDocument();
         });
     });
 
-    test('handles search and select for combobox variant', () => {
+    test('handles search and select for combobox variant', async () => {
         const onSelectMock = jest.fn();
         const onSearchMock = jest.fn();
 
@@ -59,14 +59,14 @@ describe('FormDropdown', () => {
             onSelect: onSelectMock,
             variant: 'comboBox',
         });
-        userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
-        userEvent.tab();
-        userEvent.click(screen.getByText('Select Option 1'));
+        await userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
+        await userEvent.tab();
+        await userEvent.click(screen.getByText('Select Option 1'));
 
         expect(onSearchMock).toHaveBeenCalledWith('Option 1');
         expect(onSelectMock).toHaveBeenCalledWith('option1');
     });
-    test('handles search and select for prompt variant', () => {
+    test('handles search and select for prompt variant', async () => {
         const onSelectMock = jest.fn();
         const onSearchMock = jest.fn();
 
@@ -77,9 +77,9 @@ describe('FormDropdown', () => {
             onSelect: onSelectMock,
             variant: 'prompt',
         });
-        userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
-        userEvent.tab();
-        userEvent.click(screen.getByText('Select Option 1'));
+        await userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
+        await userEvent.tab();
+        await userEvent.click(screen.getByText('Select Option 1'));
 
         expect(onSearchMock).toHaveBeenCalledWith('Option 1');
         expect(onSelectMock).toHaveBeenCalledWith('option1');
@@ -90,8 +90,8 @@ describe('FormDropdown', () => {
 
         setup({ list: [{ text: 'Option 1', value: '' }], name: 'test', validationSchema });
 
-        userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
-        userEvent.click(screen.getByText('Select Option 1'));
+        await userEvent.type(screen.getByPlaceholderText('Search...'), 'Option 1');
+        await userEvent.click(screen.getByText('Select Option 1'));
 
         await waitFor(() => {
             expect(screen.getByTestId('dt_test')).toHaveAttribute('errormessage', 'Required');

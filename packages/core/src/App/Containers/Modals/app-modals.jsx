@@ -158,14 +158,14 @@ const AppModals = observer(() => {
     React.useEffect(() => {
         if (!is_client_store_initialized || !account_settings || is_tnc_update_modal_open) return;
 
-        const { citizen, date_of_birth, address_line_1, address_city } = account_settings;
+        const { citizen, date_of_birth, address_line_1, address_city, place_of_birth } = account_settings;
 
         const shouldShow =
             !has_wallet &&
             is_logged_in &&
             is_authorize &&
             has_active_real_account &&
-            (!citizen || !date_of_birth || !address_line_1 || !address_city || no_currency);
+            (!citizen || !date_of_birth || !address_line_1 || !address_city || !place_of_birth || no_currency);
 
         if (shouldShow) {
             setShouldShowCompleteUserProfileModal(true);

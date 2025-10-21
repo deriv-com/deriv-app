@@ -36,6 +36,7 @@ describe('<AccountTransferForm />', () => {
                         mt5: {},
                     },
                 },
+                account_settings: { country_code: 'aq' },
                 mt5_login_list: [
                     {
                         login: 'value',
@@ -142,7 +143,24 @@ describe('<AccountTransferForm />', () => {
         renderAccountTransferForm();
 
         expect(screen.getByTestId('dt_account_transfer_form_wrapper')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Transfers within accounts are only available for trading, not withdrawals. To withdraw funds, use the same method you used to deposit.'
+            )
+        ).toBeInTheDocument();
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
+    });
+
+    it('should render inline message and disable transfer button when country code is RU', () => {
+        mockRootStore.client.account_settings.country_code = 'ru';
+        mockRootStore.modules.cashier.account_transfer.selected_to.is_crypto = true;
+
+        renderAccountTransferForm();
+
+        expect(
+            screen.getByText('Transfers from fiat account to crypto accounts are not supported.')
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });
 
     it('should show loader if account_list.length === 0', () => {

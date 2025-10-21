@@ -38,6 +38,14 @@
             text-align: start;
         }
 
+        .dc-input__field:disabled {
+            cursor: not-allowed;
+        }
+
+        .dc-input__field:disabled ~ label {
+            color: var(--text-disabled-1, #d6d6d6) !important;
+        }
+
         .dc-field--error {
             line-height: var(--text-lh-m);
             position: static;

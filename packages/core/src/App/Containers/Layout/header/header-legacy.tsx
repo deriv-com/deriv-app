@@ -96,6 +96,12 @@ const HeaderLegacy = observer(() => {
         routes.redirect,
         routes.index,
         routes.error404,
+        routes.reports,
+        routes.positions,
+        routes.profit,
+        routes.statement,
+        /** because contract route has dynamic id */
+        '/contract',
     ];
 
     const isExcludedRoute = excludedRoutes.some(route => window.location.pathname.includes(route));

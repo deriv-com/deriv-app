@@ -19,6 +19,7 @@ type TCryptoFiatConverterProps = {
     arrow_icon_direction: 'right' | 'left';
     from_currency: string;
     hint?: React.ReactNode;
+    disabled?: boolean;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
@@ -51,6 +52,7 @@ const CryptoFiatConverter = observer(
         arrow_icon_direction,
         from_currency,
         hint,
+        disabled,
         onChangeConverterFromAmount,
         onChangeConverterToAmount,
         resetConverter,
@@ -101,6 +103,7 @@ const CryptoFiatConverter = observer(
                             autoComplete='off'
                             required
                             hint={hint}
+                            disabled={disabled}
                             classNameHint='crypto-fiat-converter__hint'
                             data-testid='dt_converter_from_amount_input'
                         />
@@ -141,6 +144,7 @@ const CryptoFiatConverter = observer(
                                 value={converter_to_amount}
                                 autoComplete='off'
                                 hint={localize('Approximate value')}
+                                disabled={disabled}
                                 classNameHint='crypto-fiat-converter__hint'
                                 data-testid='dt_converter_to_amount_input'
                             />

@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { Analytics } from '@deriv-com/analytics';
+import { useHistory } from 'react-router';
+
 import { useHasSetCurrency } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { useHistory } from 'react-router';
+import { Analytics } from '@deriv-com/analytics';
+
 import PageContainer from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
+
 import {
     CashierOnboardingAccountIdentifierMessage,
     CashierOnboardingCryptoCard,
     CashierOnboardingFiatCard,
-    CashierOnboardingOnrampCard,
     CashierOnboardingP2PCard,
     CashierOnboardingPaymentAgentCard,
     CashierOnboardingSideNotes,
@@ -52,7 +54,6 @@ const CashierOnboarding: React.FC = observer(() => {
             <CashierOnboardingFiatCard />
             <CashierOnboardingCryptoCard />
             <CashierOnboardingP2PCard />
-            <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
         </PageContainer>
     );

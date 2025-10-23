@@ -39,6 +39,7 @@ describe('<WithdrawalCryptoForm />', () => {
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {
+                account_settings: { country_code: 'aq' },
                 currency: 'BTC',
                 verification_code: { payment_withdraw: 'code' },
             },
@@ -189,5 +190,19 @@ describe('<WithdrawalCryptoForm />', () => {
             fireEvent.click(withdraw_button);
         });
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
+    });
+
+    it('should render inline message with StaticUrl', () => {
+        render(
+            <CashierProviders store={mockRootStore}>
+                <WithdrawalCryptoForm />
+            </CashierProviders>
+        );
+
+        expect(screen.getByText(/Withdraw using the same payment method you used to deposit/i)).toBeInTheDocument();
+
+        const link = screen.getByRole('link', { name: /available payment methods/i });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', expect.stringContaining('/payment-methods'));
     });
 });

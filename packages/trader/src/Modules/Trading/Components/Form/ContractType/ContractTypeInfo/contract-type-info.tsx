@@ -78,14 +78,6 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
 
     const should_show_dropdown = Number(contract_types?.length) > 1;
 
-    React.useEffect(() => {
-        return () => {
-            Analytics.trackEvent('ce_trade_types_form', {
-                action: 'info_close',
-            });
-        };
-    }, []);
-
     // Auto-scroll to the selected contract type
     React.useEffect(() => {
         scrollToSelected(selected_contract_type);
@@ -148,7 +140,13 @@ const Info = observer(({ handleSelect, item, selected_value, list, info_banner }
                             <Chip.Selectable
                                 key={value}
                                 data-value={value}
-                                onChipSelect={() => setSelectedContractType(value)}
+                                onChipSelect={() => {
+                                    setSelectedContractType(value);
+                                    Analytics.trackEvent('ce_trade_types_form', {
+                                        action: 'info_switcher',
+                                        trade_type_name: contract_types?.find(item => item.value === value)?.text,
+                                    });
+                                }}
                                 selected={selected_contract_type === value}
                             >
                                 <Text size='sm'>{text}</Text>

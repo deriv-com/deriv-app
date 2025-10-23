@@ -19,7 +19,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "engines": {
-        "node": "18.x"
+        "node": "20.x"
     },
     "repository": {
         "type": "git",
@@ -96,7 +96,7 @@
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.9.1",
+        "@deriv/deriv-charts": "^2.9.2",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

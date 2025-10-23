@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { observer } from 'mobx-react-lite';
 import { ActionSheet, TextField, useSnackbar } from '@deriv-com/quill-ui';
-import { getTomorrowDate, getUnitMap, toMoment } from '@deriv/shared';
+import { getTomorrowDate, getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationActionSheetContainer from './container';
@@ -14,6 +14,7 @@ import { TTradeParametersProps } from '../trade-parameters';
 const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
     const {
         contract_type,
+        symbol,
         duration_min_max,
         duration_unit,
         duration_units_list,
@@ -28,7 +29,6 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
         setSavedExpiryDateV2,
         setUnsavedExpiryDateV2,
         start_time,
-        symbol,
         trade_type_tab,
         trade_types,
         unsaved_expiry_date_v2,
@@ -91,26 +91,35 @@ const Duration = observer(({ is_minimized }: TTradeParametersProps) => {
             return () => clearTimeout(timer);
         }
 
-        const result = getSmallestDuration(duration_min_max, duration_units_list);
-        if (result?.unit == 'd') {
+        if (duration_unit === 'd') {
             setEndDate(new Date());
         }
-
-        const start_duration = setTimeout(() => {
-            onChangeMultiple({
-                duration_unit: result?.unit,
-                duration: result?.value,
-                expiry_time: null,
-                expiry_type: 'duration',
-            });
-        }, 10);
-
         const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
-
         setEndDate(new Date(start_date));
+    }, [symbol, duration_min_max, duration_units_list, duration, duration_unit]);
 
-        return () => clearTimeout(start_duration);
-    }, [symbol, contract_type, duration_min_max, duration_units_list]);
+    useEffect(() => {
+        if (duration_unit === 'd') {
+            const result = getSmallestDuration(duration_min_max, duration_units_list);
+            if (result?.unit == 'd') {
+                setEndDate(new Date());
+            }
+
+            const start_duration = setTimeout(() => {
+                onChangeMultiple({
+                    duration_unit: result?.unit,
+                    duration: result?.value,
+                    expiry_time: null,
+                    expiry_type: 'duration',
+                });
+            }, 10);
+
+            const start_date = getDatePickerStartDate(duration_units_list, server_time, start_time, duration_min_max);
+            setEndDate(new Date(start_date));
+
+            return () => clearTimeout(start_duration);
+        }
+    }, [duration_units_list, duration_min_max, symbol, contract_type]);
 
     const onClose = React.useCallback(() => setOpen(false), []);
 

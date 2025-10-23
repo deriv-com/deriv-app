@@ -8,9 +8,24 @@
     }
 
     &__header {
-        padding: 0 0 3.2rem;
+        padding: 0 0 1.6rem;
+    }
+
+    &__inline-message {
+        max-width: 36rem;
+        width: 100%;
+        margin: 0 auto 2.4rem;
+
+        &.transfer-restriction {
+            margin: 0 auto 1.6rem;
+        }
+
         @include mobile-or-tablet-screen {
-            padding: 0 0 1.6rem;
+            margin: 0 0 1.6rem;
+        }
+
+        &--text {
+            text-align: start;
         }
     }
 

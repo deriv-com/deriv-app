@@ -8,7 +8,6 @@ import {
     useAuthorize,
     useIsHubRedirectionEnabled,
     useIsP2PEnabled,
-    useOnrampVisible,
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
@@ -86,7 +85,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         is_virtual,
     } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
-    const is_onramp_visible = useOnrampVisible();
     const {
         subscribe,
         p2p_settings,
@@ -111,7 +109,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                 (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
                 options.push({
@@ -128,7 +125,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         is_account_transfer_visible,
-        is_onramp_visible,
         is_p2p_enabled,
         is_payment_agent_transfer_visible,
         is_payment_agent_visible,
@@ -167,9 +163,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     break;
                 case routes.cashier_acc_transfer:
                     setActiveTab('account_transfer');
-                    break;
-                case routes.cashier_onramp:
-                    setActiveTab('onramp');
                     break;
                 default:
                     setActiveTab('deposit');
@@ -216,12 +209,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             history.push(routes.cashier_deposit);
         }
     }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
-
-    useEffect(() => {
-        if (!is_onramp_visible && history.location.pathname === routes.cashier_onramp) {
-            history.push(routes.cashier_deposit);
-        }
-    }, [history, is_onramp_visible]);
 
     useEffect(() => {
         if (has_wallet && isHubRedirectionLoaded && isHubRedirectionEnabled) {

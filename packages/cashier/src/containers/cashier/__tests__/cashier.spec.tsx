@@ -169,7 +169,6 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Payment agents' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Transfer to client' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
     });
 
     it('redirects to the appropriate page when the close button is clicked', () => {

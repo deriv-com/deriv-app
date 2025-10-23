@@ -6,8 +6,6 @@ import {
     useAccountTransferVisible,
     useAuthorize,
     useIsP2PEnabled,
-    useOauth2,
-    useOnrampVisible,
     useP2PSettings,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
@@ -48,7 +46,6 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
     const { is_payment_agent_visible } = payment_agent;
     const is_account_transfer_visible = useAccountTransferVisible();
     const { isSuccess } = useAuthorize();
-    const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
 
@@ -130,8 +127,6 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
         await logoutClient();
     }, [history, logoutClient, toggleDrawer]);
 
-    const { oAuthLogout } = useOauth2({ handleLogout });
-
     const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
             action: 'open',
@@ -201,7 +196,6 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
                             (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                             (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                             (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
-                            (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                             (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
                         ) {
                             return (
@@ -283,7 +277,7 @@ const ToggleMenuDrawerAccountsOS = observer(() => {
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
                                 {is_logged_in && (
-                                    <MobileDrawer.Item onClick={oAuthLogout} className='dc-mobile-drawer__item'>
+                                    <MobileDrawer.Item onClick={handleLogout} className='dc-mobile-drawer__item'>
                                         <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}

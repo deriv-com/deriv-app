@@ -2,7 +2,7 @@
 
 This repository contains the various platforms of the Deriv application.
 
-![Prerequisite](https://img.shields.io/badge/node-18.x-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-9.x-blue.svg)
+![Prerequisite](https://img.shields.io/badge/node-20.x-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-10.x-blue.svg)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)

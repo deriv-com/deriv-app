@@ -947,12 +947,6 @@ export default class TradeStore extends BaseStore {
             this.prev_contract_type = this.contract_type;
         }
 
-        // reset stop loss after trade type was changed
-        if (name === 'contract_type' && this.has_stop_loss) {
-            this.has_stop_loss = false;
-            this.stop_loss = '';
-        }
-
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
@@ -1378,7 +1372,7 @@ export default class TradeStore extends BaseStore {
         }
 
         // Set stake to default one (from contracts_for) on symbol or contract type switch.
-        // On contract type we also additionally reset take profit
+        // On contract type we also additionally reset take profit and stop loss
         if (this.default_stake && this.is_dtrader_v2) {
             const has_contract_type_changed =
                 obj_new_values.contract_type &&
@@ -1388,6 +1382,8 @@ export default class TradeStore extends BaseStore {
             if (has_contract_type_changed) {
                 obj_new_values.has_take_profit = false;
                 obj_new_values.take_profit = '';
+                obj_new_values.has_stop_loss = false;
+                obj_new_values.stop_loss = '';
             }
         }
 

@@ -6,8 +6,9 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
     height: 100%;
 
     &-container {
-        padding: var(--core-spacing-200);
         width: 100%;
+        padding-left: var(--component-navigationBar-spacing-sm);
+        padding-right: var(--component-navigationBar-spacing-sm);
         border-top: 1px solid var(--component-navigationBar-border-color);
         height: $BOTTOM_NAV_HEIGHT;
         z-index: 30;
@@ -23,6 +24,10 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
 
         .quill-navigation-bottom-bar__action-label {
             color: var(--component-navigationBar-label-color-default);
+
+            &-container {
+                height: 18px;
+            }
         }
 
         svg {

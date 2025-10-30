@@ -5,10 +5,15 @@ import userEvent from '@testing-library/user-event';
 
 import VideoPlayer from '../video-player';
 // [AI]
-const mockUseIsRtl = jest.fn(() => false);
-jest.mock('@deriv/hooks', () => ({
-    useIsRtl: mockUseIsRtl,
-}));
+let mockUseIsRtl: jest.Mock;
+jest.mock('@deriv/hooks', () => {
+    const actual = jest.requireActual('@deriv/hooks');
+    mockUseIsRtl = jest.fn(() => false);
+    return {
+        ...actual,
+        useIsRtl: mockUseIsRtl,
+    };
+});
 // [/AI]
 
 type TMockedStreamProps = {

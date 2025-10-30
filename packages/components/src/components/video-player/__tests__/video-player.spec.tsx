@@ -1,7 +1,15 @@
 import React from 'react';
+
 import { fireEvent, render, screen } from '@testing-library/react';
-import VideoPlayer from '../video-player';
 import userEvent from '@testing-library/user-event';
+
+import VideoPlayer from '../video-player';
+// [AI]
+const mockUseIsRtl = jest.fn(() => false);
+jest.mock('@deriv/hooks', () => ({
+    useIsRtl: mockUseIsRtl,
+}));
+// [/AI]
 
 type TMockedStreamProps = {
     onEnded: () => void;
@@ -125,4 +133,23 @@ describe('<VideoPlayer />', () => {
         await userEvent.click(replay_button);
         expect(screen.getByText(icon_play)).toBeInTheDocument();
     });
+    // [AI]
+    it('should render progress bar correctly in RTL mode without reversing direction', () => {
+        mockUseIsRtl.mockReturnValue(true);
+
+        render(<VideoPlayer {...mocked_props} />);
+        const video = screen.getByTestId(video_data_testid);
+        fireEvent.loadedData(video);
+
+        expect(screen.getByTestId(player_data_testid)).toBeInTheDocument();
+
+        const progress_bar = screen.getByTestId('dt_progress_bar');
+        expect(progress_bar).toBeInTheDocument();
+
+        const progress_bar_filled = screen.getByTestId('dt_progress_bar_filled');
+        expect(progress_bar_filled).toBeInTheDocument();
+
+        mockUseIsRtl.mockReturnValue(false);
+    });
+    // [/AI]
 });

@@ -18,6 +18,9 @@ type TVideoControls = {
     is_playing?: boolean;
     is_mobile?: boolean;
     is_muted?: boolean;
+    // [AI]
+    is_rtl?: boolean;
+    // [/AI]
     is_v2?: boolean;
     increased_drag_area?: boolean;
     onRewind: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
@@ -46,6 +49,9 @@ const VideoControls = ({
     is_playing,
     is_mobile,
     is_muted,
+    // [AI]
+    is_rtl = false,
+    // [/AI]
     is_v2 = false,
     increased_drag_area,
     onRewind,
@@ -117,6 +123,9 @@ const VideoControls = ({
             )}
             <div
                 className={clsx('player__controls__progress-bar', { 'player__controls__progress-bar--v2': is_v2 })}
+                // [AI]
+                style={{ transform: is_rtl ? 'scaleX(-1)' : 'scaleX(1)' }}
+                // [/AI]
                 onClick={onRewind}
                 onKeyDown={onRewind}
                 onMouseOver={() => setIsDragDotVisible(true)}

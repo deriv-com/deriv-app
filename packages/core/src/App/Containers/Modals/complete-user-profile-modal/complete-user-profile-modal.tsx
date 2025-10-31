@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import { Button, Modal, Text } from '@deriv/components';
 import { useResidenceList } from '@deriv/hooks';
-import { DerivLightUserErrorIcon, DerivLightUserSuccessIcon, StandaloneCheckFillIcon } from '@deriv/quill-icons';
+import { DerivLightUserErrorIcon, StandaloneCheckFillIcon } from '@deriv/quill-icons';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
+import IcSuccessUserIcon from '../../../../Assets/SvgComponents/others/ic-user-success.svg';
 
 import CompleteAccountSettings from './complete-account-settings';
 import CompleteFinancialAssessment from './complete-financial-information';
@@ -130,7 +132,7 @@ const CompleteUserProfileModal = observer(
                         {!personal_done || !fa_done ? (
                             <DerivLightUserErrorIcon height='120px' width='120px' />
                         ) : (
-                            <DerivLightUserSuccessIcon height='120px' width='120px' color='green' />
+                            <IcSuccessUserIcon />
                         )}
                     </div>
                     <div className='complete-user-profile-modal__title'>

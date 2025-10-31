@@ -43,19 +43,19 @@ type TCurrencyFormProps = {
 };
 
 type TPersonalDetailsFormProps = {
-    date_of_birth: string;
+    date_of_birth: GetSettings['date_of_birth'];
 };
 
 type TCountryandCitizenshipFormProps = {
-    citizen: string;
+    citizen: GetSettings['citizen'];
 };
 
 type TAddressDetailFormProps = {
-    address_line_1: string;
-    address_line_2: string;
-    address_city: string;
-    address_state: string;
-    address_postcode: string;
+    address_line_1: GetSettings['address_line_1'];
+    address_line_2: GetSettings['address_line_2'];
+    address_city: GetSettings['address_city'];
+    address_state: GetSettings['address_state'];
+    address_postcode: GetSettings['address_postcode'];
 };
 
 type TCompleteUserProfileFormProps = TPersonalDetailsFormProps &
@@ -64,7 +64,7 @@ type TCompleteUserProfileFormProps = TPersonalDetailsFormProps &
     TCurrencyFormProps;
 
 type TCompleteUserProfileProps = {
-    account_settings: GetSettings;
+    account_settings: Partial<GetSettings>;
     residence: string;
     noCurrency?: boolean;
     onClose: () => void;
@@ -272,6 +272,7 @@ const CompleteAccountSettings = observer(
                                                                 setFieldValue('currency', e.target.value, true);
                                                                 handleChange(e);
                                                             }}
+                                                            list_portal_id='modal_root'
                                                         />
                                                     )}
                                                 </Field>

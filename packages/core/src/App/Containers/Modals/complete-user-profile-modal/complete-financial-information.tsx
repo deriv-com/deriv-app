@@ -13,6 +13,7 @@ import {
 } from '@deriv/api-types';
 import {
     Autocomplete,
+    AutoHeightWrapper,
     Checkbox,
     Dropdown,
     FormSubmitButton,
@@ -20,6 +21,7 @@ import {
     Modal,
     SelectNative,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useFinancialAssessmentQuestions } from '@deriv/hooks';
@@ -386,502 +388,619 @@ const CompleteFinancialAssessment = observer(
         };
 
         return (
-            <Formik<Partial<TFinancialInformationForm>>
-                initialValues={setInitialFormData()}
-                enableReinitialize
-                validate={validateCurrentStep}
-                onSubmit={handleNext}
-            >
-                {({ handleSubmit, isSubmitting, values, setFieldValue, isValid, handleChange }) => {
-                    return (
-                        <Form className='complete-user-profile-modal__form' onSubmit={handleSubmit}>
-                            {current_step === 1 && (
-                                <>
-                                    {/* Employment Status */}
-                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                        <Text
-                                            weight='bold'
-                                            className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
-                                        >
-                                            <Localize i18n_default_text='Employment status' />
-                                        </Text>
-                                        <Field name='employment_status'>
-                                            {({
-                                                field,
-                                                form: { setFieldValue, handleBlur, handleChange },
-                                                meta,
-                                            }: FieldProps) => (
-                                                <div className='employment-status-field'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            {...field}
-                                                            placeholder={localize('Employment status')}
-                                                            is_align_text_left
-                                                            name={field.name}
-                                                            list={getEmploymentStatusList({ financial_questions })}
-                                                            value={field.value}
-                                                            onChange={(e: {
-                                                                target: { name: string; value: string };
-                                                            }) => {
-                                                                handleChange(e);
-                                                                setFieldValue('no_tax_information', false);
-                                                            }}
-                                                            handleBlur={handleBlur}
-                                                            error={meta.touched ? meta.error : undefined}
-                                                            disabled={isFieldDisabled('employment_status')}
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            {...field}
-                                                            placeholder={localize('Please select')}
-                                                            name={field.name}
-                                                            label={localize('Employment status')}
-                                                            list_items={getEmploymentStatusList({
-                                                                financial_questions,
-                                                            })}
-                                                            value={field.value}
-                                                            error={meta.touched ? meta.error : undefined}
-                                                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                                                setFieldValue(field.name, e.target?.name);
-                                                                setFieldValue('no_tax_information', false);
-                                                                handleChange(e);
-                                                            }}
-                                                            disabled={isFieldDisabled('employment_status')}
-                                                        />
-                                                    )}
+            <AutoHeightWrapper default_height={isDesktop ? 625 : 500}>
+                {({ height }) => (
+                    <ThemedScrollbars autohide={false} height={height}>
+                        <Formik<Partial<TFinancialInformationForm>>
+                            initialValues={setInitialFormData()}
+                            enableReinitialize
+                            validate={validateCurrentStep}
+                            onSubmit={handleNext}
+                        >
+                            {({ handleSubmit, isSubmitting, values, setFieldValue, isValid, handleChange }) => {
+                                return (
+                                    <Form className='complete-user-profile-modal__form' onSubmit={handleSubmit}>
+                                        {current_step === 1 && (
+                                            <>
+                                                {/* Employment Status */}
+                                                <div className='complete-user-profile-modal__bottom-margin'>
+                                                    <Text
+                                                        weight='bold'
+                                                        className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
+                                                    >
+                                                        <Localize i18n_default_text='Employment status' />
+                                                    </Text>
+                                                    <Field name='employment_status'>
+                                                        {({
+                                                            field,
+                                                            form: { setFieldValue, handleBlur, handleChange },
+                                                            meta,
+                                                        }: FieldProps) => (
+                                                            <div className='employment-status-field'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        {...field}
+                                                                        placeholder={localize('Employment status')}
+                                                                        is_align_text_left
+                                                                        name={field.name}
+                                                                        list={getEmploymentStatusList({
+                                                                            financial_questions,
+                                                                        })}
+                                                                        value={field.value}
+                                                                        onChange={(e: {
+                                                                            target: { name: string; value: string };
+                                                                        }) => {
+                                                                            handleChange(e);
+                                                                            setFieldValue('no_tax_information', false);
+                                                                        }}
+                                                                        handleBlur={handleBlur}
+                                                                        error={meta.touched ? meta.error : undefined}
+                                                                        disabled={isFieldDisabled('employment_status')}
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        {...field}
+                                                                        placeholder={localize('Please select')}
+                                                                        name={field.name}
+                                                                        label={localize('Employment status')}
+                                                                        list_items={getEmploymentStatusList({
+                                                                            financial_questions,
+                                                                        })}
+                                                                        value={field.value}
+                                                                        error={meta.touched ? meta.error : undefined}
+                                                                        onChange={(
+                                                                            e: React.ChangeEvent<HTMLSelectElement>
+                                                                        ) => {
+                                                                            setFieldValue(field.name, e.target?.name);
+                                                                            setFieldValue('no_tax_information', false);
+                                                                            handleChange(e);
+                                                                        }}
+                                                                        disabled={isFieldDisabled('employment_status')}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </Field>
                                                 </div>
-                                            )}
-                                        </Field>
-                                    </div>
-                                    {shouldHideOccupationField(
-                                        getTextFromKey('employment_status', values?.employment_status)
-                                    ) && (
-                                        <div className='complete-user-profile-modal__bottom-margin'>
-                                            <Field name='no_tax_information'>
-                                                {({ field }: FieldProps) => (
-                                                    <Checkbox
-                                                        {...field}
-                                                        label={localize('I do not have tax information.')}
-                                                    />
-                                                )}
-                                            </Field>
-                                        </div>
-                                    )}
-                                    {/* Tax Residence Field */}
-                                    {!values.no_tax_information && (
-                                        <>
-                                            <div className='complete-user-profile-modal__bottom-margin'>
-                                                <Text
-                                                    weight='bold'
-                                                    className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
-                                                >
-                                                    <Localize i18n_default_text='Employment status' />
-                                                </Text>
-                                                <Field name='tax_residence'>
-                                                    {({ field, form: { setFieldValue }, meta }: FieldProps) => (
-                                                        <div className='complete-user-profile-modal__bottom-margin'>
-                                                            {isDesktop ? (
-                                                                <Autocomplete
+                                                {shouldHideOccupationField(
+                                                    getTextFromKey('employment_status', values?.employment_status)
+                                                ) && (
+                                                    <div className='complete-user-profile-modal__bottom-margin'>
+                                                        <Field name='no_tax_information'>
+                                                            {({ field }: FieldProps) => (
+                                                                <Checkbox
                                                                     {...field}
-                                                                    data-lpignore='true'
-                                                                    autoComplete='off'
-                                                                    label={localize('Tax residence')}
-                                                                    error={meta.touched ? meta.error : undefined}
-                                                                    value={tax_residence_to_display || field.value}
-                                                                    list_items={residenceList}
-                                                                    onItemSelection={(item: TItem) => {
-                                                                        setFieldValue(
-                                                                            'tax_residence',
-                                                                            (item as ResidenceList[0]).value,
-                                                                            true
-                                                                        );
-                                                                        setTaxResidenceToDisplay(
-                                                                            (item as ResidenceList[0]).text || ''
-                                                                        );
-                                                                    }}
-                                                                    data-testid='tax_residence'
-                                                                    disabled={isFieldDisabled('tax_residence')}
-                                                                />
-                                                            ) : (
-                                                                <SelectNative
-                                                                    {...field}
-                                                                    placeholder={localize('Tax residence')}
-                                                                    name={field.name}
-                                                                    label={localize('Tax residence')}
-                                                                    list_items={residenceList}
-                                                                    value={tax_residence_to_display || field.value}
-                                                                    use_text
-                                                                    error={meta.touched ? meta.error : ''}
-                                                                    onChange={e => {
-                                                                        const selected_item = residenceList.find(
-                                                                            item => item.text === e.target.value
-                                                                        );
-                                                                        setTaxResidenceToDisplay(
-                                                                            selected_item?.text || ''
-                                                                        );
-                                                                        handleChange(e);
-                                                                        setFieldValue(
-                                                                            'tax_residence',
-                                                                            selected_item?.value || '',
-                                                                            true
-                                                                        );
-                                                                    }}
-                                                                    data_testid='tax_residence_mobile'
-                                                                    disabled={isFieldDisabled('tax_residence')}
+                                                                    label={localize('I do not have tax information.')}
                                                                 />
                                                             )}
+                                                        </Field>
+                                                    </div>
+                                                )}
+                                                {/* Tax Residence Field */}
+                                                {!values.no_tax_information && (
+                                                    <>
+                                                        <div className='complete-user-profile-modal__bottom-margin'>
+                                                            <Text
+                                                                weight='bold'
+                                                                className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
+                                                            >
+                                                                <Localize i18n_default_text='Employment status' />
+                                                            </Text>
+                                                            <Field name='tax_residence'>
+                                                                {({
+                                                                    field,
+                                                                    form: { setFieldValue },
+                                                                    meta,
+                                                                }: FieldProps) => (
+                                                                    <div className='complete-user-profile-modal__bottom-margin'>
+                                                                        {isDesktop ? (
+                                                                            <Autocomplete
+                                                                                {...field}
+                                                                                data-lpignore='true'
+                                                                                autoComplete='off'
+                                                                                label={localize('Tax residence')}
+                                                                                error={
+                                                                                    meta.touched
+                                                                                        ? meta.error
+                                                                                        : undefined
+                                                                                }
+                                                                                value={
+                                                                                    tax_residence_to_display ||
+                                                                                    field.value
+                                                                                }
+                                                                                list_items={residenceList}
+                                                                                onItemSelection={(item: TItem) => {
+                                                                                    setFieldValue(
+                                                                                        'tax_residence',
+                                                                                        (item as ResidenceList[0])
+                                                                                            .value,
+                                                                                        true
+                                                                                    );
+                                                                                    setTaxResidenceToDisplay(
+                                                                                        (item as ResidenceList[0])
+                                                                                            .text || ''
+                                                                                    );
+                                                                                }}
+                                                                                data-testid='tax_residence'
+                                                                                disabled={isFieldDisabled(
+                                                                                    'tax_residence'
+                                                                                )}
+                                                                            />
+                                                                        ) : (
+                                                                            <SelectNative
+                                                                                {...field}
+                                                                                placeholder={localize('Tax residence')}
+                                                                                name={field.name}
+                                                                                label={localize('Tax residence')}
+                                                                                list_items={residenceList}
+                                                                                value={
+                                                                                    tax_residence_to_display ||
+                                                                                    field.value
+                                                                                }
+                                                                                use_text
+                                                                                error={meta.touched ? meta.error : ''}
+                                                                                onChange={e => {
+                                                                                    const selected_item =
+                                                                                        residenceList.find(
+                                                                                            item =>
+                                                                                                item.text ===
+                                                                                                e.target.value
+                                                                                        );
+                                                                                    setTaxResidenceToDisplay(
+                                                                                        selected_item?.text || ''
+                                                                                    );
+                                                                                    handleChange(e);
+                                                                                    setFieldValue(
+                                                                                        'tax_residence',
+                                                                                        selected_item?.value || '',
+                                                                                        true
+                                                                                    );
+                                                                                }}
+                                                                                data_testid='tax_residence_mobile'
+                                                                                disabled={isFieldDisabled(
+                                                                                    'tax_residence'
+                                                                                )}
+                                                                            />
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </Field>
                                                         </div>
-                                                    )}
-                                                </Field>
-                                            </div>
-                                            {/* Tax Identification Number */}
-                                            <div className='complete-user-profile-modal__bottom-margin'>
-                                                <Text
-                                                    weight='bold'
-                                                    className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
-                                                >
-                                                    <Localize i18n_default_text='Tax identification number' />
-                                                </Text>
-                                                <Field name='tax_identification_number'>
-                                                    {({ field }: FieldProps) => (
-                                                        <FormInputField
-                                                            {...field}
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax identification number')}
-                                                            placeholder={localize('Tax identification number')}
-                                                            data-testid='tax_identification_number'
-                                                            disabled={isFieldDisabled('tax_identification_number')}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            </div>
-                                        </>
-                                    )}
-                                    {/* Account Opening Reason */}
-                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                        <Text
-                                            weight='bold'
-                                            className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
-                                        >
-                                            <Localize i18n_default_text='Account Opening Reason' />
-                                        </Text>
-                                        <Field name='account_opening_reason'>
-                                            {({ field, meta }: FieldProps) => (
-                                                <div className='complete-user-profile-modal__bottom-margin'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            placeholder={localize('Account opening reason')}
-                                                            {...field}
-                                                            is_align_text_left
-                                                            list={getAccountOpeningReasonList()}
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            list_portal_id={'modal_root'}
-                                                            disabled={isFieldDisabled('account_opening_reason')}
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Please select')}
-                                                            {...field}
-                                                            label={localize('Account opening reason')}
-                                                            list_items={getAccountOpeningReasonList()}
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            onChange={e => {
-                                                                field.onChange(e);
-                                                                setFieldValue(
-                                                                    'account_opening_reason',
-                                                                    e.target.value,
-                                                                    true
-                                                                );
-                                                            }}
-                                                            required
-                                                            data_testid='account_opening_reason_mobile'
-                                                            disabled={isFieldDisabled('account_opening_reason')}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Field>
-                                    </div>
-                                    {/* Tax Information Confirmation */}
-                                    {!values.no_tax_information && (
-                                        <div className='complete-user-profile-modal__bottom-margin'>
-                                            <Field name='tax_identification_confirm'>
-                                                {({ field }: FieldProps) => (
-                                                    <Checkbox
-                                                        {...field}
-                                                        label={localize(
-                                                            'I confirm that my tax information is accurate and complete.'
-                                                        )}
-                                                    />
+                                                        {/* Tax Identification Number */}
+                                                        <div className='complete-user-profile-modal__bottom-margin'>
+                                                            <Text
+                                                                weight='bold'
+                                                                className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
+                                                            >
+                                                                <Localize i18n_default_text='Tax identification number' />
+                                                            </Text>
+                                                            <Field name='tax_identification_number'>
+                                                                {({ field }: FieldProps) => (
+                                                                    <FormInputField
+                                                                        {...field}
+                                                                        name='tax_identification_number'
+                                                                        label={localize('Tax identification number')}
+                                                                        placeholder={localize(
+                                                                            'Tax identification number'
+                                                                        )}
+                                                                        data-testid='tax_identification_number'
+                                                                        disabled={isFieldDisabled(
+                                                                            'tax_identification_number'
+                                                                        )}
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                    </>
                                                 )}
-                                            </Field>
-                                        </div>
-                                    )}
-                                </>
-                            )}
-                            {current_step === 2 && (
-                                <>
-                                    {/* Employment Industry */}
-                                    {shouldShowFinancialField('employment_industry') &&
-                                        !shouldHideByFinancialQuestions('employment_industry', values) && (
-                                            <Field name='employment_industry'>
-                                                {({ field, meta }: FieldProps) => (
-                                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                                        {isDesktop ? (
-                                                            <Dropdown
-                                                                placeholder={localize('Industry of employment')}
-                                                                {...field}
-                                                                is_align_text_left
-                                                                list={getEmploymentIndustryList({
-                                                                    financial_questions,
-                                                                })} // Add your employment industry list here
-                                                                error={meta.touched && meta.error ? meta.error : ''}
-                                                                list_portal_id='modal_root'
-                                                            />
-                                                        ) : (
-                                                            <SelectNative
-                                                                placeholder={localize('Industry of employment')}
-                                                                {...field}
-                                                                label={localize('Industry of employment')}
-                                                                list_items={getEmploymentIndustryList({
-                                                                    financial_questions,
-                                                                })} // Add your employment industry list here
-                                                                error={meta.touched && meta.error ? meta.error : ''}
-                                                            />
+                                                {/* Account Opening Reason */}
+                                                <div className='complete-user-profile-modal__bottom-margin'>
+                                                    <Text
+                                                        weight='bold'
+                                                        className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
+                                                    >
+                                                        <Localize i18n_default_text='Account Opening Reason' />
+                                                    </Text>
+                                                    <Field name='account_opening_reason'>
+                                                        {({ field, meta }: FieldProps) => (
+                                                            <div className='complete-user-profile-modal__bottom-margin'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        placeholder={localize('Account opening reason')}
+                                                                        {...field}
+                                                                        is_align_text_left
+                                                                        list={getAccountOpeningReasonList()}
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        list_portal_id={'modal_root'}
+                                                                        disabled={isFieldDisabled(
+                                                                            'account_opening_reason'
+                                                                        )}
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize('Please select')}
+                                                                        {...field}
+                                                                        label={localize('Account opening reason')}
+                                                                        list_items={getAccountOpeningReasonList()}
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        onChange={e => {
+                                                                            field.onChange(e);
+                                                                            setFieldValue(
+                                                                                'account_opening_reason',
+                                                                                e.target.value,
+                                                                                true
+                                                                            );
+                                                                        }}
+                                                                        required
+                                                                        data_testid='account_opening_reason_mobile'
+                                                                        disabled={isFieldDisabled(
+                                                                            'account_opening_reason'
+                                                                        )}
+                                                                    />
+                                                                )}
+                                                            </div>
                                                         )}
+                                                    </Field>
+                                                </div>
+                                                {/* Tax Information Confirmation */}
+                                                {!values.no_tax_information && (
+                                                    <div className='complete-user-profile-modal__bottom-margin'>
+                                                        <Field name='tax_identification_confirm'>
+                                                            {({ field }: FieldProps) => (
+                                                                <Checkbox
+                                                                    {...field}
+                                                                    label={localize(
+                                                                        'I confirm that my tax information is accurate and complete.'
+                                                                    )}
+                                                                />
+                                                            )}
+                                                        </Field>
                                                     </div>
                                                 )}
-                                            </Field>
+                                            </>
                                         )}
+                                        {current_step === 2 && (
+                                            <>
+                                                {/* Employment Industry */}
+                                                {shouldShowFinancialField('employment_industry') &&
+                                                    !shouldHideByFinancialQuestions('employment_industry', values) && (
+                                                        <Field name='employment_industry'>
+                                                            {({ field, meta }: FieldProps) => (
+                                                                <div className='complete-user-profile-modal__bottom-margin'>
+                                                                    {isDesktop ? (
+                                                                        <Dropdown
+                                                                            placeholder={localize(
+                                                                                'Industry of employment'
+                                                                            )}
+                                                                            {...field}
+                                                                            is_align_text_left
+                                                                            list={getEmploymentIndustryList({
+                                                                                financial_questions,
+                                                                            })} // Add your employment industry list here
+                                                                            error={
+                                                                                meta.touched && meta.error
+                                                                                    ? meta.error
+                                                                                    : ''
+                                                                            }
+                                                                            list_portal_id='modal_root'
+                                                                        />
+                                                                    ) : (
+                                                                        <SelectNative
+                                                                            placeholder={localize(
+                                                                                'Industry of employment'
+                                                                            )}
+                                                                            {...field}
+                                                                            label={localize('Industry of employment')}
+                                                                            list_items={getEmploymentIndustryList({
+                                                                                financial_questions,
+                                                                            })} // Add your employment industry list here
+                                                                            error={
+                                                                                meta.touched && meta.error
+                                                                                    ? meta.error
+                                                                                    : ''
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </Field>
+                                                    )}
 
-                                    {/* Occupation */}
-                                    {shouldShowFinancialField('occupation') &&
-                                        !shouldHideByFinancialQuestions('occupation', values) && (
-                                            <Field name='occupation'>
-                                                {({ field, meta }: FieldProps) => (
-                                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                                        {isDesktop ? (
-                                                            <Dropdown
-                                                                placeholder={localize('Occupation')}
-                                                                {...field}
-                                                                is_align_text_left
-                                                                list={getOccupationList({ financial_questions })}
-                                                                error={meta.touched && meta.error ? meta.error : ''}
-                                                                list_portal_id='modal_root'
-                                                            />
-                                                        ) : (
-                                                            <SelectNative
-                                                                placeholder={localize('Occupation')}
-                                                                {...field}
-                                                                label={localize('Occupation')}
-                                                                list_items={getOccupationList({ financial_questions })}
-                                                                error={meta.touched && meta.error ? meta.error : ''}
-                                                            />
+                                                {/* Occupation */}
+                                                {shouldShowFinancialField('occupation') &&
+                                                    !shouldHideByFinancialQuestions('occupation', values) && (
+                                                        <Field name='occupation'>
+                                                            {({ field, meta }: FieldProps) => (
+                                                                <div className='complete-user-profile-modal__bottom-margin'>
+                                                                    {isDesktop ? (
+                                                                        <Dropdown
+                                                                            placeholder={localize('Occupation')}
+                                                                            {...field}
+                                                                            is_align_text_left
+                                                                            list={getOccupationList({
+                                                                                financial_questions,
+                                                                            })}
+                                                                            error={
+                                                                                meta.touched && meta.error
+                                                                                    ? meta.error
+                                                                                    : ''
+                                                                            }
+                                                                            list_portal_id='modal_root'
+                                                                        />
+                                                                    ) : (
+                                                                        <SelectNative
+                                                                            placeholder={localize('Occupation')}
+                                                                            {...field}
+                                                                            label={localize('Occupation')}
+                                                                            list_items={getOccupationList({
+                                                                                financial_questions,
+                                                                            })}
+                                                                            error={
+                                                                                meta.touched && meta.error
+                                                                                    ? meta.error
+                                                                                    : ''
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </Field>
+                                                    )}
+
+                                                {/* Income Source */}
+                                                {shouldShowFinancialField('income_source') && (
+                                                    <Field name='income_source'>
+                                                        {({ field, meta }: FieldProps) => (
+                                                            <div className='complete-user-profile-modal__bottom-margin'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        placeholder={localize('Income source')}
+                                                                        {...field}
+                                                                        is_align_text_left
+                                                                        list={getIncomeSourceList({
+                                                                            financial_questions,
+                                                                        })} // Add your income source list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        list_portal_id='modal_root'
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize('Income source')}
+                                                                        {...field}
+                                                                        label={localize('Income source')}
+                                                                        list_items={getIncomeSourceList({
+                                                                            financial_questions,
+                                                                        })} // Add your income source list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </div>
                                                         )}
-                                                    </div>
+                                                    </Field>
                                                 )}
-                                            </Field>
+
+                                                {/* Net Annual Income */}
+                                                {shouldShowFinancialField('net_income') && (
+                                                    <Field name='net_income'>
+                                                        {({ field, meta }: FieldProps) => (
+                                                            <div className='complete-user-profile-modal__bottom-margin'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        placeholder={localize('Net annual income')}
+                                                                        {...field}
+                                                                        is_align_text_left
+                                                                        list={getNetIncomeList({ financial_questions })} // Add your net income list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        list_portal_id='modal_root'
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize('Net annual income')}
+                                                                        {...field}
+                                                                        label={localize('Net annual income')}
+                                                                        list_items={getNetIncomeList({
+                                                                            financial_questions,
+                                                                        })} // Add your net income list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </Field>
+                                                )}
+
+                                                {/* Estimated Net Worth */}
+                                                {shouldShowFinancialField('estimated_worth') && (
+                                                    <Field name='estimated_worth'>
+                                                        {({ field, meta }: FieldProps) => (
+                                                            <div className='complete-user-profile-modal__bottom-margin'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        placeholder={localize('Estimated net worth')}
+                                                                        {...field}
+                                                                        is_align_text_left
+                                                                        list={getEstimatedWorthList({
+                                                                            financial_questions,
+                                                                        })} // Add your estimated worth list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        list_portal_id='modal_root'
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize('Estimated net worth')}
+                                                                        {...field}
+                                                                        label={localize('Estimated net worth')}
+                                                                        list_items={getEstimatedWorthList({
+                                                                            financial_questions,
+                                                                        })} // Add your estimated worth list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </Field>
+                                                )}
+
+                                                {/* Account Turnover */}
+                                                {shouldShowFinancialField('investment_intention') && (
+                                                    <Field name='investment_intention'>
+                                                        {({ field, meta }: FieldProps) => (
+                                                            <div className='complete-user-profile-modal__bottom-margin'>
+                                                                {isDesktop ? (
+                                                                    <Dropdown
+                                                                        placeholder={localize(
+                                                                            'How much will you invest yearly?'
+                                                                        )}
+                                                                        {...field}
+                                                                        is_align_text_left
+                                                                        list={getAccountTurnoverList({
+                                                                            financial_questions,
+                                                                        })} // Add your account turnover list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                        list_portal_id='modal_root'
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        placeholder={localize(
+                                                                            'How much will you invest yearly?'
+                                                                        )}
+                                                                        {...field}
+                                                                        label={localize(
+                                                                            'How much will you invest yearly?'
+                                                                        )}
+                                                                        list_items={getAccountTurnoverList({
+                                                                            financial_questions,
+                                                                        })} // Add your account turnover list here
+                                                                        error={
+                                                                            meta.touched && meta.error ? meta.error : ''
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </Field>
+                                                )}
+                                            </>
                                         )}
-
-                                    {/* Income Source */}
-                                    {shouldShowFinancialField('income_source') && (
-                                        <Field name='income_source'>
-                                            {({ field, meta }: FieldProps) => (
+                                        {current_step === 3 && shouldShowFinancialField('source_of_wealth') && (
+                                            <>
                                                 <div className='complete-user-profile-modal__bottom-margin'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            placeholder={localize('Income source')}
-                                                            {...field}
-                                                            is_align_text_left
-                                                            list={getIncomeSourceList({ financial_questions })} // Add your income source list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            list_portal_id='modal_root'
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Income source')}
-                                                            {...field}
-                                                            label={localize('Income source')}
-                                                            list_items={getIncomeSourceList({ financial_questions })} // Add your income source list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                        />
-                                                    )}
+                                                    <Text weight='bold'>
+                                                        <Localize i18n_default_text='Source of wealth' />
+                                                    </Text>{' '}
+                                                    <Text>
+                                                        <Localize i18n_default_text='(Select up to 2 sources)' />
+                                                    </Text>
                                                 </div>
-                                            )}
-                                        </Field>
-                                    )}
+                                                <Field name='source_of_wealth'>
+                                                    {({ field, meta }: FieldProps) => {
+                                                        const current_value = field.value || '';
 
-                                    {/* Net Annual Income */}
-                                    {shouldShowFinancialField('net_income') && (
-                                        <Field name='net_income'>
-                                            {({ field, meta }: FieldProps) => (
-                                                <div className='complete-user-profile-modal__bottom-margin'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            placeholder={localize('Net annual income')}
-                                                            {...field}
-                                                            is_align_text_left
-                                                            list={getNetIncomeList({ financial_questions })} // Add your net income list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            list_portal_id='modal_root'
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Net annual income')}
-                                                            {...field}
-                                                            label={localize('Net annual income')}
-                                                            list_items={getNetIncomeList({ financial_questions })} // Add your net income list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Field>
-                                    )}
+                                                        const handleCheckboxChange = (checkbox_value: string) => {
+                                                            const is_selected = current_value.includes(checkbox_value);
 
-                                    {/* Estimated Net Worth */}
-                                    {shouldShowFinancialField('estimated_worth') && (
-                                        <Field name='estimated_worth'>
-                                            {({ field, meta }: FieldProps) => (
-                                                <div className='complete-user-profile-modal__bottom-margin'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            placeholder={localize('Estimated net worth')}
-                                                            {...field}
-                                                            is_align_text_left
-                                                            list={getEstimatedWorthList({ financial_questions })} // Add your estimated worth list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            list_portal_id='modal_root'
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('Estimated net worth')}
-                                                            {...field}
-                                                            label={localize('Estimated net worth')}
-                                                            list_items={getEstimatedWorthList({ financial_questions })} // Add your estimated worth list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Field>
-                                    )}
-
-                                    {/* Account Turnover */}
-                                    {shouldShowFinancialField('investment_intention') && (
-                                        <Field name='investment_intention'>
-                                            {({ field, meta }: FieldProps) => (
-                                                <div className='complete-user-profile-modal__bottom-margin'>
-                                                    {isDesktop ? (
-                                                        <Dropdown
-                                                            placeholder={localize('How much will you invest yearly?')}
-                                                            {...field}
-                                                            is_align_text_left
-                                                            list={getAccountTurnoverList({ financial_questions })} // Add your account turnover list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                            list_portal_id='modal_root'
-                                                        />
-                                                    ) : (
-                                                        <SelectNative
-                                                            placeholder={localize('How much will you invest yearly?')}
-                                                            {...field}
-                                                            label={localize('How much will you invest yearly?')}
-                                                            list_items={getAccountTurnoverList({ financial_questions })} // Add your account turnover list here
-                                                            error={meta.touched && meta.error ? meta.error : ''}
-                                                        />
-                                                    )}
-                                                </div>
-                                            )}
-                                        </Field>
-                                    )}
-                                </>
-                            )}
-                            {current_step === 3 && shouldShowFinancialField('source_of_wealth') && (
-                                <>
-                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                        <Text weight='bold'>
-                                            <Localize i18n_default_text='Source of wealth' />
-                                        </Text>{' '}
-                                        <Text>
-                                            <Localize i18n_default_text='(Select up to 2 sources)' />
-                                        </Text>
-                                    </div>
-                                    <Field name='source_of_wealth'>
-                                        {({ field, meta }: FieldProps) => {
-                                            const current_value = field.value || '';
-
-                                            const handleCheckboxChange = (checkbox_value: string) => {
-                                                const is_selected = current_value.includes(checkbox_value);
-
-                                                if (is_selected) {
-                                                    // Remove the value from the string
-                                                    const updated_value = current_value
-                                                        .split(',')
-                                                        .filter((v: string) => v.trim() !== checkbox_value)
-                                                        .join(',');
-                                                    setFieldValue('source_of_wealth', updated_value, true);
-                                                } else {
-                                                    // Check if we can add more (max 2)
-                                                    const current_count = current_value
-                                                        ? current_value.split(';').filter(Boolean).length
-                                                        : 0;
-                                                    if (current_count < 2) {
-                                                        // Add the value to the string
-                                                        const updated_value = current_value
-                                                            ? `${current_value},${checkbox_value}`
-                                                            : checkbox_value;
-                                                        setFieldValue('source_of_wealth', updated_value, true);
-                                                    }
-                                                }
-                                            };
-
-                                            return (
-                                                <>
-                                                    {getSourceOfWealthList({ financial_questions }).map(item => {
-                                                        const is_checked = current_value.includes(item.value);
-                                                        const current_count = current_value
-                                                            ? current_value.split(';').filter(Boolean).length
-                                                            : 0;
-                                                        const is_disabled = !is_checked && current_count >= 2;
+                                                            if (is_selected) {
+                                                                // Remove the value from the string
+                                                                const updated_value = current_value
+                                                                    .split(',')
+                                                                    .filter((v: string) => v.trim() !== checkbox_value)
+                                                                    .join(',');
+                                                                setFieldValue('source_of_wealth', updated_value, true);
+                                                            } else {
+                                                                // Check if we can add more (max 2)
+                                                                const current_count = current_value
+                                                                    ? current_value.split(';').filter(Boolean).length
+                                                                    : 0;
+                                                                if (current_count < 2) {
+                                                                    // Add the value to the string
+                                                                    const updated_value = current_value
+                                                                        ? `${current_value},${checkbox_value}`
+                                                                        : checkbox_value;
+                                                                    setFieldValue(
+                                                                        'source_of_wealth',
+                                                                        updated_value,
+                                                                        true
+                                                                    );
+                                                                }
+                                                            }
+                                                        };
 
                                                         return (
-                                                            <div
-                                                                key={item.text}
-                                                                className='complete-user-profile-modal__bottom-margin'
-                                                            >
-                                                                <Checkbox
-                                                                    name={`source_of_wealth_${item.text}`}
-                                                                    label={item.text}
-                                                                    defaultChecked={is_checked}
-                                                                    onChange={() => handleCheckboxChange(item.text)}
-                                                                    disabled={is_disabled}
-                                                                />
-                                                            </div>
+                                                            <>
+                                                                {getSourceOfWealthList({ financial_questions }).map(
+                                                                    item => {
+                                                                        const is_checked = current_value.includes(
+                                                                            item.value
+                                                                        );
+                                                                        const current_count = current_value
+                                                                            ? current_value.split(';').filter(Boolean)
+                                                                                  .length
+                                                                            : 0;
+                                                                        const is_disabled =
+                                                                            !is_checked && current_count >= 2;
+
+                                                                        return (
+                                                                            <div
+                                                                                key={item.text}
+                                                                                className='complete-user-profile-modal__bottom-margin'
+                                                                            >
+                                                                                <Checkbox
+                                                                                    name={`source_of_wealth_${item.text}`}
+                                                                                    label={item.text}
+                                                                                    defaultChecked={is_checked}
+                                                                                    onChange={() =>
+                                                                                        handleCheckboxChange(item.text)
+                                                                                    }
+                                                                                    disabled={is_disabled}
+                                                                                />
+                                                                            </div>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                                {meta.touched && meta.error && (
+                                                                    <Text size='xs' color='loss-danger'>
+                                                                        {meta.error}
+                                                                    </Text>
+                                                                )}
+                                                            </>
                                                         );
-                                                    })}
-                                                    {meta.touched && meta.error && (
-                                                        <Text size='xs' color='loss-danger'>
-                                                            {meta.error}
-                                                        </Text>
-                                                    )}
-                                                </>
-                                            );
-                                        }}
-                                    </Field>
-                                </>
-                            )}
-                            <Modal.Footer className='complete-user-profile-modal__footer'>
-                                <FormSubmitButton
-                                    label={localize('Next')}
-                                    disabled={isSubmitting || !isValid}
-                                    is_loading={isSubmitting}
-                                    className='complete-user-profile-modal__submit-button'
-                                />
-                            </Modal.Footer>
-                        </Form>
-                    );
-                }}
-            </Formik>
+                                                    }}
+                                                </Field>
+                                            </>
+                                        )}
+                                        <Modal.Footer className='complete-user-profile-modal__footer'>
+                                            <FormSubmitButton
+                                                label={localize('Next')}
+                                                disabled={isSubmitting || !isValid}
+                                                is_loading={isSubmitting}
+                                                className='complete-user-profile-modal__submit-button'
+                                            />
+                                        </Modal.Footer>
+                                    </Form>
+                                );
+                            }}
+                        </Formik>
+                    </ThemedScrollbars>
+                )}
+            </AutoHeightWrapper>
         );
     }
 );

@@ -338,7 +338,7 @@ export const FinancialInformationValidationSchema = ({
                 if (!value) {
                     return this.createError({ message: localize('Please select at least one source of wealth') });
                 }
-                const selected_values = (value as string).split(/[;,]/).filter(Boolean);
+                const selected_values = (value as string).split(';').filter(Boolean);
                 if (selected_values.length === 0) {
                     return this.createError({ message: localize('Please select at least one source of wealth') });
                 }

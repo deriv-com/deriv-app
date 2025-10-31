@@ -162,7 +162,7 @@ const CompleteFinancialAssessment = observer(
             if (tax_residence) {
                 mutate(tax_residence);
             }
-        }, [tax_residence, mutate]);
+        }, [tax_residence]);
 
         const onSubmit = async (
             values: Partial<TFinancialInformationForm>,

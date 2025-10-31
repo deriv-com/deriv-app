@@ -1,5 +1,4 @@
 import { useQuery } from '@deriv/api';
-import { TSocketRequestQueryOptions } from '@deriv/api/types';
 
 type TFinancialAssessmentAnswer = {
     hide_if: string[];
@@ -36,17 +35,12 @@ type TFinancialAssessmentQuestionsResponse = {
 };
 
 /** A custom hook that gets the financial assessment questions. */
-// @ts-expect-error - 'financial_assessment_questions' is a valid endpoint but not yet typed in the API types
-const useFinancialAssessmentQuestions = (options?: TSocketRequestQueryOptions<'financial_assessment_questions'>) => {
+const useFinancialAssessmentQuestions = () => {
     // @ts-expect-error - 'financial_assessment_questions' is a valid endpoint but not yet typed in the API types
     const { data, ...rest } = useQuery('financial_assessment_questions', {
         payload: {
             financial_assessment_questions: 1,
             version: 'v2',
-        },
-        options: {
-            staleTime: Infinity,
-            ...options,
         },
     });
 

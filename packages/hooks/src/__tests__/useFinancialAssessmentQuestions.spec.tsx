@@ -204,35 +204,6 @@ describe('useFinancialAssessmentQuestions', () => {
                 financial_assessment_questions: 1,
                 version: 'v2',
             },
-            options: {
-                staleTime: Infinity,
-            },
-        });
-    });
-
-    it('should merge custom options with default options', () => {
-        (useQuery as jest.Mock).mockReturnValue({
-            data: null,
-            isLoading: false,
-            error: null,
-        });
-
-        const customOptions = {
-            enabled: true,
-            refetchOnMount: true,
-        };
-
-        renderHook(() => useFinancialAssessmentQuestions(customOptions), { wrapper });
-
-        expect(useQuery).toHaveBeenCalledWith('financial_assessment_questions', {
-            payload: {
-                financial_assessment_questions: 1,
-                version: 'v2',
-            },
-            options: {
-                staleTime: Infinity,
-                ...customOptions,
-            },
         });
     });
 

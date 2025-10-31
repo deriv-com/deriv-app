@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck [TODO] - Need to fix typescript errors
-
 import React from 'react';
 import { Field, FieldProps, Form, Formik, FormikHelpers } from 'formik';
 
@@ -24,7 +21,7 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { useFinancialAssessmentQuestions } from '@deriv/hooks';
+import { useFinancialAssessmentQuestions, useTinValidations } from '@deriv/hooks';
 import { shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -42,6 +39,7 @@ import {
     getSourceOfWealthList,
 } from './financial-information-list';
 import FormInputField from './form-input-field';
+import { FinancialInformationValidationSchema } from './validation';
 
 type TCompleteFinancialAssessment = {
     account_settings: GetSettings;
@@ -49,15 +47,10 @@ type TCompleteFinancialAssessment = {
     onClose: () => void;
 };
 
-type TPersonalDetailsBaseForm = {
-    account_opening_reason: string;
-    tax_residence: string;
-    tax_identification_number: string;
-    tax_identification_confirm: boolean;
-};
-
 type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'> &
-    TPersonalDetailsBaseForm & { no_tax_information: boolean; tax_identification_confirm: boolean } & {
+    Partial<GetSettings> & {
+        no_tax_information: boolean;
+        tax_identification_confirm: boolean;
         investment_intention: string;
     };
 
@@ -68,6 +61,7 @@ const CompleteFinancialAssessment = observer(
         const { isMobile, isDesktop } = useDevice();
         const { refreshNotifications } = notifications;
         const { data: financial_questions, isLoading: is_questions_loading } = useFinancialAssessmentQuestions();
+        const { tin_validation_config, mutate } = useTinValidations();
 
         const [is_loading, setIsLoading] = React.useState(true);
         const [financial_assessment_information, setFinancialAssessmentInformation] = React.useState<
@@ -125,6 +119,7 @@ const CompleteFinancialAssessment = observer(
             WS.authorized.storage.getFinancialAssessment().then((data: GetFinancialAssessmentResponse) => {
                 if (data?.get_financial_assessment) {
                     setFinancialInformationVersion(
+                        // @ts-expect-error - 'financial_information_version' is not typed in the API types
                         data.get_financial_assessment?.financial_information_version ?? 'v2'
                     );
 
@@ -158,6 +153,13 @@ const CompleteFinancialAssessment = observer(
                 setIsLoading(false);
             });
         }, []);
+
+        // Trigger TIN validation when tax_residence is initially set
+        React.useEffect(() => {
+            if (tax_residence) {
+                mutate(tax_residence);
+            }
+        }, [tax_residence, mutate]);
 
         const onSubmit = async (
             values: Partial<TFinancialInformationForm>,
@@ -243,98 +245,33 @@ const CompleteFinancialAssessment = observer(
             }
         };
 
-        const validateStep1 = (values: Partial<TFinancialInformationForm>) => {
-            const errors: Record<string, string> = {};
-
-            if (!isFieldDisabled('employment_status') && !values.employment_status) {
-                errors.employment_status = localize('This field is required');
-            }
-
-            if (!isFieldDisabled('account_opening_reason') && !values.account_opening_reason) {
-                errors.account_opening_reason = localize('This field is required');
-            }
-
-            if (!isFieldDisabled('tax_residence') && !values.tax_residence) {
-                errors.tax_residence = localize('This field is required');
-            }
-            if (!isFieldDisabled('tax_identification_number') && !values.tax_identification_number) {
-                errors.tax_identification_number = localize('This field is required');
-            }
-
-            if (!values.tax_identification_confirm) {
-                errors.tax_identification_confirm = localize('This field is required');
-            }
-
-            if (values.no_tax_information) {
-                delete errors.tax_residence;
-                delete errors.tax_identification_number;
-                delete errors.tax_identification_confirm;
-            }
-
-            return errors;
-        };
-
-        const validateStep2 = (values: Partial<TFinancialInformationForm>) => {
-            const errors: Record<string, string> = {};
-            const required_fields = [
-                'employment_industry',
-                'occupation',
-                'income_source',
-                'net_income',
-                'estimated_worth',
-                'investment_intention',
-            ];
-
-            // Only validate fields that should be shown and when user has tax information
-            required_fields.forEach(field => {
-                const fieldKey = field as keyof GetFinancialAssessment;
-                if (shouldShowFinancialField(fieldKey) && !values[field as keyof TFinancialInformationForm]) {
-                    errors[field] = localize('This field is required');
-                }
-            });
-
-            // Skip validation for questions hidden by WS rules
-            if (shouldHideByFinancialQuestions('occupation', values)) {
-                delete errors.occupation;
-            }
-            if (shouldHideByFinancialQuestions('employment_industry', values)) {
-                delete errors.employment_industry;
-            }
-
-            return errors;
-        };
-
-        const validateStep3 = (values: Partial<TFinancialInformationForm>) => {
-            const errors: Record<string, string> = {};
-
-            // Only validate if field should be shown and user has tax information
-            if (shouldShowFinancialField('source_of_wealth')) {
-                const selected_values = values.source_of_wealth
-                    ? values.source_of_wealth.split(';').filter(Boolean)
-                    : [];
-
-                if (selected_values.length === 0) {
-                    errors.source_of_wealth = localize('Please select at least one source of wealth');
-                } else if (selected_values.length > 2) {
-                    errors.source_of_wealth = localize('Please select up to 2 sources');
-                }
-            }
-
-            return errors;
-        };
-
-        const validateCurrentStep = (values: Partial<TFinancialInformationForm>) => {
-            switch (current_step) {
-                case 1:
-                    return validateStep1(values);
-                case 2:
-                    return validateStep2(values);
-                case 3:
-                    return validateStep3(values);
-                default:
-                    return {};
-            }
-        };
+        const validationSchema = React.useMemo(
+            () =>
+                FinancialInformationValidationSchema({
+                    current_step,
+                    isFieldDisabled: (name: string) => isFieldDisabled(name as keyof GetSettings),
+                    shouldShowFinancialField: (fieldName: string) =>
+                        shouldShowFinancialField(fieldName as keyof GetFinancialAssessment),
+                    shouldHideByFinancialQuestions: (question_id: string, form_values: Record<string, unknown>) =>
+                        shouldHideByFinancialQuestions(
+                            question_id as keyof NonNullable<typeof financial_questions>['questions'],
+                            form_values as Partial<TFinancialInformationForm>
+                        ),
+                    tin_validation_config,
+                    financial_questions,
+                }),
+            [
+                current_step,
+                tin_validation_config,
+                immutable_fields,
+                financial_assessment_information,
+                financial_information_version,
+                isFieldDisabled,
+                shouldShowFinancialField,
+                shouldHideByFinancialQuestions,
+                financial_questions,
+            ]
+        );
 
         const handleNext = (
             values: Partial<TFinancialInformationForm>,
@@ -394,10 +331,49 @@ const CompleteFinancialAssessment = observer(
                         <Formik<Partial<TFinancialInformationForm>>
                             initialValues={setInitialFormData()}
                             enableReinitialize
-                            validate={validateCurrentStep}
+                            validationSchema={validationSchema}
                             onSubmit={handleNext}
                         >
-                            {({ handleSubmit, isSubmitting, values, setFieldValue, isValid, handleChange }) => {
+                            {({
+                                handleSubmit,
+                                isSubmitting,
+                                values,
+                                setFieldValue,
+                                isValid,
+                                handleChange,
+                                setFieldTouched,
+                                validateForm,
+                            }) => {
+                                // Trigger validation when TIN config loads and TIN has a value
+                                const prev_tin_config_ref = React.useRef(tin_validation_config);
+                                React.useEffect(() => {
+                                    const has_tin_config =
+                                        tin_validation_config && Object.keys(tin_validation_config).length > 0;
+                                    const had_tin_config =
+                                        prev_tin_config_ref.current &&
+                                        Object.keys(prev_tin_config_ref.current).length > 0;
+
+                                    // Only trigger if config just became available (not empty)
+                                    if (
+                                        !had_tin_config &&
+                                        has_tin_config &&
+                                        values.tax_identification_number &&
+                                        values.tax_residence &&
+                                        current_step === 1
+                                    ) {
+                                        setFieldTouched('tax_identification_number', true);
+                                        validateForm();
+                                    }
+                                    prev_tin_config_ref.current = tin_validation_config;
+                                }, [
+                                    tin_validation_config,
+                                    values.tax_identification_number,
+                                    values.tax_residence,
+                                    current_step,
+                                    setFieldTouched,
+                                    validateForm,
+                                ]);
+
                                 return (
                                     <Form className='complete-user-profile-modal__form' onSubmit={handleSubmit}>
                                         {current_step === 1 && (
@@ -510,16 +486,21 @@ const CompleteFinancialAssessment = observer(
                                                                                 }
                                                                                 list_items={residenceList}
                                                                                 onItemSelection={(item: TItem) => {
+                                                                                    const tax_residence_value = (
+                                                                                        item as ResidenceList[0]
+                                                                                    ).value;
                                                                                     setFieldValue(
                                                                                         'tax_residence',
-                                                                                        (item as ResidenceList[0])
-                                                                                            .value,
+                                                                                        tax_residence_value,
                                                                                         true
                                                                                     );
                                                                                     setTaxResidenceToDisplay(
                                                                                         (item as ResidenceList[0])
                                                                                             .text || ''
                                                                                     );
+                                                                                    if (tax_residence_value) {
+                                                                                        mutate(tax_residence_value);
+                                                                                    }
                                                                                 }}
                                                                                 data-testid='tax_residence'
                                                                                 disabled={isFieldDisabled(
@@ -546,15 +527,20 @@ const CompleteFinancialAssessment = observer(
                                                                                                 item.text ===
                                                                                                 e.target.value
                                                                                         );
+                                                                                    const tax_residence_value =
+                                                                                        selected_item?.value || '';
                                                                                     setTaxResidenceToDisplay(
                                                                                         selected_item?.text || ''
                                                                                     );
                                                                                     handleChange(e);
                                                                                     setFieldValue(
                                                                                         'tax_residence',
-                                                                                        selected_item?.value || '',
+                                                                                        tax_residence_value,
                                                                                         true
                                                                                     );
+                                                                                    if (tax_residence_value) {
+                                                                                        mutate(tax_residence_value);
+                                                                                    }
                                                                                 }}
                                                                                 data_testid='tax_residence_mobile'
                                                                                 disabled={isFieldDisabled(
@@ -575,7 +561,10 @@ const CompleteFinancialAssessment = observer(
                                                                 <Localize i18n_default_text='Tax identification number' />
                                                             </Text>
                                                             <Field name='tax_identification_number'>
-                                                                {({ field }: FieldProps) => (
+                                                                {({
+                                                                    field,
+                                                                    form: { setFieldTouched, validateField },
+                                                                }: FieldProps) => (
                                                                     <FormInputField
                                                                         {...field}
                                                                         name='tax_identification_number'
@@ -587,6 +576,28 @@ const CompleteFinancialAssessment = observer(
                                                                         disabled={isFieldDisabled(
                                                                             'tax_identification_number'
                                                                         )}
+                                                                        onChange={(
+                                                                            e: React.ChangeEvent<HTMLInputElement>
+                                                                        ) => {
+                                                                            field.onChange(e);
+                                                                            if (
+                                                                                tin_validation_config &&
+                                                                                Object.keys(tin_validation_config)
+                                                                                    .length > 0
+                                                                            ) {
+                                                                                setFieldTouched(
+                                                                                    'tax_identification_number',
+                                                                                    true
+                                                                                );
+                                                                                setFieldValue(
+                                                                                    'tax_identification_confirm',
+                                                                                    false
+                                                                                );
+                                                                                validateField(
+                                                                                    'tax_identification_number'
+                                                                                );
+                                                                            }
+                                                                        }}
                                                                     />
                                                                 )}
                                                             </Field>
@@ -647,20 +658,33 @@ const CompleteFinancialAssessment = observer(
                                                     </Field>
                                                 </div>
                                                 {/* Tax Information Confirmation */}
-                                                {!values.no_tax_information && (
-                                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                                        <Field name='tax_identification_confirm'>
-                                                            {({ field }: FieldProps) => (
-                                                                <Checkbox
-                                                                    {...field}
-                                                                    label={localize(
-                                                                        'I confirm that my tax information is accurate and complete.'
-                                                                    )}
-                                                                />
-                                                            )}
-                                                        </Field>
-                                                    </div>
-                                                )}
+                                                {!values.no_tax_information &&
+                                                    tin_validation_config &&
+                                                    Object.keys(tin_validation_config).length > 0 &&
+                                                    (() => {
+                                                        const is_tin_mandatory = (
+                                                            tin_validation_config as {
+                                                                is_tin_mandatory?: number | boolean;
+                                                            }
+                                                        ).is_tin_mandatory;
+                                                        const is_mandatory =
+                                                            is_tin_mandatory === 1 || is_tin_mandatory === true;
+                                                        // Show confirmation if mandatory OR if user is filling up TIN
+                                                        return is_mandatory || !!values.tax_identification_number;
+                                                    })() && (
+                                                        <div className='complete-user-profile-modal__bottom-margin'>
+                                                            <Field name='tax_identification_confirm'>
+                                                                {({ field }: FieldProps) => (
+                                                                    <Checkbox
+                                                                        {...field}
+                                                                        label={localize(
+                                                                            'I confirm that my tax information is accurate and complete.'
+                                                                        )}
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                    )}
                                             </>
                                         )}
                                         {current_step === 2 && (

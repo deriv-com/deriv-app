@@ -3,7 +3,6 @@
 
     &__wrapper {
         position: relative;
-        direction: ltr !important;
     }
 
     &__loader {
@@ -96,7 +95,6 @@
             border-radius: $BORDER_RADIUS;
             margin: 0.8rem 0;
             cursor: pointer;
-            direction: ltr !important;
 
             &:not(&--v2):before {
                 content: '';
@@ -113,7 +111,6 @@
                 height: 0.4rem;
                 border-radius: $BORDER_RADIUS;
                 background-color: var(--brand-red-coral);
-                direction: ltr !important;
 
                 &--animated {
                     transition: all 0.3s linear;
@@ -131,21 +128,18 @@
             align-items: center;
             height: 3.6rem;
             padding-bottom: 0.4rem;
-            direction: ltr !important;
 
             &--v2 {
                 display: flex;
                 flex-direction: column;
                 height: 3.6rem;
                 padding-bottom: 0.4rem;
-                direction: ltr !important;
 
                 .controls__right--v2 {
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
                     gap: 0.8rem;
-                    direction: ltr !important;
                 }
             }
 

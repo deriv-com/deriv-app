@@ -66,10 +66,6 @@ const PersonalDetailsForm = observer(() => {
         featureFlag: 'enable_country_code_dropdown',
     });
 
-    const [isDynamicFAEnabled, isDynamicFALoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'redirect_to_fa_in_account_os',
-    });
-
     const { next_email_otp_request_timer, is_email_otp_timer_loading } = usePhoneNumberVerificationSetTimer();
 
     const scrollToTop = useScrollElementToTop();
@@ -110,21 +106,18 @@ const PersonalDetailsForm = observer(() => {
     const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
     useEffect(() => {
-        if (isDynamicFAEnabled) {
-            WS.authorized.storage
-                .getFinancialAssessment()
-                .then((data: GetFinancialAssessmentResponse) => {
-                    if (data?.get_financial_assessment) {
-                        // @ts-expect-error new key not updated in api types
-                        versionRef.current = data.get_financial_assessment.financial_information_version ?? '';
-                    }
-                })
-                .catch((error: unknown) => {
-                    // eslint-disable-next-line no-console
-                    console.error('Error fetching financial assessment:', error);
-                });
-        }
-    }, [isDynamicFAEnabled]);
+        WS.authorized.storage
+            .getFinancialAssessment()
+            .then((data: GetFinancialAssessmentResponse) => {
+                if (data?.get_financial_assessment) {
+                    versionRef.current = data.get_financial_assessment.financial_information_version ?? '';
+                }
+            })
+            .catch((error: unknown) => {
+                // eslint-disable-next-line no-console
+                console.error('Error fetching financial assessment:', error);
+            });
+    }, []);
 
     const {
         refreshNotifications,
@@ -157,8 +150,7 @@ const PersonalDetailsForm = observer(() => {
         is_loading ||
         is_loading_residence_list ||
         !isPhoneNumberVerificationLoaded ||
-        !isCountryCodeLoaded ||
-        !isDynamicFALoaded;
+        !isCountryCodeLoaded;
 
     useEffect(() => {
         const init = async () => {
@@ -219,10 +211,9 @@ const PersonalDetailsForm = observer(() => {
         setStatus({ msg: '' });
         const request = {
             ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
-            ...(!is_virtual &&
-                isDynamicFAEnabled && {
-                    financial_information_version: should_update_fa ? 'v2' : versionRef.current || 'v2',
-                }),
+            ...(!is_virtual && {
+                financial_information_version: should_update_fa ? 'v2' : versionRef.current || 'v2',
+            }),
         };
         setIsBtnLoading(true);
         const data = await WS.authorized.setSettings(request);

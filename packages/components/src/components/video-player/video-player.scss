@@ -3,9 +3,7 @@
 
     &__wrapper {
         position: relative;
-        /* [AI] */
         direction: ltr !important;
-        /* [/AI] */
     }
 
     &__loader {
@@ -98,9 +96,7 @@
             border-radius: $BORDER_RADIUS;
             margin: 0.8rem 0;
             cursor: pointer;
-            /* [AI] */
             direction: ltr !important;
-            /* [/AI] */
 
             &:not(&--v2):before {
                 content: '';
@@ -117,9 +113,7 @@
                 height: 0.4rem;
                 border-radius: $BORDER_RADIUS;
                 background-color: var(--brand-red-coral);
-                /* [AI] */
                 direction: ltr !important;
-                /* [/AI] */
 
                 &--animated {
                     transition: all 0.3s linear;
@@ -137,27 +131,21 @@
             align-items: center;
             height: 3.6rem;
             padding-bottom: 0.4rem;
-            /* [AI] */
             direction: ltr !important;
-            /* [/AI] */
 
             &--v2 {
                 display: flex;
                 flex-direction: column;
                 height: 3.6rem;
                 padding-bottom: 0.4rem;
-                /* [AI] */
                 direction: ltr !important;
-                /* [/AI] */
 
                 .controls__right--v2 {
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
                     gap: 0.8rem;
-                    /* [AI] */
                     direction: ltr !important;
-                    /* [/AI] */
                 }
             }
 

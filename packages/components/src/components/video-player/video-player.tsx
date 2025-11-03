@@ -395,9 +395,7 @@ const VideoPlayer = ({
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}
-                // [AI]
                 is_rtl={is_rtl}
-                // [/AI]
                 is_v2={is_v2}
                 increased_drag_area={increased_drag_area}
                 onRewind={onRewind}

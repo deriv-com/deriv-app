@@ -608,7 +608,6 @@ const PersonalDetailsForm = observer(() => {
                                                 </div>
                                                 {isPhoneNumberVerificationEnabled && (
                                                     <VerifyButton
-                                                        is_dynamic_fa_enabled={true}
                                                         is_verify_button_disabled={
                                                             isFieldDisabled('phone') ||
                                                             !isValid ||

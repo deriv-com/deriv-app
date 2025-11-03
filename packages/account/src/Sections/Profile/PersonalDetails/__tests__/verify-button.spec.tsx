@@ -65,7 +65,6 @@ describe('VerifyButton', () => {
             <Router history={history}>
                 <StoreProvider store={mock_store}>
                     <VerifyButton
-                        is_dynamic_fa_enabled={false}
                         is_verify_button_disabled={false}
                         next_email_otp_request_timer={mock_next_email_otp_request_timer}
                         values={mockAccountSettings}

@@ -62,7 +62,7 @@ const CompleteFinancialAssessment = observer(
         const { client, notifications } = useStore();
         const { setFinancialAndTradingAssessment, is_authentication_needed } = client;
         const { isMobile, isDesktop } = useDevice();
-        const { refreshNotifications } = notifications;
+        const { refreshNotifications, removeNotificationByKey } = notifications;
         const { data: financial_questions, isLoading: is_questions_loading } = useFinancialAssessmentQuestions();
         const { tin_validation_config, mutate } = useTinValidations();
 
@@ -236,6 +236,10 @@ const CompleteFinancialAssessment = observer(
 
                 // Success: Update local state and show success feedback
                 helpers.setSubmitting(false);
+                removeNotificationByKey({
+                    key: 'notify_financial_assessment',
+                    should_show_again: false,
+                });
                 refreshNotifications();
                 onClose();
 
@@ -463,7 +467,7 @@ const CompleteFinancialAssessment = observer(
                                                                 weight='bold'
                                                                 className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
                                                             >
-                                                                <Localize i18n_default_text='Employment status' />
+                                                                <Localize i18n_default_text='Tax residence' />
                                                             </Text>
                                                             <Field name='tax_residence'>
                                                                 {({

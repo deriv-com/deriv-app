@@ -298,7 +298,11 @@ const AppModals = observer(() => {
 
         if (is_complete_user_profile_modal_open)
             ComponentToLoad = (
-                <CompleteUserProfileModal show_missing_fa missing_information_account_settings no_currency />
+                <CompleteUserProfileModal
+                    show_missing_fa={missing_fa}
+                    missing_information_account_settings={missing_information_account_settings}
+                    no_currency={no_currency}
+                />
             );
     }
 

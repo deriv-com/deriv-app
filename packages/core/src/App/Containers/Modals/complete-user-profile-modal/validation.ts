@@ -199,14 +199,29 @@ export const FinancialInformationValidationSchema = ({
                             !this.parent.no_tax_information &&
                             this.parent.tax_residence
                         ) {
-                            // Check if employment_status is in bypass list - skip all validation if bypassed
-                            if (isEmploymentStatusBypassed(this.parent.employment_status)) {
+                            // New requirement: If tax_identification_confirm is false (0), require TIN regardless of employment_status
+                            const is_confirm_false =
+                                this.parent.tax_identification_confirm === false ||
+                                this.parent.tax_identification_confirm === 0;
+                            if (is_confirm_false) {
+                                if (!value) {
+                                    return this.createError({
+                                        message: localize('Tax identification number is required.'),
+                                    });
+                                }
+                                // Continue with format validation if TIN is provided
+                                // Check if employment_status is in bypass list - skip all validation if bypassed
+                                if (isEmploymentStatusBypassed(this.parent.employment_status)) {
+                                    return true; // Skip validation if bypassed
+                                }
+                            } else if (isEmploymentStatusBypassed(this.parent.employment_status)) {
+                                // Check if employment_status is in bypass list - skip all validation if bypassed
                                 return true; // Skip validation if bypassed
                             }
 
                             if (has_tin_config) {
                                 // Check if TIN is mandatory (1 = mandatory, 0 = optional)
-                                if (is_tin_mandatory_num === 1 && !value) {
+                                if (is_tin_mandatory_num === 1 && !value && !is_confirm_false) {
                                     return this.createError({
                                         message: localize('Tax identification number is required.'),
                                     });
@@ -243,7 +258,7 @@ export const FinancialInformationValidationSchema = ({
                                         }
                                     }
                                 }
-                            } else if (!value) {
+                            } else if (!value && !is_confirm_false) {
                                 return this.createError({ message: localize('This field is required') });
                             }
                         }
@@ -258,22 +273,26 @@ export const FinancialInformationValidationSchema = ({
                 is: (no_tax_information: boolean) => !no_tax_information,
                 then: schema =>
                     schema.test('tax_identification_confirm', function (value) {
-                        // Skip validation if employment_status is in bypass list
-                        if (isEmploymentStatusBypassed(this.parent.employment_status)) {
-                            return true;
-                        }
-                        // Require confirmation if:
-                        // 1. TIN is mandatory (is_tin_mandatory === 1), OR
-                        // 2. User is filling up TIN (tax_identification_number has a value)
-                        const is_tin_provided = !!this.parent.tax_identification_number;
-                        const should_require_confirmation = is_tin_mandatory_num === 1 || is_tin_provided;
-                        if (
-                            current_step === 1 &&
-                            !this.parent.no_tax_information &&
-                            should_require_confirmation &&
-                            !value
-                        ) {
-                            return this.createError({ message: localize('This field is required') });
+                        if (current_step === 1 && !this.parent.no_tax_information && this.parent.tax_residence) {
+                            // New requirement: If tax_identification_confirm is false (0), require it to be true
+                            // regardless of employment_status bypass
+                            const is_confirm_false = value === false || (typeof value === 'number' && value === 0);
+                            if (is_confirm_false) {
+                                return this.createError({ message: localize('This field is required') });
+                            }
+
+                            // Skip validation if employment_status is in bypass list
+                            if (isEmploymentStatusBypassed(this.parent.employment_status)) {
+                                return true;
+                            }
+                            // Require confirmation if:
+                            // 1. TIN is mandatory (is_tin_mandatory === 1), OR
+                            // 2. User is filling up TIN (tax_identification_number has a value)
+                            const is_tin_provided = !!this.parent.tax_identification_number;
+                            const should_require_confirmation = is_tin_mandatory_num === 1 || is_tin_provided;
+                            if (should_require_confirmation && !value) {
+                                return this.createError({ message: localize('This field is required') });
+                            }
                         }
                         return true;
                     }),

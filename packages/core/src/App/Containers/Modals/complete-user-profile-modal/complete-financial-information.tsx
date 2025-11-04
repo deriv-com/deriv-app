@@ -75,7 +75,14 @@ const CompleteFinancialAssessment = observer(
         const [current_step, setCurrentStep] = React.useState(1);
         const [tax_residence_to_display, setTaxResidenceToDisplay] = React.useState('');
 
-        const { tax_residence, tax_identification_number, account_opening_reason, immutable_fields } = account_settings;
+        const {
+            tax_residence,
+            tax_identification_number,
+            account_opening_reason,
+            employment_status,
+            immutable_fields,
+            tin_skipped,
+        } = account_settings;
 
         const isFieldDisabled = (name: keyof GetSettings): boolean => {
             return !!immutable_fields?.includes(name);
@@ -100,6 +107,32 @@ const CompleteFinancialAssessment = observer(
             return matched?.value ?? '';
         };
 
+        // Normalize string for flexible comparison (lowercase, trim, normalize spaces and hyphens)
+        const normalizeStringForComparison = (str: string): string => {
+            return str.toLowerCase().trim().replace(/\s+/g, ' ').replace(/[-_]/g, '');
+        };
+
+        // Convert display text to stored key from WS questions with flexible case-insensitive matching
+        const getKeyFromText = (
+            question_id: keyof NonNullable<typeof financial_questions>['questions'],
+            text?: string
+        ) => {
+            const answers = financial_questions?.questions?.[question_id]?.answers;
+            if (!answers || !text) return text || '';
+
+            // First try exact match
+            const exactMatch = answers.find(a => a.value === text);
+            if (exactMatch) return exactMatch.key;
+
+            // Then try case-insensitive match with normalized comparison
+            const normalizedText = normalizeStringForComparison(text);
+            const flexibleMatch = answers.find(a => normalizeStringForComparison(a.value) === normalizedText);
+            if (flexibleMatch) return flexibleMatch.key;
+
+            // If not found, assume it's already a key and return as-is
+            return text;
+        };
+
         // Evaluate WS-driven hide_if rules for a target question using stored keys in form values
         const shouldHideByFinancialQuestions = (
             question_id: keyof NonNullable<typeof financial_questions>['questions'],
@@ -120,41 +153,48 @@ const CompleteFinancialAssessment = observer(
 
         React.useEffect(() => {
             WS.authorized.storage.getFinancialAssessment().then((data: GetFinancialAssessmentResponse) => {
+                // Find tax_residence display text from residenceList
+                const tax_residence_item = tax_residence
+                    ? residenceList.find(item => item.value === tax_residence)
+                    : undefined;
+                if (tax_residence_item) {
+                    setTaxResidenceToDisplay(tax_residence_item.text);
+                }
+
                 if (data?.get_financial_assessment) {
-                    setFinancialInformationVersion(
-                        // @ts-expect-error - 'financial_information_version' is not typed in the API types
-                        data.get_financial_assessment?.financial_information_version ?? 'v2'
-                    );
+                    // @ts-expect-error - 'financial_information_version' is not typed in the API types
+                    const version = data.get_financial_assessment?.financial_information_version;
+                    setFinancialInformationVersion(version);
 
-                    // For v1, treat as empty financial_assessment_information
-                    if (financial_information_version === 'v1') {
-                        setFinancialAssessmentInformation({});
-                    } else {
-                        setFinancialAssessmentInformation(data.get_financial_assessment);
-                    }
+                    // Use the version from API response directly, not from state
+                    const financial_data = version === 'v1' ? {} : data.get_financial_assessment;
+                    setFinancialAssessmentInformation(financial_data);
 
+                    // Prioritize account_settings values over financial assessment data
                     setInitialFormValues({
-                        ...(financial_information_version === 'v1' ? {} : financial_assessment_information),
-                        account_opening_reason: account_opening_reason || '',
-                        tax_residence: tax_residence || '',
-                        tax_identification_number: tax_identification_number || '',
-                        no_tax_information: false,
-                        tax_identification_confirm: false,
+                        ...financial_data,
+                        employment_status,
+                        account_opening_reason,
+                        tax_residence,
+                        tax_identification_number,
+                        no_tax_information: tin_skipped === 1,
+                        tax_identification_confirm: !!tax_identification_number,
                     });
                 } else {
                     // If no financial assessment data, initialize with account_settings values
                     setFinancialAssessmentInformation({});
                     setInitialFormValues({
-                        tax_residence: tax_residence || '',
-                        tax_identification_number: tax_identification_number || '',
-                        account_opening_reason: account_opening_reason || '',
-                        no_tax_information: false,
-                        tax_identification_confirm: false,
+                        tax_residence,
+                        tax_identification_number,
+                        account_opening_reason,
+                        no_tax_information: tin_skipped === 1,
+                        tax_identification_confirm: !!tax_identification_number,
                     });
                     setFinancialInformationVersion('');
                 }
                 setIsLoading(false);
             });
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 
         // Trigger TIN validation when tax_residence is initially set
@@ -298,9 +338,19 @@ const CompleteFinancialAssessment = observer(
 
         const setInitialFormData = (): Partial<TFinancialInformationForm> => {
             // Use initial_form_values which already contains merged data from account_settings and financial_assessment_information
-            let form_data: Partial<TFinancialInformationForm> = {
+            const form_data: Partial<TFinancialInformationForm> = {
                 ...initial_form_values,
             };
+
+            // Convert employment_status from account_settings display text to key format if financial_questions is available
+            // Handle case where employment_status might be in form_data or directly from account_settings
+            const employment_status_to_convert = form_data.employment_status || employment_status;
+            if (employment_status_to_convert && financial_questions?.questions?.employment_status) {
+                const employment_status_key = getKeyFromText('employment_status', employment_status_to_convert);
+                if (employment_status_key) {
+                    form_data.employment_status = employment_status_key;
+                }
+            }
             /**
              * Remove hidden fields determined by WS rules
              */
@@ -310,24 +360,6 @@ const CompleteFinancialAssessment = observer(
             if (shouldHideByFinancialQuestions('employment_industry', form_data)) {
                 delete form_data.employment_industry;
             }
-
-            if (financial_information_version === 'v1') {
-                // For v1, clear fields but retain values for disabled (immutable) fields
-                form_data = {
-                    ...form_data,
-                    // Only clear account_opening_reason if it's not disabled
-                    account_opening_reason: isFieldDisabled('account_opening_reason')
-                        ? form_data.account_opening_reason
-                        : undefined,
-                    // Only clear tax_residence if it's not disabled
-                    tax_residence: isFieldDisabled('tax_residence') ? form_data.tax_residence : undefined,
-                    // Only clear tax_identification_number if it's not disabled
-                    tax_identification_number: isFieldDisabled('tax_identification_number')
-                        ? form_data.tax_identification_number
-                        : undefined,
-                };
-            }
-
             return form_data;
         };
 
@@ -380,7 +412,6 @@ const CompleteFinancialAssessment = observer(
                                     setFieldTouched,
                                     validateForm,
                                 ]);
-
                                 return (
                                     <Form className='complete-user-profile-modal__form' onSubmit={handleSubmit}>
                                         {current_step === 1 && (
@@ -445,20 +476,25 @@ const CompleteFinancialAssessment = observer(
                                                         )}
                                                     </Field>
                                                 </div>
-                                                {shouldHideOccupationField(
-                                                    getTextFromKey('employment_status', values?.employment_status)
-                                                ) && (
-                                                    <div className='complete-user-profile-modal__bottom-margin'>
-                                                        <Field name='no_tax_information'>
-                                                            {({ field }: FieldProps) => (
-                                                                <Checkbox
-                                                                    {...field}
-                                                                    label={localize('I do not have tax information.')}
-                                                                />
-                                                            )}
-                                                        </Field>
-                                                    </div>
-                                                )}
+                                                {/* No tax information field */}
+                                                {!!tax_identification_number &&
+                                                    tin_skipped === 1 &&
+                                                    shouldHideOccupationField(
+                                                        getTextFromKey('employment_status', values?.employment_status)
+                                                    ) && (
+                                                        <div className='complete-user-profile-modal__bottom-margin'>
+                                                            <Field name='no_tax_information'>
+                                                                {({ field }: FieldProps) => (
+                                                                    <Checkbox
+                                                                        {...field}
+                                                                        label={localize(
+                                                                            'I do not have tax information.'
+                                                                        )}
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </div>
+                                                    )}
                                                 {/* Tax Residence Field */}
                                                 {!values.no_tax_information && (
                                                     <>

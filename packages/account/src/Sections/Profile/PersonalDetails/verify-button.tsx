@@ -13,7 +13,6 @@ import { makeSettingsRequest } from './validation';
 import './verify-button.scss';
 
 type TVerifyButton = {
-    is_dynamic_fa_enabled: boolean;
     is_verify_button_disabled: boolean;
     next_email_otp_request_timer?: number;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,7 +25,6 @@ type TVerifyButton = {
 
 export const VerifyButton = observer(
     ({
-        is_dynamic_fa_enabled,
         is_verify_button_disabled,
         next_email_otp_request_timer,
         setStatus,
@@ -70,7 +68,7 @@ export const VerifyButton = observer(
             const request = {
                 // @ts-expect-error GetSettings types doesn't match updated set_settings payload types
                 ...makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual),
-                ...(is_dynamic_fa_enabled && { financial_information_version: version || 'v2' }),
+                financial_information_version: version || 'v2',
             };
 
             // @ts-expect-error GetSettings types doesn't match updated set_settings payload types

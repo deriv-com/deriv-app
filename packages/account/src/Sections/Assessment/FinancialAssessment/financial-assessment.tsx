@@ -8,7 +8,6 @@ import { Formik, FormikHelpers } from 'formik';
 
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { Button, Dropdown, FormSubmitErrorMessage, Icon, Loading, Modal, SelectNative, Text } from '@deriv/components';
-import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { ACCOUNTS_OS_DFA_URL, getSocketURL, platforms, routes, shouldHideOccupationField, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
@@ -200,15 +199,11 @@ const FinancialAssessment = observer(() => {
         updateAccountStatus,
         is_authentication_needed,
         is_financial_information_incomplete,
-        account_settings,
     } = client;
     const { isMobile, isTablet, isDesktop } = useDevice();
     const { is_from_tradershub_os, platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
     const is_mf = landing_company_shortcode === 'maltainvest';
-    const [shouldRedirectToAccountsOSApp, isRedirectToAccountsOSAppFFLoaded] = useGrowthbookGetFeatureValue({
-        featureFlag: 'redirect_to_fa_in_account_os',
-    });
 
     const history = useHistory();
     const { localize } = useTranslations();
@@ -373,12 +368,41 @@ const FinancialAssessment = observer(() => {
         return '8rem';
     };
 
-    if (is_loading || !isRedirectToAccountsOSAppFFLoaded)
-        return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    const getFormattedURL = React.useCallback(
+        (url_link: string) => {
+            const url = new URL(url_link);
+            const urlParams = new URLSearchParams(location.search);
+            const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
+
+            const params = {
+                platform,
+                appid: WebSocketUtils.getAppId(),
+                lang: i18n_language,
+                server: getSocketURL(),
+                token: getToken(),
+            };
+
+            Object.entries(params).forEach(([key, value]) => {
+                url.searchParams.append(key, value);
+            });
+
+            return url.toString();
+        },
+        [is_from_tradershub_os, i18n_language, getToken]
+    );
+
+    React.useEffect(() => {
+        const formatted_url = getFormattedURL(ACCOUNTS_OS_DFA_URL);
+        window.location.replace(formatted_url);
+    }, [getFormattedURL]);
+
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
     if (isMobile && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
+
+    return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
     const setInitialFormData = () => {
         const form_data = {
@@ -413,33 +437,6 @@ const FinancialAssessment = observer(() => {
         }
         return form_data;
     };
-
-    const getFormattedURL = (url_link: string) => {
-        const url = new URL(url_link);
-        const urlParams = new URLSearchParams(location.search);
-        const platform = urlParams.get('platform') ?? (is_from_tradershub_os ? 'tradershub_os' : 'deriv_app');
-
-        const params = {
-            platform,
-            appid: WebSocketUtils.getAppId(),
-            lang: i18n_language,
-            server: getSocketURL(),
-            token: getToken(),
-        };
-
-        Object.entries(params).forEach(([key, value]) => {
-            url.searchParams.append(key, value);
-        });
-
-        return url.toString();
-    };
-
-    if (isRedirectToAccountsOSAppFFLoaded && shouldRedirectToAccountsOSApp) {
-        setTimeout(() => {
-            window.location.replace(getFormattedURL(ACCOUNTS_OS_DFA_URL));
-        }, 0);
-        return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    }
 
     return (
         <Formik initialValues={setInitialFormData()} enableReinitialize validate={validateFields} onSubmit={onSubmit}>

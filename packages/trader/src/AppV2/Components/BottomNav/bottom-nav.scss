@@ -1,18 +1,8 @@
-$BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
-
 .bottom-nav {
     display: flex;
     flex-direction: column;
     height: 100%;
 
-    &-container {
-        width: 100%;
-        padding-left: var(--component-navigationBar-spacing-sm);
-        padding-right: var(--component-navigationBar-spacing-sm);
-        border-top: 1px solid var(--component-navigationBar-border-color);
-        height: $BOTTOM_NAV_HEIGHT;
-        z-index: 30;
-    }
     &-selection {
         flex: 1;
         overflow: auto;
@@ -22,30 +12,18 @@ $BOTTOM_NAV_HEIGHT: var(--core-spacing-2800);
     &-item {
         font-size: var(--core-fontSize-50);
 
-        .quill-navigation-bottom-bar__action-label {
-            color: var(--component-navigationBar-label-color-default);
-
-            &-container {
-                height: 18px;
-            }
+        .quill-navigation-bottom-bar__action-label-container {
+            height: 18px;
         }
 
-        svg {
-            fill: var(--component-navigationBar-icon-default);
+        .quill-navigation-bottom-bar__action-badge-container {
+            top: -5px;
         }
 
-        &__position-badge {
-            z-index: 1;
+        .badge__position-top-md {
+            right: -12px;
         }
-        &--active {
-            .quill-navigation-bottom-bar__action-label {
-                color: var(--component-navigationBar-label-color-selected);
-            }
 
-            svg {
-                fill: var(--component-navigationBar-icon-selected);
-            }
-        }
         &--positions {
             position: relative;
 

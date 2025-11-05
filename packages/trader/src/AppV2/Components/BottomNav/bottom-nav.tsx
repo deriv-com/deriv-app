@@ -10,7 +10,7 @@ import {
     StandaloneClockThreeFillIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
-import { Badge, Navigation } from '@deriv-com/quill-ui';
+import { Navigation } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import { useHistory, useLocation } from 'react-router';
 
@@ -35,38 +35,9 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
             path: routes.trade,
         },
         {
-            icon:
-                active_positions_count > 0 ? (
-                    <Badge
-                        variant='notification'
-                        position='top-right'
-                        label={active_positions_count.toString()}
-                        color='danger'
-                        size='sm'
-                        contentSize='sm'
-                        className='bottom-nav-item__position-badge'
-                    >
-                        <StandaloneClockThreeRegularIcon iconSize='sm' />
-                    </Badge>
-                ) : (
-                    <StandaloneClockThreeRegularIcon iconSize='sm' />
-                ),
-            activeIcon:
-                active_positions_count > 0 ? (
-                    <Badge
-                        variant='notification'
-                        position='top-right'
-                        label={active_positions_count.toString()}
-                        color='danger'
-                        size='sm'
-                        contentSize='sm'
-                        className='bottom-nav-item__position-badge'
-                    >
-                        <StandaloneClockThreeFillIcon iconSize='sm' />
-                    </Badge>
-                ) : (
-                    <StandaloneClockThreeFillIcon iconSize='sm' />
-                ),
+            icon: <StandaloneClockThreeRegularIcon iconSize='sm' />,
+            activeIcon: <StandaloneClockThreeFillIcon iconSize='sm' />,
+            badge: active_positions_count > 0 ? active_positions_count.toString() : undefined,
             label: (
                 <React.Fragment>
                     <span className='user-guide__anchor' />
@@ -91,19 +62,19 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
                 {children}
             </div>
             {is_logged_in ? (
-                <Navigation.Bottom className='bottom-nav-container' onChange={(_, index) => handleSelect(index)}>
+                <Navigation.Bottom onChange={(_, index) => handleSelect(index)} value={selectedIndex}>
                     {bottomNavItems.map((item, index) => (
                         <Navigation.BottomAction
                             key={index}
                             index={index}
-                            activeIcon={<></>}
-                            icon={index === selectedIndex ? item.activeIcon : item.icon}
+                            badge={item.badge}
+                            activeIcon={item.activeIcon}
+                            icon={item.icon}
                             label={item.label}
                             selected={index === selectedIndex}
                             showLabel
                             className={clsx(
                                 'bottom-nav-item',
-                                index === selectedIndex && 'bottom-nav-item--active',
                                 item.path === routes.trader_positions && 'bottom-nav-item--positions'
                             )}
                         />

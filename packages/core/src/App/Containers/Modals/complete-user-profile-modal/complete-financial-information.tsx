@@ -128,6 +128,7 @@ const CompleteFinancialAssessment = observer(
             const normalizedText = normalizeStringForComparison(text);
             const flexibleMatch = answers.find(a => normalizeStringForComparison(a.value) === normalizedText);
             if (flexibleMatch) return flexibleMatch.key;
+            if (question_id === 'employment_status') return '';
 
             // If not found, assume it's already a key and return as-is
             return text;
@@ -349,6 +350,8 @@ const CompleteFinancialAssessment = observer(
                 const employment_status_key = getKeyFromText('employment_status', employment_status_to_convert);
                 if (employment_status_key) {
                     form_data.employment_status = employment_status_key;
+                } else {
+                    delete form_data.employment_status;
                 }
             }
             /**

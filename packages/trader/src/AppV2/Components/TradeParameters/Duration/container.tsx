@@ -56,35 +56,30 @@ const DurationActionSheetContainer = observer(
                 onChangeMultiple({
                     duration_unit: DURATION_UNIT.MINUTES,
                     duration: Number(minutes),
-                    expiry_time: null,
                     expiry_type: 'duration',
+                    // Clear endtime fields when using duration mode
+                    expiry_time: null,
+                    expiry_date: null,
                 });
             } else if (unit === DURATION_UNIT.DAYS) {
-                const difference_in_time = new Date(unsaved_expiry_date_v2).getTime() - new Date().getTime();
-                const difference_in_days = Math.ceil(difference_in_time / (1000 * 3600 * 24));
                 setSelectedHour([]);
-                if (end_time) {
-                    onChangeMultiple({
-                        expiry_time: end_time,
-                        expiry_type: 'endtime',
-                    });
-                } else {
-                    setEndTime('');
-                    onChangeMultiple({
-                        duration_unit: DURATION_UNIT.DAYS,
-                        duration: Number(difference_in_days),
-                        expiry_time: null,
-                        expiry_type: 'duration',
-                    });
-                }
+                // When Days unit is selected, it represents End Time mode
+                const time_to_use = end_time || expiry_time_string || '23:59:59';
+                onChangeMultiple({
+                    expiry_date: unsaved_expiry_date_v2,
+                    expiry_time: time_to_use,
+                    expiry_type: 'endtime',
+                });
             } else {
                 setEndTime('');
                 setSelectedHour([]);
                 onChangeMultiple({
                     duration_unit: unit,
                     duration: Number(selected_time),
-                    expiry_time: null,
                     expiry_type: 'duration',
+                    // Clear endtime fields when using duration mode
+                    expiry_time: null,
+                    expiry_date: null,
                 });
             }
         };

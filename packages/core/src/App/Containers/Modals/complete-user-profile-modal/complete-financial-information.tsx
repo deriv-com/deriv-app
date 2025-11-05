@@ -385,9 +385,11 @@ const CompleteFinancialAssessment = observer(
                                 handleChange,
                                 setFieldTouched,
                                 validateForm,
+                                setFieldError,
                             }) => {
-                                // Trigger validation when TIN config loads and TIN has a value
+                                // Trigger validation when TIN config loads or changes and TIN has a value
                                 const prev_tin_config_ref = React.useRef(tin_validation_config);
+                                const prev_tax_residence_ref = React.useRef(values.tax_residence);
                                 React.useEffect(() => {
                                     const has_tin_config =
                                         tin_validation_config && Object.keys(tin_validation_config).length > 0;
@@ -395,18 +397,32 @@ const CompleteFinancialAssessment = observer(
                                         prev_tin_config_ref.current &&
                                         Object.keys(prev_tin_config_ref.current).length > 0;
 
-                                    // Only trigger if config just became available (not empty)
+                                    // Check if config changed by comparing serialized version
+                                    const config_changed =
+                                        JSON.stringify(prev_tin_config_ref.current) !==
+                                        JSON.stringify(tin_validation_config);
+                                    const tax_residence_changed =
+                                        prev_tax_residence_ref.current !== values.tax_residence;
+
+                                    // Trigger validation if:
+                                    // 1. Config just became available (not empty), OR
+                                    // 2. Config changed (switching between countries), OR
+                                    // 3. Tax residence changed and config is now available
                                     if (
-                                        !had_tin_config &&
-                                        has_tin_config &&
+                                        current_step === 1 &&
                                         values.tax_identification_number &&
                                         values.tax_residence &&
-                                        current_step === 1
+                                        has_tin_config &&
+                                        ((!had_tin_config && has_tin_config) ||
+                                            (config_changed && has_tin_config) ||
+                                            (tax_residence_changed && has_tin_config))
                                     ) {
                                         setFieldTouched('tax_identification_number', true);
                                         validateForm();
                                     }
+
                                     prev_tin_config_ref.current = tin_validation_config;
+                                    prev_tax_residence_ref.current = values.tax_residence;
                                 }, [
                                     tin_validation_config,
                                     values.tax_identification_number,
@@ -414,6 +430,7 @@ const CompleteFinancialAssessment = observer(
                                     current_step,
                                     setFieldTouched,
                                     validateForm,
+                                    setFieldError,
                                 ]);
                                 return (
                                     <Form className='complete-user-profile-modal__form' onSubmit={handleSubmit}>
@@ -544,6 +561,14 @@ const CompleteFinancialAssessment = observer(
                                                                                         (item as ResidenceList[0])
                                                                                             .text || ''
                                                                                     );
+                                                                                    setFieldValue(
+                                                                                        'tax_identification_confirm',
+                                                                                        false
+                                                                                    );
+                                                                                    setFieldError(
+                                                                                        'tax_identification_number',
+                                                                                        undefined
+                                                                                    );
                                                                                     if (tax_residence_value) {
                                                                                         mutate(tax_residence_value);
                                                                                     }
@@ -584,6 +609,14 @@ const CompleteFinancialAssessment = observer(
                                                                                         tax_residence_value,
                                                                                         true
                                                                                     );
+                                                                                    setFieldValue(
+                                                                                        'tax_identification_confirm',
+                                                                                        false
+                                                                                    );
+                                                                                    setFieldError(
+                                                                                        'tax_identification_number',
+                                                                                        undefined
+                                                                                    );
                                                                                     if (tax_residence_value) {
                                                                                         mutate(tax_residence_value);
                                                                                     }
@@ -606,47 +639,22 @@ const CompleteFinancialAssessment = observer(
                                                             >
                                                                 <Localize i18n_default_text='Tax identification number' />
                                                             </Text>
-                                                            <Field name='tax_identification_number'>
-                                                                {({
-                                                                    field,
-                                                                    form: { setFieldTouched, validateField },
-                                                                }: FieldProps) => (
-                                                                    <FormInputField
-                                                                        {...field}
-                                                                        name='tax_identification_number'
-                                                                        label={localize('Tax identification number')}
-                                                                        placeholder={localize(
-                                                                            'Tax identification number'
-                                                                        )}
-                                                                        data-testid='tax_identification_number'
-                                                                        disabled={isFieldDisabled(
-                                                                            'tax_identification_number'
-                                                                        )}
-                                                                        onChange={(
-                                                                            e: React.ChangeEvent<HTMLInputElement>
-                                                                        ) => {
-                                                                            field.onChange(e);
-                                                                            if (
-                                                                                tin_validation_config &&
-                                                                                Object.keys(tin_validation_config)
-                                                                                    .length > 0
-                                                                            ) {
-                                                                                setFieldTouched(
-                                                                                    'tax_identification_number',
-                                                                                    true
-                                                                                );
-                                                                                setFieldValue(
-                                                                                    'tax_identification_confirm',
-                                                                                    false
-                                                                                );
-                                                                                validateField(
-                                                                                    'tax_identification_number'
-                                                                                );
-                                                                            }
-                                                                        }}
-                                                                    />
-                                                                )}
-                                                            </Field>
+                                                            <FormInputField
+                                                                name='tax_identification_number'
+                                                                label={localize('Tax identification number')}
+                                                                placeholder={localize('Tax identification number')}
+                                                                data-testid='tax_identification_number'
+                                                                disabled={isFieldDisabled('tax_identification_number')}
+                                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                                    setFieldValue(
+                                                                        'tax_identification_number',
+                                                                        e.target.value,
+                                                                        true
+                                                                    );
+                                                                    setFieldTouched('tax_identification_number', true);
+                                                                    setFieldValue('tax_identification_confirm', false);
+                                                                }}
+                                                            />
                                                         </div>
                                                     </>
                                                 )}

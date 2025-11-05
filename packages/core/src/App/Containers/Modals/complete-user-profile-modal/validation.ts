@@ -206,7 +206,7 @@ export const FinancialInformationValidationSchema = ({
                             if (is_confirm_false) {
                                 if (!value) {
                                     return this.createError({
-                                        message: localize('Tax identification number is required.'),
+                                        message: localize('This is required.'),
                                     });
                                 }
                                 // Continue with format validation if TIN is provided
@@ -223,12 +223,29 @@ export const FinancialInformationValidationSchema = ({
                                 // Check if TIN is mandatory (1 = mandatory, 0 = optional)
                                 if (is_tin_mandatory_num === 1 && !value && !is_confirm_false) {
                                     return this.createError({
-                                        message: localize('Tax identification number is required.'),
+                                        message: localize('This is required.'),
                                     });
                                 }
                                 // If TIN is provided, validate format
                                 if (value) {
                                     const tin_value = value as string;
+
+                                    // Check maximum length (25 characters)
+                                    if (tin_value.length > 25) {
+                                        return this.createError({
+                                            message: localize(
+                                                "Tax identification number can't be longer than 25 characters."
+                                            ),
+                                        });
+                                    }
+
+                                    // Check allowed special characters (letters, numbers, spaces, hyphens, periods, forward slashes, apostrophes)
+                                    const allowedCharactersPattern = /^[A-Za-z0-9\s\-./']+$/;
+                                    if (!allowedCharactersPattern.test(tin_value)) {
+                                        return this.createError({
+                                            message: localize('Letters, spaces, periods, hyphens, apostrophes only.'),
+                                        });
+                                    }
 
                                     // Check invalid patterns
                                     if (invalid_patterns?.length) {
@@ -237,9 +254,7 @@ export const FinancialInformationValidationSchema = ({
                                         );
                                         if (matches_invalid) {
                                             return this.createError({
-                                                message:
-                                                    tin_format_description ||
-                                                    localize('Tax identification number is not properly formatted.'),
+                                                message: localize('Tax identification number format is incorrect.'),
                                             });
                                         }
                                     }
@@ -251,15 +266,13 @@ export const FinancialInformationValidationSchema = ({
                                         );
                                         if (!matches_valid) {
                                             return this.createError({
-                                                message:
-                                                    tin_format_description ||
-                                                    localize('Tax identification number is not properly formatted.'),
+                                                message: localize('Tax identification number format is incorrect.'),
                                             });
                                         }
                                     }
                                 }
                             } else if (!value && !is_confirm_false) {
-                                return this.createError({ message: localize('This field is required') });
+                                return this.createError({ message: localize('This is required') });
                             }
                         }
                         return true;

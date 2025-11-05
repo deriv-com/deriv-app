@@ -283,9 +283,6 @@ const CompleteFinancialAssessment = observer(
                 });
                 refreshNotifications();
                 onClose();
-
-                // Optionally update local state with the response data
-                // You might want to refetch the financial assessment data here
             } catch (_error) {
                 // Handle unexpected errors
                 helpers.setStatus({ msg: 'An unexpected error occurred. Please try again.' });
@@ -375,6 +372,9 @@ const CompleteFinancialAssessment = observer(
                             enableReinitialize
                             validationSchema={validationSchema}
                             onSubmit={handleNext}
+                            validateOnChange={true}
+                            validateOnBlur={true}
+                            validateOnMount={true}
                         >
                             {({
                                 handleSubmit,
@@ -417,7 +417,7 @@ const CompleteFinancialAssessment = observer(
                                             (config_changed && has_tin_config) ||
                                             (tax_residence_changed && has_tin_config))
                                     ) {
-                                        setFieldTouched('tax_identification_number', true);
+                                        setFieldTouched('tax_identification_number');
                                         validateForm();
                                     }
 
@@ -425,7 +425,6 @@ const CompleteFinancialAssessment = observer(
                                     prev_tax_residence_ref.current = values.tax_residence;
                                 }, [
                                     tin_validation_config,
-                                    values.tax_identification_number,
                                     values.tax_residence,
                                     current_step,
                                     setFieldTouched,
@@ -461,11 +460,16 @@ const CompleteFinancialAssessment = observer(
                                                                             financial_questions,
                                                                         })}
                                                                         value={field.value}
-                                                                        onChange={(e: {
-                                                                            target: { name: string; value: string };
-                                                                        }) => {
+                                                                        onChange={(
+                                                                            e: React.ChangeEvent<HTMLSelectElement>
+                                                                        ) => {
+                                                                            setFieldValue(field.name, e.target?.name);
+                                                                            setFieldValue(
+                                                                                'no_tax_information',
+                                                                                false,
+                                                                                false
+                                                                            );
                                                                             handleChange(e);
-                                                                            setFieldValue('no_tax_information', false);
                                                                         }}
                                                                         handleBlur={handleBlur}
                                                                         error={meta.touched ? meta.error : undefined}
@@ -486,7 +490,11 @@ const CompleteFinancialAssessment = observer(
                                                                             e: React.ChangeEvent<HTMLSelectElement>
                                                                         ) => {
                                                                             setFieldValue(field.name, e.target?.name);
-                                                                            setFieldValue('no_tax_information', false);
+                                                                            setFieldValue(
+                                                                                'no_tax_information',
+                                                                                false,
+                                                                                false
+                                                                            );
                                                                             handleChange(e);
                                                                         }}
                                                                         disabled={isFieldDisabled('employment_status')}
@@ -563,6 +571,7 @@ const CompleteFinancialAssessment = observer(
                                                                                     );
                                                                                     setFieldValue(
                                                                                         'tax_identification_confirm',
+                                                                                        false,
                                                                                         false
                                                                                     );
                                                                                     setFieldError(
@@ -607,10 +616,11 @@ const CompleteFinancialAssessment = observer(
                                                                                     setFieldValue(
                                                                                         'tax_residence',
                                                                                         tax_residence_value,
-                                                                                        true
+                                                                                        false
                                                                                     );
                                                                                     setFieldValue(
                                                                                         'tax_identification_confirm',
+                                                                                        false,
                                                                                         false
                                                                                     );
                                                                                     setFieldError(
@@ -649,10 +659,13 @@ const CompleteFinancialAssessment = observer(
                                                                     setFieldValue(
                                                                         'tax_identification_number',
                                                                         e.target.value,
-                                                                        true
+                                                                        false
                                                                     );
-                                                                    setFieldTouched('tax_identification_number', true);
-                                                                    setFieldValue('tax_identification_confirm', false);
+                                                                    setFieldValue(
+                                                                        'tax_identification_confirm',
+                                                                        false,
+                                                                        false
+                                                                    );
                                                                 }}
                                                             />
                                                         </div>

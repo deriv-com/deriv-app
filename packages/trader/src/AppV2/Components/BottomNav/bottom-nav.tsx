@@ -10,7 +10,7 @@ import {
     StandaloneClockThreeFillIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
-import { Navigation } from '@deriv-com/quill-ui';
+import { Navigation, Text } from '@deriv-com/quill-ui';
 import { useStore } from '@deriv/stores';
 import { useHistory, useLocation } from 'react-router';
 
@@ -29,14 +29,18 @@ const BottomNav = observer(({ children, className, onScroll }: BottomNavProps) =
 
     const bottomNavItems = [
         {
-            icon: <StandaloneChartAreaRegularIcon iconSize='sm' />,
-            activeIcon: <StandaloneChartAreaFillIcon iconSize='sm' />,
+            icon: <StandaloneChartAreaRegularIcon iconSize='sm' fill='var(--component-navigationBar-icon-default)' />,
+            activeIcon: (
+                <StandaloneChartAreaFillIcon iconSize='sm' fill='var(--component-navigationBar-icon-selected)' />
+            ),
             label: <Localize i18n_default_text='Trade' />,
             path: routes.trade,
         },
         {
-            icon: <StandaloneClockThreeRegularIcon iconSize='sm' />,
-            activeIcon: <StandaloneClockThreeFillIcon iconSize='sm' />,
+            icon: <StandaloneClockThreeRegularIcon iconSize='sm' fill='var(--component-navigationBar-icon-default)' />,
+            activeIcon: (
+                <StandaloneClockThreeFillIcon iconSize='sm' fill='var(--component-navigationBar-icon-selected)' />
+            ),
             badge: active_positions_count > 0 ? active_positions_count.toString() : undefined,
             label: (
                 <React.Fragment>

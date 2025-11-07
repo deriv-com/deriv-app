@@ -176,7 +176,7 @@ const CompleteFinancialAssessment = observer(
                         ...financial_data,
                         employment_status,
                         account_opening_reason,
-                        tax_residence,
+                        tax_residence: tax_residence_item?.text || '',
                         tax_identification_number,
                         no_tax_information: tin_skipped === 1,
                         tax_identification_confirm: !!tax_identification_number,
@@ -185,7 +185,7 @@ const CompleteFinancialAssessment = observer(
                     // If no financial assessment data, initialize with account_settings values
                     setFinancialAssessmentInformation({});
                     setInitialFormValues({
-                        tax_residence,
+                        tax_residence: tax_residence_item?.text || '',
                         tax_identification_number,
                         account_opening_reason,
                         no_tax_information: tin_skipped === 1,
@@ -205,6 +205,9 @@ const CompleteFinancialAssessment = observer(
             }
         }, [tax_residence]);
 
+        const taxResidenceItem = (value: string) =>
+            value ? residenceList.find(item => item.text === value) : undefined;
+
         const onSubmit = async (
             values: Partial<TFinancialInformationForm>,
             helpers: FormikHelpers<Partial<TFinancialInformationForm>>
@@ -212,7 +215,7 @@ const CompleteFinancialAssessment = observer(
             try {
                 const settings_payload = {
                     account_opening_reason: values.account_opening_reason,
-                    tax_residence: values.tax_residence,
+                    tax_residence: taxResidenceItem(values.tax_residence)?.value || values.tax_residence,
                     tax_identification_number: values.tax_identification_number,
                     tin_skipped: values.no_tax_information ? 1 : 0,
                 };
@@ -551,23 +554,15 @@ const CompleteFinancialAssessment = observer(
                                                                                         ? meta.error
                                                                                         : undefined
                                                                                 }
-                                                                                value={
-                                                                                    tax_residence_to_display ||
-                                                                                    field.value
-                                                                                }
                                                                                 list_items={residenceList}
                                                                                 onItemSelection={(item: TItem) => {
-                                                                                    const tax_residence_value = (
-                                                                                        item as ResidenceList[0]
-                                                                                    ).value;
                                                                                     setFieldValue(
                                                                                         'tax_residence',
-                                                                                        tax_residence_value,
+                                                                                        (item as ResidenceList[0]).value
+                                                                                            ? (item as ResidenceList[0])
+                                                                                                  .text
+                                                                                            : '',
                                                                                         true
-                                                                                    );
-                                                                                    setTaxResidenceToDisplay(
-                                                                                        (item as ResidenceList[0])
-                                                                                            .text || ''
                                                                                     );
                                                                                     setFieldValue(
                                                                                         'tax_identification_confirm',
@@ -578,8 +573,13 @@ const CompleteFinancialAssessment = observer(
                                                                                         'tax_identification_number',
                                                                                         undefined
                                                                                     );
-                                                                                    if (tax_residence_value) {
-                                                                                        mutate(tax_residence_value);
+                                                                                    if (
+                                                                                        (item as ResidenceList[0]).value
+                                                                                    ) {
+                                                                                        mutate(
+                                                                                            (item as ResidenceList[0])
+                                                                                                .value
+                                                                                        );
                                                                                     }
                                                                                 }}
                                                                                 data-testid='tax_residence'

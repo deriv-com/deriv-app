@@ -129,6 +129,7 @@ export default class TradersHubStore extends BaseStore {
             setIsFinancialRestrictedCountry: action.bound,
             setIsSetupRealAccountOrGoToDemoModalVisible: action.bound,
             getDefaultJurisdiction: action.bound,
+            should_show_zero_spread_account: computed,
         });
 
         reaction(
@@ -403,6 +404,20 @@ export default class TradersHubStore extends BaseStore {
         this.selected_platform_type = platform_type;
     }
 
+    get should_show_zero_spread_account() {
+        const { residence, is_logged_in, mt5_login_list } = this.root_store.client;
+        // Show zero spread account option if user is not logged in
+        if (!is_logged_in) return true;
+
+        // Show zero spread account option if user already has a zero spread account
+        const is_zero_spread_account_exist = mt5_login_list.some(account => account.product === 'zero_spread');
+        if (is_zero_spread_account_exist) return true;
+
+        // Hide zero spread account option for users from restricted countries
+        const restricted_countries = ['in'];
+        return !restricted_countries.includes(residence);
+    }
+
     getAvailableCFDAccounts() {
         const {
             trading_platform_available_accounts,
@@ -474,15 +489,19 @@ export default class TradersHubStore extends BaseStore {
                 icon: 'SwapFree',
                 availability: 'Non-EU',
             },
-            {
-                name: localize('Zero Spread'),
-                description: getZeroSpreadAccountDesc(),
-                platform: CFD_PLATFORMS.MT5,
-                market_type: 'all',
-                product: 'zero_spread',
-                icon: 'ZeroSpread',
-                availability: 'Non-EU',
-            },
+            ...(this.should_show_zero_spread_account
+                ? [
+                      {
+                          name: localize('Zero Spread'),
+                          description: getZeroSpreadAccountDesc(),
+                          platform: CFD_PLATFORMS.MT5,
+                          market_type: 'all',
+                          product: 'zero_spread',
+                          icon: 'ZeroSpread',
+                          availability: 'Non-EU',
+                      },
+                  ]
+                : []),
             {
                 name: localize('Gold'),
                 description: localize('Trading opportunities on popular precious metals.'),

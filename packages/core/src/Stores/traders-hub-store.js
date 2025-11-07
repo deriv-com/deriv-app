@@ -410,7 +410,9 @@ export default class TradersHubStore extends BaseStore {
         if (!is_logged_in) return true;
 
         // Show zero spread account option if user already has a zero spread account
-        const is_zero_spread_account_exist = mt5_login_list.some(account => account.product === 'zero_spread');
+        const is_zero_spread_account_exist = mt5_login_list.some(
+            account => account.product === 'zero_spread' && account.account_type === (this.is_demo ? 'demo' : 'real')
+        );
         if (is_zero_spread_account_exist) return true;
 
         // Hide zero spread account option for users from restricted countries

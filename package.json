@@ -23,6 +23,13 @@
         },
         "watchpack-chokidar2": {
             "braces": "^3.0.3"
+        },
+        "webpack-dev-middleware": ">=7.1.0",
+        "@storybook/manager-webpack5": {
+            "webpack-dev-middleware": ">=7.1.0"
+        },
+        "@storybook/builder-webpack5": {
+            "webpack-dev-middleware": ">=7.1.0"
         }
     },
     "devDependencies": {

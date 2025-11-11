@@ -27,9 +27,18 @@ const CompareCFDs = observer(() => {
     const history = useHistory();
     const store = useStore();
     const { client, traders_hub } = store;
-    const { trading_platform_available_accounts } = client;
+    const { residence } = client;
     const { is_demo, is_eu_user, available_dxtrade_accounts, available_ctrader_accounts, getExistingAccounts } =
         traders_hub;
+
+    // remove zero spread account for restricted countries
+    let trading_platform_available_accounts = [...client.trading_platform_available_accounts];
+    const restricted_countries = ['in'];
+    if (residence && restricted_countries.includes(residence)) {
+        trading_platform_available_accounts = trading_platform_available_accounts.filter(
+            account => account.product !== 'zero_spread'
+        );
+    }
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)

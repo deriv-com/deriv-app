@@ -65,7 +65,7 @@ const AccountTransferFormSideNote = observer(() => {
                 <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency and Deriv fiat accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
             );
         }
-        return null;
+        return <></>;
     }, [
         currency,
         is_crypto_to_crypto_transfer,
@@ -168,7 +168,7 @@ const AccountTransferFormSideNote = observer(() => {
             <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferFormSideNoteBullet>
-            {transfer_fee && transfer_fee > 0 && (
+            {transfer_fee && (
                 <AccountTransferFormSideNoteBullet>{getTransferFeeNote()}</AccountTransferFormSideNoteBullet>
             )}
             <AccountTransferFormSideNoteBullet>

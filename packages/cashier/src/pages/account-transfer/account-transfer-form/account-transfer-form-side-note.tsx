@@ -20,7 +20,7 @@ const AccountTransferFormSideNote = observer(() => {
     const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     const { client } = useStore();
-    const { account_limits, is_ctrader_allowed } = client;
+    const { account_limits, is_dxtrade_allowed, is_ctrader_allowed } = client;
 
     const { account_transfer } = useCashierStore();
 
@@ -66,7 +66,16 @@ const AccountTransferFormSideNote = observer(() => {
             );
         }
         return null;
-    }, [currency, is_crypto_to_crypto_transfer, is_dxtrade_transfer, is_mt_transfer, minimum_fee, transfer_fee]);
+    }, [
+        currency,
+        is_crypto_to_crypto_transfer,
+        is_dxtrade_transfer,
+        is_mt_transfer,
+        minimum_fee,
+        transfer_fee,
+        selected_from.value,
+        selected_to.value,
+    ]);
 
     const getDxtradeAllowedNotes = useCallback(() => {
         if (hasDxTradeAccount) {
@@ -144,10 +153,13 @@ const AccountTransferFormSideNote = observer(() => {
         allowed_transfers_count?.internal,
         allowed_transfers_count?.ctrader,
         allowed_transfers_count?.mt5,
+        is_dxtrade_allowed,
         is_ctrader_allowed,
         platform_name_dxtrade,
         platform_name_mt5,
         platform_name_ctrader,
+        selected_from.value,
+        selected_to.value,
     ]);
 
     return (

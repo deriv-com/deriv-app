@@ -168,7 +168,7 @@ const AccountTransferFormSideNote = observer(() => {
             <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferFormSideNoteBullet>
-            {transfer_fee && (
+            {transfer_fee && transfer_fee > 0 && (
                 <AccountTransferFormSideNoteBullet>{getTransferFeeNote()}</AccountTransferFormSideNoteBullet>
             )}
             <AccountTransferFormSideNoteBullet>

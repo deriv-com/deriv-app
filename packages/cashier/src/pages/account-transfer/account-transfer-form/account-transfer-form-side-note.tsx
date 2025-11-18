@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { SideNote, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
+import { getPlatformSettings } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
@@ -24,7 +24,7 @@ const AccountTransferFormSideNote = observer(() => {
 
     const { account_transfer } = useCashierStore();
 
-    const { minimum_fee, selected_from, selected_to, transfer_fee, accounts_list } = account_transfer;
+    const { selected_from, selected_to, transfer_fee, accounts_list } = account_transfer;
 
     const hasDxTradeAccount = accounts_list.some(account => account.is_dxtrade);
 
@@ -40,7 +40,6 @@ const AccountTransferFormSideNote = observer(() => {
         ctrader: ctrader_remaining_transfers?.allowed,
         dxtrade: dxtrade_remaining_transfers?.allowed,
     };
-    const currency = selected_from.currency || '';
     const is_crypto_to_crypto_transfer = selected_from.is_crypto && selected_to.is_crypto;
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
     const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
@@ -48,30 +47,28 @@ const AccountTransferFormSideNote = observer(() => {
     const getTransferFeeNote = useCallback(() => {
         if (transfer_fee && is_crypto_to_crypto_transfer) {
             return (
-                <Localize
-                    i18n_default_text='When you move funds between your Deriv cryptocurrency accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
+                <AccountTransferFormSideNoteBullet>
+                    <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
+                </AccountTransferFormSideNoteBullet>
             );
         } else if (transfer_fee && (is_mt_transfer || is_dxtrade_transfer)) {
             return (
-                <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency and Deriv MT5 accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
+                <AccountTransferFormSideNoteBullet>
+                    <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency and Deriv MT5 accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
+                </AccountTransferFormSideNoteBullet>
             );
         } else if (transfer_fee && !is_mt_transfer && !is_dxtrade_transfer) {
             return (
-                <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency and Deriv fiat accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
+                <AccountTransferFormSideNoteBullet>
+                    <Localize i18n_default_text='When you move funds between your Deriv cryptocurrency and Deriv fiat accounts, an adjustment might be applied to reflect the bid–ask value in the market. Some transfers might not be possible.' />
+                </AccountTransferFormSideNoteBullet>
             );
         }
         return <></>;
     }, [
-        currency,
         is_crypto_to_crypto_transfer,
         is_dxtrade_transfer,
         is_mt_transfer,
-        minimum_fee,
         transfer_fee,
         selected_from.value,
         selected_to.value,
@@ -168,7 +165,7 @@ const AccountTransferFormSideNote = observer(() => {
             <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
             </AccountTransferFormSideNoteBullet>
-            <AccountTransferFormSideNoteBullet>{getTransferFeeNote()}</AccountTransferFormSideNoteBullet>
+            {getTransferFeeNote()}
             <AccountTransferFormSideNoteBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
             </AccountTransferFormSideNoteBullet>

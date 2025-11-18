@@ -135,7 +135,7 @@ describe('TransferReceipt', () => {
         const { container } = render(<TransferReceipt />, { wrapper });
 
         expect(container).toHaveTextContent('10,000.00 USD (100.00000000 BTC)');
-        expect(container).toHaveTextContent('Transfer fees: 100 USD');
+        expect(container).toHaveTextContent('There might be an adjustment to reflect the bid-ask value in the market.');
     });
     it('Should render the correct from and to card labels', () => {
         render(<TransferReceipt />, { wrapper });

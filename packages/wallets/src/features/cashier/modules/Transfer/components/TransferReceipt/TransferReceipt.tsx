@@ -61,13 +61,7 @@ const TransferReceipt = () => {
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
 
     const feeMessage = feeAmount ? (
-        <Localize
-            i18n_default_text='Transfer fees: {{feeAmount}} {{displayCode}}'
-            values={{
-                displayCode: fromAccount?.currencyConfig?.display_code,
-                feeAmount,
-            }}
-        />
+        <Localize i18n_default_text='There might be an adjustment to reflect the bid-ask value in the market.' />
     ) : (
         ''
     );

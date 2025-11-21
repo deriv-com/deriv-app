@@ -243,6 +243,8 @@ const CompleteFinancialAssessment = observer(
                     return;
                 }
 
+                const eu_occupation = [values.company, values.position].filter(Boolean).join(' - ');
+
                 const fa_payload = {
                     financial_information: {
                         employment_status: getTextFromKey('employment_status', values.employment_status as string),
@@ -254,7 +256,10 @@ const CompleteFinancialAssessment = observer(
                             values.investment_intention as string
                         ),
                         source_of_wealth: (values.source_of_wealth || '').split(/[;,]/).filter(Boolean).join(';'),
-                        occupation: getTextFromKey('occupation', values.occupation as string),
+                        occupation:
+                            getOccupationList({ financial_questions }).length < 1
+                                ? eu_occupation
+                                : getTextFromKey('occupation', values.occupation as string),
                         employment_industry: getTextFromKey(
                             'employment_industry',
                             values.employment_industry as string
@@ -343,6 +348,11 @@ const CompleteFinancialAssessment = observer(
                 ...initial_form_values,
             };
 
+            if (financial_questions?.questions?.occupation?.type === 'free_text' && form_data.occupation) {
+                const [company = '', position = ''] = form_data.occupation.split(' - ').map(part => part.trim());
+                form_data.company = company;
+                form_data.position = position;
+            }
             // Convert employment_status from account_settings display text to key format if financial_questions is available
             // Handle case where employment_status might be in form_data or directly from account_settings
             const employment_status_to_convert = form_data.employment_status || employment_status;
@@ -803,7 +813,34 @@ const CompleteFinancialAssessment = observer(
 
                                                 {/* Occupation */}
                                                 {shouldShowFinancialField('occupation') &&
-                                                    !shouldHideByFinancialQuestions('occupation', values) && (
+                                                    !shouldHideByFinancialQuestions('occupation', values) &&
+                                                    (getOccupationList({
+                                                        financial_questions,
+                                                    }).length < 1 ? (
+                                                        <div className='complete-user-profile-modal__eu-company-occupation'>
+                                                            <FormInputField
+                                                                name='company'
+                                                                label={localize('Company')}
+                                                                placeholder={localize('Company')}
+                                                                data-testid='company'
+                                                                disabled={isFieldDisabled('occupation')}
+                                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                                    setFieldValue('company', e.target.value, false);
+                                                                }}
+                                                            />
+                                                            -
+                                                            <FormInputField
+                                                                name='position'
+                                                                label={localize('Position')}
+                                                                placeholder={localize('Position')}
+                                                                data-testid='position'
+                                                                disabled={isFieldDisabled('occupation')}
+                                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                                    setFieldValue('position', e.target.value, false);
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    ) : (
                                                         <Field name='occupation'>
                                                             {({ field, meta }: FieldProps) => (
                                                                 <div className='complete-user-profile-modal__bottom-margin'>
@@ -840,7 +877,7 @@ const CompleteFinancialAssessment = observer(
                                                                 </div>
                                                             )}
                                                         </Field>
-                                                    )}
+                                                    ))}
 
                                                 {/* Income Source */}
                                                 {shouldShowFinancialField('income_source') && (

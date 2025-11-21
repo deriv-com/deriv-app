@@ -104,6 +104,7 @@ type TFinancialInformationValidationParams = {
             {
                 answers?: Array<{ key: string; value: string }>;
                 hide_if?: string[];
+                type: string;
             }
         >;
     };
@@ -157,6 +158,8 @@ export const FinancialInformationValidationSchema = ({
         const employment_status_text = getEmploymentStatusText(employment_status_key);
         return tin_employment_status_bypass.includes(employment_status_text);
     };
+
+    const isOccupationFreeText = financial_questions?.questions?.occupation?.type === 'free_text';
 
     return Yup.object().shape({
         // Step 1 fields
@@ -327,17 +330,45 @@ export const FinancialInformationValidationSchema = ({
             }
             return true;
         }),
-        occupation: Yup.string().test('occupation', function (value) {
-            const formValues = this.parent;
-            if (
-                current_step === 2 &&
-                shouldShowFinancialField('occupation') &&
-                !shouldHideByFinancialQuestions('occupation', formValues) &&
-                !value
-            ) {
-                return this.createError({ message: localize('This field is required') });
-            }
-            return true;
+        ...(isOccupationFreeText && {
+            company: Yup.string().test('company', function (value) {
+                const formValues = this.parent;
+                if (
+                    current_step === 2 &&
+                    shouldShowFinancialField('occupation') &&
+                    !shouldHideByFinancialQuestions('occupation', formValues) &&
+                    !value
+                ) {
+                    return this.createError({ message: localize('This field is required') });
+                }
+                return true;
+            }),
+            position: Yup.string().test('position', function (value) {
+                const formValues = this.parent;
+                if (
+                    current_step === 2 &&
+                    shouldShowFinancialField('occupation') &&
+                    !shouldHideByFinancialQuestions('occupation', formValues) &&
+                    !value
+                ) {
+                    return this.createError({ message: localize('This field is required') });
+                }
+                return true;
+            }),
+        }),
+        ...(!isOccupationFreeText && {
+            occupation: Yup.string().test('occupation', function (value) {
+                const formValues = this.parent;
+                if (
+                    current_step === 2 &&
+                    shouldShowFinancialField('occupation') &&
+                    !shouldHideByFinancialQuestions('occupation', formValues) &&
+                    !value
+                ) {
+                    return this.createError({ message: localize('This field is required') });
+                }
+                return true;
+            }),
         }),
         income_source: Yup.string().test('income_source', function (value) {
             if (current_step === 2 && shouldShowFinancialField('income_source') && !value) {

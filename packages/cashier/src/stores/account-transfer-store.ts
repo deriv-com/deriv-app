@@ -238,9 +238,11 @@ export default class AccountTransferStore {
 
     setTransferLimit() {
         const transfer_limits = [
-            { limits: 'limits_mt5', is_transfer: this.selected_from.is_mt || this.selected_to.is_mt },
-            { limits: 'limits_dxtrade', is_transfer: this.selected_from.is_dxtrade || this.selected_to.is_dxtrade },
-            { limits: 'limits_ctrader', is_transfer: this.selected_from.is_ctrader || this.selected_to.is_ctrader },
+            { limits: 'limits_mt5', is_transfer: this.selected_from.is_mt },
+            { limits: 'limits_dxtrade', is_transfer: this.selected_from.is_dxtrade },
+            { limits: 'limits_ctrader', is_transfer: this.selected_from.is_ctrader },
+            { limits: 'limits_dxtrade', is_transfer: this.selected_to.is_dxtrade },
+            { limits: 'limits_ctrader', is_transfer: this.selected_to.is_ctrader },
         ];
 
         const limits_key = transfer_limits.find(option => option.is_transfer)?.limits || 'limits';

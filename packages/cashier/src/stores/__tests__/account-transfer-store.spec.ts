@@ -376,6 +376,23 @@ describe('AccountTransferStore', () => {
         expect(account_transfer_store.transfer_limit).toEqual({ min: '1.00', max: '10.00' });
     });
 
+    it('should use general limits when transferring to mt5 from a non-mt5 account', () => {
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
+            USD: {
+                transfer_between_accounts: {
+                    limits: { min: 0.01, max: 200 },
+                    limits_mt5: { min: 1, max: 1000 },
+                },
+            },
+        });
+
+        account_transfer_store.setSelectedFrom({ balance: 500, currency: 'USD', is_mt: false });
+        account_transfer_store.setSelectedTo({ currency: 'USD', is_mt: true });
+        account_transfer_store.setTransferLimit();
+
+        expect(account_transfer_store.transfer_limit).toEqual({ min: '0.01', max: '200.00' });
+    });
+
     it('should set proper transfer limit for dxtrade transfer', () => {
         (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { limits_dxtrade: { min: 10, max: 100 } } },

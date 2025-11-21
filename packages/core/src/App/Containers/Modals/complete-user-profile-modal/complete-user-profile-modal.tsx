@@ -43,6 +43,7 @@ type TCurrencyFormProps = {
 
 type TPersonalDetailsFormProps = {
     date_of_birth: string;
+    place_of_birth: string;
 };
 
 type TCountryandCitizenshipFormProps = {
@@ -114,6 +115,7 @@ const CompleteUserProfile = observer(
 
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
         const [citizen_to_display, setCitizenToDisplay] = React.useState('');
+        const [place_of_birth_to_display, setPlaceOfBirthToDisplay] = React.useState('');
         const [submitting_currency, setSubmittingCurrency] = React.useState(false);
 
         const { data: states_list, isFetched: state_list_fetched } = useStatesList(residence);
@@ -121,6 +123,7 @@ const CompleteUserProfile = observer(
         const {
             citizen,
             date_of_birth,
+            place_of_birth,
             address_line_1,
             address_line_2,
             address_city,
@@ -132,6 +135,7 @@ const CompleteUserProfile = observer(
             currency: '',
             citizen: citizen || '',
             date_of_birth: date_of_birth || '',
+            place_of_birth: place_of_birth || '',
             address_line_1: address_line_1 || '',
             address_line_2: address_line_2 || '',
             address_city: address_city || '',
@@ -406,6 +410,106 @@ const CompleteUserProfile = observer(
                                                         hint={localize(
                                                             'Select your citizenship/nationality as it appears on your passport or other government-issued ID'
                                                         )}
+                                                        required
+                                                    />
+                                                )}
+                                            </>
+                                        )}
+                                        {!place_of_birth && (
+                                            <>
+                                                <Text
+                                                    weight='bold'
+                                                    className='complete-user-profile-modal__heading complete-user-profile-modal__bottom-margin'
+                                                >
+                                                    <Localize i18n_default_text='Place of birth' />
+                                                </Text>
+                                                {!residence_list_fetched && (
+                                                    <div className='details-form__loader'>
+                                                        <Loading is_fullscreen={false} />
+                                                    </div>
+                                                )}
+                                                {residence_list?.length > 0 ? (
+                                                    <Field name='place_of_birth'>
+                                                        {({ field }: FieldProps) => (
+                                                            <>
+                                                                {isDesktop ? (
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='none'
+                                                                        type='text'
+                                                                        label={localize('Place of birth*')}
+                                                                        list_items={residence_list}
+                                                                        onItemSelection={({ value, text }) => {
+                                                                            setFieldValue(
+                                                                                'place_of_birth',
+                                                                                value,
+                                                                                true
+                                                                            );
+                                                                            setPlaceOfBirthToDisplay(text);
+                                                                        }}
+                                                                        list_portal_id='modal_root'
+                                                                        hint={localize('Select your place of birth')}
+                                                                        className='complete-user-profile-modal__bottom-margin-field'
+                                                                        value={
+                                                                            place_of_birth_to_display ||
+                                                                            values.place_of_birth
+                                                                        }
+                                                                        required
+                                                                        onChange={e => {
+                                                                            if (place_of_birth_to_display) {
+                                                                                setPlaceOfBirthToDisplay('');
+                                                                            }
+                                                                            setFieldValue('place_of_birth', '', false);
+                                                                            field.onChange(e);
+                                                                        }}
+                                                                        onBlur={e => {
+                                                                            if (
+                                                                                !e.target.value &&
+                                                                                values.place_of_birth
+                                                                            ) {
+                                                                                setPlaceOfBirthToDisplay(
+                                                                                    residence_list.find(
+                                                                                        item =>
+                                                                                            item.value ===
+                                                                                            values.place_of_birth
+                                                                                    )?.text || values.place_of_birth
+                                                                                );
+                                                                            }
+                                                                            field.onBlur(e);
+                                                                        }}
+                                                                    />
+                                                                ) : (
+                                                                    <SelectNative
+                                                                        {...field}
+                                                                        placeholder={localize('Place of birth')}
+                                                                        label={localize('Place of birth*')}
+                                                                        list_items={residence_list}
+                                                                        onChange={e => {
+                                                                            handleChange(e);
+                                                                            setFieldValue(
+                                                                                'place_of_birth',
+                                                                                e.target.value,
+                                                                                true
+                                                                            );
+                                                                            setPlaceOfBirthToDisplay(e.target.text);
+                                                                        }}
+                                                                        hint={localize('Select your place of birth')}
+                                                                        className='complete-user-profile-modal__bottom-margin-field'
+                                                                        required
+                                                                    />
+                                                                )}
+                                                            </>
+                                                        )}
+                                                    </Field>
+                                                ) : (
+                                                    // Fallback to input field when residence list is empty
+                                                    <FormInputField
+                                                        className='complete-user-profile-modal__bottom-margin-field'
+                                                        name='address_state'
+                                                        label={localize('Place of birth*')}
+                                                        placeholder={localize('Place of birth')}
+                                                        hint={localize('Select your place of birth')}
                                                         required
                                                     />
                                                 )}
